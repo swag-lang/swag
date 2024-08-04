@@ -933,11 +933,11 @@ void initErrors()
     SWAG_ERROR(Nte0043, "consider writing [[impl enum %s]] instead");
     SWAG_ERROR(Nte0044, "copying an array of structs is not allowed here");
     SWAG_ERROR(Nte0045, "could [[self]] be missing?");
-    SWAG_ERROR(Nte0046, "could be %s of type [[%s]]");
+    SWAG_ERROR(Nte0046, "could be this %s");
     SWAG_ERROR(Nte0047, "could be %s");
-    SWAG_ERROR(Nte0048, "could be a function of type [[%s]]");
+    SWAG_ERROR(Nte0048, "could be this other %s");
     SWAG_ERROR(Nte0049, "could be an instance of the generic function [[%s]]");
-    SWAG_ERROR(Nte0050, "could be the struct [[%s]]");
+    SWAG_ERROR(Nte0050, nullptr);
     SWAG_ERROR(Nte0051, "could be");
     SWAG_ERROR(Nte0052, "this is an enum implementation block");
     SWAG_ERROR(Nte0053, "did you forget [[var]] or [[const]] to declare a global variable or a constant?");

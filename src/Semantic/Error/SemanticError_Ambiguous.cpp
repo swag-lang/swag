@@ -49,37 +49,37 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         return duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0017, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0017, Naming::kindName(matches[0]->symbolOverload).c_str(), symbol->name.c_str())};
 
+    SetUtf8 here;
+    bool    first = true;
     for (const auto match : matches)
     {
-        const auto  overload = match->symbolOverload;
-        Diagnostic* note;
+        const auto overload = match->symbolOverload;
+        Utf8       couldBe;
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->isFromGeneric())
         {
-            auto couldBe = formNte(Nte0049, overload->typeInfo->getDisplayNameC());
-            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-        }
-        else if (overload->typeInfo->isFuncAttr())
-        {
-            auto couldBe = formNte(Nte0048, overload->typeInfo->getDisplayNameC());
-            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-        }
-        else if (overload->typeInfo->isStruct())
-        {
-            auto couldBe = formNte(Nte0050, overload->typeInfo->getDisplayNameC());
-            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+            couldBe = formNte(Nte0049, overload->typeInfo->getDisplayNameC());
         }
         else
         {
-            const auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-            auto       couldBe      = formNte(Nte0046, Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-            note                    = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+            const auto kindName = Naming::kindName(match->symbolOverload);
+            if (here.contains(kindName))
+                couldBe = formNte(Nte0048, kindName.c_str());
+            else
+                couldBe = formNte(Nte0046, kindName.c_str());
+            here.insert(kindName);
         }
 
+        if (!first)
+            couldBe = "or " + couldBe;
+
+        const auto note   = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         note->canBeMerged = false;
         err.addNote(note);
+
+        first = false;
     }
 
     return context->report(err);
