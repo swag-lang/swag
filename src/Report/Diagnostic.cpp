@@ -43,92 +43,113 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
-    doReplaceHighLight();
+    textMsg = preprocess(textMsg);
 }
 
-void Diagnostic::doReplaceHighLight()
+Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 {
-    textMsg += ' ';
+    Utf8 replace = textMsg;
 
+    replace = replaceHighLight(replace);
+
+    replace.replace("expected $$A$$ ", "expected a ");
+    replace.replace("expected $$AN$$ ", "expected an ");
+    replace.replace("got $$A$$ ", "got a ");
+    replace.replace("got $$AN$$ ", "got an ");
+    replace.replace("got identifier ", "got the identifier ");
+    replace.replace("got type ", "got the type ");
+    replace.replace("got literal ", "got the literal ");
+    replace.replace("got intrinsic ", "got the intrinsic ");
+    replace.replace("got keyword ", "got the keyword ");
+    replace.replace("got compiler keyword ", "got the compiler keyword ");
+    
+    replace.replace("$$A$$ ", "");
+    replace.replace("$$AN$$ ", "");
+
+    return replace;
+}
+
+Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
+{
     int idx = textMsg.find(" [[");
-    if (idx != -1)
+    if (idx == -1)
+        return textMsg;
+
+    Utf8 replace{textMsg.buffer, static_cast<uint32_t>(idx)};
+    while (idx != -1)
     {
-        Utf8 replace{textMsg.buffer, static_cast<uint32_t>(idx)};
-        while (idx != -1)
+        bool isSymbol = true;
+
+        Utf8 inside;
+        idx += 3;
+
+        int nextIdx = textMsg.find("]]", idx);
+        if (nextIdx != -1)
         {
-            bool isSymbol = true;
+            while (nextIdx + 2 < static_cast<int>(textMsg.length()) && textMsg[nextIdx + 2] == ']')
+                nextIdx++;
 
-            Utf8 inside;
-            idx += 3;
-
-            int nextIdx = textMsg.find("]] ", idx);
-            if (nextIdx != -1)
+            while (idx != nextIdx)
             {
-                while (idx != nextIdx)
-                {
-                    const auto c = textMsg[idx++];
-                    inside += c;
-                    if (SWAG_IS_AL_NUM(c) || c == '_')
-                        isSymbol = false;
-                }
+                const auto c = textMsg[idx++];
+                inside += c;
+                if (SWAG_IS_AL_NUM(c) || c == '_')
+                    isSymbol = false;
+            }
 
-                if (isSymbol && inside.length() <= 1)
-                {
-                    replace += " ";
-                    if (inside == ',')
-                        replace += "[[comma]] ','";
-                    else if (inside == ';')
-                        replace += "[[semicolon]] ';'";
-                    else if (inside == '(')
-                        replace += "[[open parenthesis]] '('";
-                    else if (inside == ')')
-                        replace += "[[closed parenthesis]] ')'";
-                    else if (inside == ':')
-                        replace += "[[colon]] ':'";
-                    else if (inside == '{')
-                        replace += "[[open curly bracket]] '{'";
-                    else if (inside == '}')
-                        replace += "[[closed curly bracket]] '}'";
-                    else if (inside == '[')
-                        replace += "[[open square bracket]] '['";
-                    else if (inside == ']')
-                        replace += "[[closed square bracket]] ']'";
-                    else
-                    {
-                        replace += "symbol [['";
-                        replace += inside;
-                        replace += "']]";
-                    }
-
-                    replace += " ";
-                }
+            if (isSymbol && inside.length() <= 1)
+            {
+                if (inside == ',')
+                    replace += " $$A$$ [[comma]] ','";
+                else if (inside == ';')
+                    replace += " $$A$$ [[semicolon]] ';'";
+                else if (inside == '(')
+                    replace += " $$AN$$ [[open parenthesis]] '('";
+                else if (inside == ')')
+                    replace += " $$A$$ [[closed parenthesis]] ')'";
+                else if (inside == ':')
+                    replace += " $$A$$ [[colon]] ':'";
+                else if (inside == '{')
+                    replace += " $$AN$$ [[open curly bracket]] '{'";
+                else if (inside == '}')
+                    replace += " $$A$$ [[closed curly bracket]] '}'";
+                else if (inside == '[')
+                    replace += " $$AN$$ [[open square bracket]] '['";
+                else if (inside == ']')
+                    replace += " $$A$$ [[closed square bracket]] ']'";
                 else
                 {
-                    replace += " [[";
+                    replace += " $$A$$ symbol [['";
                     replace += inside;
-                    replace += "]] ";
+                    replace += "']]";
                 }
-
-                idx += 3;
             }
             else
             {
                 replace += " [[";
+                replace += inside;
+                replace += "]]";
             }
 
-            nextIdx = textMsg.find(" [[", idx);
-            if (nextIdx == -1)
-                replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(textMsg.length() - idx)};
-            else
-                replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(nextIdx - idx)};
-            idx = nextIdx;
+            idx += 2;
+        }
+        else
+        {
+            replace += " [[";
         }
 
-        textMsg = replace;
+        nextIdx = textMsg.find(" [[", idx);
+        if (nextIdx == -1)
+            replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(textMsg.length() - idx)};
+        else
+            replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(nextIdx - idx)};
+        idx = nextIdx;
     }
+
+    return replace;
 }
 
-void Diagnostic::doReplace(const Token& token)
+void Diagnostic::replaceTokenName(const Token& token)
 {
     if (Tokenizer::isKeyword(token.id))
         textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.c_str()));
@@ -150,14 +171,14 @@ void Diagnostic::doReplace(const Token& token)
         textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.c_str()));
 }
 
-void Diagnostic::doReplace(const TokenParse& tokenParse)
+void Diagnostic::replaceTokenName(const TokenParse& tokenParse)
 {
     if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeString)
         textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse.token.c_str()));
     else if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeCharacter)
         textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse.token.c_str()));
     else
-        doReplace(tokenParse.token);
+        replaceTokenName(tokenParse.token);
 }
 
 void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
@@ -452,6 +473,8 @@ void Diagnostic::collectRanges()
     // Preprocess ranges
     for (auto& r : ranges)
     {
+        r.hint = preprocess(r.hint);
+
         // No multiline range... a test, to reduce verbosity
         if (r.endLocation.line > r.startLocation.line)
         {
@@ -504,7 +527,7 @@ void Diagnostic::collectRanges()
         fixRange(lineCode, r.startLocation, r.width, '[', ']');
 
         r.mid = r.startLocation.column + r.width / 2;
-        if((r.width & 1) == 0)
+        if ((r.width & 1) == 0)
             r.mid--;
     }
 }

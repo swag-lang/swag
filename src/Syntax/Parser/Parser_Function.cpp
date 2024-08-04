@@ -162,11 +162,11 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
 
             auto tokenComma = tokenParse;
             if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in [[struct]] initialization arguments"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in the [[struct]] initialization arguments"));
             else if (forAttrUse)
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in attribute arguments"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in the attribute arguments"));
             else
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in function call arguments"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in the function call arguments"));
 
             // Accept ending comma in struct initialization
             if (closeToken == TokenId::SymRightCurly && tokenParse.is(closeToken))

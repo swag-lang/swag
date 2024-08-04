@@ -61,7 +61,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(token);
+        replaceTokenName(token);
         setup();
     }
 
@@ -74,7 +74,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(tokenParse);
+        replaceTokenName(tokenParse);
         setup();
     }
 
@@ -88,7 +88,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(token);
+        replaceTokenName(token);
         setup();
     }
 
@@ -103,7 +103,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(token);
+        replaceTokenName(token);
         setup();
     }
 
@@ -115,7 +115,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(node->token);
+        replaceTokenName(node->token);
         node->computeLocation(startLocation, endLocation);
         setup();
     }
@@ -129,7 +129,7 @@ struct Diagnostic
         showSourceCode{true},
         hasLocation{true}
     {
-        doReplace(node->token);
+        replaceTokenName(node->token);
         node->computeLocation(startLocation, endLocation);
         setup();
     }
@@ -160,19 +160,20 @@ struct Diagnostic
     static Diagnostic* note(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg) { return new Diagnostic{file, start, end, msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
 
-    void setup();
-    void doReplaceHighLight();
-    void doReplace(const Token& token);
-    void doReplace(const TokenParse& tokenParse);
-    void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
-    void addNote(AstNode* node, const Token& token, const Utf8& msg);
-    void addNote(AstNode* node, const Utf8& h);
-    void addNote(const Token& token, const Utf8& h);
-    void addNote(const Utf8& msg);
-    void addNote(const Diagnostic* note);
-    void addNote(SourceFile* file, const Token& token, const Utf8& msg);
-    void addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
-    bool hasNotes() const { return !notes.empty(); }
+    void        setup();
+    static Utf8 preprocess(const Utf8& textMsg);
+    static Utf8 replaceHighLight(const Utf8& textMsg);
+    void        replaceTokenName(const Token& token);
+    void        replaceTokenName(const TokenParse& tokenParse);
+    void        addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void        addNote(AstNode* node, const Token& token, const Utf8& msg);
+    void        addNote(AstNode* node, const Utf8& h);
+    void        addNote(const Token& token, const Utf8& h);
+    void        addNote(const Utf8& msg);
+    void        addNote(const Diagnostic* note);
+    void        addNote(SourceFile* file, const Token& token, const Utf8& msg);
+    void        addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
+    bool        hasNotes() const { return !notes.empty(); }
 
     void setupColors();
     void collectSourceCode();

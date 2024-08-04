@@ -163,7 +163,7 @@ void initErrors()
     SWAG_ERROR(Err0037, "compile-time evaluation required                  $ the function parameter of type [[%s]] can't be evaluated at compile-time");
     SWAG_ERROR(Err0038, "compile-time evaluation required                  $ the initial value can't be evaluated at compile-time $ in order to make that kind of compile-time evaluation, [[opAffect]] should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0039, "compile-time evaluation required                  $ the initialization expression can't be evaluated at compile-time");
-    SWAG_ERROR(Err0040, "compile-time evaluation required                  $ the operation on struct [[%s]] can't be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be [[#[Swag.ConstExpr]]]");
+    SWAG_ERROR(Err0040, "compile-time evaluation required                  $ the operation on [[%s]] can't be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0041, "compile-time evaluation required                  $ the operation on the tuple can't be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0042, "compile-time evaluation required                  $ the type [[%s]] can't be converted to constant expression");
     SWAG_ERROR(Err0043, "compiler assertion failed                         $ the [[#assert]] expression was evaluated to false");
@@ -192,7 +192,7 @@ void initErrors()
     SWAG_ERROR(Err0066, "duplicated attribute                              $ the attribute [[%s]] is assigned twice, but [[Swag.AttrMulti]] is not present in the declaration");
     SWAG_ERROR(Err0067, "duplicated enum value                             $ the enum value [[%s]] is already defined with the same underlying value");
     SWAG_ERROR(Err0068, "duplicated instruction modifier                   $ an instruction modifier [[%s]] has already been defined");
-    SWAG_ERROR(Err0069, "duplicated operator                               $ expected an expression, found another operator [[%s]] instead");
+    SWAG_ERROR(Err0069, "duplicated operator                               $ expected an expression, found another [[%s]] instead");
     SWAG_ERROR(Err0070, "empty [[#mixin]] replacement block                $ an empty [[mixin]] block is useless $ add some content to the [[#mixin]] block or consider removing it");
     SWAG_ERROR(Err0071, "empty [[case]] statement                          $ a [[case]] statement should not be empty");
     SWAG_ERROR(Err0072, "empty [[default]] statement                       $ a [[default]] statement should not be empty");
