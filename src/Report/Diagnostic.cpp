@@ -243,7 +243,15 @@ void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
 {
     log->setColor(codeLineNoColor);
 
-    int m = lineNo ? lineCodeNumDigits : 0;
+    auto numDigits = 0;
+    auto l         = lineNo;
+    while (l)
+    {
+        l /= 10;
+        numDigits++;
+    }
+
+    int m = lineNo ? numDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
         log->write(" ");
     if (lineNo)
