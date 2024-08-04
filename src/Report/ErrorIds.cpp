@@ -131,7 +131,7 @@ void initErrors()
     SWAG_ERROR(Err0005, "[[#main]] already defined                         $ only one [[#main]] function is allowed per module");
     SWAG_ERROR(Err0006, "[[@mkany]] inconsistency                          $ the pointer type [[%s]] and the second argument [[%s]] are unrelated");
     SWAG_ERROR(Err0007, "[[default]] already defined                       $ only one [[default]] statement is allowed per [[switch]]");
-    SWAG_ERROR(Err0008, "[[impl]] kind mismatch                            $ the implementation kind (%s) and the type of [[%s]] (%s) are not the same");
+    SWAG_ERROR(Err0008, "[[impl]] kind mismatch                            $ this implementation syntax is for [[%s]] but [[%s]] is [[%s]]");
     SWAG_ERROR(Err0009, "[[switch]] value already defined                  $ the [[switch]] value [[%d]] has already been defined");
     SWAG_ERROR(Err0010, "[[switch]] value already defined                  $ the [[switch]] value [[%f]] has already been defined");
     SWAG_ERROR(Err0011, "[[switch]] value already defined                  $ the [[switch]] value [[%s]] has already been defined");

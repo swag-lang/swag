@@ -78,7 +78,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic err{implNode, formErr(Err0008, Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
+        Diagnostic err{implNode, formErr(Err0008, Naming::aKindName(scopeKind).c_str(), implNode->token.c_str(), Naming::aKindName(newScope->kind).c_str())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
             err.addNote(formNte(Nte0046, implNode->token.c_str()));
@@ -257,8 +257,9 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic err{implNode->identifier, formErr(Err0008, Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
+                Diagnostic err{implNode, formErr(Err0008, Naming::aKindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::aKindName(ScopeKind::Struct).c_str())};
                 err.addNote(Diagnostic::hereIs(structNode));
+                err.addNote(formNte(Nte0045, implNode->token.c_str()));
                 return context->report(err);
             }
 
