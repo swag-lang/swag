@@ -136,15 +136,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 return context->report(err);
             }
 
-            if (parent && Tokenizer::isKeyword(parent->token.id))
-                msg = formErr(Err0275, form("[[%s]]", parent->token.c_str()).c_str());
-            else if (parent && Tokenizer::isCompiler(parent->token.id))
-                msg = formErr(Err0275, form("the compiler directive [[%s]]", parent->token.c_str()).c_str());
-            else if (parent && Tokenizer::isSymbol(parent->token.id))
-                msg = formErr(Err0275, form("the symbol [[%s]]", parent->token.c_str()).c_str());
-            else
-                msg = toErr(Err0278);
-
+            msg = formErr(Err0275, parent->token.c_str());
             break;
     }
 

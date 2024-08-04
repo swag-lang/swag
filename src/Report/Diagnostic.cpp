@@ -46,55 +46,48 @@ void Diagnostic::setup()
     textMsg    = preprocess(textMsg);
 }
 
+namespace
+{
+    void addThe(Utf8& replace, const Utf8& verb)
+    {
+        replace.replace(form(" %s identifier ", verb.c_str()), form(" %s the identifier ", verb.c_str()));
+        replace.replace(form(" %s type ", verb.c_str()), form(" %s the type ", verb.c_str()));
+        replace.replace(form(" %s literal ", verb.c_str()), form(" %s the literal ", verb.c_str()));
+        replace.replace(form(" %s intrinsic ", verb.c_str()), form(" %s the intrinsic ", verb.c_str()));
+        replace.replace(form(" %s keyword ", verb.c_str()), form(" %s the keyword ", verb.c_str()));
+        replace.replace(form(" %s compiler instruction ", verb.c_str()), form(" %s the compiler instruction ", verb.c_str()));
+        replace.replace(form(" %s symbol ", verb.c_str()), form(" %s the symbol ", verb.c_str()));
+    }
+
+    void addArticle(Utf8& replace, const Utf8& verb)
+    {
+        replace.replace(form(" %s $$A$$ ", verb.c_str()), form(" %s a ", verb.c_str()));
+        replace.replace(form(" %s $$AN$$ ", verb.c_str()), form(" %s an ", verb.c_str()));
+    }
+}
+
 Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 {
     Utf8 replace = textMsg;
 
     replace = replaceHighLight(replace);
 
-    replace.replace("expected $$A$$ ", "expected a ");
-    replace.replace("expected $$AN$$ ", "expected an ");
-    replace.replace("got $$A$$ ", "got a ");
-    replace.replace("got $$AN$$ ", "got an ");
-    replace.replace(" with $$A$$ ", " with a ");
-    replace.replace(" with $$AN$$ ", " with an ");
-    replace.replace(" or $$A$$ ", " or a ");
-    replace.replace(" or $$AN$$ ", " or an ");
-    replace.replace(" and $$A$$ ", " and a ");
-    replace.replace(" and $$AN$$ ", " and an ");
+    addArticle(replace, "expected");
+    addArticle(replace, "got");
+    addArticle(replace, "with");
+    addArticle(replace, "or");
+    addArticle(replace, "and");
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");
 
-    replace.replace("got identifier ", "got the identifier ");
-    replace.replace("got type ", "got the type ");
-    replace.replace("got literal ", "got the literal ");
-    replace.replace("got intrinsic ", "got the intrinsic ");
-    replace.replace("got keyword ", "got the keyword ");
-    replace.replace("got compiler instruction ", "got the compiler instruction ");
-
-    replace.replace(" with identifier ", " with the identifier ");
-    replace.replace(" with type ", " with the type ");
-    replace.replace(" with literal ", " with the literal ");
-    replace.replace(" with intrinsic ", " with the intrinsic ");
-    replace.replace(" with keyword ", " with the keyword ");
-    replace.replace(" with compiler instruction ", " with the compiler instruction ");
-
-    replace.replace(" or identifier ", " or the identifier ");
-    replace.replace(" or type ", " or the type ");
-    replace.replace(" or literal ", " or the literal ");
-    replace.replace(" or intrinsic ", " or the intrinsic ");
-    replace.replace(" or keyword ", " or the keyword ");
-    replace.replace(" or compiler instruction ", " or the compiler instruction ");
-
-    replace.replace(" and identifier ", " and the identifier ");
-    replace.replace(" and type ", " and the type ");
-    replace.replace(" and literal ", " and the literal ");
-    replace.replace(" and intrinsic ", " and the intrinsic ");
-    replace.replace(" and keyword ", " and the keyword ");
-    replace.replace(" and compiler instruction ", " and the compiler instruction ");
-    
-    replace.replace("expected type ", "expected the type ");
+    addThe(replace, "got");
+    addThe(replace, "with");
+    addThe(replace, "or");
+    addThe(replace, "and");
+    addThe(replace, "after");
+    addThe(replace, "before");
+    addThe(replace, "expected");
 
     return replace;
 }
