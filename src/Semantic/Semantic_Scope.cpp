@@ -503,7 +503,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     }
 
     // If we are in an inline block, jump right to the function parent
-    // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
+    // Not that the function parent can be null in case of inlined expression in a global for example (compile-time execution)
     else if (startNode->is(AstNodeKind::Inline) && !context->forDebugger)
     {
         const auto inlineBlock = castAst<AstInline>(startNode, AstNodeKind::Inline);

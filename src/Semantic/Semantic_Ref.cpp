@@ -899,7 +899,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     // Do not set resolvedSymbolOverload() !
     arrayNode->setResolvedSymbolName(arrayNode->array->resolvedSymbolName());
 
-    // Can we dereference at compile time ?
+    // Can we dereference at compile-time ?
     if (arrayType->isString())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));

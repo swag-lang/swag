@@ -221,7 +221,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             {
                 const auto front = nodeCall->firstChild();
 
-                // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
+                // We have a compile-time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
                 if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
@@ -843,7 +843,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         else
             identifier->addAstFlag(AST_CONST_EXPR);
 
-        // Be sure that the return type is compatible with a compile time execution.
+        // Be sure that the return type is compatible with a compile-time execution.
         // Otherwise, we do not want the AST_CONST_EXPR_FLAG
         if (identifier->hasAstFlag(AST_CONST_EXPR))
         {

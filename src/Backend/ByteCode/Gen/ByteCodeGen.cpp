@@ -119,7 +119,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
     if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         context->sourceFile->module->addCompilerFunc(context->bc);
 
-    // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
+    // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile-time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
     if (!g_ThreadMgr.debuggerMode)
     {

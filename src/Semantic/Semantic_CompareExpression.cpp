@@ -15,7 +15,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     auto       leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto       rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-    // Compile time compare of two types
+    // compile-time compare of two types
     if (left->isConstantGenTypeInfo() && right->isConstantGenTypeInfo())
     {
         const auto ptr1 = left->getConstantGenTypeInfo();

@@ -346,7 +346,7 @@ namespace
 
         for (const auto& p : gVars)
         {
-            // Compile time constant
+            // compile-time constant
             if (p->hasFlagComputedValue())
             {
                 emitConstant(pp, p, SCBEDebug::getScopedName(p));

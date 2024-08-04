@@ -290,7 +290,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
         else
         {
             // Happens when the mixin is in a constexpr expression, inside a scope which is the real non constexpr code.
-            // In that case we need to release our registers, because it's a compile time execution done.
+            // In that case we need to release our registers, because it's a compile-time execution done.
             if (node->parent->hasAstFlag(AST_CONST_EXPR) != node->ownerScope->owner->hasAstFlag(AST_CONST_EXPR))
             {
                 for (const auto r : node->extMisc()->registersToRelease)

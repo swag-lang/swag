@@ -1926,7 +1926,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
 
         // Authorize a sub function to access inline parameters, if possible
-        // This will work for compile time values, otherwise we will have an out of stack frame when generating the code
+        // This will work for compile-time values, otherwise we will have an out of stack frame when generating the code
         cloneContext.alternativeScope = inlineNode->parametersScope;
 
         SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));

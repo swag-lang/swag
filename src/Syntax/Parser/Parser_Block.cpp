@@ -512,7 +512,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         }
         else
         {
-            return error(node, formErr(Err0151, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0151, tokenParse.token.c_str()));
         }
     }
 
