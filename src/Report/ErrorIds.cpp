@@ -1100,7 +1100,7 @@ void initErrors()
     SWAG_ERROR(Nte0210, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0211, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0212, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte0213, nullptr);
+    SWAG_ERROR(Nte0213, "the value could also come from [[%s]]");
     SWAG_ERROR(Nte0214, nullptr);
     SWAG_ERROR(Nte0215, nullptr);
     SWAG_ERROR(Nte0216, nullptr);

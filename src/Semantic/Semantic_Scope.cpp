@@ -43,10 +43,16 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     if (typeEnum.size() > 1)
     {
         Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
+        bool       first = true;
         for (const auto t : typeEnum)
         {
-            auto msg = formNte(Nte0152, t->getDisplayNameC());
+            Utf8 msg;
+            if (first)
+                msg = formNte(Nte0152, t->getDisplayNameC());
+            else
+                msg = formNte(Nte0213, t->getDisplayNameC());
             err.addNote(t->declNode, t->declNode->getTokenName(), msg);
+            first = false;
         }
 
         return context->report(err);
