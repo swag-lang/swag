@@ -176,9 +176,8 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
             if (!rawTypeInfo->isConst())
             {
-                const auto front = typeNode->firstChild();
-                Diagnostic err{front, formErr(Err0265, rawTypeInfo->getDisplayNameC())};
-                err.addNote(formNte(Nte0184, rawTypeInfo->getDisplayNameC()));
+                const auto       front = typeNode->firstChild();
+                const Diagnostic err{front, formErr(Err0265, rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 

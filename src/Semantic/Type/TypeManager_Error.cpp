@@ -181,7 +181,9 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
+        {
             msg = toErr(Err0247);
+        }
         else
         {
             msg                   = formErr(Err0741, fromType->getDisplayNameC(), toType->getDisplayNameC());
