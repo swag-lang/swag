@@ -157,7 +157,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             if (tokenParse.is(closeToken))
                 break;
 
-            if(forAttrUse && tokenParse.is(TokenId::SymRightSquare))
+            if (forAttrUse && tokenParse.is(TokenId::SymRightSquare))
                 return error(tokenParse, toErr(Err0742));
 
             auto tokenComma = tokenParse;
@@ -1021,11 +1021,11 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
     {
         if (flags.has(FUNC_DECL_INTERFACE))
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0081)};
+            const Diagnostic err{sourceFile, tokenParse, formErr(Err0081, node->token.c_str())};
             return context->report(err);
         }
 
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0082)};
+        const Diagnostic err{sourceFile, tokenParse, toErr(Err0082)};
         return context->report(err);
     }
 

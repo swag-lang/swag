@@ -43,7 +43,7 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
-    textMsg = preprocess(textMsg);
+    textMsg    = preprocess(textMsg);
 }
 
 Utf8 Diagnostic::preprocess(const Utf8& textMsg)
@@ -56,15 +56,18 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("expected $$AN$$ ", "expected an ");
     replace.replace("got $$A$$ ", "got a ");
     replace.replace("got $$AN$$ ", "got an ");
+    replace.replace("with $$A$$ ", "with a ");
+    replace.replace("with $$AN$$ ", "with an ");    
+
+    replace.replace("$$A$$ ", "");
+    replace.replace("$$AN$$ ", "");
+
     replace.replace("got identifier ", "got the identifier ");
     replace.replace("got type ", "got the type ");
     replace.replace("got literal ", "got the literal ");
     replace.replace("got intrinsic ", "got the intrinsic ");
     replace.replace("got keyword ", "got the keyword ");
     replace.replace("got compiler keyword ", "got the compiler keyword ");
-    
-    replace.replace("$$A$$ ", "");
-    replace.replace("$$AN$$ ", "");
 
     return replace;
 }
