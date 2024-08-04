@@ -299,15 +299,37 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
+        {
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0743, "var", "const", "var")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0743, "let", "const", "let")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0744, "const", "const", "const")));
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0246)));
+        }
     }
-    else
+    else if (tokenParse.is(TokenId::KwdLet))
     {
-        isLet = tokenParse.is(TokenId::KwdLet);
+        isLet = true;
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0402, isLet ? "let" : "var")));
+        {
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0743, "const", "let", "const")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0743, "var", "let", "var")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0744, "let", "let", "let")));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0402, "let")));
+        }
+    }
+    else
+    {
+        kind = AstNodeKind::VarDecl;
+        SWAG_CHECK(eatToken());
+        if (tokenParse.isNot(TokenId::SymLeftParen))
+        {
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0743, "const", "var", "const")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0743, "let", "var", "let")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0744, "var", "var", "var")));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0402, "var")));
+        }
     }
 
     const auto count = parent->children.size();

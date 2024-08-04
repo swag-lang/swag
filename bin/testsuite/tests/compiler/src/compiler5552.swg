@@ -1,5 +1,5 @@
 #global testerror "Err0743"
 #test
 {
-    const var a = 0
+    const let a = 0
 }

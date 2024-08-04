@@ -59,9 +59,9 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace(" with $$A$$ ", " with a ");
     replace.replace(" with $$AN$$ ", " with an ");
     replace.replace(" or $$A$$ ", " or a ");
-    replace.replace(" or $$AN$$ ", " or an ");     
+    replace.replace(" or $$AN$$ ", " or an ");
     replace.replace(" and $$A$$ ", " and a ");
-    replace.replace(" and $$AN$$ ", " and an ");     
+    replace.replace(" and $$AN$$ ", " and an ");
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");
@@ -71,10 +71,31 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("got literal ", "got the literal ");
     replace.replace("got intrinsic ", "got the intrinsic ");
     replace.replace("got keyword ", "got the keyword ");
-    replace.replace("got compiler keyword ", "got the compiler keyword ");
+    replace.replace("got compiler instruction ", "got the compiler instruction ");
 
-    replace.replace("expected type ", "expected the type ");
+    replace.replace(" with identifier ", " with the identifier ");
+    replace.replace(" with type ", " with the type ");
+    replace.replace(" with literal ", " with the literal ");
+    replace.replace(" with intrinsic ", " with the intrinsic ");
+    replace.replace(" with keyword ", " with the keyword ");
+    replace.replace(" with compiler instruction ", " with the compiler instruction ");
+
+    replace.replace(" or identifier ", " or the identifier ");
+    replace.replace(" or type ", " or the type ");
+    replace.replace(" or literal ", " or the literal ");
+    replace.replace(" or intrinsic ", " or the intrinsic ");
+    replace.replace(" or keyword ", " or the keyword ");
+    replace.replace(" or compiler instruction ", " or the compiler instruction ");
+
+    replace.replace(" and identifier ", " and the identifier ");
+    replace.replace(" and type ", " and the type ");
+    replace.replace(" and literal ", " and the literal ");
+    replace.replace(" and intrinsic ", " and the intrinsic ");
+    replace.replace(" and keyword ", " and the keyword ");
+    replace.replace(" and compiler instruction ", " and the compiler instruction ");
     
+    replace.replace("expected type ", "expected the type ");
+
     return replace;
 }
 
@@ -163,7 +184,7 @@ void Diagnostic::replaceTokenName(const Token& token)
     if (Tokenizer::isKeyword(token.id))
         textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.c_str()));
     else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#mix") || token.text.startsWith("#alias"))
-        textMsg.replaceAll("$$TKN$$", form("compiler keyword [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("compiler instruction [[%s]]", token.c_str()));
     else if (Tokenizer::isIntrinsicReturn(token.id))
         textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
     else if (Tokenizer::isSymbol(token.id))
@@ -301,7 +322,7 @@ void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, int lineNo) c
     printMarginLineNo(log, lineNo);
 
     log->setColor(marginBorderColor);
-    if(fromContext)
+    if (fromContext)
         log->print(LogSymbol::VerticalLineDot);
     else
         log->print(LogSymbol::VerticalLine);
