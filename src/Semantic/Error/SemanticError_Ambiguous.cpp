@@ -6,7 +6,54 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Naming.h"
 
-bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& genericMatches)
+void SemanticError::ambiguousArguments(SemanticContext*, Diagnostic& err, VectorNative<OneMatch*>& matches)
+{
+    for (uint32_t i = 0; i < matches[0]->solvedCastFlags.size(); i++)
+    {
+        uint32_t cptUntyped = 0;
+        for (const auto match : matches)
+        {
+            if (match->solvedParameters.size() <= i)
+                break;
+            if (match->parameters.size() <= i && match->paramParameters.size() <= i)
+                break;
+            if (match->solvedCastFlags.size() <= i)
+                break;
+
+            if (match->solvedCastFlags[i].has(CAST_RESULT_UNTYPED_CONVERT | CAST_RESULT_COERCE))
+                cptUntyped++;
+        }
+
+        if (cptUntyped == matches.size())
+        {
+            Utf8 toWhat;
+            if (matches.size() == 2)
+            {
+                toWhat = form("either [[%s]] or [[%s]]",
+                              matches[0]->solvedParameters[i]->typeInfo->getDisplayNameC(),
+                              matches[1]->solvedParameters[i]->typeInfo->getDisplayNameC());
+            }
+            else if (matches.size() == 3)
+            {
+                toWhat = form("either [[%s]], [[%s]] or [[%s]]",
+                              matches[0]->solvedParameters[i]->typeInfo->getDisplayNameC(),
+                              matches[1]->solvedParameters[i]->typeInfo->getDisplayNameC(),
+                              matches[2]->solvedParameters[i]->typeInfo->getDisplayNameC());
+            }
+            else
+            {
+                toWhat = "multiple types";
+            }
+
+            const auto callParam = i < matches[0]->paramParameters.size() ? matches[0]->paramParameters[i].param : matches[0]->parameters[i];
+            const auto note      = Diagnostic::note(callParam, formNte(Nte0214, matches[0]->solvedParameters[i]->declNode->token.c_str(), toWhat.c_str()));
+            err.addNote(note);
+            break;
+        }
+    }
+}
+
+bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches)
 {
     const auto symbol = tryMatches[0]->overload->symbol;
     if (!node)
@@ -15,7 +62,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     Diagnostic err{node, node->token, formErr(Err0019, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
     bool first = true;
-    for (const auto match : genericMatches)
+    for (const auto match : matches)
     {
         auto couldBe = toNte(Nte0052);
         if (!first)
@@ -28,6 +75,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
         first = false;
     }
 
+    ambiguousArguments(context, err, matches);
     return context->report(err);
 }
 
@@ -88,6 +136,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         first = false;
     }
 
+    ambiguousArguments(context, err, matches);
     return context->report(err);
 }
 
