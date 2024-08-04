@@ -208,7 +208,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         {
             if (typeInfo->isVoid())
             {
-                const Diagnostic err{node, node->token, formErr(Err0172, typeInfo->getDisplayNameC())};
+                const Diagnostic err{node, node->token, formErr(Err0172, symbol->name.c_str())};
                 return context->report(err, Diagnostic::hereIs(overload));
             }
 
