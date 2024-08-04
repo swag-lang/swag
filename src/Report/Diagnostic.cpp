@@ -12,18 +12,23 @@
 #include "Wmf/SourceFile.h"
 
 static bool BLANK_LINES = true;
-static bool COLOR_ERROR = true;
 
 void Diagnostic::setupColors()
 {
-    errorColor        = LogColor::Red;
+    errorColor                = LogColor::Red;
+    errorColorHint            = LogColor::Red;
+    errorColorHintHighLight   = LogColor::DarkRed;
+    warningColor              = LogColor::Magenta;
+    warningColorHint          = LogColor::Magenta;
+    warningColorHintHighLight = LogColor::DarkMagenta;
+    noteColorHint             = LogColor::White;
+    noteColorHintHighLight    = LogColor::Gray;
+
+    noteTitleColor = LogColor::DarkYellow;
+    noteColor      = LogColor::White;
+
     marginBorderColor = LogColor::Cyan;
     codeLineNoColor   = LogColor::Cyan;
-    hintColor         = LogColor::White;
-    rangeNoteColor    = LogColor::White;
-    warningColor      = LogColor::Magenta;
-    noteColor         = LogColor::White;
-    noteTitleColor    = LogColor::DarkYellow;
     stackColor        = LogColor::DarkYellow;
     preRemarkColor    = LogColor::White;
     remarkColor       = LogColor::Gray;
@@ -567,19 +572,40 @@ void Diagnostic::printSourceCode(Log* log) const
     printSourceCode(log, lineCodeNum, lineCode);
 }
 
-void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level) const
+void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt) const
 {
     switch (level)
     {
         case DiagnosticLevel::Error:
         case DiagnosticLevel::Panic:
-            log->setColor(errorColor);
+            if (part == HintPart::Underline)
+                log->setColor(errorColor);
+            else if (part == HintPart::Arrow)
+                log->setColor(noteColor);
+            else
+                log->setColor(errorColorHint);
+            if (logCxt)
+                logCxt->colorHighlight = Log::colorToVTS(errorColorHintHighLight) + Log::colorToVTS(LogColor::Underline);
             break;
         case DiagnosticLevel::Warning:
-            log->setColor(warningColor);
+            if (part == HintPart::Underline)
+                log->setColor(warningColor);
+            else if (part == HintPart::Arrow)
+                log->setColor(noteColor);
+            else
+                log->setColor(warningColorHint);
+            if (logCxt)
+                logCxt->colorHighlight = Log::colorToVTS(warningColorHintHighLight) + Log::colorToVTS(LogColor::Underline);
             break;
         case DiagnosticLevel::Note:
-            log->setColor(rangeNoteColor);
+            if (part == HintPart::Underline)
+                log->setColor(noteColor);
+            else if (part == HintPart::Arrow)
+                log->setColor(noteColor);
+            else
+                log->setColor(noteColorHint);
+            if (logCxt)
+                logCxt->colorHighlight = Log::colorToVTS(noteColorHintHighLight);
             break;
     }
 }
@@ -605,7 +631,7 @@ int Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
     {
         auto& rr  = ranges[ii];
         rr.hasBar = true;
-        log->setColor(rangeNoteColor);
+        setColorRanges(log, rr.errorLevel, HintPart::Arrow);
         alignRangeColumn(log, curColumn, rr.mid);
         log->print(LogSymbol::VerticalLine);
         curColumn++;
@@ -625,21 +651,8 @@ void Diagnostic::printLastRangeHint(Log* log, int curColumn)
 
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
-        log->setColor(rangeNoteColor);
-
         LogWriteContext logCxt;
-        if (COLOR_ERROR)
-        {
-            if (r.errorLevel == DiagnosticLevel::Error ||
-                r.errorLevel == DiagnosticLevel::Panic ||
-                r.errorLevel == DiagnosticLevel::Warning)
-            {
-                logCxt.colorHighlight = Log::colorToVTS(LogColor::DarkRed);
-            }
-
-            setColorRanges(log, r.errorLevel);
-        }
-
+        setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
         log->print(tokens[i], &logCxt);
 
         if (i != tokens.size() - 1)
@@ -662,11 +675,11 @@ void Diagnostic::printRanges(Log* log)
     for (uint32_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
-        setColorRanges(log, r.errorLevel);
+        setColorRanges(log, r.errorLevel, HintPart::Underline);
         alignRangeColumn(log, curColumn, r.startLocation.column);
 
         if (i != ranges.size() - 1 && r.mergeNext)
-            setColorRanges(log, ranges[i + 1].errorLevel);
+            setColorRanges(log, ranges[i + 1].errorLevel, HintPart::Underline);
 
         while (curColumn < static_cast<int>(r.startLocation.column) + r.width && curColumn <= static_cast<int>(lineCode.length()) + 1)
         {
@@ -707,7 +720,7 @@ void Diagnostic::printRanges(Log* log)
         const auto mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
-        log->setColor(rangeNoteColor);
+        setColorRanges(log, r.errorLevel, HintPart::Arrow);
 
         const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unFormat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
         const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unFormat.length()) >= 0;
@@ -773,7 +786,7 @@ void Diagnostic::report(Log* log)
             Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
             for (uint32_t i = 0; i < tokens.size(); i++)
             {
-                log->setColor(rangeNoteColor);
+                log->setColor(noteColorHint);
                 log->print(tokens[i]);
                 if (i != tokens.size() - 1)
                 {

@@ -6,6 +6,7 @@ struct SourceFile;
 struct TypeInfo;
 struct SyntaxColorContext;
 struct Log;
+struct LogWriteContext;
 enum class LogColor;
 
 enum class DiagnosticLevel
@@ -16,6 +17,13 @@ enum class DiagnosticLevel
     Note,
     Panic,
     Exception,
+};
+
+enum class HintPart
+{
+    Underline,
+    Arrow,
+    Text
 };
 
 struct Diagnostic
@@ -68,7 +76,7 @@ struct Diagnostic
     {
         doReplace(tokenParse);
         setup();
-    }    
+    }
 
     Diagnostic(AstNode* node, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
         textMsg{std::move(msg)},
@@ -178,7 +186,7 @@ struct Diagnostic
     void printMargin(Log* log, bool eol = false, bool printLineNo = false, int lineNo = 0) const;
     void printPreRemarks(Log* log) const;
     void printRemarks(Log* log) const;
-    void setColorRanges(Log* log, DiagnosticLevel level) const;
+    void setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt = nullptr) const;
     void alignRangeColumn(Log* log, int& curColumn, int where, bool withCode = true) const;
     int  printRangesVerticalBars(Log* log, size_t maxMarks);
     void printLastRangeHint(Log* log, int curColumn);
@@ -224,18 +232,22 @@ struct Diagnostic
     int                       lineCodeMaxDigits = 0;
     int                       minBlanks         = 0;
     LogColor                  errorColor;
-    LogColor                  hintColor;
-    LogColor                  marginBorderColor;
-    LogColor                  rangeNoteColor;
+    LogColor                  errorColorHint;
+    LogColor                  errorColorHintHighLight;
     LogColor                  warningColor;
+    LogColor                  warningColorHint;
+    LogColor                  warningColorHintHighLight;
     LogColor                  noteTitleColor;
     LogColor                  noteColor;
-    LogColor                  stackColor;
+    LogColor                  noteColorHint;
+    LogColor                  noteColorHintHighLight;
+    LogColor                  marginBorderColor;
     LogColor                  preRemarkColor;
     LogColor                  autoRemarkColor;
     LogColor                  remarkColor;
     LogColor                  sourceFileColor;
     LogColor                  codeLineNoColor;
+    LogColor                  stackColor;
 
     SourceLocation startLocation;
     SourceLocation endLocation;
