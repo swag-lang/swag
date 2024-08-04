@@ -69,6 +69,8 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("got keyword ", "got the keyword ");
     replace.replace("got compiler keyword ", "got the compiler keyword ");
 
+    replace.replace("expected type ", "expected the type ");
+    
     return replace;
 }
 
