@@ -140,10 +140,10 @@ void initErrors()
     SWAG_ERROR(Err0014, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0015, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
     SWAG_ERROR(Err0016, "ambiguous interface conversion                    $ ambiguous conversion of struct [[%s]] to interface [[%s]]");
-    SWAG_ERROR(Err0017, "ambiguous symbol                                  $ ambiguous resolution of the %s [[%s]]");
-    SWAG_ERROR(Err0018, "ambiguous symbol                                  $ ambiguous resolution of the enum value [[%s]]");
-    SWAG_ERROR(Err0019, "ambiguous symbol                                  $ ambiguous resolution of the generic %s [[%s]]");
-    SWAG_ERROR(Err0020, "ambiguous symbol                                  $ ambiguous resolution of the special function [[%s]]");
+    SWAG_ERROR(Err0017, "ambiguous resolution                              $ ambiguous resolution of the %s [[%s]]");
+    SWAG_ERROR(Err0018, "ambiguous resolution                              $ ambiguous resolution of the enum value [[%s]]");
+    SWAG_ERROR(Err0019, "ambiguous resolution                              $ ambiguous resolution of the generic %s [[%s]]");
+    SWAG_ERROR(Err0020, "ambiguous resolution                              $ ambiguous resolution of the special function [[%s]]");
     SWAG_ERROR(Err0021, "ambiguous syntax                                  $ ambiguity arises between initializing [[%s]] and starting a new block");
     SWAG_ERROR(Err0022, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0023, "argument already defined                          $ the argument [[%s]] has already been defined");
