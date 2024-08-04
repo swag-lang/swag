@@ -89,12 +89,26 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 {
     Diagnostic err{identifier, formErr(Err0017, Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
 
+    bool    first = true;
+    SetUtf8 here;
     for (const auto& p1 : matches)
     {
-        auto       couldBe = formNte(Nte0047, Naming::aKindName(p1.symbol->kind).c_str());
-        const auto note    = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->getTokenName(), couldBe);
-        note->canBeMerged  = false;
+        Utf8 couldBe;
+
+        const auto kindName = Naming::kindName(p1.symbol->kind);
+        if (here.contains(kindName))
+            couldBe = formNte(Nte0048, kindName.c_str());
+        else
+            couldBe = formNte(Nte0046, kindName.c_str());
+        here.insert(kindName);
+
+        if (!first)
+            couldBe = "or " + couldBe;
+        const auto note   = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->getTokenName(), couldBe);
+        note->canBeMerged = false;
         err.addNote(note);
+
+        first = false;
     }
 
     return context->report(err);

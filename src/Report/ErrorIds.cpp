@@ -934,7 +934,7 @@ void initErrors()
     SWAG_ERROR(Nte0044, "copying an array of structs is not allowed here");
     SWAG_ERROR(Nte0045, "could [[self]] be missing?");
     SWAG_ERROR(Nte0046, "could be this %s");
-    SWAG_ERROR(Nte0047, "could be %s");
+    SWAG_ERROR(Nte0047, nullptr);
     SWAG_ERROR(Nte0048, "could be this other %s");
     SWAG_ERROR(Nte0049, "could be an instance of the generic function [[%s]]");
     SWAG_ERROR(Nte0050, nullptr);
