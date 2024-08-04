@@ -1010,7 +1010,7 @@ void initErrors()
     SWAG_ERROR(Nte0120, "the [[dref]] operation isn't possible here");
     SWAG_ERROR(Nte0121, "the array has %d element(s) of type [[%s]], which doesn't match a slice of type [[%s]]");
     SWAG_ERROR(Nte0122, "the call to [[%s]] returns type [[%s]], which doesn't have a sub-scope");
-    SWAG_ERROR(Nte0123, "the counterpart is an implicit [[using self]] as an initial parameter");
+    SWAG_ERROR(Nte0123, "the counterpart is an implicit [[using self]] as a parameter");
     SWAG_ERROR(Nte0124, "the duplicated underlying enum value is [[%s]]");
     SWAG_ERROR(Nte0125, "the function [[%s]] is not marked with the [[#[Swag.ConstExpr]]] attribute");
     SWAG_ERROR(Nte0126, "the function [[%s]] is tagged with [[#[Swag.CalleeReturn]]], implying the return value is utilized within [[%s]]");
