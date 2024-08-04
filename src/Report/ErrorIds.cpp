@@ -333,7 +333,7 @@ void initErrors()
     SWAG_ERROR(Err0207, "invalid array dimension                           $ the array dimension must be an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0208, "invalid array size                                $ the size of the array can't be deduced because of a missing initialization");
     SWAG_ERROR(Err0209, "invalid assign                                    $ a function pointer can't be assigned to a constant");
-    SWAG_ERROR(Err0210, "invalid assign                                    $ assignments are not allowed for unnamed parameters ([[?]])");
+    SWAG_ERROR(Err0210, "invalid assign                                    $ assignments are not allowed for unnamed parameters");
     SWAG_ERROR(Err0211, "invalid assign                                    $ can't assign because the left expression isn't a value");
     SWAG_ERROR(Err0212, "invalid assign                                    $ the affectation to the tuple is not possible because the right expression is not compatible");
     SWAG_ERROR(Err0213, "invalid attribute                                 $ [[%s]] is not an attribute but is %s");
@@ -1062,7 +1062,7 @@ void initErrors()
     SWAG_ERROR(Nte0172, "this is a pointer type declaration due to [[*]]");
     SWAG_ERROR(Nte0173, "this is a type value, aka [[typeinfo]], aka [[%s]]");
     SWAG_ERROR(Nte0174, "this is an enum implementation block");
-    SWAG_ERROR(Nte0175, "this is an unnamed [[?]] parameter");
+    SWAG_ERROR(Nte0175, "this is an unnamed parameter ([['?']])");
     SWAG_ERROR(Nte0176, "this is the expected signature");
     SWAG_ERROR(Nte0177, "this is the first initialization");
     SWAG_ERROR(Nte0178, "this is the first usage");
