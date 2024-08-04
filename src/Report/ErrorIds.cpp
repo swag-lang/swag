@@ -406,7 +406,7 @@ void initErrors()
     SWAG_ERROR(Err0280, "invalid float number format                       $ the exponent in the scientific notation must contain at least one digit");
     SWAG_ERROR(Err0281, "invalid float number format                       $ the exponent part should not start with [[_]]");
     SWAG_ERROR(Err0282, "invalid float number format                       $ the fractional part should not start with [[_]]");
-    SWAG_ERROR(Err0283, "invalid function call                             $ [[%s]] has call parameters but is %s, not a function");
+    SWAG_ERROR(Err0283, "invalid function call                             $ [[%s]] has call parameters but is [[%s]], not a function");
     SWAG_ERROR(Err0284, "invalid function call                             $ [[%s]] has call parameters but the type [[%s]] is not a function");
     SWAG_ERROR(Err0285, "invalid function call                             $ call to function [[%s]] requires arguments between [[()]] and not [[{}]]");
     SWAG_ERROR(Err0286, "invalid function call                             $ can't call [[%s]] because the function is declared but not defined");

@@ -116,7 +116,7 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
             {
                 const auto c = textMsg[idx++];
                 inside += c;
-                if (SWAG_IS_AL_NUM(c) || c == '_')
+                if (SWAG_IS_AL_NUM(c))
                     isSymbol = false;
             }
 
@@ -140,6 +140,8 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                     replace += " $$AN$$ [[open square bracket]] '['";
                 else if (inside == ']')
                     replace += " $$A$$ [[closed square bracket]] ']'";
+                else if (inside == '_')
+                    replace += " $$AN$$ [[underscore]] '_'";                
                 else
                 {
                     replace += " $$A$$ symbol [['";
