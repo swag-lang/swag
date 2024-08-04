@@ -139,7 +139,7 @@ void initErrors()
     SWAG_ERROR(Err0013, "access modifier already defined                   $ invalid use of a [[%s]] access modifier after [[%s]]");
     SWAG_ERROR(Err0014, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0015, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
-    SWAG_ERROR(Err0016, "ambiguous interface conversion                    $ ambiguous conversion of struct [[%s]] to interface [[%s]]");
+    SWAG_ERROR(Err0016, "ambiguous interface conversion                    $ ambiguous conversion of the struct [[%s]] to the interface [[%s]]");
     SWAG_ERROR(Err0017, "ambiguous resolution                              $ ambiguous resolution of the %s [[%s]]");
     SWAG_ERROR(Err0018, "ambiguous resolution                              $ ambiguous resolution of the enum value [[%s]]");
     SWAG_ERROR(Err0019, "ambiguous resolution                              $ ambiguous resolution of the generic %s [[%s]]");
@@ -1037,9 +1037,9 @@ void initErrors()
     SWAG_ERROR(Nte0147, "this %s has the [[#[Swag.Compiler]]] attribute, which makes it compile-time only");
     SWAG_ERROR(Nte0148, "this %s has type [[%s]]");
     SWAG_ERROR(Nte0149, "this [[discard]] should be removed");
-    SWAG_ERROR(Nte0150, "this [[using]] field is convertible");
+    SWAG_ERROR(Nte0150, "this [[using]] field is convertible because [[%s]] implements the interface");
     SWAG_ERROR(Nte0151, "this argument has been named");
-    SWAG_ERROR(Nte0152, "this can be converted too");
+    SWAG_ERROR(Nte0152, "this can be converted too because [[%s]] also implements the interface");
     SWAG_ERROR(Nte0153, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte0154, "this function does not support being called with UFCS using a value of type [[%s]]");
     SWAG_ERROR(Nte0155, "this function does not support aliased names");

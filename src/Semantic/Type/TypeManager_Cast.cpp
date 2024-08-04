@@ -2709,8 +2709,8 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 if (foundField)
                 {
                     Diagnostic err{context->node, formErr(Err0016, fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    err.addNote(it.field->declNode, toNte(Nte0150));
-                    err.addNote(foundField->declNode, toNte(Nte0152));
+                    err.addNote(it.field->declNode, formNte(Nte0150, it.field->typeInfo->getDisplayNameC()));
+                    err.addNote(foundField->declNode, formNte(Nte0152, foundField->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 
