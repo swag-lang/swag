@@ -413,7 +413,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
             {
                 Diagnostic err{assign, toErr(Err0061)};
-                err.addNote(node->type, toNte(Nte0164));
+                err.addNote(node->type, toNte(Nte0177));
                 return context->report(err);
             }
 
@@ -475,7 +475,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
             Diagnostic err{node->assignment, formErr(Err0308, typeInfo->getDisplayNameC())};
-            err.addNote(toNte(Nte0101));
+            err.addNote(toNte(Nte0106));
             return context->report(err);
         }
     }

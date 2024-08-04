@@ -78,7 +78,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
         diagMsg.replace("$$$ ", "");
         Diagnostic err{sourceFile, tokenParse, diagMsg};
-        err.addNote(sourceFile, start, start, formNte(Nte0180, related.c_str()));
+        err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
         return context->report(err);
     }
 

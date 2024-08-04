@@ -62,9 +62,9 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             {
                 Diagnostic err{sourceFile, startToken, formErr(Err0683, startToken.c_str())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
-                    err.addNote(toNte(Nte0040));
+                    err.addNote(toNte(Nte0042));
                 else if (nextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0040));
+                    err.addNote(toNte(Nte0042));
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
                     err.addNote(toNte(Nte0053));
                 else
@@ -86,15 +86,15 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 msg = toErr(Err0376);
 
             if (startToken.is(TokenId::KwdLet))
-                note = toNte(Nte0205);
+                note = toNte(Nte0044);
             else if (startToken.is(TokenId::CompilerInclude))
-                note = toNte(Nte0207);
+                note = toNte(Nte0148);
             else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                note = toNte(Nte0040);
+                note = toNte(Nte0042);
             else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
-                note = formNte(Nte0220, nextToken.token.c_str(), startToken.c_str());
+                note = formNte(Nte0194, nextToken.token.c_str(), startToken.c_str());
             else
-                note = toNte(Nte0167);
+                note = toNte(Nte0180);
             break;
 
         ///////////////////////////////////////////
@@ -156,6 +156,6 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
     const Utf8 message = msg ? Utf8{msg} : toErr(Err0305);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
-        err.addNote(formNte(Nte0125, myToken.token.c_str()));
+        err.addNote(formNte(Nte0135, myToken.token.c_str()));
     return context->report(err);
 }

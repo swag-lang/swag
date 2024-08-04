@@ -1478,7 +1478,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
         const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0532, funcNode->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(srcNode, formNte(Nte0130, Naming::kindName(srcNode).c_str(), srcNode->token.c_str())));
+        return context->report(err, Diagnostic::hereIs(srcNode, formNte(Nte0115, Naming::kindName(srcNode).c_str(), srcNode->token.c_str())));
     }
 
     if (!raiseErrors)

@@ -45,7 +45,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         if (scopeKind == ScopeKind::Enum)
         {
             Diagnostic err{implNode, tokenParse.token, toErr(Err0658)};
-            err.addNote(kindLoc.token, toNte(Nte0052));
+            err.addNote(kindLoc.token, toNte(Nte0174));
             return context->report(err);
         }
 
@@ -81,9 +81,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         Diagnostic err{implNode, formErr(Err0008, Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
-            err.addNote(formNte(Nte0043, implNode->token.c_str()));
+            err.addNote(formNte(Nte0046, implNode->token.c_str()));
         else if (newScope->is(ScopeKind::Struct))
-            err.addNote(formNte(Nte0042, implNode->token.c_str()));
+            err.addNote(formNte(Nte0045, implNode->token.c_str()));
         return context->report(err);
     }
 
@@ -264,7 +264,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
             Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0619, "struct", structNode->token.c_str(), asA.c_str())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0071));
+            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0073));
             return context->report(err);
         }
 

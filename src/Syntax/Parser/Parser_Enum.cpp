@@ -36,13 +36,13 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode->identifier, formErr(Err0008, Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Enum).c_str())};
                 err.addNote(Diagnostic::hereIs(enumNode));
-                err.addNote(formNte(Nte0043, implNode->token.c_str()));
+                err.addNote(formNte(Nte0046, implNode->token.c_str()));
                 return context->report(err);
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
             Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0619, "enum", enumNode->token.c_str(), asA.c_str())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0071));
+            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0073));
             return context->report(err);
         }
 

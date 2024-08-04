@@ -322,7 +322,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0697)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0188));
+                err.addNote(unnamedTokens.front(), toNte(Nte0203));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
                 return context->report(err);
@@ -380,7 +380,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0210)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0162));
+                err.addNote(unnamedTokens.front(), toNte(Nte0175));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
                 return context->report(err);
@@ -406,9 +406,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0562)};
                 if (otherVariables.empty())
-                    err.addNote(paramNode, toNte(Nte0169));
+                    err.addNote(paramNode, toNte(Nte0182));
                 else
-                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0168));
+                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0181));
                 return context->report(err);
             }
 
@@ -575,7 +575,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0083, oneParam->token.c_str()); }, true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0087, oneParam->token.c_str()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -809,7 +809,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-            note = toNte(Nte0184);
+            note = toNte(Nte0198);
         return error(tokenParse, formErr(Err0688, funcNode->getDisplayNameC()), note.c_str());
     }
 

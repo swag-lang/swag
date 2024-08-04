@@ -17,7 +17,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     for (const auto match : genericMatches)
     {
         const auto overload = match->symbolOverload;
-        const auto note     = Diagnostic::note(overload->node, overload->node->getTokenName(), toNte(Nte0051));
+        const auto note     = Diagnostic::note(overload->node, overload->node->getTokenName(), toNte(Nte0052));
         note->canBeMerged   = false;
         err.addNote(note);
     }
@@ -66,9 +66,9 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         {
             const auto kindName = Naming::kindName(match->symbolOverload);
             if (here.contains(kindName))
-                couldBe = formNte(Nte0048, kindName.c_str());
+                couldBe = formNte(Nte0051, kindName.c_str());
             else
-                couldBe = formNte(Nte0046, kindName.c_str());
+                couldBe = formNte(Nte0050, kindName.c_str());
             here.insert(kindName);
         }
 
@@ -97,9 +97,9 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 
         const auto kindName = Naming::kindName(p1.symbol->kind);
         if (here.contains(kindName))
-            couldBe = formNte(Nte0048, kindName.c_str());
+            couldBe = formNte(Nte0051, kindName.c_str());
         else
-            couldBe = formNte(Nte0046, kindName.c_str());
+            couldBe = formNte(Nte0050, kindName.c_str());
         here.insert(kindName);
 
         if (!first)

@@ -489,8 +489,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0240, rightTypeInfo->getDisplayNameC())};
-            err.addNote(left, leftTypeInfo->isAny() ? toNte(Nte0032) : Diagnostic::isType(leftTypeInfo));
-            err.addNote(right, rightTypeInfo->isAny() ? toNte(Nte0032) : Diagnostic::isType(rightTypeInfo));
+            err.addNote(left, leftTypeInfo->isAny() ? toNte(Nte0034) : Diagnostic::isType(leftTypeInfo));
+            err.addNote(right, rightTypeInfo->isAny() ? toNte(Nte0034) : Diagnostic::isType(rightTypeInfo));
             return context->report(err);
         }
     }
@@ -508,7 +508,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isAny())
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0345, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, toNte(Nte0032));
+            err.addNote(left, toNte(Nte0034));
             return context->report(err);
         }
     }

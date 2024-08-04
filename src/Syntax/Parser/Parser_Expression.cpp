@@ -982,7 +982,7 @@ bool Parser::doCompareExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     }
 
     if (!exprFlags.has(EXPR_FLAG_NAMED_PARAM) || leftNode->isNot(AstNodeKind::IdentifierRef))
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual), error(tokenParse, toErr(Err0668), toNte(Nte0086)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual), error(tokenParse, toErr(Err0668), toNte(Nte0090)));
 
     Ast::addChildBack(parent, leftNode);
     *result = leftNode;
@@ -1425,7 +1425,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0400)};
             if (Tokenizer::isKeyword(tokenParse.token.id))
-                err.addNote(formNte(Nte0125, tokenParse.token.c_str()));
+                err.addNote(formNte(Nte0135, tokenParse.token.c_str()));
             return context->report(err);
         }
     }

@@ -27,7 +27,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                const auto note   = Diagnostic::note(p, p->getTokenName(), toNte(Nte0071));
+                const auto note   = Diagnostic::note(p, p->getTokenName(), toNte(Nte0073));
                 note->canBeMerged = false;
                 err.addNote(note);
                 break;
@@ -74,9 +74,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0067, one->name.c_str())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0071));
+                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0073));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0116, val.c_str()));
+                        err.addNote(formNte(Nte0124, val.c_str()));
                         return context->report(err);
                     }
 
@@ -93,9 +93,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0067, one->name.c_str())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0071));
+                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0073));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0116, val.c_str()));
+                        err.addNote(formNte(Nte0124, val.c_str()));
                         return context->report(err);
                     }
 
@@ -178,7 +178,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             {
                 const auto front = typeNode->firstChild();
                 Diagnostic err{front, formErr(Err0265, rawTypeInfo->getDisplayNameC())};
-                err.addNote(formNte(Nte0171, rawTypeInfo->getDisplayNameC()));
+                err.addNote(formNte(Nte0184, rawTypeInfo->getDisplayNameC()));
                 return context->report(err);
             }
 
@@ -281,7 +281,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         YIELD();
 
         PushErrCxtStep ec{context, enumNode->type, ErrCxtStepKind::Note, [rawTypeInfo] {
-                              return formNte(Nte0219, rawTypeInfo->getDisplayNameC());
+                              return formNte(Nte0150, rawTypeInfo->getDisplayNameC());
                           }};
 
         if (rawTypeInfo->isArray())

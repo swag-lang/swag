@@ -44,7 +44,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0470, tokenAttr.c_str(), tokenParse.token.c_str())};
-            err.addNote(tokenParse.token, toNte(Nte0215));
+            err.addNote(tokenParse.token, toNte(Nte0164));
             return context->report(err);
         }
     }
@@ -155,7 +155,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
             if (!varNode->is(AstNodeKind::VarDecl))
             {
                 Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0325)};
-                err.addNote(varNode->token.sourceFile, savedToken.token, toNte(Nte0057));
+                err.addNote(varNode->token.sourceFile, savedToken.token, toNte(Nte0014));
                 return context->report(err);
             }
 
@@ -188,7 +188,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                 default:
                 {
                     Diagnostic err{sourceFile, tokenParse, toErr(Err0499)};
-                    err.addNote(child, child->token, toNte(Nte0074));
+                    err.addNote(child, child->token, toNte(Nte0076));
                     return context->report(err);
                 }
             }
@@ -444,7 +444,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0259), toNte(Nte0054)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0259), toNte(Nte0206)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
@@ -462,7 +462,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         if (tokenParse.isNot(TokenId::KwdDo))
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0521)};
-            err.addNote(parent, forToken, formNte(Nte0016, forToken.c_str()));
+            err.addNote(parent, forToken, formNte(Nte0017, forToken.c_str()));
             return context->report(err);
         }
 
@@ -888,7 +888,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0694)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
-                err.addNote(toNte(Nte0181));
+                err.addNote(toNte(Nte0195));
             return context->report(err);
         }
 

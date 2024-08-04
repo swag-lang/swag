@@ -45,7 +45,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
         for (const auto t : typeEnum)
         {
-            auto msg = formNte(Nte0197, t->getDisplayNameC());
+            auto msg = formNte(Nte0152, t->getDisplayNameC());
             err.addNote(t->declNode, t->declNode->getTokenName(), msg);
         }
 

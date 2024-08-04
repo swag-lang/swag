@@ -343,9 +343,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0216), "constant", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0066), "constant", leftNode->token.c_str())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0216), "variable", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0066), "variable", leftNode->token.c_str())));
             }
             else
             {
@@ -373,8 +373,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 if (typeExpr->identifier)
                 {
                     Diagnostic err{sourceFile, tokenParse, formErr(Err0021, typeExpr->identifier->token.c_str())};
-                    err.addNote(formNte(Nte0183, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
-                    err.addNote(toNte(Nte0179));
+                    err.addNote(formNte(Nte0197, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
+                    err.addNote(toNte(Nte0192));
                     return context->report(err);
                 }
             }

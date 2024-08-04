@@ -855,7 +855,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = formNte(Nte0177, typeInfo->getDisplayNameC());
+    auto str = formNte(Nte0190, typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -871,7 +871,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return formNte(Nte0148, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return formNte(Nte0159, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
