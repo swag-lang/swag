@@ -297,7 +297,10 @@ void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, int lineNo) c
     printMarginLineNo(log, lineNo);
 
     log->setColor(marginBorderColor);
-    log->print(LogSymbol::VerticalLine);
+    if(fromContext)
+        log->print(LogSymbol::VerticalLineDot);
+    else
+        log->print(LogSymbol::VerticalLine);
     log->write(" ");
 
     if (eol)

@@ -104,22 +104,25 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     name = exp.node->token.text;
             }
 
-            const Diagnostic* note = nullptr;
+            Diagnostic* note = nullptr;
             switch (exp.type)
             {
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::Generic:
-                    msg            = formNte(Nte0099, name.c_str());
-                    exp.locIsToken = true;
+                    msg             = formNte(Nte0099, name.c_str());
+                    exp.locIsToken  = true;
+                    exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::Inline:
-                    msg            = formNte(Nte0100, name.c_str());
-                    exp.locIsToken = true;
+                    msg             = formNte(Nte0100, name.c_str());
+                    exp.locIsToken  = true;
+                    exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::CompileTime:
-                    msg            = formNte(Nte0095, name.c_str());
-                    exp.locIsToken = true;
+                    msg             = formNte(Nte0095, name.c_str());
+                    exp.locIsToken  = true;
+                    exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::Where:
                     if (exp.node->is(AstNodeKind::StructDecl))
@@ -128,7 +131,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                         msg = formNte(Nte0098, name.c_str());
                     exp.locIsToken = true;
                     break;
-                case ErrCxtStepKind::WhereEach:
+                case ErrCxtStepKind::WhereCall:
                     msg            = formNte(Nte0096, name.c_str());
                     exp.locIsToken = true;
                     break;
@@ -152,6 +155,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     note = new Diagnostic{exp.node, msg, level};
                 else
                     note = new Diagnostic{msg, level};
+                note->fromContext = exp.fromContext;
             }
 
             notes.push_back(note);

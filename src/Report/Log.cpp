@@ -89,11 +89,17 @@ void Log::print(LogSymbol symbol)
     switch (symbol)
     {
         case LogSymbol::VerticalLine:
-        case LogSymbol::VerticalLineDot:
             if (g_CommandLine.logAscii)
                 write("|");
             else
                 write("\xe2\x94\x82");
+            break;
+
+        case LogSymbol::VerticalLineDot:
+            if (g_CommandLine.logAscii)
+                write("|");
+            else
+                write("\xe2\x94\x86");
             break;
 
         case LogSymbol::VerticalLineUp:
@@ -225,12 +231,12 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
                 if (logContext && !logContext->colorHighlight.empty())
                 {
                     m += logContext->colorHighlight;
-                    //m += colorToVTS(LogColor::Underline);
+                    // m += colorToVTS(LogColor::Underline);
                 }
                 else if (curColor == colorToVTS(LogColor::White))
                 {
                     m += colorToVTS(LogColor::Gray);
-                    //m += colorToVTS(LogColor::Underline);
+                    // m += colorToVTS(LogColor::Underline);
                 }
             }
 

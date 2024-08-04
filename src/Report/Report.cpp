@@ -285,7 +285,7 @@ namespace
             {
                 n->printMarginLineNo(log, 0);
                 log->setColor(n->marginBorderColor);
-                log->print(LogSymbol::VerticalLineDot);
+                log->print(LogSymbol::VerticalLine);
                 log->writeEol();
             }
 

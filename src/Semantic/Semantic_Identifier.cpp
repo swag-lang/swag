@@ -928,7 +928,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
 
         ErrCxtStepKind type;
         if (funcDecl->whereExpression->is(AstNodeKind::CompilerWhereCall))
-            type = ErrCxtStepKind::WhereEach;
+            type = ErrCxtStepKind::WhereCall;
         else
             type = ErrCxtStepKind::Where;
 

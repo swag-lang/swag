@@ -267,4 +267,5 @@ struct Diagnostic
     bool display     = true;
     bool hasLocation = false;
     bool hasContent  = false;
+    bool fromContext = false;
 };

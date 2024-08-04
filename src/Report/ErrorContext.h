@@ -16,7 +16,7 @@ enum class ErrCxtStepKind
     Inline,
     CompileTime,
     Where,
-    WhereEach,
+    WhereCall,
     HereIs,
 };
 
@@ -24,10 +24,11 @@ struct ErrorCxtStep
 {
     VectorMap<Utf8, GenericReplaceType> replaceTypes;
     std::function<Utf8()>               err;
-    AstNode*                            node       = nullptr;
-    ErrCxtStepKind                      type       = ErrCxtStepKind::Note;
-    bool                                locIsToken = false;
-    bool                                hide       = false;
+    AstNode*                            node        = nullptr;
+    ErrCxtStepKind                      type        = ErrCxtStepKind::Note;
+    bool                                locIsToken  = false;
+    bool                                fromContext = false;
+    bool                                hide        = false;
 };
 
 struct PushErrCxtStep
