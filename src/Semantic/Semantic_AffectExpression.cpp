@@ -395,6 +395,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         if (leftTypeInfo->isTuple())
                         {
                             Diagnostic err{node, node->token, toErr(Err0212)};
+                            err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(right, Diagnostic::isType(rightTypeInfo));
                             return context->report(err);
                         }
