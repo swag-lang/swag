@@ -350,7 +350,7 @@ void initErrors()
     SWAG_ERROR(Err0224, "invalid bit-cast                                  $ bit-cast from type [[%s]] is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0225, "invalid bit-cast                                  $ bit-cast to a larger type is not allowed ([[%s]] to [[%s]])");
     SWAG_ERROR(Err0226, "invalid bit-cast                                  $ bit-cast to type [[%s]] is not allowed $ expected integer, rune, or float");
-    SWAG_ERROR(Err0227, "invalid block start                               $ a block start [[{]] is not allowed after [[discard try/assume/catch]]");
+    SWAG_ERROR(Err0227, "invalid block start                               $ an [[{]] (start of a block) is not allowed after [[discard try/assume/catch]]");
     SWAG_ERROR(Err0228, "invalid capture                                   $ can't capture [[%s]] because it's %s $ capturing %s type is not supported");
     SWAG_ERROR(Err0229, "invalid capture                                   $ can't capture [[%s]] because it's not a plain old data struct $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]] or [[opPostMove]]");
     SWAG_ERROR(Err0230, "invalid character                                 $ the character [[%s]] is not recognized in this context");
@@ -363,11 +363,11 @@ void initErrors()
     SWAG_ERROR(Err0237, "invalid comparison                                $ the comparison operation [[%s]] does not accept the type [[%s]]");
     SWAG_ERROR(Err0238, "invalid comparison                                $ unexpected comparison of a slice and [[%s]] $ a slice comparison is only allowed with [[null]]");
     SWAG_ERROR(Err0239, "invalid comparison                                $ unexpected comparison of an interface and [[%s]] $ an interface comparison is only allowed with [[null]], another interface or with a [[typeinfo]]");
-    SWAG_ERROR(Err0240, "invalid comparison                                $ unexpected comparison of type [[any]] and [[%s]] $ an [[any]] comparison is only allowed with [[null]] or with a type");
-    SWAG_ERROR(Err0241, "invalid compiler directive                        $ [[%s]] is not a valid compiler directive starting with [[#]]");
+    SWAG_ERROR(Err0240, "invalid comparison                                $ unexpected comparison of the type [[any]] and the type [[%s]] $ an [[any]] comparison is only allowed with [[null]] or with a [[typeinfo]]");
+    SWAG_ERROR(Err0241, "invalid compiler instruction                      $ [[%s]] is not a valid compiler instruction starting with the symbol [['#']]");
     SWAG_ERROR(Err0242, "invalid compiler instruction scope                $ compiler instructions do not belong to a specific scope");
-    SWAG_ERROR(Err0243, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the [[.]] character");
-    SWAG_ERROR(Err0244, "invalid const [[&&]]                              $ the move reference type [[&&]] can't be combined with an immutable expression");
+    SWAG_ERROR(Err0243, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the symbol [['.']]");
+    SWAG_ERROR(Err0244, "invalid const move reference                      $ the move reference type [[&&]] can't be combined with [[const]] $ consider removing the [[const]] or using a simple reference [[&]] instead");
     SWAG_ERROR(Err0245, "invalid constant                                  $ the constant creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0246, "invalid constant name                             $ expected the constant name after [[const]], got $$TKN$$ instead");
     SWAG_ERROR(Err0247, "invalid default parameters                        $ the default parameters of a lambda or a closure can't be redefined");
@@ -609,8 +609,8 @@ void initErrors()
     SWAG_ERROR(Err0483, "misplaced attribute                               $ unexpected start of an attribute after [[%s]] $ attributes should be placed before access modifiers; consider moving the attribute before [[%s]]");
     SWAG_ERROR(Err0484, "misplaced cast                                    $ you can't cast a [[@spread]] result");
     SWAG_ERROR(Err0485, "misplaced closure                                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
-    SWAG_ERROR(Err0486, "misplaced compiler directive                      $ [[#callerfunction]] can only be used when declaring a function parameter");
-    SWAG_ERROR(Err0487, "misplaced compiler directive                      $ [[#callerlocation]] can only be used when declaring a function parameter");
+    SWAG_ERROR(Err0486, "misplaced compiler instruction                    $ [[#callerfunction]] can only be used when declaring a function parameter");
+    SWAG_ERROR(Err0487, "misplaced compiler instruction                    $ [[#callerlocation]] can only be used when declaring a function parameter");
     SWAG_ERROR(Err0488, "misplaced error catching                          $ [[%s]] can only be associated with function calls, but [[%s]] is %s");
     SWAG_ERROR(Err0489, "misplaced error catching                          $ [[%s]] can't be nested in a [[%s]] expression $ you should use only one [[try]], [[catch]] or [[assume]]");
     SWAG_ERROR(Err0490, "misplaced error catching                          $ treating a return error with [[%s]] can only be done inside a function, macro or mixin");

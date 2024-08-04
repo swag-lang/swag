@@ -56,8 +56,12 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("expected $$AN$$ ", "expected an ");
     replace.replace("got $$A$$ ", "got a ");
     replace.replace("got $$AN$$ ", "got an ");
-    replace.replace("with $$A$$ ", "with a ");
-    replace.replace("with $$AN$$ ", "with an ");    
+    replace.replace(" with $$A$$ ", " with a ");
+    replace.replace(" with $$AN$$ ", " with an ");
+    replace.replace(" or $$A$$ ", " or a ");
+    replace.replace(" or $$AN$$ ", " or an ");     
+    replace.replace(" and $$A$$ ", " and a ");
+    replace.replace(" and $$AN$$ ", " and an ");     
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");
