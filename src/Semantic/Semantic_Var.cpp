@@ -1053,7 +1053,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         const auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
-            return context->report({node->type, toErr(Err0208)});
+        {
+            Diagnostic err{node->type, toErr(Err0208)};
+            if (node->type->typeInfo->isAlias())
+                err.addNote(node->type, Diagnostic::isType(concreteNodeType));
+            return context->report(err);
+        }
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
