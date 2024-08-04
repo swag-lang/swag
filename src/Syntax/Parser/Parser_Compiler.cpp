@@ -282,7 +282,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
         }
         else
         {
-            return error(node, formErr(Err0166, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0166, tokenParse.token.c_str()));
         }
     }
 

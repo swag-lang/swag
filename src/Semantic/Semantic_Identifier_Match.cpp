@@ -606,7 +606,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     {
         if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
         {
-            Diagnostic err{identifier, formErr(Err0170, Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->token.c_str())};
+            Diagnostic err{identifier, formErr(Err0170, Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->getDisplayNameC())};
             err.addNote(overload->node, overload->node->token, formNte(Nte0158, Naming::kindName(overload->node).c_str()));
             return context->report(err);
         }
@@ -813,7 +813,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
             {
-                Diagnostic err{identifier, identifier->token, formErr(Err0171, funcDecl->token.c_str(), ownerFct->token.c_str())};
+                Diagnostic err{identifier, identifier->token, formErr(Err0171, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
                 err.addNote(overload->node, overload->node->token, toNte(Nte0168));
                 return context->report(err);
             }

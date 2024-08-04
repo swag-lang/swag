@@ -293,8 +293,8 @@ void initErrors()
     SWAG_ERROR(Err0167, "invalid [[with]]                                  $ [[with]] is invalid on an enum variable (type is [[%s]])");
     SWAG_ERROR(Err0168, "invalid [[with]]                                  $ [[with]] is invalid on type [[%s]] $ expected a namespace, an enum, a struct or a pointer to struct");
     SWAG_ERROR(Err0169, "invalid [[with]] expression                       $ expected a [[with]] valid expression $ expected an identifier or a variable declaration");
-    SWAG_ERROR(Err0170, "invalid access from runtime                       $ the compile-time %s [[%s]] can't be accessed from runtime function [[%s]]");
-    SWAG_ERROR(Err0171, "invalid access from runtime                       $ the compile-time function [[%s]] can't be accessed from runtime function [[%s]]");
+    SWAG_ERROR(Err0170, "invalid access from runtime                       $ the compile-time %s [[%s]] can't be accessed from the runtime %s");
+    SWAG_ERROR(Err0171, "invalid access from runtime                       $ the compile-time %s can't be accessed from the runtime %s");
     SWAG_ERROR(Err0172, "invalid address                                   $ can't take the address because the function returns nothing");
     SWAG_ERROR(Err0173, "invalid address                                   $ can't take the address of %s $ this is not a variable");
     SWAG_ERROR(Err0174, "invalid address                                   $ can't take the address of a character of a string constant $ a string literal does not have an associated memory storage");
