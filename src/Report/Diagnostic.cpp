@@ -77,7 +77,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     addArticle(replace, "with", "a", "an");
     addArticle(replace, "or", "a", "an");
     addArticle(replace, "and", "a", "an");
-    
+
     addArticle(replace, "after", "the", "the");
     addArticle(replace, "before", "the", "the");
 
@@ -144,7 +144,7 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                 else if (inside == ']')
                     replace += " $$A$$ [[closed square bracket]] ']'";
                 else if (inside == '_')
-                    replace += " $$AN$$ [[underscore]] '_'";                
+                    replace += " $$AN$$ [[underscore]] '_'";
                 else
                 {
                     replace += " $$A$$ symbol [['";
@@ -581,7 +581,7 @@ void Diagnostic::collectSourceCode()
     location0.line -= sourceFile->offsetGetLine;
 
     lineCode    = sourceFile->getLine(location0.line);
-    lineCodeNum = location0.line + 1;
+    lineCodeNum = location0.line;
     minBlanks   = 0;
 
     // Remove blanks on the left, but keep indentation
@@ -600,7 +600,17 @@ void Diagnostic::collectSourceCode()
 
         // Is error at the start of the line ?
         if (location0.line && location0.column - countBlanks == 0)
-            lineCodePrev = sourceFile->getLine(location0.line - 1);
+        {
+            lineCodeNumPrev = location0.line;
+            while (lineCodeNumPrev)
+            {
+                lineCodePrev = sourceFile->getLine(lineCodeNumPrev - 1);
+                lineCodeNumPrev--;
+                lineCodePrev.trim();
+                if (!lineCodePrev.empty())
+                    break;
+            }
+        }
     }
 }
 
@@ -632,8 +642,8 @@ void Diagnostic::printSourceCode(Log* log) const
     if (showErrorLevel || showFileName)
         printMargin(log, true);
 
-    printSourceCode(log, lineCodeNum - 1, lineCodePrev);
-    printSourceCode(log, lineCodeNum, lineCode);
+    printSourceCode(log, lineCodeNumPrev + 1, lineCodePrev);
+    printSourceCode(log, lineCodeNum + 1, lineCode);
 }
 
 void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt) const

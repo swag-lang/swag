@@ -229,6 +229,7 @@ struct Diagnostic
     Utf8                      lineCode;
     Utf8                      lineCodePrev;
     int                       lineCodeNum       = 0;
+    int                       lineCodeNumPrev   = 0;
     int                       lineCodeNumDigits = 0;
     int                       lineCodeMaxDigits = 0;
     int                       minBlanks         = 0;
