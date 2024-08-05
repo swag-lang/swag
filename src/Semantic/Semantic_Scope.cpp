@@ -48,9 +48,9 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             Utf8 msg;
             if (first)
-                msg = formNte(Nte0152, t->getDisplayNameC());
+                msg = formNte(Nte0156, t->getDisplayNameC());
             else
-                msg = formNte(Nte0213, t->getDisplayNameC());
+                msg = formNte(Nte0155, t->getDisplayNameC());
             err.addNote(t->declNode, t->declNode->getTokenName(), msg);
             first = false;
         }

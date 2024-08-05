@@ -152,11 +152,11 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
-                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0043));
+                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0045));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0028));
+                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0029));
                 else
-                    err.addNote(toNte(Nte0048));
+                    err.addNote(toNte(Nte0051));
             }
         }
 
@@ -168,7 +168,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
     if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(formNte(Nte0091, symbolName->name.c_str(), symbolName->name.c_str()));
+        err.addNote(formNte(Nte0093, symbolName->name.c_str(), symbolName->name.c_str()));
 
     return context->report(err);
 }
@@ -423,13 +423,13 @@ bool Semantic::resolveType(SemanticContext* context)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
-                            err.hint = toNte(Nte0172);
-                            err.addNote(formNte(Nte0196, symName->name.c_str(), symName->name.c_str()));
+                            err.hint = toNte(Nte0176);
+                            err.addNote(formNte(Nte0199, symName->name.c_str(), symName->name.c_str()));
                             err.addNote(Diagnostic::hereIs(symOver));
                             return context->report(err);
                         }
 
-                        err.hint = toNte(Nte0172);
+                        err.hint = toNte(Nte0176);
                     }
 
                     err.addNote(Diagnostic::hereIs(symOver));

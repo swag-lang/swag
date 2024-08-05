@@ -50,14 +50,14 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     {
         Diagnostic err{back, formErr(Err0326, Naming::aKindName(symbolName->kind).c_str())};
 
-        err.addNote(toNte(Nte0013));
+        err.addNote(toNte(Nte0015));
 
         if (symbolName->is(SymbolKind::Enum) ||
             symbolName->is(SymbolKind::Interface) ||
             symbolName->is(SymbolKind::TypeAlias) ||
             symbolName->is(SymbolKind::Struct))
         {
-            err.addNote(node, node->kwdLoc, formNte(Nte0026, Naming::aKindName(symbolName->kind).c_str()));
+            err.addNote(node, node->kwdLoc, formNte(Nte0046, Naming::aKindName(symbolName->kind).c_str()));
         }
 
         return context->report(err);
@@ -652,14 +652,14 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic err{dependentVar, formErr(Err0014, dependentVar->typeInfo->getDisplayNameC())};
-                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0123));
-                err.addNote(toNte(Nte0036));
+                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0125));
+                err.addNote(toNte(Nte0038));
                 return context->report(err);
             }
 
             Diagnostic err{dep.node, formErr(Err0014, dependentVar->typeInfo->getDisplayNameC())};
-            err.addNote(dependentVar, toNte(Nte0060));
-            err.addNote(toNte(Nte0036));
+            err.addNote(dependentVar, toNte(Nte0063));
+            err.addNote(toNte(Nte0038));
             return context->report(err);
         }
 
@@ -879,7 +879,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             const auto firstNode = symbol->nodes.front();
             Diagnostic err{genericParameters, formErr(Err0683, Naming::aKindName(symbol->kind).c_str())};
-            err.addNote(node, node->token, formNte(Nte0132, node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
+            err.addNote(node, node->token, formNte(Nte0134, node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
         }

@@ -23,7 +23,7 @@ namespace
             const auto err        = new Diagnostic{identifier, formErr(Err0715, identifier->token.c_str())};
             const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
-            const auto note       = Diagnostic::note(errNode, toNte(Nte0080));
+            const auto note       = Diagnostic::note(errNode, toNte(Nte0083));
             notes.push_back(note);
             return err;
         }
@@ -127,7 +127,7 @@ namespace
         {
             const auto userOp   = prev->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
             const auto typeInfo = TypeManager::concreteType(userOp->typeInfo);
-            const auto msg      = formNte(Nte0122, userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
+            const auto msg      = formNte(Nte0124, userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }
@@ -135,7 +135,7 @@ namespace
         {
             const auto api       = castAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
             const auto typeArray = castTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
-            const auto note      = Diagnostic::note(api->array, formNte(Nte0007, api->array->token.c_str(), typeArray->finalType->getDisplayNameC()));
+            const auto note      = Diagnostic::note(api->array, formNte(Nte0008, api->array->token.c_str(), typeArray->finalType->getDisplayNameC()));
             notes.push_back(note);
         }
         else
@@ -144,9 +144,9 @@ namespace
             const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
             const auto        prevType = TypeManager::concreteType(prev->typeInfo, CONCRETE_FORCE_ALIAS);
             if (prevType)
-                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.c_str(), kindName.c_str(), prevType->getDisplayNameC()));
+                note = Diagnostic::note(prev, formNte(Nte0005, prev->token.c_str(), kindName.c_str(), prevType->getDisplayNameC()));
             else
-                note = Diagnostic::note(prev, formNte(Nte0003, prev->token.c_str(), kindName.c_str()));
+                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.c_str(), kindName.c_str()));
             notes.push_back(note);
 
             if (prev->typeInfo && prev->typeInfo->declNode)
@@ -199,7 +199,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0309, identifier->token.c_str())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0202)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0205)));
         return context->report(*err, notes);
     }
 
@@ -207,7 +207,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0244, identifier->token.c_str())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0202)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0205)));
         return context->report(*err, notes);
     }
 
@@ -237,7 +237,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 
     // Additional notes
     if (searchFor == IdentifierSearchFor::Type && identifier->token.text == "int")
-        notes.push_back(Diagnostic::note(formNte(Nte0108, "s32")));
+        notes.push_back(Diagnostic::note(formNte(Nte0109, "s32")));
 
     return context->report(*err, notes);
 }

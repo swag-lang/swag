@@ -170,9 +170,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             // Instructions
             ParserPushBreakable scopedBreakable(this, switchNode);
             if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-                return error(prevToken, isDefault ? toErr(Err0072) : toErr(Err0071), toNte(Nte0030));
+                return error(prevToken, isDefault ? toErr(Err0072) : toErr(Err0071), toNte(Nte0031));
             if (tokenParse.is(TokenId::SymRightCurly))
-                return error(prevToken, isDefault ? toErr(Err0072) : toErr(Err0071), toNte(Nte0029));
+                return error(prevToken, isDefault ? toErr(Err0072) : toErr(Err0071), toNte(Nte0030));
             while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
         }
@@ -427,7 +427,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->isNot(AstNodeKind::VarDecl))
         {
             Diagnostic err{id->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0401)};
-            err.addNote(node, node->token, toNte(Nte0015));
+            err.addNote(node, node->token, toNte(Nte0017));
             return context->report(err);
         }
 

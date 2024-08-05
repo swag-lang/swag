@@ -36,19 +36,19 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0125, symbolName->name.c_str()));
-                        result->hint      = toNte(Nte0081);
+                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0127, symbolName->name.c_str()));
+                        result->hint      = toNte(Nte0084);
                         return result;
                     }
 
-                    return Diagnostic::note(c, c->token, toNte(Nte0165));
+                    return Diagnostic::note(c, c->token, toNte(Nte0169));
                 }
             }
 
             if (symbolName->is(SymbolKind::Variable))
-                return Diagnostic::note(c, c->token, formNte(Nte0006, symbolName->name.c_str()));
+                return Diagnostic::note(c, c->token, formNte(Nte0007, symbolName->name.c_str()));
 
-            return Diagnostic::note(c, toNte(Nte0055));
+            return Diagnostic::note(c, toNte(Nte0058));
         }
     }
 
@@ -124,7 +124,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0040, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.hint          = formNte(Nte0155, userOp->symbol->name.c_str());
+                err.hint          = formNte(Nte0159, userOp->symbol->name.c_str());
                 return context->report(err);
             }
 
@@ -144,7 +144,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0040, realType->getDisplayNameC())};
-                    err.hint = toNte(Nte0081);
+                    err.hint = toNte(Nte0084);
                     return context->report(err);
                 }
             }

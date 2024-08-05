@@ -119,9 +119,9 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
             {
-                err.addNote(formNte(Nte0086, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+                err.addNote(formNte(Nte0089, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
                 if (tokenParse.literalValue.u64 < 32)
-                    err.addNote(formNte(Nte0085, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+                    err.addNote(formNte(Nte0088, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
             }
         }
 
@@ -160,7 +160,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     if (isIntrinsic && tokenParse.isNot(TokenId::SymLeftParen))
     {
         Diagnostic err{identifier, formErr(Err0567, identifier->token.c_str())};
-        err.addNote(sourceFile, tokenParse.token, formNte(Nte0059, tokenParse.token.c_str()));
+        err.addNote(sourceFile, tokenParse.token, formNte(Nte0062, tokenParse.token.c_str()));
         return context->report(err);
     }
 
@@ -323,8 +323,8 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
                 Diagnostic err{sourceFile, tokenParse, formErr(Err0744, tokenParse.token.c_str())};
-                err.addNote(sourceFile, discardToken.token, toNte(Nte0160));
-                err.addNote(toNte(Nte0012));
+                err.addNote(sourceFile, discardToken.token, toNte(Nte0164));
+                err.addNote(toNte(Nte0014));
                 return context->report(err);
             }
 
