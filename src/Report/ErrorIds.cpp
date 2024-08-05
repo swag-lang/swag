@@ -1102,8 +1102,8 @@ void initErrors()
     SWAG_ERROR(Nte0212, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0213, "the value could also come from [[%s]]");
     SWAG_ERROR(Nte0214, "the argument [[%s]] could be converted to %s");
-    SWAG_ERROR(Nte0215, nullptr);
-    SWAG_ERROR(Nte0216, nullptr);
+    SWAG_ERROR(Nte0215, "[[%s]] is considered to be a type and not a generic value because of the preceeding [[var]]");
+    SWAG_ERROR(Nte0216, "consider removing [[var]] or replace it by [[const]] if you want to declare a generic value");
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);

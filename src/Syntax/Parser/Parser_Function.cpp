@@ -529,6 +529,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         bool isConstant = false;
         bool isType     = false;
 
+        const auto tokenForce = tokenParse.token;
         if (tokenParse.is(TokenId::KwdConst))
         {
             isConstant = true;
@@ -553,7 +554,14 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
         if (tokenParse.is(TokenId::SymColon))
         {
-            SWAG_VERIFY(!isType, error(tokenParse, toErr(Err0302)));
+            if (isType)
+            {
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0302)};
+                err.addNote(Diagnostic::note(oneParam, formNte(Nte0215, oneParam->token.c_str())));
+                err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0216)));
+                return context->report(err);
+            }
+
             isConstant = true;
 
             SWAG_CHECK(eatToken());
