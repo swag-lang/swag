@@ -516,7 +516,8 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
     if (paramIdx >= typeLambda->parameters.count)
     {
-        const Diagnostic err{nodeParam, formErr(Err0623, typeLambda->parameters.count, nodeParam->parent->children.count)};
+        Diagnostic err{nodeParam, formErr(Err0623, typeLambda->parameters.count, nodeParam->parent->children.count)};
+        err.addNote(formNte(Nte0218, typeLambda->getDisplayNameC()));
         return context->report(err);
     }
 

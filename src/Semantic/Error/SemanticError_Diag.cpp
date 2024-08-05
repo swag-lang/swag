@@ -159,7 +159,12 @@ namespace
             site = errorParam.oneTry->callParameters;
         SWAG_ASSERT(site);
 
-        const auto msg = formErr(Err0623, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+        Utf8 msg;
+        if (errorParam.destStructDecl)
+            msg = formErr(Err0747, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
+        else
+            msg = formErr(Err0623, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+
         const auto err = new Diagnostic{site, msg};
         errorParam.addError(err);
         errorParam.addNote(Diagnostic::hereIs(overload));

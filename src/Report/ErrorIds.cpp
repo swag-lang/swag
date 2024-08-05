@@ -870,7 +870,7 @@ void initErrors()
     SWAG_ERROR(Err0744, "misplaced [[%s]]                                  $ can't combine [[%s]] with another [[%s]]");
     SWAG_ERROR(Err0745, "invalid variable name                             $ expected another variable name after [[,]], got $$TKN$$ instead");
     SWAG_ERROR(Err0746, "invalid tuple comparison                          $ a tuple can't be compared to the type [[%s]] $ a tuple can only be compared to another tuple");
-    SWAG_ERROR(Err0747, nullptr);
+    SWAG_ERROR(Err0747, "too many arguments                                $ expected [[%d]] argument(s) to initialize [[%s]], got [[%d]] instead");
     SWAG_ERROR(Err0748, nullptr);
     SWAG_ERROR(Err0749, nullptr);
     SWAG_ERROR(Err0750, nullptr);
@@ -1105,7 +1105,7 @@ void initErrors()
     SWAG_ERROR(Nte0215, "[[%s]] is considered to be a type and not a generic value because of the preceeding [[var]]");
     SWAG_ERROR(Nte0216, "consider removing [[var]] or replace it by [[const]] if you want to declare a generic value");
     SWAG_ERROR(Nte0217, "[[%s]] does not take arguments between parenthesis, so what follows should be a normal [[(expression)]]");
-    SWAG_ERROR(Nte0218, nullptr);
+    SWAG_ERROR(Nte0218, "the lambda type is [[%s]]");
     SWAG_ERROR(Nte0219, nullptr);
     SWAG_ERROR(Nte0220, nullptr);
 }
