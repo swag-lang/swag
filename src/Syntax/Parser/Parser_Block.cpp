@@ -450,7 +450,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
             id->isNot(AstNodeKind::VarDecl) &&
             id->isNot(AstNodeKind::AffectOp))
         {
-            Diagnostic err{id, formErr(Err0169, Naming::aKindName(id).c_str())};
+            const Diagnostic err{id, formErr(Err0169, Naming::aKindName(id).c_str())};
             return context->report(err);
         }
 

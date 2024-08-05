@@ -48,7 +48,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     varNode->type = typeNode;
 
     SWAG_ASSERT(typeStruct->declNode);
-    auto destStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    const auto destStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     varNode->addAlternativeScope(typeStruct->declNode->ownerScope);
     typeNode->identifier = newIdentifierRef(typeStruct->declNode->token.text, nullptr, typeNode);
 

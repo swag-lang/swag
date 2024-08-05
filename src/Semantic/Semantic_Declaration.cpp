@@ -66,7 +66,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 {
     const auto n = context->node->findParent(AstNodeKind::With);
     SWAG_ASSERT(n);
-    auto node = castAst<AstWith>(n, AstNodeKind::With);
+    const auto node = castAst<AstWith>(n, AstNodeKind::With);
 
     // If this is a simple identifier, no bytecode generation
     TypeInfo*  typeResolved = nullptr;
