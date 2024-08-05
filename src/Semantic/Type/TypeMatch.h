@@ -21,7 +21,6 @@ enum class MatchResult
     MissingArguments,
     NotEnoughGenericArguments,
     BadSignature,
-    CannotDeduceGenericType,
     BadGenericSignature,
     InvalidNamedArgument,
     MissingNamedArgument,

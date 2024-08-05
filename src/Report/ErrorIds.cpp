@@ -416,7 +416,7 @@ void initErrors()
     SWAG_ERROR(Err0290, "invalid generated [[impl]] block                  $ [[impl]] block generation is permissible only within a [[#message]] with [[Swag.CompilerMsgMask.AttributeGen]]");
     SWAG_ERROR(Err0291, "invalid generic                                   $ a generic struct instantiation of a partial type alias ([[%s]]) is not supported");
     SWAG_ERROR(Err0292, "invalid generic                                   $ can't deduce the generic arguments when calling %s [[%s]]");
-    SWAG_ERROR(Err0293, "invalid generic                                   $ can't deduce the generic type [[%s]] from type [[%s]]");
+    SWAG_ERROR(Err0293, nullptr);
     SWAG_ERROR(Err0294, "invalid generic                                   $ can't instantiate the generic function [[%s]] because of missing contextual types replacements");
     SWAG_ERROR(Err0295, "invalid generic                                   $ can't instantiate the generic struct [[%s]] because of missing contextual types replacements");
     SWAG_ERROR(Err0296, "invalid generic                                   $ the generic value [[%s]] has already been deduced from arguments to be [[%s]], and [[%s]] is provided here");

@@ -209,16 +209,6 @@ namespace
         errorParam.addNote(Diagnostic::note(bi.badNode, Diagnostic::isType(bi.badNode)));
     }
 
-    void errorCannotDeduceGenericType(SemanticContext*, const ErrorParam& errorParam)
-    {
-        const auto&              match = errorParam.oneTry->symMatchContext;
-        const BadSignatureInfos& bi    = match.badSignatureInfos;
-
-        const auto msg = formErr(Err0293, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
-        const auto err = new Diagnostic{match.parameters[bi.badSignatureParameterIdx], msg};
-        errorParam.addError(err);
-    }
-
     void errorBadGenericSignature(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto               overload  = errorParam.oneTry->overload;
@@ -549,10 +539,6 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 
         case MatchResult::MismatchGenericValue:
             errorMismatchGenericValue(context, errorParam);
-            break;
-
-        case MatchResult::CannotDeduceGenericType:
-            errorCannotDeduceGenericType(context, errorParam);
             break;
 
         case MatchResult::BadGenericSignature:
