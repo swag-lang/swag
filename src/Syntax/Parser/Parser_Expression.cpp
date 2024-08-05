@@ -226,7 +226,7 @@ bool Parser::doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNo
     else
         msg = "to end the left expression";
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, msg));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, msg, parent));
     return true;
 }
 

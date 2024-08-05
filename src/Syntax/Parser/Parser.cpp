@@ -56,34 +56,33 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
     return true;
 }
 
-bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg)
+bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg, AstNode* node)
 {
-    SWAG_ASSERT(msg);
-
-    if (tokenParse.token.isNot(id))
+    if (tokenParse.token.is(id))
     {
-        const Utf8 related = Naming::tokenToName(id);
+        SWAG_CHECK(eatToken());
+        return true;
+    }
 
-        if (!msg || msg[0] == 0)
-            msg = "$$$";
+    const Utf8 related = Naming::tokenToName(id);
 
-        if (tokenParse.is(TokenId::EndOfFile))
-        {
-            auto diagMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
-            diagMsg.replace(" $$$", "");
-            const Diagnostic err{sourceFile, start, start, diagMsg};
-            return context->report(err);
-        }
+    SWAG_ASSERT(msg);
+    if (!msg || msg[0] == 0)
+        msg = "$$$";
 
-        auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+    if (tokenParse.is(TokenId::EndOfFile))
+    {
+        auto diagMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
         diagMsg.replace(" $$$", "");
-        Diagnostic err{sourceFile, tokenParse, diagMsg};
-        err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
+        const Diagnostic err{sourceFile, start, start, diagMsg};
         return context->report(err);
     }
 
-    SWAG_CHECK(eatToken());
-    return true;
+    auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+    diagMsg.replace(" $$$", "");
+    Diagnostic err{sourceFile, tokenParse, diagMsg};
+    err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
+    return context->report(err);
 }
 
 bool Parser::eatFormat(AstNode* parent)
