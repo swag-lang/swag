@@ -395,6 +395,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic err{node, node->token, toErr(Err0354)};
             err.addNote(node->array, Diagnostic::isType(typeVar));
+            err.addNote(toNte(Nte0109));
             return context->report(err);
         }
 

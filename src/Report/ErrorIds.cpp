@@ -469,7 +469,7 @@ void initErrors()
     SWAG_ERROR(Err0343, "invalid operation                                 $ the operation [['%s']] is not allowed because the right expression is an enum type ([[%s]]) not marked with [[#[Swag.EnumFlags]]]");
     SWAG_ERROR(Err0344, "invalid operation                                 $ the operation [['%s']] is not allowed on tuple types");
     SWAG_ERROR(Err0345, "invalid operation                                 $ the operation [['%s']] is not allowed on type [[%s]]");
-    SWAG_ERROR(Err0346, "invalid operator modifier                         $ [[%s]] is not recognized as a valid instruction modifier");
+    SWAG_ERROR(Err0346, "invalid instruction modifier                      $ [[%s]] is not recognized as a valid instruction modifier");
     SWAG_ERROR(Err0347, "invalid packing value                             $ the [[#[Swag.Pack]]] argument must be 0 or a power of two, got [[%d]]");
     SWAG_ERROR(Err0348, "invalid parameter                                 $ the [[#message]] block needs a parameter of type [[Swag.CompilerMsgMask]], got type [[%s]]");
     SWAG_ERROR(Err0349, "invalid parameter name                            $ expected a parameter name, got $$TKN$$ instead");
@@ -482,7 +482,7 @@ void initErrors()
     SWAG_ERROR(Err0356, "invalid range type                                $ unexpected type [[%s]] in a range expression");
     SWAG_ERROR(Err0357, "invalid reference                                 $ [[ref]] requires a pointer or a reference as an expression, got type [[%s]] instead");
     SWAG_ERROR(Err0358, "invalid reference                                 $ invalid reference to the current file scope name");
-    SWAG_ERROR(Err0359, "invalid reference to [[with]] block               $ an identifier is expected after [[.]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0359, "invalid reference to [[with]] expression          $ an identifier is expected after [[.]], got $$TKN$$ instead");
     SWAG_ERROR(Err0360, "invalid return type                               $ a function can't return type [[%s]]");
     SWAG_ERROR(Err0361, "invalid return type                               $ a function return of type [[void]] is invalid $ just omit the return type if you want the function to return nothing");
     SWAG_ERROR(Err0362, "invalid return type                               $ the function [[opSlice]] must return a string or a slice, got type [[%s]] instead");
@@ -914,7 +914,7 @@ void initErrors()
     SWAG_ERROR(Nte0024, "both parts of an [[orelse]] should have the same type");
     SWAG_ERROR(Nte0025, "but it is applied on this %s");
     SWAG_ERROR(Nte0026, "consider using [[typealias]] to create an alias for %s");
-    SWAG_ERROR(Nte0027, "consider adding [[&]] to get the address of this expression");
+    SWAG_ERROR(Nte0027, "consider adding [['&']] to get the address of this expression");
     SWAG_ERROR(Nte0028, "consider adding [[using]] before [[self]] if you intend to access members of the instance directly");
     SWAG_ERROR(Nte0029, "consider adding a [[break]] if you want to exit without any action");
     SWAG_ERROR(Nte0030, "consider adding a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
@@ -996,7 +996,7 @@ void initErrors()
     SWAG_ERROR(Nte0106, nullptr);
     SWAG_ERROR(Nte0107, "parameter mismatch (type is [[%s]])");
     SWAG_ERROR(Nte0108, "perhaps you intended to use this type: [[%s]]");
-    SWAG_ERROR(Nte0109, "pointer arithmetic is only valid for pointers declared with [[^]], not the symbol [['*']]");
+    SWAG_ERROR(Nte0109, "pointer arithmetic is not valid for pointers declared with [['*']] (only if declared with [['^']])");
     SWAG_ERROR(Nte0110, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte0111, "public structs should export all their special functions");
     SWAG_ERROR(Nte0112, "should conform to type [[%s]]");
