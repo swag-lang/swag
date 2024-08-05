@@ -1400,8 +1400,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
                 if (tokenParse.isNot(TokenId::SymComma))
                     break;
+
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0128)));
+                SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymDot), invalidIdentifierError(tokenParse, toErr(Err0745)));
 
                 if (!multi)
                 {
@@ -1417,12 +1419,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         }
 
         default:
-        {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0400)};
-            if (Tokenizer::isKeyword(tokenParse.token.id))
-                err.addNote(formNte(Nte0135, tokenParse.token.c_str()));
-            return context->report(err);
-        }
+            return invalidIdentifierError(tokenParse, toErr(Err0400));
     }
 
     return true;

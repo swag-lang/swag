@@ -59,10 +59,10 @@ namespace
         replace.replace(form(" %s symbol ", verb.c_str()), form(" %s the symbol ", verb.c_str()));
     }
 
-    void addArticle(Utf8& replace, const Utf8& verb)
+    void addArticle(Utf8& replace, const Utf8& verb, const Utf8& a, const Utf8& an)
     {
-        replace.replace(form(" %s $$A$$ ", verb.c_str()), form(" %s a ", verb.c_str()));
-        replace.replace(form(" %s $$AN$$ ", verb.c_str()), form(" %s an ", verb.c_str()));
+        replace.replace(form(" %s $$A$$ ", verb.c_str()), form(" %s %s ", verb.c_str(), a.c_str()));
+        replace.replace(form(" %s $$AN$$ ", verb.c_str()), form(" %s %s ", verb.c_str(), an.c_str()));
     }
 }
 
@@ -72,11 +72,14 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 
     replace = replaceHighLight(replace);
 
-    addArticle(replace, "expected");
-    addArticle(replace, "got");
-    addArticle(replace, "with");
-    addArticle(replace, "or");
-    addArticle(replace, "and");
+    addArticle(replace, "expected", "a", "an");
+    addArticle(replace, "got", "a", "an");
+    addArticle(replace, "with", "a", "an");
+    addArticle(replace, "or", "a", "an");
+    addArticle(replace, "and", "a", "an");
+    
+    addArticle(replace, "after", "the", "the");
+    addArticle(replace, "before", "the", "the");
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");

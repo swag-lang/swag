@@ -526,8 +526,8 @@ void initErrors()
     SWAG_ERROR(Err0400, "invalid variable name                             $ expected a variable name, got $$TKN$$ instead");
     SWAG_ERROR(Err0401, "invalid symbol                                    $ the symbol [[%s]] is not a valid Swag symbol");
     SWAG_ERROR(Err0402, "invalid variable name                             $ expected the variable name after [[%s]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0403, "invalid variable name                             $ unexpected call arguments after variable name [[%s]]");
-    SWAG_ERROR(Err0404, "invalid variable name                             $ unexpected generic arguments after variable name [[%s]]");
+    SWAG_ERROR(Err0403, "invalid call                                      $ unexpected call arguments after variable name [[%s]]");
+    SWAG_ERROR(Err0404, "invalid generic arguments                         $ unexpected generic arguments after variable name [[%s]]");
     SWAG_ERROR(Err0405, "invalid variable type                             $ a variable can't be declared with a [[void]] type");
     SWAG_ERROR(Err0406, "invalid variable type                             $ failed to deduce the type of %s [[%s]]");
     SWAG_ERROR(Err0407, "invalid variable type                             $ failed to deduce the type of the variable because the expression is [[null]]");
@@ -619,7 +619,7 @@ void initErrors()
     SWAG_ERROR(Err0493, "misplaced generic arguments                       $ unexpected generic arguments for %s [[%s]]");
     SWAG_ERROR(Err0494, "misplaced move reference                          $ a move reference type [[&&]] is only valid when declaring a function parameter");
     SWAG_ERROR(Err0495, "misplaced range                                   $ can't use a range in a switch without an expression");
-    SWAG_ERROR(Err0496, "misplaced reference to [[with]] block             $ statements starting with the [[.]] operator are only valid within a [[with]] block");
+    SWAG_ERROR(Err0496, "misplaced reference to [[with]] block             $ statements starting with [[.]] are only valid within a [[with]] block");
     SWAG_ERROR(Err0497, "misplaced special function                        $ the struct special function [[%s]] should be declared within the corresponding [[impl]] block $ an [[impl for]] block can only be used to implement interfaces");
     SWAG_ERROR(Err0498, "misplaced special function                        $ the struct special function [[%s]] should be declared within the corresponding [[impl]] block");
     SWAG_ERROR(Err0499, "misplaced top-level [[using]]                     $ a top-level [[using]] must be placed before any other declarations");
@@ -868,7 +868,7 @@ void initErrors()
     SWAG_ERROR(Err0742, "missing [[)]]                                     $ missing [[)]] to end the attribute arguments list");
     SWAG_ERROR(Err0743, "misplaced [[%s]]                                  $ can't combine [[%s]] with [[%s]]");
     SWAG_ERROR(Err0744, "misplaced [[%s]]                                  $ can't combine [[%s]] with another [[%s]]");
-    SWAG_ERROR(Err0745, nullptr);
+    SWAG_ERROR(Err0745, "invalid variable name                             $ expected another variable name after [[,]], got $$TKN$$ instead");
     SWAG_ERROR(Err0746, nullptr);
     SWAG_ERROR(Err0747, nullptr);
     SWAG_ERROR(Err0748, nullptr);
