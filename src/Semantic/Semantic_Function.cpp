@@ -535,11 +535,14 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Return type
     if (!typeNode->children.empty())
     {
-        const auto front   = typeNode->firstChild();
-        typeNode->typeInfo = front->typeInfo;
-        if (typeNode->typeInfo->getConcreteAlias()->isVoid())
+        const auto front    = typeNode->firstChild();
+        typeNode->typeInfo  = front->typeInfo;
+        const auto concrete = typeNode->typeInfo->getConcreteAlias();
+        if (concrete->isVoid())
         {
-            const Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, toErr(Err0361)};
+            Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, toErr(Err0361)};
+            if (typeNode->typeInfo->isAlias())
+                err.addNote(Diagnostic::note(typeNode, Diagnostic::isType(concrete)));
             return context->report(err);
         }
     }
