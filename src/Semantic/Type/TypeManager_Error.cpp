@@ -228,8 +228,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         Utf8 toName, fromName;
         toType->computeWhateverName(toName, ComputeNameKind::DisplayName);
         fromType->computeWhateverName(fromName, ComputeNameKind::DisplayName);
-        remarks.push_back(form("source type is %s", fromName.c_str()));
-        remarks.push_back(form("requested type is %s", toName.c_str()));
+        remarks.push_back(form("the source type is [[%s]]", fromName.c_str()));
+        remarks.push_back(form("the requested type is [[%s]]", toName.c_str()));
 
         msg = toErr(Err0633);
     }

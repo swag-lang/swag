@@ -160,8 +160,10 @@ namespace
         SWAG_ASSERT(site);
 
         Utf8 msg;
-        if (errorParam.destStructDecl)
-            msg = formErr(Err0747, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
+        if (errorParam.destStructDecl && errorParam.destStructDecl->typeInfo->isTuple())
+            msg = formErr(Err0629, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+        else if (errorParam.destStructDecl)
+            msg = formErr(Err0627, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
         else
             msg = formErr(Err0623, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
 
