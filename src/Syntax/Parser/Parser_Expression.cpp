@@ -161,7 +161,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0516)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0557)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, formErr(Err0557, node->token.c_str())));
 
     // Three parameters
     if (node->token.is(TokenId::IntrinsicMakeInterface))
