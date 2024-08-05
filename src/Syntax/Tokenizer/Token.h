@@ -24,6 +24,7 @@ struct Token
     bool is(TokenId what) const { return id == what; }
     bool isNot(TokenId what) const { return id != what; }
     bool is(const Utf8& name) const { return text == name; }
+    bool isNot(const Utf8& name) const { return text != name; }
 
     SourceFile*    sourceFile = nullptr;
     Utf8           text;

@@ -576,7 +576,7 @@ void initErrors()
     SWAG_ERROR(Err0450, "misplaced [[const]] qualifier                     $ the [[const]] qualifier is not allowed for [[func]], only for [[mtd]]");
     SWAG_ERROR(Err0451, "misplaced [[continue]]                            $ [[continue]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
     SWAG_ERROR(Err0452, "misplaced [[do]]                                  $ unnecessary usage of [[do]] before [[{]] $ consider removing it");
-    SWAG_ERROR(Err0453, "misplaced [[fallthrough]]                         $ [[fallthrough]] is invalid in the last [[case]] of a [[switch]]");
+    SWAG_ERROR(Err0453, "misplaced [[fallthrough]]                         $ [[fallthrough]] is invalid in the last [[case]] of a [[switch]] $ consider removing it");
     SWAG_ERROR(Err0454, "misplaced [[fallthrough]]                         $ [[fallthrough]] is only valid within a [[case]] block");
     SWAG_ERROR(Err0455, "misplaced [[fallthrough]]                         $ [[fallthrough]] is only valid within a [[switch]]");
     SWAG_ERROR(Err0456, "misplaced [[moveref]]                             $ [[moveref]] can only be used before a function argument");

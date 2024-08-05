@@ -196,7 +196,13 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
         const auto constToken = tokenParse;
         isConst               = true;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.is(TokenId::Identifier) && tokenParse.token.is(g_LangSpec->name_self), error(constToken, toErr(Err0449)));
+
+        if (tokenParse.isNot(TokenId::Identifier) || tokenParse.token.isNot(g_LangSpec->name_self))
+        {
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0449)};
+            return context->report(err);
+        }
+
         paramNode->token.text = g_LangSpec->name_self;
     }
 
