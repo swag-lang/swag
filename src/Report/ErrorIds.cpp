@@ -571,7 +571,7 @@ void initErrors()
     SWAG_ERROR(Err0445, "misplaced [[@spread]]                             $ the intrinsic [[@spread]] can only be used as a direct function argument");
     SWAG_ERROR(Err0446, "misplaced [[Self]] type                           $ the [[Self]] type is only valid within an [[impl]], [[struct]], or [[interface]] block");
     SWAG_ERROR(Err0447, "misplaced [[break]]                               $ [[break]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
-    SWAG_ERROR(Err0448, "misplaced [[code]]                                $ the type [[code]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
+    SWAG_ERROR(Err0448, "misplaced type                                    $ the type [[code]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
     SWAG_ERROR(Err0449, "misplaced [[const]]                               $ expected [[self]] after [[const]] when declaring a function parameter, got $$TKN$$ instead");
     SWAG_ERROR(Err0450, "misplaced [[const]] qualifier                     $ the [[const]] qualifier is not allowed for [[func]], only for [[mtd]]");
     SWAG_ERROR(Err0451, "misplaced [[continue]]                            $ [[continue]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
@@ -624,7 +624,7 @@ void initErrors()
     SWAG_ERROR(Err0498, "misplaced special function                        $ the struct special function [[%s]] should be declared within the corresponding [[impl]] block");
     SWAG_ERROR(Err0499, "misplaced top-level [[using]]                     $ a top-level [[using]] must be placed before any other declarations");
     SWAG_ERROR(Err0500, "misplaced tuple unpacking                         $ tuple unpacking is not allowed in %s");
-    SWAG_ERROR(Err0501, "misplaced type                                    $ [[%s]] is only valid when declaring a function parameter");
+    SWAG_ERROR(Err0501, "misplaced type                                    $ the type [[%s]] is only valid when declaring a function parameter");
     SWAG_ERROR(Err0502, "misplaced variadic argument                       $ a variadic argument must be the last one");
     SWAG_ERROR(Err0503, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
     SWAG_ERROR(Err0504, "missing [[#alias]] number                         $ an [[#alias]] variable name must end with a number such as [[#alias0]], [[#alias1]], etc.");
