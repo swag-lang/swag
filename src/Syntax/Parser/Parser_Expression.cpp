@@ -1234,17 +1234,12 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (tokenParse.is(TokenId::SymColon))
             {
-                if (paramExpression->isNot(AstNodeKind::IdentifierRef))
-                {
-                    const Diagnostic err{sourceFile, tokenExpr, toErr(Err0305)};
-                    return context->report(err);
-                }
-
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->lastChild()));
                 auto       namedToFree     = paramExpression;
                 const auto namedExpression = namedToFree->lastChild();
                 SWAG_CHECK(eatToken());
+
                 if (tokenParse.is(TokenId::SymLeftCurly))
                     SWAG_CHECK(doExpressionListTuple(node, &paramExpression));
                 else
