@@ -235,11 +235,11 @@ void initErrors()
     SWAG_ERROR(Err0109, "generic type mismatch                             $ expected type [[%s]] for the generic %s, got type [[%s]] instead");
     SWAG_ERROR(Err0110, "identifier expected                               $ expected a function call after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0111, "immutable global variable                         $ the global variable [[%s]] is immutable at compile-time because it's initialized to 0");
-    SWAG_ERROR(Err0112, "incomplete [[case]] expression list               $ expected another expression after the [[,]] and before the [[:]] $ a [[,]] indicates a list of [[case]] expressions; provide the next expression or consider removing the [[,]]");
+    SWAG_ERROR(Err0112, "incomplete [[case]] expression list               $ expected another expression after [[,]] and before the [[:]] $ a [[,]] indicates a list of [[case]] expressions; provide the next expression or consider removing the [[,]]");
     SWAG_ERROR(Err0113, "incomplete [[switch]]                             $ the value [[%s.%s]] is missing");
-    SWAG_ERROR(Err0114, "incomplete alias list                             $ expected another alias name after the [[,]] $ either provide an additional alias name or remove the trailing [[,]]");
-    SWAG_ERROR(Err0115, "incomplete arguments list                         $ expected another call argument after the [[,]] $ either provide an additional argument or remove the trailing [[,]]");
-    SWAG_ERROR(Err0116, "incomplete array dimensions                       $ expected another dimension after the [[,]] $ either provide an additional dimension or remove the trailing [[,]]");
+    SWAG_ERROR(Err0114, "incomplete alias list                             $ expected another alias variable after [[,]] $ either provide an additional alias variable name or remove the trailing [[,]]");
+    SWAG_ERROR(Err0115, "incomplete arguments list                         $ expected another call argument after [[,]] $ either provide an additional argument or remove the trailing [[,]]");
+    SWAG_ERROR(Err0116, "incomplete array dimensions                       $ expected another dimension after [[,]] $ either provide an additional dimension or remove the trailing [[,]]");
     SWAG_ERROR(Err0117, "incomplete binary number format                   $ binary literals require at least one [[0]] or [[1]] digit");
     SWAG_ERROR(Err0118, "incomplete character literal                      $ expected a closing back-tick [[`]] before the end of the line");
     SWAG_ERROR(Err0119, "incomplete hexadecimal number format              $ hexadecimal literals require at least one valid digit ([[0-9]], [[A-F]], [[a-f]])");
@@ -401,7 +401,7 @@ void initErrors()
     SWAG_ERROR(Err0275, "invalid expression                                $ expected an expression after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0276, "invalid expression                                $ expected an expression after [[%s]], got $$TKN$$ instead $ consider adding an [[(]] after [[%s]] to start an expression");
     SWAG_ERROR(Err0277, "invalid expression                                $ expected an expression, got a type instead");
-    SWAG_ERROR(Err0278, nullptr);
+    SWAG_ERROR(Err0278, "invalid alias variable name                       $ expected an identifier as a variable alias name, got $$TKN$$ instead");
     SWAG_ERROR(Err0279, "invalid expression                                $ the directive [[%s]] can't be used as an expression $ this directive can only be used as a statement");
     SWAG_ERROR(Err0280, "invalid float number format                       $ the exponent in the scientific notation must contain at least one digit");
     SWAG_ERROR(Err0281, "invalid float number format                       $ the exponent part should not start with [[_]]");
