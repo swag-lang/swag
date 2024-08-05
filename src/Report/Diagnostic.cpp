@@ -606,8 +606,9 @@ void Diagnostic::collectSourceCode()
             {
                 lineCodePrev = sourceFile->getLine(lineCodeNumPrev - 1);
                 lineCodeNumPrev--;
-                lineCodePrev.trim();
-                if (!lineCodePrev.empty())
+                auto prev = lineCodePrev;
+                prev.trim();
+                if (!prev.empty())
                     break;
             }
         }
