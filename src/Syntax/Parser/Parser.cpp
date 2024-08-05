@@ -70,18 +70,23 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (!msg || msg[0] == 0)
         msg = "$$$";
 
+    Utf8 errMsg;
+    if (tokenParse.is(TokenId::EndOfFile))
+        errMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+    else
+        errMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+    errMsg.replace(" $$$", "");
+
+    Diagnostic err{sourceFile, tokenParse, errMsg};
+
     if (tokenParse.is(TokenId::EndOfFile))
     {
-        auto diagMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
-        diagMsg.replace(" $$$", "");
-        const Diagnostic err{sourceFile, start, start, diagMsg};
-        return context->report(err);
+        err.startLocation = start;
+        err.endLocation   = start;
     }
+    else
+        err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
 
-    auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
-    diagMsg.replace(" $$$", "");
-    Diagnostic err{sourceFile, tokenParse, diagMsg};
-    err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
     return context->report(err);
 }
 
