@@ -497,8 +497,8 @@ void initErrors()
     SWAG_ERROR(Err0371, "invalid struct operation                          $ can't affect by index a type [[%s]] to [[%s]] because the necessary [[opIndexAffect]] can't be found");
     SWAG_ERROR(Err0372, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]] to solve operator [['%s']]");
     SWAG_ERROR(Err0373, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]]");
-    SWAG_ERROR(Err0374, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, but there's nothing here");
-    SWAG_ERROR(Err0375, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, got type [[%s]] instead");
+    SWAG_ERROR(Err0374, "invalid throw                                     $ throw needs a struct or [[@err()]] as an expression, but there's nothing to throw here");
+    SWAG_ERROR(Err0375, "invalid throw                                     $ throw needs a struct or [[@err()]] as an expression, got type [[%s]] instead");
     SWAG_ERROR(Err0376, "invalid top-level instruction                     $ expected a top-level instruction, got $$TKN$$ instead");
     SWAG_ERROR(Err0377, "invalid tuple dereference                         $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err0378, "invalid tuple unpacking                           $ can't unpack an empty tuple");

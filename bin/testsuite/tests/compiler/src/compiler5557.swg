@@ -3,5 +3,5 @@
 {
     var a = 2
     var b = {2}
-    var c = a == b
+    var c = b == a
 }
