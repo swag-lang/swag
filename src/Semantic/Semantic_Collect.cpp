@@ -474,8 +474,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         const auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
-            Diagnostic err{node->assignment, formErr(Err0308, typeInfo->getDisplayNameC())};
-            err.addNote(toNte(Nte0106));
+            const Diagnostic err{node->assignment, formErr(Err0308, typeInfo->getDisplayNameC())};
             return context->report(err);
         }
     }

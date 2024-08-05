@@ -431,7 +431,7 @@ void initErrors()
     SWAG_ERROR(Err0305, "invalid identifier                                $ expected an identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0306, "invalid identifier list                           $ [[with]] does not support multiple identifiers");
     SWAG_ERROR(Err0307, "invalid import version                            $ the [[#import]] version format is invalid");
-    SWAG_ERROR(Err0308, "invalid initialization                            $ can't initialize a constant array (type is [[%s]]) with one single value");
+    SWAG_ERROR(Err0308, "invalid initialization                            $ can't initialize a constant array (type is [[%s]]) with one single value $ only variables can be initialized that way");
     SWAG_ERROR(Err0309, "invalid instrinsic scope                          $ intrinsics do not belong to a specific scope");
     SWAG_ERROR(Err0310, "invalid interface conversion                      $ [[%s]] (or a [[using]] field) doesn't implement [[%s]], so struct-to-interface cast is not allowed");
     SWAG_ERROR(Err0311, "invalid interface function                        $ the first parameter should be [[self]], got type [[%s]] instead $ consider declaring the interface function with [[mtd]] instead of [[func]]");
@@ -993,7 +993,7 @@ void initErrors()
     SWAG_ERROR(Nte0103, "one function declares [[throw]] while the other doesn't");
     SWAG_ERROR(Nte0104, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0105, "only the address of a returned reference can be taken, and this is %s");
-    SWAG_ERROR(Nte0106, "only variables can be initialized that way");
+    SWAG_ERROR(Nte0106, nullptr);
     SWAG_ERROR(Nte0107, "parameter mismatch (type is [[%s]])");
     SWAG_ERROR(Nte0108, "perhaps you intended to use this type: [[%s]]");
     SWAG_ERROR(Nte0109, "pointer arithmetic is only valid for pointers declared with [[^]], not the symbol [['*']]");

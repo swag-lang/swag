@@ -439,13 +439,6 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doAffectExpression(node, &id));
 
-        if (id->is(AstNodeKind::StatementNoScope))
-        {
-            Diagnostic err{node->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0306)};
-            err.addNote(node, node->token, toNte(Nte0015));
-            return context->report(err);
-        }
-
         if (id->isNot(AstNodeKind::IdentifierRef) &&
             id->isNot(AstNodeKind::VarDecl) &&
             id->isNot(AstNodeKind::AffectOp))
