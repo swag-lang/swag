@@ -93,10 +93,11 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
 {
     if (tokenParse.is(TokenId::CompilerDo))
     {
+        const auto tokenDo = tokenParse.token;
         SWAG_CHECK(eatToken());
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0426)};
+            const Diagnostic err{sourceFile, tokenDo, toErr(Err0426)};
             return context->report(err);
         }
     }

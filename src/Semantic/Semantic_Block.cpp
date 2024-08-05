@@ -890,27 +890,12 @@ bool Semantic::resolveVisit(SemanticContext* context)
         content += alias1Name;
         content += R"( = #index;}})";
     }
-
+    else if (typeInfo->isPointer())
+    {
+        return context->report({node->expression, toErr(Err0409)});
+    }
     else
     {
-        // Special error in case of a pointer
-        if (typeInfo->isPointer())
-        {
-            auto typePtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-            if (typePtr->pointedType->isEnum() ||
-                typePtr->pointedType->isVariadic() ||
-                typePtr->pointedType->isTypedVariadic() ||
-                typePtr->pointedType->isSlice() ||
-                typePtr->pointedType->isArray() ||
-                typePtr->pointedType->isStruct() ||
-                typePtr->pointedType->isString())
-            {
-                return context->report({node->expression, formErr(Err0409, typeInfo->getDisplayNameC())});
-            }
-
-            return context->report({node->expression, formErr(Err0409, typeInfo->getDisplayNameC())});
-        }
-
         return context->report({node->expression, formErr(Err0412, typeInfo->getDisplayNameC())});
     }
 
