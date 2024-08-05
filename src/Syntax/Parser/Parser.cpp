@@ -56,7 +56,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
     return true;
 }
 
-bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg, AstNode* node)
+bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg, AstNode* parent)
 {
     if (tokenParse.token.is(id))
     {
@@ -85,6 +85,18 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     {
         const Utf8 related = Naming::tokenToName(id);
         err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
+    }
+
+    if (parent)
+    {
+        if (parent->is(AstNodeKind::Statement) || parent->is(AstNodeKind::StatementNoScope))
+            parent = parent->getParent(1);
+
+        if (Tokenizer::isCompiler(parent->token.id) ||
+            Tokenizer::isKeyword(parent->token.id))
+        {
+            err.addNote(formNte(Nte0217, parent->token.c_str()));
+        }
     }
 
     return context->report(err);
