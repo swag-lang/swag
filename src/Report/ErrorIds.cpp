@@ -505,8 +505,8 @@ void initErrors()
     SWAG_ERROR(Err0379, "invalid tuple unpacking                           $ can't unpack type [[%s]] $ a struct or a tuple is expected");
     SWAG_ERROR(Err0380, "invalid type                                      $ the initialization expression has type [[void]]");
     SWAG_ERROR(Err0381, "invalid type                                      $ the intrinsic [[@spread]] can't be used with type [[%s]] $ this kind of type can't be spreaded");
-    SWAG_ERROR(Err0382, "invalid type                                      $ the operator [[<<]] requires an integer, got type [[%s]] instead");
-    SWAG_ERROR(Err0383, "invalid type                                      $ the operator [[>>]] requires an integer, got type [[%s]] instead");
+    SWAG_ERROR(Err0382, "invalid type                                      $ the operator [['<<']] requires an integer, got type [[%s]] instead");
+    SWAG_ERROR(Err0383, "invalid type                                      $ the operator [['>>']] requires an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0384, "invalid type                                      $ the second parameter of [[%s]] can't be of type [[%s]] $ consider using [[opAssign]] if you want to make a copy");
     SWAG_ERROR(Err0385, "invalid type                                      $ the special function [[%s]] expects a [[bool]] as a generic parameter, got type [[%s]] instead");
     SWAG_ERROR(Err0386, "invalid type                                      $ the special function [[%s]] expects a [[string]] as a generic parameter, got type [[%s]] instead");
@@ -1028,7 +1028,7 @@ void initErrors()
     SWAG_ERROR(Nte0138, "the number of values is variable and could be greater than one");
     SWAG_ERROR(Nte0139, "the only accepted type for an integer to pointer conversion is [[u64]]");
     SWAG_ERROR(Nte0140, "the operation is not allowed on a non-pointer type");
-    SWAG_ERROR(Nte0141, "the operator [[++]] requires compile-time strings as arguments");
+    SWAG_ERROR(Nte0141, "the operator [['++']] requires compile-time strings as arguments");
     SWAG_ERROR(Nte0142, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0143, "the return type of an [[#ast]] block should be of type [[string]]");
     SWAG_ERROR(Nte0144, "the slicing lower bound type is invalid, expected an integer, got [[%s]] instead");
