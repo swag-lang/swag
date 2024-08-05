@@ -193,6 +193,7 @@ struct Parser
     bool doInitializationExpression(const TokenParse& forToken, AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doLiteral(AstNode* parent, AstNode** result);
     bool doIntrinsicProp(AstNode* parent, AstNode** result);
+    bool doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doIndex(AstNode* parent, AstNode** result);
     bool doMoveRef(AstNode* parent, AstNode** result);
     bool doDeRef(AstNode* parent, AstNode** result);

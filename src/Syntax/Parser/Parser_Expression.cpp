@@ -210,6 +210,24 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
+{
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatToken());
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(startLoc, tokenParse.token.endLocation, toErr(Err0673)));
+
+    SWAG_CHECK(doExpression(parent, exprFlags, result));
+    (*result)->addAstFlag(AST_EXPR_IN_PARENTS);
+    FormatAst::inheritFormatAfter(this, *result, &tokenParse);
+
+    if (parent)
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the expression after [[%s]]", parent->token.c_str())));
+    else
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
+
+    return true;
+}
+
 bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     switch (tokenParse.token.id)
@@ -243,19 +261,8 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::SymLeftParen:
-        {
-            const auto startLoc = tokenParse.token.startLocation;
-            SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(startLoc, tokenParse.token.endLocation, toErr(Err0673)));
-            SWAG_CHECK(doExpression(parent, exprFlags, result));
-            (*result)->addAstFlag(AST_EXPR_IN_PARENTS);
-            FormatAst::inheritFormatAfter(this, *result, &tokenParse);
-            if (parent)
-                SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the [[%s]] expression", parent->token.c_str())));
-            else
-                SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
+            SWAG_CHECK(doParenthesisExpression(parent, exprFlags, result));
             break;
-        }
 
         case TokenId::KwdTrue:
         case TokenId::KwdFalse:
