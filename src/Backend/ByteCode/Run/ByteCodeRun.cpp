@@ -57,7 +57,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0598, context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0602, context->maxRecurse));
         return;
     }
 

@@ -117,7 +117,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 
         // Code is only valid for a macro or mixin
         if (paramType->isCode())
-            SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0448)}));
+            SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0504)}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->is(ScopeKind::Attribute))
@@ -130,7 +130,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
                 !toTest->isEnum() &&
                 !toTest->isPointerToTypeInfo())
             {
-                Diagnostic err{nodeParam->type ? nodeParam->type : nodeParam, formErr(Err0387, toTest->getDisplayNameC())};
+                Diagnostic err{nodeParam->type ? nodeParam->type : nodeParam, formErr(Err0388, toTest->getDisplayNameC())};
                 err.addNote(toNte(Nte0104));
                 return context->report(err);
             }
@@ -141,24 +141,24 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         // Variadic must be the last one
         if (paramType->isVariadic())
         {
-            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0736)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0741)}));
             typeInfo->addFlag(TYPEINFO_VARIADIC);
             if (index != parameters->childCount())
-                return context->report({nodeParam, toErr(Err0503)});
+                return context->report({nodeParam, toErr(Err0506)});
         }
         else if (paramType->isTypedVariadic())
         {
-            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0736)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0741)}));
             typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
             if (index != parameters->childCount())
-                return context->report({nodeParam, toErr(Err0503)});
+                return context->report({nodeParam, toErr(Err0506)});
         }
         else if (paramType->isCVariadic())
         {
-            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0736)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, toErr(Err0741)}));
             typeInfo->addFlag(TYPEINFO_C_VARIADIC);
             if (index != parameters->childCount())
-                return context->report({nodeParam, toErr(Err0503)});
+                return context->report({nodeParam, toErr(Err0506)});
         }
 
         // Default parameter value
@@ -175,7 +175,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         {
             if (defaultValueDone)
             {
-                Diagnostic err{nodeParam, formErr(Err0536, Naming::niceParameterRank(index).c_str())};
+                Diagnostic err{nodeParam, formErr(Err0540, Naming::niceParameterRank(index).c_str())};
                 err.addNote(firstParamWithDef, toNte(Nte0183));
                 return context->report(err);
             }
@@ -306,7 +306,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({funcNode, funcNode->tokenName, formErr(Err0581, funcNode->token.c_str(), n)});
+                return context->report({funcNode, funcNode->tokenName, formErr(Err0585, funcNode->token.c_str(), n)});
             mask >>= 1;
         }
     }
@@ -323,14 +323,14 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
         funcNode->ownerScope->addPublicNode(funcNode);
     else if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
-        SWAG_VERIFY(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED), context->report({funcNode, funcNode->getTokenName(), toErr(Err0565)}));
+        SWAG_VERIFY(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED), context->report({funcNode, funcNode->getTokenName(), toErr(Err0569)}));
 
     funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
 
     // Check attributes
     if (funcNode->isForeign() && funcNode->content)
     {
-        Diagnostic err{funcNode, funcNode->getTokenName(), toErr(Err0676)};
+        Diagnostic err{funcNode, funcNode->getTokenName(), toErr(Err0681)};
         err.addNote(funcNode->content, funcNode->content->token, toNte(Nte0079));
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
         err.addNote(attr, formNte(Nte0063, "attribute"));
@@ -341,7 +341,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     {
         if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC))
         {
-            SWAG_VERIFY(module->is(ModuleKind::Test), context->report({funcNode, toErr(Err0440)}));
+            SWAG_VERIFY(module->is(ModuleKind::Test), context->report({funcNode, toErr(Err0441)}));
         }
     }
 
@@ -357,8 +357,8 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
             if (!funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-                    return context->report({funcNode->returnType, formErr(Err0571, funcNode->getDisplayNameC())});
-                return context->report({funcNode->returnType, formErr(Err0572, funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
+                    return context->report({funcNode->returnType, formErr(Err0575, funcNode->getDisplayNameC())});
+                return context->report({funcNode->returnType, formErr(Err0576, funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -412,7 +412,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         }
 
         // Be sure 'impl' is justified
-        SWAG_VERIFY(implFor, context->report({funcNode->token.sourceFile, funcNode->implLoc, funcNode->implLoc, toErr(Err0659)}));
+        SWAG_VERIFY(implFor, context->report({funcNode->token.sourceFile, funcNode->implLoc, funcNode->implLoc, toErr(Err0664)}));
     }
 
     // Warnings
@@ -524,9 +524,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         auto       parameters = funcNode->parameters;
         const auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->isEnum(), context->report({parameters, formErr(Err0348, paramType->getDisplayNameC())}));
+        SWAG_VERIFY(paramType->isEnum(), context->report({parameters, formErr(Err0347, paramType->getDisplayNameC())}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, formErr(Err0348, paramType->getDisplayNameC())}));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, formErr(Err0347, paramType->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         YIELD();
         funcNode->parameters->addAstFlag(AST_NO_BYTECODE);
@@ -540,7 +540,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         const auto concrete = typeNode->typeInfo->getConcreteAlias();
         if (concrete->isVoid())
         {
-            Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, toErr(Err0361)};
+            Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, toErr(Err0360)};
             if (typeNode->typeInfo->isAlias())
                 err.addNote(Diagnostic::note(typeNode, Diagnostic::isType(concrete)));
             return context->report(err);
@@ -589,7 +589,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
             {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0221, funcNode->getDisplayNameC())};
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0222, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -597,7 +597,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
             if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
             {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0220, funcNode->getDisplayNameC())};
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0221, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -605,7 +605,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
             if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
             {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0219, funcNode->getDisplayNameC())};
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0220, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -613,7 +613,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
             if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0222, funcNode->getDisplayNameC())};
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0223, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -621,7 +621,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
             if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
             {
-                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0218, funcNode->getDisplayNameC())};
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0219, funcNode->getDisplayNameC())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -633,7 +633,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         funcNode->token.text != g_LangSpec->name_opAffect &&
         funcNode->token.text != g_LangSpec->name_opAffectLiteral)
     {
-        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0477, funcNode->token.c_str())};
+        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0479, funcNode->token.c_str())};
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
         err.addNote(attr, formNte(Nte0063, "attribute"));
         return context->report(err);
@@ -644,7 +644,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         funcNode->token.text != g_LangSpec->name_opAffectLiteral &&
         funcNode->token.text != g_LangSpec->name_opCast)
     {
-        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0479, funcNode->token.c_str())};
+        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0481, funcNode->token.c_str())};
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
         err.addNote(attr, formNte(Nte0063, "attribute"));
         context->report(err);
@@ -652,7 +652,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !funcNode->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
-        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0476, funcNode->token.c_str())};
+        Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0478, funcNode->token.c_str())};
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
         err.addNote(attr, formNte(Nte0063, "attribute"));
         return context->report(err);
@@ -669,7 +669,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             ok = true;
         if (!ok)
         {
-            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0475, funcNode->getDisplayNameC())};
+            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0477, funcNode->getDisplayNameC())};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
             err.addNote(attr, formNte(Nte0063, "attribute"));
             return context->report(err);
@@ -691,7 +691,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
-                Diagnostic err{funcNode->genericParameters, formErr(Err0681, funcNode->token.c_str())};
+                Diagnostic err{funcNode->genericParameters, formErr(Err0686, funcNode->token.c_str())};
                 const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 err.addNote(attr, formNte(Nte0063, "attribute"));
                 return context->report(err);
@@ -705,7 +705,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_GENERIC))
         {
-            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0679, funcNode->token.c_str())};
+            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0684, funcNode->token.c_str())};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
             err.addNote(attr, formNte(Nte0063, "attribute"));
             return context->report(err);
@@ -781,7 +781,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         !typeInfo->returnType->isArray() &&
         !typeInfo->returnType->isPointer())
     {
-        return context->report({typeNode->firstChild(), formErr(Err0360, typeInfo->returnType->getDisplayNameC())});
+        return context->report({typeNode->firstChild(), formErr(Err0359, typeInfo->returnType->getDisplayNameC())});
     }
 
     typeInfo->name.clear();
@@ -948,7 +948,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
         {
-            Diagnostic err{funcNode->returnType->firstChild(), toErr(Err0690)};
+            Diagnostic err{funcNode->returnType->firstChild(), toErr(Err0695)};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
             err.addNote(attr, formNte(Nte0063, "attribute"));
             return context->report(err);
@@ -957,7 +957,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_DISCARDABLE))
         {
-            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0566, funcNode->token.c_str())};
+            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0570, funcNode->token.c_str())};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
             err.addNote(attr, formNte(Nte0063, "attribute"));
             return context->report(err);
@@ -997,7 +997,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 
             if (other)
             {
-                const Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0649, funcNode->token.c_str())};
+                const Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0654, funcNode->token.c_str())};
                 return context->report(err, Diagnostic::hereIs(other));
             }
         }
@@ -1138,12 +1138,12 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
             YIELD();
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
             if (!typeStruct->isPlainOldData())
-                return context->report({c, formErr(Err0229, c->token.c_str())});
+                return context->report({c, formErr(Err0231, c->token.c_str())});
             continue;
         }
 
         const auto aKindName = Naming::aKindName(typeField);
-        return context->report({c, formErr(Err0228, c->token.c_str(), aKindName.c_str(), aKindName.c_str())});
+        return context->report({c, formErr(Err0230, c->token.c_str(), aKindName.c_str(), aKindName.c_str())});
     }
 
     // As this is the capture block resolved in the right context, we can now evaluate the corresponding closure
@@ -1204,7 +1204,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     const auto child = node->firstChild();
     node->typeInfo   = child->typeInfo;
 
-    SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, toErr(Err0582)}));
+    SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, toErr(Err0586)}));
 
     // Force const if necessary
     // func([.., ...]) must be const
@@ -1270,8 +1270,8 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     auto       node    = context->node;
     const auto fctDecl = node->hasOwnerInline() ? node->ownerInline()->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report({node, toErr(Err0462)}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->isNot(ScopeKind::Function), context->report({node, toErr(Err0462)}));
+    SWAG_VERIFY(fctDecl, context->report({node, toErr(Err0464)}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->isNot(ScopeKind::Function), context->report({node, toErr(Err0464)}));
 
     const auto fct     = castAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
@@ -1422,7 +1422,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         {
             if (!funcReturnType->isVoid())
             {
-                Diagnostic err{node, formErr(Err0569, funcReturnType->getDisplayNameC())};
+                Diagnostic err{node, formErr(Err0573, funcReturnType->getDisplayNameC())};
                 err.addNote(funcNode->returnTypeDeducedNode->firstChild(), toNte(Nte0074));
                 return context->report(err);
             }
@@ -1436,7 +1436,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         // We try to return something, but the previous return had nothing
         if (funcReturnType->isVoid() && !childType->isVoid())
         {
-            Diagnostic err{child, formErr(Err0616, childType->getDisplayNameC())};
+            Diagnostic err{child, formErr(Err0619, childType->getDisplayNameC())};
             err.addNote(funcNode->returnTypeDeducedNode, toNte(Nte0074));
             return context->report(err);
         }
@@ -1444,7 +1444,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         constexpr CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT;
         if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
         {
-            Diagnostic err{child, formErr(Err0615, funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
+            Diagnostic err{child, formErr(Err0620, funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
             err.addNote(funcNode->returnTypeDeducedNode->firstChild(), toNte(Nte0074));
             return context->report(err);
         }
@@ -1501,7 +1501,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
     if (node->children.empty())
     {
-        Diagnostic err{node, formErr(Err0570, funcNode->returnType->typeInfo->getDisplayNameC())};
+        Diagnostic err{node, formErr(Err0574, funcNode->returnType->typeInfo->getDisplayNameC())};
         err.addNote(funcNode->returnType->firstChild(), formNte(Nte0151, typeInfoFunc->returnType->getDisplayNameC()));
         return context->report(err);
     }
@@ -1528,7 +1528,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
                                    ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-                return context->report({child, formErr(Err0689, funcNode->getDisplayNameC())});
+                return context->report({child, formErr(Err0694, funcNode->getDisplayNameC())});
         }
     }
 
@@ -1538,9 +1538,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
     {
         Utf8 msg;
         if (Parser::isGeneratedName(funcNode->token.text))
-            msg = formErr(Err0692, concreteType->getDisplayNameC());
+            msg = formErr(Err0697, concreteType->getDisplayNameC());
         else
-            msg = formErr(Err0691, concreteType->getDisplayNameC(), funcNode->token.c_str());
+            msg = formErr(Err0696, concreteType->getDisplayNameC(), funcNode->token.c_str());
 
         Diagnostic err{child, msg};
 
@@ -1728,7 +1728,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
             cpt++;
             if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
             {
-                const Diagnostic err{identifier, identifier->token, formErr(Err0602, identifier->token.c_str(), g_CommandLine.limitInlineLevel)};
+                const Diagnostic err{identifier, identifier->token, formErr(Err0606, identifier->token.c_str(), g_CommandLine.limitInlineLevel)};
                 return context->report(err);
             }
         }
@@ -1968,7 +1968,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
                         {
                             if (alias.text == val)
                             {
-                                const Diagnostic err{id, alias, formErr(Err0737, alias.c_str())};
+                                const Diagnostic err{id, alias, formErr(Err0742, alias.c_str())};
                                 return context->report(err);
                             }
                         }
@@ -1978,7 +1978,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
                     {
                         if (alias.text == val)
                         {
-                            const Diagnostic err{id, alias, formErr(Err0737, alias.c_str())};
+                            const Diagnostic err{id, alias, formErr(Err0742, alias.c_str())};
                             return context->report(err);
                         }
                     }

@@ -529,7 +529,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     {
         if (rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
         {
-            Diagnostic err{rangeNode->expressionLow, formErr(Err0355, rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
+            Diagnostic err{rangeNode->expressionLow, formErr(Err0354, rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
             err.addNote(rangeNode->expressionUp, toNte(Nte0185));
             return context->report(err);
         }

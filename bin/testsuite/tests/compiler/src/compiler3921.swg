@@ -1,4 +1,4 @@
-#global testerror "Err0204"
+#global testerror "Err0205"
 #test
 {
     typealias X = *u16

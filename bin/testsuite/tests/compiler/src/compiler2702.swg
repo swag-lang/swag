@@ -1,4 +1,4 @@
-#global testerror "Err0447"
+#global testerror "Err0450"
 
 func doIt(fn: func())
 {

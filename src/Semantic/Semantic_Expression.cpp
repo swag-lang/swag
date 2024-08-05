@@ -413,7 +413,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node->expressionLow, formErr(Err0356, node->expressionLow->typeInfo->getDisplayNameC())};
+        Diagnostic err{node->expressionLow, formErr(Err0355, node->expressionLow->typeInfo->getDisplayNameC())};
         err.addNote(toNte(Nte0056));
         return context->report(err);
     }
@@ -424,7 +424,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const bool upUnSigned   = node->expressionUp->typeInfo->isNativeIntegerUnsigned();
     if ((downSigned && upUnSigned) || (downUnSigned && upSigned))
     {
-        Diagnostic err{node, node->token, toErr(Err0646)};
+        Diagnostic err{node, node->token, toErr(Err0653)};
         err.addNote(node->expressionLow, Diagnostic::isType(node->expressionLow));
         err.addNote(node->expressionUp, Diagnostic::isType(node->expressionUp));
         return context->report(err);

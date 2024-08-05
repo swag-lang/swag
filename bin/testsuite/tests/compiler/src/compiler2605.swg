@@ -1,4 +1,4 @@
-#global testerror "Err0683"
+#global testerror "Err0688"
 
 #[Swag.Mixin]
 func titi()

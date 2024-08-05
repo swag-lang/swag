@@ -1,4 +1,4 @@
-#global testerror "Err0534"
+#global testerror "Err0520"
 
 func(T) AA()
 {

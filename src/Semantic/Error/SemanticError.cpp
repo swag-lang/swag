@@ -108,7 +108,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     if (thisKind != otherKind)
         as = form("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic err{sourceFile, token, formErr(Err0619, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    Diagnostic err{sourceFile, token, formErr(Err0623, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0073));
     return context->report(err);
 }

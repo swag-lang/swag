@@ -1,2 +1,2 @@
-#global testerror "Err0186"
+#global testerror "Err0187"
 const A = #include 0

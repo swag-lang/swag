@@ -1,2 +1,2 @@
-#global testerror "Err0233";
+#global testerror "Err0235";
 #assert '1' * '2';

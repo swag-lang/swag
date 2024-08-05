@@ -32,7 +32,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         node->typeInfo = leftTypeInfo;
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic err{node, node->token, toErr(Err0352)};
+            Diagnostic err{node, node->token, toErr(Err0351)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             err.addNote(toNte(Nte0109));
             return context->report(err);
@@ -40,12 +40,12 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
-            Diagnostic err{node, node->token, toErr(Err0351)};
+            Diagnostic err{node, node->token, toErr(Err0350)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
 
-        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0353, rightTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0352, rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
         return true;
     }
@@ -55,7 +55,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     {
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic err{node, node->token, toErr(Err0352)};
+            Diagnostic err{node, node->token, toErr(Err0351)};
             err.addNote(right, Diagnostic::isType(rightTypeInfo));
             err.addNote(toNte(Nte0109));
             return context->report(err);
@@ -63,13 +63,13 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
-            Diagnostic err{node, node->token, toErr(Err0351)};
+            Diagnostic err{node, node->token, toErr(Err0350)};
             err.addNote(right, Diagnostic::isType(rightTypeInfo));
             return context->report(err);
         }
 
         node->typeInfo = rightTypeInfo;
-        SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, formErr(Err0353, leftTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, formErr(Err0352, leftTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, right, left, CAST_FLAG_TRY_COERCE));
         return true;
     }
@@ -227,13 +227,13 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic err{node, node->token, toErr(Err0352)};
+            Diagnostic err{node, node->token, toErr(Err0351)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             err.addNote(toNte(Nte0109));
             return context->report(err);
         }
 
-        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0353, rightTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0352, rightTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
         return true;
     }
@@ -1155,7 +1155,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic err{node, node->token, formErr(Err0382, leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0383, leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(left));
         return context->report(err);
     }
@@ -1233,7 +1233,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic err{node, node->token, formErr(Err0383, leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0384, leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(left));
         return context->report(err);
     }

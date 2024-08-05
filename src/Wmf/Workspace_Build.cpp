@@ -418,7 +418,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic err{prevNodeLocal, prevNodeLocal->token, formErr(Err0617, Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
+            Diagnostic err{prevNodeLocal, prevNodeLocal->token, formErr(Err0621, Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
             Report::report(err, notes);
             const auto sourceFile             = Report::getDiagFile(err);
             sourceFile->module->hasCycleError = true;

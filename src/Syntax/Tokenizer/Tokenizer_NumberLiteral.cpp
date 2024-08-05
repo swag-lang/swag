@@ -25,7 +25,7 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0603)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0607)));
         SWAG_VERIFY(rank != 64, error(tokenParse, toErr(Err0334)));
         tokenParse.literalValue.u64 <<= 1;
         rank++;
@@ -40,7 +40,7 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, toErr(Err0223));
+        return error(tokenParse, toErr(Err0224));
     }
 
     // Be sure we don't have 0x without nothing
@@ -83,7 +83,7 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0603)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0607)));
         SWAG_VERIFY(rank != 16, error(tokenParse, toErr(Err0335)));
         tokenParse.literalValue.u64 <<= 4;
         rank++;
@@ -104,7 +104,7 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
         tokenParse.token.id            = TokenId::Identifier;
-        return error(tokenParse, toErr(Err0303));
+        return error(tokenParse, toErr(Err0304));
     }
 
     // Be sure we don't have 0x without nothing
@@ -150,7 +150,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0603)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0607)));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
@@ -190,7 +190,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0603)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0607)));
         token.literalValue.u64 += val;
 
         c = peekChar(offset);
@@ -231,7 +231,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& tokenParse, uint32_t c)
         // Fraction part
         tokenFrac.token.startLocation = location;
         c                             = peekChar(offset);
-        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenFrac, toErr(Err0282)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenFrac, toErr(Err0283)));
         if (SWAG_IS_DIGIT(c))
         {
             eatChar(c, offset);
@@ -264,8 +264,8 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& tokenParse, uint32_t c)
         }
 
         tokenExponent.token.startLocation = location;
-        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenExponent, toErr(Err0281)));
-        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, toErr(Err0280)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenExponent, toErr(Err0282)));
+        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, toErr(Err0281)));
         eatChar(c, offset);
         SWAG_CHECK(doIntLiteral(tokenExponent, c));
         c = peekChar(offset);

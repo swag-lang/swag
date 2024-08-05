@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 //#assert true
 
-#global testerror "Err0539";
+#global testerror "Err0543";
 enum TOTO
 {
 	A = 0 B = 1

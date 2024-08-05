@@ -1,3 +1,3 @@
-#global testerror "Err0387"
+#global testerror "Err0388"
 
 attr toto(x: any...);

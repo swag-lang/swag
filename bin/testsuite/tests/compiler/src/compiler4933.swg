@@ -1,4 +1,4 @@
-#global testerror "Err0609"
+#global testerror "Err0613"
 #global export
 
 public const A = 0

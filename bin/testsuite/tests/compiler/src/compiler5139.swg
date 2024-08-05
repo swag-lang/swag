@@ -1,4 +1,4 @@
-#global testerror "Err0549"
+#global testerror "Err0553"
 
 struct(T) Point
 {

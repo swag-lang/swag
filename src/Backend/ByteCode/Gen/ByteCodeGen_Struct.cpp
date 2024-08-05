@@ -856,7 +856,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0724, typeStructVar->getDisplayNameC(), "opDrop")}));
+            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0729, typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
@@ -968,7 +968,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0724, typeStructVar->getDisplayNameC(), "opPostCopy")}));
+            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0729, typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
@@ -1079,7 +1079,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION),
-                        context->report({typeParam->declNode, formErr(Err0724, typeStructVar->getDisplayNameC(), "opPostMove")}));
+                        context->report({typeParam->declNode, formErr(Err0729, typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);

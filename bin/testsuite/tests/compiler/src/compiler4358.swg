@@ -1,4 +1,4 @@
-#global testerror "Err0665"
+#global testerror "Err0670"
 struct(T) Point
     where:call T == s32
 {

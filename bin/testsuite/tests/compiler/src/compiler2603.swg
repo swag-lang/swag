@@ -1,5 +1,5 @@
-#global testerror "Err0498"
-//#global testerror "Err0699"
+#global testerror "Err0500"
+//#global testerror "Err0704"
 
 #[Swag.Macro]
 func(ptr: bool) opVisitToto(x: string, stmt: code)

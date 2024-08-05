@@ -22,10 +22,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline()->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, formErr(Err0443, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0444, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, formErr(Err0442, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0443, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     return true;
 }
@@ -44,7 +44,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->lastChild();
-    return context->report({node, node->token, formErr(Err0488, node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
+    return context->report({node, node->token, formErr(Err0490, node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)
