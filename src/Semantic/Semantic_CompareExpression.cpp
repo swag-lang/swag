@@ -142,6 +142,22 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     if (leftTypeInfo->isStruct() != rightTypeInfo->isStruct() &&
         (leftTypeInfo->isStruct() || rightTypeInfo->isStruct()))
     {
+        if (leftTypeInfo->isTuple())
+        {
+            Diagnostic err{node, node->token, formErr(Err0746, rightTypeInfo->getDisplayNameC())};
+            err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
+            err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
+            return context->report(err);
+        }
+
+        if (rightTypeInfo->isTuple())
+        {
+            Diagnostic err{node, node->token, formErr(Err0746, leftTypeInfo->getDisplayNameC())};
+            err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
+            err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
+            return context->report(err);
+        }        
+
         node->typeInfo = g_TypeMgr->typeInfoBool;
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
         YIELD();

@@ -869,7 +869,7 @@ void initErrors()
     SWAG_ERROR(Err0743, "misplaced [[%s]]                                  $ can't combine [[%s]] with [[%s]]");
     SWAG_ERROR(Err0744, "misplaced [[%s]]                                  $ can't combine [[%s]] with another [[%s]]");
     SWAG_ERROR(Err0745, "invalid variable name                             $ expected another variable name after [[,]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0746, nullptr);
+    SWAG_ERROR(Err0746, "invalid tuple comparison                          $ a tuple can't be compared to the type [[%s]] $ a tuple can only be compared to another tuple");
     SWAG_ERROR(Err0747, nullptr);
     SWAG_ERROR(Err0748, nullptr);
     SWAG_ERROR(Err0749, nullptr);
