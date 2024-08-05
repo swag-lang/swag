@@ -666,7 +666,7 @@ void initErrors()
     SWAG_ERROR(Err0540, "missing enum flag value                           $ can't deduce the value of flag [[%s]] as the previous value isn't a power of two");
     SWAG_ERROR(Err0541, "missing enum name                                 $ expected the enum name before the start of the body [[{]]");
     SWAG_ERROR(Err0542, "missing enum name                                 $ expected the enum name before the start of the type definition [[:]]");
-    SWAG_ERROR(Err0543, "missing function parameters                       $ expected the function parameters between [[()]] before the start of the body [[{]] $ if you want to declare a function without parameters, consider adding [[()]] after the name");
+    SWAG_ERROR(Err0543, "missing function parameters                       $ expected the function parameters between [[()]] before [[{]] $ if you want to declare a function without parameters, consider adding [[()]] after the name");
     SWAG_ERROR(Err0544, "missing generic arguments                         $ can't instantiate %s because of missing generic arguments");
     SWAG_ERROR(Err0545, "missing generic arguments                         $ can't instantiate the generic function [[%s]] because of missing generic arguments");
     SWAG_ERROR(Err0546, "missing generic arguments                         $ can't instantiate the generic struct [[%s]] because of missing generic arguments");
