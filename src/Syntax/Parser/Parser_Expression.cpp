@@ -220,11 +220,13 @@ bool Parser::doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNo
     (*result)->addAstFlag(AST_EXPR_IN_PARENTS);
     FormatAst::inheritFormatAfter(this, *result, &tokenParse);
 
+    Utf8 msg;
     if (parent)
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, form("to end the expression after [[%s]]", parent->token.c_str())));
+        msg = form("to end the expression after [[%s]]", parent->token.c_str());
     else
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
+        msg = "to end the left expression";
 
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, msg));
     return true;
 }
 
