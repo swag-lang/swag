@@ -229,15 +229,11 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
             if (!logContext || logContext->canHighlight)
             {
                 if (logContext && !logContext->colorHighlight.empty())
-                {
                     m += logContext->colorHighlight;
-                    // m += colorToVTS(LogColor::Underline);
-                }
                 else if (curColor == colorToVTS(LogColor::White))
-                {
                     m += colorToVTS(LogColor::Gray);
-                    // m += colorToVTS(LogColor::Underline);
-                }
+                else if (curColor == colorToVTS(LogColor::Gray))
+                    m += colorToVTS(LogColor::Underline);
             }
 
             pz += 2;

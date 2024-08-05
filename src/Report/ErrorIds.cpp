@@ -653,11 +653,11 @@ void initErrors()
     SWAG_ERROR(Err0527, "missing [[while]] boolean expression              $ expected a boolean expression before [[%s]]");
     SWAG_ERROR(Err0528, "missing arguments                                 $ the %s should have arguments but none were provided");
     SWAG_ERROR(Err0529, "missing arguments                                 $ the [[#[Swag.Using]]] attribute should have at least one argument");
-    SWAG_ERROR(Err0530, "missing attribute                                 $ [[opVisit]] functions must have the [[#[Swag.Macro]]] attribute");
+    SWAG_ERROR(Err0530, "missing attribute                                 $ an [[opVisit]] function must be declared with the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0531, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0532, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
-    SWAG_ERROR(Err0533, "missing closing [[%s]]                            $ expected [[%s]] %s but none was found after");
-    SWAG_ERROR(Err0534, "missing closing [[%s]]                            $ expected symbol [[%s]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0533, "missing [[%s]]                                    $ expected [[%s]] %s but none was found after");
+    SWAG_ERROR(Err0534, "missing [[%s]]                                    $ expected [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0535, "missing constant type                             $ expected a type declaration with [[:]] or an assignment, got $$TKN$$ instead");
     SWAG_ERROR(Err0536, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0537, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
@@ -1080,7 +1080,7 @@ void initErrors()
     SWAG_ERROR(Nte0190, "this type is [[%s]]");
     SWAG_ERROR(Nte0191, "this value can only be converted to type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0192, "to begin a new block, consider moving [[{]] to a new line");
-    SWAG_ERROR(Nte0193, "to close this you need [[%s]]");
+    SWAG_ERROR(Nte0193, "to close this you need a [[%s]]");
     SWAG_ERROR(Nte0194, "to declare a global variable, syntax would be [[var %s: %s]]");
     SWAG_ERROR(Nte0195, "to declare a variable, the syntax is [[var name: type]] or [[var name = expression]]");
     SWAG_ERROR(Nte0196, "to dereference variable [[%s]] as in C, employ [[dref %s]]");
