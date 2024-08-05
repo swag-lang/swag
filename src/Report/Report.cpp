@@ -241,8 +241,8 @@ namespace
         }
 
         // Compute the space needed to display all line numbers
-        uint32_t lineCodeMaxDigits = 0;
-        uint32_t minBlanks         = UINT32_MAX;
+        int lineCodeMaxDigits = 0;
+        int minBlanks         = INT32_MAX;
 
         for (const auto note : notes)
         {

@@ -11,8 +11,8 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
-constexpr bool     BLANK_LINES       = true;
-constexpr uint32_t MAX_INDENT_BLANKS = 10;
+constexpr bool BLANK_LINES       = true;
+constexpr int  MAX_INDENT_BLANKS = 10;
 
 void Diagnostic::setupColors()
 {
@@ -167,7 +167,7 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
 
         nextIdx = textMsg.find(" [[", idx);
         if (nextIdx == -1)
-            replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(textMsg.length() - idx)};
+            replace += Utf8{textMsg.buffer + idx, textMsg.length() - idx};
         else
             replace += Utf8{textMsg.buffer + idx, static_cast<uint32_t>(nextIdx - idx)};
         idx = nextIdx;
@@ -299,7 +299,7 @@ void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
         numDigits++;
     }
 
-    uint32_t m = lineNo ? numDigits : 0;
+    int m = lineNo ? numDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
         log->write(" ");
     if (lineNo)
@@ -603,7 +603,7 @@ void Diagnostic::collectSourceCode()
                 prev.trim();
                 if (!prev.empty())
                 {
-                    const auto countPrevBlanks = lineCodePrev.countStartBlanks();
+                    const int countPrevBlanks = lineCodePrev.countStartBlanks();
                     if (countPrevBlanks > MAX_INDENT_BLANKS)
                         minBlanks = min(minBlanks, countPrevBlanks - MAX_INDENT_BLANKS);
                     break;

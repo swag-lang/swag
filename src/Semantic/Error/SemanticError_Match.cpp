@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
-#include "Main/CommandLine.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"

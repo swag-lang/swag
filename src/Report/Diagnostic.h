@@ -227,11 +227,11 @@ struct Diagnostic
     Vector<RangeHint>         ranges;
     Utf8                      lineCode;
     Utf8                      lineCodePrev;
-    uint32_t                  lineCodeNum       = 0;
-    uint32_t                  lineCodeNumPrev   = 0;
-    uint32_t                  lineCodeNumDigits = 0;
-    uint32_t                  lineCodeMaxDigits = 0;
-    uint32_t                  minBlanks         = 0;
+    int                       lineCodeNum       = 0;
+    int                       lineCodeNumPrev   = 0;
+    int                       lineCodeNumDigits = 0;
+    int                       lineCodeMaxDigits = 0;
+    int                       minBlanks         = 0;
     LogColor                  errorColor;
     LogColor                  errorColorHint;
     LogColor                  errorColorHintHighLight;

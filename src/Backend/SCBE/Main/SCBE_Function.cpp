@@ -4,7 +4,6 @@
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Report/Diagnostic.h"
-#include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "SCBE_Macros.h"
 #include "Semantic/Type/TypeManager.h"

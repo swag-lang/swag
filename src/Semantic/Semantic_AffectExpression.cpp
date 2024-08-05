@@ -8,7 +8,6 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool Semantic::resolveMove(SemanticContext* context)

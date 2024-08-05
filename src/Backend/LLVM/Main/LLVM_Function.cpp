@@ -5,7 +5,6 @@
 #include "Backend/LLVM/Main/LLVM.h"
 #include "Backend/LLVM/Main/LLVM_Macros.h"
 #include "Report/Diagnostic.h"
-#include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
