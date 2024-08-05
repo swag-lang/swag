@@ -70,13 +70,13 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         if (tokenParse.is(TokenId::EndOfFile))
         {
             auto diagMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
-            diagMsg.replace("$$$ ", "");
+            diagMsg.replace(" $$$", "");
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
         }
 
         auto diagMsg = formErr(Err0534, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
-        diagMsg.replace("$$$ ", "");
+        diagMsg.replace(" $$$", "");
         Diagnostic err{sourceFile, tokenParse, diagMsg};
         err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
         return context->report(err);

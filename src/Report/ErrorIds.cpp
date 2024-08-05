@@ -657,7 +657,7 @@ void initErrors()
     SWAG_ERROR(Err0531, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0532, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
     SWAG_ERROR(Err0533, "missing [[%s]]                                    $ expected [[%s]] %s but none was found after");
-    SWAG_ERROR(Err0534, "missing [[%s]]                                    $ expected [[%s]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0534, "missing [[%s]]                                    $ expected [[%s]] %s, got $$TKN$$ instead");
     SWAG_ERROR(Err0535, "missing constant type                             $ expected a type declaration with [[:]] or an assignment, got $$TKN$$ instead");
     SWAG_ERROR(Err0536, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0537, "missing dereference index                         $ an index is missing to dereference the array [[%s]] of type [[%s]] $ consider adding the index between brackets");
