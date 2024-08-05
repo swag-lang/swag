@@ -64,13 +64,10 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         return true;
     }
 
-    const Utf8 related = Naming::tokenToName(id);
-
-    SWAG_ASSERT(msg);
-    if (!msg || msg[0] == 0)
-        msg = "$$$";
-
     Utf8 errMsg;
+    SWAG_ASSERT(msg);
+    if (msg[0] == 0)
+        msg = "$$$";
     if (tokenParse.is(TokenId::EndOfFile))
         errMsg = formErr(Err0533, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
     else
@@ -85,7 +82,10 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         err.endLocation   = start;
     }
     else
+    {
+        const Utf8 related = Naming::tokenToName(id);
         err.addNote(sourceFile, start, start, formNte(Nte0193, related.c_str()));
+    }
 
     return context->report(err);
 }

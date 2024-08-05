@@ -1080,7 +1080,7 @@ void initErrors()
     SWAG_ERROR(Nte0190, "this type is [[%s]]");
     SWAG_ERROR(Nte0191, "this value can only be converted to type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0192, "to begin a new block, consider moving [[{]] to a new line");
-    SWAG_ERROR(Nte0193, "to close this you need a [[%s]]");
+    SWAG_ERROR(Nte0193, "this must be associated to a [[%s]]");
     SWAG_ERROR(Nte0194, "to declare a global variable, syntax would be [[var %s: %s]]");
     SWAG_ERROR(Nte0195, "to declare a variable, the syntax is [[var name: type]] or [[var name = expression]]");
     SWAG_ERROR(Nte0196, "to dereference variable [[%s]] as in C, employ [[dref %s]]");
