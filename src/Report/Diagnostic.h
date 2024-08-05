@@ -150,8 +150,7 @@ struct Diagnostic
         setup();
     }
 
-    static constexpr uint32_t MAX_INDENT_BLANKS       = 10;
-    static constexpr auto     ERROR_MESSAGE_SEPARATOR = "$";
+    static constexpr auto ERROR_MESSAGE_SEPARATOR = "$";
 
     static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Note}; }
@@ -228,11 +227,11 @@ struct Diagnostic
     Vector<RangeHint>         ranges;
     Utf8                      lineCode;
     Utf8                      lineCodePrev;
-    int                       lineCodeNum       = 0;
-    int                       lineCodeNumPrev   = 0;
-    int                       lineCodeNumDigits = 0;
-    int                       lineCodeMaxDigits = 0;
-    int                       minBlanks         = 0;
+    uint32_t                  lineCodeNum       = 0;
+    uint32_t                  lineCodeNumPrev   = 0;
+    uint32_t                  lineCodeNumDigits = 0;
+    uint32_t                  lineCodeMaxDigits = 0;
+    uint32_t                  minBlanks         = 0;
     LogColor                  errorColor;
     LogColor                  errorColorHint;
     LogColor                  errorColorHintHighLight;

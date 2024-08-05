@@ -11,7 +11,8 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
-static bool BLANK_LINES = true;
+constexpr bool     BLANK_LINES       = true;
+constexpr uint32_t MAX_INDENT_BLANKS = 10;
 
 void Diagnostic::setupColors()
 {
@@ -23,17 +24,15 @@ void Diagnostic::setupColors()
     warningColorHintHighLight = LogColor::DarkMagenta;
     noteColorHint             = LogColor::White;
     noteColorHintHighLight    = LogColor::Gray;
-
-    noteTitleColor = LogColor::DarkYellow;
-    noteColor      = LogColor::White;
-
-    marginBorderColor = LogColor::Cyan;
-    codeLineNoColor   = LogColor::Cyan;
-    stackColor        = LogColor::DarkYellow;
-    preRemarkColor    = LogColor::White;
-    remarkColor       = LogColor::Gray;
-    autoRemarkColor   = LogColor::Gray;
-    sourceFileColor   = LogColor::Cyan;
+    noteTitleColor            = LogColor::DarkYellow;
+    noteColor                 = LogColor::White;
+    marginBorderColor         = LogColor::Cyan;
+    codeLineNoColor           = LogColor::Cyan;
+    stackColor                = LogColor::DarkYellow;
+    preRemarkColor            = LogColor::White;
+    remarkColor               = LogColor::Gray;
+    autoRemarkColor           = LogColor::Gray;
+    sourceFileColor           = LogColor::Cyan;
 }
 
 void Diagnostic::setup()
@@ -300,7 +299,7 @@ void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
         numDigits++;
     }
 
-    int m = lineNo ? numDigits : 0;
+    uint32_t m = lineNo ? numDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
         log->write(" ");
     if (lineNo)
@@ -585,16 +584,10 @@ void Diagnostic::collectSourceCode()
     minBlanks   = 0;
 
     // Remove blanks on the left, but keep indentation
-    auto pz = lineCode.c_str();
+    const auto pz = lineCode.c_str();
     if (*pz && SWAG_IS_NOT_WIN_EOL(*pz) && SWAG_IS_NOT_EOL(*pz))
     {
-        uint32_t countBlanks = 0;
-        while (SWAG_IS_BLANK(*pz))
-        {
-            pz++;
-            countBlanks++;
-        }
-
+        const auto countBlanks = lineCode.countStartBlanks();
         if (countBlanks > MAX_INDENT_BLANKS)
             minBlanks = countBlanks - MAX_INDENT_BLANKS;
 
@@ -609,7 +602,12 @@ void Diagnostic::collectSourceCode()
                 auto prev = lineCodePrev;
                 prev.trim();
                 if (!prev.empty())
+                {
+                    const auto countPrevBlanks = lineCodePrev.countStartBlanks();
+                    if (countPrevBlanks > MAX_INDENT_BLANKS)
+                        minBlanks = min(minBlanks, countPrevBlanks - MAX_INDENT_BLANKS);
                     break;
+                }
             }
         }
     }

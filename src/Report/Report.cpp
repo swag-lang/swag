@@ -241,11 +241,20 @@ namespace
         }
 
         // Compute the space needed to display all line numbers
-        int lineCodeMaxDigits = 0;
+        uint32_t lineCodeMaxDigits = 0;
+        uint32_t minBlanks         = UINT32_MAX;
+
         for (const auto note : notes)
+        {
             lineCodeMaxDigits = max(lineCodeMaxDigits, note->lineCodeNumDigits);
+            minBlanks         = min(minBlanks, note->minBlanks);
+        }
+
         for (const auto note : notes)
+        {
             note->lineCodeMaxDigits = lineCodeMaxDigits;
+            note->minBlanks         = minBlanks;
+        }
     }
 
     void reportInternal(Log* log, const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)

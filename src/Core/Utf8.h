@@ -58,6 +58,7 @@ struct Utf8
     bool        startsWith(const char* pz) const;
     int         countOf(char c) const;
     int         toInt(uint32_t offset = 0) const;
+    uint32_t    countStartBlanks() const;
 
     void clear();
     void makeLocal();

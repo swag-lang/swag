@@ -1041,6 +1041,22 @@ int Utf8::toInt(uint32_t offset) const
     return strtol(buffer + offset, &end, 10);
 }
 
+uint32_t Utf8::countStartBlanks() const
+{
+    if (!length())
+        return 0;
+
+    auto     pz          = buffer;
+    uint32_t countBlanks = 0;
+    while (SWAG_IS_BLANK(*pz))
+    {
+        pz++;
+        countBlanks++;
+    }
+
+    return countBlanks;
+}
+
 Utf8 form(const char* format, va_list args)
 {
     va_list argsCopy;
