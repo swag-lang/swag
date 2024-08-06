@@ -355,17 +355,17 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     setContextualGenericTypeReplacement(context, oneTryMatch, toCheck);
 }
 
-Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replace)
+Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replaceTypes, const VectorMap<Utf8, ComputedValue*>& replaceValues)
 {
-    if (replace.empty())
+    if (replaceTypes.empty() && replaceValues.empty())
         return {};
 
     Vector<Utf8> result;
     Utf8         remark;
-    for (auto p : replace)
+
+    for (const auto& p : replaceTypes)
     {
-        // Can occur in case of constants (like string for example)
-        if (p.first == p.second.typeInfoReplace->getDisplayName())
+        if (p.first == p.second.typeInfoReplace->getDisplayName()) // Can occur in case of constants (like string for example)
             continue;
         if (Parser::isGeneratedName(p.first))
             continue;
@@ -373,6 +373,35 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
         Utf8 rem = "with ";
         rem += form("%s = %s", p.first.c_str(), p.second.typeInfoReplace->getDisplayNameC());
         rem.replace("struct ", "");
+
+        if (remark.empty() || remark.length() + rem.length() + 2 < g_CommandLine.errorRightColumn)
+        {
+            if (!remark.empty())
+                remark += ", ";
+            remark += rem;
+        }
+        else
+        {
+            result.push_back(remark);
+            remark.clear();
+        }
+    }
+
+    if (!remark.empty())
+        result.push_back(remark);
+    remark.clear();
+
+    for (const auto& p : replaceValues)
+    {
+        if (Parser::isGeneratedName(p.first))
+            continue;
+        if(!p.second)
+            continue;
+        if(!p.second->text.length() || p.second->text.empty())
+            continue;
+
+        Utf8 rem = "with ";
+        rem += form("%s = %s", p.first.c_str(), p.second->text.c_str());
 
         if (remark.empty() || remark.length() + rem.length() + 2 < g_CommandLine.errorRightColumn)
         {

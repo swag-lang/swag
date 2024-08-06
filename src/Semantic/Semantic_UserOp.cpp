@@ -606,8 +606,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     literal.token.sourceFile = left->token.sourceFile;
     literal.inheritTokenLocation(left->token);
     literal.inheritOwners(left);
-    literal.allocateExtension(ExtensionKind::Semantic);
-    literal.extSemantic()->computedValue = &cValue;
+    literal.allocateComputedValue(); // LEAK
 
     if (opConst || opType)
     {

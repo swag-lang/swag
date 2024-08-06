@@ -38,7 +38,7 @@ namespace
                 {
                     doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
                     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                    auto       remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                    auto       remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes, typeFunc->replaceValues);
                     if (!remarks.empty())
                         note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
                 }
@@ -50,21 +50,10 @@ namespace
                 {
                     doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
                     const auto typeStruct = castTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-                    auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                    auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes, typeStruct->replaceValues);
                     if (!remarks.empty())
                         note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
                 }
-
-                /*if (genCheckNode->typeInfo &&
-                    genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
-                    !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
-                {
-                    doneGenParamsRemarks.insert(genCheckNode->typeInfo);
-                    const auto typeStruct = castTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
-                    auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
-                    if (!remarks.empty())
-                        note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
-                }*/
             }
         }
     }

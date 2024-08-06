@@ -131,7 +131,10 @@ void ErrorParam::addNote(Diagnostic* note) const
 
     diagNote->push_back(note);
 
-    auto remarks = Generic::computeGenericParametersReplacement(bi->genericReplaceTypes);
-    if (!remarks.empty())
-        note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+    if(bi)
+    {
+        auto remarks = Generic::computeGenericParametersReplacement(bi->genericReplaceTypes, bi->genericReplaceValues);
+        if (!remarks.empty())
+            note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+    }
 }

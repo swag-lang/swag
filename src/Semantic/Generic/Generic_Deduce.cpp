@@ -305,6 +305,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
             context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
             context.badSignatureInfos.genericReplaceTypes       = context.genericReplaceTypes;
+            context.badSignatureInfos.genericReplaceValues      = context.genericReplaceValues;
             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             context.result = MatchResult::BadSignature;
         }

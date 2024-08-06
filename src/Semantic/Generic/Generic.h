@@ -4,6 +4,7 @@ struct AstFuncDecl;
 struct AstNode;
 struct AstVarDecl;
 struct CloneContext;
+struct ComputedValue;
 struct Job;
 struct OneMatch;
 struct OneTryMatch;
@@ -37,7 +38,7 @@ namespace Generic
     void         setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
     void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch);
     bool         instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct);
-    Vector<Utf8> computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replace);
+    Vector<Utf8> computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replaceTypes, const VectorMap<Utf8, ComputedValue*>& replaceValues);
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias);
