@@ -517,6 +517,8 @@ bool AstNode::isConstant1() const
     return false;
 }
 
+// Never returns null, but only 'kind' is always valid.
+// If 'kind' is AstNodeKind::Invalid, then the rest of the node is garbage.
 AstNode* AstNode::getParent(uint32_t level) const
 {
     SWAG_ASSERT(level);
@@ -526,7 +528,6 @@ AstNode* AstNode::getParent(uint32_t level) const
         if (!p->parent)
         {
             static AstNode n;
-            memset(&n, 0, sizeof(n));
             n.kind = AstNodeKind::Invalid;
             return &n;
         }
