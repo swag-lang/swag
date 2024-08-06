@@ -1,4 +1,4 @@
-#global testerror "Err0557"
+#global testerror "Err0546"
 #test
 {
     let a: s32

@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0334, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0640, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0335, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0641, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -139,7 +139,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // Reference to a static struct member
     if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, formErr(Err0587, node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic err{node, formErr(Err0576, node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
         if (node->childCount() <= 1 &&
@@ -163,7 +163,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err);
     }
 
-    Diagnostic err{node, formErr(Err0588, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
+    Diagnostic err{node, formErr(Err0577, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
 
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
@@ -243,19 +243,19 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
             {
                 typeInfo->addFlag(TYPEINFO_VARIADIC);
                 if (index != node->parameters->childCount() - 1)
-                    return context->report({param, toErr(Err0506)});
+                    return context->report({param, toErr(Err0495)});
             }
             else if (typeParam->typeInfo->isTypedVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
                 if (index != node->parameters->childCount() - 1)
-                    return context->report({param, toErr(Err0506)});
+                    return context->report({param, toErr(Err0495)});
             }
             else if (typeParam->typeInfo->isCVariadic())
             {
                 typeInfo->addFlag(TYPEINFO_C_VARIADIC);
                 if (index != node->parameters->childCount() - 1)
-                    return context->report({param, toErr(Err0506)});
+                    return context->report({param, toErr(Err0495)});
             }
 
             typeInfo->parameters.push_back(typeParam);
@@ -347,7 +347,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFlags.has(TYPEFLAG_IS_CODE))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0503, "code")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0492, "code")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -356,7 +356,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->hasFlag(TYPEINFO_C_VARIADIC))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0503, "cvarargs")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0492, "cvarargs")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -418,7 +418,7 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->isNot(SymbolKind::Struct) &&
                     symName->isNot(SymbolKind::Interface))
                 {
-                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0387, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0378, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->is(SymbolKind::Variable))
                     {
                         if (symOver->typeInfo->isPointer())
@@ -484,7 +484,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
         {
             const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, toErr(Err0496)}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, toErr(Err0485)}));
             ptrFlags.add(TYPEINFO_POINTER_MOVE_REF);
         }
 
@@ -582,7 +582,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0384, typeNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0375, typeNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 

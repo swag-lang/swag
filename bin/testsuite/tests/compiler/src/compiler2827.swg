@@ -1,4 +1,4 @@
-#global testerror "Err0477"
+#global testerror "Err0466"
 
 struct(T) Toto
 {

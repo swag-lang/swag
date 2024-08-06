@@ -32,7 +32,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0550, typeExpr->identifier->resolvedSymbolName()->name.c_str())};
+                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0539, typeExpr->identifier->resolvedSymbolName()->name.c_str())};
                             return context->report(err, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
                         }
 

@@ -374,7 +374,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
             if (tokenParse.is(TokenId::SymMinusMinus))
             {
                 tokenParse.token.id = TokenId::Invalid;
-                return error(tokenParse, formErr(Err0367, tokenParse.token.c_str()));
+                return error(tokenParse, formErr(Err0360, tokenParse.token.c_str()));
             }
 
             break;

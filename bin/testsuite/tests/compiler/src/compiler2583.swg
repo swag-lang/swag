@@ -1,2 +1,2 @@
-#global testerror "Err0665"
+#global testerror "Err0663"
 attr toto() throw;

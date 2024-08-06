@@ -850,7 +850,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                     oneParam->typeInfo->isTypedVariadic() ||
                     oneParam->typeInfo->isCVariadic())
                 {
-                    Diagnostic err{oneParam, toErr(Err0505)};
+                    Diagnostic err{oneParam, toErr(Err0494)};
                     err.hint = Diagnostic::isType(oneParam);
                     return context->report(err);
                 }
@@ -878,7 +878,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             const auto firstNode = symbol->nodes.front();
-            Diagnostic err{genericParameters, formErr(Err0680, Naming::aKindName(symbol->kind).c_str())};
+            Diagnostic err{genericParameters, formErr(Err0678, Naming::aKindName(symbol->kind).c_str())};
             err.addNote(node, node->token, formNte(Nte0134, node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
@@ -1054,7 +1054,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     const auto identifierRef = identifier->identifierRef();
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.is(context->sourceFile->scopeFile->name))
     {
-        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0351)}));
+        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0344)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }

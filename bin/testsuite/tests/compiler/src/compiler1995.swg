@@ -1,5 +1,5 @@
 
-#global testerror "Err0712"
+#global testerror "Err0710"
 
 struct ConvertFormatInt
 {

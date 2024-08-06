@@ -98,7 +98,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
                 filePath = filePath1;
             if (!std::filesystem::exists(filePath, err))
             {
-                Report::report({n->token.sourceFile, n->token, formErr(Err0706, n->token.c_str())});
+                Report::report({n->token.sourceFile, n->token, formErr(Err0704, n->token.c_str())});
                 return false;
             }
         }

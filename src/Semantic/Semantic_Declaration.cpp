@@ -17,7 +17,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0463, Naming::kindName(node->ownerScope->kind).c_str())}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0452, Naming::kindName(node->ownerScope->kind).c_str())}));
 
     const CollectedScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? COLLECTED_SCOPE_STRUCT_USING : 0;
 
@@ -34,7 +34,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
         const auto typePointer = castTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         if (!typePointer->pointedType->isInterface())
         {
-            SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0462, typePointer->pointedType->getDisplayNameC())}));
+            SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0451, typePointer->pointedType->getDisplayNameC())}));
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             regNode->addAlternativeScope(typeStruct->scope, altFlags);
             regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
@@ -42,7 +42,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     }
     else
     {
-        return context->report({node, formErr(Err0461, typeInfoVar->getDisplayNameC())});
+        return context->report({node, formErr(Err0450, typeInfoVar->getDisplayNameC())});
     }
 
     return true;
@@ -154,7 +154,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
                 break;
             }
             default:
-                return context->report({node, formErr(Err0460, typeResolved->getDisplayNameC())});
+                return context->report({node, formErr(Err0449, typeResolved->getDisplayNameC())});
         }
 
         node->parent->addAlternativeScope(scope, COLLECTED_SCOPE_USING);

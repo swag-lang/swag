@@ -1,4 +1,4 @@
-#global testerror "Err0529"
+#global testerror "Err0518"
 struct AA
 {
     x: s32 = 555

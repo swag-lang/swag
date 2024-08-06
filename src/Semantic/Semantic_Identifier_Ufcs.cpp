@@ -87,7 +87,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                Diagnostic err{node, formErr(Err0534, Naming::kindName(overload).c_str())};
+                Diagnostic err{node, formErr(Err0523, Naming::kindName(overload).c_str())};
                 err.addNote(Diagnostic::hereIs(overload));
                 return context->report(err);
             }

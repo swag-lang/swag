@@ -1,4 +1,4 @@
-#global testerror "Err0496"
+#global testerror "Err0485"
 using Swag
 
 //#[Swag.PrintBc]

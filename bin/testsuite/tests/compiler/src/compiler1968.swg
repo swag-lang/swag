@@ -1,5 +1,5 @@
 
-#global testerror "Err0615"
+#global testerror "Err0604"
 
 func __tptp()
 {

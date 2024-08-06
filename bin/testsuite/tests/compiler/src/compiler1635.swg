@@ -1,4 +1,4 @@
-#global testerror "Err0685"
+#global testerror "Err0683"
 
 readonly struct A
 {

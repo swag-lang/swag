@@ -144,7 +144,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     {
         if (leftTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0371, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0364, rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
             err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
             return context->report(err);
@@ -152,7 +152,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         if (rightTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0371, leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0364, leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
             err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
             return context->report(err);
@@ -516,14 +516,14 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0339, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0642, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
 
         if (leftTypeInfo->isAny())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0339, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0642, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, toNte(Nte0035));
             return context->report(err);
         }

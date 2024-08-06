@@ -149,7 +149,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
                 SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c8, msg));
                 const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
                 if (cw > Utf8::MAX_ENCODED_UNICODE)
-                    return context->report({node->token.sourceFile, loc, formErr(Err0392, cw)});
+                    return context->report({node->token.sourceFile, loc, formErr(Err0383, cw)});
                 result.append(cw);
                 loc.column += 8;
                 continue;
@@ -220,13 +220,13 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
                     case NativeTypeKind::U8:
                         if (uni[0] > UINT8_MAX)
-                            return formErr(Err0604, uni[0]);
+                            return formErr(Err0593, uni[0]);
                         computedValue.reg.u8 = static_cast<uint8_t>(uni[0]);
                         break;
 
                     case NativeTypeKind::U16:
                         if (uni[0] > UINT16_MAX)
-                            return formErr(Err0603, uni[0]);
+                            return formErr(Err0592, uni[0]);
                         computedValue.reg.u16 = static_cast<uint16_t>(uni[0]);
                         break;
 
@@ -270,37 +270,37 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             {
                 case NativeTypeKind::U8:
                     if (computedValue.reg.u64 > UINT8_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u8"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u8"));
                     break;
                 case NativeTypeKind::U16:
                     if (computedValue.reg.u64 > UINT16_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u16"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u16"));
                     break;
                 case NativeTypeKind::U32:
                     if (computedValue.reg.u64 > UINT32_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u32"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u32"));
                     break;
                 case NativeTypeKind::U64:
                     break;
 
                 case NativeTypeKind::S8:
                     if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                        return formErr(Err0412, computedValue.reg.s64, "s8");
+                        return formErr(Err0401, computedValue.reg.s64, "s8");
                     break;
                 case NativeTypeKind::S16:
                     if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                        return formErr(Err0412, computedValue.reg.s64, "s16");
+                        return formErr(Err0401, computedValue.reg.s64, "s16");
                     break;
                 case NativeTypeKind::S32:
                     if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                        return formErr(Err0412, computedValue.reg.s64, "s32");
+                        return formErr(Err0401, computedValue.reg.s64, "s32");
                     break;
                 case NativeTypeKind::S64:
                     break;
 
                 case NativeTypeKind::Rune:
                     if (computedValue.reg.u64 > UINT32_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "rune"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "rune"));
                     break;
 
                 case NativeTypeKind::F32:
@@ -323,39 +323,39 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             {
                 case NativeTypeKind::U8:
                     if (computedValue.reg.u64 > UINT8_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u8"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u8"));
                     break;
                 case NativeTypeKind::U16:
                     if (computedValue.reg.u64 > UINT16_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u16"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u16"));
                     break;
                 case NativeTypeKind::U32:
                     if (computedValue.reg.u64 > UINT32_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "u32"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "u32"));
                     break;
                 case NativeTypeKind::U64:
                     break;
 
                 case NativeTypeKind::S8:
                     if (computedValue.reg.u64 > UINT8_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "s8"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "s8"));
                     break;
                 case NativeTypeKind::S16:
                     if (computedValue.reg.u64 > UINT16_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "s16"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "s16"));
                     break;
                 case NativeTypeKind::S32:
                     if (computedValue.reg.u64 > UINT32_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "s32"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "s32"));
                     break;
                 case NativeTypeKind::S64:
                     if (computedValue.reg.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
-                        return form(formErr(Err0412, computedValue.reg.u64, "s64"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "s64"));
                     break;
 
                 case NativeTypeKind::Rune:
                     if (computedValue.reg.u64 > UINT32_MAX)
-                        return form(formErr(Err0412, computedValue.reg.u64, "rune"));
+                        return form(formErr(Err0401, computedValue.reg.u64, "rune"));
                     break;
 
                 default:

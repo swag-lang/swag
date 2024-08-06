@@ -1,4 +1,4 @@
-#global testerror "Err0643"
+#global testerror "Err0630"
 #test
 {
     switch(5)

@@ -1,5 +1,5 @@
 
-#global testerror "Err0418"
+#global testerror "Err0407"
 
 using A
 namespace A

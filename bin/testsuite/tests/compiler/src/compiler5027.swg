@@ -1,4 +1,4 @@
-#global testerror "Err0605"
+#global testerror "Err0594"
 enum A: u16
 {
 	Red = 0;

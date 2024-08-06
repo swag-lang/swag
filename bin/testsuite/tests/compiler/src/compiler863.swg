@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0388"
+#global testerror "Err0379"
 #test
 {
 	//var a: (x: s32)->s32 = { return x; }

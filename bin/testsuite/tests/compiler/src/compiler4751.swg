@@ -1,4 +1,4 @@
-#global testerror "Err0413"
+#global testerror "Err0402"
 struct Driver {}
 var g_Driver: Driver
 

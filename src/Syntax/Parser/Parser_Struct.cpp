@@ -44,7 +44,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         if (scopeKind == ScopeKind::Enum)
         {
-            Diagnostic err{implNode, tokenParse.token, toErr(Err0660)};
+            Diagnostic err{implNode, tokenParse.token, toErr(Err0658)};
             err.addNote(kindLoc.token, toNte(Nte0178));
             return context->report(err);
         }
@@ -60,7 +60,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         implInterface                             = true;
 
         const auto last = castAst<AstIdentifier>(identifierStruct->lastChild(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0679)}));
+        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0677)}));
     }
     else
     {
@@ -236,8 +236,8 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0578)));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0363)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0567)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0356)));
     structNode->inheritTokenName(tokenParse.token);
     structNode->tokenName = tokenParse.token;
     SWAG_CHECK(checkIsValidUserName(structNode, &tokenParse.token));
@@ -264,7 +264,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0623, "struct", structNode->token.c_str(), asA.c_str())};
+            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0612, "struct", structNode->token.c_str(), asA.c_str())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0076));
             return context->report(err);
         }
@@ -328,7 +328,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
         SWAG_CHECK(doCompilerWhere(structNode, &structNode->whereExpression));
-        SWAG_VERIFY(structNode->whereExpression->isNot(AstNodeKind::CompilerWhereCall), error(structNode->whereExpression, toErr(Err0667)));
+        SWAG_VERIFY(structNode->whereExpression->isNot(AstNodeKind::CompilerWhereCall), error(structNode->whereExpression, toErr(Err0665)));
     }
 
     // Content of struct
@@ -400,7 +400,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
         funcNode = castAst<AstFuncDecl>(resultNode, AstNodeKind::FuncDecl);
     }
 
-    SWAG_VERIFY(!funcNode->genericParameters, error(funcNode->genericParameters, toErr(Err0682)));
+    SWAG_VERIFY(!funcNode->genericParameters, error(funcNode->genericParameters, toErr(Err0680)));
 
     ParserPushFreezeFormat ff{this};
     ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
@@ -528,7 +528,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         {
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   savedToken = tokenParse;
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0464)}));
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0453)}));
             SWAG_CHECK(eatToken());
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
             structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
@@ -554,13 +554,13 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         case TokenId::KwdVar:
         {
-            const Diagnostic err{parent, tokenParse.token, toErr(Err0666)};
+            const Diagnostic err{parent, tokenParse.token, toErr(Err0664)};
             return context->report(err);
         }
 
         case TokenId::KwdMethod:
         case TokenId::KwdFunc:
-            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse, toErr(Err0494)));
+            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(tokenParse, toErr(Err0483)));
             SWAG_CHECK(doInterfaceMtdDecl(parent, result));
             break;
 

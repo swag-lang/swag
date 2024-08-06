@@ -344,7 +344,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     const auto job        = context->baseJob;
     auto       expression = context->node->lastChild();
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0618, expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0607, expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -443,7 +443,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->hasOwnerInline() || node->ownerInline()->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline()->hasAttribute(ATTRIBUTE_MACRO))
-        return context->report({node, toErr(Err0431)});
+        return context->report({node, toErr(Err0420)});
 
     return true;
 }
@@ -733,7 +733,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0706, filename.c_str())});
+                    return context->report({back, formErr(Err0704, filename.c_str())});
             }
         }
 
@@ -947,12 +947,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             return true;
 
         case TokenId::CompilerCallerLocation:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0489)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0478)}));
             node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
             return true;
 
         case TokenId::CompilerCallerFunction:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0488)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0477)}));
             node->typeInfo = g_TypeMgr->typeInfoString;
             return true;
 

@@ -1,4 +1,4 @@
-#global testerror "Err0559"
+#global testerror "Err0548"
 
 enum A : string
 {

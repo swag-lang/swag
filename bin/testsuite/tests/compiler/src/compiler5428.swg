@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0611"
+//#global testerror "Err0600"
 
 func(T) max(a, b: T, c: string)
 {

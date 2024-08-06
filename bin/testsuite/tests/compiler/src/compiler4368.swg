@@ -1,4 +1,4 @@
-#global testerror "Err0388"
+#global testerror "Err0379"
 func(N = 6) add()
 {
 }

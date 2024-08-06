@@ -1,4 +1,4 @@
-#global testerror "Err0611"
+#global testerror "Err0600"
 
 using Core
 

@@ -1,4 +1,4 @@
-#global testerror "Err0370"
+#global testerror "Err0363"
 using Swag
 
 [toto]

@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0672";
+#global testerror "Err0670";
 namespace A
 {
 	namespace B

@@ -103,7 +103,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const uint32_t maxCount = typeStruct->fields.size();
         if (countParams > maxCount)
         {
-            Diagnostic err{fromNode->children[maxCount], formErr(Err0633, maxCount, countParams)};
+            Diagnostic err{fromNode->children[maxCount], formErr(Err0622, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
             return context->report(err);
@@ -111,7 +111,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
         if (countParams < maxCount)
         {
-            Diagnostic err{fromNode->lastChild(), formErr(Err0594, maxCount, countParams)};
+            Diagnostic err{fromNode->lastChild(), formErr(Err0583, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
             return context->report(err);
@@ -199,14 +199,14 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto destStruct  = castAst<AstStruct>(toType->declNode, AstNodeKind::StructDecl);
     if (countParams > maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0633, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0622, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
         return context->report(err);
     }
     if (countParams < maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0594, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0583, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
         return context->report(err);
@@ -445,7 +445,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, formErr(Err0362, identifier->typeInfo->name.c_str())});
+        return context->report({callP, formErr(Err0355, identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->is(AstNodeKind::ExpressionList))

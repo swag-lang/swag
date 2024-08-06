@@ -1,4 +1,4 @@
-#global testerror "Err0643"
+#global testerror "Err0630"
 #test
 {
     const PowerOfTwo: [4] f32 = #run

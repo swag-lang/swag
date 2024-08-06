@@ -43,8 +43,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0672), toNte(Nte0023)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0665), toNte(Nte0023)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0670), toNte(Nte0023)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0663), toNte(Nte0023)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////
@@ -80,7 +80,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             if (tokenParse.isNot(TokenId::SymRightSquare))
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0537)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0526)));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0216)));
             }
         }

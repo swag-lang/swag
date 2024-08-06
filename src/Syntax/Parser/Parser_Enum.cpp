@@ -17,8 +17,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     *result                                   = enumNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0546)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0545)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0535)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0534)));
     SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0257)));
     enumNode->inheritTokenName(tokenParse.token);
     enumNode->tokenName = tokenParse.token;
@@ -41,7 +41,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0623, "enum", enumNode->token.c_str(), asA.c_str())};
+            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0612, "enum", enumNode->token.c_str(), asA.c_str())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0076));
             return context->report(err);
         }
