@@ -343,8 +343,8 @@ void initErrors()
     SWAG_ERROR(Err0211, "invalid assign                                    $ assignments are not allowed for unnamed parameters");
     SWAG_ERROR(Err0212, "invalid assign                                    $ can't assign because the left expression isn't a value");
     SWAG_ERROR(Err0213, "invalid assign                                    $ the affectation to the tuple is not possible because the right expression is not compatible");
-    SWAG_ERROR(Err0214, "invalid attribute                                 $ [[%s]] is not an attribute but is %s");
-    SWAG_ERROR(Err0215, "invalid attribute                                 $ expected an attribute, but [[%s]] is %s");
+    SWAG_ERROR(Err0214, "invalid attribute                                 $ expected an attribute, but [[%s]] is %s");
+    SWAG_ERROR(Err0215, nullptr);
     SWAG_ERROR(Err0216, "invalid attribute name                            $ expected an attribute name, got $$TKN$$ instead");
     SWAG_ERROR(Err0217, "invalid attribute usage                           $ expected [[,]] for a new attribute name or [[]]] to end the list, got $$TKN$$ instead");
     SWAG_ERROR(Err0218, "invalid binary number format                      $ binary literals should only contain [[0]] or [[1]], got $$TKN$$ instead");
