@@ -300,7 +300,7 @@ void initErrors()
     SWAG_ERROR(Err0174, "invalid attribute usage                           $ expected [[,]] for a new attribute name or [[]]] to end the list, got $$TKN$$ instead");
     SWAG_ERROR(Err0175, "invalid bit-cast                                  $ bit-cast from type [[%s]] is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0176, "invalid bit-cast                                  $ bit-cast to a larger type is not allowed ([[%s]] to [[%s]])");
-    SWAG_ERROR(Err0177, "invalid bit-cast                                  $ bit-cast to type [[%s]] is not allowed $ expected integer, rune, or float");
+    SWAG_ERROR(Err0177, "invalid bit-cast                                  $ bit-cast to the type [[%s]] is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err0178, "invalid block start                               $ an [[{]] (start of a block) is not allowed after [[discard try/assume/catch]]");
     SWAG_ERROR(Err0179, "invalid call                                      $ unexpected call arguments after the variable name [[%s]]");
     SWAG_ERROR(Err0180, "invalid call function                             $ [[%s]] has call parameters but is [[%s]], not a function");
@@ -311,7 +311,7 @@ void initErrors()
     SWAG_ERROR(Err0185, "invalid capture                                   $ can't capture [[%s]] because it's %s $ capturing %s type is not supported");
     SWAG_ERROR(Err0186, "invalid capture                                   $ can't capture [[%s]] because it's not a plain old data struct $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]] or [[opPostMove]]");
     SWAG_ERROR(Err0187, "invalid character                                 $ the character [[%s]] is not recognized in this context");
-    SWAG_ERROR(Err0188, "invalid character literal                         $ can't convert a character literal to type [[%s]]");
+    SWAG_ERROR(Err0188, "invalid character literal                         $ can't convert a character literal to the type [[%s]]");
     SWAG_ERROR(Err0189, "invalid character literal                         $ the character literal [[%s]] seems to be a string and not a character");
     SWAG_ERROR(Err0190, "invalid character syntax                          $ characters should be delimited with back-ticks and not quotes $ consider using the syntax [[`%s`]] instead");
     SWAG_ERROR(Err0191, "invalid compiler instruction                      $ [[%s]] is not a valid compiler instruction starting with the symbol [['#']]");
@@ -452,7 +452,7 @@ void initErrors()
     SWAG_ERROR(Err0326, "invalid type                                      $ the type [[%s]] does not accept a [[const]] version");
     SWAG_ERROR(Err0327, "invalid type                                      $ the type is generic and can't be evaluated in this context");
     SWAG_ERROR(Err0328, "invalid type                                      $ unexpected first parameter type for the special function [[%s]] ([[%s]] expected, [[%s]] provided)");
-    SWAG_ERROR(Err0329, "invalid type [[@cvaarg]]                          $ a variadic argument of type [[%s]] has been promoted to type [[%s]] at the call site");
+    SWAG_ERROR(Err0329, "invalid type [[@cvaarg]]                          $ a variadic argument of type [[%s]] has been promoted to the type [[%s]] at the call site");
     SWAG_ERROR(Err0330, "invalid type [[orelse]]                           $ the [[orelse]] operator does not accept a [[struct]] as an argument");
     SWAG_ERROR(Err0331, "invalid type [[orelse]]                           $ the [[orelse]] operator does not accept the type [[%s]] as an argument");
     SWAG_ERROR(Err0332, "invalid type [[switch]]                           $ [[switch]] does not accept an expression of type [[%s]]");
@@ -686,7 +686,7 @@ void initErrors()
     SWAG_ERROR(Err0560, "out of range character literal                    $ can't convert the character literal [[0x%x]] to [[u8]], this is out of range");
     SWAG_ERROR(Err0561, "out of range compiler limit                       $ the size of the %s is too big (maximum size is [[0x%I64x]] bytes)");
     SWAG_ERROR(Err0562, "out of range compiler limit                       $ the size of the data segment [[%s]] is too big (maximum size is [[0x%I64x]] bytes)");
-    SWAG_ERROR(Err0563, "out of range enum value                           $ the enum value [[%s]] exceeds the valid range of type [[%s]]");
+    SWAG_ERROR(Err0563, "out of range enum value                           $ the enum value [[%s]] exceeds the valid range of the type [[%s]]");
     SWAG_ERROR(Err0564, "out of range index                                $ the given index [[%I64u]] exceeds the maximum value [[%I64u]]");
     SWAG_ERROR(Err0565, "out of range inline level                         $ can't expand [[%s]] because the limit defined with [[--limit-inline:%d]] has been reached");
     SWAG_ERROR(Err0566, "out of range number                               $ this literal number exceeds 64 bits and is out of allowable range");
@@ -717,13 +717,13 @@ void initErrors()
     SWAG_ERROR(Err0591, "too many initializers                             $ expected [[%d]] values to initialize [[%s]], got [[%d]] instead");
     SWAG_ERROR(Err0592, "too many initializers                             $ expected [[%d]] values to initialize the array, got [[%d]] instead");
     SWAG_ERROR(Err0593, "too many initializers                             $ expected [[%d]] values to initialize the tuple, got [[%d]] instead");
-    SWAG_ERROR(Err0594, "too many initializers                             $ too many initializers for type [[%s]]");
+    SWAG_ERROR(Err0594, "too many initializers                             $ too many initializers for the type [[%s]]");
     SWAG_ERROR(Err0595, "too many parameters                               $ too many parameters for [[%s]] ([[%d]] expected, [[%d]] provided)");
     SWAG_ERROR(Err0596, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
     SWAG_ERROR(Err0597, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0598, "type mismatch                                     $ conversion from a closure type to a lambda type is not allowed");
     SWAG_ERROR(Err0599, "type mismatch                                     $ conversion from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
-    SWAG_ERROR(Err0600, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
+    SWAG_ERROR(Err0600, "type mismatch                                     $ conversion from the type [[%s]] to the type [[%s]] is not allowed");
     SWAG_ERROR(Err0601, "type mismatch                                     $ expected a return of type [[%s]] for the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0602, "type mismatch                                     $ expected type [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0603, "type mismatch                                     $ the [[%s]] assignment requires an expression of type [[%s]], got type [[%s]] instead");
@@ -1001,7 +1001,7 @@ void initErrors()
     SWAG_ERROR(Nte0110, "pointer arithmetic is not valid for pointers declared with [['*']] (only if declared with [['^']])");
     SWAG_ERROR(Nte0111, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte0112, "public structs should export all their special functions");
-    SWAG_ERROR(Nte0113, "should conform to type [[%s]]");
+    SWAG_ERROR(Nte0113, "should conform to the type [[%s]]");
     SWAG_ERROR(Nte0114, "structs with an [[internal]] access should not export their special functions");
     SWAG_ERROR(Nte0115, "the % s [[%s]] has only been used as a scope to find function [[%s]]");
     SWAG_ERROR(Nte0116, "the %s [[%s]] is marked with [[throw]] and can raise errors you must deal with");
@@ -1083,7 +1083,7 @@ void initErrors()
     SWAG_ERROR(Nte0192, "this suffix forces the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0193, "this tuple has [[%d]] fields");
     SWAG_ERROR(Nte0194, "this type is [[%s]]");
-    SWAG_ERROR(Nte0195, "this value can only be converted to type [[%s]] with a dynamic call to [[opAffect]]");
+    SWAG_ERROR(Nte0195, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0196, "to begin a new block, consider moving [[{]] to a new line");
     SWAG_ERROR(Nte0197, "to declare a global variable, syntax would be [[var %s: %s]]");
     SWAG_ERROR(Nte0198, "to declare a variable, the syntax is [[var name: type]] or [[var name = expression]]");
