@@ -795,7 +795,7 @@ void initErrors()
     SWAG_ERROR(Err0665, "unexpected [[var]] in struct                      $ [[var]] is unnecessary in struct variable declarations $ struct variables should be declared as [[fieldName: Type]] without [[var]]");
     SWAG_ERROR(Err0666, "unexpected [[where:call]] for struct              $ a [[where:call]] constraint is not allowed for structs, but is only valid for functions $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0667, "unexpected [[where]]                              $ a [[where]] constraint is not allowed on special function [[%s]] $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
-    SWAG_ERROR(Err0668, "unexpected affectation                            $ unexpected usage of the assignment operator [[=]] inside an expression $ if you are trying to compare values, you should use [['==']] instead");
+    SWAG_ERROR(Err0668, "unexpected affectation                            $ unexpected usage of the assignment operator [['=']] inside an expression $ if you are trying to compare values, you should use [['==']] instead");
     SWAG_ERROR(Err0669, "unexpected aliased names                          $ unexpected variable aliases when calling [[%s]] because it's not a macro or a mixin");
     SWAG_ERROR(Err0670, "unexpected attribute return type                  $ an attribute can't have a return type starting with [[->]]");
     SWAG_ERROR(Err0671, "unexpected comparison                             $ expected an affectation with [[=]] but found the comparison operator [['==']] instead");

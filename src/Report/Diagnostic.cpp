@@ -158,6 +158,12 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                     replace += "']]";
                 }
             }
+            else if(isSymbol && (inside[0] != '\'' || inside.back() != '\''))
+            {
+                replace += " [[\'";
+                replace += inside;
+                replace += "\']]";            
+            }
             else
             {
                 replace += " [[";
