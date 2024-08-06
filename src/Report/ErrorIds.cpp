@@ -157,7 +157,6 @@ void initErrors()
     SWAG_ERROR(Err0020, "ambiguous resolution                              $ ambiguous resolution of the special function [[%s]]");
     SWAG_ERROR(Err0021, "ambiguous syntax                                  $ ambiguity arises between initializing [[%s]] and starting a new block");
     SWAG_ERROR(Err0022, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
-    SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]");
     SWAG_ERROR(Err0043, "compile-time assertion failed                     $ the [[#assert]] expression was evaluated to false");
     SWAG_ERROR(Err0027, "compile-time evaluation required                  $ [[#include]] requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0028, "compile-time evaluation required                  $ can't transform the function return slice (a slice of type [[%s]]) to a compile-time value");
@@ -182,9 +181,6 @@ void initErrors()
     SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0051, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive");
     SWAG_ERROR(Err0056, "defer escape throw                                $ an error can't escape a [[defer]] or [[defer:err]] block");
-    SWAG_ERROR(Err0057, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
-    SWAG_ERROR(Err0058, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found at [[%s]]");
-    SWAG_ERROR(Err0059, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found");
     SWAG_ERROR(Err0060, "division by zero                                  $ this divider expression evaluates to 0");
     SWAG_ERROR(Err0066, "duplicated attribute                              $ the attribute [[%s]] is assigned twice, but [[Swag.AttrMulti]] is not present in the declaration");
     SWAG_ERROR(Err0061, "duplicated initialization                         $ you should not initialize a struct with both the type syntax and an assignment");
@@ -204,7 +200,6 @@ void initErrors()
     SWAG_ERROR(Err0110, "expected identifier                               $ expected a function call after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0083, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0084, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
-    SWAG_ERROR(Err0085, "failed semantic                                   $ can't resolve this");
     SWAG_ERROR(Err0086, "fetch error                                       $ can't fetch file [[%s]] for module dependency [[%s]]");
     SWAG_ERROR(Err0087, "file delete error                                 $ failed to delete file [[%s]]");
     SWAG_ERROR(Err0088, "file format error                                 $ the file format must be ASCII, UTF-8, or UTF-8-BOM");
@@ -217,6 +212,7 @@ void initErrors()
     SWAG_ERROR(Err0095, "file read error                                   $ failed to read source file [[%s]]");
     SWAG_ERROR(Err0096, "file write error                                  $ failed to write to file [[%s]]");
     SWAG_ERROR(Err0097, "folder error                                      $ failed to create directory [[%s]]");
+    SWAG_ERROR(Err0247, "folder error dependency                           $ the dependency module folder [[\"%s\"]] does not exist");
     SWAG_ERROR(Err0098, "forbidden [[@postcopy]]                           $ the intrinsic [[@postcopy]] can't be called on type [[%s]] because of [[#[Swag.NoCopy]]]");
     SWAG_ERROR(Err0099, "forbidden [[opDrop]]                              $ unexpected [[opDrop]] special function for [[%s]] because the struct is marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0100, "forbidden [[opPostCopy]]                          $ unexpected [[opPostCopy]] special function for struct [[%s]] because the struct is marked with [[#[Swag.NoCopy]]]");
@@ -335,8 +331,6 @@ void initErrors()
     SWAG_ERROR(Err0243, "invalid default parameters                        $ the default parameters of a lambda or a closure can't be redefined");
     SWAG_ERROR(Err0244, "invalid default value                             $ [[self]] can't have a default value");
     SWAG_ERROR(Err0245, "invalid default value                             $ lambda parameters can't have a default value");
-    SWAG_ERROR(Err0246, "invalid dependency                                $ can't resolve the module dependency [[%s]] because the [[location]] is empty");
-    SWAG_ERROR(Err0247, "invalid dependency                                $ the dependency module folder [[%s]] does not exist");
     SWAG_ERROR(Err0248, "invalid dereference                               $ can't dereference [[%s]] by index because the special function [[opIndex]] can't be found in [[%s]]");
     SWAG_ERROR(Err0249, "invalid dereference                               $ dereferencing the type [[%s]] is not valid");
     SWAG_ERROR(Err0250, "invalid dereference                               $ the type of [[%s]] is [[%s]], so it can't be dereferenced by index because pointer arithmetic is not allowed");
@@ -852,8 +846,14 @@ void initErrors()
     SWAG_ERROR(Err0720, "unknown visit specialization                      $ the visit specialization name [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0721, "unpack number mismatch                            $ trying to unpack [[%u]] variable(s) but the tuple has [[%u]] field(s)");
     SWAG_ERROR(Err0722, "unpack number mismatch                            $ trying to unpack [[%u]] variable(s) but the tuple has only [[%u]] field(s)");
+    SWAG_ERROR(Err0057, "unresolved dependency                             $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
+    SWAG_ERROR(Err0058, "unresolved dependency                             $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found at [[%s]]");
+    SWAG_ERROR(Err0059, "unresolved dependency                             $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found");
+    SWAG_ERROR(Err0246, "unresolved dependency                             $ can't resolve the module dependency [[%s]] because the [[location]] is empty");
+    SWAG_ERROR(Err0025, "unresolved foreign call                           $ failed to load the module [[%s]] while resolving the foreign function [[%s]]");
     SWAG_ERROR(Err0723, "unresolved identifier                             $ the identifier [[%s]] can't be solved");
     SWAG_ERROR(Err0724, "unresolved interface                              $ the interface can't be solved due to the generic type [[%s]]");
+    SWAG_ERROR(Err0085, "unresolved semantic                               $ can't resolve this");
     SWAG_ERROR(Err0725, "unsuitable struct for union                       $ the struct [[%s]] is not suitable for union because it contains an [[%s]] function");
     SWAG_ERROR(Err0726, "unsupported [[@nameof]] argument                  $ can't evaluate the [[@nameof]] argument");
     SWAG_ERROR(Err0727, "unsupported [[@stringof]] argument                $ can't evaluate the [[@stringof]] argument");
