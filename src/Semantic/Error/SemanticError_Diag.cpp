@@ -392,12 +392,12 @@ namespace
         }
         else if (destParamNode->hasAstFlag(AST_GENERATED) || Parser::isGeneratedName(destParamNode->token.c_str()))
         {
-            const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, toNte(Nte0068));
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, toNte(Nte0068));
             errorParam.addNote(note);
         }
         else
         {
-            const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, formNte(Nte0067, destParamNode->token.c_str()));
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, formNte(Nte0067, destParamNode->token.c_str()));
             errorParam.addNote(note);
         }
     }
@@ -440,6 +440,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     errorParam.oneTry    = &oneTry;
     errorParam.diagError = &diagError;
     errorParam.diagNote  = &diagNote;
+    errorParam.bi        = &oneTry.symMatchContext.badSignatureInfos;
 
     if (!oneTry.type && oneTry.overload)
         oneTry.type = oneTry.overload->typeInfo;

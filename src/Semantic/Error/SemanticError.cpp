@@ -117,3 +117,21 @@ bool SemanticError::error(SemanticContext* context, const Utf8& msg)
 {
     return context->report({context->node, msg});
 }
+
+void ErrorParam::addError(const Diagnostic* note) const
+{
+    SWAG_ASSERT(note);
+    diagError->push_back(note);
+}
+
+void ErrorParam::addNote(Diagnostic* note) const
+{
+    if (!note)
+        return;
+
+    diagNote->push_back(note);
+
+    auto remarks = Generic::computeGenericParametersReplacement(bi->genericReplaceTypes);
+    if (!remarks.empty())
+        note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+}

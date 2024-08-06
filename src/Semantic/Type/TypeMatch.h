@@ -43,16 +43,17 @@ enum class CastErrorType
 
 struct BadSignatureInfos
 {
-    Utf8           badGenMatch;
-    AstNode*       badNode                   = nullptr;
-    AstNode*       genMatchFromNode          = nullptr;
-    TypeInfo*      badSignatureRequestedType = nullptr;
-    TypeInfo*      badSignatureGivenType     = nullptr;
-    TypeInfo*      castErrorToType           = nullptr;
-    TypeInfo*      castErrorFromType         = nullptr;
-    ComputedValue* badGenValue1              = nullptr;
-    ComputedValue* badGenValue2              = nullptr;
-    MatchResult    matchResult               = MatchResult::Ok;
+    Utf8                                badGenMatch;
+    AstNode*                            badNode                   = nullptr;
+    AstNode*                            genMatchFromNode          = nullptr;
+    TypeInfo*                           badSignatureRequestedType = nullptr;
+    TypeInfo*                           badSignatureGivenType     = nullptr;
+    TypeInfo*                           castErrorToType           = nullptr;
+    TypeInfo*                           castErrorFromType         = nullptr;
+    ComputedValue*                      badGenValue1              = nullptr;
+    ComputedValue*                      badGenValue2              = nullptr;
+    MatchResult                         matchResult               = MatchResult::Ok;
+    VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
 
     CastFlags     castErrorFlags;
     CastErrorType castErrorType            = CastErrorType::Zero;
@@ -63,6 +64,7 @@ struct BadSignatureInfos
     void clear()
     {
         badGenMatch.clear();
+        genericReplaceTypes.clear();
         badNode                   = nullptr;
         genMatchFromNode          = nullptr;
         badSignatureRequestedType = nullptr;

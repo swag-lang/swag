@@ -304,6 +304,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             context.badSignatureInfos.genMatchFromNode          = it->second.fromNode;
             context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
             context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
+            context.badSignatureInfos.genericReplaceTypes       = context.genericReplaceTypes;
             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             context.result = MatchResult::BadSignature;
         }
@@ -323,7 +324,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
         canReg = false;
     else if (wantedTypeInfo->isPointer())
         canReg = false;
-    else if(wantedTypeInfo->hasFlag(TYPEINFO_GENERIC_COUNT))
+    else if (wantedTypeInfo->hasFlag(TYPEINFO_GENERIC_COUNT))
         canReg = false;
     else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
         canReg = wantedTypeInfo->isSame(callTypeInfo, CAST_FLAG_CAST);

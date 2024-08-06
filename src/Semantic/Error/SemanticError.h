@@ -6,6 +6,7 @@ struct AstAttrDecl;
 struct AstTypeLambda;
 struct AstFuncDecl;
 struct AstFuncCallParam;
+struct BadSignatureInfos;
 struct CollectedScope;
 struct AstIdentifier;
 struct AstIdentifierRef;
@@ -42,28 +43,20 @@ struct ErrorParam
     Vector<const Diagnostic*>* diagError;
     Vector<const Diagnostic*>* diagNote;
 
-    AstNode*          errorNode             = nullptr;
-    AstFuncCallParam* failedParam           = nullptr;
-    uint32_t          badParamIdx           = 0;
-    AstFuncDecl*      destFuncDecl          = nullptr;
-    AstTypeLambda*    destLambdaDecl        = nullptr;
-    AstAttrDecl*      destAttrDecl          = nullptr;
-    AstStruct*        destStructDecl        = nullptr;
-    AstNode*          destParameters        = nullptr;
-    AstNode*          destGenericParameters = nullptr;
-    Utf8              explicitCastMsg;
+    AstNode*           errorNode             = nullptr;
+    AstFuncCallParam*  failedParam           = nullptr;
+    uint32_t           badParamIdx           = 0;
+    AstFuncDecl*       destFuncDecl          = nullptr;
+    AstTypeLambda*     destLambdaDecl        = nullptr;
+    AstAttrDecl*       destAttrDecl          = nullptr;
+    AstStruct*         destStructDecl        = nullptr;
+    AstNode*           destParameters        = nullptr;
+    AstNode*           destGenericParameters = nullptr;
+    BadSignatureInfos* bi                    = nullptr;
+    Utf8               explicitCastMsg;
 
-    void addError(const Diagnostic* note) const
-    {
-        SWAG_ASSERT(note);
-        diagError->push_back(note);
-    }
-
-    void addNote(const Diagnostic* note) const
-    {
-        if (note)
-            diagNote->push_back(note);
-    }
+    void addError(const Diagnostic* note) const;
+    void addNote(Diagnostic* note) const;
 };
 
 namespace SemanticError
@@ -81,7 +74,7 @@ namespace SemanticError
     void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& diagError, Vector<const Diagnostic*>& diagNote);
 
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
-    void ambiguousArguments(SemanticContext* context, Diagnostic &err, VectorNative<OneMatch*>& matches);
+    void ambiguousArguments(SemanticContext* context, Diagnostic& err, VectorNative<OneMatch*>& matches);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches);
     bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags);
     bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches);
