@@ -1,4 +1,4 @@
-#global testerror "Err0677"
+#global testerror "Err0674"
 func toto(x: s32... = 3)
 {
     @print(x[0])

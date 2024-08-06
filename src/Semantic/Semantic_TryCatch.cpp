@@ -22,10 +22,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline()->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, formErr(Err0444, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0438, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, formErr(Err0443, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0437, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     return true;
 }
@@ -147,9 +147,9 @@ bool Semantic::resolveThrow(SemanticContext* context)
 
     const auto type = TypeManager::concretePtrRefType(expr->typeInfo);
 
-    SWAG_VERIFY(!type->isVoid(), context->report({expr, toErr(Err0374)}));
+    SWAG_VERIFY(!type->isVoid(), context->report({expr, toErr(Err0368)}));
     if (!type->isAny() || !node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_THROW_GET_ERR))
-        SWAG_VERIFY(type->isStruct(), context->report({expr, formErr(Err0375, type->getDisplayNameC())}));
+        SWAG_VERIFY(type->isStruct(), context->report({expr, formErr(Err0369, type->getDisplayNameC())}));
 
     if (type->isString())
         context->node->printLoc();

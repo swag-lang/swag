@@ -1,4 +1,4 @@
-#global testerror "Err0721"
+#global testerror "Err0717"
 
 func toto(b: bool, h, s, l: f32 = -2) {}
 

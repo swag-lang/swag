@@ -1,2 +1,2 @@
-#global testerror "Err0418"
+#global testerror "Err0412"
 const x = 12345678901234567890's64

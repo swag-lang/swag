@@ -312,13 +312,13 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 {
                     auto what = typeAttr->attributeUsage;
                     if (!what.has(ATTR_USAGE_STRUCT | ATTR_USAGE_ENUM))
-                        return context->report({child, toErr(Err0217)});
+                        return context->report({child, toErr(Err0468)});
 
                     what.remove(ATTR_USAGE_STRUCT);
                     what.remove(ATTR_USAGE_ENUM);
                     what.remove(ATTR_USAGE_GEN);
                     if (typeAttr->attributeUsage.has(what))
-                        return context->report({child, toErr(Err0217)});
+                        return context->report({child, toErr(Err0468)});
                 }
             }
 
@@ -335,8 +335,8 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 if (*it == ATTRIBUTE_FOREIGN)
                 {
                     auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
-                    SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, toErr(Err0323)}));
-                    SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, toErr(Err0324)}));
+                    SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, toErr(Err0317)}));
+                    SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, toErr(Err0318)}));
                 }
 
 #define EXCLUSIVE(__a, __b) ((*it == (__a) && (flags.has(__b))) || (*it == (__b) && (flags.has(__a))))
@@ -387,7 +387,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                             break;
                         }
                         default:
-                            return context->report({c, formErr(Err0466, typeChild->getDisplayNameC())});
+                            return context->report({c, formErr(Err0460, typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);
@@ -414,7 +414,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
                     else
                     {
-                        return context->report({child, attrParam->token, formErr(Err0276, w.c_str())});
+                        return context->report({child, attrParam->token, formErr(Err0270, w.c_str())});
                     }
                 }
             }
@@ -464,7 +464,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                         if (!done)
                         {
-                            return context->report({child, attrParam->token, formErr(Err0364, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0358, w.c_str())});
                         }
                     }
                 }
@@ -562,7 +562,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, formErr(Err0322, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0316, w.c_str())});
                         }
                     }
                 }
@@ -574,7 +574,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0346, attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0340, attrValue->reg.u8)}));
             }
 
             //////

@@ -19,7 +19,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0546)));
     SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0545)));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0263)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0257)));
     enumNode->inheritTokenName(tokenParse.token);
     enumNode->tokenName = tokenParse.token;
     SWAG_CHECK(checkIsValidUserName(enumNode));
@@ -161,7 +161,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 
 bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0262)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0256)));
 
     const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent);
     *result              = enumValue;

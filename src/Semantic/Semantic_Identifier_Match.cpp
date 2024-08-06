@@ -673,7 +673,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
             {
                 if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                 {
-                    const Diagnostic err(identifier, identifier->token, formErr(Err0745, overload->node->token.c_str()));
+                    const Diagnostic err(identifier, identifier->token, formErr(Err0741, overload->node->token.c_str()));
                     return context->report(err, Diagnostic::hereIs(overload));
                 }
 
@@ -757,7 +757,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // Be sure it's () and not {}
     if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({identifier->callParameters, formErr(Err0286, identifier->token.c_str())});
+        return context->report({identifier->callParameters, formErr(Err0280, identifier->token.c_str())});
 
     // Capture syntax
     if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
@@ -765,7 +765,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
         {
             const auto cp = identifier->callParameters;
-            Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, formErr(Err0674, identifier->token.c_str())};
+            Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, formErr(Err0671, identifier->token.c_str())};
             err.addNote(identifier->token, toNte(Nte0170));
             return context->report(err);
         }
@@ -786,7 +786,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // Be sure this is not a 'forward' decl
     if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && !identifier->hasIntrinsicName())
     {
-        const Diagnostic err{identifier, identifier->token, formErr(Err0287, identifier->token.c_str())};
+        const Diagnostic err{identifier, identifier->token, formErr(Err0281, identifier->token.c_str())};
         return context->report(err, Diagnostic::hereIs(overload));
     }
 
@@ -875,7 +875,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
             {
-                const Diagnostic err(identifier, identifier->token, formErr(Err0743, overload->node->token.c_str()));
+                const Diagnostic err(identifier, identifier->token, formErr(Err0739, overload->node->token.c_str()));
                 return context->report(err, Diagnostic::hereIs(overload));
             }
 
@@ -999,7 +999,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
         !identifier->hasAstFlag(AST_GENERATED) &&
         !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
     {
-        const Diagnostic err{identifier, identifier->token, toErr(Err0368)};
+        const Diagnostic err{identifier, identifier->token, toErr(Err0362)};
         return context->report(err);
     }
 
@@ -1180,7 +1180,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !prevNode->typeInfo->isStruct())
     {
-        const Diagnostic err{prevNode, formErr(Err0257, prevNode->token.c_str(), prevNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{prevNode, formErr(Err0251, prevNode->token.c_str(), prevNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -1403,7 +1403,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         case SymbolKind::EnumValue:
             if (idRef && idRef->previousResolvedNode && idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
             {
-                const Diagnostic err{idRef->previousResolvedNode, formErr(Err0255, idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+                const Diagnostic err{idRef->previousResolvedNode, formErr(Err0249, idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -2015,7 +2015,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
-            return context->report({identifier, formErr(Err0727, identifier->token.c_str())});
+            return context->report({identifier, formErr(Err0723, identifier->token.c_str())});
         }
 
         context->clearTryMatch();
@@ -2136,11 +2136,11 @@ bool Semantic::matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch
 
 bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
-    SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0440)}));
+    SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0434)}));
     AstNode* parent = identifier;
     while (parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
         parent = parent->ownerFct->parent;
-    SWAG_VERIFY(parent, context->report({parent, toErr(Err0440)}));
+    SWAG_VERIFY(parent, context->report({parent, toErr(Err0434)}));
 
     if (parent->ownerScope->is(ScopeKind::Struct) || parent->ownerScope->is(ScopeKind::Enum))
     {
@@ -2149,7 +2149,7 @@ bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMa
     }
     else
     {
-        SWAG_VERIFY(parent->ownerFct, context->report({parent, toErr(Err0440)}));
+        SWAG_VERIFY(parent->ownerFct, context->report({parent, toErr(Err0434)}));
         parent = parent->ownerFct;
 
         // Force scope

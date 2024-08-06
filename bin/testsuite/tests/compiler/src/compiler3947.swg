@@ -1,4 +1,4 @@
-#global testerror "Err0371"
+#global testerror "Err0365"
 struct V
 {
     x, y: s32

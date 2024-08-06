@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0649"
+#global testerror "Err0647"
 func(T) Print(x: T, y: T)
 {
 }

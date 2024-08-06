@@ -1,4 +1,4 @@
-#global testerror "Err0644"
+#global testerror "Err0643"
 enum A: const [2] any
 {
     BB = null

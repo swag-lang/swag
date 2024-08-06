@@ -1,4 +1,4 @@
-#global testerror "Err0703"
+#global testerror "Err0700"
 #test
 {
     let a = true'f32

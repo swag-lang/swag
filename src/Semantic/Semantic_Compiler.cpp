@@ -443,7 +443,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->hasOwnerInline() || node->ownerInline()->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline()->hasAttribute(ATTRIBUTE_MACRO))
-        return context->report({node, toErr(Err0437)});
+        return context->report({node, toErr(Err0431)});
 
     return true;
 }
@@ -733,7 +733,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0710, filename.c_str())});
+                    return context->report({back, formErr(Err0706, filename.c_str())});
             }
         }
 

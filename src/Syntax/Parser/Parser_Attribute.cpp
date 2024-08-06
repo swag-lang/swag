@@ -43,8 +43,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0675), toNte(Nte0023)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0668), toNte(Nte0023)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0672), toNte(Nte0023)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0665), toNte(Nte0023)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////
@@ -75,7 +75,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-            SWAG_VERIFY(tokenParse.is(TokenId::SymRightSquare) || tokenParse.is(TokenId::SymComma), error(tokenParse, toErr(Err0218)));
+            SWAG_VERIFY(tokenParse.is(TokenId::SymRightSquare) || tokenParse.is(TokenId::SymComma), error(tokenParse, toErr(Err0217)));
 
             if (tokenParse.isNot(TokenId::SymRightSquare))
             {
@@ -93,7 +93,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
     }
 
     // :AttrUseLastChild
-    SWAG_VERIFY(!attrBlockNode->children.empty(), error(attrBlockNode, toErr(Err0260)));
+    SWAG_VERIFY(!attrBlockNode->children.empty(), error(attrBlockNode, toErr(Err0254)));
     const auto back = attrBlockNode->lastChild();
     back->allocateExtension(ExtensionKind::Semantic);
     SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);

@@ -1,4 +1,4 @@
-#global testerror "Err0393"
+#global testerror "Err0387"
 namespace A {}
 
 func toto()->A {}

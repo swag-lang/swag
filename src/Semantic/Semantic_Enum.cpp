@@ -54,7 +54,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         const auto rawType = TypeManager::concreteType(typeInfo->rawType);
         if (!rawType->isNative() && !rawType->isString())
         {
-            const Diagnostic err{node->firstChild(), formErr(Err0266, rawType->getDisplayNameC())};
+            const Diagnostic err{node->firstChild(), formErr(Err0260, rawType->getDisplayNameC())};
             return context->report(err);
         }
 
@@ -144,7 +144,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         typeInfo->addFlag(TYPEINFO_ENUM_FLAGS);
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!concreteType->isNativeInteger() || concreteType->isNativeIntegerSigned())
-            return context->report({typeNode->firstChild(), formErr(Err0264, rawTypeInfo->getDisplayNameC())});
+            return context->report({typeNode->firstChild(), formErr(Err0258, rawTypeInfo->getDisplayNameC())});
     }
 
     if (enumNode->hasAttribute(ATTRIBUTE_ENUM_INDEX))
@@ -152,7 +152,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         typeInfo->addFlag(TYPEINFO_ENUM_INDEX);
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!concreteType->isNativeInteger())
-            return context->report({typeNode->firstChild(), formErr(Err0265, rawTypeInfo->getDisplayNameC())});
+            return context->report({typeNode->firstChild(), formErr(Err0259, rawTypeInfo->getDisplayNameC())});
     }
 
     if (enumNode->hasAttribute(ATTRIBUTE_INCOMPLETE))
@@ -170,14 +170,14 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             if (typeArray->count == UINT32_MAX)
             {
                 const auto       front = typeNode->firstChild();
-                const Diagnostic err{front, formErr(Err0268, rawTypeInfo->getDisplayNameC())};
+                const Diagnostic err{front, formErr(Err0262, rawTypeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
             if (!rawTypeInfo->isConst())
             {
                 const auto       front = typeNode->firstChild();
-                const Diagnostic err{front, formErr(Err0267, rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+                const Diagnostic err{front, formErr(Err0261, rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -187,23 +187,23 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         case TypeInfoKind::Slice:
         {
             const auto       front = typeNode->firstChild();
-            const Diagnostic err{front, formErr(Err0269, rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+            const Diagnostic err{front, formErr(Err0263, rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
             SWAG_VERIFY(rawTypeInfo->isConst(), context->report(err));
             return true;
         }
 
         case TypeInfoKind::Native:
             if (rawTypeInfo->nativeType == NativeTypeKind::Any)
-                return context->report({typeNode->firstChild(), formErr(Err0270, rawTypeInfo->getDisplayNameC())});
+                return context->report({typeNode->firstChild(), formErr(Err0264, rawTypeInfo->getDisplayNameC())});
             return true;
     }
 
     if (rawTypeInfo->isCString())
-        return context->report({typeNode->firstChild(), toErr(Err0271)});
+        return context->report({typeNode->firstChild(), toErr(Err0265)});
 
     if (!typeNode->children.empty())
         typeNode = typeNode->firstChild();
-    return context->report({typeNode, formErr(Err0270, rawTypeInfo->getDisplayNameC())});
+    return context->report({typeNode, formErr(Err0264, rawTypeInfo->getDisplayNameC())});
 }
 
 bool Semantic::resolveSubEnumValue(SemanticContext* context)
@@ -217,7 +217,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())
     {
-        const Diagnostic err{node, formErr(Err0258, node->typeInfo->getDisplayNameC())};
+        const Diagnostic err{node, formErr(Err0252, node->typeInfo->getDisplayNameC())};
         return context->report(err, Diagnostic::hereIs(node->resolvedSymbolOverload()));
     }
 
@@ -232,7 +232,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
     {
-        const Diagnostic err{node, formErr(Err0422, concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+        const Diagnostic err{node, formErr(Err0416, concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
         const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload());
         const auto       note1 = Diagnostic::hereIs(enumNode->type);
         return context->report(err, note, note1);

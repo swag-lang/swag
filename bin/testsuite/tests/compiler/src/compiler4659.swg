@@ -1,4 +1,4 @@
-#global testerror "Err0339"
+#global testerror "Err0333"
 #test
 {
     let b = ~5.0

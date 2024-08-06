@@ -239,7 +239,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (typeField->isListArray())
                 typeField = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeField), false);
             if (typeField->isListTuple())
-                return context->report({fromNode, toErr(Err0735)});
+                return context->report({fromNode, toErr(Err0731)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
@@ -445,7 +445,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, formErr(Err0368, identifier->typeInfo->name.c_str())});
+        return context->report({callP, formErr(Err0362, identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->is(AstNodeKind::ExpressionList))

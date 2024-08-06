@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0340, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0334, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0341, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0335, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -117,9 +117,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->is(AstNodeKind::TypeExpression) || node->is(AstNodeKind::TypeLambda))
-        return context->report({node, toErr(Err0279)});
+        return context->report({node, toErr(Err0273)});
     if (node->hasAstFlag(AST_FROM_GENERIC_REPLACE))
-        return context->report({node, toErr(Err0279)});
+        return context->report({node, toErr(Err0273)});
 
     if (!node->resolvedSymbolName())
         return true;
@@ -418,7 +418,7 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->isNot(SymbolKind::Struct) &&
                     symName->isNot(SymbolKind::Interface))
                 {
-                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0393, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0387, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->is(SymbolKind::Variable))
                     {
                         if (symOver->typeInfo->isPointer())
@@ -516,7 +516,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
 
         const auto rawType = typeNode->typeInfo;
-        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->lastChild(), toErr(Err0732)}));
+        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->lastChild(), toErr(Err0728)}));
 
         uint32_t totalCount = 1;
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
@@ -582,7 +582,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0390, typeNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0384, typeNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -658,7 +658,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isRune())
     {
-        const Diagnostic err{typeNode, formErr(Err0227, typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode, formErr(Err0221, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -667,13 +667,13 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !exprTypeInfo->isRune() &&
         !exprTypeInfo->isPointer())
     {
-        const Diagnostic err{exprNode, formErr(Err0225, exprTypeInfo->getDisplayNameC())};
+        const Diagnostic err{exprNode, formErr(Err0219, exprTypeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
     if (typeInfo->sizeOf > exprTypeInfo->sizeOf)
     {
-        const Diagnostic err{exprNode, formErr(Err0226, exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
+        const Diagnostic err{exprNode, formErr(Err0220, exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 

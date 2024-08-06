@@ -1,2 +1,2 @@
-#global testerror "Err0261"
+#global testerror "Err0255"
 #if true #do;

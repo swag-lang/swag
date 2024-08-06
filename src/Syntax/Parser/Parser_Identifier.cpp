@@ -60,9 +60,9 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
         return true;
 
     if (node->is(AstNodeKind::IdentifierRef))
-        return error(node, formErr(Err0245, msg));
+        return error(node, formErr(Err0239, msg));
 
-    return error(node, formErr(Err0305, msg));
+    return error(node, formErr(Err0299, msg));
 }
 
 bool Parser::checkIsIdentifier(const TokenParse& myToken, const char* msg) const
@@ -114,7 +114,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (tokenParse.is(TokenId::LiteralNumber))
     {
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0306)};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0300)};
         if (tokenParse.literalType == LiteralType::TypeUntypedInt)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
@@ -167,7 +167,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.is(g_LangSpec->name_Self))
     {
-        SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, toErr(Err0449)}));
+        SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, toErr(Err0443)}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -193,7 +193,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         {
             if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
             {
-                Diagnostic err{identifier, tokenParse.token, toErr(Err0368)};
+                Diagnostic err{identifier, tokenParse.token, toErr(Err0362)};
                 return context->report(err);
             }
 
@@ -322,7 +322,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0744, tokenParse.token.c_str())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0740, tokenParse.token.c_str())};
                 err.addNote(sourceFile, discardToken.token, toNte(Nte0164));
                 err.addNote(toNte(Nte0014));
                 return context->report(err);
@@ -386,7 +386,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK);
-        SWAG_VERIFY(!afterDiscard, error(tokenParse, toErr(Err0228)));
+        SWAG_VERIFY(!afterDiscard, error(tokenParse, toErr(Err0222)));
         SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
         if (node->semanticFct == Semantic::resolveTry)

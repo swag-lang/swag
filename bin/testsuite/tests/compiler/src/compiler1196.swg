@@ -1,4 +1,4 @@
-#global testerror "Err0714"
+#global testerror "Err0710"
 
 const A = false
 

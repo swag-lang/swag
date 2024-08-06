@@ -74,7 +74,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             if (!hasEnum.empty())
             {
-                Diagnostic err{identifierRef, formErr(Err0707, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                Diagnostic err{identifierRef, formErr(Err0704, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
                 const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
@@ -84,7 +84,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifierRef, formErr(Err0717, identifier->token.c_str())};
+            Diagnostic err{identifierRef, formErr(Err0713, identifier->token.c_str())};
 
             // Call to a function ?
             if (testedOver.size() == 1)
@@ -584,7 +584,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0442)};
+                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0436)};
                     return context->report(err);
                 }
 
@@ -661,6 +661,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0442)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0436)}));
     return true;
 }

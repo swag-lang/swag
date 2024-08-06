@@ -1,4 +1,4 @@
-#global testerror "Err0395"
+#global testerror "Err0389"
 
 #test
 {

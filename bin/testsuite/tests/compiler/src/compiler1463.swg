@@ -1,2 +1,2 @@
-#global testerror "Err0313"
+#global testerror "Err0307"
 var @toto = 0

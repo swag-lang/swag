@@ -1,4 +1,4 @@
-#global testerror "Err0420"
+#global testerror "Err0414"
 public struct A3928 {}
 
 public impl A3928

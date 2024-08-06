@@ -1,4 +1,4 @@
-#global testerror "Err0341"
+#global testerror "Err0335"
 #test
 {
 //    let y = 1.0
