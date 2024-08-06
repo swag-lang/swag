@@ -176,7 +176,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         if (!typeStruct->isStruct())
             return true;
 
-        // First parameter must be be struct
+        // First parameter must be struct
         SWAG_VERIFY(node->parameters, context->report({node, node->getTokenName(), formErr(Err0523, name.c_str())}));
         auto       firstGen  = node->parameters->firstChild();
         const auto firstType = firstGen->typeInfo;

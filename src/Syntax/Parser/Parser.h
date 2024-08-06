@@ -107,7 +107,7 @@ struct Parser
 
     TokenParse getNextToken(uint32_t count = 1);
     bool       eatToken();
-    bool       eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "", AstNode* parent = nullptr);
+    bool       eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "", const AstNode* parent = nullptr);
     bool       eatToken(TokenId id, const char* msg);
     bool       eatTokenError(TokenId id, const Utf8& msg);
     bool       eatFormat(AstNode* parent);

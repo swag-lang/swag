@@ -666,7 +666,6 @@ namespace OS
         {
             case IDCANCEL:
                 exit(-1);
-                break;
             case IDTRYAGAIN:
                 DebugBreak();
                 break;

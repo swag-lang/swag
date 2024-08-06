@@ -1013,7 +1013,6 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         case TokenId::CompilerPlaceHolder:
             SWAG_CHECK(doCompilerPlaceHolder(parent));
             return true;
-            break;
         case TokenId::CompilerGlobal:
             SWAG_CHECK(doCompilerGlobal(parent, result));
             return true;

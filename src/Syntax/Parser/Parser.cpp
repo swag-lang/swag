@@ -56,7 +56,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
     return true;
 }
 
-bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg, AstNode* parent)
+bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* msg, const AstNode* parent)
 {
     if (tokenParse.token.is(id))
     {
