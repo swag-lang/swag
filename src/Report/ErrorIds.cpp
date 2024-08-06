@@ -1035,7 +1035,7 @@ void initErrors()
     SWAG_ERROR(Nte0144, "the operator [['++']] requires compile-time strings as arguments");
     SWAG_ERROR(Nte0145, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0146, "the return type of an [[#ast]] block should be of type [[string]]");
-    SWAG_ERROR(Nte0147, "the slicing lower bound type is invalid, expected an integer, got [[%s]] instead");
+    SWAG_ERROR(Nte0147, "the slicing lower bound type is invalid, expected an integer, got the type [[%s]] instead");
     SWAG_ERROR(Nte0148, "the symbol [[%s]] is already present in the interface scope [[%s]]");
     SWAG_ERROR(Nte0149, "the symbol [[%s]] was located through a [[using]] statement");
     SWAG_ERROR(Nte0150, "the symbol [[...]] is used to declare variadic function parameters, which is not valid in this context");
