@@ -528,8 +528,6 @@ void initErrors()
     SWAG_ERROR(Err0402, "invalid variable type                             $ failed to deduce the type of the variable because the expression is [[null]]");
     SWAG_ERROR(Err0403, "invalid visit                                     $ can't visit a variadic type by pointer");
     SWAG_ERROR(Err0404, "invalid visit                                     $ can't visit an enum content by pointer");
-    SWAG_ERROR(Err0405, "invalid visit                                     $ the type [[%s]] can't be visited with [[visit]] $ missing the [[opVisit]] special function");
-    SWAG_ERROR(Err0406, "invalid visit specialization                      $ can't find the visit specialization name [[%s]] in [[%s]]");
     SWAG_ERROR(Err0407, "invalid visit type                                $ can't visit a pointer");
     SWAG_ERROR(Err0408, "invalid visit type                                $ can't visit a value with type [[%s]]");
     SWAG_ERROR(Err0409, "invalid void dereference                          $ dereferencing a pointer to [[void]] is not valid $ [[void]] does not have a valid size");
@@ -764,16 +762,17 @@ void initErrors()
     SWAG_ERROR(Err0638, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0639, "type mismatch                                     $ conversion from a closure type to a lambda type is not allowed");
     SWAG_ERROR(Err0640, "type mismatch                                     $ conversion from a type value ([[typeinfo]]) to a compile type ([[%s]]) is not allowed");
-    SWAG_ERROR(Err0641, "type mismatch                                     $ conversion from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
-    SWAG_ERROR(Err0642, "type mismatch                                     $ conversion from type [[%s]] to a pointer type is not allowed");
     SWAG_ERROR(Err0643, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
     SWAG_ERROR(Err0644, "type mismatch                                     $ expected a return of type [[%s]] for the special function [[%s]], got type [[%s]] instead");
-    SWAG_ERROR(Err0645, "type mismatch                                     $ expected type [[%s]] for field [[%s]], got type [[%s]] instead");
-    SWAG_ERROR(Err0646, "type mismatch                                     $ expected type [[%s]] for the UFCS argument, got type [[%s]] instead");
     SWAG_ERROR(Err0647, "type mismatch                                     $ expected type [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0648, "type mismatch                                     $ the [[%s]] assignment requires an expression of type [[%s]], got the type [[%s]] instead");
     SWAG_ERROR(Err0649, "type mismatch                                     $ type [[%s]] and type [[%s]] defined in the command line for [[%s]] are incompatible");
     SWAG_ERROR(Err0650, "type mismatch                                     $ unexpected mix of signed and unsigned type in a range expression $ lower bound and upper bound should be the same");
+    SWAG_ERROR(Err0646, "type mismatch UFCS argument                       $ expected an UFCS argument of type [[%s]], got type [[%s]] instead");
+    SWAG_ERROR(Err0742, "type mismatch argument                            $ expected an argument of type [[%s]], got type [[%s]] instead");
+    SWAG_ERROR(Err0645, "type mismatch field                               $ expected type [[%s]] for field [[%s]], got type [[%s]] instead");
+    SWAG_ERROR(Err0641, "type mismatch pointer                             $ conversion from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
+    SWAG_ERROR(Err0642, "type mismatch pointer                             $ conversion from type [[%s]] to a pointer type is not allowed");
     SWAG_ERROR(Err0651, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0652, "unexpected [[#elif]]                              $ an [[#elif]] was found without a preceding [[#if]] instruction");
     SWAG_ERROR(Err0653, "unexpected [[#else]]                              $ a [[#else]] was found without a preceding [[#if]] or [[#elif]] instruction");
@@ -844,6 +843,8 @@ void initErrors()
     SWAG_ERROR(Err0718, "unknown relocation offset                         $ the struct member [[%s]] can't be found; unable to compute the relocation");
     SWAG_ERROR(Err0719, "unknown struct                                    $ the struct [[%s]] can't be found");
     SWAG_ERROR(Err0720, "unknown type                                      $ the type [[%s]] can't be found");
+    SWAG_ERROR(Err0405, "unknown visit                                     $ the type [[%s]] can't be visited with [[visit]] $ the special function [[opVisit]] can't be found");
+    SWAG_ERROR(Err0406, "unknown visit specialization                      $ the visit specialization name [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0721, "unpacking number mismatch                         $ trying to unpack [[%u]] variable(s) but the tuple has [[%u]] field(s)");
     SWAG_ERROR(Err0722, "unpacking number mismatch                         $ trying to unpack [[%u]] variable(s) but the tuple has only [[%u]] field(s)");
     SWAG_ERROR(Err0723, "unresolved identifier                             $ the identifier [[%s]] can't be solved");
@@ -865,7 +866,6 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0741, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
     SWAG_ERROR(Err0745, nullptr);
