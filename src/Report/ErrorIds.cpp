@@ -649,7 +649,7 @@ void initErrors()
     SWAG_ERROR(Err0523, "missing return type                               $ the special function [[%s]] requires a return type");
     SWAG_ERROR(Err0524, "missing return type                               $ the special function [[%s]] should return a type [[%s]]");
     SWAG_ERROR(Err0525, "missing return value                              $ expected a return value because the return type has already been deduced to be [[%s]]");
-    SWAG_ERROR(Err0526, "missing return value                              $ expected an expression of type [[%s]] after the [[return]]");
+    SWAG_ERROR(Err0526, "missing return value                              $ expected a return value of type [[%s]] after the [[return]]");
     SWAG_ERROR(Err0527, "missing return value                              $ some control paths of %s do not return a value");
     SWAG_ERROR(Err0528, "missing return value                              $ the %s returns a type [[%s]] but lacks a [[return]] in its body");
     SWAG_ERROR(Err0529, "missing slicing upper bound                       $ expected an upper bound expression after [[..<]] $ if you want to slice to the end, consider using [[..]] instead of [[..<]]");
