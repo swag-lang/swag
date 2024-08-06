@@ -1,2 +1,2 @@
-#global testerror "Err0307"
+#global testerror "Err0258"
 var @typealias = 0

@@ -1,4 +1,4 @@
-#global testerror "Err0648"
+#global testerror "Err0646"
 
 typealias X = func()->s32
 

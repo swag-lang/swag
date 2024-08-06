@@ -1,2 +1,2 @@
-#global testerror "Err0136"
+#global testerror "Err0116"
 var #mix45AA = 0

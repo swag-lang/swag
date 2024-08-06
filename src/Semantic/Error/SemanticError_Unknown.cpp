@@ -197,7 +197,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     // Special case with an intrinsic or a compiler function inside a scope
     if (identifierRef->startScope && identifier->token.text[0] == '@')
     {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0303, identifier->token.c_str())};
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0253, identifier->token.c_str())};
         if (identifier->childParentIdx())
             notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0205)));
         return context->report(*err, notes);
@@ -205,7 +205,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 
     if (identifierRef->startScope && identifier->token.text[0] == '#')
     {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0238, identifier->token.c_str())};
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0194, identifier->token.c_str())};
         if (identifier->childParentIdx())
             notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0205)));
         return context->report(*err, notes);

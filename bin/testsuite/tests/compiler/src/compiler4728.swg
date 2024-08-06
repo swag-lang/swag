@@ -1,4 +1,4 @@
-#global testerror "Err0402"
+#global testerror "Err0358"
 typealias A4728 = s32
 
 public func toto4728()->{a: A4728}

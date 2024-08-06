@@ -42,7 +42,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     // More than one match : ambiguous
     if (typeEnum.size() > 1)
     {
-        Diagnostic err{identifierRef, formErr(Err0018, identifier->token.c_str())};
+        Diagnostic err{identifierRef, formErr(Err0029, identifier->token.c_str())};
         bool       first = true;
         for (const auto t : typeEnum)
         {
@@ -584,13 +584,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0425)};
+                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0381)};
                     return context->report(err);
                 }
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0142, scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0122, scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 
@@ -661,6 +661,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0425)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0381)}));
     return true;
 }

@@ -1,4 +1,4 @@
-#global testerror "Err0270"
+#global testerror "Err0165"
 
 #[Swag.ExportType("po")]
 struct A

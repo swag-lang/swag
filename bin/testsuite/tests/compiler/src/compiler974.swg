@@ -1,4 +1,4 @@
-#global testerror "Err0036"
+#global testerror "Err0044"
 struct Point
 {
 	x: s32 = 10

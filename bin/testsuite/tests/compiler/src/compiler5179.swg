@@ -1,4 +1,4 @@
-//#global testerror "Err0067"
+//#global testerror "Err0016"
 
 enum BasicErrors0: const [4] s32
 {

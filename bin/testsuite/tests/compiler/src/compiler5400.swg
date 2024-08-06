@@ -1,4 +1,4 @@
-#global testerror "Err0637"
+#global testerror "Err0602"
 //#global skip
 var g: s32 = 6
 

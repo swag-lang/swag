@@ -1,4 +1,4 @@
-#global testerror "Err0100"
+#global testerror "Err0092"
 
 #[Swag.NoCopy]
 struct AA

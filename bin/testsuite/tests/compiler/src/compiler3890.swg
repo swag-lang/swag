@@ -1,4 +1,4 @@
-#global testerror "Err0612"
+#global testerror "Err0023"
 struct A {}
 impl A {
     #[Swag.Macro]

@@ -70,7 +70,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
     if (node->boolExpression->hasFlagComputedValue() && node->boolExpression->computedValue()->reg.b)
     {
-        const Diagnostic err{node->boolExpression, toErr(Err0131)};
+        const Diagnostic err{node->boolExpression, toErr(Err0111)};
         return context->report(err);
     }
 
@@ -194,8 +194,8 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
             if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-                    return context->report({fct->returnType, formErr(Err0564, fct->getDisplayNameC())});
-                return context->report({fct->returnType, formErr(Err0565, fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
+                    return context->report({fct->returnType, formErr(Err0523, fct->getDisplayNameC())});
+                return context->report({fct->returnType, formErr(Err0524, fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -277,7 +277,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
     {
-        Diagnostic err{node, node->token, toErr(Err0463)};
+        Diagnostic err{node, node->token, toErr(Err0419)};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
         err.addNote(attr, formNte(Nte0066, "attribute"));
         return context->report(err);
@@ -304,10 +304,10 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         case TypeInfoKind::Slice:
         case TypeInfoKind::Array:
         case TypeInfoKind::Interface:
-            return context->report({node->expression, formErr(Err0163, typeSwitch->getDisplayNameC())});
+            return context->report({node->expression, formErr(Err0140, typeSwitch->getDisplayNameC())});
     }
 
-    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, toErr(Err0074)}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, toErr(Err0066)}));
 
     // Collect constant expressions, to avoid double definitions
     VectorNative<AstNode*> valDef;
@@ -325,7 +325,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, formErr(Err0012, expr->computedValue()->text.c_str())};
+                        Diagnostic err{expr, formErr(Err0022, expr->computedValue()->text.c_str())};
                         err.addNote(valDef[idx], toNte(Nte0076));
                         return context->report(err);
                     }
@@ -344,12 +344,12 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         const auto note = Diagnostic::note(valDef[idx], toNte(Nte0076));
                         if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, formErr(Err0011, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0021, expr->token.c_str())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, formErr(Err0011, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0021, expr->token.c_str())}, note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, formErr(Err0009, expr->computedValue()->reg.u64)}, note);
-                        return context->report({expr, formErr(Err0010, expr->computedValue()->reg.f64)}, note);
+                            return context->report({expr, formErr(Err0019, expr->computedValue()->reg.u64)}, note);
+                        return context->report({expr, formErr(Err0020, expr->computedValue()->reg.f64)}, note);
                     }
 
                     val64.push_back(expr->computedValue()->reg.u64);
@@ -358,7 +358,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
             }
             else if (node->hasAttribute(ATTRIBUTE_COMPLETE))
             {
-                return checkIsConstExpr(context, expr->hasFlagComputedValue(), expr, toErr(Err0033));
+                return checkIsConstExpr(context, expr->hasFlagComputedValue(), expr, toErr(Err0041));
             }
         }
     }
@@ -371,7 +371,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
             const auto note = Diagnostic::note(attr, formNte(Nte0066, "attribute"));
-            return context->report({back, back->token, toErr(Err0655)}, note);
+            return context->report({back, back->token, toErr(Err0654)}, note);
         }
 
         // When a switch is marked as complete, be sure every definitions have been covered
@@ -390,7 +390,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic err{node, node->token, formErr(Err0113, typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, formErr(Err0477, typeEnum->name.c_str(), one->name.c_str())};
                             err.addNote(one->declNode, one->declNode->token, toNte(Nte0139));
                             return context->report(err);
                         }
@@ -404,7 +404,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic err{node, node->token, formErr(Err0113, typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, formErr(Err0477, typeEnum->name.c_str(), one->name.c_str())};
                             err.addNote(one->declNode, one->declNode->token, toNte(Nte0139));
                             return context->report(err);
                         }
@@ -457,7 +457,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             }
             else
             {
-                return context->report({rangeNode, toErr(Err0486)});
+                return context->report({rangeNode, toErr(Err0442)});
             }
         }
 
@@ -600,7 +600,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!typeInfo->isTuple(), context->report({node->expression, toErr(Err0165)}));
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({node->expression, toErr(Err0142)}));
 
         AstIdentifierRef* identifierRef = nullptr;
         AstIdentifier*    callVisit     = nullptr;
@@ -850,7 +850,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     {
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
-            Diagnostic err{node, node->wantPointerToken, toErr(Err0394)};
+            Diagnostic err{node, node->wantPointerToken, toErr(Err0350)};
             err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
             return context->report(err);
         }
@@ -871,7 +871,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     {
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
-            Diagnostic err{node, node->wantPointerToken, toErr(Err0395)};
+            Diagnostic err{node, node->wantPointerToken, toErr(Err0351)};
             err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
             return context->report(err);
         }
@@ -892,11 +892,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
     }
     else if (typeInfo->isPointer())
     {
-        return context->report({node->expression, toErr(Err0396)});
+        return context->report({node->expression, toErr(Err0352)});
     }
     else
     {
-        return context->report({node->expression, formErr(Err0397, typeInfo->getDisplayNameC())});
+        return context->report({node->expression, formErr(Err0353, typeInfo->getDisplayNameC())});
     }
 
     node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
@@ -979,7 +979,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     auto ownerBreakable = node->safeOwnerBreakable();
     while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->safeOwnerBreakable();
-    SWAG_VERIFY(ownerBreakable, context->report({node, toErr(Err0417)}));
+    SWAG_VERIFY(ownerBreakable, context->report({node, toErr(Err0373)}));
 
     ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
@@ -1024,7 +1024,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
         node->setOwnerBreakable(breakable);
     }
 
-    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, toErr(Err0433)}));
+    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, toErr(Err0389)}));
     node->ownerBreakable()->breakList.push_back(node);
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
@@ -1043,20 +1043,20 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
 bool Semantic::resolveFallThrough(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->hasOwnerBreakable() && node->ownerBreakable()->is(AstNodeKind::Switch), context->report({node, toErr(Err0440)}));
+    SWAG_VERIFY(node->hasOwnerBreakable() && node->ownerBreakable()->is(AstNodeKind::Switch), context->report({node, toErr(Err0396)}));
     node->ownerBreakable()->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
     while (parent && parent->isNot(AstNodeKind::SwitchCase) && parent != node->safeOwnerBreakable())
         parent = parent->parent;
-    SWAG_VERIFY(parent && parent->is(AstNodeKind::SwitchCase), context->report({node, toErr(Err0439)}));
+    SWAG_VERIFY(parent && parent->is(AstNodeKind::SwitchCase), context->report({node, toErr(Err0395)}));
     node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-    SWAG_VERIFY(node->switchCase->caseIndex != UINT32_MAX, context->report({node, toErr(Err0439)}));
+    SWAG_VERIFY(node->switchCase->caseIndex != UINT32_MAX, context->report({node, toErr(Err0395)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable(), AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, toErr(Err0438)}));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, toErr(Err0394)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitFallThrough;
@@ -1067,12 +1067,12 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
 bool Semantic::resolveContinue(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
-    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, toErr(Err0436)}));
+    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, toErr(Err0392)}));
 
     auto checkBreakable = node->safeOwnerBreakable();
     while (checkBreakable && !checkBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_CONTINUE))
         checkBreakable = checkBreakable->safeOwnerBreakable();
-    SWAG_VERIFY(checkBreakable, context->report({node, toErr(Err0436)}));
+    SWAG_VERIFY(checkBreakable, context->report({node, toErr(Err0392)}));
     checkBreakable->continueList.push_back(node);
     node->setOwnerBreakable(checkBreakable);
 

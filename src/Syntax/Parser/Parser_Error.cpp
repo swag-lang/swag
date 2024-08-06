@@ -73,17 +73,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             }
 
             if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0651);
-            else if (startToken.is(TokenId::CompilerElseIf))
                 msg = toErr(Err0650);
+            else if (startToken.is(TokenId::CompilerElseIf))
+                msg = toErr(Err0649);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0652);
+                msg = toErr(Err0651);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0667);
+                msg = toErr(Err0666);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0653);
+                msg = toErr(Err0652);
             else
-                msg = toErr(Err0363);
+                msg = toErr(Err0319);
 
             if (startToken.is(TokenId::KwdLet))
                 note = toNte(Nte0047);
@@ -100,30 +100,30 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
         ///////////////////////////////////////////
         case InvalidTokenError::EmbeddedInstruction:
             if (startToken.is(TokenId::SymAmpersandAmpersand))
-                msg = formErr(Err0315, "and", "&&");
+                msg = formErr(Err0265, "and", "&&");
             else if (startToken.is(TokenId::SymVerticalVertical))
-                msg = formErr(Err0315, "or", "||");
+                msg = formErr(Err0265, "or", "||");
             else if (startToken.is(TokenId::KwdElse))
-                msg = toErr(Err0657);
-            else if (startToken.is(TokenId::KwdElif))
                 msg = toErr(Err0656);
+            else if (startToken.is(TokenId::KwdElif))
+                msg = toErr(Err0655);
             else if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0651);
-            else if (startToken.is(TokenId::CompilerElseIf))
                 msg = toErr(Err0650);
+            else if (startToken.is(TokenId::CompilerElseIf))
+                msg = toErr(Err0649);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0652);
+                msg = toErr(Err0651);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0667);
+                msg = toErr(Err0666);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0653);
+                msg = toErr(Err0652);
             else
-                msg = toErr(Err0253);
+                msg = toErr(Err0207);
             break;
 
         ///////////////////////////////////////////
         case InvalidTokenError::LeftExpression:
-            msg = toErr(Err0185);
+            msg = toErr(Err0162);
             break;
 
         ///////////////////////////////////////////
@@ -132,11 +132,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             // Bad character syntax as an expression
             if (startToken.is(TokenId::SymQuote) && nextNextToken.is(TokenId::SymQuote))
             {
-                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0229, nextToken.token.c_str())};
+                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0192, nextToken.token.c_str())};
                 return context->report(err);
             }
 
-            msg = formErr(Err0272, parent->token.c_str());
+            msg = formErr(Err0225, parent->token.c_str());
             break;
     }
 
@@ -145,7 +145,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    const Utf8 message = msg ? Utf8{msg} : toErr(Err0300);
+    const Utf8 message = msg ? Utf8{msg} : toErr(Err0249);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0137, myToken.token.c_str()));

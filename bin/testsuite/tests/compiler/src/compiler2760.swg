@@ -1,4 +1,4 @@
-#global testerror "Err0262"
+#global testerror "Err0216"
 
 enum AA: const [] s32
 {

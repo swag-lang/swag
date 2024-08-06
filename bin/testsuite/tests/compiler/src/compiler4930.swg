@@ -1,3 +1,3 @@
-#global testerror "Err0481"
+#global testerror "Err0437"
 
 const A = try toto()

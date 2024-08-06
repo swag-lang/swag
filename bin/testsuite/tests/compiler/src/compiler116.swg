@@ -1,4 +1,4 @@
-#global testerror "Err0612"
+#global testerror "Err0023"
 var main: bool
 
 func main ()

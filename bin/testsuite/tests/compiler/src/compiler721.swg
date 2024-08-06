@@ -1,4 +1,4 @@
-#global testerror "Err0398"
+#global testerror "Err0354"
 #test
 {
 	var ptr: ^void

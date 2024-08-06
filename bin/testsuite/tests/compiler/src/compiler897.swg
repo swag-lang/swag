@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0637"
+#global testerror "Err0602"
 func arithmeticMean(numbers: f32...)
 {
 }

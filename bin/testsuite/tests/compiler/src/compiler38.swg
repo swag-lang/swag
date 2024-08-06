@@ -1,3 +1,3 @@
-#global testerror "Err0401"
+#global testerror "Err0357"
 
 var x = 0xFFFFFFFF_FFFFFFFF'rune

@@ -1,5 +1,5 @@
 
 ;
 
-#global testerror "Err0612";
+#global testerror "Err0023";
 func main (b: bool, b: u32) { }

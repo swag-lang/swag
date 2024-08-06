@@ -52,7 +52,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
                 SWAG_ASSERT(false);
 #endif
-                Diagnostic err{nodeFunc, formErr(Err0025, moduleName.c_str(), funcName.c_str())};
+                Diagnostic err{nodeFunc, formErr(Err0727, moduleName.c_str(), funcName.c_str())};
                 if (!g_ModuleMgr->loadModuleError.empty())
                     err.addNote(Diagnostic::note(g_ModuleMgr->loadModuleError));
                 context->report(err);

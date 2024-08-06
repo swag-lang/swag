@@ -1,4 +1,4 @@
-#global testerror "Err0218"
+#global testerror "Err0280"
 //#global testpass lexer
 0b112
  = 

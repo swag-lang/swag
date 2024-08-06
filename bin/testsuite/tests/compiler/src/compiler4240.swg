@@ -1,4 +1,4 @@
-#global testerror "Err0472"
+#global testerror "Err0428"
 
 #[Swag.Macro]
 func toto(#[Swag.ConstExpr] x: string)->string

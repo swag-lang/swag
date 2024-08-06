@@ -1,4 +1,4 @@
-#global testerror "Err0340"
+#global testerror "Err0296"
 #test
 {
     var ptr: *u8

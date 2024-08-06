@@ -201,7 +201,7 @@ void ModuleBuildJob::checkMissingErrors() const
                 if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->removeFlag(FILE_SHOULD_HAVE_ERROR);
-                    Report::report({file, file->tokenHasError, toErr(Err0568)});
+                    Report::report({file, file->tokenHasError, toErr(Err0527)});
                 }
             }
 
@@ -210,7 +210,7 @@ void ModuleBuildJob::checkMissingErrors() const
                 if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->removeFlag(FILE_SHOULD_HAVE_WARNING);
-                    Report::report({file, file->tokenHasWarning, toErr(Err0569)});
+                    Report::report({file, file->tokenHasWarning, toErr(Err0528)});
                 }
             }
         }
@@ -692,7 +692,7 @@ JobResult ModuleBuildJob::execute()
             {
                 if (module->is(ModuleKind::Script))
                 {
-                    Report::error(module, toErr(Err0504));
+                    Report::error(module, toErr(Err0461));
                     return JobResult::ReleaseJob;
                 }
             }

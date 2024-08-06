@@ -1,4 +1,4 @@
-#global testerror "Err0521"
+#global testerror "Err0479"
 #test
 {
     visit a, : {}

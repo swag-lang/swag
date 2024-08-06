@@ -1,3 +1,3 @@
-#global testerror "Err0311"
+#global testerror "Err0262"
 
 const A = 1'any

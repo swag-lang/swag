@@ -1,4 +1,4 @@
-#global testerror "Err0306"
+#global testerror "Err0256"
 
 interface IPokeValue
 {

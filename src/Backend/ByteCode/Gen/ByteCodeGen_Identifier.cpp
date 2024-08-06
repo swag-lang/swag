@@ -24,7 +24,7 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    Diagnostic err{context->node, formErr(Err0078, Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+    Diagnostic err{context->node, formErr(Err0069, Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
 
     err.addNote(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))

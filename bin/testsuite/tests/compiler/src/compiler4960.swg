@@ -1,4 +1,4 @@
-#global testerror "Err0566"
+#global testerror "Err0525"
 #test
 {
     a[0..<]

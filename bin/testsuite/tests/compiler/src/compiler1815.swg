@@ -1,5 +1,5 @@
 
-#global testerror "Err0597"
+#global testerror "Err0559"
 
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]

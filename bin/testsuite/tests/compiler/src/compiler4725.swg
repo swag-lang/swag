@@ -1,4 +1,4 @@
-#global testerror "Err0402"
+#global testerror "Err0358"
 internal const StringSmallSize = 16'u64
 
 public struct String4725

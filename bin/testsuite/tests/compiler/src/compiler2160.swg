@@ -1,4 +1,4 @@
-#global testerror "Err0322"
+#global testerror "Err0271"
 
 namespace s
 {

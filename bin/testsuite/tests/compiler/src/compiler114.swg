@@ -1,7 +1,7 @@
 
 ;
 
-#global testerror "Err0612";
+#global testerror "Err0023";
 
 #[Swag.Overload]
 func main ()

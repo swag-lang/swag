@@ -18,9 +18,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, formErr(Err0294, identifier->token.c_str()));
+            return error(identifier->genericParameters, formErr(Err0244, identifier->token.c_str()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, formErr(Err0223, identifier->token.c_str()));
+            return error(identifier->callParameters, formErr(Err0186, identifier->token.c_str()));
     }
 
     if (node->token.text[0] != '#')
@@ -32,7 +32,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         if (node->token.text.find(g_LangSpec->name_sharpmix) == 0)
         {
             if (node->token.is(g_LangSpec->name_sharpmix))
-                return error(node->token, toErr(Err0506));
+                return error(node->token, toErr(Err0463));
 
             const char* pz  = node->token.text.buffer + 4;
             const auto  end = node->token.text.buffer + node->token.text.count;
@@ -40,14 +40,14 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, formErr(Err0136, node->token.c_str() + 4));
+                    return error(node->token, formErr(Err0116, node->token.c_str() + 4));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 10)
-                return error(node->token, formErr(Err0588, num));
+                return error(node->token, formErr(Err0547, num));
             if (node->ownerFct)
                 node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN);
 
@@ -58,7 +58,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         if (node->token.text.find(g_LangSpec->name_sharpalias) == 0)
         {
             if (node->token.is(g_LangSpec->name_sharpalias))
-                return error(node->token, toErr(Err0496));
+                return error(node->token, toErr(Err0453));
 
             const char* pz  = node->token.text.buffer + 6;
             const auto  end = node->token.text.buffer + node->token.text.count;
@@ -66,14 +66,14 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, formErr(Err0132, node->token.c_str() + 6));
+                    return error(node->token, formErr(Err0112, node->token.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 32)
-                return error(node->token, formErr(Err0587, num));
+                return error(node->token, formErr(Err0546, num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -81,7 +81,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         }
     }
 
-    return error(node->token, formErr(Err0387, node->token.c_str()));
+    return error(node->token, formErr(Err0343, node->token.c_str()));
 }
 
 bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
@@ -157,7 +157,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
 
 bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
 {
-    SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0491, Naming::aKindName(currentScope->kind).c_str())));
+    SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0447, Naming::aKindName(currentScope->kind).c_str())));
 
     const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
     *result               = parentNode;
@@ -300,10 +300,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0428, "var", "const", "var")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0428, "let", "const", "let")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0429, "const", "const", "const")));
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0242)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0384, "var", "const", "var")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0384, "let", "const", "let")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0385, "const", "const", "const")));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0198)));
         }
     }
     else if (tokenParse.is(TokenId::KwdLet))
@@ -313,10 +313,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0428, "const", "let", "const")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0428, "var", "let", "var")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0429, "let", "let", "let")));
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0390, "let")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0384, "const", "let", "const")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0384, "var", "let", "var")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0385, "let", "let", "let")));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0346, "let")));
         }
     }
     else
@@ -325,10 +325,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::SymLeftParen))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0428, "const", "var", "const")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0428, "let", "var", "let")));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0429, "var", "var", "var")));
-            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0390, "var")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdConst), error(tokenParse, formErr(Err0384, "const", "var", "const")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdLet), error(tokenParse, formErr(Err0384, "let", "var", "let")));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, formErr(Err0385, "var", "var", "var")));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0346, "var")));
         }
     }
 
@@ -354,9 +354,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = toErr(Err0528);
+                msg = toErr(Err0486);
             else
-                msg = toErr(Err0571);
+                msg = toErr(Err0530);
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
@@ -394,7 +394,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic err{sourceFile, tokenParse, formErr(Err0021, typeExpr->identifier->token.c_str())};
+                    Diagnostic err{sourceFile, tokenParse, formErr(Err0032, typeExpr->identifier->token.c_str())};
                     err.addNote(formNte(Nte0200, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
                     err.addNote(toNte(Nte0196));
                     return context->report(err);
@@ -458,7 +458,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     {
         if (!parent || parent->isNot(AstNodeKind::If))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0671)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0670)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }
