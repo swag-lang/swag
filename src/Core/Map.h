@@ -2,10 +2,10 @@
 #include "Core/Path.h"
 
 template<typename K, typename V>
-struct Map : std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, StdAllocator<std::pair<const K, V>>>
+struct Map : std::unordered_map<K, V, std::hash<K>, std::equal_to<>, StdAllocator<std::pair<const K, V>>>
 {
     Map() :
-        std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, StdAllocator<std::pair<const K, V>>>()
+        std::unordered_map<K, V, std::hash<K>, std::equal_to<>, StdAllocator<std::pair<const K, V>>>()
     {
     }
 
