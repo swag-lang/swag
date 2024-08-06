@@ -79,8 +79,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Reserve room to pass parameters to embedded intrinsics
-    constexpr int ALLOC_T_NUM = 5;
-    auto          allocT      = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOC_T_NUM));
+    static constexpr int ALLOC_T_NUM = 5;
+    auto                 allocT      = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOC_T_NUM));
     allocT->setAlignment(llvm::Align{16});
 
     // Debug infos
