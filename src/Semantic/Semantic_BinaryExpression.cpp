@@ -983,7 +983,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         if (node->token.isNot(TokenId::SymVertical) &&
             node->token.isNot(TokenId::SymAmpersand) &&
             node->token.isNot(TokenId::SymCircumflex))
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
 
         if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
             return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");

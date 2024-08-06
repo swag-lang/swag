@@ -440,7 +440,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 leftTypeInfo->nativeType == NativeTypeKind::F32 ||
                 leftTypeInfo->nativeType == NativeTypeKind::F64)
             {
-                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
             }
 
             break;
@@ -472,7 +472,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 leftTypeInfo->nativeType == NativeTypeKind::F32 ||
                 leftTypeInfo->nativeType == NativeTypeKind::F64)
             {
-                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
             }
             break;
         }
@@ -521,7 +521,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 leftTypeInfo->nativeType == NativeTypeKind::String ||
                 leftTypeInfo->nativeType == NativeTypeKind::CString)
             {
-                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
             }
             break;
         }
@@ -544,7 +544,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 leftTypeInfo->nativeType == NativeTypeKind::String ||
                 leftTypeInfo->nativeType == NativeTypeKind::CString)
             {
-                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
             }
             break;
         }
@@ -569,7 +569,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 leftTypeInfo->nativeType == NativeTypeKind::String ||
                 leftTypeInfo->nativeType == NativeTypeKind::CString)
             {
-                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
             }
             break;
         }
