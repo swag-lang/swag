@@ -324,7 +324,7 @@ bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        const Diagnostic err{expression, formErr(Err0189, node->token.c_str(), typeInfo->getDisplayNameC())};
+        const Diagnostic err{expression, formErr(Err0189, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
