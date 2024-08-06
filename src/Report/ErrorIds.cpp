@@ -500,7 +500,7 @@ void initErrors()
     SWAG_ERROR(Err0383, "invalid type                                      $ the type [[%s]] can't be used as an argument to [[@cvaarg]]");
     SWAG_ERROR(Err0384, "invalid type                                      $ the type [[%s]] does not accept a [[const]] version");
     SWAG_ERROR(Err0385, "invalid type                                      $ the type is generic and can't be evaluated in this context");
-    SWAG_ERROR(Err0386, "invalid type                                      $ unexpected first parameter type for special function [[%s]] ([[%s]] expected, [[%s]] provided)");
+    SWAG_ERROR(Err0386, "invalid type                                      $ unexpected first parameter type for the special function [[%s]] ([[%s]] expected, [[%s]] provided)");
     SWAG_ERROR(Err0387, "invalid type declaration                          $ expected a type but [[%s]] is %s");
     SWAG_ERROR(Err0388, "invalid type declaration                          $ expected a type declaration, got $$TKN$$ instead");
     SWAG_ERROR(Err0389, "invalid type declaration                          $ expected the array type after its dimensions, got $$TKN$$ instead");
@@ -701,14 +701,14 @@ void initErrors()
     SWAG_ERROR(Err0586, "non-transferable [[cvarargs]] type                $ a parameter with the type [[cvarargs]] can't be passed to another function");
     SWAG_ERROR(Err0587, "not a value                                       $ implicit reference to a static struct member of [[%s]]");
     SWAG_ERROR(Err0588, "not a value                                       $ the %s [[%s]] is not a valid value in this context");
-    SWAG_ERROR(Err0589, "not enough arguments                              $ not enough arguments for %s");
-    SWAG_ERROR(Err0590, "not enough arguments                              $ not enough arguments to call %s");
+    SWAG_ERROR(Err0589, "not enough attribute arguments                    $ not enough arguments for %s");
+    SWAG_ERROR(Err0590, "not enough call arguments                         $ not enough arguments to call %s");
     SWAG_ERROR(Err0591, "not enough generic arguments                      $ not enough generic arguments for %s");
-    SWAG_ERROR(Err0592, "not enough generic parameters                     $ not enough generic parameters for special function [[%s]]");
+    SWAG_ERROR(Err0592, "not enough generic parameters                     $ not enough generic parameters for the special function [[%s]]");
     SWAG_ERROR(Err0593, "not enough initializers                           $ expected [[%d]] value(s) to initialize the array, got [[%d]] instead");
     SWAG_ERROR(Err0594, "not enough initializers                           $ expected [[%d]] value(s) to initialize the tuple, got [[%d]] instead");
-    SWAG_ERROR(Err0595, "not enough parameters                             $ not enough parameters for special function [[%s]] (expected [[%d]], got [[%d]])");
-    SWAG_ERROR(Err0596, "not enough parameters                             $ too few parameters for special function [[%s]] (at least [[%d]] expected, only [[%d]] provided)");
+    SWAG_ERROR(Err0595, "not enough parameters                             $ not enough parameters for the special function [[%s]] (expected [[%d]], got [[%d]])");
+    SWAG_ERROR(Err0596, "not enough parameters                             $ not enough parameters for the special function [[%s]] (expected at least [[%d]], got [[%d]])");
     SWAG_ERROR(Err0597, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0598, "out of range [[#alias]] number                    $ an [[#alias]] number should be in the range [0, 31], got [[%u]] instead");
     SWAG_ERROR(Err0599, "out of range [[#mix]] number                      $ a [[#mix]] number should be in the range [0, 31], got [[%u]] instead");
@@ -741,8 +741,8 @@ void initErrors()
     SWAG_ERROR(Err0626, "system error                                      $ failed to create the process [[%s]]");
     SWAG_ERROR(Err0627, "too many arguments                                $ expected [[%d]] argument(s), got [[%d]] instead");
     SWAG_ERROR(Err0628, "too many generic arguments                        $ expected [[%d]] generic argument(s) for %s [[%s]], got [[%d]] instead");
-    SWAG_ERROR(Err0629, "too many generic parameters                       $ expected one single generic parameter for special function [[%s]], got [[%d]] instead");
-    SWAG_ERROR(Err0630, "too many generic parameters                       $ too many generic parameters for special function [[%s]]");
+    SWAG_ERROR(Err0629, "too many generic parameters                       $ expected one single generic parameter for the special function [[%s]], got [[%d]] instead");
+    SWAG_ERROR(Err0630, "too many generic parameters                       $ too many generic parameters for the special function [[%s]]");
     SWAG_ERROR(Err0631, "too many initializers                             $ expected [[%d]] value(s) to initialize [[%s]], got [[%d]] instead");
     SWAG_ERROR(Err0632, "too many initializers                             $ expected [[%d]] value(s) to initialize the array, got [[%d]] instead");
     SWAG_ERROR(Err0633, "too many initializers                             $ expected [[%d]] value(s) to initialize the tuple, got [[%d]] instead");
@@ -756,7 +756,7 @@ void initErrors()
     SWAG_ERROR(Err0643, "type mismatch                                     $ conversion from type [[%s]] to type [[%s]] is not allowed");
     SWAG_ERROR(Err0644, "type mismatch                                     $ expected a return of type [[%s]] for the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0647, "type mismatch                                     $ expected type [[%s]], got type [[%s]] instead");
-    SWAG_ERROR(Err0648, "type mismatch                                     $ the [[%s]] assignment requires an expression of type [[%s]], got the type [[%s]] instead");
+    SWAG_ERROR(Err0648, "type mismatch                                     $ the [[%s]] assignment requires an expression of type [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0649, "type mismatch                                     $ type [[%s]] and type [[%s]] defined in the command line for [[%s]] are incompatible");
     SWAG_ERROR(Err0650, "type mismatch                                     $ unexpected mix of signed and unsigned type in a range expression $ lower bound and upper bound should be the same");
     SWAG_ERROR(Err0646, "type mismatch UFCS argument                       $ expected an UFCS argument of type [[%s]], got type [[%s]] instead");
