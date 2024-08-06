@@ -1,4 +1,4 @@
-#global testerror "Err0179"
+#global testerror "Err0173"
 
 #[Swag.AttributeUsage.Function]
 func function()

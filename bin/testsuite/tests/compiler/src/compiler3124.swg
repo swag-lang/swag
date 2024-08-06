@@ -1,4 +1,4 @@
-#global testerror "Err0366"
+#global testerror "Err0367"
 enum Col
 {
     A

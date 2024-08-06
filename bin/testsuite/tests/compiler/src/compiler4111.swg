@@ -1,4 +1,4 @@
-#global testerror "Err0259"
+#global testerror "Err0237"
 #test
 {
     @asssert(false)

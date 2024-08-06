@@ -2,7 +2,7 @@
 ;
 
 //#[Swag.PrintBc]
-#global testerror "Err0173";
+#global testerror "Err0167";
 #test
 {
 	//var arr: [] s32 = {6, 10, 10};

@@ -1,4 +1,4 @@
-#global testerror "Err0250";
+#global testerror "Err0228";
 
 func main ()
 {

@@ -1,4 +1,4 @@
-#global testerror "Err0608"
+#global testerror "Err0610"
 struct(T) VV
 {
     x: T

@@ -1,4 +1,4 @@
-#global testerror "Err0158"
+#global testerror "Err0154"
 
 #[Swag.Inline]
 func toto()

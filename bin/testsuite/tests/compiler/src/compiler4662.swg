@@ -1,4 +1,4 @@
-#global testerror "Err0206"
+#global testerror "Err0202"
 #test
 {
     const a: string = null

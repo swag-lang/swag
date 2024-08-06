@@ -1,2 +1,2 @@
-#global testerror "Err0193";
+#global testerror "Err0191";
 #unittest tgoito

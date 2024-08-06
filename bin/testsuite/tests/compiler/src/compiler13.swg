@@ -1,2 +1,2 @@
-#global testerror "Err0339"
+#global testerror "Err0347"
 const A = 0xFFFFFFFF'

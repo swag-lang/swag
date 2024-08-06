@@ -1,4 +1,4 @@
-#global testerror "Err0658"
+#global testerror "Err0660"
 func impl tota()
 {
 

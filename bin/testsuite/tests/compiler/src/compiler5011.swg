@@ -1,4 +1,4 @@
-#global testerror "Err0621"
+#global testerror "Err0623"
 #test
 {
     let a = @mkinterface(0, 0, 0)

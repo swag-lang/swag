@@ -1,3 +1,3 @@
-#global testerror "Err0435"
+#global testerror "Err0436"
 #[Swag.Tls]
 const X = [10, 10, 20, 40]

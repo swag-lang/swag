@@ -1,2 +1,2 @@
-#global testerror "Err0191"
+#global testerror "Err0189"
 var x = `\xFFF`'rune

@@ -1,4 +1,4 @@
-#global testerror "Err0571"
+#global testerror "Err0573"
 
 #[Swag.Overload]
 func(T) toto() where @typeof(T) == f32

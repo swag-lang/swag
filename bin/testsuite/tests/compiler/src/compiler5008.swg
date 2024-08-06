@@ -1,4 +1,4 @@
-#global testerror "Err0613"
+#global testerror "Err0615"
 #test
 {
     @init(1.0, 2)

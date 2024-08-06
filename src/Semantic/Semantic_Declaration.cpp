@@ -17,7 +17,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0416, Naming::kindName(node->ownerScope->kind).c_str())}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0417, Naming::kindName(node->ownerScope->kind).c_str())}));
 
     const CollectedScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? COLLECTED_SCOPE_STRUCT_USING : 0;
 
@@ -34,7 +34,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
         const auto typePointer = castTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         if (!typePointer->pointedType->isInterface())
         {
-            SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0415, typePointer->pointedType->getDisplayNameC())}));
+            SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, formErr(Err0416, typePointer->pointedType->getDisplayNameC())}));
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             regNode->addAlternativeScope(typeStruct->scope, altFlags);
             regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
@@ -42,7 +42,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     }
     else
     {
-        return context->report({node, formErr(Err0414, typeInfoVar->getDisplayNameC())});
+        return context->report({node, formErr(Err0415, typeInfoVar->getDisplayNameC())});
     }
 
     return true;
@@ -97,7 +97,7 @@ bool Semantic::resolveWith(SemanticContext* context)
     {
         case TypeInfoKind::Pointer:
             if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
-                return context->report({context->node, formErr(Err0145, typeResolved->getDisplayNameC())});
+                return context->report({context->node, formErr(Err0141, typeResolved->getDisplayNameC())});
             break;
 
         case TypeInfoKind::Namespace:
@@ -106,11 +106,11 @@ bool Semantic::resolveWith(SemanticContext* context)
 
         case TypeInfoKind::Enum:
             if (fromVar)
-                return context->report({context->node, formErr(Err0144, typeResolved->getDisplayNameC())});
+                return context->report({context->node, formErr(Err0140, typeResolved->getDisplayNameC())});
             break;
 
         default:
-            return context->report({context->node, formErr(Err0145, typeResolved->getDisplayNameC())});
+            return context->report({context->node, formErr(Err0141, typeResolved->getDisplayNameC())});
     }
 
     return true;
@@ -154,7 +154,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
                 break;
             }
             default:
-                return context->report({node, formErr(Err0413, typeResolved->getDisplayNameC())});
+                return context->report({node, formErr(Err0414, typeResolved->getDisplayNameC())});
         }
 
         node->parent->addAlternativeScope(scope, COLLECTED_SCOPE_USING);

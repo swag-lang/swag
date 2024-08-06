@@ -139,7 +139,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = formErr(Err0638, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0640, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
@@ -149,7 +149,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = formErr(Err0651, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0653, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
@@ -159,34 +159,34 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = formErr(Err0256, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0234, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = formErr(Err0652, fromType->getDisplayNameC());
+        msg = formErr(Err0654, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
             hint = toNte(Nte0142);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
         hint = formNte(Nte0177, fromType->getDisplayNameC());
-        msg  = formErr(Err0597, toType->getDisplayNameC());
+        msg  = formErr(Err0599, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
         hint = toNte(Nte0210);
-        msg  = toErr(Err0596);
+        msg  = toErr(Err0598);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg = toErr(Err0199);
+            msg = toErr(Err0195);
         }
         else
         {
-            msg                   = formErr(Err0598, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg                   = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
             const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
 
             BadSignatureInfos bi;
@@ -231,7 +231,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         remarks.push_back(form("the source type is [[%s]]", fromName.c_str()));
         remarks.push_back(form("the requested type is [[%s]]", toName.c_str()));
 
-        msg = toErr(Err0594);
+        msg = toErr(Err0596);
     }
 }
 
@@ -262,7 +262,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = formErr(Err0598, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 
