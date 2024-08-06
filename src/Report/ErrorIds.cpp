@@ -191,7 +191,10 @@ void initErrors()
     SWAG_ERROR(Err0065, "empty [[interface]]                               $ the interface [[%s]] should contain at least one function declaration");
     SWAG_ERROR(Err0066, "empty [[switch]]                                  $ the body of the [[switch]] is empty $ consider adding some cases, or removing it");
     SWAG_ERROR(Err0067, "empty array literal                               $ an array literal should contain at least one value");
+    SWAG_ERROR(Err0209, "empty attribute                                   $ an attribute should contain at least one value $ you should specify the attribute name");
     SWAG_ERROR(Err0068, "empty compiler function body                      $ a %s requires a body; expected [[{]] but found [[;]] instead");
+    SWAG_ERROR(Err0671, "empty expression                                  $ the expression [[()]] is empty and not allowed here");
+    SWAG_ERROR(Err0210, "empty statement [[;]]                             $ a [[;]] can't be used alone to mark an empty statement");
     SWAG_ERROR(Err0069, "escaping stack frame                              $ you can't reference the %s [[%s]] because it's in a different stack frame");
     SWAG_ERROR(Err0070, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err0071, "expected [[%s]]                                   $ expected [[%s]] %s, got $$TKN$$ instead");
@@ -300,6 +303,7 @@ void initErrors()
     SWAG_ERROR(Err0184, "invalid bit-cast                                  $ bit-cast to type [[%s]] is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err0185, "invalid block start                               $ an [[{]] (start of a block) is not allowed after [[discard try/assume/catch]]");
     SWAG_ERROR(Err0186, "invalid call                                      $ unexpected call arguments after the variable name [[%s]]");
+    SWAG_ERROR(Err0260, "invalid call lambda                               $ invalid lambda call because [[%s]] is not a variable, it is %s");
     SWAG_ERROR(Err0187, "invalid capture                                   $ can't capture [[%s]] because it's %s $ capturing %s type is not supported");
     SWAG_ERROR(Err0188, "invalid capture                                   $ can't capture [[%s]] because it's not a plain old data struct $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]] or [[opPostMove]]");
     SWAG_ERROR(Err0189, "invalid character                                 $ the character [[%s]] is not recognized in this context");
@@ -320,8 +324,6 @@ void initErrors()
     SWAG_ERROR(Err0206, "invalid dereference null                          $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0207, "invalid embedded enum                             $ expected an enum type, got type [[%s]] instead");
     SWAG_ERROR(Err0208, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, got $$TKN$$ instead");
-    SWAG_ERROR(Err0209, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name");
-    SWAG_ERROR(Err0210, "invalid empty statement [[;]]                     $ a [[;]] can't be used alone to mark an empty statement");
     SWAG_ERROR(Err0211, "invalid enum identifier                           $ expected an enum value identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0221, "invalid escape code                               $ [[%c]] is not a valid escape code");
     SWAG_ERROR(Err0222, "invalid escape format                             $ the [[\\U]] escape code requires 8 hexadecimal digits");
@@ -359,7 +361,6 @@ void initErrors()
     SWAG_ERROR(Err0257, "invalid interface function                        $ the first parameter should be [[self]], got type [[%s]] instead $ consider declaring the interface function with [[mtd]] instead of [[func]]");
     SWAG_ERROR(Err0258, "invalid interface function                        $ the interface member [[%s]] should have at least [[self]] as the first parameter $ consider declaring the interface function with [[mtd]] instead of [[func]]");
     SWAG_ERROR(Err0259, "invalid intrinsic                                 $ [[%s]] is not a valid intrinsic starting with [[@]]");
-    SWAG_ERROR(Err0260, "invalid lambda call                               $ invalid lambda call because [[%s]] is not a variable, it is %s");
     SWAG_ERROR(Err0341, "invalid list variables                            $ [[if]] does not support multiples variable declarations");
     SWAG_ERROR(Err0342, "invalid list variables                            $ [[using]] does not support multiple variable declarations");
     SWAG_ERROR(Err0343, "invalid list variables                            $ [[with]] does not support multiple variables");
@@ -375,6 +376,7 @@ void initErrors()
     SWAG_ERROR(Err0270, "invalid name alias                                $ a name alias should not be used on %s");
     SWAG_ERROR(Err0160, "invalid name alias                                $ expected an identifier for name aliasing, got $$TKN$$ instead");
     SWAG_ERROR(Err0161, "invalid name alias                                $ expected the alias name after [[%s]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0271, "invalid name argument                             $ expected an argument name before [[:]], got $$TKN$$ instead");
     SWAG_ERROR(Err0180, "invalid name attribute                            $ expected an attribute name, got $$TKN$$ instead");
     SWAG_ERROR(Err0195, "invalid name compound                             $ expected a single identifier %s $ consider using a single name without the symbol [['.']]");
     SWAG_ERROR(Err0198, "invalid name constant                             $ expected the constant name after [[const]], got $$TKN$$ instead");
@@ -392,7 +394,6 @@ void initErrors()
     SWAG_ERROR(Err0345, "invalid name variable                             $ expected a variable name, got $$TKN$$ instead");
     SWAG_ERROR(Err0346, "invalid name variable                             $ expected another variable name after [[,]], got $$TKN$$ instead");
     SWAG_ERROR(Err0347, "invalid name variable                             $ expected the variable name after [[%s]], got $$TKN$$ instead");
-    SWAG_ERROR(Err0271, "invalid named argument                            $ expected a named argument before [[:]], got $$TKN$$ instead");
     SWAG_ERROR(Err0272, "invalid namespace body                            $ missing the namespace body or an instruction instead of the [[;]]");
     SWAG_ERROR(Err0274, "invalid negation                                  $ can't negate a value of type [[%s]]");
     SWAG_ERROR(Err0275, "invalid negation                                  $ can't negate an unsigned type [[%s]]");
@@ -795,7 +796,6 @@ void initErrors()
     SWAG_ERROR(Err0668, "unexpected attribute return type                  $ an attribute can't have a return type starting with [[->]]");
     SWAG_ERROR(Err0669, "unexpected comparison                             $ expected an affectation with [[=]] but found the comparison operator [['==']] instead");
     SWAG_ERROR(Err0670, "unexpected default value                          $ default value for variadic parameters are not allowed");
-    SWAG_ERROR(Err0671, "unexpected empty expression                       $ the expression [[()]] is empty and not allowed here");
     SWAG_ERROR(Err0672, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ the beginning [[/*]] of the multi-line comment is missing");
     SWAG_ERROR(Err0673, "unexpected end of file within comment             $ this multi-line comment is missing its closing [[*/]]");
     SWAG_ERROR(Err0674, "unexpected function body                          $ a function tagged with the [[#[Swag.Foreign]]] attribute can't have a body");
