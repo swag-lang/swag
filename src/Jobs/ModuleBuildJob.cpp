@@ -201,7 +201,7 @@ void ModuleBuildJob::checkMissingErrors() const
                 if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->removeFlag(FILE_SHOULD_HAVE_ERROR);
-                    Report::report({file, file->tokenHasError, toErr(Err0527)});
+                    Report::report({file, file->tokenHasError, toErr(Err0530)});
                 }
             }
 
@@ -210,7 +210,7 @@ void ModuleBuildJob::checkMissingErrors() const
                 if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->removeFlag(FILE_SHOULD_HAVE_WARNING);
-                    Report::report({file, file->tokenHasWarning, toErr(Err0528)});
+                    Report::report({file, file->tokenHasWarning, toErr(Err0531)});
                 }
             }
         }
@@ -253,7 +253,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
-                Report::error(module, formErr(Err0701, dep->name.c_str()));
+                Report::error(module, formErr(Err0700, dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
@@ -692,7 +692,7 @@ JobResult ModuleBuildJob::execute()
             {
                 if (module->is(ModuleKind::Script))
                 {
-                    Report::error(module, toErr(Err0461));
+                    Report::error(module, toErr(Err0469));
                     return JobResult::ReleaseJob;
                 }
             }

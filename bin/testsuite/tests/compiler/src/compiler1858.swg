@@ -1,4 +1,4 @@
-#global testerror "Err0575"
+#global testerror "Err0581"
 
 const A = B
 const B = A

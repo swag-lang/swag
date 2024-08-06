@@ -1,4 +1,4 @@
-#global testerror "Err0538"
+#global testerror "Err0545"
 
 func addItem(name: string, id: string, disabled = false)
 {

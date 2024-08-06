@@ -22,10 +22,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline()->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, formErr(Err0383, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0391, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, formErr(Err0382, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0390, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
 
     return true;
 }
@@ -44,7 +44,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->lastChild();
-    return context->report({node, node->token, formErr(Err0435, node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
+    return context->report({node, node->token, formErr(Err0443, node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)
@@ -147,9 +147,9 @@ bool Semantic::resolveThrow(SemanticContext* context)
 
     const auto type = TypeManager::concretePtrRefType(expr->typeInfo);
 
-    SWAG_VERIFY(!type->isVoid(), context->report({expr, toErr(Err0317)}));
+    SWAG_VERIFY(!type->isVoid(), context->report({expr, toErr(Err0318)}));
     if (!type->isAny() || !node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_THROW_GET_ERR))
-        SWAG_VERIFY(type->isStruct(), context->report({expr, formErr(Err0318, type->getDisplayNameC())}));
+        SWAG_VERIFY(type->isStruct(), context->report({expr, formErr(Err0319, type->getDisplayNameC())}));
 
     if (type->isString())
         context->node->printLoc();

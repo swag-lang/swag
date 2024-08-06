@@ -25,7 +25,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{right, formErr(Err0268, right->typeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0269, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 err.addNote(toNte(Nte0061));
             return context->report(err);
@@ -55,7 +55,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic err{mpl, toErr(Err0590)};
+        Diagnostic err{mpl, toErr(Err0596)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
         err.addNote(toNte(Nte0210));
         return context->report(err);
@@ -274,19 +274,19 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0595, g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0601, g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0595, g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0601, g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0595, g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0601, g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
-        Diagnostic err{node, node->token, formErr(Err0640, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0646, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -337,7 +337,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic err{node, node->token, formErr(Err0641, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0647, node->token.c_str())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -357,7 +357,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     }
                     else if (forTuple)
                     {
-                        return context->report({node, node->token, formErr(Err0641, node->token.c_str())});
+                        return context->report({node, node->token, formErr(Err0647, node->token.c_str())});
                     }
                     else
                     {
@@ -367,7 +367,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         {
                             YIELD();
 
-                            Diagnostic err{right, formErr(Err0313, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                            Diagnostic err{right, formErr(Err0314, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(node, node->token, formNte(Nte0158, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
@@ -495,7 +495,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 if (!leftTypeInfo->isPointerArithmetic())
                 {
-                    Diagnostic err{node, node->token, toErr(Err0294)};
+                    Diagnostic err{node, node->token, toErr(Err0295)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     err.addNote(toNte(Nte0110));
                     return context->report(err);
@@ -503,13 +503,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
                 if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
                 {
-                    Diagnostic err{node, node->token, toErr(Err0293)};
+                    Diagnostic err{node, node->token, toErr(Err0294)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
 
                 rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0295, rightTypeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0296, rightTypeInfo->getDisplayNameC())}));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
                 break;
             }

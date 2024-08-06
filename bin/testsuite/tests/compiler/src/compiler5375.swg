@@ -1,4 +1,4 @@
-#global testerror "Err0709"
+#global testerror "Err0708"
 #test
 {
     var l, dx, dy: s32

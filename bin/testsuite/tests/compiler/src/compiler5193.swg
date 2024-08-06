@@ -1,4 +1,4 @@
-/*#global testerror "Err0317"
+/*#global testerror "Err0318"
 
 struct A {x: s32}
 impl A {

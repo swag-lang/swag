@@ -1,4 +1,4 @@
-#global testerror "Err0592"
+#global testerror "Err0598"
 #test
 {
     var x = 2's64

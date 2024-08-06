@@ -1,5 +1,5 @@
 
-#global testerror "Err0710"
+#global testerror "Err0709"
 
 #[Swag.Macro]
 func toto(t: s32, x: code)

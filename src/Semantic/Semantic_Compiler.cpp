@@ -324,7 +324,7 @@ bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        const Diagnostic err{expression, formErr(Err0601, typeInfo->getDisplayNameC())};
+        const Diagnostic err{expression, formErr(Err0607, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -344,7 +344,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     const auto job        = context->baseJob;
     auto       expression = context->node->lastChild();
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0572, expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0578, expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -443,7 +443,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->hasOwnerInline() || node->ownerInline()->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline()->hasAttribute(ATTRIBUTE_MACRO))
-        return context->report({node, toErr(Err0376)});
+        return context->report({node, toErr(Err0384)});
 
     return true;
 }
@@ -461,7 +461,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->addSemFlag(SEMFLAG_COMPILER_INSERT);
 
     auto expr = node->firstChild();
-    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0600, expr->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0606, expr->typeInfo->getDisplayNameC())}));
 
     node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
@@ -710,7 +710,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     auto       back   = node->firstChild();
 
     SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, toErr(Err0035)));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0599, back->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0605, back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     if (!node->hasSemFlag(SEMFLAG_LOAD))
@@ -733,7 +733,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0704, filename.c_str())});
+                    return context->report({back, formErr(Err0703, filename.c_str())});
             }
         }
 
@@ -947,12 +947,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             return true;
 
         case TokenId::CompilerCallerLocation:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0434)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0442)}));
             node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
             return true;
 
         case TokenId::CompilerCallerFunction:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0433)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0441)}));
             node->typeInfo = g_TypeMgr->typeInfoString;
             return true;
 

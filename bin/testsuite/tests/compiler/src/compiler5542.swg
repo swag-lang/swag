@@ -1,4 +1,4 @@
-#global testerror "Err0530"
+#global testerror "Err0536"
 
 private struct Bot
 {

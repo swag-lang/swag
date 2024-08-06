@@ -32,7 +32,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0497, typeExpr->identifier->resolvedSymbolName()->name.c_str())};
+                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0499, typeExpr->identifier->resolvedSymbolName()->name.c_str())};
                             return context->report(err, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
                         }
 
@@ -62,7 +62,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, formErr(Err0239, node->token.c_str())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, formErr(Err0240, node->token.c_str())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -80,7 +80,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     const auto genericStructType = castTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     const auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->is(AstNodeKind::StructDecl), context->report({node, node->token, formErr(Err0236, node->token.c_str())}));
+    SWAG_VERIFY(sourceNode->is(AstNodeKind::StructDecl), context->report({node, node->token, formErr(Err0237, node->token.c_str())}));
 
     // Make a new type
     const auto newType = castTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);

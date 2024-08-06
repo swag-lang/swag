@@ -1,4 +1,4 @@
-#global testerror "Err0592"
+#global testerror "Err0598"
 
 var v = 50;
 

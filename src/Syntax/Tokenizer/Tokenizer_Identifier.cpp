@@ -59,7 +59,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     else if (tokenParse.token.text[0] == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0258, tokenParse.token.c_str())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0259, tokenParse.token.c_str())};
 
         Vector<Utf8> searchList{};
         for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)

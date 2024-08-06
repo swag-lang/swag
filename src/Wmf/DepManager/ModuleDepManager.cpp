@@ -236,15 +236,15 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
 bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
-        return Report::report({dep->node, formErr(Err0726, dep->name.c_str())});
+        return Report::report({dep->node, formErr(Err0725, dep->name.c_str())});
 
     Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)
-            return Report::report({dep->node, toErr(Err0250)});
-        return Report::report({dep->node, dep->tokenLocation, toErr(Err0250)});
+            return Report::report({dep->node, toErr(Err0251)});
+        return Report::report({dep->node, dep->tokenLocation, toErr(Err0251)});
     }
 
     // Check mode
@@ -357,7 +357,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             case CompareVersionResult::VersionGreater:
             case CompareVersionResult::VersionLower:
             {
-                Diagnostic err{dep->node, formErr(Err0723, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+                Diagnostic err{dep->node, formErr(Err0722, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
                 err.addNote(cfgModule->fetchDep->node, toNte(Nte0075));
                 Report::report(err);
                 return false;
@@ -568,12 +568,12 @@ bool ModuleDepManager::execute()
         {
             if (dep->resolvedLocation.empty())
             {
-                Diagnostic err{dep->node, formErr(Err0725, dep->name.c_str(), dep->version.c_str())};
+                Diagnostic err{dep->node, formErr(Err0724, dep->name.c_str(), dep->version.c_str())};
                 Report::report(err);
             }
             else
             {
-                Diagnostic err{dep->node, formErr(Err0724, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Diagnostic err{dep->node, formErr(Err0723, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
                 Report::report(err);
             }
             ok = false;

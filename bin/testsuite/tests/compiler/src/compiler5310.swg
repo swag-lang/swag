@@ -1,6 +1,6 @@
 #global skip
 
-//#global testerror "Err0563"
+//#global testerror "Err0569"
 
 #[Swag.Optim("", false)]
 #test

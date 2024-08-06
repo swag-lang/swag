@@ -1,4 +1,4 @@
-#global testerror "Err0707"
+#global testerror "Err0706"
 struct A
 {
     x: s32

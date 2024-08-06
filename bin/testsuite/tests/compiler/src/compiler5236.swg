@@ -1,4 +1,4 @@
-#global testerror "Err0565"
+#global testerror "Err0571"
 struct(T) A {}
 
 impl A

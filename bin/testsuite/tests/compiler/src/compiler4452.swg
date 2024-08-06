@@ -1,4 +1,4 @@
-#global testerror "Err0252"
+#global testerror "Err0253"
 #test
 {
     const x: [2] bool = true

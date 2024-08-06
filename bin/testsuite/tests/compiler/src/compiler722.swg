@@ -1,4 +1,4 @@
-#global testerror "Err0739"
+#global testerror "Err0738"
 #test
 {
 	@alloc(-10)

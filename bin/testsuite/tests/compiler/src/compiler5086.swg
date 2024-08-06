@@ -1,4 +1,4 @@
-#global testerror "Err0215"
+#global testerror "Err0216"
 enum Random: [2] s32
 {
 }

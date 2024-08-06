@@ -1,4 +1,4 @@
-//#global testerror "Err0262"
+//#global testerror "Err0263"
 
 typealias B = f32
 const A = 1'B

@@ -1,7 +1,7 @@
 
 #global testpass syntax;
 
-#global testerror "Err0210";
+#global testerror "Err0211";
 enum A
 {
 	namespace B

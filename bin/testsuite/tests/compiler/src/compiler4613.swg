@@ -1,2 +1,2 @@
-#global testerror "Err0337"
+#global testerror "Err0338"
 var X = 6's

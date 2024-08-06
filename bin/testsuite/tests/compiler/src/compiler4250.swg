@@ -1,4 +1,4 @@
-#global testerror "Err0559"
+#global testerror "Err0565"
 #test
 {
     const X = "abcd"

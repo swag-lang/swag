@@ -1,3 +1,3 @@
-#global testerror "Err0357"
+#global testerror "Err0365"
 
 var x = 10000000000000000's32
