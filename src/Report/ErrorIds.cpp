@@ -813,7 +813,7 @@ void initErrors()
     SWAG_ERROR(Err0687, "unexpected name                                   $ too many [[visit]] alias names (maximum is [[2]], but [[%u]] are provided)");
     SWAG_ERROR(Err0688, "unexpected parameters                             $ expected [[{]] here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0689, "unexpected return value                           $ a %s can't return something");
-    SWAG_ERROR(Err0690, "unexpected return value                           $ a function with the [[#[Swag.CalleeReturn]]] attribute must not declare a return value");
+    SWAG_ERROR(Err0690, "unexpected return value                           $ a function with the [[#[Swag.CalleeReturn]]] attribute can't declare a return value");
     SWAG_ERROR(Err0691, "unexpected return value                           $ unexpected return value of type [[%s]] for function [[%s]]");
     SWAG_ERROR(Err0692, "unexpected return value                           $ unexpected return value of type [[%s]]");
     SWAG_ERROR(Err0693, "unexpected tuple unpacking name                   $ expected a variable name or [[?]] when unpacking a tuple, got $$TKN$$ instead");
