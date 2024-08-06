@@ -11,7 +11,6 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
-constexpr bool BLANK_LINES       = true;
 constexpr int  MAX_INDENT_BLANKS = 10;
 
 void Diagnostic::setupColors()
@@ -786,19 +785,6 @@ void Diagnostic::printRanges(Log* log)
 
     const auto orgNumRanges = ranges.size();
 
-    // The last one in on the same line as the underline if there is enough room
-    if (!ranges.empty() && !BLANK_LINES)
-    {
-        const auto& r        = ranges.back();
-        const auto  unFormat = Log::removeFormat(r.hint.c_str());
-        if (curColumn + 1 + unFormat.length() < g_CommandLine.errorRightColumn && lineCodePrev.empty())
-        {
-            log->write(" ");
-            printLastRangeHint(log, curColumn + 1);
-            ranges.pop_back();
-        }
-    }
-
     while (!ranges.empty())
     {
         auto&      r        = ranges.back();
@@ -851,7 +837,7 @@ void Diagnostic::printRanges(Log* log)
 
         ranges.pop_back();
 
-        if (BLANK_LINES && !ranges.empty())
+        if (!ranges.empty())
             printRangesVerticalBars(log, ranges.size());
     }
 
