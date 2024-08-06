@@ -456,13 +456,6 @@ void initErrors()
     SWAG_ERROR(Err0330, "invalid number prefix                             $ expected [[0x]] for hexadecimal or [[0b]] for binary, got $$TKN$$ instead");
     SWAG_ERROR(Err0331, "invalid opaque struct                             $ a struct marked with [[#[Swag.Opaque]]] requires a [[public]] access");
     SWAG_ERROR(Err0332, "invalid opaque struct                             $ the struct can't be marked with [[#[Swag.Opaque]]] because the whole file is exported with [[#global export]]");
-    SWAG_ERROR(Err0333, "invalid operation                                 $ the bit inversion operation [['~']] is not allowed on type [[%s]]");
-    SWAG_ERROR(Err0334, "invalid operation                                 $ the operation [['%s']] does not accept the type [[%s]] as the left argument");
-    SWAG_ERROR(Err0335, "invalid operation                                 $ the operation [['%s']] does not accept the type [[%s]] as the right argument");
-    SWAG_ERROR(Err0336, "invalid operation                                 $ the operation [['%s']] is not allowed because the left expression is an enum type ([[%s]]) not marked with [[#[Swag.EnumFlags]]]");
-    SWAG_ERROR(Err0337, "invalid operation                                 $ the operation [['%s']] is not allowed because the right expression is an enum type ([[%s]]) not marked with [[#[Swag.EnumFlags]]]");
-    SWAG_ERROR(Err0338, "invalid operation                                 $ the operation [['%s']] is not allowed on tuple types");
-    SWAG_ERROR(Err0339, "invalid operation                                 $ the operation [['%s']] is not allowed on type [[%s]]");
     SWAG_ERROR(Err0340, "invalid packing value                             $ the [[#[Swag.Pack]]] argument must be 0 or a power of two, got [[%d]]");
     SWAG_ERROR(Err0341, "invalid parameter                                 $ the [[#message]] block needs a parameter of type [[Swag.CompilerMsgMask]], got type [[%s]]");
     SWAG_ERROR(Err0342, "invalid parameter name                            $ expected a parameter name, got $$TKN$$ instead");
@@ -500,8 +493,6 @@ void initErrors()
     SWAG_ERROR(Err0374, "invalid tuple unpacking                           $ can't unpack type [[%s]] $ a struct or a tuple is expected");
     SWAG_ERROR(Err0375, "invalid type                                      $ the initialization expression has type [[void]]");
     SWAG_ERROR(Err0376, "invalid type                                      $ the intrinsic [[@spread]] can't be used with type [[%s]] $ this kind of type can't be spreaded");
-    SWAG_ERROR(Err0377, "invalid type                                      $ the operator [['<<']] requires an integer, got type [[%s]] instead");
-    SWAG_ERROR(Err0378, "invalid type                                      $ the operator [['>>']] requires an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0379, "invalid type                                      $ the second parameter of [[%s]] can't be of type [[%s]] $ consider using [[opAssign]] if you want to make a copy");
     SWAG_ERROR(Err0380, "invalid type                                      $ the special function [[%s]] expects a [[bool]] as a generic parameter, got type [[%s]] instead");
     SWAG_ERROR(Err0381, "invalid type                                      $ the special function [[%s]] expects a [[string]] as a generic parameter, got type [[%s]] instead");
@@ -773,6 +764,14 @@ void initErrors()
     SWAG_ERROR(Err0645, "type mismatch field                               $ expected type [[%s]] for field [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0641, "type mismatch pointer                             $ conversion from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
     SWAG_ERROR(Err0642, "type mismatch pointer                             $ conversion from type [[%s]] to a pointer type is not allowed");
+    SWAG_ERROR(Err0333, "type mismatch operation                           $ the bit inversion operation [['~']] does not accept the type [[%s]]");
+    SWAG_ERROR(Err0334, "type mismatch operation                           $ the operation [['%s']] does not accept the type [[%s]] as the left argument");
+    SWAG_ERROR(Err0335, "type mismatch operation                           $ the operation [['%s']] does not accept the type [[%s]] as the right argument");
+    SWAG_ERROR(Err0336, "type mismatch operation                           $ the operation [['%s']] is not allowed because the left expression is an enum type ([[%s]]) not marked with [[#[Swag.EnumFlags]]]");
+    SWAG_ERROR(Err0337, "type mismatch operation                           $ the operation [['%s']] is not allowed because the right expression is an enum type ([[%s]]) not marked with [[#[Swag.EnumFlags]]]");
+    SWAG_ERROR(Err0338, "type mismatch operation                           $ the operation [['%s']] does not accept tuple types");
+    SWAG_ERROR(Err0339, "type mismatch operation                           $ the operation [['%s']] does not accept the type [[%s]]");
+    SWAG_ERROR(Err0377, "type mismatch operation                           $ the operation [['%s']] requires an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0651, "unauthorized function overload                    $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0652, "unexpected [[#elif]]                              $ an [[#elif]] was found without a preceding [[#if]] instruction");
     SWAG_ERROR(Err0653, "unexpected [[#else]]                              $ a [[#else]] was found without a preceding [[#if]] or [[#elif]] instruction");
@@ -866,6 +865,7 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0741, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
+    SWAG_ERROR(Err0378, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
     SWAG_ERROR(Err0745, nullptr);

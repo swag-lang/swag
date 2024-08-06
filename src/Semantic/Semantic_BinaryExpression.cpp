@@ -1155,7 +1155,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic err{node, node->token, formErr(Err0377, leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0377, "<<", leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(left));
         return context->report(err);
     }
@@ -1233,7 +1233,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic err{node, node->token, formErr(Err0378, leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0377, ">>", leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(left));
         return context->report(err);
     }
