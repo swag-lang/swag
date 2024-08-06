@@ -1,2 +1,2 @@
-#global testerror "Err0646";
+#global testerror "Err0645";
 #assert true / false;

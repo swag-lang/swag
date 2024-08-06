@@ -1,4 +1,4 @@
-#global testerror "Err0371"
+#global testerror "Err0372"
 
 interface TOTO
 {

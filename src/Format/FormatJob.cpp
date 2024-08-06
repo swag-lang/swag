@@ -23,7 +23,7 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
     FILE* f = nullptr;
     if (fopen_s(&f, fileName, "wb"))
     {
-        Report::errorOS(formErr(Err0086, fileName.c_str()));
+        Report::errorOS(formErr(Err0085, fileName.c_str()));
         return false;
     }
 

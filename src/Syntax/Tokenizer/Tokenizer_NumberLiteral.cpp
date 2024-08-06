@@ -25,7 +25,7 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0566)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0x80000000'00000000), error(tokenParse, toErr(Err0568)));
         SWAG_VERIFY(rank != 64, error(tokenParse, toErr(Err0276)));
         tokenParse.literalValue.u64 <<= 1;
         rank++;
@@ -83,7 +83,7 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0566)));
+        SWAG_VERIFY(!(tokenParse.literalValue.u64 & 0xF0000000'00000000), error(tokenParse, toErr(Err0568)));
         SWAG_VERIFY(rank != 16, error(tokenParse, toErr(Err0277)));
         tokenParse.literalValue.u64 <<= 4;
         rank++;
@@ -150,7 +150,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0566)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0568)));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
@@ -190,7 +190,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         rank++;
 
         const auto val = c - '0';
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0566)));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, toErr(Err0568)));
         token.literalValue.u64 += val;
 
         c = peekChar(offset);

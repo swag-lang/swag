@@ -1,4 +1,4 @@
-#global testerror "Err0646"
+#global testerror "Err0645"
 #test
 {
     var fct1: func(s32, bool)

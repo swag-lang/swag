@@ -778,10 +778,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0105, dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0104, dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0104, dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0103, dep->buildNum)}));
                 break;
             default:
                 break;
@@ -1067,7 +1067,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, toErr(Err0099)});
+        Report::report({ip->node, ip->node->token, toErr(Err0098)});
         return false;
     }
 

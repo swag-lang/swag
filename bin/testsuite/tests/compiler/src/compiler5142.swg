@@ -1,4 +1,4 @@
-#global testerror "Err0537"
+#global testerror "Err0538"
 func hello(v: s32, name, a, b) {
     return "hello" + name
 }

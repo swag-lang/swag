@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0460"
+#global testerror "Err0461"
 func T(a: ..., c: s32)
 {
 }

@@ -1,5 +1,5 @@
-#global testerror "Err0539"
-#global testerror "Err0543"
+#global testerror "Err0540"
+#global testerror "Err0544"
 
 struct Utf8
 {

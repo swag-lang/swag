@@ -94,7 +94,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
             if (!std::filesystem::remove(n))
             {
-                Report::errorOS(formErr(Err0081, n.c_str()));
+                Report::errorOS(formErr(Err0080, n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -112,7 +112,7 @@ JobResult FetchModuleFileSystemJob::execute()
         std::error_code err;
         if (!std::filesystem::exists(folder, err) && !std::filesystem::create_directories(folder, err))
         {
-            Report::errorOS(formErr(Err0091, folder.c_str()));
+            Report::errorOS(formErr(Err0090, folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

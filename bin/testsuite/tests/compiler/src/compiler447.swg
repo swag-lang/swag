@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0610"
+#global testerror "Err0609"
 func F(a: s32 = 10, b: s32 = 20)
 {
 	@assert(a == 10)

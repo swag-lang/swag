@@ -424,7 +424,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const bool upUnSigned   = node->expressionUp->typeInfo->isNativeIntegerUnsigned();
     if ((downSigned && upUnSigned) || (downUnSigned && upSigned))
     {
-        Diagnostic err{node, node->token, toErr(Err0605)};
+        Diagnostic err{node, node->token, toErr(Err0604)};
         err.addNote(node->expressionLow, Diagnostic::isType(node->expressionLow));
         err.addNote(node->expressionUp, Diagnostic::isType(node->expressionUp));
         return context->report(err);

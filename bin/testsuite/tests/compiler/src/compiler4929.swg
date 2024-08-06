@@ -1,3 +1,3 @@
-#global testerror "Err0213"
+#global testerror "Err0211"
 
 const A = #ast "toto"

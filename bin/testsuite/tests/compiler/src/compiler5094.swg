@@ -1,2 +1,2 @@
-#global testerror "Err0419"
+#global testerror "Err0420"
 public var g = 0

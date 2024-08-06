@@ -1,4 +1,4 @@
-#global testerror "Err0367"
+#global testerror "Err0368"
 typealias Toto4730 = s32
 
 #[Swag.Inline]

@@ -1,3 +1,3 @@
-#global testerror "Err0704"
+#global testerror "Err0706"
 
 const A = #include "toto"

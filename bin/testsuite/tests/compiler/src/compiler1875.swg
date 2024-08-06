@@ -1,4 +1,4 @@
-#global testerror "Err0659"
+#global testerror "Err0663"
 
 public enum Compiler1871
 {

@@ -103,7 +103,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const uint32_t maxCount = typeStruct->fields.size();
         if (countParams > maxCount)
         {
-            Diagnostic err{fromNode->children[maxCount], formErr(Err0593, maxCount, countParams)};
+            Diagnostic err{fromNode->children[maxCount], formErr(Err0592, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
             return context->report(err);
@@ -111,7 +111,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
         if (countParams < maxCount)
         {
-            Diagnostic err{fromNode->lastChild(), formErr(Err0551, maxCount, countParams)};
+            Diagnostic err{fromNode->lastChild(), formErr(Err0552, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
             return context->report(err);
@@ -199,14 +199,14 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto destStruct  = castAst<AstStruct>(toType->declNode, AstNodeKind::StructDecl);
     if (countParams > maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0593, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0592, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
         return context->report(err);
     }
     if (countParams < maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0551, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0552, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0083)));
         return context->report(err);

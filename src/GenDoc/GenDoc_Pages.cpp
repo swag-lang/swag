@@ -27,7 +27,7 @@ bool GenDoc::generatePages()
             path = path1;
 
         if (!std::filesystem::exists(path, err))
-            Report::errorOS(formErr(Err0083, path.c_str()));
+            Report::errorOS(formErr(Err0082, path.c_str()));
         else
             files.push_back(path);
     }

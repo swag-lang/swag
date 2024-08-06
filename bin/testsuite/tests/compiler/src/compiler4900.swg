@@ -1,2 +1,2 @@
-#global testerror "Err0655";
+#global testerror "Err0659";
 `A

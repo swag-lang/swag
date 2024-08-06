@@ -1,4 +1,4 @@
-#global testerror "Err0675"
+#global testerror "Err0677"
 #[Swag.Foreign("tptp")]
 func toto()
 {
