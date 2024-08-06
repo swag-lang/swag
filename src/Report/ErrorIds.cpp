@@ -303,6 +303,10 @@ void initErrors()
     SWAG_ERROR(Err0184, "invalid bit-cast                                  $ bit-cast to type [[%s]] is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err0185, "invalid block start                               $ an [[{]] (start of a block) is not allowed after [[discard try/assume/catch]]");
     SWAG_ERROR(Err0186, "invalid call                                      $ unexpected call arguments after the variable name [[%s]]");
+    SWAG_ERROR(Err0229, "invalid call function                             $ [[%s]] has call parameters but is [[%s]], not a function");
+    SWAG_ERROR(Err0230, "invalid call function                             $ [[%s]] has call parameters but the type [[%s]] is not a function");
+    SWAG_ERROR(Err0231, "invalid call function                             $ call to function [[%s]] requires arguments between [[()]] and not [[{}]]");
+    SWAG_ERROR(Err0232, "invalid call function                             $ can't call [[%s]] because the function is declared but not defined");
     SWAG_ERROR(Err0260, "invalid call lambda                               $ invalid lambda call because [[%s]] is not a variable, it is %s");
     SWAG_ERROR(Err0187, "invalid capture                                   $ can't capture [[%s]] because it's %s $ capturing %s type is not supported");
     SWAG_ERROR(Err0188, "invalid capture                                   $ can't capture [[%s]] because it's not a plain old data struct $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]] or [[opPostMove]]");
@@ -333,10 +337,6 @@ void initErrors()
     SWAG_ERROR(Err0226, "invalid expression                                $ expected an expression after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0227, "invalid expression                                $ expected an expression, got a type instead");
     SWAG_ERROR(Err0228, "invalid expression                                $ the instruction [[%s]] can't be used as an expression $ this instruction can only be used as a statement");
-    SWAG_ERROR(Err0229, "invalid function call                             $ [[%s]] has call parameters but is [[%s]], not a function");
-    SWAG_ERROR(Err0230, "invalid function call                             $ [[%s]] has call parameters but the type [[%s]] is not a function");
-    SWAG_ERROR(Err0231, "invalid function call                             $ call to function [[%s]] requires arguments between [[()]] and not [[{}]]");
-    SWAG_ERROR(Err0232, "invalid function call                             $ can't call [[%s]] because the function is declared but not defined");
     SWAG_ERROR(Err0233, "invalid function declaration                      $ expected [[func]] or [[mtd]] to declare an interface function, got $$TKN$$ instead $ to declare a function within an interface, use [[func]] or [[mtd]]");
     SWAG_ERROR(Err0236, "invalid generated [[impl]] block                  $ [[impl]] block generation is permissible only within a [[#message]] with [[Swag.CompilerMsgMask.AttributeGen]]");
     SWAG_ERROR(Err0237, "invalid generic                                   $ a generic struct instantiation of a partial type alias ([[%s]]) is not supported");
