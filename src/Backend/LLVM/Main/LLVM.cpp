@@ -146,62 +146,62 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
                                                         "swag_defaultAllocTable");
         pp.processInfos =
         new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
+        pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
     }
     else
     {
         pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_mainContext");
         pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_defaultAllocTable");
         pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_processInfos");
-        pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_tls_threadLocalId");
+        pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_tls_threadLocalId");
     }
 
     // LIBC functions without llvm intrinsics
     {
-        pp.fn_acosf32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_acosf64  = modu.getOrInsertFunction(g_LangSpec->name_acos.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_asinf32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_asinf64  = modu.getOrInsertFunction(g_LangSpec->name_asin.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_tanf32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_tanf64   = modu.getOrInsertFunction(g_LangSpec->name_tan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_atanf32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_atanf64  = modu.getOrInsertFunction(g_LangSpec->name_atan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_sinhf32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_sinhf64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_coshf32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_coshf64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_tanhf32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fn_tanhf64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fn_powf32   = modu.getOrInsertFunction(g_LangSpec->name_powf.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
-        pp.fn_powf64   = modu.getOrInsertFunction(g_LangSpec->name_pow.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
-        pp.fn_atan2f32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
-        pp.fn_atan2f64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
-        pp.fn_memcmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.c_str(), llvm::FunctionType::get(I32_TY(), {PTR_I8_TY(), PTR_I8_TY(), I64_TY()}, false));
-        pp.fn_strlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY()}, false));
-        pp.fn_strcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY(), PTR_I8_TY()}, false));
-        pp.fn_malloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {I64_TY()}, false));
-        pp.fn_realloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
-        pp.fn_free     = modu.getOrInsertFunction(g_LangSpec->name_free.c_str(), llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
+        pp.fnAcosf32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAcosf64  = modu.getOrInsertFunction(g_LangSpec->name_acos.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnAsinf32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAsinf64  = modu.getOrInsertFunction(g_LangSpec->name_asin.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnTanf32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnTanf64   = modu.getOrInsertFunction(g_LangSpec->name_tan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnAtanf32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAtanf64  = modu.getOrInsertFunction(g_LangSpec->name_atan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnSinhf32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnSinhf64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnCoshf32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnCoshf64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnTanhf32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnTanhf64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnPowf32   = modu.getOrInsertFunction(g_LangSpec->name_powf.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fnPowf64   = modu.getOrInsertFunction(g_LangSpec->name_pow.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fnAtan2f32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fnAtan2f64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fnMemcmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.c_str(), llvm::FunctionType::get(I32_TY(), {PTR_I8_TY(), PTR_I8_TY(), I64_TY()}, false));
+        pp.fnStrlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY()}, false));
+        pp.fnStrcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY(), PTR_I8_TY()}, false));
+        pp.fnMalloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {I64_TY()}, false));
+        pp.fnRealloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
+        pp.fnFree     = modu.getOrInsertFunction(g_LangSpec->name_free.c_str(), llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
     }
 
     // Cache things
-    pp.cst0_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 0);
-    pp.cst1_i1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 1);
-    pp.cst0_i8  = llvm::ConstantInt::get(I8_TY(), 0);
-    pp.cst1_i8  = llvm::ConstantInt::get(I8_TY(), 1);
-    pp.cst0_i16 = llvm::ConstantInt::get(I16_TY(), 0);
-    pp.cst0_i32 = llvm::ConstantInt::get(I32_TY(), 0);
-    pp.cst1_i32 = llvm::ConstantInt::get(I32_TY(), 1);
-    pp.cst2_i32 = llvm::ConstantInt::get(I32_TY(), 2);
-    pp.cst3_i32 = llvm::ConstantInt::get(I32_TY(), 3);
-    pp.cst4_i32 = llvm::ConstantInt::get(I32_TY(), 4);
-    pp.cst5_i32 = llvm::ConstantInt::get(I32_TY(), 5);
-    pp.cst6_i32 = llvm::ConstantInt::get(I32_TY(), 6);
-    pp.cst0_i64 = llvm::ConstantInt::get(I64_TY(), 0);
-    pp.cst1_i64 = llvm::ConstantInt::get(I64_TY(), 1);
-    pp.cst0_f32 = llvm::ConstantFP::get(F32_TY(), 0);
-    pp.cst0_f64 = llvm::ConstantFP::get(F64_TY(), 0);
-    pp.cst_null = llvm::ConstantPointerNull::get(PTR_I64_TY());
+    pp.cstAi1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 0);
+    pp.cstBi1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 1);
+    pp.cstAi8  = llvm::ConstantInt::get(I8_TY(), 0);
+    pp.cstBi8  = llvm::ConstantInt::get(I8_TY(), 1);
+    pp.cstAi16 = llvm::ConstantInt::get(I16_TY(), 0);
+    pp.cstAi32 = llvm::ConstantInt::get(I32_TY(), 0);
+    pp.cstBi32 = llvm::ConstantInt::get(I32_TY(), 1);
+    pp.cstCi32 = llvm::ConstantInt::get(I32_TY(), 2);
+    pp.cstDi32 = llvm::ConstantInt::get(I32_TY(), 3);
+    pp.cstEi32 = llvm::ConstantInt::get(I32_TY(), 4);
+    pp.cstFi32 = llvm::ConstantInt::get(I32_TY(), 5);
+    pp.cstGi32 = llvm::ConstantInt::get(I32_TY(), 6);
+    pp.cstAi64 = llvm::ConstantInt::get(I64_TY(), 0);
+    pp.cstBi64 = llvm::ConstantInt::get(I64_TY(), 1);
+    pp.cstAf32 = llvm::ConstantFP::get(F32_TY(), 0);
+    pp.cstAf64 = llvm::ConstantFP::get(F64_TY(), 0);
+    pp.cstNull = llvm::ConstantPointerNull::get(PTR_I64_TY());
 }
 
 JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)

@@ -971,7 +971,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
         fctParams.push_front(r0);
         emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncCall, pushRAParams, {});
 
-        const auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst4_i32});
+        const auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstEi32});
         const auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
         const auto pt = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
         const auto r2 = builder.CreatePointerCast(r1, pt);

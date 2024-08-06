@@ -125,7 +125,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
 
     // Filename
     llvm::Value* r1 = builder.CreateGlobalString(node->token.sourceFile->path.c_str());
-    r1              = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cst0_i32});
+    r1              = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cstAi32});
 
     // Line & column
     auto r2 = builder.getInt32(node->token.startLocation.line);
@@ -136,10 +136,10 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
     if (message)
     {
         r4 = builder.CreateGlobalString(message);
-        r4 = builder.CreateInBoundsGEP(I8_TY(), r4, {pp.cst0_i32});
+        r4 = builder.CreateInBoundsGEP(I8_TY(), r4, {pp.cstAi32});
     }
     else
-        r4 = builder.CreateIntToPtr(pp.cst0_i64, PTR_I8_TY());
+        r4 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
 
     emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
