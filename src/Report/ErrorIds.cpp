@@ -581,6 +581,7 @@ void initErrors()
     SWAG_ERROR(Err0493, "misplaced type                                    $ the type [[code]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
     SWAG_ERROR(Err0494, "misplaced variadic argument                       $ a variadic argument must be the last one");
     SWAG_ERROR(Err0495, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
+    SWAG_ERROR(Err0737, "misplaced variadic parameter                      $ an inline function can't have variadic parameters");
     SWAG_ERROR(Err0496, "missing [[#alias]] number                         $ an [[#alias]] variable name must end with a number such as [[#alias0]], [[#alias1]], etc.");
     SWAG_ERROR(Err0497, "missing [[#do]]                                   $ missing either [[#do]] or [[{]] before $$TKN$$");
     SWAG_ERROR(Err0498, "missing [[#foreignlib]] string argument           $ expected the library name after [[#foreignlib]], got $$TKN$$ instead $ use [[#foreignlib \"path/to/library\"]] to specify the library to import");
@@ -702,6 +703,10 @@ void initErrors()
     SWAG_ERROR(Err0609, "return type mismatch                              $ the return value has already been deduced to have the type [[%s]], and here it's the type [[%s]]");
     SWAG_ERROR(Err0610, "semantic cycle                                    $ a cycle has been detected during the resolution of %s [[%s]]");
     SWAG_ERROR(Err0611, "standalone expression                             $ an expression value should be used $ consider removing it");
+    SWAG_ERROR(Err0009, "switch value already defined                      $ the [[switch]] value [[%d]] has already been defined");
+    SWAG_ERROR(Err0010, "switch value already defined                      $ the [[switch]] value [[%f]] has already been defined");
+    SWAG_ERROR(Err0011, "switch value already defined                      $ the [[switch]] value [[%s]] has already been defined");
+    SWAG_ERROR(Err0012, "switch value already defined                      $ the [[switch]] value [[\"%s\"]] has already been defined");
     SWAG_ERROR(Err0612, "symbol already defined                            $ the %s [[%s]] has already been defined %s");
     SWAG_ERROR(Err0613, "symbol already defined                            $ the %s [[%s]] has already been defined in a parent scope");
     SWAG_ERROR(Err0614, "system error                                      $ failed to create the process [[%s]] (::CreatePipe)");
@@ -715,7 +720,7 @@ void initErrors()
     SWAG_ERROR(Err0622, "too many initializers                             $ expected [[%d]] value(s) to initialize the tuple, got [[%d]] instead");
     SWAG_ERROR(Err0623, "too many initializers                             $ too many initializers for type [[%s]]");
     SWAG_ERROR(Err0624, "too many parameters                               $ too many parameters for [[%s]] ([[%d]] expected, [[%d]] provided)");
-    SWAG_ERROR(Err0625, "too many variadic arguments                       $ the maximum number of variadic arguments is [[%d]], got [[%d]] instead");
+    SWAG_ERROR(Err0625, "out of range variadic arguments                   $ the maximum number of variadic arguments is [[%d]], got [[%d]] instead");
     SWAG_ERROR(Err0626, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
     SWAG_ERROR(Err0627, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0628, "type mismatch                                     $ conversion from a closure type to a lambda type is not allowed");
@@ -750,6 +755,8 @@ void initErrors()
     SWAG_ERROR(Err0206, "type mismatch argument                            $ the intrinsic [[@runes]] requires an argument of type [[string]], got type [[%s]] instead");
     SWAG_ERROR(Err0054, "type mismatch argument const                      $ the intrinsic [[%s]] requires a mutable pointer as a first argument, got type [[%s]] instead");
     SWAG_ERROR(Err0055, "type mismatch argument const                      $ the intrinsic [[%s]] requires a mutable variable as a first argument, got type [[%s]] instead");
+    SWAG_ERROR(Err0728, "type mismatch array                               $ can't declare a static array of type [[void]]");
+    SWAG_ERROR(Err0732, "type mismatch array index                         $ the array access index must be an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0230, "type mismatch comparison                          $ comparison operations on tuples are not supported");
     SWAG_ERROR(Err0231, "type mismatch comparison                          $ the comparison operation [['%s']] does not accept the type [[%s]] as the left argument");
     SWAG_ERROR(Err0232, "type mismatch comparison                          $ the comparison operation [['%s']] does not accept the type [[%s]] as the right argument");
@@ -760,6 +767,7 @@ void initErrors()
     SWAG_ERROR(Err0052, "type mismatch const                               $ casting from an immutable type [[%s]] to a mutable one [[%s]] is not allowed");
     SWAG_ERROR(Err0053, "type mismatch const UFCS                          $ the UFCS argument should be mutable but is not (type is [[%s]])");
     SWAG_ERROR(Err0638, "type mismatch field                               $ expected type [[%s]] for field [[%s]], got type [[%s]] instead");
+    SWAG_ERROR(Err0733, "type mismatch generic parameter                   $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Err0639, "type mismatch operation                           $ the bit inversion operation [['~']] does not accept the type [[%s]]");
     SWAG_ERROR(Err0640, "type mismatch operation                           $ the operation [['%s']] does not accept the type [[%s]] as the left argument");
     SWAG_ERROR(Err0641, "type mismatch operation                           $ the operation [['%s']] does not accept the type [[%s]] as the right argument");
@@ -770,7 +778,6 @@ void initErrors()
     SWAG_ERROR(Err0646, "type mismatch operation                           $ the operation [['%s']] requires an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0647, "type mismatch pointer                             $ conversion from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
     SWAG_ERROR(Err0648, "type mismatch pointer                             $ conversion from type [[%s]] to a pointer type is not allowed");
-    SWAG_ERROR(Err0649, "unexpected function overload                      $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0650, "unexpected [[#elif]]                              $ an [[#elif]] was found without a preceding [[#if]] instruction");
     SWAG_ERROR(Err0651, "unexpected [[#else]]                              $ a [[#else]] was found without a preceding [[#if]] or [[#elif]] instruction");
     SWAG_ERROR(Err0652, "unexpected [[)]]                                  $ a [[)]] was found without a preceding [[(]]");
@@ -798,6 +805,7 @@ void initErrors()
     SWAG_ERROR(Err0674, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ the beginning [[/*]] of the multi-line comment is missing");
     SWAG_ERROR(Err0675, "unexpected end of file within comment             $ this multi-line comment is missing its closing [[*/]]");
     SWAG_ERROR(Err0676, "unexpected function body                          $ a function tagged with the [[#[Swag.Foreign]]] attribute can't have a body");
+    SWAG_ERROR(Err0649, "unexpected function overload                      $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0677, "unexpected generic arguments                      $ expected a name without generic arguments");
     SWAG_ERROR(Err0678, "unexpected generic arguments                      $ unexpected generic arguments after %s");
     SWAG_ERROR(Err0679, "unexpected generic function                       $ the function [[%s]] appears to be generic despite the [[#[Swag.NotGeneric]]] attribute");
@@ -849,21 +857,13 @@ void initErrors()
     SWAG_ERROR(Err0725, "unsuitable struct for union                       $ the struct [[%s]] is not suitable for union because it contains an [[%s]] function");
     SWAG_ERROR(Err0726, "unsupported [[@nameof]] argument                  $ can't evaluate the [[@nameof]] argument");
     SWAG_ERROR(Err0727, "unsupported [[@stringof]] argument                $ can't evaluate the [[@stringof]] argument");
-    SWAG_ERROR(Err0728, "type mismatch array                               $ can't declare a static array of type [[void]]");
     SWAG_ERROR(Err0729, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function returning [[%s]]");
     SWAG_ERROR(Err0730, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function with more than [[%d]] parameters, got [[%d]]");
     SWAG_ERROR(Err0731, "unsupported generic                               $ unsupported generic type deduction, this is too complicated (embedded tuples)");
-    SWAG_ERROR(Err0732, "type mismatch array index                         $ the array access index must be an integer, got type [[%s]] instead");
-    SWAG_ERROR(Err0733, "type mismatch generic parameter                   $ tuple types are not supported for generic parameters");
-    SWAG_ERROR(Err0737, "misplaced variadic parameter                      $ an inline function can't have variadic parameters");
     SWAG_ERROR(Err0738, "unused alias name                                 $ the alias name [[%s]] has no corresponding variable $ consider removing it");
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0741, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0009, "switch value already defined                      $ the [[switch]] value [[%d]] has already been defined");
-    SWAG_ERROR(Err0010, "switch value already defined                      $ the [[switch]] value [[%f]] has already been defined");
-    SWAG_ERROR(Err0011, "switch value already defined                      $ the [[switch]] value [[%s]] has already been defined");
-    SWAG_ERROR(Err0012, "switch value already defined                      $ the [[switch]] value [[\"%s\"]] has already been defined");
     SWAG_ERROR(Err0215, nullptr);
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
