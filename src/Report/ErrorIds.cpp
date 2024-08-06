@@ -198,7 +198,7 @@ void initErrors()
     SWAG_ERROR(Err0072, "escaping stack frame                              $ you can't reference the %s [[%s]] because it's in a different stack frame");
     SWAG_ERROR(Err0073, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err0074, "expected [[%s]]                                   $ expected [[%s]] %s, got $$TKN$$ instead");
-    SWAG_ERROR(Err0075, "expected a ending [[;]]                           $ the interface member definition of [[%s]] should end with a [[;]] $ you can instead define a function body if you want to declare a default implementation");
+    SWAG_ERROR(Err0075, "expected ending [[;]]                             $ the interface member definition of [[%s]] should end with a [[;]] $ you can instead define a function body if you want to declare a default implementation");
     SWAG_ERROR(Err0076, "expected function body                            $ a function body starting with [[{]], [[=]] or [[=>]] is expected");
     SWAG_ERROR(Err0078, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0079, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
@@ -427,9 +427,9 @@ void initErrors()
     SWAG_ERROR(Err0301, "invalid return value assignment                   $ the call does not return a value");
     SWAG_ERROR(Err0302, "invalid runtime typeinfo                          $ failed to convert [[%s]] to a runtime typeinfo");
     SWAG_ERROR(Err0303, "invalid safety argument                           $ invalid safety value [[\"%s\"]] $ the acceptable safety values are [[\"boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null\"]]");
-    SWAG_ERROR(Err0304, "invalid slicing                                   $ can't slice [[%s]] because [[opSlice]] can't be found in the type [[%s]]");
-    SWAG_ERROR(Err0305, "invalid slicing                                   $ slicing is invalid for the type [[%s]]");
-    SWAG_ERROR(Err0306, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
+    SWAG_ERROR(Err0304, "invalid slice                                     $ can't slice [[%s]] because [[opSlice]] can't be found in the type [[%s]]");
+    SWAG_ERROR(Err0305, "invalid slice                                     $ slicing is invalid for the type [[%s]]");
+    SWAG_ERROR(Err0306, "invalid slice                                     $ slicing is invalid on a multi-dimensional array");
     SWAG_ERROR(Err0307, "invalid struct initialization                     $ expected [[{}]] to initialize a struct, and not [[()]] which is reserved for function calls");
     SWAG_ERROR(Err0308, "invalid struct operation                          $ can't affect by index a type [[%s]] to [[%s]] because the necessary [[opIndexAffect]] can't be found");
     SWAG_ERROR(Err0309, "invalid struct operation                          $ the special function [[%s]] is missing in [[%s]] to solve operator [['%s']]");
@@ -487,6 +487,7 @@ void initErrors()
     SWAG_ERROR(Err0361, "isolated [[elif]]                                 $ a [[elif]] was found without a preceding [[if]]");
     SWAG_ERROR(Err0362, "isolated [[else]]                                 $ a [[else]] was found without a preceding [[if]] or [[elif]]");
     SWAG_ERROR(Err0363, "isolated [[}]]                                    $ a [[}]] was found without a preceding [[{]]");
+    SWAG_ERROR(Err0673, "isolated end comment                              $ unexpected end of a multi-line comment [['*/']] after %s $ the beginning [['/*']] of the multi-line comment is missing");
     SWAG_ERROR(Err0364, "literal overflow                                  $ can't negate the number [[%I64d]] because [[%I64u]] is too large for the type [[s64]]");
     SWAG_ERROR(Err0365, "literal overflow                                  $ can't negate the number [[%d]] because [[%u]] is too large for the type [[%s]]");
     SWAG_ERROR(Err0366, "literal overflow                                  $ the number [[%I64u]] is too large for the type [[%s]]");
@@ -654,7 +655,7 @@ void initErrors()
     SWAG_ERROR(Err0528, "missing return value                              $ expected a return value of type [[%s]] after the [[return]]");
     SWAG_ERROR(Err0529, "missing return value                              $ some control paths of %s do not return a value");
     SWAG_ERROR(Err0530, "missing return value                              $ the %s returns a type [[%s]] but lacks a [[return]] in its body");
-    SWAG_ERROR(Err0531, "missing slicing upper bound                       $ expected an upper bound expression after [[..<]] $ if you want to slice to the end, consider using [[..]] instead of [[..<]]");
+    SWAG_ERROR(Err0531, "missing slice upper bound                         $ expected an upper bound expression after [[..<]] $ if you want to slice to the end, consider using [[..]] instead of [[..<]]");
     SWAG_ERROR(Err0532, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0533, "missing test warning                              $ expected at least one warning, but none was raised");
     SWAG_ERROR(Err0534, "missing type                                      $ expected a type after [[#type]], got $$TKN$$ instead");
@@ -682,6 +683,7 @@ void initErrors()
     SWAG_ERROR(Err0556, "out of range [[#up]] count                        $ an [[#up]] count should be in the range [1, 255], got [[%u]] instead");
     SWAG_ERROR(Err0557, "out of range array dimensions                     $ array dimensions can't exceed [[254]]");
     SWAG_ERROR(Err0558, "out of range call level                           $ the limit defined with [[--limit-recurse-bc:%d]] has been reached");
+    SWAG_ERROR(Err0735, "out of range callback parameters                  $ the intrinsic [[@mkcallback]] does not allow a function with more than [[%d]] parameters, got [[%d]]");
     SWAG_ERROR(Err0559, "out of range character literal                    $ can't convert the character literal [[0x%x]] to [[u16]], this is out of range");
     SWAG_ERROR(Err0560, "out of range character literal                    $ can't convert the character literal [[0x%x]] to [[u8]], this is out of range");
     SWAG_ERROR(Err0561, "out of range compiler limit                       $ the size of the %s is too big (maximum size is [[0x%I64x]] bytes)");
@@ -690,9 +692,9 @@ void initErrors()
     SWAG_ERROR(Err0564, "out of range index                                $ the given index [[%I64u]] exceeds the maximum value [[%I64u]]");
     SWAG_ERROR(Err0565, "out of range inline level                         $ can't expand [[%s]] because the limit defined with [[--limit-inline:%d]] has been reached");
     SWAG_ERROR(Err0566, "out of range number                               $ this literal number exceeds 64 bits and is out of allowable range");
-    SWAG_ERROR(Err0567, "out of range slicing                              $ the slicing bound [[%I64u]] is out of range (max is [[%I64u]])");
-    SWAG_ERROR(Err0568, "out of range slicing                              $ the slicing lower bound [[%I64u]] is greater than the upper bound [[%I64u]]");
-    SWAG_ERROR(Err0569, "out of range slicing                              $ the slicing upper bound exclusion with [[..<]] is not possible because it is zero");
+    SWAG_ERROR(Err0567, "out of range slice                                $ the slicing bound [[%I64u]] is out of range (max is [[%I64u]])");
+    SWAG_ERROR(Err0568, "out of range slice                                $ the slicing lower bound [[%I64u]] is greater than the upper bound [[%I64u]]");
+    SWAG_ERROR(Err0569, "out of range slice                                $ the slicing upper bound exclusion with [[..<]] is not possible because it is zero");
     SWAG_ERROR(Err0570, "out of range variadic arguments                   $ the maximum number of variadic arguments is [[%d]], got [[%d]] instead");
     SWAG_ERROR(Err0571, "overflow bytecode stack                           $ the required size exceeds the limit [[%s]] given by [[--stack-size]]");
     SWAG_ERROR(Err0572, "overflow capture size                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");
@@ -778,8 +780,10 @@ void initErrors()
     SWAG_ERROR(Err0580, "type mismatch return                              $ an [[#ast]] block must return a type [[string]], got type [[%s]] instead");
     SWAG_ERROR(Err0581, "type mismatch return                              $ the return value has already been deduced to be nothing, and here it's the type [[%s]]");
     SWAG_ERROR(Err0582, "type mismatch return                              $ the return value has already been deduced to have the type [[%s]], and here it's the type [[%s]]");
-    SWAG_ERROR(Err0655, "unclosed literal character                        $ expected a closing back-tick [[`]] before the end of the line");
-    SWAG_ERROR(Err0656, "unclosed literal string                           $ expected a closing quotation mark [[\"]] before the end of the line $ if you want a multi-line string, use the syntax [[\"\"\"string\"\"\"]]");
+    SWAG_ERROR(Err0734, "type mismatch return callback                     $ the intrinsic [[@mkcallback]] does not accept a function returning the type [[%s]]");
+    SWAG_ERROR(Err0674, "unclosed comment                                  $ this multi-line comment is missing its closing [['*/']]");
+    SWAG_ERROR(Err0655, "unclosed literal character                        $ expected a closing back-tick [['`']] before the end of the line");
+    SWAG_ERROR(Err0656, "unclosed literal string                           $ expected a closing quotation mark [['\"']] before the end of the line $ if you want a multi-line string, use the syntax [[\"\"\"string\"\"\"]]");
     SWAG_ERROR(Err0657, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
     SWAG_ERROR(Err0658, "unexpected [[default]]                            $ a [[switch]] marked with the [[#[Swag.Complete]]] attribute can't have a [[default]] statement");
     SWAG_ERROR(Err0659, "unexpected [[for]]                                $ the [[for]] keyword is not valid in an enum implementation");
@@ -796,8 +800,6 @@ void initErrors()
     SWAG_ERROR(Err0670, "unexpected attribute return type                  $ an attribute can't have a return type starting with [[->]]");
     SWAG_ERROR(Err0671, "unexpected comparison                             $ expected an affectation with [[=]] but found the comparison operator [['==']] instead");
     SWAG_ERROR(Err0672, "unexpected default value                          $ default value for variadic parameters are not allowed");
-    SWAG_ERROR(Err0673, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ the beginning [[/*]] of the multi-line comment is missing");
-    SWAG_ERROR(Err0674, "unexpected end of file within comment             $ this multi-line comment is missing its closing [[*/]]");
     SWAG_ERROR(Err0675, "unexpected function body                          $ a function tagged with the [[#[Swag.Foreign]]] attribute can't have a body");
     SWAG_ERROR(Err0676, "unexpected function overload                      $ a function with the same name [[%s]] has already been declared $ if you want to declare an overload, mark all functions with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0677, "unexpected generic arguments                      $ expected a name without generic arguments");
@@ -857,8 +859,6 @@ void initErrors()
     SWAG_ERROR(Err0731, "unsuitable struct for union                       $ the struct [[%s]] is not suitable for union because it contains an [[%s]] function");
     SWAG_ERROR(Err0732, "unsupported [[@nameof]] argument                  $ can't evaluate the [[@nameof]] argument");
     SWAG_ERROR(Err0733, "unsupported [[@stringof]] argument                $ can't evaluate the [[@stringof]] argument");
-    SWAG_ERROR(Err0734, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function returning [[%s]]");
-    SWAG_ERROR(Err0735, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function with more than [[%d]] parameters, got [[%d]]");
     SWAG_ERROR(Err0736, "unsupported generic                               $ unsupported generic type deduction, this is too complicated (embedded tuples)");
     SWAG_ERROR(Err0737, "unused alias name                                 $ the alias name [[%s]] has no corresponding variable $ consider removing it");
     SWAG_ERROR(Err0738, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
