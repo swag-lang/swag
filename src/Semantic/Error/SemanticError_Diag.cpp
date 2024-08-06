@@ -89,9 +89,9 @@ namespace
         if (!callParameters || callParameters->children.empty())
             err = new Diagnostic{node, node->token, formErr(Err0481, Naming::kindName(overload).c_str())};
         else if (errorParam.destAttrDecl)
-            err = new Diagnostic{node, node->token, formErr(Err0537, niceName.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0537, node->token.c_str())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0538, niceName.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0538, node->token.c_str())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);

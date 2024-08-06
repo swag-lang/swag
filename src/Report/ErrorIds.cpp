@@ -604,8 +604,6 @@ void initErrors()
     SWAG_ERROR(Err0478, "missing [[visit]] expression                      $ expected the element to visit before [[%s]]");
     SWAG_ERROR(Err0479, "missing [[visit]] variable                        $ expected another [[visit]] variable between the [[comma]] ',' and the [[colon]] ':' $ the first [[visit]] variable is the [[value]], the second one is the [[index]]");
     SWAG_ERROR(Err0480, "missing [[while]] boolean expression              $ expected a boolean expression before [[%s]]");
-    SWAG_ERROR(Err0481, "missing arguments                                 $ the %s should have arguments but none were provided");
-    SWAG_ERROR(Err0482, "missing arguments                                 $ the [[#[Swag.Using]]] attribute should have at least one argument");
     SWAG_ERROR(Err0483, "missing attribute                                 $ an [[opVisit]] function must be declared with the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0484, "missing attribute name                            $ expected an attribute name before [[(]]");
     SWAG_ERROR(Err0485, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
@@ -660,8 +658,10 @@ void initErrors()
     SWAG_ERROR(Err0534, "non-transferable [[cvarargs]] type                $ a parameter with the type [[cvarargs]] can't be passed to another function");
     SWAG_ERROR(Err0535, "not a value                                       $ implicit reference to a static struct member of [[%s]]");
     SWAG_ERROR(Err0536, "not a value                                       $ the %s [[%s]] is not a valid value in this context");
-    SWAG_ERROR(Err0537, "not enough attribute arguments                    $ not enough arguments for %s");
-    SWAG_ERROR(Err0538, "not enough call arguments                         $ not enough arguments to call %s");
+    SWAG_ERROR(Err0537, "not enough attribute arguments                    $ not enough arguments for the attribute [[%s]]");
+    SWAG_ERROR(Err0482, nullptr);
+    SWAG_ERROR(Err0481, "not enough arguments                              $ the %s should have arguments but none were provided");
+    SWAG_ERROR(Err0538, "not enough call arguments                         $ not enough arguments calling the function [[%s]]");
     SWAG_ERROR(Err0539, "not enough generic arguments                      $ not enough generic arguments for %s");
     SWAG_ERROR(Err0540, "not enough generic parameters                     $ not enough generic parameters for the special function [[%s]]");
     SWAG_ERROR(Err0541, "not enough initializers                           $ expected [[%d]] value(s) to initialize the array, got [[%d]] instead");
