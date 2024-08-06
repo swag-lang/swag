@@ -381,25 +381,24 @@ namespace
         }
 
         // Here is
-        if (destParamNode && destParamNode->isGeneratedSelf())
+        if (!destParamNode)
+        {
+            errorParam.addNote(Diagnostic::hereIs(overload));
+        }
+        else if (destParamNode->isGeneratedSelf())
         {
             SWAG_ASSERT(errorParam.destFuncDecl);
             errorParam.addNote(Diagnostic::hereIs(errorParam.destFuncDecl));
         }
-        else if (destParamNode && destParamNode->hasAstFlag(AST_GENERATED))
+        else if (destParamNode->hasAstFlag(AST_GENERATED) || Parser::isGeneratedName(destParamNode->token.c_str()))
         {
             const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, toNte(Nte0068));
             errorParam.addNote(note);
         }
-        else if (destParamNode)
-        {
-            const auto        msg  = formNte(Nte0067, destParamNode->token.c_str());
-            const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
-            errorParam.addNote(note);
-        }
         else
         {
-            errorParam.addNote(Diagnostic::hereIs(overload));
+            const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, formNte(Nte0067, destParamNode->token.c_str()));
+            errorParam.addNote(note);
         }
     }
 
