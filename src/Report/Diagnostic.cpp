@@ -578,10 +578,22 @@ void Diagnostic::reportCompact(Log* log)
 {
     setupColors();
     printErrorLevel(log);
+
+    Vector<Utf8> tokens;
+    tokenizeError(textMsg, tokens);
+
+    log->print(tokens[0]);
+    log->print(": ");
+
     log->setColor(sourceFileColor);
     printSourceLine(log);
-    log->setColor(LogColor::White);
-    log->print(oneLiner(textMsg));
+
+    if(tokens.size() > 1)
+    {
+        log->setColor(LogColor::White);
+        log->print(tokens[1]);
+    }
+
     log->writeEol();
     log->setDefaultColor();
 }
