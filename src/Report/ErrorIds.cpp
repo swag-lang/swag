@@ -158,6 +158,7 @@ void initErrors()
     SWAG_ERROR(Err0021, "ambiguous syntax                                  $ ambiguity arises between initializing [[%s]] and starting a new block");
     SWAG_ERROR(Err0022, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]");
+    SWAG_ERROR(Err0043, "compile-time assertion failed                     $ the [[#assert]] expression was evaluated to false");
     SWAG_ERROR(Err0027, "compile-time evaluation required                  $ [[#include]] requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0028, "compile-time evaluation required                  $ can't transform the function return slice (a slice of type [[%s]]) to a compile-time value");
     SWAG_ERROR(Err0029, "compile-time evaluation required                  $ can't transform the function return value (type is [[%s]]) to a constant array because [[opCount]] returns [[0]]");
@@ -174,7 +175,6 @@ void initErrors()
     SWAG_ERROR(Err0040, "compile-time evaluation required                  $ the operation on [[%s]] can't be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0041, "compile-time evaluation required                  $ the operation on the tuple can't be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0042, "compile-time evaluation required                  $ the type [[%s]] can't be converted to constant expression");
-    SWAG_ERROR(Err0043, "compiler assertion failed                         $ the [[#assert]] expression was evaluated to false");
     SWAG_ERROR(Err0046, "conflicting attributes                            $ the [[#[Swag.Compiler]]] and [[#[Swag.Tls]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0047, "conflicting attributes                            $ the [[#[Swag.Inline]]] and [[#[Swag.NoInline]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0048, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
