@@ -6,6 +6,7 @@
 enum ErrorID : uint64_t
 {
 #include "ErrorList.h"
+
     MaxErrors,
 };
 

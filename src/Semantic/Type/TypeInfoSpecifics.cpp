@@ -655,7 +655,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
     auto countMyParams = parameters.size();
     if (!isClosure() && other->isClosure())
         countMyParams += 1;
-    
+
     if (other->parameters.size() > countMyParams)
     {
         bi.matchResult = MatchResult::TooManyArguments;
@@ -695,7 +695,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
             bi.matchResult = MatchResult::NoReturnType;
             return false;
         }
-        
+
         if (returnType && !returnType->isVoid() && (!other->returnType || other->returnType->isVoid()))
         {
             bi.matchResult = MatchResult::MissingReturnType;

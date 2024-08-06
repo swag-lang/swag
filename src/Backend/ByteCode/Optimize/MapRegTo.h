@@ -41,7 +41,7 @@ struct MapRegTo
     {
         if (reg < CACHE)
         {
-            if(here[reg])
+            if (here[reg])
             {
                 SWAG_ASSERT(countCache);
                 countCache--;
@@ -52,17 +52,17 @@ struct MapRegTo
             map.erase(reg);
     }
 
-    void set(uint32_t reg, const T &value)
+    void set(uint32_t reg, const T& value)
     {
         if (reg < CACHE)
         {
-            if(!here[reg])
+            if (!here[reg])
             {
                 here[reg] = true;
                 countCache++;
             }
-            
-            val[reg]  = value;
+
+            val[reg] = value;
         }
         else
         {

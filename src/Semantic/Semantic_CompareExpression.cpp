@@ -156,7 +156,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
             err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
             return context->report(err);
-        }        
+        }
 
         node->typeInfo = g_TypeMgr->typeInfoBool;
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));

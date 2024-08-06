@@ -150,9 +150,9 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
     }
     else
     {
-        pp.mainContext          = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_mainContext");
-        pp.defaultAllocTable    = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_defaultAllocTable");
-        pp.processInfos         = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_processInfos");
+        pp.mainContext         = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_mainContext");
+        pp.defaultAllocTable   = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_defaultAllocTable");
+        pp.processInfos        = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_processInfos");
         pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::ExternalLinkage, nullptr, "swag_tls_threadLocalId");
     }
 

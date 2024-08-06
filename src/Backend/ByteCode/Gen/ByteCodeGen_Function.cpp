@@ -1962,7 +1962,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     auto numVariadic = (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
-        if(numVariadic > SWAG_LIMIT_MAX_VARIADIC_PARAMS)
+        if (numVariadic > SWAG_LIMIT_MAX_VARIADIC_PARAMS)
             return context->report({allParams, formErr(Err0572, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
     }
 

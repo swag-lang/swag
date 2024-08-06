@@ -5,6 +5,7 @@
 #define SWAG_ERROR(__enum) #__enum
 const char* g_ErrList[] = {
 #include "ErrorList.h"
+
 };
 
 Utf8 g_E[MaxErrors];

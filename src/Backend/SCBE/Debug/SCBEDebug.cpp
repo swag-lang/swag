@@ -27,8 +27,8 @@ SCBEDebugTypeIndex SCBEDebug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInf
     field.name.setView(g_LangSpec->name_count);
     tr0->lfFieldList.fields.push_back(field);
 
-    const auto tr1                = addTypeRecord(pp);
-    tr1->kind                     = LF_STRUCTURE;
+    const auto tr1               = addTypeRecord(pp);
+    tr1->kind                    = LF_STRUCTURE;
     tr1->lfStructure.memberCount = 2;
     tr1->lfStructure.sizeOf      = 2 * sizeof(void*);
     tr1->lfStructure.fieldList   = tr0->index;
@@ -115,13 +115,13 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
     /////////////////////////////////
     if (typeInfo->isArray())
     {
-        auto typeArr             = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto tr                  = addTypeRecord(pp);
-        tr->kind                 = LF_ARRAY;
+        auto typeArr            = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto tr                 = addTypeRecord(pp);
+        tr->kind                = LF_ARRAY;
         tr->lfArray.elementType = getOrCreateType(pp, typeArr->pointedType, true);
         tr->lfArray.indexType   = UInt64;
         tr->lfArray.sizeOf      = typeArr->sizeOf;
-        iter.first->second       = tr->index;
+        iter.first->second      = tr->index;
         return tr->index;
     }
 
@@ -145,8 +145,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.name.setView(g_LangSpec->name_sizeof);
         tr0->lfFieldList.fields.push_back(field);
 
-        auto tr1                      = addTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
+        auto tr1                     = addTypeRecord(pp);
+        tr1->kind                    = LF_STRUCTURE;
         tr1->lfStructure.memberCount = 2;
         tr1->lfStructure.sizeOf      = 2 * sizeof(void*);
         tr1->lfStructure.fieldList   = tr0->index;
@@ -176,8 +176,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.name.setView(g_LangSpec->name_itable);
         tr0->lfFieldList.fields.push_back(field);
 
-        auto tr1                      = addTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
+        auto tr1                     = addTypeRecord(pp);
+        tr1->kind                    = LF_STRUCTURE;
         tr1->lfStructure.memberCount = 2;
         tr1->lfStructure.sizeOf      = 2 * sizeof(void*);
         tr1->lfStructure.fieldList   = tr0->index;
@@ -207,8 +207,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.name.setView(g_LangSpec->name_typeinfo);
         tr0->lfFieldList.fields.push_back(field);
 
-        auto tr1                      = addTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
+        auto tr1                     = addTypeRecord(pp);
+        tr1->kind                    = LF_STRUCTURE;
         tr1->lfStructure.memberCount = 2;
         tr1->lfStructure.sizeOf      = 2 * sizeof(void*);
         tr1->lfStructure.fieldList   = tr0->index;
@@ -233,10 +233,10 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         }
 
         // Create a forward reference, in case a field points to the struct itself
-        auto tr2                  = addTypeRecord(pp);
-        tr2->kind                 = LF_STRUCTURE;
+        auto tr2                 = addTypeRecord(pp);
+        tr2->kind                = LF_STRUCTURE;
         tr2->lfStructure.forward = true;
-        tr2->name                 = sname;
+        tr2->name                = sname;
 
         iter.first->second = tr2->index;
 
@@ -256,12 +256,12 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         }
 
         // Struct itself, pointing to the field list
-        auto tr1                      = addTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
+        auto tr1                     = addTypeRecord(pp);
+        tr1->kind                    = LF_STRUCTURE;
         tr1->lfStructure.memberCount = static_cast<uint16_t>(typeStruct->fields.size());
         tr1->lfStructure.sizeOf      = static_cast<uint16_t>(typeStruct->sizeOf);
         tr1->lfStructure.fieldList   = tr0->index;
-        tr1->name                     = sname;
+        tr1->name                    = sname;
 
         iter.first->second = tr1->index;
         return tr1->index;
@@ -300,12 +300,12 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
             }
 
             // Enum itself, pointing to the field list
-            auto tr1                    = addTypeRecord(pp);
-            tr1->kind                   = LF_ENUM;
+            auto tr1                   = addTypeRecord(pp);
+            tr1->kind                  = LF_ENUM;
             tr1->lfEnum.count          = static_cast<uint16_t>(typeInfoEnum->values.size());
             tr1->lfEnum.fieldList      = tr0->index;
             tr1->lfEnum.underlyingType = getOrCreateType(pp, typeInfoEnum->rawType);
-            tr1->name                   = sname;
+            tr1->name                  = sname;
 
             iter.first->second = tr1->index;
             return tr1->index;
@@ -338,8 +338,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         std::pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
         if (iter1.second)
         {
-            auto tr1              = addTypeRecord(pp);
-            tr1->kind             = LF_ARGLIST;
+            auto tr1             = addTypeRecord(pp);
+            tr1->kind            = LF_ARGLIST;
             tr1->lfArgList.count = numArgs;
             for (auto p : typeFunc->parameters)
             {
@@ -354,9 +354,9 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
 
         if (isMethod)
         {
-            tr0->kind                    = LF_MFUNCTION;
+            tr0->kind                   = LF_MFUNCTION;
             tr0->lfMFunction.returnType = getOrCreateType(pp, typeFunc->returnType);
-            auto typeThis                = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeThis               = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
             tr0->lfMFunction.structType = getOrCreateType(pp, typeThis->pointedType);
             tr0->lfMFunction.thisType   = getOrCreateType(pp, typeThis);
             tr0->lfMFunction.numArgs    = numArgs;
@@ -364,7 +364,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         }
         else
         {
-            tr0->kind                    = LF_PROCEDURE;
+            tr0->kind                   = LF_PROCEDURE;
             tr0->lfProcedure.returnType = getOrCreateType(pp, typeFunc->returnType);
             tr0->lfProcedure.numArgs    = numArgs;
             tr0->lfProcedure.argsType   = argsTypeIndex;
@@ -372,10 +372,10 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
 
         if (typeInfo->isLambdaClosure())
         {
-            auto trp                    = addTypeRecord(pp);
-            trp->kind                   = LF_POINTER;
+            auto trp                   = addTypeRecord(pp);
+            trp->kind                  = LF_POINTER;
             trp->lfPointer.pointeeType = tr0->index;
-            iter.first->second          = trp->index;
+            iter.first->second         = trp->index;
             return trp->index;
         }
 
@@ -443,8 +443,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* t
         return simpleType | NearPointer64 << 8;
 
     // Pointer to something complex
-    const auto tr              = addTypeRecord(pp);
-    tr->kind                   = LF_POINTER;
+    const auto tr             = addTypeRecord(pp);
+    tr->kind                  = LF_POINTER;
     tr->lfPointer.pointeeType = getOrCreateType(pp, typeInfo, !asRef);
     tr->lfPointer.asRef       = asRef;
     return tr->index;
@@ -453,8 +453,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* t
 SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
-    const auto tr              = addTypeRecord(pp);
-    tr->kind                   = LF_POINTER;
+    const auto tr             = addTypeRecord(pp);
+    tr->kind                  = LF_POINTER;
     tr->lfPointer.pointeeType = getOrCreatePointerToType(pp, typeInfo, false);
     return tr->index;
 }

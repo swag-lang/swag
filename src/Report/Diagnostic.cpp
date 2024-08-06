@@ -11,7 +11,7 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 
-constexpr int  MAX_INDENT_BLANKS = 10;
+constexpr int MAX_INDENT_BLANKS = 10;
 
 void Diagnostic::setupColors()
 {
@@ -157,11 +157,11 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                     replace += "']]";
                 }
             }
-            else if(isSymbol && (inside[0] != '\'' || inside.back() != '\''))
+            else if (isSymbol && (inside[0] != '\'' || inside.back() != '\''))
             {
                 replace += " [[\'";
                 replace += inside;
-                replace += "\']]";            
+                replace += "\']]";
             }
             else
             {

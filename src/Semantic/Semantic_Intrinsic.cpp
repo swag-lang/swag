@@ -662,7 +662,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
     auto       expr     = node->firstChild();
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
-    
+
     if (const auto pr2 = node->getParent(2); pr2->isNot(AstNodeKind::FuncCallParam))
     {
         if (pr2->is(AstNodeKind::Cast) || pr2->is(AstNodeKind::AutoCast))

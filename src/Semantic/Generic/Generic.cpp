@@ -395,9 +395,9 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
     {
         if (Parser::isGeneratedName(p.first))
             continue;
-        if(!p.second)
+        if (!p.second)
             continue;
-        if(!p.second->text.length() || p.second->text.empty())
+        if (!p.second->text.length() || p.second->text.empty())
             continue;
 
         Utf8 rem = "with ";

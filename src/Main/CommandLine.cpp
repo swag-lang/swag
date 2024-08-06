@@ -35,9 +35,9 @@ bool CommandLine::check()
     if (!verboseErrorsFilter.empty())
         verboseErrors = true;
 #ifdef SWAG_STATS
-    if(!statsFreqOp0.empty() || !statsFreqOp1.empty())
+    if (!statsFreqOp0.empty() || !statsFreqOp1.empty())
         statsFreq = true;
-    if(!profileFilter.empty())
+    if (!profileFilter.empty())
         profile = true;
 #endif
 
