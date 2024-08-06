@@ -91,6 +91,12 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     addThe(replace, "before");
     addThe(replace, "expected");
 
+    replace.replace("[[1]] arguments", "[[1]] argument");
+    replace.replace("[[1]] parameters", "[[1]] parameter");
+    replace.replace("[[1]] values", "[[1]] value");
+    replace.replace("[[1]] fields", "[[1]] field");
+    replace.replace("[[1]] variables", "[[1]] variable");
+
     return replace;
 }
 

@@ -72,12 +72,12 @@ bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, const Ast
     {
         if (numCur > numWanted)
             return context->report({parameters->children[numWanted], formErr(Err0587, node->token.c_str(), numWanted, numCur)});
-        return context->report({parameters, formErr(Err0543, node->token.c_str(), numWanted, numCur)});
+        return context->report({parameters, formErr(Err0543, numWanted, node->token.c_str(), numCur)});
     }
 
     if (!exact && numCur < numWanted)
     {
-        return context->report({parameters, formErr(Err0544, node->token.c_str(), numWanted, numCur)});
+        return context->report({parameters, formErr(Err0544, numWanted, node->token.c_str(), numCur)});
     }
 
     return true;
