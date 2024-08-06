@@ -699,13 +699,10 @@ void initErrors()
     SWAG_ERROR(Err0573, "overload mismatch                                 $ found [[%d]] overloads for [[%s]], but none matched the provided arguments");
     SWAG_ERROR(Err0574, "recursive evaluation                              $ the struct [[%s]] references itself, which is causing a recursion");
     SWAG_ERROR(Err0575, "redundant access modifier                         $ the [[%s]] access modifier is unnecessary because of [[#global export]] $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
-    SWAG_ERROR(Err0576, "reserved function name                            $ the function name [[%s]] is reserved by the compiler");
-    SWAG_ERROR(Err0577, "reserved identifier                               $ the identifier [[%s]] starts with [[__]] $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
-    SWAG_ERROR(Err0578, "reserved namespace name                           $ the namespace [[%s]] is reserved by the compiler");
-    SWAG_ERROR(Err0579, "reserved struct member name                       $ the struct member name [[%s]] is reserved by the compiler $ struct member names beginning with [[item]] are reserved by the language");
-    SWAG_ERROR(Err0580, "return type mismatch                              $ an [[#ast]] block must return a type string, got type [[%s]] instead");
-    SWAG_ERROR(Err0581, "return type mismatch                              $ the return value has already been deduced to be nothing, and here it's the type [[%s]]");
-    SWAG_ERROR(Err0582, "return type mismatch                              $ the return value has already been deduced to have the type [[%s]], and here it's the type [[%s]]");
+    SWAG_ERROR(Err0577, "reserved name                                     $ the identifier [[%s]] starts with [[__]] $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
+    SWAG_ERROR(Err0576, "reserved name function                            $ the function name [[%s]] is reserved by the compiler");
+    SWAG_ERROR(Err0578, "reserved name namespace                           $ the namespace [[%s]] is reserved by the compiler");
+    SWAG_ERROR(Err0579, "reserved name struct member                       $ the struct member name [[%s]] is reserved by the compiler $ struct member names beginning with [[item]] are reserved by the language");
     SWAG_ERROR(Err0583, "semantic cycle                                    $ a cycle has been detected during the resolution of %s [[%s]]");
     SWAG_ERROR(Err0584, "standalone expression                             $ an expression value should be used $ consider removing it");
     SWAG_ERROR(Err0585, "system error                                      $ failed to create the process [[%s]] (::CreatePipe)");
@@ -778,6 +775,9 @@ void initErrors()
     SWAG_ERROR(Err0652, "type mismatch operation                           $ the operation [['%s']] requires an integer, got type [[%s]] instead");
     SWAG_ERROR(Err0653, "type mismatch pointer                             $ conversion from a value pointer [[%s]] to a block pointer [[%s]] is not allowed");
     SWAG_ERROR(Err0654, "type mismatch pointer                             $ conversion from type [[%s]] to a pointer type is not allowed");
+    SWAG_ERROR(Err0580, "type mismatch return                              $ an [[#ast]] block must return a type [[string]], got type [[%s]] instead");
+    SWAG_ERROR(Err0581, "type mismatch return                              $ the return value has already been deduced to be nothing, and here it's the type [[%s]]");
+    SWAG_ERROR(Err0582, "type mismatch return                              $ the return value has already been deduced to have the type [[%s]], and here it's the type [[%s]]");
     SWAG_ERROR(Err0655, "unclosed literal character                        $ expected a closing back-tick [[`]] before the end of the line");
     SWAG_ERROR(Err0656, "unclosed literal string                           $ expected a closing quotation mark [[\"]] before the end of the line $ if you want a multi-line string, use the syntax [[\"\"\"string\"\"\"]]");
     SWAG_ERROR(Err0657, "unexpected [[const]]                              $ unexpected [[const]] before a lambda parameter name");
