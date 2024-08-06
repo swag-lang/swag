@@ -822,7 +822,7 @@ void initErrors()
     SWAG_ERROR(Err0696, "unexpected type declaration                       $ unexpected type declaration after [[self]] $ [[self]] is implicitly typed; consider removing the redundant type");
     SWAG_ERROR(Err0697, "unexpected type declaration                       $ unexpected type declaration after unnamed parameters");
     SWAG_ERROR(Err0698, "unexpected type suffix                            $ %s should not be followed by a type suffix");
-    SWAG_ERROR(Err0699, "unexpected visit name                             $ a special visit name is only valid to visit a struct, and here we are visiting [[%s]]");
+    SWAG_ERROR(Err0699, "unexpected visit name                             $ a visit specialization name is only valid to visit a struct, and here we are visiting [[%s]]");
     SWAG_ERROR(Err0700, "unknown attribute                                 $ the attribute [[%s]] can't be found");
     SWAG_ERROR(Err0701, "unknown dependency                                $ the module dependency [[%s]] can't be found");
     SWAG_ERROR(Err0702, "unknown enum value                                $ the enumeration value [[%s]] can't be found in [[%s]]");
@@ -843,7 +843,7 @@ void initErrors()
     SWAG_ERROR(Err0717, "unknown struct                                    $ the struct [[%s]] can't be found");
     SWAG_ERROR(Err0718, "unknown type                                      $ the type [[%s]] can't be found");
     SWAG_ERROR(Err0719, "unknown visit                                     $ the type [[%s]] can't be visited with [[visit]] $ the special function [[opVisit]] can't be found");
-    SWAG_ERROR(Err0720, "unknown visit specialization                      $ the visit specialization name [[%s]] can't be found in [[%s]]");
+    SWAG_ERROR(Err0720, "unknown visit name                                $ the visit specialization name [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0721, "unpack number mismatch                            $ trying to unpack [[%u]] variables but the tuple has [[%u]] fields");
     SWAG_ERROR(Err0722, "unpack number mismatch                            $ trying to unpack [[%u]] variables but the tuple has only [[%u]] fields");
     SWAG_ERROR(Err0723, "unresolved dependency                             $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
