@@ -15,12 +15,12 @@ struct Set : std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<
     }
 };
 
-struct SetUtf8 : std::unordered_set<Utf8, HashUtf8, std::equal_to<Utf8>, StdAllocator<Utf8>>
+struct SetUtf8 : std::unordered_set<Utf8, HashUtf8, std::equal_to<>, StdAllocator<Utf8>>
 {
     SetUtf8() = default;
 };
 
-struct SetPath : std::unordered_set<Path, HashPath, std::equal_to<Path>, StdAllocator<Path>>
+struct SetPath : std::unordered_set<Path, HashPath, std::equal_to<>, StdAllocator<Path>>
 {
     SetPath() = default;
 };
