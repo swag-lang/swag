@@ -186,7 +186,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         }
         else
         {
-            msg                   = formErr(Err0645, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg                   = formErr(Err0644, fromType->getDisplayNameC(), toType->getDisplayNameC());
             const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
 
             BadSignatureInfos bi;

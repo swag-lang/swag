@@ -1016,7 +1016,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         {
             const auto typeInfo = node->firstChild()->typeInfo;
             typeInfo->computeScopedName();
-            SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node->firstChild(), formErr(Err0650, typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node->firstChild(), formErr(Err0649, "*Swag.CVaList", typeInfo->getDisplayNameC())}));
 
             if (node->token.is(TokenId::IntrinsicCVaStart))
             {

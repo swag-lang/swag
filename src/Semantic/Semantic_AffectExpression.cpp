@@ -55,7 +55,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic err{mpl, toErr(Err0638)};
+        Diagnostic err{mpl, toErr(Err0640)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
         err.addNote(toNte(Nte0210));
         return context->report(err);
