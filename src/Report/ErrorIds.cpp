@@ -200,7 +200,6 @@ void initErrors()
     SWAG_ERROR(Err0074, "expected [[%s]]                                   $ expected [[%s]] %s, got $$TKN$$ instead");
     SWAG_ERROR(Err0075, "expected a ending [[;]]                           $ the interface member definition of [[%s]] should end with a [[;]] $ you can instead define a function body if you want to declare a default implementation");
     SWAG_ERROR(Err0076, "expected function body                            $ a function body starting with [[{]], [[=]] or [[=>]] is expected");
-    SWAG_ERROR(Err0077, "expected identifier                               $ expected a function call after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0078, "failed [[%s]] constraint                          $ the %s [[%s]] can't be used because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0079, "failed generic instantiation                      $ the variable creation failed due to the generic type [[%s]]");
     SWAG_ERROR(Err0080, "fetch error                                       $ can't fetch file [[%s]] for module dependency [[%s]]");
@@ -244,7 +243,6 @@ void initErrors()
     SWAG_ERROR(Err0118, "invalid [[#import]] location                      $ expected a [[#import]] version as a string, got $$TKN$$ instead");
     SWAG_ERROR(Err0119, "invalid [[#mix]] number                           $ a [[#mix]] variable name should end with a number, got [[%s]] instead");
     SWAG_ERROR(Err0120, "invalid [[#mixin]] replacement keyword            $ a [[#mixin]] block accepts only [[break]] and [[continue]] as replacements, got $$TKN$$ instead");
-    SWAG_ERROR(Err0121, "invalid [[#scope]] identifier                     $ expected the [[#scope]] identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0122, "invalid [[#up]] count                             $ expected an integer literal for the [[#up]] count, got $$TKN$$ instead");
     SWAG_ERROR(Err0123, "invalid [[#up]] count                             $ the [[#up]] count can't be zero");
     SWAG_ERROR(Err0124, "invalid [[#up]] count                             $ the [[#up]] count should be an untyped integer in the range [1, 255], got [[%s]] instead");
@@ -302,6 +300,7 @@ void initErrors()
     SWAG_ERROR(Err0176, "invalid bit-cast                                  $ bit-cast to a larger type is not allowed ([[%s]] to [[%s]])");
     SWAG_ERROR(Err0177, "invalid bit-cast                                  $ bit-cast to the type [[%s]] is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err0178, "invalid block start                               $ an [[{]] (start of a block) is not allowed after [[discard try/assume/catch]]");
+    SWAG_ERROR(Err0077, "invalid call                                      $ expected a function call after [[%s]], got $$TKN$$ instead");
     SWAG_ERROR(Err0179, "invalid call                                      $ unexpected call arguments after the variable name [[%s]]");
     SWAG_ERROR(Err0180, "invalid call function                             $ [[%s]] has call parameters but is [[%s]], not a function");
     SWAG_ERROR(Err0181, "invalid call function                             $ [[%s]] has call parameters but the type [[%s]] is not a function");
@@ -328,7 +327,6 @@ void initErrors()
     SWAG_ERROR(Err0202, "invalid dereference null                          $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0203, "invalid embedded enum                             $ expected an enum type, got type [[%s]] instead");
     SWAG_ERROR(Err0204, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, got $$TKN$$ instead");
-    SWAG_ERROR(Err0205, "invalid enum identifier                           $ expected an enum value identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0206, "invalid escape code                               $ [[%c]] is not a valid escape code");
     SWAG_ERROR(Err0207, "invalid escape format                             $ the [[\\U]] escape code requires 8 hexadecimal digits");
     SWAG_ERROR(Err0208, "invalid escape format                             $ the [[\\u]] escape code requires 4 hexadecimal digits");
@@ -352,6 +350,8 @@ void initErrors()
     SWAG_ERROR(Err0226, "invalid generic type                              $ a generic type does not accept a specific type starting with [[:]]");
     SWAG_ERROR(Err0227, "invalid identifier                                $ expected an identifier %s, got $$TKN$$ instead");
     SWAG_ERROR(Err0228, "invalid identifier                                $ expected an identifier, got $$TKN$$ instead");
+    SWAG_ERROR(Err0121, "invalid identifier [[#scope]]                     $ expected the [[#scope]] identifier, got $$TKN$$ instead");
+    SWAG_ERROR(Err0205, "invalid identifier enum                           $ expected an enum value identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0229, "invalid import location                           $ the [[#import]] location has an incorrect format $ expecting [[location=\"mode@accesspath\"]] where mode is [[swag]] or [[disk]]");
     SWAG_ERROR(Err0230, "invalid import version                            $ the [[#import]] version format is invalid");
     SWAG_ERROR(Err0231, "invalid initialization                            $ can't initialize a constant array (type is [[%s]]) with one single value $ only variables can be initialized that way");
@@ -830,12 +830,12 @@ void initErrors()
     SWAG_ERROR(Err0704, "unknown file                                      $ the file [[%s]] can't be found");
     SWAG_ERROR(Err0705, "unknown foreign function                          $ the foreign function [[%s]] can't be found");
     SWAG_ERROR(Err0706, "unknown function                                  $ the function [[%s]] can't be found");
+    SWAG_ERROR(Err0712, "unknown function interface                        $ the function [[%s]] can't be found in the interface [[%s]]");
     SWAG_ERROR(Err0707, "unknown identifier                                $ the identifier [[%s]] can't be found in [[%s]] or in %s [[%s]]");
     SWAG_ERROR(Err0708, "unknown identifier                                $ the identifier [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0709, "unknown identifier                                $ the identifier [[%s]] can't be found in the tuple");
     SWAG_ERROR(Err0710, "unknown identifier                                $ the identifier [[%s]] can't be found");
     SWAG_ERROR(Err0711, "unknown identifier                                $ the identifier [[%s]] is preceded with [[.]] but the corresponding [[enum]] or [[with]] can't be found");
-    SWAG_ERROR(Err0712, "unknown interface function                        $ the function [[%s]] can't be found in the interface [[%s]]");
     SWAG_ERROR(Err0713, "unknown label                                     $ the scope label [[%s]] can't be found");
     SWAG_ERROR(Err0714, "unknown method                                    $ the method [[%s]] can't be found in [[%s]]");
     SWAG_ERROR(Err0715, "unknown parameter                                 $ the named parameter [[%s]] can't be found");
