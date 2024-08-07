@@ -588,7 +588,7 @@ void Diagnostic::reportCompact(Log* log)
     log->setColor(sourceFileColor);
     printSourceLine(log);
 
-    if(tokens.size() > 1)
+    if (tokens.size() > 1)
     {
         log->setColor(LogColor::White);
         log->print(tokens[1]);
@@ -679,6 +679,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
                 log->setColor(errorColor);
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
+            else if (part == HintPart::ErrorLevel)
+                log->setColor(errorColorHint);      
             else
                 log->setColor(errorColorHint);
             if (logCxt)
@@ -689,6 +691,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
                 log->setColor(warningColor);
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
+            else if (part == HintPart::ErrorLevel)
+                log->setColor(warningColorHint);              
             else
                 log->setColor(warningColorHint);
             if (logCxt)
@@ -699,6 +703,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
                 log->setColor(noteColor);
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
+            else if (part == HintPart::ErrorLevel)
+                log->setColor(noteColor);        
             else
                 log->setColor(noteColorHint);
             if (logCxt)
@@ -890,7 +896,10 @@ void Diagnostic::report(Log* log)
         else
         {
             printErrorLevel(log);
-            log->print(textMsg);
+
+            LogWriteContext logCxt;
+            setColorRanges(log, errorLevel, HintPart::ErrorLevel, &logCxt);
+            log->print(textMsg, &logCxt);
             log->writeEol();
         }
     }

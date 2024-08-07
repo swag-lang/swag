@@ -21,6 +21,7 @@ enum class DiagnosticLevel
 
 enum class HintPart
 {
+    ErrorLevel,
     Underline,
     Arrow,
     Text
