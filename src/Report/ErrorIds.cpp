@@ -200,7 +200,7 @@ void initErrors()
     SWAG_ERROR(Err0073, "exception!                                        $ can't proceed due to a compile-time execution exception");
     SWAG_ERROR(Err0074, "expected [[%s]]                                   $ expected [[%s]] %s, got $$TKN$$ instead");
     SWAG_ERROR(Err0075, "expected ending [[;]]                             $ expected a ending [[;]] after the interface member definition of [[%s]] $ you could instead define a function body if you want to declare a default implementation");
-    SWAG_ERROR(Err0076, "expected function body                            $ expected a function body starting with [[{]], the [[=]] or [[=>]]");
+    SWAG_ERROR(Err0076, "expected function body                            $ expected a function body starting with [[{]]");
     SWAG_ERROR(Err0077, "failed [[%s]] constraint                          $ can't use the %s [[%s]] because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0078, "failed generic instantiation                      $ can't create the variable due to the generic type [[%s]]");
     SWAG_ERROR(Err0079, "fetch error                                       $ can't fetch the file [[%s]] for module dependency [[%s]]");
