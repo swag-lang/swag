@@ -140,7 +140,7 @@ namespace OS
     {
         // Current target
         g_NativeTarget.os   = SwagTargetOs::Windows;
-        g_NativeTarget.arch = SwagTargetArch::X86_64;
+        g_NativeTarget.arch = SwagTargetArch::X8664;
         g_NativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
 
         // We do not want to assert, but just reports of the CRT

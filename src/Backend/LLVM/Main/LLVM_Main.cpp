@@ -34,7 +34,7 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
         // See SWAG_LIMIT_PAGE_STACK
         // Stack probing. Must do it by hand to avoid linking with vc runtime on windows.
         // void __chkstk()
-        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
+        if (g_CommandLine.target.arch == SwagTargetArch::X8664)
         {
             Utf8 in;
             in.append(R"(

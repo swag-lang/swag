@@ -22,7 +22,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
         const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
         cpuFct->startAddress = concat.totalCount();
-        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
+        if (g_CommandLine.target.arch == SwagTargetArch::X8664)
         {
             concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
