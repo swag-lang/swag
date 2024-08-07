@@ -198,9 +198,9 @@ void initErrors()
     SWAG_ERROR(Err0071, "empty statement [[;]]                             $ can't use a [[;]] alone to mark an empty statement");
     SWAG_ERROR(Err0072, "escaping stack frame                              $ can't reference the %s [[%s]] because it is in a different stack frame");
     SWAG_ERROR(Err0073, "exception!                                        $ can't proceed due to a compile-time execution exception");
-    SWAG_ERROR(Err0074, "expected [[%s]]                                   $ can't proceed because [[%s]] %s is expected, got $$TKN$$ instead");
-    SWAG_ERROR(Err0075, "expected ending [[;]]                             $ can't proceed because the interface member definition of [[%s]] should end with a [[;]] $ you can instead define a function body if you want to declare a default implementation");
-    SWAG_ERROR(Err0076, "expected function body                            $ can't proceed because a function body starting with [[{]], [[=]] or [[=>]] is expected");
+    SWAG_ERROR(Err0074, "expected [[%s]]                                   $ expected [[%s]] %s, got $$TKN$$ instead");
+    SWAG_ERROR(Err0075, "expected ending [[;]]                             $ expected a ending [[;]] after the interface member definition of [[%s]] $ you could instead define a function body if you want to declare a default implementation");
+    SWAG_ERROR(Err0076, "expected function body                            $ expected a function body starting with [[{]], the [[=]] or [[=>]]");
     SWAG_ERROR(Err0077, "failed [[%s]] constraint                          $ can't use the %s [[%s]] because of a failed [[%s]] constraint");
     SWAG_ERROR(Err0078, "failed generic instantiation                      $ can't create the variable due to the generic type [[%s]]");
     SWAG_ERROR(Err0079, "fetch error                                       $ can't fetch the file [[%s]] for module dependency [[%s]]");
