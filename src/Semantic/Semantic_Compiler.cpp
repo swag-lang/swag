@@ -109,12 +109,6 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
         const auto realType = TypeManager::concreteType(node->typeInfo);
         if (realType && realType->isStruct() && !realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         {
-            if (realType->isTuple())
-            {
-                const Diagnostic err{node, toErr(Err0049)};
-                return context->report(err);
-            }
-
             // It is possible to convert a complex struct to a constant static array of values if the struct
             // implements 'opCount' and 'opSlice'
             waitAllStructMethods(context->baseJob, realType);

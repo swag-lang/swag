@@ -87,6 +87,15 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
     }
 }
 
+Utf8 TypeInfoAlias::getDisplayName()
+{
+    Utf8 res;
+    if (isConst())
+        res += "const ";
+    res += rawType->getDisplayName();
+    return res;
+}
+
 bool TypeInfoAlias::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
     if (this == to)

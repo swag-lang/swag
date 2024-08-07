@@ -509,6 +509,7 @@ struct TypeInfoAlias final : TypeInfo
     {
     }
 
+    Utf8      getDisplayName() override;
     void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;

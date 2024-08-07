@@ -173,7 +173,7 @@ void initErrors()
     SWAG_ERROR(Err0046, "compile-time evaluation required                  $ can't evaluate the initialization expression at compile-time $ in order to make that kind of compile-time evaluation, [[opAffect]] should be [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Err0047, "compile-time evaluation required                  $ can't evaluate the initialization expression at compile-time");
     SWAG_ERROR(Err0048, "compile-time evaluation required                  $ can't evaluate this operation on [[%s]] at compile-time $ in order to make that kind of compile-time evaluation, the struct should be [[#[Swag.ConstExpr]]]");
-    SWAG_ERROR(Err0049, "compile-time evaluation required                  $ can't evaluate this operation on the tuple at compile-time $ in order to make that kind of compile-time evaluation, the tuple should be [[#[Swag.ConstExpr]]]");
+    SWAG_ERROR(Err0049, nullptr);
     SWAG_ERROR(Err0050, "compile-time evaluation required                  $ can't convert the type [[%s]] to a constant expression");
     SWAG_ERROR(Err0051, "conflicting attributes                            $ can't use the [[#[Swag.Compiler]]] and [[#[Swag.Tls]]] attributes together because they are mutually exclusive");
     SWAG_ERROR(Err0052, "conflicting attributes                            $ can't use the [[#[Swag.Inline]]] and [[#[Swag.NoInline]]] attributes together because they are mutually exclusive");
