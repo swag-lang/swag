@@ -34,19 +34,26 @@ namespace
         if (errorParam.destStructDecl)
         {
             errorParam.addError(new Diagnostic{isNamed, formErr(Err0705, isNamed->token.c_str(), typeInfo->getDisplayNameC())});
-            if (typeInfo->declNode->hasExtraPointer(ExtraPointerKind::ExportNode))
-                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode), toNte(Nte0083)));
-            else if (errorParam.oneTry->overload)
-                errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
 
             CollectedScope altScope;
             altScope.scope = errorParam.destStructDecl->scope;
             const auto msg = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
             errorParam.addNote(Diagnostic::note(msg));
+
+            if (typeInfo->declNode->hasExtraPointer(ExtraPointerKind::ExportNode))
+                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode), toNte(Nte0083)));
+            else if (errorParam.oneTry->overload)
+                errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
         }
         else
         {
             errorParam.addError(new Diagnostic{isNamed, formErr(Err0717, isNamed->token.c_str())});
+
+            CollectedScope altScope;
+            altScope.scope = errorParam.destFuncDecl->scope;
+            const auto msg = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
+            errorParam.addNote(Diagnostic::note(msg));
+
             errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
         }
     }

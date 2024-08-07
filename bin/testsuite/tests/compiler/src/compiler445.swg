@@ -1,6 +1,7 @@
 #global testerror "Err0717"
 func F(a: s32, b: s32)
 {
+	var d: s32
 	@assert(a == 1)
 	@assert(b == 0)
 }

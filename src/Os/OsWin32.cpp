@@ -125,7 +125,7 @@ namespace OS
             return false;
         }
 
-        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
+        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X8664);
 
         Path p0 = g_WinSdkFolder;
         p0.append("um\\x64");
