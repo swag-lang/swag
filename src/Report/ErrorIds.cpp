@@ -147,7 +147,7 @@ void initErrors()
     SWAG_ERROR(Err0020, "already defined switch value                      $ the [[switch]] value [[%f]] has already been defined");
     SWAG_ERROR(Err0021, "already defined switch value                      $ the [[switch]] value [[%s]] has already been defined");
     SWAG_ERROR(Err0022, "already defined switch value                      $ the [[switch]] value [[\"%s\"]] has already been defined");
-    SWAG_ERROR(Err0023, "already defined symbol                            $ the %s [[%s]] has already been defined %s");
+    SWAG_ERROR(Err0023, "already defined %s                                $ the %s [[%s]] has already been defined %s");
     SWAG_ERROR(Err0024, "already defined symbol                            $ the %s [[%s]] has already been defined in a parent scope");
     SWAG_ERROR(Err0025, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0026, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");

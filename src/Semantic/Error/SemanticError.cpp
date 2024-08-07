@@ -105,10 +105,16 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
                                           AstNode*      otherSymbolDecl)
 {
     Utf8 as;
+    Utf8 what;
     if (thisKind != otherKind)
-        as = form("as %s", Naming::aKindName(otherKind).c_str());
+    {
+        what = "symbol";
+        as   = form("as [[%s]]", Naming::aKindName(otherKind).c_str());
+    }
+    else
+        what = Naming::kindName(thisKind);
 
-    Diagnostic err{sourceFile, token, formErr(Err0023, Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    Diagnostic err{sourceFile, token, formErr(Err0023, what.c_str(), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0076));
     return context->report(err);
 }
