@@ -137,7 +137,7 @@ void initErrors()
     SWAG_ERROR(Err0010, "already defined [[#import]] version               $ the [[#import]] version of the module [[%s]] is already defined as [[%s]]");
     SWAG_ERROR(Err0011, "already defined [[#main]]                         $ only one [[#main]] function is allowed per module");
     SWAG_ERROR(Err0012, "already defined [[default]]                       $ only one [[default]] statement is allowed per [[switch]]");
-    SWAG_ERROR(Err0013, "already defined access modifier                   $ invalid use of a [[%s]] access modifier after [[%s]]");
+    SWAG_ERROR(Err0013, "already defined access specifier                  $ invalid use of a [[%s]] access specifier after [[%s]]");
     SWAG_ERROR(Err0014, "already defined argument                          $ the argument [[%s]] has already been defined");
     SWAG_ERROR(Err0015, "already defined enum                              $ the enum [[%s]] has already been defined");
     SWAG_ERROR(Err0016, "already defined enum value                        $ the enum value [[%s]] is already defined with the same underlying value");
@@ -544,9 +544,9 @@ void initErrors()
     SWAG_ERROR(Err0417, "misplaced [[using]]                               $ [[using]] on a pointer variable is only valid for struct pointers, got a pointer to [[%s]] instead");
     SWAG_ERROR(Err0418, "misplaced [[using]]                               $ [[using]] on a variable is not allowed in [[%s]] scope");
     SWAG_ERROR(Err0419, "misplaced [[using]] in interface                  $ [[using]] can't be associated with an interface member");
-    SWAG_ERROR(Err0420, "misplaced access modifier                         $ a global variable can't be [[public]]");
-    SWAG_ERROR(Err0421, "misplaced access modifier                         $ misuse of [[%s]] before [[%s]]");
-    SWAG_ERROR(Err0422, "misplaced access modifier                         $ the [[%s]] access modifier can only be used at the global scope");
+    SWAG_ERROR(Err0420, "misplaced access specifier                        $ a global variable can't be [[public]]");
+    SWAG_ERROR(Err0421, "misplaced access specifier                        $ misuse of [[%s]] before [[%s]]");
+    SWAG_ERROR(Err0422, "misplaced access specifier                        $ the [[%s]] access specifier can only be used at the global scope");
     SWAG_ERROR(Err0423, "misplaced attribute                               $ [[AttributeUsage.Gen]] can only be associated with [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]");
     SWAG_ERROR(Err0424, "misplaced attribute                               $ a %s can't have the [[#[Swag.CalleeReturn]]] attribute");
     SWAG_ERROR(Err0425, "misplaced attribute                               $ a %s can't have the [[#[Swag.Inline]]] attribute");
@@ -564,7 +564,7 @@ void initErrors()
     SWAG_ERROR(Err0437, "misplaced attribute                               $ the attribute [[%s]] can only be applied to %s");
     SWAG_ERROR(Err0438, "misplaced attribute                               $ the attribute [[%s]] can't be associated with %s");
     SWAG_ERROR(Err0439, "misplaced attribute                               $ the attribute [[%s]] can't be used in a [[#global]] statement $ the attribute does not have the [[Swag.AttributeUsage.File]] usage");
-    SWAG_ERROR(Err0440, "misplaced attribute                               $ unexpected start of an attribute after [[%s]] $ attributes should be placed before access modifiers; consider moving the attribute before [[%s]]");
+    SWAG_ERROR(Err0440, "misplaced attribute                               $ unexpected start of an attribute after [[%s]] $ attributes should be placed before access specifiers; consider moving the attribute before [[%s]]");
     SWAG_ERROR(Err0441, "misplaced cast                                    $ you can't cast a [[@spread]] result");
     SWAG_ERROR(Err0442, "misplaced closure                                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
     SWAG_ERROR(Err0443, "misplaced compiler instruction                    $ [[#callerfunction]] can only be used when declaring a function parameter");
@@ -701,7 +701,7 @@ void initErrors()
     SWAG_ERROR(Err0574, "overflow capture size                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");
     SWAG_ERROR(Err0575, "overload mismatch                                 $ found [[%d]] overloads for [[%s]], but none matched the provided arguments");
     SWAG_ERROR(Err0576, "recursive evaluation                              $ the struct [[%s]] references itself, which is causing a recursion");
-    SWAG_ERROR(Err0577, "redundant access modifier                         $ the [[%s]] access modifier is unnecessary because of [[#global export]] $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
+    SWAG_ERROR(Err0577, "redundant access specifier                        $ the [[%s]] access specifier is unnecessary because of [[#global export]] $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err0578, "reserved name                                     $ the identifier [[%s]] starts with [[__]] $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
     SWAG_ERROR(Err0579, "reserved name function                            $ the function name [[%s]] is reserved by the compiler");
     SWAG_ERROR(Err0580, "reserved name namespace                           $ the namespace [[%s]] is reserved by the compiler");
@@ -1057,7 +1057,7 @@ void initErrors()
     SWAG_ERROR(Nte0165, "this [[using]] field is convertible because [[%s]] implements the interface");
     SWAG_ERROR(Nte0166, "this argument has been named");
     SWAG_ERROR(Nte0167, "this can be converted too because [[%s]] also implements the interface");
-    SWAG_ERROR(Nte0168, "this can't be prefixed with an access modifier");
+    SWAG_ERROR(Nte0168, "this can't be prefixed with an access specifier");
     SWAG_ERROR(Nte0169, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte0170, "this function does not support aliased names");
     SWAG_ERROR(Nte0171, "this function does not support being called with UFCS using a value of type [[%s]]");
