@@ -1,6 +1,3 @@
-
-
-
 #global testerror "Err0717"
 func F(a: s32, b: s32)
 {

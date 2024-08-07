@@ -841,7 +841,7 @@ void initErrors()
     SWAG_ERROR(Err0714, "unknown identifier                                $ the identifier [[%s]] is preceded with [[.]] but the corresponding [[enum]] or [[with]] can't be found");
     SWAG_ERROR(Err0715, "unknown label                                     $ the scope label [[%s]] can't be found");
     SWAG_ERROR(Err0716, "unknown method                                    $ the method [[%s]] can't be found in [[%s]]");
-    SWAG_ERROR(Err0717, "unknown parameter                                 $ the named parameter [[%s]] can't be found");
+    SWAG_ERROR(Err0717, "unknown named argument                            $ the named argument [[%s]] can't be found");
     SWAG_ERROR(Err0718, "unknown relocation offset                         $ the struct member [[%s]] can't be found; unable to compute the relocation");
     SWAG_ERROR(Err0719, "unknown struct                                    $ the struct [[%s]] can't be found");
     SWAG_ERROR(Err0720, "unknown type                                      $ the type [[%s]] can't be found");
