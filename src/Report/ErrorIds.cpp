@@ -150,7 +150,7 @@ void initErrors()
     SWAG_ERROR(Err0023, "already defined %s                                $ the %s [[%s]] has already been defined %s");
     SWAG_ERROR(Err0024, "already defined symbol                            $ the %s [[%s]] has already been defined in a parent scope");
     SWAG_ERROR(Err0025, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
-    SWAG_ERROR(Err0026, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
+    SWAG_ERROR(Err0026, "ambiguous cast                                    $ ambiguous cast from type [[%s]] to type [[%s]]");
     SWAG_ERROR(Err0027, "ambiguous interface conversion                    $ ambiguous conversion of the struct [[%s]] to the interface [[%s]]");
     SWAG_ERROR(Err0028, "ambiguous resolution                              $ ambiguous resolution of the %s [[%s]]");
     SWAG_ERROR(Err0029, "ambiguous resolution                              $ ambiguous resolution of the enum value [[%s]]");
@@ -1105,7 +1105,7 @@ void initErrors()
     SWAG_ERROR(Nte0213, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0214, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0215, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte0216, nullptr);
+    SWAG_ERROR(Nte0216, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);

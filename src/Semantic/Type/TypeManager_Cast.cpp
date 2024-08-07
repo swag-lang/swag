@@ -2670,7 +2670,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
-                            Diagnostic err{fromNode, formErr(Err0026, fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            Diagnostic err{fromNode, formErr(Err0026, fromType->getDisplayNameC(), toType->getDisplayNameC())};
+                            err.addNote(formNte(Nte0216, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
                             err.addNote(foundField->declNode, toNte(Nte0064));
                             err.addNote(field->declNode, toNte(Nte0063));
                             return context->report(err);
