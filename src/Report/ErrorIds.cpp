@@ -993,7 +993,7 @@ void initErrors()
     SWAG_ERROR(Nte0101, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0102, "occurred during the inline expansion of [[%s]]");
     SWAG_ERROR(Nte0103, "occurred in generated code");
-    SWAG_ERROR(Nte0104, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
+    SWAG_ERROR(Nte0104, "occurred while trying to convert [[%s]] to a function call parameter of type [[%s]]");
     SWAG_ERROR(Nte0105, "one function declares [[throw]] while the other doesn't");
     SWAG_ERROR(Nte0106, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0107, "only the address of a returned reference can be taken, and this is %s");

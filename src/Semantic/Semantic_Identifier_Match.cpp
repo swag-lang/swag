@@ -175,7 +175,8 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
         {
             {
-                PushErrCxtStep ec(context, typeInfoFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
+                const auto     declParam = oneMatch.solvedParameters[i]->declNode;
+                PushErrCxtStep ec(context, declParam, ErrCxtStepKind::Note, [declParam] { return formNte(Nte0067, declParam->token.c_str()); });
                 context->castFlagsResult = 0;
 
                 toType = oneMatch.solvedParameters[i]->typeInfo;
@@ -193,7 +194,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 if (overload)
                 {
                     const auto     declParam = oneMatch.solvedParameters[i]->declNode;
-                    PushErrCxtStep ec0(context, oneMatch.solvedParameters[i]->declNode, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0104, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
+                    PushErrCxtStep ec0(context, declParam, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0104, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
                     SWAG_CHECK(checkCanTakeAddress(context, id));
                     overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
                 }
