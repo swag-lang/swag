@@ -193,9 +193,9 @@ void initErrors()
     SWAG_ERROR(Err0066, "empty [[switch]]                                  $ can't have an empty [[switch]] body $ consider adding some cases, or removing it");
     SWAG_ERROR(Err0067, "empty array literal                               $ can't use an array literal without at least one value");
     SWAG_ERROR(Err0068, "empty attribute                                   $ can't use an attribute without at least one value $ you should specify an attribute name");
-    SWAG_ERROR(Err0069, "empty compiler function body                      $ can't proceed because a %s requires a body; expected [[{]] but found [[;]] instead");
-    SWAG_ERROR(Err0070, "empty expression                                  $ can't have an empty expression [[()]] $ consider removing it");
-    SWAG_ERROR(Err0071, "empty statement [[;]]                             $ can't use [[;]] alone to mark an empty statement");
+    SWAG_ERROR(Err0069, "empty compiler function body                      $ expected [[{]] to start the %s body, got [[;]] instead");
+    SWAG_ERROR(Err0070, "empty expression                                  $ can't have an empty expression [[()]]");
+    SWAG_ERROR(Err0071, "empty statement [[;]]                             $ can't use a [[;]] alone to mark an empty statement");
     SWAG_ERROR(Err0072, "escaping stack frame                              $ can't reference the %s [[%s]] because it is in a different stack frame");
     SWAG_ERROR(Err0073, "exception!                                        $ can't proceed due to a compile-time execution exception");
     SWAG_ERROR(Err0074, "expected [[%s]]                                   $ can't proceed because [[%s]] %s is expected, got $$TKN$$ instead");
