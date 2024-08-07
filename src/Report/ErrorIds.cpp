@@ -151,7 +151,7 @@ void initErrors()
     SWAG_ERROR(Err0024, "already defined symbol                            $ the %s [[%s]] has already been defined in a parent scope");
     SWAG_ERROR(Err0025, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0026, "ambiguous cast                                    $ ambiguous cast from type [[%s]] to type [[%s]]");
-    SWAG_ERROR(Err0027, "ambiguous interface conversion                    $ ambiguous conversion of the struct [[%s]] to the interface [[%s]]");
+    SWAG_ERROR(Err0027, "ambiguous interface conversion                    $ ambiguous conversion from the type [[%s]] to the interface [[%s]]");
     SWAG_ERROR(Err0028, "ambiguous resolution                              $ ambiguous resolution of the %s [[%s]]");
     SWAG_ERROR(Err0029, "ambiguous resolution                              $ ambiguous resolution of the enum value [[%s]]");
     SWAG_ERROR(Err0030, "ambiguous resolution                              $ ambiguous resolution of the generic %s [[%s]]");
