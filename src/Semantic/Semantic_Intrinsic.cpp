@@ -197,7 +197,8 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
 
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CAST_FLAG_JUST_CHECK))
         {
-            Diagnostic err{first, formErr(Err0004, first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+            Diagnostic err{first, formErr(Err0004, first->typeInfo->getDisplayNameC(), realType->getDisplayNameC(), realType->getDisplayNameC(), typePointer->pointedType->getDisplayNameC())};
             err.addNote(second->token, Diagnostic::isType(realType));
             return context->report(err);
         }

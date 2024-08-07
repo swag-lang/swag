@@ -128,7 +128,7 @@ void initErrors()
     SWAG_ERROR(Err0001, "%s");
     SWAG_ERROR(Err0002, "%s");
     SWAG_ERROR(Err0003, "%s");
-    SWAG_ERROR(Err0004, "[[@mkany]] inconsistency                          $ the pointer type [[%s]] and the second argument [[%s]] are unrelated");
+    SWAG_ERROR(Err0004, "type mismatch [[@mkany]]                          $ the pointer type [[%s]] and the second argument [[%s]] do not match $ you should have a pointer to [[%s]] as a first argument, or the type [[%s]] as the second");
     SWAG_ERROR(Err0005, "[[impl]] kind mismatch                            $ this implementation syntax is for [[%s]] but [[%s]] is [[%s]]");
     SWAG_ERROR(Err0006, "already defined [[#global export]]                $ only one [[#global export]] is allowed per file");
     SWAG_ERROR(Err0007, "already defined [[#import]] location              $ the [[#import]] location has already been defined");
