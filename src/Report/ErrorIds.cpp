@@ -138,7 +138,7 @@ void initErrors()
     SWAG_ERROR(Err0011, "already defined [[#main]]                         $ only one [[#main]] function is allowed per module");
     SWAG_ERROR(Err0012, "already defined [[default]]                       $ only one [[default]] statement is allowed per [[switch]]");
     SWAG_ERROR(Err0013, "already defined access specifier                  $ invalid use of a [[%s]] access specifier after [[%s]]");
-    SWAG_ERROR(Err0014, "already defined argument                          $ the argument [[%s]] has already been defined");
+    SWAG_ERROR(Err0014, "already defined named argument                    $ the argument [[%s]] has already been defined");
     SWAG_ERROR(Err0015, "already defined enum                              $ the enum [[%s]] has already been defined");
     SWAG_ERROR(Err0016, "already defined enum value                        $ the enum value [[%s]] is already defined with the same underlying value");
     SWAG_ERROR(Err0017, "already defined generic symbol                    $ the generic symbol [[%s]] has already been defined in a parent scope");
@@ -865,7 +865,7 @@ void initErrors()
     SWAG_ERROR(Err0738, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0739, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0740, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0741, nullptr);
+    SWAG_ERROR(Err0741, "already defined field name                        $ the field name [[%s]] has already been defined");
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);

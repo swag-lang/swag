@@ -55,8 +55,13 @@ namespace
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
         const auto isNamed = errorParam.failedParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
-        const auto msg     = formErr(Err0014, isNamed->token.c_str());
-        const auto err     = new Diagnostic{isNamed, msg};
+
+        Utf8 msg;
+        if (errorParam.destStructDecl)
+            msg = formErr(Err0741, isNamed->token.c_str());
+        else
+            msg = formErr(Err0014, isNamed->token.c_str());
+        const auto err = new Diagnostic{isNamed, msg};
         errorParam.addError(err);
 
         const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
