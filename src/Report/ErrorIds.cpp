@@ -153,7 +153,7 @@ void initErrors()
     SWAG_ERROR(Err0026, "ambiguous cast                                    $ ambiguous cast from type [[%s]] to type [[%s]]");
     SWAG_ERROR(Err0027, "ambiguous interface conversion                    $ ambiguous conversion from the type [[%s]] to the interface [[%s]]");
     SWAG_ERROR(Err0028, "ambiguous resolution                              $ ambiguous resolution of the %s [[%s]]");
-    SWAG_ERROR(Err0029, "ambiguous resolution                              $ ambiguous resolution of the enum value [[%s]]");
+    SWAG_ERROR(Err0029, "ambiguous resolution enum                         $ ambiguous resolution of the enum value [[%s]]");
     SWAG_ERROR(Err0030, "ambiguous resolution                              $ ambiguous resolution of the generic %s [[%s]]");
     SWAG_ERROR(Err0031, "ambiguous resolution                              $ ambiguous resolution of the special function [[%s]]");
     SWAG_ERROR(Err0032, "ambiguous syntax                                  $ ambiguity arises between initializing [[%s]] and starting a new block");
@@ -1106,7 +1106,7 @@ void initErrors()
     SWAG_ERROR(Nte0214, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0215, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0216, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
-    SWAG_ERROR(Nte0217, nullptr);
+    SWAG_ERROR(Nte0217, "consider using the full name of the enum value");
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);
     SWAG_ERROR(Nte0220, nullptr);
