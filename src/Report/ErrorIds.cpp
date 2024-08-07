@@ -180,12 +180,12 @@ void initErrors()
     SWAG_ERROR(Err0053, "conflicting attributes                            $ can't use the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes together because they are mutually exclusive");
     SWAG_ERROR(Err0054, "conflicting attributes                            $ can't use the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes together because they are mutually exclusive");
     SWAG_ERROR(Err0055, "conflicting attributes                            $ can't use the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes together because they are mutually exclusive");
-    SWAG_ERROR(Err0056, "conflicting cast modifiers                        $ can't use the [[%s]] and [[%s]] cast modifiers together because they are mutually exclusive");
+    SWAG_ERROR(Err0056, "conflicting cast modifiers                        $ can't cast with both the [[%s]] and [[%s]] modifiers because they are mutually exclusive");
     SWAG_ERROR(Err0057, "defer escape throw                                $ can't have an error escape a [[defer]] or [[defer:err]] block");
     SWAG_ERROR(Err0058, "division by zero                                  $ can't divide because the divider expression evaluates to 0");
     SWAG_ERROR(Err0059, "duplicated attribute                              $ can't assign twice the attribute [[%s]] because [[Swag.AttrMulti]] is not present in the declaration");
     SWAG_ERROR(Err0060, "duplicated initialization                         $ can't initialize a struct with both the type syntax and an assignment");
-    SWAG_ERROR(Err0061, "duplicated operator                               $ can't use another [[%s]] $ expected an expression instead");
+    SWAG_ERROR(Err0061, "duplicated operator                               $ can't use the operator [['%s']] twice $ expected an expression instead");
     SWAG_ERROR(Err0062, "empty [[#mixin]] replacement block                $ can't have an empty [[mixin]] block $ consider adding some content to the block, or removing it");
     SWAG_ERROR(Err0063, "empty [[case]] statement                          $ can't have an empty [[case]] statement");
     SWAG_ERROR(Err0064, "empty [[default]] statement                       $ can't have an empty [[default]] statement");
