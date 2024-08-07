@@ -573,7 +573,8 @@ const Token& AstNode::getTokenName() const
     if (is(AstNodeKind::Impl))
     {
         const auto implDecl = castAst<AstImpl>(this, AstNodeKind::Impl);
-        return implDecl->identifier->getTokenName();
+        if (implDecl->identifier)
+            return implDecl->identifier->getTokenName();
     }
 
     return token;

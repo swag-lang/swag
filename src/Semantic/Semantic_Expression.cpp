@@ -13,7 +13,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     if (test)
         return true;
 
-    auto note = computeNonConstExprNote(expression);
+    const auto note = computeNonConstExprNote(expression);
 
     if (expression->hasSpecialFuncCall())
     {
@@ -33,21 +33,6 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
         message = toErr(Err0044);
 
     Diagnostic err{expression, message};
-
-    // Just keep the culprit if the culprit is the same as the full expression, and there's no
-    // specific requested error message
-    if (errMsg.empty() && note->startLocation == err.startLocation && note->endLocation == err.endLocation)
-    {
-        Vector<Utf8> parts;
-        Diagnostic::tokenizeError(err.textMsg, parts);
-        err.textMsg = parts[0];
-        err.textMsg += " ";
-        err.textMsg += Diagnostic::ERROR_MESSAGE_SEPARATOR;
-        err.textMsg += " ";
-        err.textMsg += note->textMsg;
-        note = nullptr;
-    }
-
     err.addNote(note);
     return context->report(err);
 }
