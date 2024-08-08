@@ -245,7 +245,7 @@ void initErrors()
     SWAG_ERROR(Err0118, "invalid [[#mix]] number                           $ can't use [[%s]] at the end of a [[#mix]] variable name $ a [[#mix]] variable name should end with a number");
     SWAG_ERROR(Err0119, "invalid [[#mixin]] replacement keyword            $ expected a [[#mixin]] replacement keyword, got $$TKN$$ instead $ a [[#mixin]] block only accepts [[break]] and [[continue]] as replacements");
     SWAG_ERROR(Err0120, "invalid [[#up]] count                             $ expected an integer literal for the [[#up]] count, got $$TKN$$ instead");
-    SWAG_ERROR(Err0121, "invalid [[#up]] count                             $ can't proceed because the [[#up]] count can't be zero");
+    SWAG_ERROR(Err0121, "invalid [[#up]] count                             $ expected a non zero value for the [[#up]] count");
     SWAG_ERROR(Err0122, "invalid [[#up]] count                             $ can't use [[%s]] because the [[#up]] count should be an untyped integer in the range [1, 255]");
     SWAG_ERROR(Err0123, "invalid [[#up]] move                              $ can't move [[%d]] scopes up with [[#up]]");
     SWAG_ERROR(Err0124, "invalid [[@alignof]]                              $ can't compute the alignment of a generic expression");
