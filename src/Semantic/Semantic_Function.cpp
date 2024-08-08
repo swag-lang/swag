@@ -815,7 +815,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
             funcNode->addSemFlag(SEMFLAG_NO_PUBLIC);
-            SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, formErr(Err0094, typeStruct->name.c_str())}));
+            SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, formErr(Err0094, typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.is(g_LangSpec->name_opPostMove))
         {

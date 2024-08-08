@@ -216,9 +216,9 @@ void initErrors()
     SWAG_ERROR(Err0089, "file write error                                  $ can't write to the file [[%s]]");
     SWAG_ERROR(Err0090, "folder error                                      $ can't create the directory [[%s]]");
     SWAG_ERROR(Err0091, "folder error dependency                           $ can't find the dependency module folder [[\"%s\"]]");
-    SWAG_ERROR(Err0092, "forbidden [[@postcopy]]                           $ can't call the intrinsic [[@postcopy]] on type [[%s]] because of [[#[Swag.NoCopy]]]");
-    SWAG_ERROR(Err0093, "forbidden [[opDrop]]                              $ can't use [[opDrop]] for [[%s]] because the struct is marked with the [[#[Swag.ConstExpr]]] attribute");
-    SWAG_ERROR(Err0094, "forbidden [[opPostCopy]]                          $ can't use [[opPostCopy]] for [[%s]] because the struct is marked with the [[#[Swag.NoCopy]]] attribute");
+    SWAG_ERROR(Err0092, "forbidden [[@postcopy]]                           $ can't call the intrinsic [[@postcopy]] on the type [[%s]] because of [[#[Swag.NoCopy]]]");
+    SWAG_ERROR(Err0093, "forbidden [[opDrop]]                              $ can't define [[opDrop]] for [[%s]] because the struct is marked with the [[#[Swag.ConstExpr]]] attribute");
+    SWAG_ERROR(Err0094, "forbidden [[opPostCopy]]                          $ can't define [[opPostCopy]] for [[%s]] because the struct is marked with the [[#[Swag.NoCopy]]] attribute");
     SWAG_ERROR(Err0095, "forbidden call                                    $ can't make a direct call to [[opDrop]] $ consider using [[@drop]] instead]]");
     SWAG_ERROR(Err0096, "forbidden call                                    $ can't make a direct call to [[opPostCopy]] $ consider using [[@postcopy]] instead]]");
     SWAG_ERROR(Err0097, "forbidden call                                    $ can't make a direct call to [[opPostMove]] $ consider using [[@postmove]] instead]]");
