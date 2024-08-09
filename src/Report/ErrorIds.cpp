@@ -435,7 +435,7 @@ void initErrors()
     SWAG_ERROR(Err0308, "invalid struct operation                          $ can't affect by index a type [[%s]] to [[%s]] because [[opIndexAffect]] can't be found");
     SWAG_ERROR(Err0309, "invalid struct operation                          $ can't find the special function [[%s]] in [[%s]] to solve the operator [['%s']]");
     SWAG_ERROR(Err0310, "invalid struct operation                          $ can't find the special function [[%s]] in [[%s]]");
-    SWAG_ERROR(Err0311, "invalid symbol                                    $ can't use the symbol [['%s']] in Swag");
+    SWAG_ERROR(Err0311, "invalid symbol                                    $ unexpected symbol [['%s']]");
     SWAG_ERROR(Err0312, "invalid throw                                     $ can't throw without a struct or [[@err()]] as an expression");
     SWAG_ERROR(Err0313, "invalid throw                                     $ can't throw the type [[%s]] $ throw needs a struct or [[@err()]] as an expression");
     SWAG_ERROR(Err0314, "invalid top-level instruction                     $ expected a top-level instruction, got $$TKN$$ instead");
@@ -469,7 +469,7 @@ void initErrors()
     SWAG_ERROR(Err0342, "invalid type enum                                 $ expected the enum slice type [[%s]] to be [[const]] $ this should be designated as [[const %s]]");
     SWAG_ERROR(Err0343, "invalid type enum                                 $ can't use the type [[%s]] as an enum type");
     SWAG_ERROR(Err0344, "invalid type enum                                 $ can't use the type [[cstring]] as an enum type $ consider using [[string]] instead");
-    SWAG_ERROR(Err0345, "invalid type range                                $ can't use type [[%s]] in a range expression");
+    SWAG_ERROR(Err0345, "invalid type range                                $ can't use the type [[%s]] in a range expression");
     SWAG_ERROR(Err0346, "invalid type suffix                               $ can't use the suffix [[%s]] on a literal except for a struct conversion");
     SWAG_ERROR(Err0347, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, got $$TKN$$ instead");
     SWAG_ERROR(Err0348, "invalid type variable                             $ can't declare a variable with a [[void]] type");
