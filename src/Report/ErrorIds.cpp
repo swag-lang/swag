@@ -451,7 +451,7 @@ void initErrors()
     SWAG_ERROR(Err0324, "invalid type                                      $ expected [[bool]] as the generic parameter of the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0325, "invalid type                                      $ expected [[string]] as the generic parameter of the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0326, "invalid type                                      $ can't have the type [[%s]] as the second parameter of [[%s]] $ consider using [[opAssign]] if you want to make a copy");
-    SWAG_ERROR(Err0327, "type mismatch                                     $ expected type [[%s]] as the first parameter of the special function [[%s]], got type [[%s]] instead");
+    SWAG_ERROR(Err0327, "invalid type                                      $ expected type [[%s]] as the first parameter of the special function [[%s]], got type [[%s]] instead");
     SWAG_ERROR(Err0328, "invalid type [[@cvaarg]]                          $ can't use a variadic argument of type [[%s]] because it has been promoted to the type [[%s]] at the call site");
     SWAG_ERROR(Err0329, "invalid type [[orelse]]                           $ can't have a [[struct]] as an [[orelse]] argument");
     SWAG_ERROR(Err0330, "invalid type [[orelse]]                           $ can't have the type [[%s]] as an [[orelse]] argument");
