@@ -137,9 +137,10 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     }
 
     // Reference to a static struct member
-    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
+    const auto overload = node->resolvedSymbolOverload();
+    if (overload && overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, formErr(Err0544, node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic err{node, formErr(Err0544, overload->symbol->name.c_str(), overload->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
         if (node->childCount() <= 1 &&
