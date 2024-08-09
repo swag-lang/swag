@@ -635,7 +635,7 @@ void initErrors()
     SWAG_ERROR(Err0508, "missing initialization                            $ can't declare a [[let]] variable without an explicit initialization");
     SWAG_ERROR(Err0509, "missing initialization                            $ can't declare an immutable variable without an explicit initialization");
     SWAG_ERROR(Err0510, "missing initialization                            $ expected an initialization of [[%s]] because [[%s]] does not contain a value for zero");
-    SWAG_ERROR(Err0511, "missing initialization                            $ expected an explicit initialization because the enumeration value [[%s]] has type [[%s]]");
+    SWAG_ERROR(Err0511, "missing initialization                            $ expected an explicit initialization because the enumeration value [[%s]] has the type [[%s]]");
     SWAG_ERROR(Err0512, "missing interface function                        $ can't have some functions of the interface [[%s]] not implemented for [[%s]]");
     SWAG_ERROR(Err0513, "missing intrinsic arguments                       $ expected the arguments of [[%s]] between [[()]]");
     SWAG_ERROR(Err0514, "missing name attribute                            $ expected an attribute name before [[(]]");
