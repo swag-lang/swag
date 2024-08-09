@@ -136,7 +136,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 return context->report(err);
             }
 
-            msg = formErr(Err0209, parent->token.c_str());
+            msg = toErr(Err0209);
             break;
     }
 

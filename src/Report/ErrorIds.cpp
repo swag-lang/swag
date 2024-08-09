@@ -333,7 +333,7 @@ void initErrors()
     SWAG_ERROR(Err0206, "invalid escape format                             $ expected 4 hexadecimal digits after the [['\\u']] escape code");
     SWAG_ERROR(Err0207, "invalid escape format                             $ expected 2 hexadecimal digits after the [['\\x']] escape code");
     SWAG_ERROR(Err0208, "invalid expression                                $ expected an expression after [[%s]], got $$TKN$$ instead $ consider adding an [[(]] after [[%s]] to start an expression");
-    SWAG_ERROR(Err0209, "invalid expression                                $ expected an expression after [[%s]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0209, "invalid expression                                $ expected an expression, got $$TKN$$ instead");
     SWAG_ERROR(Err0210, "invalid expression                                $ expected an expression, got a type instead");
     SWAG_ERROR(Err0211, "invalid expression                                $ can't use the compiler instruction [[%s]] as an expression $ this compiler instruction can only be used as a statement");
     SWAG_ERROR(Err0212, "invalid function declaration                      $ expected [[func]] or [[mtd]] to declare an interface function, got $$TKN$$ instead $ to declare a function within an interface, use [[func]] or [[mtd]]");
@@ -572,11 +572,11 @@ void initErrors()
     SWAG_ERROR(Err0445, "misplaced error catching                          $ can't catch [[%s]] because it is %s");
     SWAG_ERROR(Err0446, "misplaced error catching                          $ can't nest [[%s]] in a [[%s]] expression $ you should use only one [[try]], [[catch]] or [[assume]]");
     SWAG_ERROR(Err0447, "misplaced error catching                          $ can't treat a return error with [[%s]] outside of a function, macro, or mixin");
-    SWAG_ERROR(Err0448, "misplaced error catching                          $ can't use [[%s]] because the function [[%s]] can't raise an error");
+    SWAG_ERROR(Err0448, "misplaced error catching                          $ can't use [[%s]] because the function [[%s]] does not raise errors");
     SWAG_ERROR(Err0449, "misplaced function declaration                    $ can't declare functions directly inside structs $ functions associated with structs should be declared inside an [[impl]] block");
     SWAG_ERROR(Err0450, "misplaced generic arguments                       $ unexpected generic arguments for %s [[%s]]");
     SWAG_ERROR(Err0451, "misplaced move reference                          $ can't use a move reference type [[&&]] outside of a function parameter");
-    SWAG_ERROR(Err0452, "misplaced range                                   $ can't use a range in a switch which without an expression");
+    SWAG_ERROR(Err0452, "misplaced range                                   $ can't use a range in a switch without an expression");
     SWAG_ERROR(Err0453, "misplaced reference to [[with]] block             $ can't use statements starting with [[.]] outside of a [[with]] block");
     SWAG_ERROR(Err0454, "misplaced special function                        $ can't declare the special function [[%s]] outside of the corresponding [[impl]] block $ an [[impl for]] block can only be used to implement interfaces");
     SWAG_ERROR(Err0455, "misplaced special function                        $ can't declare the special function [[%s]] outside of the corresponding [[impl]] block");
@@ -588,7 +588,7 @@ void initErrors()
     SWAG_ERROR(Err0461, "misplaced variadic parameter                      $ can't place a variadic parameter anywhere but at the end");
     SWAG_ERROR(Err0462, "misplaced variadic parameter                      $ can't use variadic parameters in an inline function");
     SWAG_ERROR(Err0463, "missing [[#alias]] number                         $ can't use an [[#alias]] variable name without a trailing number, such as [[#alias0]], [[#alias1]], etc.");
-    SWAG_ERROR(Err0464, "missing [[#do]]                                   $ can't process $$TKN$$ because either [[#do]] or [[{]] is missing");
+    SWAG_ERROR(Err0464, "missing [[#do]]                                   $ expected either [[#do]] or [[{]] before $$TKN$$");
     SWAG_ERROR(Err0465, "missing [[#foreignlib]] string argument           $ can't use $$TKN$$ because [[#foreignlib]] should be followed by a library name $ use [[#foreignlib \"path/to/library\"]] to specify the library to import");
     SWAG_ERROR(Err0466, "missing [[#global testerror]] string argument     $ can't use $$TKN$$ because [[#global testerror]] should be followed by the error string to check");
     SWAG_ERROR(Err0467, "missing [[#global testwarning]] string argument   $ can't use $$TKN$$ because [[#global testwarning]] should be followed by the warning string to check");
@@ -607,7 +607,7 @@ void initErrors()
     SWAG_ERROR(Err0480, "missing [[:]]                                     $ expected [[:]] after the [[loop]] variable name [[%s]] $ the syntax is [[loop [variable:] count]]");
     SWAG_ERROR(Err0481, "missing [[case]] expression                       $ expected the [[case]] expression, got [[%s]] instead");
     SWAG_ERROR(Err0482, "missing [[closure]] capture variable              $ expected another capture variable between the [[comma]] ',' and [['|']] $ add another variable or consider removing the trailing comma");
-    SWAG_ERROR(Err0483, "missing [[do]]                                    $ expected either [[do]] or [[{]], got $$TKN$$ instead");
+    SWAG_ERROR(Err0483, "missing [[do]]                                    $ expected either [[do]] or [[{]] before $$TKN$$");
     SWAG_ERROR(Err0484, "missing [[if]] boolean expression                 $ expected a boolean expression after [[if]], got $$TKN$$ instead");
     SWAG_ERROR(Err0485, "missing [[impl]]                                  $ expected the function [[%s]] in the interface [[%s]] to have an [[impl]] marker");
     SWAG_ERROR(Err0486, "missing [[loop]] count                            $ expected the [[loop]] count expression before [[%s]]");

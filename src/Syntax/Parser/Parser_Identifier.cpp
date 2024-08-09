@@ -421,6 +421,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
 
+    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0447, node->token.c_str())));
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0446, tokenParse.token.c_str(), node->token.c_str())));
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0446, tokenParse.token.c_str(), node->token.c_str())));
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0446, tokenParse.token.c_str(), node->token.c_str())));
