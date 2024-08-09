@@ -1,4 +1,4 @@
-#global testerror "Err0203"
+#global testerror "Err0201"
 
 interface toto
 {

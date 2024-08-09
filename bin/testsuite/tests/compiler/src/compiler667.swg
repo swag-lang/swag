@@ -1,4 +1,4 @@
-#global testerror "Err0598"
+#global testerror "Err0596"
 
 typealias toto = s32
 

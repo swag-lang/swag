@@ -1,4 +1,4 @@
-#global testerror "Err0460"
+#global testerror "Err0459"
 
 func sumsumsumsumsumsumsumsumsumsumsumsumsumsumsumsumsum(x: f32, nums: ...)
 {

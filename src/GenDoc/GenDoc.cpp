@@ -1429,7 +1429,7 @@ bool GenDoc::constructAndSave()
 
         if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
         {
-            Report::errorOS(formErr(Err0089, fullFileName.c_str()));
+            Report::errorOS(formErr(Err0088, fullFileName.c_str()));
             (void) fclose(f);
             return false;
         }

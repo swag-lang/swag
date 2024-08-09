@@ -1,4 +1,4 @@
-#global testerror "Err0212"
+#global testerror "Err0210"
 namespace drawing
 {
     enum Color

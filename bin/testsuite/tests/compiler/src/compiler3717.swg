@@ -1,4 +1,4 @@
-#global testerror "Err0057"
+#global testerror "Err0056"
 var READ, TOTO: s32
 
 func toto() throw

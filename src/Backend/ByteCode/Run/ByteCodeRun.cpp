@@ -57,7 +57,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0559, context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0558, context->maxRecurse));
         return;
     }
 
@@ -1628,7 +1628,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = toNte(Nte0086);
-                        callInternalPanic(context, ip, formErr(Err0101, over->node->token.c_str()));
+                        callInternalPanic(context, ip, formErr(Err0100, over->node->token.c_str()));
                     }
                 }
                 registersRC[ip->a.u32].pointer = ptr;
@@ -1650,7 +1650,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         {
                             context->internalPanicSymbol = over;
                             context->internalPanicHint   = toNte(Nte0086);
-                            callInternalPanic(context, ip, formErr(Err0101, over->node->token.c_str()));
+                            callInternalPanic(context, ip, formErr(Err0100, over->node->token.c_str()));
                         }
                     }
                 }
@@ -4443,7 +4443,7 @@ namespace
 #endif
 
             level   = DiagnosticLevel::Exception;
-            userMsg = toErr(Err0073);
+            userMsg = toErr(Err0072);
             notes.push_back(Diagnostic::note(toNte(Nte0111)));
             notes.push_back(Diagnostic::note(toNte(Nte0212)));
         }

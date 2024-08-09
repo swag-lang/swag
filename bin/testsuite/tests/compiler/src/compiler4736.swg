@@ -1,3 +1,3 @@
-#global testerror "Err0250"
+#global testerror "Err0247"
 enum A { R, G, B }
 namealias b = A

@@ -1,4 +1,4 @@
-#global testerror "Err0599"
+#global testerror "Err0597"
 #test
 {
     var x = [1'u8,1'u8,1'u8]

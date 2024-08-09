@@ -1,4 +1,4 @@
-#global testerror "Err0571"
+#global testerror "Err0570"
 #test
 {
     var x = "toto"

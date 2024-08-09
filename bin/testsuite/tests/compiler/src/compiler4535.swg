@@ -1,4 +1,4 @@
-#global testerror "Err0597"
+#global testerror "Err0595"
 
 #[Swag.Strict]
 typealias B = func(s32)

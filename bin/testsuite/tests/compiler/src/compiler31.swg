@@ -1,3 +1,3 @@
-#global testerror "Err0190";
+#global testerror "Err0189";
 #unittest
 SWA

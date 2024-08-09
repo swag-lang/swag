@@ -1,2 +1,2 @@
-#global testerror "Err0115"
+#global testerror "Err0114"
 #global _print___

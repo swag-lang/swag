@@ -59,7 +59,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     if (!node)
         node = context->node;
 
-    Diagnostic err{node, node->token, formErr(Err0030, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0029, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
     bool first = true;
     for (const auto match : matches)

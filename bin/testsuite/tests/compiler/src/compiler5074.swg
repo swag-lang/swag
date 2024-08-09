@@ -1,4 +1,4 @@
-//#global testerror "Err0100"
+//#global testerror "Err0098"
 
 enum A{E}
 #test

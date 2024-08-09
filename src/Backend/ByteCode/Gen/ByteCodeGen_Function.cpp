@@ -1490,7 +1490,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic err{parent, parent->token, formErr(Err0448, parent->token.c_str(), srcNode->token.c_str())};
+            const Diagnostic err{parent, parent->token, formErr(Err0447, parent->token.c_str(), srcNode->token.c_str())};
             return context->report(err, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1963,7 +1963,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         if (numVariadic > SWAG_LIMIT_MAX_VARIADIC_PARAMS)
-            return context->report({allParams, formErr(Err0572, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
+            return context->report({allParams, formErr(Err0571, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
     }
 
     auto lastParam = allParams && !allParams->children.empty() ? allParams->lastChild() : nullptr;
@@ -2293,7 +2293,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
     if (funcNode->stackSize > g_CommandLine.limitStackRT)
-        Report::report({funcNode, formErr(Err0573, Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
+        Report::report({funcNode, formErr(Err0572, Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;

@@ -1,3 +1,3 @@
-#global testerror "Err0324"
+#global testerror "Err0322"
 
 attr toto(x: *s32);

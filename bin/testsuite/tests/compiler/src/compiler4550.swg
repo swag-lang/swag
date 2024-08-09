@@ -1,4 +1,4 @@
-#global testerror "Err0147"
+#global testerror "Err0146"
 
 #[Swag.EnumFlags]
 enum Flags

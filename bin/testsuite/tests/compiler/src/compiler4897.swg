@@ -1,2 +1,2 @@
-#global testerror "Err0277"
+#global testerror "Err0273"
 0x00000000_00000000_1

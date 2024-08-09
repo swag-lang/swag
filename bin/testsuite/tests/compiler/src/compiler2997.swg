@@ -1,2 +1,2 @@
-#global testerror "Err0599"
+#global testerror "Err0597"
 #assert @gettag("toto", string, 666) == "true"

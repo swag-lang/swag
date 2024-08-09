@@ -1,4 +1,4 @@
-#global testerror "Err0483"
+#global testerror "Err0482"
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {

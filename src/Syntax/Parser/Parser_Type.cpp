@@ -108,7 +108,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         if (tokenParse.token.is(g_LangSpec->name_self))
         {
             curIsAlone = false;
-            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0414)));
+            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0413)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
             typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
@@ -116,7 +116,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse, toErr(Err0195));
+                return error(tokenParse, toErr(Err0193));
         }
         // ...
         else if (tokenParse.is(TokenId::SymDotDotDot))
@@ -166,7 +166,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             }
         }
 
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0196)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0194)));
 
         // If we are in a type declaration, generate a variable and not just a type
         if (inTypeVarDecl)
@@ -240,7 +240,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             break;
 
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0110)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0109)));
     }
 
     FormatAst::inheritFormatAfter(this, params, &tokenParse);
@@ -459,7 +459,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
     }
 
-    Diagnostic err{sourceFile, tokenParse, toErr(Err0335)};
+    Diagnostic err{sourceFile, tokenParse, toErr(Err0334)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
         err.addNote(toNte(Nte0091));
@@ -490,7 +490,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymAmpersandAmpersand))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0192)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0190)};
             return context->report(err);
         }
     }
@@ -542,13 +542,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             }
 
             if (node->arrayDim == 254)
-                return error(tokenParse, toErr(Err0558));
+                return error(tokenParse, toErr(Err0557));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
             if (tokenParse.isNot(TokenId::SymComma))
                 break;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0108)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0107)));
         }
 
         auto rightSquareToken = tokenParse;
@@ -567,7 +567,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymComma))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0336)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0335)};
             return context->report(err);
         }
 
@@ -669,7 +669,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
     {
-        return error(node, formErr(Err0056, "bit", "over"));
+        return error(node, formErr(Err0055, "bit", "over"));
     }
 
     if (mdfFlags.has(MODIFIER_UN_CONST))

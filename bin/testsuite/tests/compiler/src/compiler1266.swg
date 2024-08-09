@@ -1,5 +1,5 @@
 
-#global testerror "Err0713"
+#global testerror "Err0714"
 
 func getCharCount(buffer: *u8)
 {

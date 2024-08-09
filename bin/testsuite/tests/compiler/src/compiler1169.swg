@@ -1,4 +1,4 @@
-#global testerror "Err0044"
+#global testerror "Err0042"
 
 var TOTO = "win32"
 

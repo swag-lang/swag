@@ -28,21 +28,21 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         {
-            Diagnostic err{node, node->token, formErr(Err0273, typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0270, typeInfo->getDisplayNameC())};
             err.addNote(child, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
 
         case NativeTypeKind::Any:
         {
-            Diagnostic err{node, node->token, formErr(Err0272, typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0269, typeInfo->getDisplayNameC())};
             err.addNote(child, toNte(Nte0035));
             return context->report(err);
         }
 
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0272, typeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0269, typeInfo->getDisplayNameC())};
             err.addNote(child, Diagnostic::isType(typeInfo));
             return context->report(err);
         }

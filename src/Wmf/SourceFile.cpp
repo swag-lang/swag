@@ -48,7 +48,7 @@ bool SourceFile::checkFormat()
         || (c1 == 0x84 && c2 == 0x31 && c3 == 0x95 && c4 == 0x33) // GB-18030
     )
     {
-        Report::report({this, toErr(Err0081)});
+        Report::report({this, toErr(Err0080)});
         return false;
     }
 
@@ -107,7 +107,7 @@ bool SourceFile::load()
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
-        Report::errorOS(formErr(Err0088, path.c_str()));
+        Report::errorOS(formErr(Err0087, path.c_str()));
         return false;
     }
 
