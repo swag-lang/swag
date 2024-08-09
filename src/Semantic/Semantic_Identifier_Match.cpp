@@ -814,8 +814,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
             {
-                Diagnostic err{identifier, identifier->token, formErr(Err0142, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
-                err.addNote(overload->node, overload->node->token, toNte(Nte0172));
+                Diagnostic err{identifier, identifier->getTokenName(), formErr(Err0142, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
+                err.addNote(overload->node, overload->node->getTokenName(), toNte(Nte0172));
                 return context->report(err);
             }
         }

@@ -154,8 +154,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
 
             if (!varNode->is(AstNodeKind::VarDecl))
             {
-                Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0239)};
-                err.addNote(varNode->token.sourceFile, savedToken.token, toNte(Nte0016));
+                const Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0239)};
                 return context->report(err);
             }
 

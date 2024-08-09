@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
@@ -85,7 +86,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
             SWAG_CHECK(checkIsConstExpr(context, nameNode->hasFlagComputedValue(), nameNode, toErr(Err0039), node->token.text));
             SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0615, node->token.c_str(), nameNode->typeInfo->getDisplayNameC())}));
-            SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0163, typeNode->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0163, Naming::aKindName(defaultVal).c_str())}));
 
             {
                 PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0119); });
