@@ -418,10 +418,10 @@ void initErrors()
     SWAG_ERROR(Err0291, "invalid pointer arithmetic                        $ can't perform pointer arithmetic");
     SWAG_ERROR(Err0292, "invalid pointer arithmetic                        $ can't perform pointer arithmetic with a non-integer type [[%s]]");
     SWAG_ERROR(Err0293, "invalid pointer arithmetic                        $ can't perform pointer slicing");
-    SWAG_ERROR(Err0294, "invalid range                                     $ can't have a lower bound [[%lld]] greater than the upper bound [[%lld]]");
+    SWAG_ERROR(Err0294, "invalid range                                     $ can't have a lower bound [[%lld]] greater than the upper bound [[%lld]] $ you can loop in reverse order with the [[loop,back]] syntax");
     SWAG_ERROR(Err0295, "invalid reference                                 $ expected a pointer type or a reference as the [[ref]] expression, got type [[%s]] instead");
     SWAG_ERROR(Err0296, "invalid reference                                 $ can't reference the current file scope");
-    SWAG_ERROR(Err0297, "invalid reference to [[with]] expression          $ can't use [[.]] without an identifier, got $$TKN$$ instead");
+    SWAG_ERROR(Err0297, "invalid reference [[with]]                        $ can't use [[.]] without an identifier, got $$TKN$$ instead");
     SWAG_ERROR(Err0298, "invalid return type                               $ can't use [[%s]] as a function return type");
     SWAG_ERROR(Err0299, "invalid return type                               $ can't use [[void]] as a function return type $ just omit the return type if you want the function to return nothing");
     SWAG_ERROR(Err0300, "invalid return type                               $ expected a [[string]] or a [[slice]] as the [[opSlice]] return type, got type [[%s]] instead");
