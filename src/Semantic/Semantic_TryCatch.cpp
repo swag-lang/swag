@@ -32,7 +32,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
 
 bool Semantic::checkCanCatch(SemanticContext* context)
 {
-    auto       node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
+    const auto node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
     const auto identifierRef = castAst<AstIdentifierRef>(node->firstChild(), AstNodeKind::IdentifierRef);
 
     for (const auto c : identifierRef->children)
@@ -44,7 +44,9 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->lastChild();
-    return context->report({node, node->token, formErr(Err0445, node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
+    Diagnostic err{node, node->token, formErr(Err0445, lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())};
+    err.addNote(lastChild, toNte(Nte0219));
+    return context->report(err);
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)

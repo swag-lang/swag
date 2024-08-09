@@ -472,19 +472,19 @@ void initErrors()
     SWAG_ERROR(Err0345, "invalid type range                                $ can't use the type [[%s]] in a range expression");
     SWAG_ERROR(Err0346, "invalid type suffix                               $ can't use the suffix [[%s]] on a literal except for a struct conversion");
     SWAG_ERROR(Err0347, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, got $$TKN$$ instead");
-    SWAG_ERROR(Err0348, "invalid type variable                             $ can't declare a variable with a [[void]] type");
+    SWAG_ERROR(Err0348, "invalid type variable                             $ can't declare a variable with the type [[void]]");
     SWAG_ERROR(Err0349, "invalid type variable                             $ can't deduce the type of %s [[%s]]");
     SWAG_ERROR(Err0350, "invalid type variable                             $ can't deduce the type of the variable because the expression is [[null]]");
-    SWAG_ERROR(Err0351, "invalid type visit                                $ can't visit a pointer");
-    SWAG_ERROR(Err0352, "invalid type visit                                $ can't visit a value with type [[%s]]");
-    SWAG_ERROR(Err0353, "invalid unicode value                             $ can't convert value [[0x%x]] to UTF8 because it is not a valid unicode code point");
+    SWAG_ERROR(Err0351, "invalid type visit                                $ can't visit a pointer (the type is [[%s]])");
+    SWAG_ERROR(Err0352, "invalid type visit                                $ can't visit a value with the type [[%s]]");
+    SWAG_ERROR(Err0353, "invalid unicode value                             $ can't convert the value [[0x%x]] to UTF8 because it is not a valid unicode code point");
     SWAG_ERROR(Err0354, "invalid visit                                     $ can't visit a variadic type by pointer");
     SWAG_ERROR(Err0355, "invalid visit                                     $ can't visit an enum content by pointer");
     SWAG_ERROR(Err0356, "invalid void dereference                          $ can't dereference a pointer to [[void]] $ [[void]] does not have a valid size");
-    SWAG_ERROR(Err0357, "isolated [[#elif]]                                $ can't use [[#elif]] without a preceding [[#if]]");
+    SWAG_ERROR(Err0357, "isolated [[#elif]]                                $ can't have [[#elif]] without a preceding [[#if]]");
     SWAG_ERROR(Err0358, "isolated [[#else]]                                $ can't have [[#else]] without a preceding [[#if]] or [[#elif]]");
-    SWAG_ERROR(Err0359, "isolated [[)]]                                    $ can't have [[)]] without a preceding [[(]]");
-    SWAG_ERROR(Err0360, "isolated [[]]]                                    $ can't have [[]]] without a preceding [[[]]");
+    SWAG_ERROR(Err0359, "isolated [[)]]                                    $ can't have a [[)]] without a preceding [[(]]");
+    SWAG_ERROR(Err0360, "isolated [[]]]                                    $ can't have a [[]]] without a preceding [[[]]");
     SWAG_ERROR(Err0361, "isolated [[elif]]                                 $ can't have [[elif]] without a preceding [[if]]");
     SWAG_ERROR(Err0362, "isolated [[else]]                                 $ can't have [[else]] without a preceding [[if]] or [[elif]]");
     SWAG_ERROR(Err0363, "isolated [[}]]                                    $ can't have a [[}]] without a preceding [[{]]");
@@ -500,7 +500,7 @@ void initErrors()
     SWAG_ERROR(Err0373, "mismatch scopes                                   $ expected the [[impl]] block to be defined in the same scope as [[%s]]");
     SWAG_ERROR(Err0374, "misplaced [[#dependencies]]                       $ can't use [[#dependencies]] outside [[module.swg]] or [[.swgs]] files");
     SWAG_ERROR(Err0375, "misplaced [[#dependencies]]                       $ expected [[#dependencies]] to be placed at the file level");
-    SWAG_ERROR(Err0376, "misplaced [[#do]]                                 $ can't use [[#do]] before [[{]] $ consider removing it");
+    SWAG_ERROR(Err0376, "misplaced [[#do]]                                 $ can't have [[#do]] before [[{]] $ consider removing it");
     SWAG_ERROR(Err0377, "misplaced [[#global testerror]]                   $ can't use [[#global testerror]] outside a test file from the [[./tests]] folder");
     SWAG_ERROR(Err0378, "misplaced [[#global testwarning]]                 $ can't use [[#global testwarning]] outside a test file from the [[./tests]] folder");
     SWAG_ERROR(Err0379, "misplaced [[#global using]]                       $ can't use [[#global using]] outside [[module.swg]] or [[.swgs]] files");
@@ -525,16 +525,16 @@ void initErrors()
     SWAG_ERROR(Err0398, "misplaced [[Self]] type                           $ can't use the [[Self]] type outside an [[impl]], [[struct]], or [[interface]] block");
     SWAG_ERROR(Err0399, "misplaced [[break]]                               $ can't use [[break]] outside a breakable block such as [[loop]], [[visit]], [[for]], etc.");
     SWAG_ERROR(Err0400, "misplaced [[const]]                               $ expected [[self]] after [[const]] when declaring a function parameter, got $$TKN$$ instead");
-    SWAG_ERROR(Err0401, "misplaced [[const]] qualifier                     $ can't use the [[const]] qualifier for [[func]], only for [[mtd]]");
-    SWAG_ERROR(Err0402, "misplaced [[continue]]                            $ can't use [[continue]] outside a breakable block like [[loop]], [[visit]], [[for]], etc.");
-    SWAG_ERROR(Err0403, "misplaced [[do]]                                  $ can't use [[do]] before [[{]] $ consider removing it");
+    SWAG_ERROR(Err0401, "misplaced [[const]] qualifier                     $ can't use the [[const]] qualifier after [[func]], only after [[mtd]]");
+    SWAG_ERROR(Err0402, "misplaced [[continue]]                            $ can't use [[continue]] outside a breakable block such as [[loop]], [[visit]], [[for]], etc.");
+    SWAG_ERROR(Err0403, "misplaced [[do]]                                  $ can't have [[do]] before [[{]] $ consider removing it");
     SWAG_ERROR(Err0404, "misplaced [[fallthrough]]                         $ can't use [[fallthrough]] in the last [[case]] of a [[switch]] $ consider removing it");
     SWAG_ERROR(Err0405, "misplaced [[fallthrough]]                         $ can't use [[fallthrough]] outside a [[case]] block");
     SWAG_ERROR(Err0406, "misplaced [[fallthrough]]                         $ can't use [[fallthrough]] outside a [[switch]]");
     SWAG_ERROR(Err0407, "misplaced [[moveref]]                             $ expected [[moveref]] to be used before a function argument");
-    SWAG_ERROR(Err0408, "misplaced [[moveref]]                             $ unexpected [[moveref]] on a compile-time value $ [[moveref]] should be used on a pointer or a reference");
-    SWAG_ERROR(Err0409, "misplaced [[moveref]]                             $ unexpected [[moveref]] on an immutable expression");
-    SWAG_ERROR(Err0410, "misplaced [[moveref]]                             $ unexpected [[moveref]] on type [[%s]] $ [[moveref]] should be used on a pointer or a reference");
+    SWAG_ERROR(Err0408, "misplaced [[moveref]]                             $ can't use [[moveref]] on a compile-time value $ [[moveref]] should be used on a pointer or a reference");
+    SWAG_ERROR(Err0409, "misplaced [[moveref]]                             $ can't use [[moveref]] on an immutable expression");
+    SWAG_ERROR(Err0410, "misplaced [[moveref]]                             $ can't use [[moveref]] on the type [[%s]] $ [[moveref]] should be used on a pointer or a reference");
     SWAG_ERROR(Err0411, "misplaced [[mtd]]                                 $ can't use [[mtd]] outside a struct implementation block $ you could replace [[mtd]] with [[func]]");
     SWAG_ERROR(Err0412, "misplaced [[mtd]] in enum                         $ can't use [[mtd]] outside a struct implementation block $ you could replace [[mtd]] with [[func]]");
     SWAG_ERROR(Err0413, "misplaced [[retval]]                              $ can't use the [[retval]] special type outside a function body");
@@ -542,8 +542,8 @@ void initErrors()
     SWAG_ERROR(Err0415, "misplaced [[using]]                               $ can't associate [[using]] with the type [[%s]] $ expected a namespace, a struct, an enum or a variable");
     SWAG_ERROR(Err0416, "misplaced [[using]]                               $ can't associate [[using]] with a variable of type [[%s]]");
     SWAG_ERROR(Err0417, "misplaced [[using]]                               $ can't associate [[using]] with a pointer to [[%s]] $ [[using]] can only be used on pointers to struct");
-    SWAG_ERROR(Err0418, "misplaced [[using]]                               $ can't associate [[using]] with a variable in [[%s]] scope");
-    SWAG_ERROR(Err0419, "misplaced [[using]] in interface                  $ can't associate [[using]] with an interface member");
+    SWAG_ERROR(Err0418, "misplaced [[using]]                               $ can't associate [[using]] with a variable at [[%s]] scope");
+    SWAG_ERROR(Err0419, "misplaced [[using]] in interface                  $ can't associate [[using]] with an interface function");
     SWAG_ERROR(Err0420, "misplaced access specifier                        $ can't make a global variable [[public]]");
     SWAG_ERROR(Err0421, "misplaced access specifier                        $ unexpected [[%s]] before [[%s]]");
     SWAG_ERROR(Err0422, "misplaced access specifier                        $ can't use the [[%s]] access specifier outside of the global scope");
@@ -561,7 +561,7 @@ void initErrors()
     SWAG_ERROR(Err0434, "misplaced attribute                               $ can't use the [[#[Swag.Complete]]] attribute to function [[%s]] $ #[Swag.Complete] can only be applied to [[opAffect]] and [[opAffectLiteral]]");
     SWAG_ERROR(Err0435, "misplaced attribute                               $ can't use the [[#[Swag.Discardable]]] attribute on type [[%s]] $ it can only be applied to lambda variables");
     SWAG_ERROR(Err0436, "misplaced attribute                               $ can't use the [[#[Swag.Implicit]]] attribute to function [[%s]] $ [[#[Swag.Implicit]]] can only be applied to [[opAffect]], [[opAffectLiteral]] and [[opCast]]");
-    SWAG_ERROR(Err0437, "misplaced attribute                               $ can't use the [[%s]] attribute here $ it can only be applied to %s");
+    SWAG_ERROR(Err0437, "misplaced attribute                               $ can't use the [[%s]] attribute here");
     SWAG_ERROR(Err0438, "misplaced attribute                               $ can't use the [[%s]] attribute on %s");
     SWAG_ERROR(Err0439, "misplaced attribute                               $ can't use the [[%s]] attribute in a [[#global]] statement $ the attribute does not have the [[Swag.AttributeUsage.File]] usage");
     SWAG_ERROR(Err0440, "misplaced attribute                               $ can't place an attribute after [[%s]] $ attributes should be placed before access specifiers; consider moving the attribute before [[%s]]");
@@ -569,7 +569,7 @@ void initErrors()
     SWAG_ERROR(Err0442, "misplaced closure                                 $ can't define a closure in a global scope $ closures can only be defined within functions");
     SWAG_ERROR(Err0443, "misplaced compiler instruction                    $ can't use [[#callerfunction]] outside of a function parameter");
     SWAG_ERROR(Err0444, "misplaced compiler instruction                    $ can't use [[#callerlocation]] outside of a function parameter");
-    SWAG_ERROR(Err0445, "misplaced error catching                          $ [[%s]] can only be associated with function calls, but [[%s]] is %s");
+    SWAG_ERROR(Err0445, "misplaced error catching                          $ can't catch [[%s]] because it is %s");
     SWAG_ERROR(Err0446, "misplaced error catching                          $ can't nest [[%s]] in a [[%s]] expression $ you should use only one [[try]], [[catch]] or [[assume]]");
     SWAG_ERROR(Err0447, "misplaced error catching                          $ can't treat a return error with [[%s]] outside of a function, macro, or mixin");
     SWAG_ERROR(Err0448, "misplaced error catching                          $ can't use [[%s]] because the function [[%s]] can't raise an error");
@@ -1107,8 +1107,8 @@ void initErrors()
     SWAG_ERROR(Nte0215, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0216, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
     SWAG_ERROR(Nte0217, "you should consider using the full name of the enum value");
-    SWAG_ERROR(Nte0218, nullptr);
-    SWAG_ERROR(Nte0219, nullptr);
+    SWAG_ERROR(Nte0218, "it can only be applied to %s");
+    SWAG_ERROR(Nte0219, "this can't raise errors");
     SWAG_ERROR(Nte0220, nullptr);
 }
 

@@ -892,7 +892,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     }
     else if (typeInfo->isPointer())
     {
-        return context->report({node->expression, toErr(Err0351)});
+        return context->report({node->expression, formErr(Err0351, typeInfo->getDisplayNameC())});
     }
     else
     {
