@@ -366,7 +366,7 @@ void initErrors()
     SWAG_ERROR(Err0239, "invalid list variables                            $ can't declare multiple variables in [[using]] $ [[using]] should be followed by a single variable declaration");
     SWAG_ERROR(Err0240, "invalid list variables                            $ can't declare multiple variables in [[with]] $ [[with]] should be followed by a single variable declaration");
     SWAG_ERROR(Err0241, "invalid literal                                   $ can't convert the literal [[%I64u]]");
-    SWAG_ERROR(Err0242, "invalid literal suffix                            $ can't use the symbol [[%s]] as a literal suffix because it is [[%s]]");
+    SWAG_ERROR(Err0242, "invalid literal suffix                            $ can't use the symbol [[%s]] as a literal suffix because it is [[%s]] $ this should be a type");
     SWAG_ERROR(Err0243, "invalid literal suffix                            $ can't use the type [[%s]] as a literal suffix");
     SWAG_ERROR(Err0244, "invalid literal suffix                            $ can't use the type [[%s]] as a float literal suffix $ only [[f32]] and [[f64]] are accepted");
     SWAG_ERROR(Err0245, "invalid literal to struct conversion              $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
