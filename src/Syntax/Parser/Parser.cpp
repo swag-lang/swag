@@ -92,10 +92,13 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         if (parent->is(AstNodeKind::Statement) || parent->is(AstNodeKind::StatementNoScope))
             parent = parent->getParent(1);
 
-        if (Tokenizer::isCompiler(parent->token.id) ||
-            Tokenizer::isKeyword(parent->token.id))
+        if(!isGeneratedName(parent->token.text))
         {
-            err.addNote(formNte(Nte0003, parent->token.c_str()));
+            if (Tokenizer::isCompiler(parent->token.id) ||
+                Tokenizer::isKeyword(parent->token.id))
+            {
+                err.addNote(formNte(Nte0003, parent->token.c_str()));
+            }
         }
     }
 
