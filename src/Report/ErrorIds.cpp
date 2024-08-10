@@ -636,10 +636,10 @@ void initErrors()
     SWAG_ERROR(Err0673, "unexpected aliased names                          $ can't use variable aliases when calling [[%s]] because it is not a macro or a mixin");
     SWAG_ERROR(Err0461, "misplaced variadic parameter                      $ can't use variadic parameters in an inline function");
     SWAG_ERROR(Err0350, "invalid type visit                                $ can't visit a pointer (the type is [[%s]])");
-    SWAG_ERROR(Err0332, "invalid type [[visit]]                            $ can't visit a tuple");
+    SWAG_ERROR(Err0332, "invalid type visit                                $ can't visit a tuple");
     SWAG_ERROR(Err0351, "invalid type visit                                $ can't visit a value with the type [[%s]]");
-    SWAG_ERROR(Err0353, "invalid visit                                     $ can't visit a variadic type by pointer");
-    SWAG_ERROR(Err0354, "invalid visit                                     $ can't visit an enum content by pointer");
+    SWAG_ERROR(Err0353, "invalid mode visit                                $ can't visit a variadic type by pointer");
+    SWAG_ERROR(Err0354, "invalid mode visit                                $ can't visit an enum content by pointer");
     SWAG_ERROR(Err0721, "unknown visit                                     $ can't visit the type [[%s]] $ can't find the special function [[opVisit]]");
     SWAG_ERROR(Err0088, "file write error                                  $ can't write to the file [[%s]]");
     SWAG_ERROR(Err0285, "invalid packing value                             $ expected 0 or a power of two [[#[Swag.Pack]]] argument, got [[%d]]");
