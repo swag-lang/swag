@@ -220,9 +220,10 @@ namespace
     {
         const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
-        const auto msg = formErr(Err0216, bi.badGenMatch.c_str(),
-                                 Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),
-                                 Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str());
+        const auto msg = formErr(Err0216,
+                                 Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str(),
+                                 bi.badGenMatch.c_str(),
+                                 Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str());
         const auto err = new Diagnostic{bi.badNode, msg};
         errorParam.addError(err);
         errorParam.addNote(Diagnostic::note(bi.badNode, Diagnostic::isType(bi.badNode)));
