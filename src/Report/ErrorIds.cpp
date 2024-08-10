@@ -231,7 +231,6 @@ void initErrors()
     SWAG_ERROR(Err0199, "invalid dereference null                          $ can't dereference a null pointer");
     SWAG_ERROR(Err0355, "invalid void dereference                          $ can't dereference a pointer to [[void]] $ [[void]] does not have a valid size");
     SWAG_ERROR(Err0494, "missing dereference index                         $ can't dereference the array [[%s]] of type [[%s]] without an index $ consider adding the index between brackets");
-    SWAG_ERROR(Err0495, "missing dereference index                         $ can't dereference the array [[%s]] of type [[%s]] without an index $ consider adding the index between brackets");
     SWAG_ERROR(Err0198, "invalid dereference                               $ can't dereference the type [[%s]]");
     SWAG_ERROR(Err0315, "invalid tuple dereference                         $ can't dereference tuples like pointers");
     SWAG_ERROR(Err0032, "ambiguous syntax                                  $ can't determine if this is an initialization of [[%s]] or the start of a new block");
@@ -865,6 +864,7 @@ void initErrors()
     SWAG_ERROR(Err0563, "out of range compiler limit                       $ unexpected size of the data segment [[%s]] (maximum size is [[0x%I64x]] bytes)");
     SWAG_ERROR(Err0310, "invalid symbol                                    $ unexpected symbol [['%s']]");
     SWAG_ERROR(Err0216, "invalid generic                                   $ unexpected value [[%s]] for the generic value [[%s]] because it has already been deduced from arguments to be [[%s]]");
+    SWAG_ERROR(Err0495, nullptr);
     SWAG_ERROR(Err0741, nullptr);
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);

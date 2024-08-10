@@ -1243,7 +1243,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         identifier->parent == identifierRef &&
         identifierRef->lastChild() != identifier)
     {
-        const Diagnostic err{identifier, formErr(Err0495, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())};
+        const Diagnostic err{identifier, formErr(Err0494, symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
