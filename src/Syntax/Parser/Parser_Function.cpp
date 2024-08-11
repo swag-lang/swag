@@ -160,7 +160,6 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             if (forAttrUse && tokenParse.is(TokenId::SymRightSquare))
                 return error(tokenParse, toErr(Err0478));
 
-            auto tokenComma = tokenParse;
             if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in the [[struct]] initialization arguments"));
             else if (forAttrUse)
@@ -172,8 +171,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             if (closeToken == TokenId::SymRightCurly && tokenParse.is(closeToken))
                 break;
 
-            if (tokenParse.is(closeToken))
-                return context->report({callParams, tokenComma.token, toErr(Err0106)});
+            SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0106)));
         }
     }
 
