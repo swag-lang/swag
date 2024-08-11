@@ -2262,7 +2262,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0589, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
+        const auto       msg = formErr(Err0540, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }
@@ -2670,7 +2670,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
-                            Diagnostic err{fromNode, formErr(Err0026, fromType->getDisplayNameC(), toType->getDisplayNameC())};
+                            Diagnostic err{fromNode, formErr(Err0005, fromType->getDisplayNameC(), toType->getDisplayNameC())};
                             err.addNote(formNte(Nte0216, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
                             err.addNote(foundField->declNode, toNte(Nte0064));
                             err.addNote(field->declNode, toNte(Nte0063));
@@ -2709,7 +2709,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             {
                 if (foundField)
                 {
-                    Diagnostic err{context->node, formErr(Err0027, fromTypeStruct->getDisplayNameC(), toTypeItf->name.c_str())};
+                    Diagnostic err{context->node, formErr(Err0007, fromTypeStruct->getDisplayNameC(), toTypeItf->name.c_str())};
                     err.addNote(it.field->declNode, formNte(Nte0165, it.field->typeInfo->getDisplayNameC()));
                     err.addNote(foundField->declNode, formNte(Nte0167, foundField->typeInfo->getDisplayNameC()));
                     return context->report(err);
@@ -3180,9 +3180,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, formErr(Err0550, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0481, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, formErr(Err0590, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0541, toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

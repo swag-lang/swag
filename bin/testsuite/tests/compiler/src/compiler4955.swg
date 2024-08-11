@@ -1,2 +1,2 @@
-#global testerror "Err0262"
+#global testerror "Err0706"
 #global testpass "toto"

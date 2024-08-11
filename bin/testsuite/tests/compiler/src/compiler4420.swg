@@ -1,4 +1,4 @@
-#global testerror "Err0407"
+#global testerror "Err0323"
 using Swag
 
 func toto(x: &&s32) {}

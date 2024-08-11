@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0714"
+#global testerror "Err0697"
 #test
 {
 	for var i = 0; i < 10; i += 10

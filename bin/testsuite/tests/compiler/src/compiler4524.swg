@@ -1,4 +1,4 @@
-#global testerror "Err0296"
+#global testerror "Err0215"
 typealias AL = void
 func toto()->AL
 {

@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0011"
+#global testerror "Err0515"
 #main
 {
 	@assert(true)

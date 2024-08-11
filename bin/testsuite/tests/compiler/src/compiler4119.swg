@@ -1,4 +1,4 @@
-#global testerror "Err0662"
+#global testerror "Err0315"
 #test
 {
     var a = 0'u8

@@ -1,4 +1,4 @@
 
-#global testerror "Err0658";
+#global testerror "Err0626";
 	/* salut la foule
 		/* */

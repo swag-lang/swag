@@ -1,4 +1,4 @@
-#global testerror "Err0224"
+#global testerror "Err0181"
 
 func sum(nums: f64...) {
     @assert(nums.0 == 10)

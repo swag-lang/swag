@@ -1,4 +1,4 @@
-#global testerror "Err0056"
+#global testerror "Err0053"
 
 var READ, TOTO: s32
 

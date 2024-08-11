@@ -1,4 +1,4 @@
-#global testerror "Err0041"
+#global testerror "Err0023"
 
 var a = 0'u8
 #[Swag.Pack(a)]

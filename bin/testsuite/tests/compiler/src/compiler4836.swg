@@ -1,4 +1,4 @@
-#global testerror "Err0475"
+#global testerror "Err0411"
 //func toto() => "toto"
 
 //#assert(false, toto())

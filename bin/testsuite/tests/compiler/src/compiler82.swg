@@ -1,2 +1,2 @@
-#global testerror "Err0202"
+#global testerror "Err0690"
 var x = "tototo\oθθθθ"

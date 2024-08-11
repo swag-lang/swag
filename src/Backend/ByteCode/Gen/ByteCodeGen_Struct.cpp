@@ -1168,7 +1168,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
     {
         if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
         {
-            const Diagnostic err{from, formErr(Err0101, typeInfo->getDisplayNameC())};
+            const Diagnostic err{from, formErr(Err0088, typeInfo->getDisplayNameC())};
             return context->report(err);
         }
 

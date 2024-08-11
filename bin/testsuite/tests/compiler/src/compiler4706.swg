@@ -1,4 +1,4 @@
-#global testerror "Err0704"
+#global testerror "Err0689"
 enum RGB { R; G; B; }
 var g: RGB = R
 

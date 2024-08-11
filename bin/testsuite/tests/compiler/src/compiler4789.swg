@@ -1,4 +1,4 @@
-#global testerror "Err0112";
+#global testerror "Err0101";
 func main1 ()->s32
 {
 	while(true) do

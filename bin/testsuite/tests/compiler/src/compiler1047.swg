@@ -1,4 +1,4 @@
-#global testerror "Err0099"
+#global testerror "Err0090"
 
 func new() => {1}
 

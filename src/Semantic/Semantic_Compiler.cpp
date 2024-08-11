@@ -116,7 +116,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             if (node->hasSpecialFuncCall())
             {
-                Diagnostic err{node, formErr(Err0046, realType->getDisplayNameC())};
+                Diagnostic err{node, formErr(Err0028, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                 err.hint          = formNte(Nte0159, userOp->symbol->name.c_str());
                 return context->report(err);
@@ -137,7 +137,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 }
                 else
                 {
-                    Diagnostic err{node, formErr(Err0046, realType->getDisplayNameC())};
+                    Diagnostic err{node, formErr(Err0028, realType->getDisplayNameC())};
                     err.hint = toNte(Nte0084);
                     return context->report(err);
                 }
@@ -196,13 +196,13 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                         ok = true;
                     if (!ok)
                     {
-                        const Diagnostic err{node, formErr(Err0047, typeSliceContent->getDisplayNameC())};
+                        const Diagnostic err{node, formErr(Err0014, typeSliceContent->getDisplayNameC())};
                         return context->report(err);
                     }
                 }
                 else if (!concreteType->isString())
                 {
-                    const Diagnostic err{node, formErr(Err0035, concreteType->getDisplayNameC())};
+                    const Diagnostic err{node, formErr(Err0017, concreteType->getDisplayNameC())};
                     return context->report(err);
                 }
 
@@ -318,7 +318,7 @@ bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        const Diagnostic err{expression, formErr(Err0611, typeInfo->getDisplayNameC())};
+        const Diagnostic err{expression, formErr(Err0568, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -338,7 +338,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     const auto job        = context->baseJob;
     auto       expression = context->node->lastChild();
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0656, expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0624, expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -384,7 +384,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     const auto msg = node->firstChild();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0038, node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0020, node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     const Diagnostic err{node, node->token, formErr(Err0001, msg->computedValue()->text.c_str()), DiagnosticLevel::Error};
@@ -400,7 +400,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     const auto msg = node->firstChild();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0038, node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0020, node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     const Diagnostic err{node, node->token, msg->computedValue()->text, DiagnosticLevel::Warning};
@@ -423,7 +423,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
     node->addAstFlag(AST_NO_BYTECODE);
 
     if (!expr->computedValue()->reg.b)
-        return context->report({node, node->token, toErr(Err0034)});
+        return context->report({node, node->token, toErr(Err0013)});
     return true;
 }
 
@@ -437,7 +437,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->hasOwnerInline() || node->ownerInline()->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline()->hasAttribute(ATTRIBUTE_MACRO))
-        return context->report({node, toErr(Err0385)});
+        return context->report({node, toErr(Err0297)});
 
     return true;
 }
@@ -455,7 +455,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->addSemFlag(SEMFLAG_COMPILER_INSERT);
 
     auto expr = node->firstChild();
-    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0610, expr->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0567, expr->typeInfo->getDisplayNameC())}));
 
     node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
@@ -703,8 +703,8 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     const auto module = context->sourceFile->module;
     auto       back   = node->firstChild();
 
-    SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, toErr(Err0036)));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0609, back->typeInfo->getDisplayNameC())}));
+    SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, toErr(Err0018)));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0566, back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     if (!node->hasSemFlag(SEMFLAG_LOAD))
@@ -727,13 +727,13 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0706, filename.c_str())});
+                    return context->report({back, formErr(Err0692, filename.c_str())});
             }
         }
 
         struct stat statBuf;
         const int   rc = stat(fullFileName, &statBuf);
-        SWAG_VERIFY(rc == 0, context->report({back, formErr(Err0084, back->computedValue()->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, formErr(Err0073, back->computedValue()->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", statBuf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         const auto newJob         = Allocator::alloc<LoadFileJob>();
@@ -941,12 +941,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             return true;
 
         case TokenId::CompilerCallerLocation:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0443)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0370)}));
             node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
             return true;
 
         case TokenId::CompilerCallerFunction:
-            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0442)}));
+            SWAG_VERIFY(node->parent->is(AstNodeKind::FuncDeclParam), context->report({node, toErr(Err0369)}));
             node->typeInfo = g_TypeMgr->typeInfoString;
             return true;
 

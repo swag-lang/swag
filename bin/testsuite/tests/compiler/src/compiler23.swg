@@ -1,4 +1,4 @@
-#global testerror "Err0660"
+#global testerror "Err0628"
 const a = "tototo
 #global xxxx
 to"

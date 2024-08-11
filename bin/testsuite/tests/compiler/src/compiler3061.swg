@@ -1,3 +1,3 @@
-#global testerror "Err0050"
+#global testerror "Err0029"
 #[Swag.Tls, Swag.Compiler]
 var x = [10, 10, 20, 40]

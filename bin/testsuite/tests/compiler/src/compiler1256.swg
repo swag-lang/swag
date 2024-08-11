@@ -1,4 +1,4 @@
-#global testerror "Err0005"
+#global testerror "Err0509"
 
 func toto() -> {a:f32, b:bool}
 {

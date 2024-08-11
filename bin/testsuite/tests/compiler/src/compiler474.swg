@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0334"
+#global testerror "Err0248"
 #test
 {
 	var a: (s32, bool)->s32 = &F;

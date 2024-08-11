@@ -1,2 +1,2 @@
-#global testerror "Err0261";
+#global testerror "Err0670";
 attr toto(b, 0) -> var;

@@ -1,4 +1,4 @@
-#global testerror "Err0411"
+#global testerror "Err0328"
 enum A { R; }
 impl enum A
 {

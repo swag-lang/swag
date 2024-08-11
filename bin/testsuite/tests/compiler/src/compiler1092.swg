@@ -1,4 +1,4 @@
-#global testerror "Err0650"
+#global testerror "Err0616"
 
 #[Swag.EnumFlags]
 enum TITI

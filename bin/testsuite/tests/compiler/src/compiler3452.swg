@@ -1,4 +1,4 @@
-#global testerror "Err0184"
+#global testerror "Err0147"
 struct Vector
 {
     x, y: f32

@@ -17,7 +17,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic err{expression, expression->token, formErr(Err0046, expression->typeInfo->getDisplayNameC())};
+        Diagnostic err{expression, expression->token, formErr(Err0028, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
         err.hint          = formNte(Nte0159, userOp->symbol->name.c_str());
         err.addNote(note);
@@ -30,7 +30,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     else if (errMsg.length())
         message = errMsg;
     else
-        message = toErr(Err0042);
+        message = toErr(Err0024);
 
     Diagnostic err{expression, message};
     err.addNote(note);
@@ -297,7 +297,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
     if (typeInfo->isStruct())
     {
-        Diagnostic err{node->token.sourceFile, node->token, toErr(Err0329)};
+        Diagnostic err{node->token.sourceFile, node->token, toErr(Err0558)};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -310,7 +310,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isLambdaClosure())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0330, typeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0559, typeInfo->getDisplayNameC())};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -398,7 +398,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node->expressionLow, formErr(Err0344, node->expressionLow->typeInfo->getDisplayNameC())};
+        Diagnostic err{node->expressionLow, formErr(Err0211, node->expressionLow->typeInfo->getDisplayNameC())};
         err.addNote(toNte(Nte0059));
         return context->report(err);
     }
@@ -409,7 +409,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const bool upUnSigned   = node->expressionUp->typeInfo->isNativeIntegerUnsigned();
     if ((downSigned && upUnSigned) || (downUnSigned && upSigned))
     {
-        Diagnostic err{node, node->token, toErr(Err0599)};
+        Diagnostic err{node, node->token, toErr(Err0550)};
         err.addNote(node->expressionLow, Diagnostic::isType(node->expressionLow));
         err.addNote(node->expressionUp, Diagnostic::isType(node->expressionUp));
         return context->report(err);

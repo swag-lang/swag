@@ -15,7 +15,7 @@ namespace
     {
         SWAG_ASSERT(errorParam.failedParam);
         SWAG_ASSERT(errorParam.badParamIdx >= 2);
-        const auto msg = formErr(Err0521, Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
+        const auto msg = formErr(Err0450, Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
         const auto err = new Diagnostic{errorParam.failedParam, msg};
         errorParam.addError(err);
 
@@ -33,7 +33,7 @@ namespace
 
         if (errorParam.destStructDecl)
         {
-            errorParam.addError(new Diagnostic{isNamed, formErr(Err0705, isNamed->token.c_str(), typeInfo->getDisplayNameC())});
+            errorParam.addError(new Diagnostic{isNamed, formErr(Err0691, isNamed->token.c_str(), typeInfo->getDisplayNameC())});
 
             CollectedScope altScope;
             altScope.scope = errorParam.destStructDecl->scope;
@@ -47,7 +47,7 @@ namespace
         }
         else
         {
-            errorParam.addError(new Diagnostic{isNamed, formErr(Err0717, isNamed->token.c_str())});
+            errorParam.addError(new Diagnostic{isNamed, formErr(Err0705, isNamed->token.c_str())});
 
             CollectedScope altScope;
             altScope.scope = errorParam.destFuncDecl->scope;
@@ -65,9 +65,9 @@ namespace
 
         Utf8 msg;
         if (errorParam.destStructDecl)
-            msg = formErr(Err0016, isNamed->token.c_str());
+            msg = formErr(Err0520, isNamed->token.c_str());
         else
-            msg = formErr(Err0019, isNamed->token.c_str());
+            msg = formErr(Err0039, isNamed->token.c_str());
         const auto err = new Diagnostic{isNamed, msg};
         errorParam.addError(err);
 
@@ -84,7 +84,7 @@ namespace
             node = errorParam.errorNode;
 
         const auto overload = errorParam.oneTry->overload;
-        const auto err      = new Diagnostic{node, formErr(Err0490, Naming::kindName(overload).c_str())};
+        const auto err      = new Diagnostic{node, formErr(Err0426, Naming::kindName(overload).c_str())};
         errorParam.addError(err);
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
@@ -99,11 +99,11 @@ namespace
 
         Diagnostic* err;
         if (!callParameters || callParameters->children.empty())
-            err = new Diagnostic{node, node->token, formErr(Err0490, Naming::kindName(overload).c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0426, Naming::kindName(overload).c_str())};
         else if (errorParam.destAttrDecl)
-            err = new Diagnostic{node, node->token, formErr(Err0546, node->token.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0477, node->token.c_str())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0547, node->token.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0478, node->token.c_str())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
@@ -142,11 +142,11 @@ namespace
 
         Diagnostic* err;
         if (errorParam.destFuncDecl && errorParam.destFuncDecl->isSpecialFunctionName())
-            err = new Diagnostic{errNode, errNode->token, formErr(Err0212, niceName.c_str(), errorParam.destFuncDecl->token.c_str())};
+            err = new Diagnostic{errNode, errNode->token, formErr(Err0726, niceName.c_str(), errorParam.destFuncDecl->token.c_str())};
         else if (genericParameters)
-            err = new Diagnostic{genericParameters, formErr(Err0548, niceName.c_str())};
+            err = new Diagnostic{genericParameters, formErr(Err0479, niceName.c_str())};
         else
-            err = new Diagnostic{errNode, errNode->token, formErr(Err0499, niceName.c_str())};
+            err = new Diagnostic{errNode, errNode->token, formErr(Err0062, niceName.c_str())};
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
         errorParam.addNote(note);
@@ -173,11 +173,11 @@ namespace
 
         Utf8 msg;
         if (errorParam.destStructDecl && errorParam.destStructDecl->typeInfo->isTuple())
-            msg = formErr(Err0591, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0542, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
         else if (errorParam.destStructDecl)
-            msg = formErr(Err0589, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0540, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
         else
-            msg = formErr(Err0585, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0536, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
 
         const auto err = new Diagnostic{site, msg};
         errorParam.addError(err);
@@ -201,14 +201,14 @@ namespace
         Diagnostic* err;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            const auto msg = formErr(Err0449, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
+            const auto msg = formErr(Err0385, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
             err            = new Diagnostic{errNode, msg};
         }
         else
         {
             if (genericParameters)
                 errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
-            const auto msg = formErr(Err0586, match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
+            const auto msg = formErr(Err0537, match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
             err            = new Diagnostic{errNode, msg};
         }
 
@@ -220,7 +220,7 @@ namespace
     {
         const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
-        const auto msg = formErr(Err0216,
+        const auto msg = formErr(Err0175,
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str(),
                                  bi.badGenMatch.c_str(),
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str());
@@ -240,15 +240,15 @@ namespace
         Diagnostic* err;
         if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_VALUE_TYPE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0217)};
+            err = new Diagnostic{errorNode, toErr(Err0383)};
         }
         else if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_TYPE_VALUE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0218)};
+            err = new Diagnostic{errorNode, toErr(Err0384)};
         }
         else
         {
-            const auto msg = formErr(Err0642, bi.badSignatureRequestedType->getDisplayNameC(), niceArg.c_str(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0610, bi.badSignatureRequestedType->getDisplayNameC(), niceArg.c_str(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{errorNode, msg};
             err->hint      = errorParam.explicitCastMsg;
         }
@@ -303,23 +303,23 @@ namespace
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             typeStruct->flattenUsingFields();
             const auto fieldName = typeStruct->flattenFields[errorParam.badParamIdx - 1]->name;
-            const auto msg       = formErr(Err0641, bi.badSignatureRequestedType->getDisplayNameC(), fieldName.c_str(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg       = formErr(Err0609, bi.badSignatureRequestedType->getDisplayNameC(), fieldName.c_str(), bi.badSignatureGivenType->getDisplayNameC());
             err                  = new Diagnostic{callParamNode, msg};
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {
-            const auto msg     = formErr(Err0640, bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg     = formErr(Err0599, bi.badSignatureGivenType->getDisplayNameC());
             err                = new Diagnostic{callParamNode, callParamNode->token, msg};
             addSpecificCastErr = false;
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
         {
-            const auto msg = formErr(Err0604, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0555, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{callParamNode, callParamNode->token, msg};
         }
         else
         {
-            const auto msg = formErr(Err0622, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0579, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{callParamNode, msg};
         }
 

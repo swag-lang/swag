@@ -1,5 +1,5 @@
-//#global testerror "Err0484"
-#global testerror "Err0453"
+//#global testerror "Err0420"
+#global testerror "Err0390"
 
 struct A {}
 interface I

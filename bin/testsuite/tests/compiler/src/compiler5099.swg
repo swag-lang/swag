@@ -1,4 +1,4 @@
-#global testerror "Err0239"
+#global testerror "Err0190"
 
 namespace B {}
 const A = 1'B

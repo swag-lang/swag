@@ -282,7 +282,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
     Diagnostic err{node,
                    node->getTokenName(),
-                   formErr(Err0367,
+                   formErr(Err0280,
                            Naming::kindName(node->resolvedSymbolOverload()).c_str(),
                            node->token.c_str(),
                            Naming::kindName(culprit->resolvedSymbolOverload()).c_str(),

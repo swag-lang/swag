@@ -1,4 +1,4 @@
-#global testerror "Err0005"
+#global testerror "Err0509"
 struct Y{}
 struct Y{}
 struct Y{}

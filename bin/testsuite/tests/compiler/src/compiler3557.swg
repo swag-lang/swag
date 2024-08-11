@@ -1,4 +1,4 @@
-#global testerror "Err0211"
+#global testerror "Err0174"
 
 #message(Swag.CompilerMsgMask.SemFunctions)
 {

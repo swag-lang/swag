@@ -1,4 +1,4 @@
-#global testerror "Err0692"
+#global testerror "Err0673"
 
 #[Swag.Mixin]
 func mac(stmt: code)

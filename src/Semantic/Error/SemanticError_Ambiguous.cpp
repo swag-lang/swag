@@ -59,7 +59,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     if (!node)
         node = context->node;
 
-    Diagnostic err{node, node->token, formErr(Err0029, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0010, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
     bool first = true;
     for (const auto match : matches)
@@ -103,7 +103,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         return duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0028, Naming::kindName(matches[0]->symbolOverload).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0009, Naming::kindName(matches[0]->symbolOverload).c_str(), symbol->name.c_str())};
 
     SetUtf8 here;
     bool    first = true;
@@ -142,7 +142,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
-    Diagnostic err{identifier, formErr(Err0028, Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
+    Diagnostic err{identifier, formErr(Err0009, Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
 
     bool    first = true;
     SetUtf8 here;

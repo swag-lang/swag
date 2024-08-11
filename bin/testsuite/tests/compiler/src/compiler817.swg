@@ -1,4 +1,4 @@
-#global testerror "Err0099"
+#global testerror "Err0090"
 #test
 {
 	const a = [0,1,2,3]

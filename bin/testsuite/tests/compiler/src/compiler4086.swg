@@ -1,2 +1,2 @@
-#global testerror "Err0240"
+#global testerror "Err0191"
 const PreviewHeight = 256.0's32

@@ -1,4 +1,4 @@
-#global testerror "Err0492"
+#global testerror "Err0429"
 
 func call()->s32 throw
 {

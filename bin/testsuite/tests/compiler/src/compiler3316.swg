@@ -1,4 +1,4 @@
-#global testerror "Err0684"
+#global testerror "Err0659"
 struct Duration
 {
 }

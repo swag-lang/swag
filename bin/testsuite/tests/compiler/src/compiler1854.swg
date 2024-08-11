@@ -1,3 +1,3 @@
-#global testerror "Err0068"
+#global testerror "Err0059"
 
 #init;

@@ -208,7 +208,7 @@ namespace
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // Multiple tryMatches
-        Diagnostic                err{node, node->token, formErr(Err0574, tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+        Diagnostic                err{node, node->token, formErr(Err0505, tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 

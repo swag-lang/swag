@@ -1,4 +1,4 @@
-//#global testerror "Err0028"
+//#global testerror "Err0009"
 
 func contains(x: f32)
 {

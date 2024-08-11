@@ -1,4 +1,4 @@
-#global testerror "Err0131"
+#global testerror "Err0114"
 
 const A = 0
 impl A
