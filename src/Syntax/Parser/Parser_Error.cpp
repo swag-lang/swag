@@ -83,18 +83,20 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0269);
             else
+            {
                 msg = toErr(Err0232);
-
-            if (startToken.is(TokenId::KwdLet))
-                note = toNte(Nte0047);
-            else if (startToken.is(TokenId::CompilerInclude))
-                note = toNte(Nte0151);
-            else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                note = toNte(Nte0044);
-            else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
-                note = formNte(Nte0197, nextToken.token.c_str(), startToken.c_str());
-            else
-                note = toNte(Nte0184);
+                if (startToken.is(TokenId::KwdLet))
+                    note = toNte(Nte0047);
+                else if (startToken.is(TokenId::CompilerInclude))
+                    note = toNte(Nte0151);
+                else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
+                    note = toNte(Nte0044);
+                else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
+                    note = formNte(Nte0197, nextToken.token.c_str(), startToken.c_str());
+                else
+                    note = toNte(Nte0184);
+            }
+        
             break;
 
         ///////////////////////////////////////////
