@@ -1,4 +1,4 @@
-#global testerror "Err0280"
+#global testerror "Err0284"
 struct ErrToto5205{}
 
 #[Swag.Inline]

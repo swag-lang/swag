@@ -1,4 +1,4 @@
-#global testerror "Err0307"
+#global testerror "Err0311"
 func toto(x: ...)
 {
     var valist: Swag.CVaList

@@ -1,3 +1,3 @@
-#global testerror "Err0337"
+#global testerror "Err0341"
 
 using var B: s32

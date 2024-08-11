@@ -1,4 +1,4 @@
-#global testerror "Err0028"
+#global testerror "Err0030"
 
 //#[Swag.ConstExpr]
 struct A { x: s32; }

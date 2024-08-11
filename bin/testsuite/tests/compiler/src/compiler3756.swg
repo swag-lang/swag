@@ -1,4 +1,4 @@
-#global testerror "Err0327"
+#global testerror "Err0331"
 #test
 {
     var x: mtd()

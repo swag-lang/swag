@@ -1,4 +1,4 @@
-#global testerror "Err0035"
+#global testerror "Err0037"
 #test
 {
 	var x = 5 % (1 - 1)

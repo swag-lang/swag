@@ -25,7 +25,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{right, formErr(Err0197, right->typeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0199, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 err.addNote(toNte(Nte0061));
             return context->report(err);
@@ -163,7 +163,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (left == left->parent->lastChild())
         {
-            Diagnostic err{node, node->token, formErr(Err0089, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             err.addNote(toNte(Nte0061));
@@ -172,13 +172,13 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{node, node->token, formErr(Err0089, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             return context->report(err);
         }
 
-        Diagnostic err{node, node->token, formErr(Err0089, left->resolvedSymbolName()->name.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
         err.addNote(left, Diagnostic::isType(left->typeInfo));
         err.addNote(note);
         return context->report(err);
@@ -188,7 +188,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         left->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET) &&
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
-        Diagnostic err{node, node->token, toErr(Err0090)};
+        Diagnostic err{node, node->token, toErr(Err0093)};
         err.addNote(left, toNte(Nte0020));
         err.addNote(Diagnostic::hereIs(left->resolvedSymbolOverload()->node));
         return context->report(err);
@@ -196,7 +196,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->hasAstFlag(AST_L_VALUE))
     {
-        Diagnostic err{node, node->token, toErr(Err0090)};
+        Diagnostic err{node, node->token, toErr(Err0093)};
         if (hint.empty())
             hint = Diagnostic::isType(left);
         err.addNote(left, hint);
@@ -206,14 +206,14 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
-        Diagnostic err{node, node->token, toErr(Err0090)};
+        Diagnostic err{node, node->token, toErr(Err0093)};
         if (hint.empty())
             hint = toNte(Nte0174);
         err.addNote(left, hint);
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, toErr(Err0138)};
+    Diagnostic err{node, node->token, toErr(Err0141)};
     if (hint.empty())
         hint = Diagnostic::isType(left);
     err.addNote(left, hint);
@@ -367,7 +367,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         {
                             YIELD();
 
-                            Diagnostic err{right, formErr(Err0224, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                            Diagnostic err{right, formErr(Err0225, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(node, node->token, formNte(Nte0158, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
@@ -495,7 +495,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 if (!leftTypeInfo->isPointerArithmetic())
                 {
-                    Diagnostic err{node, node->token, toErr(Err0206)};
+                    Diagnostic err{node, node->token, toErr(Err0208)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     err.addNote(toNte(Nte0110));
                     return context->report(err);
@@ -503,13 +503,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
                 if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
                 {
-                    Diagnostic err{node, node->token, toErr(Err0207)};
+                    Diagnostic err{node, node->token, toErr(Err0209)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
 
                 rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0208, rightTypeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0210, rightTypeInfo->getDisplayNameC())}));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
                 break;
             }

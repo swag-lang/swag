@@ -54,7 +54,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             thisIsAType = true;
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0469)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0474)));
         }
 
         Token constToken;
@@ -85,7 +85,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             else
             {
                 SWAG_VERIFY(inTypeVarDecl, error(tokenName.token, toErr(Err0666)));
-                SWAG_VERIFY(!isConst, error(constToken, toErr(Err0311)));
+                SWAG_VERIFY(!isConst, error(constToken, toErr(Err0315)));
 
                 namedParam        = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, nullptr);
                 namedParam->token = tokenName.token;
@@ -108,7 +108,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         if (tokenParse.token.is(g_LangSpec->name_self))
         {
             curIsAlone = false;
-            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0334)));
+            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0338)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
             typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
@@ -116,7 +116,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse, toErr(Err0372));
+                return error(tokenParse, toErr(Err0377));
         }
         // ...
         else if (tokenParse.is(TokenId::SymDotDotDot))
@@ -166,7 +166,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             }
         }
 
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0373)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0378)));
 
         // If we are in a type declaration, generate a variable and not just a type
         if (inTypeVarDecl)
@@ -240,7 +240,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             break;
 
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0098)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0100)));
     }
 
     FormatAst::inheritFormatAfter(this, params, &tokenParse);
@@ -454,12 +454,12 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
         case TokenId::KwdFunc:
         case TokenId::KwdClosure:
         case TokenId::KwdMethod:
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0327)}));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0331)}));
             SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
             return true;
     }
 
-    Diagnostic err{sourceFile, tokenParse, toErr(Err0248)};
+    Diagnostic err{sourceFile, tokenParse, toErr(Err0249)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
         err.addNote(toNte(Nte0091));
@@ -490,7 +490,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymAmpersandAmpersand))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0152)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0154)};
             return context->report(err);
         }
     }
@@ -542,13 +542,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             }
 
             if (node->arrayDim == 254)
-                return error(tokenParse, toErr(Err0488));
+                return error(tokenParse, toErr(Err0493));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
             if (tokenParse.isNot(TokenId::SymComma))
                 break;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0095)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0097)));
         }
 
         auto rightSquareToken = tokenParse;
@@ -567,7 +567,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymComma))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0249)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0250)};
             return context->report(err);
         }
 
@@ -636,7 +636,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     // This is a lambda
     if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdClosure) || tokenParse.is(TokenId::KwdMethod))
     {
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0327)}));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0331)}));
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
         return true;
     }
@@ -669,7 +669,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
     {
-        return error(node, formErr(Err0034, "bit", "over"));
+        return error(node, formErr(Err0036, "bit", "over"));
     }
 
     if (mdfFlags.has(MODIFIER_UN_CONST))

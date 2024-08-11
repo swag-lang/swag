@@ -170,7 +170,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             if (typeArray->count == UINT32_MAX)
             {
                 const auto       front = typeNode->firstChild();
-                const Diagnostic err{front, formErr(Err0159, rawTypeInfo->getDisplayNameC())};
+                const Diagnostic err{front, formErr(Err0161, rawTypeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -327,14 +327,14 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     case NativeTypeKind::String:
                     case NativeTypeKind::F32:
                     case NativeTypeKind::F64:
-                        return context->report({valNode, formErr(Err0445, valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0450, valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
                     default:
                         break;
                 }
                 break;
 
             case TypeInfoKind::Slice:
-                return context->report({valNode, formErr(Err0445, valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
+                return context->report({valNode, formErr(Err0450, valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
 
             default:
                 break;
@@ -365,7 +365,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             {
                 case NativeTypeKind::U8:
                     if (enumNode->computedValue()->reg.u8 == UINT8_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     if (isFlags && enumNode->computedValue()->reg.u8)
                     {
                         const auto n = enumNode->computedValue()->reg.u8;
@@ -377,7 +377,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     break;
                 case NativeTypeKind::U16:
                     if (enumNode->computedValue()->reg.u16 == UINT16_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     if (isFlags && enumNode->computedValue()->reg.u16)
                     {
                         const auto n = enumNode->computedValue()->reg.u16;
@@ -389,7 +389,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     break;
                 case NativeTypeKind::U32:
                     if (enumNode->computedValue()->reg.u32 == UINT32_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     if (isFlags && enumNode->computedValue()->reg.u32)
                     {
                         const auto n = enumNode->computedValue()->reg.u32;
@@ -401,7 +401,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     break;
                 case NativeTypeKind::U64:
                     if (enumNode->computedValue()->reg.u64 == UINT64_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     if (isFlags && enumNode->computedValue()->reg.u64)
                     {
                         const auto n = enumNode->computedValue()->reg.u64;
@@ -414,22 +414,22 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
                 case NativeTypeKind::S8:
                     if (enumNode->computedValue()->reg.s8 <= INT8_MIN || enumNode->computedValue()->reg.s8 >= INT8_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     enumNode->computedValue()->reg.s8++;
                     break;
                 case NativeTypeKind::S16:
                     if (enumNode->computedValue()->reg.s16 <= INT16_MIN || enumNode->computedValue()->reg.s16 >= INT16_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     enumNode->computedValue()->reg.s16++;
                     break;
                 case NativeTypeKind::S32:
                     if (enumNode->computedValue()->reg.s32 <= INT32_MIN || enumNode->computedValue()->reg.s32 >= INT32_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     enumNode->computedValue()->reg.s32++;
                     break;
                 case NativeTypeKind::S64:
                     if (enumNode->computedValue()->reg.s64 <= INT64_MIN || enumNode->computedValue()->reg.s64 >= INT64_MAX)
-                        return context->report({valNode, formErr(Err0495, valNode->token.c_str(), rawType->getDisplayNameC())});
+                        return context->report({valNode, formErr(Err0498, valNode->token.c_str(), rawType->getDisplayNameC())});
                     enumNode->computedValue()->reg.s64++;
                     break;
                 default:

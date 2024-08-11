@@ -1,4 +1,4 @@
-#global testerror "Err0339"
+#global testerror "Err0343"
 
 attr toto();
 

@@ -17,7 +17,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic err{expression, expression->token, formErr(Err0028, expression->typeInfo->getDisplayNameC())};
+        Diagnostic err{expression, expression->token, formErr(Err0030, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
         err.hint          = formNte(Nte0159, userOp->symbol->name.c_str());
         err.addNote(note);
@@ -30,7 +30,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     else if (errMsg.length())
         message = errMsg;
     else
-        message = toErr(Err0024);
+        message = toErr(Err0026);
 
     Diagnostic err{expression, message};
     err.addNote(note);
@@ -398,7 +398,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node->expressionLow, formErr(Err0211, node->expressionLow->typeInfo->getDisplayNameC())};
+        Diagnostic err{node->expressionLow, formErr(Err0213, node->expressionLow->typeInfo->getDisplayNameC())};
         err.addNote(toNte(Nte0059));
         return context->report(err);
     }

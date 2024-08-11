@@ -23,7 +23,7 @@ JobResult ModulePrepOutputStage1Job::execute()
     {
         if (!module->mainIsDefined)
         {
-            Report::error(module, toErr(Err0406));
+            Report::error(module, toErr(Err0411));
             return JobResult::ReleaseJob;
         }
     }

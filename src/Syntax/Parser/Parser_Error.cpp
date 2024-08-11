@@ -73,18 +73,18 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             }
 
             if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0267);
-            else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0266);
-            else if (startToken.is(TokenId::SymRightParen))
                 msg = toErr(Err0268);
-            else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0272);
-            else if (startToken.is(TokenId::SymRightSquare))
+            else if (startToken.is(TokenId::CompilerElseIf))
+                msg = toErr(Err0267);
+            else if (startToken.is(TokenId::SymRightParen))
                 msg = toErr(Err0269);
+            else if (startToken.is(TokenId::SymRightCurly))
+                msg = toErr(Err0273);
+            else if (startToken.is(TokenId::SymRightSquare))
+                msg = toErr(Err0270);
             else
             {
-                msg = toErr(Err0232);
+                msg = toErr(Err0233);
                 if (startToken.is(TokenId::KwdLet))
                     note = toNte(Nte0047);
                 else if (startToken.is(TokenId::CompilerInclude))
@@ -102,23 +102,23 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
         ///////////////////////////////////////////
         case InvalidTokenError::EmbeddedInstruction:
             if (startToken.is(TokenId::SymAmpersandAmpersand))
-                msg = formErr(Err0194, "and", "&&");
+                msg = formErr(Err0196, "and", "&&");
             else if (startToken.is(TokenId::SymVerticalVertical))
-                msg = formErr(Err0194, "or", "||");
+                msg = formErr(Err0196, "or", "||");
             else if (startToken.is(TokenId::KwdElse))
-                msg = toErr(Err0271);
-            else if (startToken.is(TokenId::KwdElif))
-                msg = toErr(Err0270);
-            else if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0267);
-            else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0266);
-            else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0268);
-            else if (startToken.is(TokenId::SymRightCurly))
                 msg = toErr(Err0272);
-            else if (startToken.is(TokenId::SymRightSquare))
+            else if (startToken.is(TokenId::KwdElif))
+                msg = toErr(Err0271);
+            else if (startToken.is(TokenId::CompilerElse))
+                msg = toErr(Err0268);
+            else if (startToken.is(TokenId::CompilerElseIf))
+                msg = toErr(Err0267);
+            else if (startToken.is(TokenId::SymRightParen))
                 msg = toErr(Err0269);
+            else if (startToken.is(TokenId::SymRightCurly))
+                msg = toErr(Err0273);
+            else if (startToken.is(TokenId::SymRightSquare))
+                msg = toErr(Err0270);
             else
                 msg = toErr(Err0650);
             break;
@@ -134,11 +134,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             // Bad character syntax as an expression
             if (startToken.is(TokenId::SymQuote) && nextNextToken.is(TokenId::SymQuote))
             {
-                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0150, nextToken.token.c_str())};
+                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0152, nextToken.token.c_str())};
                 return context->report(err);
             }
 
-            msg = toErr(Err0165);
+            msg = toErr(Err0167);
             break;
     }
 
@@ -147,7 +147,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    const Utf8 message = msg ? Utf8{msg} : toErr(Err0181);
+    const Utf8 message = msg ? Utf8{msg} : toErr(Err0183);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0137, myToken.token.c_str()));

@@ -1,5 +1,5 @@
 
-#global testerror "Err0463";
+#global testerror "Err0468";
 func main2 ()->s32
 {
 	if(true)

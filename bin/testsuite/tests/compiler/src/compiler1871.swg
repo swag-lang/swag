@@ -1,5 +1,5 @@
 
-#global testerror "Err0284"
+#global testerror "Err0288"
 
 public struct Compiler1871
 {

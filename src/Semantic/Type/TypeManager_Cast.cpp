@@ -3180,7 +3180,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, formErr(Err0481, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0486, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
                     context->report({fromNode, formErr(Err0541, toTypeArray->count, fromTypeList->subTypes.size())});
             }

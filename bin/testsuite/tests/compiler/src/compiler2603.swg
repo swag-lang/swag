@@ -1,4 +1,4 @@
-#global testerror "Err0389"
+#global testerror "Err0394"
 //#global testerror "Err0682"
 
 #[Swag.Macro]

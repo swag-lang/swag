@@ -144,7 +144,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     {
         if (leftTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0233, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0234, rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
             err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
             return context->report(err);
@@ -152,7 +152,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         if (rightTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0233, leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0234, leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::note(left, Diagnostic::isType(left)));
             err.addNote(Diagnostic::note(right, Diagnostic::isType(right)));
             return context->report(err);

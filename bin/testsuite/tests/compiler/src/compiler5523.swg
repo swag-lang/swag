@@ -1,2 +1,2 @@
-#global testerror "Err0295"
+#global testerror "Err0299"
 #load "a"

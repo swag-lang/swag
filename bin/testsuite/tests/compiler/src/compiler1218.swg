@@ -1,4 +1,4 @@
-#global testerror "Err0450"
+#global testerror "Err0455"
 
 struct Vector2
 {

@@ -1,2 +1,2 @@
-#global testerror "Err0149"
+#global testerror "Err0151"
 const X = `"`'f32 // 我

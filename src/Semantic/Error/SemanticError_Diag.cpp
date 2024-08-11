@@ -15,7 +15,7 @@ namespace
     {
         SWAG_ASSERT(errorParam.failedParam);
         SWAG_ASSERT(errorParam.badParamIdx >= 2);
-        const auto msg = formErr(Err0450, Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
+        const auto msg = formErr(Err0455, Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
         const auto err = new Diagnostic{errorParam.failedParam, msg};
         errorParam.addError(err);
 
@@ -67,7 +67,7 @@ namespace
         if (errorParam.destStructDecl)
             msg = formErr(Err0520, isNamed->token.c_str());
         else
-            msg = formErr(Err0039, isNamed->token.c_str());
+            msg = formErr(Err0041, isNamed->token.c_str());
         const auto err = new Diagnostic{isNamed, msg};
         errorParam.addError(err);
 
@@ -84,7 +84,7 @@ namespace
             node = errorParam.errorNode;
 
         const auto overload = errorParam.oneTry->overload;
-        const auto err      = new Diagnostic{node, formErr(Err0426, Naming::kindName(overload).c_str())};
+        const auto err      = new Diagnostic{node, formErr(Err0431, Naming::kindName(overload).c_str())};
         errorParam.addError(err);
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
@@ -99,11 +99,11 @@ namespace
 
         Diagnostic* err;
         if (!callParameters || callParameters->children.empty())
-            err = new Diagnostic{node, node->token, formErr(Err0426, Naming::kindName(overload).c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0431, Naming::kindName(overload).c_str())};
         else if (errorParam.destAttrDecl)
-            err = new Diagnostic{node, node->token, formErr(Err0477, node->token.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0482, node->token.c_str())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0478, node->token.c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0483, node->token.c_str())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
@@ -144,9 +144,9 @@ namespace
         if (errorParam.destFuncDecl && errorParam.destFuncDecl->isSpecialFunctionName())
             err = new Diagnostic{errNode, errNode->token, formErr(Err0726, niceName.c_str(), errorParam.destFuncDecl->token.c_str())};
         else if (genericParameters)
-            err = new Diagnostic{genericParameters, formErr(Err0479, niceName.c_str())};
+            err = new Diagnostic{genericParameters, formErr(Err0484, niceName.c_str())};
         else
-            err = new Diagnostic{errNode, errNode->token, formErr(Err0062, niceName.c_str())};
+            err = new Diagnostic{errNode, errNode->token, formErr(Err0064, niceName.c_str())};
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
         errorParam.addNote(note);
@@ -201,7 +201,7 @@ namespace
         Diagnostic* err;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            const auto msg = formErr(Err0385, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
+            const auto msg = formErr(Err0390, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
             err            = new Diagnostic{errNode, msg};
         }
         else
@@ -220,7 +220,7 @@ namespace
     {
         const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
-        const auto msg = formErr(Err0175,
+        const auto msg = formErr(Err0177,
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str(),
                                  bi.badGenMatch.c_str(),
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str());
@@ -240,11 +240,11 @@ namespace
         Diagnostic* err;
         if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_VALUE_TYPE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0383)};
+            err = new Diagnostic{errorNode, toErr(Err0388)};
         }
         else if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_TYPE_VALUE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0384)};
+            err = new Diagnostic{errorNode, toErr(Err0389)};
         }
         else
         {

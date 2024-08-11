@@ -1,4 +1,4 @@
-#global testerror "Err0109"
+#global testerror "Err0111"
 func printf(args: cvarargs)
 {
     var valist: Swag.CVaList

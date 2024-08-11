@@ -1,4 +1,4 @@
-#global testerror "Err0098"
+#global testerror "Err0100"
 struct(x,) AA
 {
 }

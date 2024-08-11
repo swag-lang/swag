@@ -1,5 +1,5 @@
 #global skipfmt
-#global testerror "Err0364"
+#global testerror "Err0369"
 
 #[Swag.Safety("", true)]
 ;

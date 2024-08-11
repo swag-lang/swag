@@ -1,4 +1,4 @@
-#global testerror "Err0420"
+#global testerror "Err0425"
 
 struct Pt { x, y: f32; }
 

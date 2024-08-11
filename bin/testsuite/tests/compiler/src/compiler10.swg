@@ -1,2 +1,2 @@
-#global testerror "Err0374";
+#global testerror "Err0379";
 0x111_

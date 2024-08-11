@@ -737,7 +737,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic err{importNode, tokenVersion, toErr(Err0183)};
+        Diagnostic err{importNode, tokenVersion, toErr(Err0185)};
         err.addNote(toNte(Nte0157));
         return Report::report(err);
     }
@@ -768,7 +768,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            Diagnostic err{importNode, tokenVersion, toErr(Err0183)};
+            Diagnostic err{importNode, tokenVersion, toErr(Err0185)};
             err.addNote(toErr(Nte0157));
             return Report::report(err);
         }
@@ -1067,7 +1067,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, toErr(Err0084)});
+        Report::report({ip->node, ip->node->token, toErr(Err0086)});
         return false;
     }
 

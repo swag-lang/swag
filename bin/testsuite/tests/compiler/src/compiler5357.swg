@@ -1,4 +1,4 @@
-#global testerror "Err0033"
+#global testerror "Err0035"
 #[Swag.Inline, Swag.Mixin]
 func toto()
 {

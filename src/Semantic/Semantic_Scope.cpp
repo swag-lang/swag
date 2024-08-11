@@ -585,13 +585,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0302)};
+                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0306)};
                     return context->report(err);
                 }
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0107, scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0109, scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 
@@ -662,6 +662,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0302)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0306)}));
     return true;
 }

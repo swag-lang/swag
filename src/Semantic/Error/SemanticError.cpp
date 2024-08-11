@@ -23,7 +23,7 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
         whereExpr = errorParam.destStructDecl->whereExpression;
     }
 
-    const auto msg = formErr(Err0060, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
+    const auto msg = formErr(Err0062, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
     errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0071, whereExpr->token.c_str())));

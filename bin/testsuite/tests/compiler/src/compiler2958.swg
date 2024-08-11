@@ -1,4 +1,4 @@
-#global testerror "Err0082"
+#global testerror "Err0084"
 
 #[Swag.ConstExpr]
 struct V

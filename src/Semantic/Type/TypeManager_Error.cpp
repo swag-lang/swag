@@ -159,7 +159,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = formErr(Err0185, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0187, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
@@ -182,7 +182,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg = toErr(Err0371);
+            msg = toErr(Err0376);
         }
         else
         {

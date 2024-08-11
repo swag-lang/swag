@@ -1,4 +1,4 @@
-#global testerror "Err0157"
+#global testerror "Err0159"
 struct Wnd
 {
     x: s32
