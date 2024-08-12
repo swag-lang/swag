@@ -20,7 +20,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         if (identifier->genericParameters)
             return error(identifier->genericParameters, formErr(Err0657, identifier->token.c_str()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, formErr(Err0146, identifier->token.c_str()));
+            return error(identifier->callParameters, formErr(Err0171, identifier->token.c_str(), "a variable name"));
     }
 
     if (node->token.text[0] != '#')
