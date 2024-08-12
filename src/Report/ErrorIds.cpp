@@ -772,7 +772,7 @@ void initErrors()
     SWAG_ERROR(Err0643, "unexpected attribute name                         $ expected an attribute name, but got $$TKN$$ instead                                                                                      $ ");
     SWAG_ERROR(Err0644, "unexpected attribute return type                  $ cannot declare a return type starting with [[->]] in an attribute                                                                        $ ");
     SWAG_ERROR(Err0645, "unexpected binary digit                           $ expected a binary digit, but got $$TKN$$ instead                                                                                         $ binary literals can only contain [[0]] or [[1]]");
-    SWAG_ERROR(Err0646, "unexpected character                              $ unexpected character [[%s]]                                                                                                              $ ");
+    SWAG_ERROR(Err0646, "unexpected character                              $ unexpected character [['%s']]                                                                                                              $ ");
     SWAG_ERROR(Err0647, "unexpected comparison                             $ cannot use the comparison operator [['==']] here                                                                                         $ expected an assignment with the symbol [['=']]");
     SWAG_ERROR(Err0648, "unexpected compiler instruction scope             $ unexpected scoping of a compiler instruction                                                                                             $ compiler instructions do not belong to a specific scope");
     SWAG_ERROR(Err0649, "unexpected default value                          $ cannot use default values for variadic parameters                                                                                        $ ");
@@ -1039,7 +1039,7 @@ void initErrors()
     SWAG_ERROR(Nte0145, "the symbol [[%s]] is already present in the interface scope [[%s]]");
     SWAG_ERROR(Nte0146, "the symbol [[%s]] was located through a [[using]] statement");
     SWAG_ERROR(Nte0147, "the symbol [[...]] is used to declare variadic function parameters, which is not valid in this context");
-    SWAG_ERROR(Nte0148, "the syntax in Swag is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
+    SWAG_ERROR(Nte0148, "in Swag, the syntax is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0149, "the type [[%s]] is expected because of %s");
     SWAG_ERROR(Nte0150, "the type [[%s]] is needed because of the enum specific type");
     SWAG_ERROR(Nte0151, "the type [[%s]] is needed because of the function return type");
@@ -1105,7 +1105,7 @@ void initErrors()
     SWAG_ERROR(Nte0211, "you cannot reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0212, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0213, "you need to take the address of a value to create a reference");
-    SWAG_ERROR(Nte0214, nullptr);
+    SWAG_ERROR(Nte0214, "in Swag, a line comment starts with [[//]]");
     SWAG_ERROR(Nte0215, nullptr);
     SWAG_ERROR(Nte0216, nullptr);
     SWAG_ERROR(Nte0217, nullptr);

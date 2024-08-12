@@ -24,39 +24,53 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
             SWAG_ASSERT(it1);
             tokenParse.literalType = *it1;
         }
+
+        return true;
     }
-    else if (tokenParse.token.text[0] == '#')
+
+    if (tokenParse.token.text == '#' || tokenParse.token.text == '@')
+    {
+        tokenParse.token.endLocation = location;
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0646, tokenParse.token.c_str())};
+        if (tokenParse.token.text == '#' && SWAG_IS_BLANK(*curBuffer))
+            err.addNote(toNte(Nte0214));
+        return errorContext->report(err);
+    }
+
+    if (tokenParse.token.text[0] == '#')
     {
         if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpalias))
         {
             tokenParse.token.id = TokenId::Identifier;
+            return true;
         }
-        else if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpmix))
+
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpmix))
         {
             tokenParse.token.id = TokenId::Identifier;
+            return true;
         }
-        else
+
+        tokenParse.token.endLocation = location;
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0687, tokenParse.token.c_str())};
+
+        Vector<Utf8> searchList{};
+        for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
         {
-            tokenParse.token.endLocation = location;
-            Diagnostic err{sourceFile, tokenParse, formErr(Err0687, tokenParse.token.c_str())};
-
-            Vector<Utf8> searchList{};
-            for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
-            {
-                const auto& k = g_LangSpec->keywords.buffer[i].key;
-                if (k && k[0] == '#')
-                    searchList.push_back(k);
-            }
-
-            Vector<Utf8> result;
-            SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
-            if (!result.empty())
-                err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
-
-            return errorContext->report(err);
+            const auto& k = g_LangSpec->keywords.buffer[i].key;
+            if (k && k[0] == '#')
+                searchList.push_back(k);
         }
+
+        Vector<Utf8> result;
+        SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
+        if (!result.empty())
+            err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
+
+        return errorContext->report(err);
     }
-    else if (tokenParse.token.text[0] == '@')
+
+    if (tokenParse.token.text[0] == '@')
     {
         tokenParse.token.endLocation = location;
         Diagnostic err{sourceFile, tokenParse, formErr(Err0702, tokenParse.token.c_str())};
@@ -76,10 +90,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
 
         return errorContext->report(err);
     }
-    else
-    {
-        tokenParse.token.id = TokenId::Identifier;
-    }
 
+    tokenParse.token.id = TokenId::Identifier;
     return true;
 }
