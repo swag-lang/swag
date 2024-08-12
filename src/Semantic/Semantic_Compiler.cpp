@@ -100,7 +100,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     }
 
     // :CheckConstExprFuncReturnType
-    // Be sure we can deal with the type at compile-time
+    // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
     execParams.forConstExpr = onlyConstExpr;
 

@@ -220,7 +220,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0012)};
                 auto       note = Diagnostic::note(lastParameter, formNte(Nte0010, lastParameter->type->token.c_str()));
-                note->hint      = formNte(Nte0207, lastParameter->type->token.c_str());
+                note->hint      = formNte(Nte0207, lastParameter->type->token.c_str(), lastParameter->type->token.c_str());
                 err.addNote(note);
                 return context->report(err);
             }

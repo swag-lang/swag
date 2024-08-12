@@ -936,7 +936,7 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileT
     if (node->safetyOn.has(what))
         return true;
 
-    // At compile-time, we must emit safety except if the user has specifically changed it in the code
+    // at compile time, we must emit safety except if the user has specifically changed it in the code
     if (compileTime)
         return true;
 

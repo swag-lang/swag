@@ -143,7 +143,7 @@ namespace
     // Callback stuff. This is tricky !
     // The problem: we want an external library to be able to call a callback defined in swag.
     // When swag code is native, no problem.
-    // The problem starts when that callback is bytecode, at compile-time.
+    // The problem starts when that callback is bytecode, at compile time.
     // We need a way to associate a native function that will be called by the external library to a bytecode.
     //
     // The only way I have found : make the native function generic (always the same parameters), and attach
