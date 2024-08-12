@@ -1106,7 +1106,7 @@ void initErrors()
     SWAG_ERROR(Nte0212, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0213, "you need to take the address of a value to create a reference");
     SWAG_ERROR(Nte0214, "in Swag, a line comment starts with [[//]]");
-    SWAG_ERROR(Nte0215, nullptr);
+    SWAG_ERROR(Nte0215, "either provide another argument after a [[,]] or close the list with [[)]]");
     SWAG_ERROR(Nte0216, nullptr);
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
