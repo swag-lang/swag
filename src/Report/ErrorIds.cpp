@@ -272,7 +272,6 @@ void initErrors()
     SWAG_ERROR(Err0143, "invalid bit-cast                                  $ cannot bit-cast from the type [[%s]]                                                                                                     $ expected an integer, rune, float, or pointer");
     SWAG_ERROR(Err0144, "invalid bit-cast                                  $ cannot bit-cast from the type [[%s]] to the larger type [[%s]]                                                                           $ ");
     SWAG_ERROR(Err0145, "invalid bit-cast                                  $ cannot bit-cast to the type [[%s]]                                                                                                       $ expected an integer, rune, or float");
-    SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0147, "invalid call                                      $ expected a function call after [[%s]], but got $$TKN$$ instead                                                                           $ ");
     SWAG_ERROR(Err0148, "invalid capture                                   $ cannot capture [[%s]] because it is %s                                                                                                   $ capturing %s type is not possible");
     SWAG_ERROR(Err0149, "invalid capture                                   $ cannot capture [[%s]] because it is not a plain old data struct                                                                          $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]], or [[opPostMove]]");
@@ -868,6 +867,7 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0740, "invalid variable name                             $ cannot use [[#alias]] as a variable name outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                    $ ");
     SWAG_ERROR(Err0741, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
+    SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
