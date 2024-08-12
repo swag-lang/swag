@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Report/ErrorIds.h"
+#include "pch.h"
+#include "Report/ErrorIds.h"
 
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) #__enum
@@ -864,8 +866,8 @@ void initErrors()
     SWAG_ERROR(Err0737, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err0738, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0740, nullptr);
-    SWAG_ERROR(Err0741, nullptr);
+    SWAG_ERROR(Err0740, "invalid variable name                             $ cannot use [[#alias]] as a variable name outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                    $ ");
+    SWAG_ERROR(Err0741, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
     SWAG_ERROR(Err0742, nullptr);
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
@@ -890,8 +892,8 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0001, "[[#alias]] is only valid within a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
-    SWAG_ERROR(Nte0002, "[[#mix]] is only valid within a [[#[Swag.Mixin]]] function");
+    SWAG_ERROR(Nte0001, nullptr);
+    SWAG_ERROR(Nte0002, nullptr);
     SWAG_ERROR(Nte0003, "[[%s]] does not take arguments between parenthesis, so what follows should be a normal [[(expression)]]");
     SWAG_ERROR(Nte0004, "as [[%s]] is %s, itdoes not have a sub-scope");
     SWAG_ERROR(Nte0005, "as [[%s]] is %s of type [[%s]], it does not have a sub-scope");
