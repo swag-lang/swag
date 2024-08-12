@@ -110,29 +110,29 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::Generic:
-                    msg             = formNte(Nte0101, name.c_str());
+                    msg             = formNte(Nte0097, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::Inline:
-                    msg             = formNte(Nte0102, name.c_str());
+                    msg             = formNte(Nte0098, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::CompileTime:
-                    msg             = formNte(Nte0097, name.c_str());
+                    msg             = formNte(Nte0093, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::Where:
                     if (exp.node->is(AstNodeKind::StructDecl))
-                        msg = formNte(Nte0099, name.c_str());
+                        msg = formNte(Nte0095, name.c_str());
                     else
-                        msg = formNte(Nte0100, name.c_str());
+                        msg = formNte(Nte0096, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::WhereCall:
-                    msg            = formNte(Nte0098, name.c_str());
+                    msg            = formNte(Nte0094, name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::HereIs:
@@ -169,12 +169,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
         sourceNode = exportNode;
     if (sourceNode && sourceNode->token.sourceFile && sourceNode->token.sourceFile->fromNode && !sourceNode->token.sourceFile->fileForSourceLocation)
     {
-        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, toNte(Nte0103));
+        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, toNte(Nte0099));
         notes.push_back(note);
     }
     else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_FROM_AST) && sourceNode)
     {
-        const auto note = Diagnostic::note(sourceNode, toNte(Nte0103));
+        const auto note = Diagnostic::note(sourceNode, toNte(Nte0099));
         notes.push_back(note);
     }
 }

@@ -290,7 +290,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
                            accessCulprit)};
 
     if (onNode == culprit)
-        err.addNote(culprit, culprit->token, formNte(Nte0161, Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
+        err.addNote(culprit, culprit->token, formNte(Nte0159, Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
     else
     {
         err.addNote(onNode, onNode->token, formNte(Nte0173, accessCulprit, onNode->typeInfo->getDisplayNameC()));

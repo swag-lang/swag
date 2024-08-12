@@ -106,7 +106,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
         Diagnostic err{sourceFile, tokenParse, toErr(Err0404)};
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, formNte(Nte0018, parent->token.c_str()));
+        err.addNote(parent, parent->token, formNte(Nte0013, parent->token.c_str()));
         return context->report(err);
     }
 
@@ -131,7 +131,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
 
 bool Parser::doCompilerIfStatement(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0209)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0208)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {

@@ -2671,9 +2671,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
                             Diagnostic err{fromNode, formErr(Err0005, fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                            err.addNote(formNte(Nte0216, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
-                            err.addNote(foundField->declNode, toNte(Nte0064));
-                            err.addNote(field->declNode, toNte(Nte0063));
+                            err.addNote(formNte(Nte0155, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
+                            err.addNote(foundField->declNode, toNte(Nte0067));
+                            err.addNote(field->declNode, toNte(Nte0066));
                             return context->report(err);
                         }
                     }
@@ -2710,8 +2710,8 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 if (foundField)
                 {
                     Diagnostic err{context->node, formErr(Err0007, fromTypeStruct->getDisplayNameC(), toTypeItf->name.c_str())};
-                    err.addNote(it.field->declNode, formNte(Nte0165, it.field->typeInfo->getDisplayNameC()));
-                    err.addNote(foundField->declNode, formNte(Nte0167, foundField->typeInfo->getDisplayNameC()));
+                    err.addNote(it.field->declNode, formNte(Nte0164, it.field->typeInfo->getDisplayNameC()));
+                    err.addNote(foundField->declNode, formNte(Nte0166, foundField->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 

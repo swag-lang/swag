@@ -948,7 +948,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = formNte(Nte0194, typeInfo->getDisplayNameC());
+    auto str = formNte(Nte0193, typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -964,7 +964,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return formNte(Nte0163, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return formNte(Nte0161, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
@@ -999,7 +999,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         return note(node, node->getTokenName(), txt1);
     }
 
-    const auto txt  = toNte(Nte0065);
+    const auto txt  = toNte(Nte0068);
     const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
     return note(node, node->getTokenName(), txt1);
 }

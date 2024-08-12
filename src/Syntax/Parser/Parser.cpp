@@ -84,7 +84,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     else
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, formNte(Nte0186, related.c_str()));
+        err.addNote(sourceFile, start, start, formNte(Nte0185, related.c_str()));
     }
 
     if (parent)
@@ -97,7 +97,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             if (Tokenizer::isCompiler(parent->token.id) ||
                 Tokenizer::isKeyword(parent->token.id))
             {
-                err.addNote(formNte(Nte0003, parent->token.c_str()));
+                err.addNote(formNte(Nte0002, parent->token.c_str()));
             }
         }
     }

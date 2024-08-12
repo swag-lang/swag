@@ -67,7 +67,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
     if (typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
     {
         Diagnostic err{from, formErr(Err0090, typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
-        err.addNote(context->node->token, toNte(Nte0050));
+        err.addNote(context->node->token, toNte(Nte0053));
         return context->report(err);
     }
 

@@ -27,7 +27,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                const auto note   = Diagnostic::note(p, p->getTokenName(), toNte(Nte0076));
+                const auto note   = Diagnostic::note(p, p->getTokenName(), toNte(Nte0079));
                 note->canBeMerged = false;
                 err.addNote(note);
                 break;
@@ -74,9 +74,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0519, one->name.c_str())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0076));
+                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0079));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0126, val.c_str()));
+                        err.addNote(formNte(Nte0122, val.c_str()));
                         return context->report(err);
                     }
 
@@ -93,9 +93,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0519, one->name.c_str())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0076));
+                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0079));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0126, val.c_str()));
+                        err.addNote(formNte(Nte0122, val.c_str()));
                         return context->report(err);
                     }
 
@@ -280,7 +280,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         YIELD();
 
         PushErrCxtStep ec{context, enumNode->type, ErrCxtStepKind::Note, [rawTypeInfo] {
-                              return formNte(Nte0153, rawTypeInfo->getDisplayNameC());
+                              return formNte(Nte0150, rawTypeInfo->getDisplayNameC());
                           }};
 
         if (rawTypeInfo->isArray())

@@ -29,14 +29,14 @@ void Workspace::setup()
     if (!std::filesystem::exists(workspacePath, err))
     {
         Report::error(formErr(Fat0035, workspacePath.c_str()));
-        g_Log.messageInfo(toNte(Nte0208));
+        g_Log.messageInfo(toNte(Nte0207));
         OS::exit(-1);
     }
 
     if (!g_CommandLine.scriptCommand && !std::filesystem::exists(modulesPath, err) && !std::filesystem::exists(testsPath, err))
     {
         Report::error(formErr(Fat0027, workspacePath.c_str()));
-        g_Log.messageInfo(toNte(Nte0208));
+        g_Log.messageInfo(toNte(Nte0207));
         OS::exit(-1);
     }
 

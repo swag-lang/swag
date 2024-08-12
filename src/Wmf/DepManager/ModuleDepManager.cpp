@@ -358,7 +358,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             case CompareVersionResult::VersionLower:
             {
                 Diagnostic err{dep->node, formErr(Err0720, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-                err.addNote(cfgModule->fetchDep->node, toNte(Nte0075));
+                err.addNote(cfgModule->fetchDep->node, toNte(Nte0078));
                 Report::report(err);
                 return false;
             }

@@ -326,7 +326,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0680)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0206));
+                err.addNote(unnamedTokens.front(), toNte(Nte0205));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
                 return context->report(err);
@@ -384,7 +384,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0352)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0179));
+                err.addNote(unnamedTokens.front(), toNte(Nte0178));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
                 return context->report(err);
@@ -410,9 +410,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0459)};
                 if (otherVariables.empty())
-                    err.addNote(paramNode, toNte(Nte0187));
+                    err.addNote(paramNode, toNte(Nte0186));
                 else
-                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0185));
+                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0184));
                 return context->report(err);
             }
 
@@ -561,8 +561,8 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             if (isType)
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0181)};
-                err.addNote(Diagnostic::note(oneParam, formNte(Nte0009, oneParam->token.c_str())));
-                err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0037)));
+                err.addNote(Diagnostic::note(oneParam, formNte(Nte0007, oneParam->token.c_str())));
+                err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0036)));
                 return context->report(err);
             }
 
@@ -587,7 +587,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0090, oneParam->token.c_str()); }, true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0035, oneParam->token.c_str()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -821,7 +821,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-            note = toNte(Nte0201);
+            note = toNte(Nte0049);
         return error(tokenParse, formErr(Err0671, funcNode->getDisplayNameC()), note.c_str());
     }
 
@@ -1070,7 +1070,7 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
     else
     {
         {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0013); });
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0010); });
             SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
         }
 
