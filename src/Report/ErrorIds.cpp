@@ -1067,7 +1067,7 @@ void initErrors()
     SWAG_ERROR(Nte0173, "this has [[%s]] access (type is [[%s]])");
     SWAG_ERROR(Nte0174, "this is a constant");
     SWAG_ERROR(Nte0175, "this is a lambda expression");
-    SWAG_ERROR(Nte0176, "this is a pointer type declaration because of [[*]]");
+    SWAG_ERROR(Nte0176, nullptr);
     SWAG_ERROR(Nte0177, "this is a type value, aka [[typeinfo]], aka [[%s]]");
     SWAG_ERROR(Nte0178, "this is an enum implementation block");
     SWAG_ERROR(Nte0179, "this is an unnamed parameter ([['?']])");
@@ -1089,7 +1089,7 @@ void initErrors()
     SWAG_ERROR(Nte0195, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0197, "to declare a global variable, syntax would be [[var %s: %s]]");
     SWAG_ERROR(Nte0198, "to declare a variable, the syntax is [[var name: type]] or [[var name = expression]]");
-    SWAG_ERROR(Nte0199, "to dereference variable [[%s]] as in C, employ [[dref %s]]");
+    SWAG_ERROR(Nte0199, nullptr);
     SWAG_ERROR(Nte0200, "to initialize the struct [[%s]], remove the blanks between [[%s]] and the [[{]]");
     SWAG_ERROR(Nte0201, "to retrieve the program arguments, consider using the [[@args()]] intrinsic");
     SWAG_ERROR(Nte0196, "to start a new block, consider moving the [[{]] to a new line");

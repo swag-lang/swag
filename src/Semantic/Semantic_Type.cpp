@@ -420,19 +420,6 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->isNot(SymbolKind::Interface))
                 {
                     Diagnostic err{child->token.sourceFile, child->token, formErr(Err0248, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
-                    if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->is(SymbolKind::Variable))
-                    {
-                        if (symOver->typeInfo->isPointer())
-                        {
-                            err.hint = toNte(Nte0176);
-                            err.addNote(formNte(Nte0199, symName->name.c_str(), symName->name.c_str()));
-                            err.addNote(Diagnostic::hereIs(symOver));
-                            return context->report(err);
-                        }
-
-                        err.hint = toNte(Nte0176);
-                    }
-
                     err.addNote(Diagnostic::hereIs(symOver));
                     return context->report(err);
                 }
