@@ -893,11 +893,11 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Nte0003, "[[%s]] does not take arguments within parenthesis, so what follows should be a normal [[(expression)]]");
-    SWAG_ERROR(Nte0005, "[[%s]] is %s of type [[%s]] that does not have a sub-scope");
+    SWAG_ERROR(Nte0005, "[[%s]] is %s of type [[%s]] which does not have a sub-scope");
     SWAG_ERROR(Nte0004, "[[%s]] is %s that does not have a sub-scope");
     SWAG_ERROR(Nte0006, "[[%s]] is a mutable UFCS argument, so taking the address is implicit");
     SWAG_ERROR(Nte0007, "[[%s]] is a variable, and variables within expressions cannot be evaluated at compile-time");
-    SWAG_ERROR(Nte0008, "[[%s]] is an array of type [[%s]] that does not have a sub-scope");
+    SWAG_ERROR(Nte0008, "[[%s]] is an array of type [[%s]] which does not have a sub-scope");
     SWAG_ERROR(Nte0009, "[[%s]] is considered to be a type and not a generic value due to the preceeding [[var]]");
     SWAG_ERROR(Nte0010, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0011, "[[%s]] was located within [[%s]] due to a [[using]] field");
@@ -993,7 +993,7 @@ void initErrors()
     SWAG_ERROR(Nte0102, "occurred during the inline expansion of [[%s]]");
     SWAG_ERROR(Nte0103, "occurred in generated code");
     SWAG_ERROR(Nte0104, "occurred while trying to convert [[%s]] to a function call argument of type [[%s]]");
-    SWAG_ERROR(Nte0105, "one function declares [[throw]] while the other doesn't");
+    SWAG_ERROR(Nte0105, "one function declares [[throw]], while the other does not");
     SWAG_ERROR(Nte0106, "only basic types, [[enum]] and [[typeinfo]] are accepted for attribute parameters");
     SWAG_ERROR(Nte0107, "only the address of a returned reference can be taken, and this is %s");
     SWAG_ERROR(Nte0108, "parameter mismatch (type is [[%s]])");
@@ -1010,8 +1010,8 @@ void initErrors()
     SWAG_ERROR(Nte0119, "the [[@gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0120, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
     SWAG_ERROR(Nte0122, "the argument [[%s]] could be converted to %s");
-    SWAG_ERROR(Nte0123, "the array has [[%d]] elements of type [[%s]], which doesn't match a slice of type [[%s]]");
-    SWAG_ERROR(Nte0124, "the call to [[%s]] returns type [[%s]], which doesn't have a sub-scope");
+    SWAG_ERROR(Nte0123, "the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]");
+    SWAG_ERROR(Nte0124, "the call to [[%s]] returns type [[%s]], which does not have a sub-scope");
     SWAG_ERROR(Nte0126, "the duplicated underlying enum value is [[%s]]");
     SWAG_ERROR(Nte0127, "the function [[%s]] is not marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Nte0128, "the function [[%s]] is tagged with [[#[Swag.CalleeReturn]]], implying the return value is utilized within [[%s]]");
