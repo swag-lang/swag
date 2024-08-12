@@ -892,14 +892,12 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0001, nullptr);
-    SWAG_ERROR(Nte0002, nullptr);
-    SWAG_ERROR(Nte0003, "[[%s]] does not take arguments between parenthesis, so what follows should be a normal [[(expression)]]");
-    SWAG_ERROR(Nte0004, "as [[%s]] is %s, itdoes not have a sub-scope");
-    SWAG_ERROR(Nte0005, "as [[%s]] is %s of type [[%s]], it does not have a sub-scope");
-    SWAG_ERROR(Nte0006, "as [[%s]] is a mutable UFCS argument, taking the address is implicit");
-    SWAG_ERROR(Nte0007, "[[%s]] is a variable and variables within expressions cannot be evaluated at compile-time");
-    SWAG_ERROR(Nte0008, "[[%s]] is an array of type [[%s]] which does not have a sub-scope");
+    SWAG_ERROR(Nte0003, "[[%s]] does not take arguments within parenthesis, so what follows should be a normal [[(expression)]]");
+    SWAG_ERROR(Nte0005, "[[%s]] is %s of type [[%s]] that does not have a sub-scope");
+    SWAG_ERROR(Nte0004, "[[%s]] is %s that does not have a sub-scope");
+    SWAG_ERROR(Nte0006, "[[%s]] is a mutable UFCS argument, so taking the address is implicit");
+    SWAG_ERROR(Nte0007, "[[%s]] is a variable, and variables within expressions cannot be evaluated at compile-time");
+    SWAG_ERROR(Nte0008, "[[%s]] is an array of type [[%s]] that does not have a sub-scope");
     SWAG_ERROR(Nte0009, "[[%s]] is considered to be a type and not a generic value due to the preceeding [[var]]");
     SWAG_ERROR(Nte0010, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0011, "[[%s]] was located within [[%s]] due to a [[using]] field");
@@ -907,8 +905,6 @@ void initErrors()
     SWAG_ERROR(Nte0013, "[[closure]] should be followed by the capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0014, "[[discard]] cannot be associated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte0015, "[[namealias]] should be associated with a namespace, a function or a variable instead of a type");
-    SWAG_ERROR(Nte0016, nullptr);
-    SWAG_ERROR(Nte0017, nullptr);
     SWAG_ERROR(Nte0018, "a [[%s]] block must start with [[#do]] or must be enclosed in [[{}]]");
     SWAG_ERROR(Nte0019, "a [[%s]] block must start with [[do]] or must be enclosed in [[{}]]");
     SWAG_ERROR(Nte0020, "a [[let]] variable is immutable and cannot be changed");
@@ -984,6 +980,7 @@ void initErrors()
     SWAG_ERROR(Nte0090, "if you want to declare a generic constant, consider adding [[const]] before [[%s]]");
     SWAG_ERROR(Nte0091, "if you want to declare a lambda type, use [[func(]] or [[closure(]]");
     SWAG_ERROR(Nte0092, "if you want to retrieve the type of an expression, consider using [[@decltype]] instead");
+    SWAG_ERROR(Nte0218, "it can only be applied to %s");
     SWAG_ERROR(Nte0093, "it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself is not a value");
     SWAG_ERROR(Nte0094, "missing %s of type [[%s]]");
     SWAG_ERROR(Nte0095, "missing generic parameter [[%s]]");
@@ -1012,19 +1009,17 @@ void initErrors()
     SWAG_ERROR(Nte0118, "the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected");
     SWAG_ERROR(Nte0119, "the [[@gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0120, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
-    SWAG_ERROR(Nte0121, "this [[dref]] operation is not possible here");
     SWAG_ERROR(Nte0122, "the argument [[%s]] could be converted to %s");
     SWAG_ERROR(Nte0123, "the array has [[%d]] elements of type [[%s]], which doesn't match a slice of type [[%s]]");
     SWAG_ERROR(Nte0124, "the call to [[%s]] returns type [[%s]], which doesn't have a sub-scope");
-    SWAG_ERROR(Nte0125, "the other one is an implicit parameter [[using self]]");
     SWAG_ERROR(Nte0126, "the duplicated underlying enum value is [[%s]]");
     SWAG_ERROR(Nte0127, "the function [[%s]] is not marked with [[#[Swag.ConstExpr]]]");
     SWAG_ERROR(Nte0128, "the function [[%s]] is tagged with [[#[Swag.CalleeReturn]]], implying the return value is utilized within [[%s]]");
     SWAG_ERROR(Nte0129, "the function call returns an immutable [[%s]]");
-    SWAG_ERROR(Nte0130, "the function is supposed to be part of the interface due to [[impl]]");
     SWAG_ERROR(Nte0131, "the function is marked with [[#[Swag.Inline]]]");
     SWAG_ERROR(Nte0132, "the function is marked with [[#[Swag.Macro]]]");
     SWAG_ERROR(Nte0133, "the function is marked with [[#[Swag.Mixin]]]");
+    SWAG_ERROR(Nte0130, "the function is supposed to be part of the interface due to [[impl]]");
     SWAG_ERROR(Nte0134, "the identifier [[%s]] is %s and not a function or a struct");
     SWAG_ERROR(Nte0135, "the interface declaration returns type [[%s]]");
     SWAG_ERROR(Nte0136, "the interface declaration yields no return");
@@ -1036,6 +1031,7 @@ void initErrors()
     SWAG_ERROR(Nte0142, "the only accepted type for an integer to pointer conversion is [[u64]]");
     SWAG_ERROR(Nte0143, "the operation is not allowed on a non-pointer type");
     SWAG_ERROR(Nte0144, "the operator [['++']] requires compile-time strings as arguments");
+    SWAG_ERROR(Nte0125, "the other one is an implicit parameter [[using self]]");
     SWAG_ERROR(Nte0145, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0146, "the return type of an [[#ast]] block should be of type [[string]]");
     SWAG_ERROR(Nte0147, "the slicing lower bound type is invalid, expected an integer, got the type [[%s]] instead");
@@ -1049,6 +1045,7 @@ void initErrors()
     SWAG_ERROR(Nte0155, "the value could also come from [[%s]]");
     SWAG_ERROR(Nte0156, "the value could come from [[%s]]");
     SWAG_ERROR(Nte0157, "the version format should be [[version.revision.buildnum]], where each number is either >= 0 or the [[?]] character");
+    SWAG_ERROR(Nte0216, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
     SWAG_ERROR(Nte0158, "there's an hidden call to [[%s]] for the type [[%s]]");
     SWAG_ERROR(Nte0159, "there's an hidden call to [[%s]]");
     SWAG_ERROR(Nte0160, "there's an implied first parameter [[self]]");
@@ -1056,10 +1053,12 @@ void initErrors()
     SWAG_ERROR(Nte0162, "this %s has the [[#[Swag.Compiler]]] attribute, which makes it compile-time only");
     SWAG_ERROR(Nte0163, "this %s has type [[%s]]");
     SWAG_ERROR(Nte0164, "this [[discard]] should be removed");
+    SWAG_ERROR(Nte0121, "this [[dref]] operation is not possible here");
     SWAG_ERROR(Nte0165, "this [[using]] field is convertible because [[%s]] implements the interface");
     SWAG_ERROR(Nte0166, "this argument has been named");
     SWAG_ERROR(Nte0167, "this can be converted too because [[%s]] also implements the interface");
     SWAG_ERROR(Nte0168, "this cannot be prefixed with an access specifier");
+    SWAG_ERROR(Nte0219, "this cannot raise errors");
     SWAG_ERROR(Nte0169, "this function call cannot be evaluated at compile-time");
     SWAG_ERROR(Nte0170, "this function does not support aliased names");
     SWAG_ERROR(Nte0171, "this function does not support being called with UFCS using a value of type [[%s]]");
@@ -1087,12 +1086,12 @@ void initErrors()
     SWAG_ERROR(Nte0193, "this tuple has [[%d]] fields");
     SWAG_ERROR(Nte0194, "this type is [[%s]]");
     SWAG_ERROR(Nte0195, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
-    SWAG_ERROR(Nte0196, "to start a new block, consider moving the [[{]] to a new line");
     SWAG_ERROR(Nte0197, "to declare a global variable, syntax would be [[var %s: %s]]");
     SWAG_ERROR(Nte0198, "to declare a variable, the syntax is [[var name: type]] or [[var name = expression]]");
     SWAG_ERROR(Nte0199, "to dereference variable [[%s]] as in C, employ [[dref %s]]");
     SWAG_ERROR(Nte0200, "to initialize the struct [[%s]], remove the blanks between [[%s]] and the [[{]]");
     SWAG_ERROR(Nte0201, "to retrieve the program arguments, consider using the [[@args()]] intrinsic");
+    SWAG_ERROR(Nte0196, "to start a new block, consider moving the [[{]] to a new line");
     SWAG_ERROR(Nte0202, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0203, "unable to resolve %s [[%s]]");
     SWAG_ERROR(Nte0204, "unable to resolve type [[%s]]");
@@ -1107,10 +1106,11 @@ void initErrors()
     SWAG_ERROR(Nte0213, "you cannot reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0214, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0215, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte0216, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
     SWAG_ERROR(Nte0217, "you should consider using the full name of the enum value");
-    SWAG_ERROR(Nte0218, "it can only be applied to %s");
-    SWAG_ERROR(Nte0219, "this cannot raise errors");
+    SWAG_ERROR(Nte0001, nullptr);
+    SWAG_ERROR(Nte0002, nullptr);
+    SWAG_ERROR(Nte0016, nullptr);
+    SWAG_ERROR(Nte0017, nullptr);
     SWAG_ERROR(Nte0220, nullptr);
 }
 

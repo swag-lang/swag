@@ -680,7 +680,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
             else if (part == HintPart::ErrorLevel)
-                log->setColor(errorColorHint);      
+                log->setColor(errorColorHint);
             else
                 log->setColor(errorColorHint);
             if (logCxt)
@@ -692,7 +692,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
             else if (part == HintPart::ErrorLevel)
-                log->setColor(warningColorHint);              
+                log->setColor(warningColorHint);
             else
                 log->setColor(warningColorHint);
             if (logCxt)
@@ -704,7 +704,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
             else if (part == HintPart::ErrorLevel)
-                log->setColor(noteColor);        
+                log->setColor(noteColor);
             else
                 log->setColor(noteColorHint);
             if (logCxt)
@@ -1071,4 +1071,17 @@ Utf8 Diagnostic::oneLiner(const Utf8& err)
     }
 
     return result;
+}
+
+bool Diagnostic::containsText(const Utf8& txt) const
+{
+    if (textMsg.containsNoCase(txt))
+        return true;
+    for (const auto& n : notes)
+    {
+        if (n->textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
+            return true;
+    }
+
+    return false;
 }

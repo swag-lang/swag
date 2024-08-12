@@ -165,6 +165,7 @@ struct Diagnostic
     static Utf8 replaceHighLight(const Utf8& textMsg);
     void        replaceTokenName(const Token& token);
     void        replaceTokenName(const TokenParse& tokenParse);
+    bool        containsText(const Utf8& txt) const;
     void        addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void        addNote(AstNode* node, const Token& token, const Utf8& msg);
     void        addNote(AstNode* node, const Utf8& h);

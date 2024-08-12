@@ -478,6 +478,18 @@ namespace
         return true;
     }
 
+    void verboseErrorWarning(const Diagnostic& err, const Vector<const Diagnostic*>& notes)
+    {
+        bool display = g_CommandLine.verboseErrorsFilter.empty();
+        display      = display || err.containsText(g_CommandLine.verboseErrorsFilter);
+        for (const auto& n : notes)
+            display = display || n->containsText(g_CommandLine.verboseErrorsFilter);
+        if (display)
+        {
+            reportInternal(&g_Log, err, notes);
+        }
+    }
+
     bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext)
     {
         if (g_SilentError > 0 && inDiag.errorLevel != DiagnosticLevel::Exception)
@@ -538,13 +550,7 @@ namespace
                     if (dismiss)
                     {
                         if (g_CommandLine.verboseErrors)
-                        {
-                            if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
-                            {
-                                reportInternal(&g_Log, err, notes);
-                            }
-                        }
-
+                            verboseErrorWarning(err, notes);
                         return false;
                     }
                 }
@@ -580,13 +586,7 @@ namespace
                     if (dismiss)
                     {
                         if (g_CommandLine.verboseErrors)
-                        {
-                            if (g_CommandLine.verboseErrorsFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
-                            {
-                                reportInternal(&g_Log, err, notes);
-                            }
-                        }
-
+                            verboseErrorWarning(err, notes);
                         return true;
                     }
                 }
