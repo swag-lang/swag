@@ -1105,8 +1105,8 @@ void initErrors()
     SWAG_ERROR(Nte0209, "you can execute [[Swag]] with [[--callstack]] to obtain more contextual details");
     SWAG_ERROR(Nte0210, "you can execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0211, "you cannot reference this runtime %s from the compile-time %s");
-    SWAG_ERROR(Nte0144, nullptr);
-    SWAG_ERROR(Nte0217, nullptr);
+    SWAG_ERROR(Nte0144, "a constant requires a compile-time evaluation");
+    SWAG_ERROR(Nte0217, "a global variable requires a compile-time evaluation");
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);
     SWAG_ERROR(Nte0220, nullptr);
