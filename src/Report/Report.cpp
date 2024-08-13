@@ -243,6 +243,9 @@ namespace
         {
             note->lineCodeMaxDigits = lineCodeMaxDigits;
             note->minBlanks         = minBlanks;
+
+            if (note->hasLocation && note->sourceFile != notes[0]->sourceFile)
+                note->fromContext = true;
         }
     }
 

@@ -116,19 +116,16 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::DuringGeneric:
-                    msg             = formNte(Nte0097, name.c_str());
-                    exp.locIsToken  = true;
-                    exp.fromContext = true;
+                    msg            = formNte(Nte0097, name.c_str());
+                    exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::DuringInline:
-                    msg             = formNte(Nte0098, name.c_str());
-                    exp.locIsToken  = true;
-                    exp.fromContext = true;
+                    msg            = formNte(Nte0098, name.c_str());
+                    exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::DuringCompileTime:
-                    msg             = formNte(Nte0093, name.c_str());
-                    exp.locIsToken  = true;
-                    exp.fromContext = true;
+                    msg            = formNte(Nte0093, name.c_str());
+                    exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::DuringWhere:
                     if (exp.node->is(AstNodeKind::StructDecl))

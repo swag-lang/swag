@@ -911,7 +911,10 @@ void Diagnostic::report(Log* log)
             log->writeEol();
         printMarginLineNo(log, 0);
         log->setColor(marginBorderColor);
-        log->print(LogSymbol::VerticalLine);
+        if (fromContext)
+            log->print(LogSymbol::VerticalLineDot);
+        else
+            log->print(LogSymbol::VerticalLine);
         log->write(" ");
         log->setColor(sourceFileColor);
         printSourceLine(log);
