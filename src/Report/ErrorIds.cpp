@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Report/ErrorIds.h"
-#include "pch.h"
-#include "Report/ErrorIds.h"
 
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) #__enum
@@ -654,9 +652,9 @@ void initErrors()
     SWAG_ERROR(Err0526, "redefined symbol                                  $ cannot redefine the %s [[%s]] because it already exists                                                                                  $ ");
     SWAG_ERROR(Err0527, "redundant access specifier                        $ cannot use the [[%s]] access specifier because of [[#global export]]                                                                     $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err0528, "reserved name                                     $ cannot use an identifier starting with [[__]] ([[%s]])                                                                                   $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
-    SWAG_ERROR(Err0529, "reserved name function                            $ cannot use the function name [[%s]] because it is reserved by the compiler                                                               $ ");
-    SWAG_ERROR(Err0530, "reserved name namespace                           $ cannot use the namespace [[%s]] because it is reserved by the compiler                                                                   $ ");
-    SWAG_ERROR(Err0531, "reserved name struct member                       $ cannot use the field name [[%s]] because it is reserved by the compiler                                                                  $ struct member names beginning with [[item]] are reserved by the language");
+    SWAG_ERROR(Err0529, "reserved function name                            $ cannot name a function [[%s]] because it is reserved by the compiler                                                               $ ");
+    SWAG_ERROR(Err0530, "reserved namespace name                           $ cannot name a namespace [[%s]] because it is reserved by the compiler                                                                   $ ");
+    SWAG_ERROR(Err0531, "reserved field name                               $ cannot name a field [[%s]] because it is reserved by the compiler                                                                  $ struct member names beginning with [[item]] are reserved by the language");
     SWAG_ERROR(Err0532, "semantic cycle                                    $ cannot solve %s [[%s]] because a cycle has been detected                                                                                 $ ");
     SWAG_ERROR(Err0533, "standalone expression                             $ cannot leave an expression unused                                                                                                        $ consider removing it");
     SWAG_ERROR(Err0534, "system error                                      $ cannot create the process [[%s]]                                                                                                         $ ");
@@ -954,7 +952,7 @@ void initErrors()
     SWAG_ERROR(Nte0060, "entity %s [[%s]] awaits the generation of type [[%s]]");
     SWAG_ERROR(Nte0061, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0062, "expected an integer, a rune or a float value");
-    SWAG_ERROR(Nte0063, "function names that start with [[op]] followed by an uppercase letter are reserved for struct special functions");
+    SWAG_ERROR(Nte0063, "function names starting with [[op]] and an uppercase letter are reserved for struct functions");
     SWAG_ERROR(Nte0064, "function parameters are immutable and cannot be modified");
     SWAG_ERROR(Nte0065, "got [[%s]] instead");
     SWAG_ERROR(Nte0066, "here is another one");
@@ -1039,14 +1037,14 @@ void initErrors()
     SWAG_ERROR(Nte0145, "the symbol [[%s]] is already present in the interface scope [[%s]]");
     SWAG_ERROR(Nte0146, "the symbol [[%s]] was located through a [[using]] statement");
     SWAG_ERROR(Nte0147, "the symbol [[...]] is used to declare variadic function parameters, which is not valid in this context");
-    SWAG_ERROR(Nte0148, "in Swag, the syntax is [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
+    SWAG_ERROR(Nte0148, "use [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0149, "the type [[%s]] is expected because of %s");
-    SWAG_ERROR(Nte0150, "the type [[%s]] is needed because of the enum specific type");
-    SWAG_ERROR(Nte0151, "the type [[%s]] is needed because of the function return type");
+    SWAG_ERROR(Nte0150, "the type [[%s]] is expected because of the enum specific type");
+    SWAG_ERROR(Nte0151, "the type [[%s]] is expected because of the function return type");
     SWAG_ERROR(Nte0152, "the value could also come from [[%s]]");
     SWAG_ERROR(Nte0153, "the value could come from [[%s]]");
     SWAG_ERROR(Nte0154, "the version format should be [[version.revision.buildnum]], where each number is either >= 0 or the [[?]] character");
-    SWAG_ERROR(Nte0155, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so don't know which one to take");
+    SWAG_ERROR(Nte0155, "there are multiple [[using]] fields of type [[%s]] in [[%s]], so cannot determine which one to use");
     SWAG_ERROR(Nte0156, "there's an hidden call to [[%s]] for the type [[%s]]");
     SWAG_ERROR(Nte0157, "there's an hidden call to [[%s]]");
     SWAG_ERROR(Nte0158, "there's an implied first parameter [[self]]");
@@ -1062,8 +1060,8 @@ void initErrors()
     SWAG_ERROR(Nte0168, "this cannot raise errors");
     SWAG_ERROR(Nte0169, "this function call cannot be evaluated at compile time");
     SWAG_ERROR(Nte0170, "this function does not support aliased names");
-    SWAG_ERROR(Nte0171, "this function does not support being called with UFCS using a value of type [[%s]]");
-    SWAG_ERROR(Nte0172, "this function has the [[#[Swag.Compiler]]] attribute, which makes it compile-time only");
+    SWAG_ERROR(Nte0171, "this function cannot be called with UFCS using a value of type [[%s]]");
+    SWAG_ERROR(Nte0172, "this function is marked with [[#[Swag.Compiler]]], making it compile-time only");
     SWAG_ERROR(Nte0173, "this has [[%s]] access (type is [[%s]])");
     SWAG_ERROR(Nte0174, "this is a constant");
     SWAG_ERROR(Nte0175, "this is a lambda expression");
@@ -1105,7 +1103,7 @@ void initErrors()
     SWAG_ERROR(Nte0211, "you cannot reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0212, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0213, "you need to take the address of a value to create a reference");
-    SWAG_ERROR(Nte0214, "in Swag, a line comment starts with [[//]]");
+    SWAG_ERROR(Nte0214, "if this is a line comment, make it start with [[//]]");
     SWAG_ERROR(Nte0215, "either provide another argument after a [[,]] or close the list with [[)]]");
     SWAG_ERROR(Nte0216, "did you forget [[var]], [[let]] or [[const]] to declare a variable or a constant?");
     SWAG_ERROR(Nte0217, nullptr);
