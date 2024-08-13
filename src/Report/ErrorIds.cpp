@@ -867,8 +867,8 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0740, "invalid variable name                             $ cannot use [[#alias]] as a variable name outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                    $ ");
     SWAG_ERROR(Err0741, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
-    SWAG_ERROR(Err0146, nullptr);
-    SWAG_ERROR(Err0742, nullptr);
+    SWAG_ERROR(Err0146, "unknown variable                                  $ cannot find the variable [[%s]] in [[%s]]                                                                                                $ ");
+    SWAG_ERROR(Err0742, "unknown variable                                  $ cannot find the variable [[%s]]                                                                                                          $ ");
     SWAG_ERROR(Err0743, nullptr);
     SWAG_ERROR(Err0744, nullptr);
     SWAG_ERROR(Err0745, nullptr);
@@ -1107,7 +1107,7 @@ void initErrors()
     SWAG_ERROR(Nte0213, "you need to take the address of a value to create a reference");
     SWAG_ERROR(Nte0214, "in Swag, a line comment starts with [[//]]");
     SWAG_ERROR(Nte0215, "either provide another argument after a [[,]] or close the list with [[)]]");
-    SWAG_ERROR(Nte0216, nullptr);
+    SWAG_ERROR(Nte0216, "did you forget [[var]], [[let]] or [[const]] to declare a variable or a constant?");
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);

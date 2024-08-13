@@ -82,6 +82,10 @@ namespace
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0694, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
+        else if (typeWhere->isStruct())
+        {
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0146, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+        }
         else
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0698, identifier->token.c_str(), typeWhere->getDisplayNameC())};
@@ -160,6 +164,7 @@ namespace
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // What kind of thing to we search for ?
+    const auto pr1       = identifier->getParent(1);
     const auto pr2       = identifier->getParent(2);
     auto       searchFor = IdentifierSearchFor::Whatever;
     if (pr2->is(AstNodeKind::TypeExpression) && identifier->parent->lastChild() == identifier)
@@ -170,6 +175,12 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         searchFor = IdentifierSearchFor::Struct;
     else if (identifier->callParameters)
         searchFor = IdentifierSearchFor::Function;
+    else if (pr2->is(AstNodeKind::AffectOp) || pr2->is(AstNodeKind::BinaryOp) || pr1->is(AstNodeKind::ArrayPointerIndex))
+        searchFor = IdentifierSearchFor::Variable;
+    else if (pr2->is(AstNodeKind::Impl) && pr2->hasSpecFlag(AstImpl::SPEC_FLAG_ENUM))
+        searchFor = IdentifierSearchFor::Enum;
+    else if (pr2->is(AstNodeKind::Impl))
+        searchFor = IdentifierSearchFor::Struct;
 
     // Default message
     Diagnostic* err;
@@ -186,6 +197,9 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
             break;
         case IdentifierSearchFor::Struct:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0708, identifier->token.c_str())};
+            break;
+        case IdentifierSearchFor::Variable:
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0742, identifier->token.c_str())};
             break;
         default:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0697, identifier->token.c_str())};
@@ -225,6 +239,20 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         notes.push_back(Diagnostic::note(appendMsg));
     }
 
+    // Additional notes
+    switch (searchFor)
+    {
+        case IdentifierSearchFor::Type:
+            if (identifier->token.text == "int")
+                notes.push_back(Diagnostic::note(formNte(Nte0105, "s32")));
+            break;
+
+        case IdentifierSearchFor::Variable:
+            if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->startScope)
+                notes.push_back(Diagnostic::note(toNte(Nte0216)));
+            break;
+    }
+
     // Error in scope context
     if (identifierRef->startScope)
     {
@@ -234,10 +262,6 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     }
 
     commonErrorNotes(context, {}, identifier, err, notes);
-
-    // Additional notes
-    if (searchFor == IdentifierSearchFor::Type && identifier->token.text == "int")
-        notes.push_back(Diagnostic::note(formNte(Nte0105, "s32")));
 
     return context->report(*err, notes);
 }

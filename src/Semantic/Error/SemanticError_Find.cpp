@@ -15,16 +15,16 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
             a0.makeLower();
             a1.makeLower();
             if (a0 == a1 && searchName != best[0])
-                appendMsg = form("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
+                appendMsg = form("did you mean [[%s]]? (notice the capitalization)", best[0].c_str());
             else
-                appendMsg = form("do you mean [[%s]]?", best[0].c_str());
+                appendMsg = form("did you mean [[%s]]?", best[0].c_str());
             break;
         }
         case 2:
-            appendMsg = form("do you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
+            appendMsg = form("did you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
             break;
         case 3:
-            appendMsg = form("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+            appendMsg = form("did you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
             break;
     }
 
@@ -92,39 +92,57 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
             const auto one = s->symTable.mapNames.buffer[i];
             if (!one.symbolName)
                 continue;
-
-            // Filter to try to be as relevant as possible
-            if (searchFor == IdentifierSearchFor::Function &&
-                one.symbolName->isNot(SymbolKind::Function))
-                continue;
-            if (searchFor == IdentifierSearchFor::Attribute &&
-                one.symbolName->isNot(SymbolKind::Attribute))
-                continue;
-            if (searchFor != IdentifierSearchFor::Function &&
-                one.symbolName->is(SymbolKind::Function))
-                continue;
-            if (searchFor != IdentifierSearchFor::Function &&
-                one.symbolName->is(SymbolKind::Attribute))
-                continue;
-            if (searchFor == IdentifierSearchFor::Type &&
-                one.symbolName->isNot(SymbolKind::TypeAlias) &&
-                one.symbolName->isNot(SymbolKind::Enum) &&
-                one.symbolName->isNot(SymbolKind::GenericType) &&
-                one.symbolName->isNot(SymbolKind::Struct) &&
-                one.symbolName->isNot(SymbolKind::Interface))
-                continue;
-            if (searchFor == IdentifierSearchFor::Struct &&
-                one.symbolName->isNot(SymbolKind::Struct))
-                continue;
             if (one.symbolName->cptOverloadsInit == 0)
                 continue;
 
-            searchList.push_back(one.symbolName->name);
+            if (searchFor == IdentifierSearchFor::Whatever)
+            {
+                searchList.push_back(one.symbolName->name);
+                continue;
+            }
+
+            switch (one.symbolName->kind)
+            {
+                case SymbolKind::Function:
+                    if (searchFor == IdentifierSearchFor::Function)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+
+                case SymbolKind::Attribute:
+                    if (searchFor == IdentifierSearchFor::Attribute)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+
+                case SymbolKind::Variable:
+                    if (searchFor == IdentifierSearchFor::Variable)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+
+                case SymbolKind::Struct:
+                    if (searchFor == IdentifierSearchFor::Struct || searchFor == IdentifierSearchFor::Type)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+
+                case SymbolKind::Enum:
+                    if (searchFor == IdentifierSearchFor::Enum || searchFor == IdentifierSearchFor::Type)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+
+                case SymbolKind::TypeAlias:
+                case SymbolKind::GenericType:
+                case SymbolKind::Interface:
+                    if (searchFor == IdentifierSearchFor::Type)
+                        searchList.push_back(one.symbolName->name);
+                    break;
+            }
         }
     }
 
     for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
     {
+        if (!g_LangSpec->keywords.buffer[i].key)
+            continue;
+
         switch (searchFor)
         {
             case IdentifierSearchFor::TopLevelInstruction:
@@ -151,9 +169,11 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
                 }
                 break;
 
+            case IdentifierSearchFor::Variable:
+                break;
+
             default:
-                if (g_LangSpec->keywords.buffer[i].key)
-                    searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
                 break;
         }
     }

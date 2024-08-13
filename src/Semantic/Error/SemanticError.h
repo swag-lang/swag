@@ -35,6 +35,8 @@ enum class IdentifierSearchFor
     Keyword,
     TopLevelInstruction,
     Struct,
+    Enum,
+    Variable,
 };
 
 struct ErrorParam
