@@ -272,7 +272,8 @@ namespace
         cleanNotes(notes);
         log->writeEol();
 
-        bool marginBefore = true;
+        bool        marginBefore = true;
+        Diagnostic* prevN        = nullptr;
         for (const auto n : notes)
         {
             if (!n->display)
@@ -286,12 +287,16 @@ namespace
             {
                 n->printMarginLineNo(log, 0);
                 log->setColor(n->marginBorderColor);
-                log->print(LogSymbol::VerticalLine);
+                if (prevN && prevN->fromContext)
+                    log->print(LogSymbol::VerticalLineDot);
+                else
+                    log->print(LogSymbol::VerticalLine);
                 log->writeEol();
             }
 
             n->report(log);
             marginBefore = n->hasContent;
+            prevN        = n;
         }
 
         log->setDefaultColor();
