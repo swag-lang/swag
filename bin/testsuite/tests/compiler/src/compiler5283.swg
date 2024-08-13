@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0575"
+//#global testerror "Err0578"
 #test
 {
     var a = 0

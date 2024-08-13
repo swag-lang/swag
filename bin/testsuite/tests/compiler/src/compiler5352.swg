@@ -1,2 +1,2 @@
-#global testerror "Err0334"
+#global testerror "Err0336"
 func contains(what: u8) => return Ut8.contains(toSlice(), what)

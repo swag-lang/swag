@@ -2262,7 +2262,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0540, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
+        const auto       msg = formErr(Err0542, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }
@@ -3180,9 +3180,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, formErr(Err0486, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0487, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, formErr(Err0541, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0543, toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

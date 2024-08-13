@@ -1,3 +1,3 @@
-#global testerror "Err0447"
+#global testerror "Err0449"
 
 const A: s32

@@ -1,4 +1,4 @@
-#global testerror "Err0579";
+#global testerror "Err0582";
 
 //#[Swag.PrintBc]
 func test (arr: [2] s32, idx: s32, val: s32)

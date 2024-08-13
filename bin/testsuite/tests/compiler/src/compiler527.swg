@@ -1,4 +1,4 @@
-#global testerror "Err0743"
+#global testerror "Err0694"
 impl enum toto
 {
 }

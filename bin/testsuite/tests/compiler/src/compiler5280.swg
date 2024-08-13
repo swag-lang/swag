@@ -1,4 +1,4 @@
-#global testerror "Err0404"
+#global testerror "Err0406"
 
 #if true
     #print 0

@@ -1,5 +1,5 @@
 
-#global testerror "Err0579"
+#global testerror "Err0582"
 
 #[Swag.Strict]
 typealias Alias = s32

@@ -1,4 +1,4 @@
-//#global testerror "Err0272"
+//#global testerror "Err0274"
 
 func toto(str: func(s32, s32))
 {    

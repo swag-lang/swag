@@ -1,4 +1,4 @@
-#global testerror "Err0350"
+#global testerror "Err0352"
 
 private Bot
 {

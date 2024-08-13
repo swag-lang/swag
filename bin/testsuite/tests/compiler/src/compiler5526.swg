@@ -1,3 +1,3 @@
-#global testerror "Err0462"
+#global testerror "Err0463"
 
 public func toto5526() => 0

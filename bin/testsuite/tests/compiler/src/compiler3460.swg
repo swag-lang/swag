@@ -1,4 +1,4 @@
-#global testerror "Err0148"
+#global testerror "Err0147"
 func toto()
 {
     var x: closure()

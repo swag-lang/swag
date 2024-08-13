@@ -1,2 +1,2 @@
-#global testerror "Err0280"
+#global testerror "Err0282"
 18446744073709551616

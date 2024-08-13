@@ -1,4 +1,4 @@
-#global testerror "Err0714"
+#global testerror "Err0720"
 
 #[Swag.Safety("nullptr", true)]
 {

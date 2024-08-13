@@ -1,4 +1,4 @@
-#global testerror "Err0459"
+#global testerror "Err0461"
 func main (argc, argv)
 {
 }

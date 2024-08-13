@@ -1,4 +1,4 @@
-#global testerror "Err0500"
+#global testerror "Err0501"
 #global testerror "Err0767"
 #global testerror "Err0013"
 

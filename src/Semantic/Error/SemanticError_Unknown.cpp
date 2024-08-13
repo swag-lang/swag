@@ -20,7 +20,7 @@ namespace
         // Error inside a tuple
         if (typeRef && typeRef->isTuple())
         {
-            const auto err        = new Diagnostic{identifier, formErr(Err0700, identifier->token.c_str())};
+            const auto err        = new Diagnostic{identifier, formErr(Err0705, identifier->token.c_str())};
             const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
             const auto note       = Diagnostic::note(errNode, toNte(Nte0086));
@@ -50,7 +50,7 @@ namespace
         if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
         {
             const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
-            const auto msg     = formErr(Err0699, identifier->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
+            const auto msg     = formErr(Err0704, identifier->token.c_str(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
             err                = new Diagnostic{identifier, identifier->token, msg};
             const auto note    = Diagnostic::hereIs(altEnum->declNode);
             if (note)
@@ -58,41 +58,41 @@ namespace
         }
         else if (typeWhere->isEnum())
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0689, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0695, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.is(g_LangSpec->name_opVisit))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0715, typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0723, typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.text.startsWith(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
             const Utf8 variant{identifier->token.text.buffer + g_LangSpec->name_opVisit.length()};
-            err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0716, variant.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0724, variant.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->callParameters)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0704, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0710, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isInterface() && identifier->callParameters)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0695, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0707, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }        
         else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0686, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0691, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0694, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0700, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct())
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0146, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0722, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
         else
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0698, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0703, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
 
         // Variable before
@@ -191,25 +191,25 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     switch (searchFor)
     {
         case IdentifierSearchFor::Function:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0694, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0700, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Attribute:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0686, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0691, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Type:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0709, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0715, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Struct:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0708, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0714, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Enum:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0743, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0694, identifier->token.c_str())};
             break;
         case IdentifierSearchFor::Variable:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0742, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0721, identifier->token.c_str())};
             break;
         default:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0697, identifier->token.c_str())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0702, identifier->token.c_str())};
             break;
     }
 
@@ -218,7 +218,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     // Special case with an intrinsic or a compiler function inside a scope
     if (identifierRef->startScope && identifier->token.text[0] == '@')
     {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0664, identifier->token.c_str())};
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0667, identifier->token.c_str())};
         if (identifier->childParentIdx())
             notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0204)));
         return context->report(*err, notes);
@@ -226,7 +226,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 
     if (identifierRef->startScope && identifier->token.text[0] == '#')
     {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0648, identifier->token.c_str())};
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0651, identifier->token.c_str())};
         if (identifier->childParentIdx())
             notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0204)));
         return context->report(*err, notes);

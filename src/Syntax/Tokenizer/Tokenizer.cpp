@@ -384,7 +384,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
         ///////////////////////////////////////////
         tokenParse.token.text = c;
         tokenParse.token.id   = TokenId::Invalid;
-        return error(tokenParse, formErr(Err0646, tokenParse.token.c_str()));
+        return error(tokenParse, formErr(Err0649, tokenParse.token.c_str()));
     }
 
     doAfterToken(tokenParse);
