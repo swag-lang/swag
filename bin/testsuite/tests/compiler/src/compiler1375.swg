@@ -1,5 +1,6 @@
 #global testerror "Err0697"
 #global testerror "Err0425"
+#global testerror "Err0742"
 
 using Swag
 

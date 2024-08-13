@@ -94,6 +94,8 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
                 continue;
             if (one.symbolName->cptOverloadsInit == 0)
                 continue;
+            if(searchName == one.symbolName->name)
+                continue;
 
             if (searchFor == IdentifierSearchFor::Whatever)
             {
