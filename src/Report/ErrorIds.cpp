@@ -336,7 +336,7 @@ void initErrors()
     SWAG_ERROR(Err0210, "invalid pointer arithmetic                        $ cannot perform pointer arithmetic with a non-integer type [[%s]]                                                                         $ ");
     SWAG_ERROR(Err0211, "invalid pointer arithmetic                        $ cannot perform pointer slicing                                                                                                           $ ");
     SWAG_ERROR(Err0212, "invalid range                                     $ cannot have a lower bound [[%lld]] greater than the upper bound [[%lld]]                                                                 $ you can loop in reverse order with the [[loop,back]] syntax");
-    SWAG_ERROR(Err0213, "invalid range type                                $ cannot use the type [[%s]] in a range expression                                                                                         $ ");
+    SWAG_ERROR(Err0213, "invalid range type                                $ cannot use the type [[%s]] in a range expression                                                                                         $ expected an integer, a rune or a float value");
     SWAG_ERROR(Err0214, "invalid reference                                 $ cannot reference the current file scope                                                                                                  $ ");
     SWAG_ERROR(Err0215, "invalid reference                                 $ expected a pointer type or a reference as the [[ref]] expression, but got type [[%s]] instead                                            $ ");
     SWAG_ERROR(Err0216, "invalid return type                               $ cannot use [[%s]] as a function return type                                                                                              $ ");
@@ -586,7 +586,7 @@ void initErrors()
     SWAG_ERROR(Err0458, "missing parameter name                            $ expected the parameter name and [[:]] before [[%s]]                                                                                      $ ");
     SWAG_ERROR(Err0459, "missing parameter type                            $ expected the type with [[:]] or an assignment, but got $$TKN$$ instead                                                                   $ ");
     SWAG_ERROR(Err0460, "missing parameters                                $ cannot have a special function [[%s]] without parameters                                                                                 $ ");
-    SWAG_ERROR(Err0461, "missing parameters                                $ expected [[(]] after the intrinsic [[%s]] because it is a function                                                                       $ ");
+    SWAG_ERROR(Err0461, nullptr);
     SWAG_ERROR(Err0462, "missing return type                               $ cannot have a [[public]] function without an explicitly defined return type                                                              $ ");
     SWAG_ERROR(Err0463, "missing return type                               $ cannot have a special function [[%s]] without a return type                                                                              $ ");
     SWAG_ERROR(Err0464, "missing return type                               $ cannot have a special function [[%s]] without a return type [[%s]]                                                                       $ ");
@@ -969,10 +969,10 @@ void initErrors()
     SWAG_ERROR(Nte0105, "did you mean [[%s]]?");
     SWAG_ERROR(Nte0009, "did you mean to use the symbol [['=']] to assign a value instead?");
     SWAG_ERROR(Nte0061, "evaluation failed during compile-time");
-    SWAG_ERROR(Nte0062, "expected an integer, a rune or a float value");
+    SWAG_ERROR(Nte0062, nullptr);
+    SWAG_ERROR(Nte0065, nullptr);
     SWAG_ERROR(Nte0063, "function names starting with [[op]] and an uppercase letter are reserved for struct functions");
     SWAG_ERROR(Nte0064, "function parameters are immutable and cannot be modified");
-    SWAG_ERROR(Nte0065, "got [[%s]] instead");
     SWAG_ERROR(Nte0087, "consider prefixing with [[#run]] to enforce a compile-time call");
     SWAG_ERROR(Nte0214, "consider using [[//]] to start a line comment");
     SWAG_ERROR(Nte0088, "it can only be applied to %s");

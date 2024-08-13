@@ -159,8 +159,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (isIntrinsic && tokenParse.isNot(TokenId::SymLeftParen))
     {
-        Diagnostic err{identifier, formErr(Err0461, identifier->token.c_str())};
-        err.addNote(sourceFile, tokenParse.token, formNte(Nte0065, tokenParse.token.c_str()));
+        const Diagnostic err{identifier, formErr(Err0431, form("intrinsic [[%s]]", identifier->token.c_str()).c_str())};
         return context->report(err);
     }
 
