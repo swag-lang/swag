@@ -40,6 +40,8 @@ bool Parser::testIsValidUserName(const AstNode* node) const
 bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 {
     // An identifier that starts with '__' is reserved for internal usage !
+    if (node->token.text == "_")
+        return error(loc ? *loc : node->token, toErr(Err0746));
     if (!testIsValidUserName(node))
         return error(loc ? *loc : node->token, formErr(Err0528, node->token.c_str()));
 

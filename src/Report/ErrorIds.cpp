@@ -655,7 +655,7 @@ void initErrors()
     SWAG_ERROR(Err0527, "redundant access specifier                        $ cannot use the [[%s]] access specifier because of [[#global export]]                                                                     $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err0531, "reserved field name                               $ cannot name a field [[%s]] because it is reserved by the compiler                                                                        $ struct member names beginning with [[item]] are reserved by the language");
     SWAG_ERROR(Err0529, "reserved function name                            $ cannot name a function [[%s]] because it is reserved by the compiler                                                                     $ ");
-    SWAG_ERROR(Err0528, "reserved name                                     $ cannot use an identifier starting with [[__]] ([[%s]])                                                                                   $ identifiers starting with [[__]] are typically reserved for compiler-internal or system use");
+    SWAG_ERROR(Err0528, "reserved name                                     $ cannot use an identifier starting with [[__]] ([[%s]])                                                                                   $ identifiers starting with [[__]] are reserved by the compiler");
     SWAG_ERROR(Err0530, "reserved namespace name                           $ cannot name a namespace [[%s]] because it is reserved by the compiler                                                                    $ ");
     SWAG_ERROR(Err0532, "semantic cycle                                    $ cannot solve %s [[%s]] because a cycle has been detected                                                                                 $ ");
     SWAG_ERROR(Err0533, "standalone expression                             $ cannot leave an expression unused                                                                                                        $ consider removing it");
@@ -870,7 +870,7 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0744, "type mismatch                                     $ expected the slice bound to be an integer, but got type [[%s]] instead                                                                   $ ");
     SWAG_ERROR(Err0745, "unexpected symbol                                 $ expected [[->]] to declare a function return type, got $$TKN$$ instead                                                                   $ ");
-    SWAG_ERROR(Err0746, nullptr);
+    SWAG_ERROR(Err0746, "reserved name                                     $ cannot use an identifier named with a single [[_]]                                                                                       $ an identifier named with one single [[_]] is reserved by the compiler");
     SWAG_ERROR(Err0747, nullptr);
     SWAG_ERROR(Err0748, nullptr);
     SWAG_ERROR(Err0749, nullptr);
