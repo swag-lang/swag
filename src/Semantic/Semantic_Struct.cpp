@@ -817,7 +817,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
         const auto node          = context->node;
         context->whereParameters = structDecl->genericParameters;
 
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Where, nullptr);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::DuringWhere, nullptr);
         const auto     result    = executeCompilerNode(context, expr, false);
         context->whereParameters = nullptr;
         if (!result)

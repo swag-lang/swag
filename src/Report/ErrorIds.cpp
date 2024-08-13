@@ -868,7 +868,7 @@ void initErrors()
     SWAG_ERROR(Err0737, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0738, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
-    SWAG_ERROR(Err0744, nullptr);
+    SWAG_ERROR(Err0744, "type mismatch                                     $ expected the slice bound to be an integer, but got type [[%s]] instead                                                                      $ ");
     SWAG_ERROR(Err0745, nullptr);
     SWAG_ERROR(Err0746, nullptr);
     SWAG_ERROR(Err0747, nullptr);
@@ -957,6 +957,7 @@ void initErrors()
     SWAG_ERROR(Nte0199, "consider using the syntax [[var name: type]] or [[var name = expression]] to declare a variable");
     SWAG_ERROR(Nte0051, "consider writing [[impl %s]] instead");
     SWAG_ERROR(Nte0052, "consider writing [[impl enum %s]] instead");
+    SWAG_ERROR(Nte0215, "consider providing another argument after a [[,]] or closing the list with [[)]]");
     SWAG_ERROR(Nte0053, "copying an array of structs is not allowed here");
     SWAG_ERROR(Nte0054, "could [[self]] be missing?");
     SWAG_ERROR(Nte0055, "could be an instance of the generic function [[%s]]");
@@ -967,14 +968,13 @@ void initErrors()
     SWAG_ERROR(Nte0216, "did you forget [[var]], [[let]] or [[const]] to declare a variable or a constant?");
     SWAG_ERROR(Nte0105, "did you mean [[%s]]?");
     SWAG_ERROR(Nte0009, "did you mean to use the symbol [['=']] to assign a value instead?");
-    SWAG_ERROR(Nte0215, "either provide another argument after a [[,]] or close the list with [[)]]");
     SWAG_ERROR(Nte0061, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0062, "expected an integer, a rune or a float value");
     SWAG_ERROR(Nte0063, "function names starting with [[op]] and an uppercase letter are reserved for struct functions");
     SWAG_ERROR(Nte0064, "function parameters are immutable and cannot be modified");
     SWAG_ERROR(Nte0065, "got [[%s]] instead");
-    SWAG_ERROR(Nte0087, "if necessary, prefix with [[#run]] to enforce a compile-time call");
-    SWAG_ERROR(Nte0214, "if this is a line comment, make it start with [[//]]");
+    SWAG_ERROR(Nte0087, "consider prefixing with [[#run]] to enforce a compile-time call");
+    SWAG_ERROR(Nte0214, "consider using [[//]] to start a line comment");
     SWAG_ERROR(Nte0088, "it can only be applied to %s");
     SWAG_ERROR(Nte0089, "it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself is not a value");
     SWAG_ERROR(Nte0090, "missing %s of type [[%s]]");
@@ -1028,7 +1028,6 @@ void initErrors()
     SWAG_ERROR(Nte0109, "the parameter should conform to the type [[%s]]");
     SWAG_ERROR(Nte0142, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0143, "the return type of an [[#ast]] block should be of type [[string]]");
-    SWAG_ERROR(Nte0144, "the slicing lower bound type is invalid, expected an integer, got the type [[%s]] instead");
     SWAG_ERROR(Nte0060, "the symbol %s [[%s]] wait for the generation of the type [[%s]]");
     SWAG_ERROR(Nte0145, "the symbol [[%s]] is already present in the interface scope [[%s]]");
     SWAG_ERROR(Nte0146, "the symbol [[%s]] was located through a [[using]] statement");
@@ -1106,6 +1105,7 @@ void initErrors()
     SWAG_ERROR(Nte0209, "you can execute [[Swag]] with [[--callstack]] to obtain more contextual details");
     SWAG_ERROR(Nte0210, "you can execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0211, "you cannot reference this runtime %s from the compile-time %s");
+    SWAG_ERROR(Nte0144, nullptr);
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);

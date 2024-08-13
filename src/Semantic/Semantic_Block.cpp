@@ -92,7 +92,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
     ErrorCxtStep expNode;
     expNode.node = node->parent;
-    expNode.type = ErrCxtStepKind::Inline;
+    expNode.type = ErrCxtStepKind::DuringInline;
     context->errCxtSteps.push_back(expNode);
 
     if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))

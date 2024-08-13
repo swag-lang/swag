@@ -11,13 +11,14 @@ struct SourceFile;
 
 enum class ErrCxtStepKind
 {
+    Error,
     Note,
-    Generic,
-    Inline,
-    CompileTime,
-    Where,
-    WhereCall,
     HereIs,
+    DuringGeneric,
+    DuringInline,
+    DuringCompileTime,
+    DuringWhere,
+    DuringWhereCall,
 };
 
 struct ErrorCxtStep

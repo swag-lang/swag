@@ -928,9 +928,9 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
 
         ErrCxtStepKind type;
         if (funcDecl->whereExpression->is(AstNodeKind::CompilerWhereCall))
-            type = ErrCxtStepKind::WhereCall;
+            type = ErrCxtStepKind::DuringWhereCall;
         else
-            type = ErrCxtStepKind::Where;
+            type = ErrCxtStepKind::DuringWhere;
 
         PushErrCxtStep ec(context, node, type, nullptr);
         const auto     result    = executeCompilerNode(context, expr, false);
@@ -972,7 +972,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
             const auto exportNode = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
             if (exportNode)
                 expNode.node = exportNode;
-            expNode.type = ErrCxtStepKind::Generic;
+            expNode.type = ErrCxtStepKind::DuringGeneric;
             job->context.errCxtSteps.push_back(expNode);
         }
 

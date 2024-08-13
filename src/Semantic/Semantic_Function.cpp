@@ -1926,7 +1926,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecl.empty())
     {
-        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
+        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::DuringInline, nullptr);
 
         // Authorize a sub function to access inline parameters, if possible
         // This will work for compile-time values, otherwise we will have an out of stack frame when generating the code
@@ -1955,7 +1955,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {
-            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
+            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::DuringInline, nullptr);
             const auto     id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
             for (auto& val : cloneContext.replaceNames | std::views::values)
             {

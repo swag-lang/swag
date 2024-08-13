@@ -47,7 +47,13 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
 
             switch (exp.type)
             {
-                case ErrCxtStepKind::Generic:
+                case ErrCxtStepKind::Error:
+                    if (!msg.empty())
+                        diagnostic.textMsg = msg;
+                    exp.hide = true;
+                    break;
+
+                case ErrCxtStepKind::DuringGeneric:
                     if (exp.node && exp.node->is(AstNodeKind::VarDecl)) // Can happen with automatic call of opIndexSuffix
                     {
                         exp.hide = true;
@@ -59,12 +65,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     }
                     break;
 
-                case ErrCxtStepKind::Inline:
+                case ErrCxtStepKind::DuringInline:
                     exp.hide   = doneInline;
                     doneInline = true;
                     break;
 
-                case ErrCxtStepKind::CompileTime:
+                case ErrCxtStepKind::DuringCompileTime:
                     exp.hide     = doneCompTime;
                     doneCompTime = true;
                     break;
@@ -109,29 +115,29 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             {
                 case ErrCxtStepKind::Note:
                     break;
-                case ErrCxtStepKind::Generic:
+                case ErrCxtStepKind::DuringGeneric:
                     msg             = formNte(Nte0097, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
-                case ErrCxtStepKind::Inline:
+                case ErrCxtStepKind::DuringInline:
                     msg             = formNte(Nte0098, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
-                case ErrCxtStepKind::CompileTime:
+                case ErrCxtStepKind::DuringCompileTime:
                     msg             = formNte(Nte0093, name.c_str());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
-                case ErrCxtStepKind::Where:
+                case ErrCxtStepKind::DuringWhere:
                     if (exp.node->is(AstNodeKind::StructDecl))
                         msg = formNte(Nte0095, name.c_str());
                     else
                         msg = formNte(Nte0096, name.c_str());
                     exp.locIsToken = true;
                     break;
-                case ErrCxtStepKind::WhereCall:
+                case ErrCxtStepKind::DuringWhereCall:
                     msg            = formNte(Nte0094, name.c_str());
                     exp.locIsToken = true;
                     break;
