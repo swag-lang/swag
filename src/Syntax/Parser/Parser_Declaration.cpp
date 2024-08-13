@@ -35,12 +35,15 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdNamespace:
         case TokenId::CompilerGlobal:
             break;
+        
         case TokenId::SymAttrStart:
             return error(tokenParse, formErr(Err0353, tokenAttr.c_str(), tokenAttr.c_str()));
+        
         case TokenId::KwdPublic:
         case TokenId::KwdPrivate:
         case TokenId::KwdInternal:
             return error(tokenParse, formErr(Err0517, tokenParse.token.c_str(), tokenAttr.c_str()));
+        
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0350, tokenAttr.c_str(), tokenParse.token.c_str())};

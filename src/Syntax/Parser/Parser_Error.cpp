@@ -63,6 +63,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                 Diagnostic err{sourceFile, startToken, formErr(Err0663, startToken.c_str())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote(toNte(Nte0045));
+                else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
+                    err.addNote(formNte(Nte0105, "public"));                
                 else if (nextToken.is(TokenId::SymLeftParen))
                     err.addNote(toNte(Nte0045));
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))

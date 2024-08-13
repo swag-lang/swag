@@ -1040,6 +1040,16 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
             return context->report(err);
         }
 
+        if (Tokenizer::isSymbol(tokenParse.token.id))
+        {
+            const auto nextToken = getNextToken();
+            if (nextToken.is(TokenId::NativeType))
+            {
+                const Diagnostic err{sourceFile, tokenParse, toErr(Err0745)};
+                return context->report(err);
+            }
+        }
+
         const Diagnostic err{sourceFile, tokenParse, toErr(Err0060)};
         return context->report(err);
     }
