@@ -294,10 +294,14 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::SymDot:
         {
             SWAG_CHECK(eatToken());
+            if (tokenParse.isNot(TokenId::Identifier))
+                return error(tokenParse, formErr(Err0461, ".").c_str());
+
             AstNode* idref;
             SWAG_CHECK(doIdentifierRef(parent, &idref));
             *result = idref;
-            castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE);
+            SWAG_ASSERT(idref->is(AstNodeKind::IdentifierRef));
+            idref->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE);
             break;
         }
 

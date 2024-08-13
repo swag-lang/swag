@@ -135,17 +135,17 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                 else if (inside == ';')
                     replace += " $$A$$ [[semicolon]] ';'";
                 else if (inside == '(')
-                    replace += " $$AN$$ [[left parenthesis]] '('";
+                    replace += " $$A$$ [[left parenthesis]] '('";
                 else if (inside == ')')
                     replace += " $$A$$ [[right parenthesis]] ')'";
                 else if (inside == ':')
                     replace += " $$A$$ [[colon]] ':'";
                 else if (inside == '{')
-                    replace += " $$AN$$ [[left curly bracket]] '{'";
+                    replace += " $$A$$ [[left curly bracket]] '{'";
                 else if (inside == '}')
                     replace += " $$A$$ [[right curly bracket]] '}'";
                 else if (inside == '[')
-                    replace += " $$AN$$ [[left square bracket]] '['";
+                    replace += " $$A$$ [[left square bracket]] '['";
                 else if (inside == ']')
                     replace += " $$A$$ [[right square bracket]] ']'";
                 else if (inside == '_')

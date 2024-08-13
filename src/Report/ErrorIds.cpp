@@ -306,6 +306,7 @@ void initErrors()
     SWAG_ERROR(Err0181, "invalid generic type                              $ cannot use a specific type starting with [[:]] for a generic type                                                                        $ ");
     SWAG_ERROR(Err0182, "invalid identifier                                $ expected an identifier %s, but got $$TKN$$ instead                                                                                       $ ");
     SWAG_ERROR(Err0183, "invalid identifier                                $ expected an identifier, but got $$TKN$$ instead                                                                                          $ ");
+    SWAG_ERROR(Err0461, "invalid identifier                                $ expected an identifier after [[%s]], but got $$TKN$$ instead                                                                             $ ");
     SWAG_ERROR(Err0184, "invalid import location                           $ unexpected [[#import]] location format                                                                                                   $ expecting [[location=\"mode@accesspath\"]] where mode is [[swag]] or [[disk]]");
     SWAG_ERROR(Err0185, "invalid import version                            $ unexpected [[#import]] version format                                                                                                    $ ");
     SWAG_ERROR(Err0186, "invalid initialization                            $ cannot initialize a constant array (the type is [[%s]]) with one single value                                                            $ only variables can be initialized that way");
@@ -869,7 +870,6 @@ void initErrors()
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0744, "type mismatch                                     $ expected the slice bound to be an integer, but got type [[%s]] instead                                                                   $ ");
     SWAG_ERROR(Err0745, "unexpected symbol                                 $ expected [[->]] to declare a function return type, got $$TKN$$ instead                                                                   $ ");
-    SWAG_ERROR(Err0461, nullptr);
     SWAG_ERROR(Err0746, nullptr);
     SWAG_ERROR(Err0747, nullptr);
     SWAG_ERROR(Err0748, nullptr);
