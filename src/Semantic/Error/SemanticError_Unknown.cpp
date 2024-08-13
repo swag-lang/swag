@@ -74,6 +74,10 @@ namespace
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0704, identifier->token.c_str(), typeWhere->getDisplayNameC())};
         }
+        else if (typeWhere->isInterface() && identifier->callParameters)
+        {
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0695, identifier->token.c_str(), typeWhere->getDisplayNameC())};
+        }        
         else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0686, identifier->token.c_str(), typeWhere->getDisplayNameC())};

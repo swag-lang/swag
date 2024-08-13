@@ -1,4 +1,4 @@
-//#global testerror "Err0747"
+#global testerror "Err0695"
 
 struct(T) Queue
 {
@@ -40,6 +40,17 @@ impl Queue
             start, end = null
         return data;
     }        
+}
+
+#test
+{
+    var int_queue: Queue's32
+    int_queue.init(@getcontext().allocator);
+
+    try int_queue.enqueue(25);
+    try int_queue.enqueue(50);
+    try int_queue.enqueue(75);
+    try int_queue.enqueue(100);
 }
 
 /*
