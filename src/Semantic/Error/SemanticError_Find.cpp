@@ -169,6 +169,8 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
                 }
                 break;
 
+            case IdentifierSearchFor::Struct:
+            case IdentifierSearchFor::Enum:
             case IdentifierSearchFor::Variable:
                 break;
 

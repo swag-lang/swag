@@ -869,7 +869,7 @@ void initErrors()
     SWAG_ERROR(Err0741, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
     SWAG_ERROR(Err0146, "unknown variable                                  $ cannot find the variable [[%s]] in [[%s]]                                                                                                $ ");
     SWAG_ERROR(Err0742, "unknown variable                                  $ cannot find the variable [[%s]]                                                                                                          $ ");
-    SWAG_ERROR(Err0743, nullptr);
+    SWAG_ERROR(Err0743, "unknown enum                                      $ cannot find the enum [[%s]]                                                                                                              $ ");
     SWAG_ERROR(Err0744, nullptr);
     SWAG_ERROR(Err0745, nullptr);
     SWAG_ERROR(Err0746, nullptr);

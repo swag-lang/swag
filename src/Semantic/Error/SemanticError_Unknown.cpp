@@ -198,6 +198,9 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         case IdentifierSearchFor::Struct:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0708, identifier->token.c_str())};
             break;
+        case IdentifierSearchFor::Enum:
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0743, identifier->token.c_str())};
+            break;
         case IdentifierSearchFor::Variable:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0742, identifier->token.c_str())};
             break;
