@@ -215,7 +215,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
         if (!itfSymbol)
         {
-            Diagnostic err{childFct, childFct->tokenName, formErr(Err0695, childFct->token.text.c_str(), typeInterface->name.c_str())};
+            Diagnostic err{childFct, childFct->tokenName, formErr(Err0695, childFct->token.text.c_str(), typeInterface->getDisplayNameC())};
             if (childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
                 err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0129));
             err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
