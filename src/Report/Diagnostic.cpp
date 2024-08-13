@@ -1032,7 +1032,7 @@ void Diagnostic::removeErrorId(Utf8& err)
     if (hastErrorId(err))
     {
         err.remove(0, 10);
-        err.trim();
+        err.trimLeft();
     }
 }
 
