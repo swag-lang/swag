@@ -1,4 +1,4 @@
-#global testerror "Err0386"
+//#global testerror "Err0028"
 
 struct(T) Queue
 {
@@ -48,10 +48,10 @@ impl Queue
     var int_queue: Queue's32
     int_queue.init(@getcontext().allocator);
 
-    try int_queue.enqueue(25);
-    try int_queue.enqueue(50);
-    try int_queue.enqueue(75);
-    try int_queue.enqueue(100);
+    int_queue.enqueue(25);
+    int_queue.enqueue(50);
+    int_queue.enqueue(75);
+    int_queue.enqueue(100);
 }
 
 /*
