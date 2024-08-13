@@ -869,9 +869,9 @@ void initErrors()
     SWAG_ERROR(Err0738, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0739, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] if you don't need the return value");
     SWAG_ERROR(Err0744, "type mismatch                                     $ expected the slice bound to be an integer, but got type [[%s]] instead                                                                   $ ");
-    SWAG_ERROR(Err0745, "unexpected symbol                                 $ expected [[->]] to declare a function return type, got $$TKN$$ instead                                                                   $ ");
+    SWAG_ERROR(Err0745, "unexpected return syntax                          $ expected [[->]] to declare a function return type, got $$TKN$$ instead                                                                   $ ");
     SWAG_ERROR(Err0746, "reserved name                                     $ cannot use an identifier named with a single [[_]]                                                                                       $ an identifier named with one single [[_]] is reserved by the compiler");
-    SWAG_ERROR(Err0747, nullptr);
+    SWAG_ERROR(Err0747, "unexpected return syntax                          $ expected [[->]] before $$TKN$$ to declare a function return type                                                                         $ ");
     SWAG_ERROR(Err0748, nullptr);
     SWAG_ERROR(Err0749, nullptr);
     SWAG_ERROR(Err0750, nullptr);

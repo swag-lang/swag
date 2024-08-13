@@ -1050,6 +1050,12 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
             }
         }
 
+        if (tokenParse.is(TokenId::NativeType))
+        {
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0747)};
+            return context->report(err);
+        }
+
         const Diagnostic err{sourceFile, tokenParse, toErr(Err0060)};
         return context->report(err);
     }
