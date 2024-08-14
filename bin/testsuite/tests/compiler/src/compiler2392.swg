@@ -1,4 +1,4 @@
-#global testerror "Err0550";
+#global testerror "Err0551";
 
 typealias str = string;
 var a: str = "coucou";

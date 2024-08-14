@@ -40,7 +40,7 @@ bool Tokenizer::doBinLiteral(TokenParse& tokenParse)
     {
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
-        return error(tokenParse, toErr(Err0648));
+        return error(tokenParse, toErr(Err0649));
     }
 
     // Be sure we don't have 0x without nothing
@@ -104,7 +104,7 @@ bool Tokenizer::doHexLiteral(TokenParse& tokenParse)
         tokenParse.token.startLocation = location;
         tokenParse.token.text          = c;
         tokenParse.token.id            = TokenId::Identifier;
-        return error(tokenParse, toErr(Err0665));
+        return error(tokenParse, toErr(Err0666));
     }
 
     // Be sure we don't have 0x without nothing
@@ -334,7 +334,7 @@ bool Tokenizer::doNumberLiteral(TokenParse& tokenParse, uint32_t c)
             eatChar(c, offset);
             tokenParse.token.text          = c;
             tokenParse.token.startLocation = startLoc;
-            return error(tokenParse, toErr(Err0672));
+            return error(tokenParse, toErr(Err0674));
         }
     }
 

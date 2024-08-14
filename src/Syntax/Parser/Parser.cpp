@@ -84,7 +84,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     else
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, formNte(Nte0200, related.c_str()));
+        err.addNote(sourceFile, start, start, formNte(Nte0209, related.c_str()));
     }
 
     if (parent)
@@ -136,7 +136,7 @@ bool Parser::eatSemiCol(const char* msg)
             tokenParse = st;
         }
 
-        return error(tokenParse, formErr(Err0440, msg));
+        return error(tokenParse, formErr(Err0441, msg));
     }
 
     if (tokenParse.is(TokenId::SymSemiColon))

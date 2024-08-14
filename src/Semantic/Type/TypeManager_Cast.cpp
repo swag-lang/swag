@@ -2262,7 +2262,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0542, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
+        const auto       msg = formErr(Err0543, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }
@@ -2671,9 +2671,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
                             Diagnostic err{fromNode, formErr(Err0005, fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                            err.addNote(formNte(Nte0149, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
-                            err.addNote(foundField->declNode, toNte(Nte0174));
-                            err.addNote(field->declNode, toNte(Nte0173));
+                            err.addNote(formNte(Nte0154, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
+                            err.addNote(foundField->declNode, toNte(Nte0179));
+                            err.addNote(field->declNode, toNte(Nte0178));
                             return context->report(err);
                         }
                     }
@@ -2710,8 +2710,8 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 if (foundField)
                 {
                     Diagnostic err{context->node, formErr(Err0007, fromTypeStruct->getDisplayNameC(), toTypeItf->name.c_str())};
-                    err.addNote(it.field->declNode, formNte(Nte0158, it.field->typeInfo->getDisplayNameC()));
-                    err.addNote(foundField->declNode, formNte(Nte0160, foundField->typeInfo->getDisplayNameC()));
+                    err.addNote(it.field->declNode, formNte(Nte0163, it.field->typeInfo->getDisplayNameC()));
+                    err.addNote(foundField->declNode, formNte(Nte0165, foundField->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 
@@ -3180,9 +3180,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, formErr(Err0487, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0488, toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, formErr(Err0543, toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, formErr(Err0544, toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

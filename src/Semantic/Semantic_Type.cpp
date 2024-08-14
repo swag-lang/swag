@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0621, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0622, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -140,7 +140,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, formErr(Err0481, overload->symbol->name.c_str(), overload->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic err{node, formErr(Err0482, overload->symbol->name.c_str(), overload->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
         if (node->childCount() <= 1 &&
@@ -153,23 +153,23 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
-                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0062));
+                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0060));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0030));
+                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0028));
                 else
-                    err.addNote(toNte(Nte0074));
+                    err.addNote(toNte(Nte0073));
             }
         }
 
         return context->report(err);
     }
 
-    Diagnostic err{node, formErr(Err0482, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
+    Diagnostic err{node, formErr(Err0483, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
 
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
     if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(formNte(Nte0087, symbolName->name.c_str(), symbolName->name.c_str()));
+        err.addNote(formNte(Nte0089, symbolName->name.c_str(), symbolName->name.c_str()));
 
     return context->report(err);
 }
@@ -504,7 +504,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
 
         const auto rawType = typeNode->typeInfo;
-        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->lastChild(), toErr(Err0587)}));
+        SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->lastChild(), toErr(Err0588)}));
 
         uint32_t totalCount = 1;
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
@@ -534,7 +534,7 @@ bool Semantic::resolveType(SemanticContext* context)
             }
 
             const auto childType = TypeManager::concreteType(child->typeInfo);
-            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, formErr(Err0588, child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, formErr(Err0589, child->typeInfo->getDisplayNameC())}));
             SWAG_CHECK(context->checkSizeOverflow("array", static_cast<uint64_t>(count) * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             SWAG_VERIFY(!child->isConstant0(), context->report({child, toErr(Err0139)}));
 

@@ -1,4 +1,4 @@
-#global testerror "Err0436"
+#global testerror "Err0437"
 
 #[Swag.Inline]
 func toto()->s32 throw

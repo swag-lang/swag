@@ -1,4 +1,4 @@
-#global testerror "Err0482";
+#global testerror "Err0483";
 namespace A{}
 
 #assert A + A;

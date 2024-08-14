@@ -27,7 +27,7 @@ bool Semantic::resolveMove(SemanticContext* context)
         {
             Diagnostic err{right, formErr(Err0198, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                err.addNote(toNte(Nte0085));
+                err.addNote(toNte(Nte0087));
             return context->report(err);
         }
     }
@@ -55,9 +55,9 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic err{mpl, toErr(Err0548)};
+        Diagnostic err{mpl, toErr(Err0549)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
-        err.addNote(toNte(Nte0018));
+        err.addNote(toNte(Nte0016));
         return context->report(err);
     }
 
@@ -123,7 +123,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (child->hasAstFlag(AST_FUNC_CALL | AST_FUNC_INLINE_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = formNte(Nte0119, left->typeInfo->getDisplayNameC());
+                hint = formNte(Nte0124, left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -153,9 +153,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
             SWAG_ASSERT(left->resolvedSymbolOverload());
             if (left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0194));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0199));
             else if (!left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0194), Diagnostic::isType(left->typeInfo));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0199), Diagnostic::isType(left->typeInfo));
         }
     }
 
@@ -166,7 +166,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
-            err.addNote(toNte(Nte0085));
+            err.addNote(toNte(Nte0087));
             return context->report(err);
         }
 
@@ -189,7 +189,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
-        err.addNote(left, toNte(Nte0014));
+        err.addNote(left, toNte(Nte0012));
         err.addNote(Diagnostic::hereIs(left->resolvedSymbolOverload()->node));
         return context->report(err);
     }
@@ -208,7 +208,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
         if (hint.empty())
-            hint = toNte(Nte0168);
+            hint = toNte(Nte0173);
         err.addNote(left, hint);
         return context->report(err);
     }
@@ -274,19 +274,19 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0556, leftConcrete->getDisplayNameC(), g_LangSpec->name_nodrop.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_nodrop.c_str(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0556, leftConcrete->getDisplayNameC(), g_LangSpec->name_moveraw.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_moveraw.c_str(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0556, leftConcrete->getDisplayNameC(), g_LangSpec->name_move.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_move.c_str(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
-        Diagnostic err{node, node->token, formErr(Err0619, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -337,7 +337,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic err{node, node->token, formErr(Err0622, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0623, node->token.c_str())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -357,7 +357,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     }
                     else if (forTuple)
                     {
-                        return context->report({node, node->token, formErr(Err0622, node->token.c_str())});
+                        return context->report({node, node->token, formErr(Err0623, node->token.c_str())});
                     }
                     else
                     {
@@ -370,7 +370,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                             Diagnostic err{right, formErr(Err0225, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                            err.addNote(node, node->token, formNte(Nte0150, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                            err.addNote(node, node->token, formNte(Nte0155, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                             return context->report(err);
                         }
 
@@ -393,7 +393,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     {
                         if (leftTypeInfo->isTuple())
                         {
-                            Diagnostic err{node, node->token, toErr(Err0590)};
+                            Diagnostic err{node, node->token, toErr(Err0591)};
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(right, Diagnostic::isType(rightTypeInfo));
                             return context->report(err);
@@ -497,7 +497,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 {
                     Diagnostic err{node, node->token, toErr(Err0208)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                    err.addNote(toNte(Nte0103));
+                    err.addNote(toNte(Nte0105));
                     return context->report(err);
                 }
 

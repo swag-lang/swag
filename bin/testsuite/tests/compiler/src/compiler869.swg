@@ -1,4 +1,4 @@
-#global testerror "Err0470"
+#global testerror "Err0471"
 
 var G: s32 = 0
 

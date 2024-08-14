@@ -1,5 +1,5 @@
 
 ;
 
-#global testerror "Err0620";
+#global testerror "Err0621";
 #assert 1.0 & 1;

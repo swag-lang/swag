@@ -194,8 +194,8 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
             if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-                    return context->report({fct->returnType, formErr(Err0469, fct->getDisplayNameC())});
-                return context->report({fct->returnType, formErr(Err0470, fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
+                    return context->report({fct->returnType, formErr(Err0470, fct->getDisplayNameC())});
+                return context->report({fct->returnType, formErr(Err0471, fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -279,7 +279,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         Diagnostic err{node, node->token, toErr(Err0358)};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        err.addNote(attr, formNte(Nte0176, "attribute"));
+        err.addNote(attr, formNte(Nte0181, "attribute"));
         return context->report(err);
     }
 
@@ -304,7 +304,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         case TypeInfoKind::Slice:
         case TypeInfoKind::Array:
         case TypeInfoKind::Interface:
-            return context->report({node->expression, formErr(Err0563, typeSwitch->getDisplayNameC())});
+            return context->report({node->expression, formErr(Err0564, typeSwitch->getDisplayNameC())});
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, toErr(Err0047)}));
@@ -325,8 +325,8 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, formErr(Err0526, expr->computedValue()->text.c_str())};
-                        err.addNote(valDef[idx], toNte(Nte0190));
+                        Diagnostic err{expr, formErr(Err0527, expr->computedValue()->text.c_str())};
+                        err.addNote(valDef[idx], toNte(Nte0195));
                         return context->report(err);
                     }
 
@@ -342,14 +342,14 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        const auto note = Diagnostic::note(valDef[idx], toNte(Nte0190));
+                        const auto note = Diagnostic::note(valDef[idx], toNte(Nte0195));
                         if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, formErr(Err0525, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0526, expr->token.c_str())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, formErr(Err0525, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0526, expr->token.c_str())}, note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, formErr(Err0523, expr->computedValue()->reg.u64)}, note);
-                        return context->report({expr, formErr(Err0524, expr->computedValue()->reg.f64)}, note);
+                            return context->report({expr, formErr(Err0524, expr->computedValue()->reg.u64)}, note);
+                        return context->report({expr, formErr(Err0525, expr->computedValue()->reg.f64)}, note);
                     }
 
                     val64.push_back(expr->computedValue()->reg.u64);
@@ -370,7 +370,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         if (back->expressions.empty())
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-            const auto note = Diagnostic::note(attr, formNte(Nte0176, "attribute"));
+            const auto note = Diagnostic::note(attr, formNte(Nte0181, "attribute"));
             return context->report({back, back->token, toErr(Err0321)}, note);
         }
 
@@ -391,7 +391,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!valText.contains(one->value->text))
                         {
                             Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.c_str(), one->name.c_str())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0129));
+                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
                             return context->report(err);
                         }
                     }
@@ -405,7 +405,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.c_str(), one->name.c_str())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0129));
+                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
                             return context->report(err);
                         }
                     }
@@ -478,7 +478,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0143, typeInfo->getDisplayNameC(), "the switch expression"); });
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0148, typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -530,7 +530,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0023); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0021); }, true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
             }
@@ -662,14 +662,14 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     if (!node->extraNameToken.text.empty())
     {
-        Diagnostic err{node, node->extraNameToken, formErr(Err0687, Naming::aKindName(typeInfo).c_str())};
+        Diagnostic err{node, node->extraNameToken, formErr(Err0690, Naming::aKindName(typeInfo).c_str())};
         err.addNote(node->expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
 
     if (node->aliasNames.size() > 2)
     {
-        Diagnostic err{node, node->aliasNames[2], formErr(Err0671, node->aliasNames.size())};
+        Diagnostic err{node, node->aliasNames[2], formErr(Err0673, node->aliasNames.size())};
         return context->report(err);
     }
 
@@ -1020,7 +1020,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
         auto breakable = node->safeOwnerBreakable();
         while (breakable && (breakable->isNot(AstNodeKind::ScopeBreakable) || breakable->token.text != node->label.text))
             breakable = breakable->safeOwnerBreakable();
-        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, formErr(Err0709, node->label.text.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, formErr(Err0712, node->label.text.c_str())}));
         node->setOwnerBreakable(breakable);
     }
 

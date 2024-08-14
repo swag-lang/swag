@@ -57,7 +57,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             symbolName->is(SymbolKind::TypeAlias) ||
             symbolName->is(SymbolKind::Struct))
         {
-            err.addNote(node, node->kwdLoc, formNte(Nte0063, Naming::aKindName(symbolName->kind).c_str()));
+            err.addNote(node, node->kwdLoc, formNte(Nte0061, Naming::aKindName(symbolName->kind).c_str()));
         }
 
         return context->report(err);
@@ -652,14 +652,14 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic err{dependentVar, formErr(Err0004, dependentVar->typeInfo->getDisplayNameC())};
-                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0135));
-                err.addNote(toNte(Nte0044));
+                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0140));
+                err.addNote(toNte(Nte0042));
                 return context->report(err);
             }
 
             Diagnostic err{dep.node, formErr(Err0004, dependentVar->typeInfo->getDisplayNameC())};
-            err.addNote(dependentVar, toNte(Nte0173));
-            err.addNote(toNte(Nte0044));
+            err.addNote(dependentVar, toNte(Nte0178));
+            err.addNote(toNte(Nte0042));
             return context->report(err);
         }
 
@@ -878,8 +878,8 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             const auto firstNode = symbol->nodes.front();
-            Diagnostic err{genericParameters, formErr(Err0658, Naming::aKindName(symbol->kind).c_str())};
-            err.addNote(node, node->token, formNte(Nte0124, node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
+            Diagnostic err{genericParameters, formErr(Err0659, Naming::aKindName(symbol->kind).c_str())};
+            err.addNote(node, node->token, formNte(Nte0129, node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
         }
@@ -1145,7 +1145,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (symbolsMatch.empty())
-        return context->report({identifier, formErr(Err0736, identifier->token.c_str())});
+        return context->report({identifier, formErr(Err0739, identifier->token.c_str())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.

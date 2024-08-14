@@ -177,8 +177,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         if (nakedName == "node")
             nakedName.clear();
         Diagnostic err{oneAttribute, formErr(Err0368, oneAttribute->token.c_str())};
-        err.addNote(formNte(Nte0086, specificMsg));
-        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0025, nakedName.c_str()));
+        err.addNote(formNte(Nte0088, specificMsg));
+        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0023, nakedName.c_str()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
@@ -360,7 +360,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto id = castAst<AstIdentifier>(child->lastChild(), AstNodeKind::Identifier);
                 id->addAstFlag(AST_NO_SEMANTIC);
 
-                SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, formErr(Err0483, "Swag.Using")}));
+                SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, formErr(Err0484, "Swag.Using")}));
                 for (auto c : id->callParameters->children)
                 {
                     auto ptr       = c->getConstantGenTypeInfo();
@@ -415,7 +415,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
                     else
                     {
-                        return context->report({child, attrParam->token, formErr(Err0716, w.c_str())});
+                        return context->report({child, attrParam->token, formErr(Err0719, w.c_str())});
                     }
                 }
             }
@@ -465,7 +465,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                         if (!done)
                         {
-                            return context->report({child, attrParam->token, formErr(Err0720, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0723, w.c_str())});
                         }
                     }
                 }
@@ -512,7 +512,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, formErr(Err0719, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0722, w.c_str())});
                         }
                     }
                 }
@@ -563,7 +563,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, formErr(Err0718, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0721, w.c_str())});
                         }
                     }
                 }

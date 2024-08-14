@@ -1,4 +1,4 @@
-#global testerror "Err0593"
+#global testerror "Err0594"
 interface I
 {
     mtd toto();

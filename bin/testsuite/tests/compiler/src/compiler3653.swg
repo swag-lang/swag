@@ -1,4 +1,4 @@
-#global testerror "Err0506"
+#global testerror "Err0507"
 #[Swag.Overload]
 func(a: bool, x: string) toto() {}
 #[Swag.Overload]

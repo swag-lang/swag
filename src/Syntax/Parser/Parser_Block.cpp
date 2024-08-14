@@ -112,9 +112,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     bool           hasDefault  = false;
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
     {
-        SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0638)));
+        SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0639)));
         const bool isDefault = tokenParse.is(TokenId::KwdDefault);
-        SWAG_VERIFY(!isDefault || !hasDefault, error(tokenParse, toErr(Err0517)));
+        SWAG_VERIFY(!isDefault || !hasDefault, error(tokenParse, toErr(Err0518)));
         if (isDefault)
             hasDefault = true;
 
@@ -170,9 +170,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             // Instructions
             ParserPushBreakable scopedBreakable(this, switchNode);
             if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-                return error(prevToken, isDefault ? toErr(Err0045) : toErr(Err0044), toNte(Nte0032));
+                return error(prevToken, isDefault ? toErr(Err0045) : toErr(Err0044), toNte(Nte0030));
             if (tokenParse.is(TokenId::SymRightCurly))
-                return error(prevToken, isDefault ? toErr(Err0045) : toErr(Err0044), toNte(Nte0031));
+                return error(prevToken, isDefault ? toErr(Err0045) : toErr(Err0044), toNte(Nte0029));
             while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
         }
@@ -442,7 +442,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
             id->isNot(AstNodeKind::VarDecl) &&
             id->isNot(AstNodeKind::AffectOp))
         {
-            const Diagnostic err{id, formErr(Err0639, Naming::aKindName(id).c_str())};
+            const Diagnostic err{id, formErr(Err0640, Naming::aKindName(id).c_str())};
             return context->report(err);
         }
 
@@ -504,7 +504,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         }
         else
         {
-            return error(tokenParse, formErr(Err0689, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0692, tokenParse.token.c_str()));
         }
     }
 
@@ -551,7 +551,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 
     if (tokenParse.isNot(TokenId::SymSemiColon))
     {
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0636)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0637)));
         node->label = tokenParse.token;
         FormatAst::inheritFormatAfter(this, node, &tokenParse);
         SWAG_CHECK(eatToken());

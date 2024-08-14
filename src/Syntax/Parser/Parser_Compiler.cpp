@@ -106,7 +106,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
         Diagnostic err{sourceFile, tokenParse, toErr(Err0406)};
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, formNte(Nte0012, parent->token.c_str()));
+        err.addNote(parent, parent->token, formNte(Nte0112, parent->token.c_str()));
         return context->report(err);
     }
 
@@ -131,7 +131,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
 
 bool Parser::doCompilerIfStatement(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0065)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0063)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
@@ -283,7 +283,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
         }
         else
         {
-            return error(tokenParse, formErr(Err0690, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0693, tokenParse.token.c_str()));
         }
     }
 
@@ -452,7 +452,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (!sourceFile->imported)
         {
-            SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, toErr(Err0511)));
+            SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, toErr(Err0512)));
             sourceFile->addFlag(FILE_FORCE_EXPORT);
             sourceFile->module->addExportSourceFile(sourceFile);
         }
@@ -585,7 +585,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            context->report({sourceFile, tokenParse.token, formErr(Err0712, tokenParse.token.c_str())});
+            context->report({sourceFile, tokenParse.token, formErr(Err0715, tokenParse.token.c_str())});
             return false;
         }
 
@@ -715,7 +715,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return context->report({sourceFile, tokenParse.token, formErr(Err0688, tokenParse.token.c_str())});
+        return context->report({sourceFile, tokenParse.token, formErr(Err0691, tokenParse.token.c_str())});
     }
 
     return true;
@@ -872,8 +872,8 @@ bool Parser::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
-                SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0512)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0632)));
+                SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0513)));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0633)));
                 node->tokenLocation = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -883,8 +883,8 @@ bool Parser::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
-                SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse, toErr(Err0514)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0633)));
+                SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse, toErr(Err0515)));
+                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0634)));
                 node->tokenVersion = tokenParse.token;
                 SWAG_CHECK(eatToken());
                 continue;

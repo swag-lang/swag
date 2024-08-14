@@ -18,7 +18,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->semanticFct                      = Semantic::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0646)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0647)));
 
     attrNode->inheritTokenName(tokenParse.token);
     attrNode->tokenName = tokenParse.token;
@@ -43,8 +43,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0647), toNte(Nte0022)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0341), toNte(Nte0022)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0648), toNte(Nte0020)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0341), toNte(Nte0020)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////
@@ -80,8 +80,8 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             if (tokenParse.isNot(TokenId::SymRightSquare))
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0435)));
-                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0646)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0436)));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0647)));
             }
         }
 

@@ -60,17 +60,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             // Identifier at global scope
             if (startToken.is(TokenId::Identifier))
             {
-                Diagnostic err{sourceFile, startToken, formErr(Err0666, startToken.c_str())};
+                Diagnostic err{sourceFile, startToken, formErr(Err0668, startToken.c_str())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
-                    err.addNote(toNte(Nte0061));
+                    err.addNote(toNte(Nte0059));
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
                     err.addNote(formNte(Nte0081, "public"));                
                 else if (nextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0061));
+                    err.addNote(toNte(Nte0059));
                 else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0061));                
+                    err.addNote(toNte(Nte0059));                
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
-                    err.addNote(toNte(Nte0079));
+                    err.addNote(toNte(Nte0078));
                 else
                     err.addNote(SemanticError::findClosestMatchesMsg(startToken.text, {}, IdentifierSearchFor::TopLevelInstruction));
                 return context->report(err);
@@ -90,15 +90,15 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             {
                 msg = toErr(Err0233);
                 if (startToken.is(TokenId::KwdLet))
-                    note = toNte(Nte0064);
+                    note = toNte(Nte0062);
                 else if (startToken.is(TokenId::CompilerInclude))
-                    note = toNte(Nte0058);
+                    note = toNte(Nte0056);
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    note = toNte(Nte0061);
+                    note = toNte(Nte0059);
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
-                    note = formNte(Nte0069, nextToken.token.c_str(), startToken.c_str());
+                    note = formNte(Nte0068, nextToken.token.c_str(), startToken.c_str());
                 else
-                    note = toNte(Nte0198);
+                    note = toNte(Nte0203);
             }
         
             break;
@@ -124,12 +124,12 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0272);
             else
-                msg = toErr(Err0653);
+                msg = toErr(Err0654);
             break;
 
         ///////////////////////////////////////////
         case InvalidTokenError::LeftExpression:
-            msg = toErr(Err0643);
+            msg = toErr(Err0644);
             break;
 
         ///////////////////////////////////////////
@@ -154,6 +154,6 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
     const Utf8 message = msg ? Utf8{msg} : toErr(Err0182);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
-        err.addNote(formNte(Nte0127, myToken.token.c_str()));
+        err.addNote(formNte(Nte0132, myToken.token.c_str()));
     return context->report(err);
 }

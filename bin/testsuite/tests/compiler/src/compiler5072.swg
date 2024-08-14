@@ -1,4 +1,4 @@
-#global testerror "Err0611"
+#global testerror "Err0612"
 
 enum A: [..] s32
 {

@@ -1,4 +1,4 @@
-#global testerror "Err0628"
+#global testerror "Err0629"
 func toto()->string
 {
     return ""

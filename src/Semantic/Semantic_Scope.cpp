@@ -48,14 +48,14 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             Utf8 msg;
             if (first)
-                msg = formNte(Nte0147, t.second->getDisplayNameC());
+                msg = formNte(Nte0152, t.second->getDisplayNameC());
             else
-                msg = formNte(Nte0146, t.second->getDisplayNameC());
+                msg = formNte(Nte0151, t.second->getDisplayNameC());
             err.addNote(t.first, msg);
             first = false;
         }
 
-        err.addNote(toNte(Nte0068));
+        err.addNote(toNte(Nte0066));
         return context->report(err);
     }
 
@@ -75,7 +75,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             if (!hasEnum.empty())
             {
-                Diagnostic err{identifierRef, formErr(Err0695, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                Diagnostic err{identifierRef, formErr(Err0698, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
                 const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
@@ -85,7 +85,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifierRef, formErr(Err0701, identifier->token.c_str())};
+            Diagnostic err{identifierRef, formErr(Err0704, identifier->token.c_str())};
 
             // Call to a function ?
             if (testedOver.size() == 1)

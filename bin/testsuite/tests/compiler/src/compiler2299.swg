@@ -1,4 +1,4 @@
-#global testerror "Err0542"
+#global testerror "Err0543"
 
 struct Range16
 {

@@ -1,5 +1,5 @@
 //#[Swag.EnumFlags]
-#global testerror "Err0619"
+#global testerror "Err0620"
 enum Toto { A; B; C; }
 
 #test

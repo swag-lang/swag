@@ -36,12 +36,12 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0117, symbolName->name.c_str()));
-                        result->hint      = toNte(Nte0041);
+                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0122, symbolName->name.c_str()));
+                        result->hint      = toNte(Nte0039);
                         return result;
                     }
 
-                    return Diagnostic::note(c, c->token, toNte(Nte0163));
+                    return Diagnostic::note(c, c->token, toNte(Nte0168));
                 }
             }
 
@@ -118,7 +118,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0030, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.hint          = formNte(Nte0151, userOp->symbol->name.c_str());
+                err.hint          = formNte(Nte0156, userOp->symbol->name.c_str());
                 return context->report(err);
             }
 
@@ -138,7 +138,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0030, realType->getDisplayNameC())};
-                    err.hint = toNte(Nte0041);
+                    err.hint = toNte(Nte0039);
                     return context->report(err);
                 }
             }
@@ -318,7 +318,7 @@ bool Semantic::resolveCompilerWhereExpression(SemanticContext* context)
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        const Diagnostic err{expression, formErr(Err0571, typeInfo->getDisplayNameC())};
+        const Diagnostic err{expression, formErr(Err0572, typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -338,7 +338,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     const auto job        = context->baseJob;
     auto       expression = context->node->lastChild();
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0627, expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, formErr(Err0628, expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -455,7 +455,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->addSemFlag(SEMFLAG_COMPILER_INSERT);
 
     auto expr = node->firstChild();
-    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0570, expr->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0571, expr->typeInfo->getDisplayNameC())}));
 
     node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
@@ -704,7 +704,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     auto       back   = node->firstChild();
 
     SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, toErr(Err0020)));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0569, back->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, formErr(Err0570, back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     if (!node->hasSemFlag(SEMFLAG_LOAD))
@@ -727,7 +727,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0698, filename.c_str())});
+                    return context->report({back, formErr(Err0701, filename.c_str())});
             }
         }
 

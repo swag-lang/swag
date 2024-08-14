@@ -45,7 +45,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         if (scopeKind == ScopeKind::Enum)
         {
             Diagnostic err{implNode, tokenParse.token, toErr(Err0326)};
-            err.addNote(kindLoc.token, toNte(Nte0171));
+            err.addNote(kindLoc.token, toNte(Nte0176));
             return context->report(err);
         }
 
@@ -60,7 +60,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         implInterface                             = true;
 
         const auto last = castAst<AstIdentifier>(identifierStruct->lastChild(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0659)}));
+        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0660)}));
     }
     else
     {
@@ -81,9 +81,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(scopeKind).c_str(), implNode->token.c_str(), Naming::aKindName(newScope->kind).c_str())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
-            err.addNote(formNte(Nte0072, implNode->token.c_str()));
-        else if (newScope->is(ScopeKind::Struct))
             err.addNote(formNte(Nte0071, implNode->token.c_str()));
+        else if (newScope->is(ScopeKind::Struct))
+            err.addNote(formNte(Nte0070, implNode->token.c_str()));
         return context->report(err);
     }
 
@@ -236,7 +236,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0472)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0473)));
     SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0224)));
     structNode->inheritTokenName(tokenParse.token);
     structNode->tokenName = tokenParse.token;
@@ -259,13 +259,13 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::aKindName(ScopeKind::Struct).c_str())};
                 err.addNote(Diagnostic::hereIs(structNode));
-                err.addNote(formNte(Nte0071, implNode->token.c_str()));
+                err.addNote(formNte(Nte0070, implNode->token.c_str()));
                 return context->report(err);
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0510, "symbol", "struct", structNode->token.c_str(), asA.c_str())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0190));
+            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0511, "symbol", "struct", structNode->token.c_str(), asA.c_str())};
+            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0195));
             return context->report(err);
         }
 
@@ -400,7 +400,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
         funcNode = castAst<AstFuncDecl>(resultNode, AstNodeKind::FuncDecl);
     }
 
-    SWAG_VERIFY(!funcNode->genericParameters, error(funcNode->genericParameters, toErr(Err0664)));
+    SWAG_VERIFY(!funcNode->genericParameters, error(funcNode->genericParameters, toErr(Err0665)));
 
     ParserPushFreezeFormat ff{this};
     ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);

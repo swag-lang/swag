@@ -139,17 +139,17 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = formErr(Err0599, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
         const auto to   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint            = formNte(Nte0113, from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        hint            = formNte(Nte0118, from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = formErr(Err0623, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0624, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
@@ -163,19 +163,19 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = formErr(Err0624, fromType->getDisplayNameC());
+        msg = formErr(Err0625, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
-            hint = toNte(Nte0132);
+            hint = toNte(Nte0137);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = formNte(Nte0170, fromType->getDisplayNameC());
-        msg  = formErr(Err0549, toType->getDisplayNameC());
+        hint = formNte(Nte0175, fromType->getDisplayNameC());
+        msg  = formErr(Err0550, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        hint = toNte(Nte0018);
-        msg  = toErr(Err0548);
+        hint = toNte(Nte0016);
+        msg  = toErr(Err0549);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
@@ -186,7 +186,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         }
         else
         {
-            msg                   = formErr(Err0550, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg                   = formErr(Err0551, fromType->getDisplayNameC(), toType->getDisplayNameC());
             const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
 
             BadSignatureInfos bi;
@@ -221,7 +221,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     {
         const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
-            hint = toNte(Nte0049);
+            hint = toNte(Nte0047);
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -231,7 +231,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         remarks.push_back(form("the source type is [[%s]]", fromName.c_str()));
         remarks.push_back(form("the requested type is [[%s]]", toName.c_str()));
 
-        msg = toErr(Err0547);
+        msg = toErr(Err0548);
     }
 }
 
@@ -262,7 +262,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = formErr(Err0550, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = formErr(Err0551, fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 
@@ -270,7 +270,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
             if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, formNte(Nte0034, toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, formNte(Nte0032, toType->getDisplayNameC())));
         }
 
         Diagnostic err{fromNode, msg};

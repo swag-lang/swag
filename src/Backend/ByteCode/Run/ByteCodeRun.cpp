@@ -57,7 +57,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0495, context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0496, context->maxRecurse));
         return;
     }
 
@@ -1627,7 +1627,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = toNte(Nte0038);
+                        context->internalPanicHint   = toNte(Nte0036);
                         callInternalPanic(context, ip, formErr(Err0092, over->node->token.c_str()));
                     }
                 }
@@ -1649,7 +1649,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         else if (module->bssCannotChange)
                         {
                             context->internalPanicSymbol = over;
-                            context->internalPanicHint   = toNte(Nte0038);
+                            context->internalPanicHint   = toNte(Nte0036);
                             callInternalPanic(context, ip, formErr(Err0092, over->node->token.c_str()));
                         }
                     }
@@ -4444,8 +4444,8 @@ namespace
 
             level   = DiagnosticLevel::Exception;
             userMsg = toErr(Err0057);
-            notes.push_back(Diagnostic::note(toNte(Nte0104)));
-            notes.push_back(Diagnostic::note(toNte(Nte0214)));
+            notes.push_back(Diagnostic::note(toNte(Nte0106)));
+            notes.push_back(Diagnostic::note(toNte(Nte0085)));
         }
 
         // Message
@@ -4492,7 +4492,7 @@ namespace
             runContext->ip--;
 
         if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note(toNte(Nte0213)));
+            notes.push_back(Diagnostic::note(toNte(Nte0084)));
 
         Report::report(*err, notes, runContext);
 

@@ -1,4 +1,4 @@
-#global testerror "Err0649"
+#global testerror "Err0650"
 #test
 {
     # This program adds two numbers

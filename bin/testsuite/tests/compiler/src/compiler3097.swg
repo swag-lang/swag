@@ -1,2 +1,2 @@
-#global testerror "Err0618"
+#global testerror "Err0619"
 #assert 1.0 << 1

@@ -1,4 +1,4 @@
-#global testerror "Err0535"
+#global testerror "Err0536"
 enum A { A; }
 
 func toto()

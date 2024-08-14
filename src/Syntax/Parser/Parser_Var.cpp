@@ -18,7 +18,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, formErr(Err0660, identifier->token.c_str()));
+            return error(identifier->genericParameters, formErr(Err0661, identifier->token.c_str()));
         if (identifier->callParameters)
             return error(identifier->callParameters, formErr(Err0170, identifier->token.c_str(), "a variable name"));
     }
@@ -47,7 +47,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             }
 
             if (num >= 10)
-                return error(node->token, formErr(Err0492, num));
+                return error(node->token, formErr(Err0493, num));
             if (node->ownerFct)
                 node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN);
 
@@ -73,7 +73,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             }
 
             if (num >= 32)
-                return error(node->token, formErr(Err0491, num));
+                return error(node->token, formErr(Err0492, num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -354,9 +354,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = toErr(Err0437);
+                msg = toErr(Err0438);
             else
-                msg = toErr(Err0476);
+                msg = toErr(Err0477);
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
@@ -365,13 +365,13 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0179), "constant", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.c_str())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0179), "variable", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.c_str())));
             }
             else
             {
-                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0176), "declaration")));
+                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0181), "declaration")));
             }
 
             return context->report(err);
@@ -395,8 +395,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 if (typeExpr->identifier)
                 {
                     Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.c_str())};
-                    err.addNote(formNte(Nte0046, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
-                    err.addNote(toNte(Nte0039));
+                    err.addNote(formNte(Nte0044, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
+                    err.addNote(toNte(Nte0037));
                     return context->report(err);
                 }
             }
@@ -458,7 +458,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     {
         if (!parent || parent->isNot(AstNodeKind::If))
         {
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0650)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0651)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }
