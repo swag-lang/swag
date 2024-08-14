@@ -87,7 +87,7 @@ namespace
 
         Diagnostic* err;
         if (!callParameters)
-            err = new Diagnostic{node, node->token, formErr(Err0433, Naming::kindName(overload).c_str())};
+            err = new Diagnostic{node, node->token, formErr(Err0433, Naming::kindName(overload).c_str(), node->token.c_str())};
         else if (errorParam.destAttrDecl)
             err = new Diagnostic{node, node->token, formErr(Err0483, node->token.c_str())};
         else
