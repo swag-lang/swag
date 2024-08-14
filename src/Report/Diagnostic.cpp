@@ -72,6 +72,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 
     addArticle(replace, "expected", "a", "an");
     addArticle(replace, "got", "a", "an");
+    addArticle(replace, "found", "a", "an");
     addArticle(replace, "with", "a", "an");
     addArticle(replace, "or", "a", "an");
     addArticle(replace, "and", "a", "an");
@@ -83,6 +84,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("$$AN$$ ", "");
 
     addThe(replace, "got");
+    addThe(replace, "found");
     addThe(replace, "with");
     addThe(replace, "or");
     addThe(replace, "and");
