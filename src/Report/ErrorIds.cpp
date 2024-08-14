@@ -874,7 +874,7 @@ void initErrors()
     SWAG_ERROR(Err0747, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0748, "unexpected identifier                             $ cannot have two consecutive identifiers                                                                                                  $ ");
     SWAG_ERROR(Err0749, "unexpected symbol                                 $ unexpected symbol [['%s']] after the %s                                                                                                  $ ");
-    SWAG_ERROR(Err0750, "missing affectation                               $ expected an affectation after the %s, found $$TKN$$ instead                                                                              $ ");
+    SWAG_ERROR(Err0750, "missing affectation                               $ expected an affectation or some arguments after the %s, found $$TKN$$ instead                                                                              $ ");
     SWAG_ERROR(Err0751, nullptr);
     SWAG_ERROR(Err0752, nullptr);
     SWAG_ERROR(Err0753, nullptr);
@@ -1107,7 +1107,7 @@ void initErrors()
     SWAG_ERROR(Nte0215, "referencing this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0216, "consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type");
     SWAG_ERROR(Nte0217, "this should be a function call or an affectation");
-    SWAG_ERROR(Nte0218, "this should be followed by an affectation");
+    SWAG_ERROR(Nte0218, "this should be followed by an affectation or by arguments");
     SWAG_ERROR(Nte0219, "did you forget a [['.']] between [[%s]] and [[%s]]?");
     SWAG_ERROR(Nte0220, nullptr);
 }
