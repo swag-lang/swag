@@ -1704,7 +1704,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     }
 
     if (!leftAlone)
-        return error(tokenParse, formErr(Err0440, "left statement"));
+        return error(tokenParse, formErr(Err0440, "left affectation"));
 
     if (tokenParse.is(TokenId::SymEqualEqual))
         return error(tokenParse, toErr(Err0650));
