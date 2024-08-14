@@ -1,5 +1,5 @@
 var g_RedImg: s32
-func addAliens//()
+func addAliens()
 {
     const DIST = 50  // DIST should be a numeric value, not a string
     loop xc: 10

@@ -567,7 +567,7 @@ void initErrors()
     SWAG_ERROR(Err0440, "missing end of line                               $ expected a line break or a [[;]] to close the %s, found $$TKN$$ instead                                                                  $ consider adding a line break or separating the previous statement with a [[;]]");
     SWAG_ERROR(Err0441, "missing enum name                                 $ expected the enum name before the start of the body [['{']]                                                                              $ ");
     SWAG_ERROR(Err0442, "missing enum name                                 $ expected the enum name before the start of the type definition [[':']]                                                                   $ ");
-    SWAG_ERROR(Err0443, "missing function parameters                       $ expected the function parameters between [[()]] before [[{]]                                                                             $ consider adding [[()]] after the name if you want to declare a function without parameters");
+    SWAG_ERROR(Err0443, "missing function parameters                       $ expected the function parameters between [[()]] before [[{]]                                                                             $ consider adding [[()]] after [[%s]] if this function has no parameters");
     SWAG_ERROR(Err0444, "missing generic parameters                        $ cannot declare [[%s]] without generic parameters                                                                                         $ ");
     SWAG_ERROR(Err0445, "missing generic parameters                        $ cannot declare the struct [[%s]] without generic parameters, as [[%s]] is generic                                                        $ ");
     SWAG_ERROR(Err0446, "missing generic parameters                        $ cannot solve the struct [[%s]] because of the generic field [[%s]]                                                                       $ ");
@@ -901,8 +901,8 @@ void initErrors()
     SWAG_ERROR(Nte0009, "[[closure]] should be followed by capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0010, "[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
     SWAG_ERROR(Nte0011, "[[namealias]] should be associated with a namespace, function, or variable, not a type");
-    SWAG_ERROR(Nte0012, "a [[%s]] block should either start with [[#do]] or be enclosed in [[{}]]");
-    SWAG_ERROR(Nte0013, "a [[%s]] block should either start with [[do]] or be enclosed in [[{}]]");
+    SWAG_ERROR(Nte0012, "the [[%s]] block should either start with [[#do]] or be enclosed in [[{}]]");
+    SWAG_ERROR(Nte0013, "the [[%s]] block should either start with [[do]] or be enclosed in [[{}]]");
     SWAG_ERROR(Nte0014, "a [[let]] variable is immutable and cannot be modified");
     SWAG_ERROR(Nte0015, "a [[public]] struct should export all of its special functions");
     SWAG_ERROR(Nte0016, "a constant requires compile-time evaluation");
