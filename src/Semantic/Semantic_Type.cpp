@@ -570,7 +570,8 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0241, typeNode->typeInfo->getDisplayNameC())};
+        Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0241, typeNode->typeInfo->getDisplayNameC())};
+        err.addNote(typeNode->firstChild(), Diagnostic::isType(typeNode));
         return context->report(err);
     }
 
