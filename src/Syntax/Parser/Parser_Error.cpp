@@ -67,6 +67,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
                     err.addNote(formNte(Nte0081, "public"));                
                 else if (nextToken.is(TokenId::SymLeftParen))
                     err.addNote(toNte(Nte0061));
+                else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
+                    err.addNote(toNte(Nte0061));                
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
                     err.addNote(toNte(Nte0079));
                 else

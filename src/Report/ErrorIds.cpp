@@ -1105,7 +1105,7 @@ void initErrors()
     SWAG_ERROR(Nte0213, "execute [[Swag]] with [[--callstack]] to obtain more contextual details");
     SWAG_ERROR(Nte0214, "execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0215, "referencing this runtime %s from the compile-time %s");
-    SWAG_ERROR(Nte0216, nullptr);
+    SWAG_ERROR(Nte0216, "consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type");
     SWAG_ERROR(Nte0217, nullptr);
     SWAG_ERROR(Nte0218, nullptr);
     SWAG_ERROR(Nte0219, nullptr);

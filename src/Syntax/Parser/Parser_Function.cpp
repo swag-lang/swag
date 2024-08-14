@@ -459,13 +459,21 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = tokenParse.token.startLocation;
-    if (tokenParse.isNot(TokenId::SymLeftParen) && parent->is(AstNodeKind::AttrDecl))
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, form("to declare the attribute parameters of [[%s]]", parent->token.c_str())));
-    else if (tokenParse.isNot(TokenId::SymLeftParen))
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str())));
-    else
-        SWAG_CHECK(eatToken());
+    if (tokenParse.isNot(TokenId::SymLeftParen))
+    {
+        if (parent->is(AstNodeKind::AttrDecl))
+            return eatToken(TokenId::SymLeftParen, form("to declare the attribute parameters of [[%s]]", parent->token.c_str()));
 
+        if (tokenParse.is(TokenId::Identifier) && getNextToken().is(TokenId::SymLeftParen))
+        {
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&]() { return formNte(Nte0216, tokenParse.token.c_str(), parent->token.c_str()); });
+            return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str()));
+        }
+
+        return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str()));
+    }
+
+    SWAG_CHECK(eatToken());
     if (tokenParse.isNot(TokenId::SymRightParen) || isMethod || isConstMethod)
     {
         auto allParams = Ast::newFuncDeclParams(this, parent);
