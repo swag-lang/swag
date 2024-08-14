@@ -72,15 +72,15 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack < typeStruct->fields.size())
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0725, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, formNte(Nte0192, typeStruct->fields.size()));
-        err.addNote(toNte(Nte0042));
+        err.addNote(varDecl->assignment, formNte(Nte0208, typeStruct->fields.size()));
+        err.addNote(toNte(Nte0056));
         return context->report(err);
     }
 
     if (numUnpack > typeStruct->fields.size())
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0726, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, formNte(Nte0192, typeStruct->fields.size()));
+        err.addNote(varDecl->assignment, formNte(Nte0208, typeStruct->fields.size()));
         return context->report(err);
     }
 
@@ -320,7 +320,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     if (identifier->callParameters)
     {
         Diagnostic err{assign, toErr(Err0039)};
-        err.addNote(identifier->callParameters, toNte(Nte0180));
+        err.addNote(identifier->callParameters, toNte(Nte0184));
         return context->report(err);
     }
 
@@ -517,7 +517,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     if (paramIdx >= typeLambda->parameters.count)
     {
         Diagnostic err{nodeParam, formErr(Err0538, typeLambda->parameters.count, nodeParam->parent->children.count)};
-        err.addNote(formNte(Nte0134, typeLambda->getDisplayNameC()));
+        err.addNote(formNte(Nte0128, typeLambda->getDisplayNameC()));
         return context->report(err);
     }
 
@@ -980,7 +980,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         Diagnostic err{node, node->token, formErr(Err0360, concreteNodeType->getDisplayNameC())};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
-        err.addNote(attr, formNte(Nte0069, "attribute"));
+        err.addNote(attr, formNte(Nte0176, "attribute"));
         return context->report(err);
     }
 
@@ -1042,12 +1042,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else if (isCompilerConstant)
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0144); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0016); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0028)));
             }
             else
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0217); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0017); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0028)));
             }
         }
@@ -1082,14 +1082,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant)
         {
             Diagnostic err{node->assignment, toErr(Err0449)};
-            err.addNote(toNte(Nte0040));
+            err.addNote(toNte(Nte0048));
             return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
         {
             Diagnostic err{node->assignment, toErr(Err0448)};
-            err.addNote(toNte(Nte0040));
+            err.addNote(toNte(Nte0048));
             return context->report(err);
         }
     }
@@ -1140,8 +1140,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic err{node->assignment, toErr(Err0029)};
-                        err.hint = formNte(Nte0194, leftConcreteType->getDisplayNameC());
-                        err.addNote(node->assignToken, formNte(Nte0157, g_LangSpec->name_opAffect.c_str()));
+                        err.hint = formNte(Nte0210, leftConcreteType->getDisplayNameC());
+                        err.addNote(node->assignToken, formNte(Nte0151, g_LangSpec->name_opAffect.c_str()));
                         return context->report(err);
                     }
                 }

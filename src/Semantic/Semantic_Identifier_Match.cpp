@@ -176,7 +176,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         {
             {
                 const auto     declParam = oneMatch.solvedParameters[i]->declNode;
-                PushErrCxtStep ec(context, declParam, ErrCxtStepKind::Note, [declParam] { return formNte(Nte0070, declParam->token.c_str()); });
+                PushErrCxtStep ec(context, declParam, ErrCxtStepKind::Note, [declParam] { return formNte(Nte0177, declParam->token.c_str()); });
                 context->castFlagsResult = 0;
 
                 toType = oneMatch.solvedParameters[i]->typeInfo;
@@ -194,7 +194,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 if (overload)
                 {
                     const auto     declParam = oneMatch.solvedParameters[i]->declNode;
-                    PushErrCxtStep ec0(context, declParam, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0100, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
+                    PushErrCxtStep ec0(context, declParam, ErrCxtStepKind::Note, [id, declParam] { return formNte(Nte0098, id->token.c_str(), declParam->typeInfo->getDisplayNameC()); });
                     SWAG_CHECK(checkCanTakeAddress(context, id));
                     overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
                 }
@@ -608,7 +608,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
         {
             Diagnostic err{identifier, formErr(Err0120, Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->getDisplayNameC())};
-            err.addNote(overload->node, overload->node->token, formNte(Nte0160, Naming::kindName(overload->node).c_str()));
+            err.addNote(overload->node, overload->node->token, formNte(Nte0154, Naming::kindName(overload->node).c_str()));
             return context->report(err);
         }
     }
@@ -749,7 +749,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         if (symbolName && symbolName->is(SymbolKind::Variable) && !prev->hasAstFlag(AST_FROM_UFCS))
         {
             Diagnostic err{prev, formErr(Err0477, Naming::kindName(prev->resolvedSymbolOverload()->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
-            err.addNote(identifier->token, formNte(Nte0171, prev->typeInfo->getDisplayNameC()));
+            err.addNote(identifier->token, formNte(Nte0164, prev->typeInfo->getDisplayNameC()));
             return context->report(err, Diagnostic::hereIs(funcDecl));
         }
     }
@@ -767,7 +767,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             const auto cp = identifier->callParameters;
             Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, formErr(Err0644, identifier->token.c_str())};
-            err.addNote(identifier->token, toNte(Nte0170));
+            err.addNote(identifier->token, toNte(Nte0165));
             return context->report(err);
         }
     }
@@ -815,7 +815,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
             {
                 Diagnostic err{identifier, identifier->getTokenName(), formErr(Err0121, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
-                err.addNote(overload->node, overload->node->getTokenName(), toNte(Nte0172));
+                err.addNote(overload->node, overload->node->getTokenName(), toNte(Nte0166));
                 return context->report(err);
             }
         }
@@ -1201,24 +1201,24 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
             Diagnostic err{prevNode, formErr(Err0478, prevNode->token.c_str(), symbol->name.c_str())};
             const auto prevIdentifier = castAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             const auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            err.addNote(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), formNte(Nte0171, prevNode->typeInfo->getDisplayNameC()));
+            err.addNote(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), formNte(Nte0164, prevNode->typeInfo->getDisplayNameC()));
             err.addNote(Diagnostic::hereIs(widthNode));
-            err.addNote(formNte(Nte0030, identifierRef->startScope->name.c_str()));
+            err.addNote(formNte(Nte0035, identifierRef->startScope->name.c_str()));
             return context->report(err);
         }
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
         {
             Diagnostic err{prevNode, formErr(Err0477, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
-            err.addNote(identifier->token, formNte(Nte0171, prevNode->typeInfo->getDisplayNameC()));
-            err.addNote(formNte(Nte0111, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str()));
+            err.addNote(identifier->token, formNte(Nte0164, prevNode->typeInfo->getDisplayNameC()));
+            err.addNote(formNte(Nte0105, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str()));
             err.addNote(Diagnostic::hereIs(oneMatch.oneOverload->overload));
-            err.addNote(formNte(Nte0038, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), identifierRef->startScope->name.c_str()));
+            err.addNote(formNte(Nte0045, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), identifierRef->startScope->name.c_str()));
             return context->report(err);
         }
 
         Diagnostic err{prevNode, formErr(Err0477, Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
-        err.addNote(identifier->token, formNte(Nte0171, prevNode->typeInfo->getDisplayNameC()));
+        err.addNote(identifier->token, formNte(Nte0164, prevNode->typeInfo->getDisplayNameC()));
         err.addNote(Diagnostic::hereIs(oneMatch.oneOverload->overload));
         return context->report(err);
     }

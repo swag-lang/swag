@@ -21,14 +21,14 @@ bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, Ast
         if (forType->isSlice())
         {
             Diagnostic err{arrayAccess, toErr(Err0203)};
-            err.addNote(arrayNode, toNte(Nte0189));
+            err.addNote(arrayNode, toNte(Nte0205));
             return context->report(err);
         }
 
         if (forType->isString())
         {
             Diagnostic err{arrayAccess, toErr(Err0203)};
-            err.addNote(arrayNode, toNte(Nte0190));
+            err.addNote(arrayNode, toNte(Nte0206));
             return context->report(err);
         }
     }
@@ -47,17 +47,17 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
     if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
     {
         msg  = toErr(Err0129);
-        msg1 = toNte(Nte0128);
+        msg1 = toNte(Nte0122);
     }
     else if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
         msg  = toErr(Err0128);
-        msg1 = toNte(Nte0127);
+        msg1 = toNte(Nte0121);
     }
     else if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
     {
         msg  = toErr(Err0131);
-        msg1 = toNte(Nte0126);
+        msg1 = toNte(Nte0120);
     }
 
     if (!msg.empty())
@@ -83,7 +83,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
             if (overload->hasFlag(OVERLOAD_IS_LET))
             {
                 Diagnostic err{node, node->token, toErr(Err0130)};
-                err.addNote(formNte(Nte0117, node->token.c_str()));
+                err.addNote(formNte(Nte0111, node->token.c_str()));
                 return context->report(err);
             }
 
@@ -213,7 +213,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
             }
 
             Diagnostic err{node, node->token, formErr(Err0127, typeInfo->getDisplayNameC())};
-            err.addNote(formNte(Nte0103, Naming::aKindName(typeInfo).c_str()));
+            err.addNote(formNte(Nte0101, Naming::aKindName(typeInfo).c_str()));
             return context->report(err, Diagnostic::hereIs(overload));
         }
     }
@@ -395,7 +395,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic err{node, node->token, toErr(Err0211)};
             err.addNote(node->array, Diagnostic::isType(typeVar));
-            err.addNote(toNte(Nte0106));
+            err.addNote(toNte(Nte0103));
             return context->report(err);
         }
 
@@ -433,7 +433,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (!symbol)
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0220, node->array->token.c_str(), typeInfo->getDisplayNameC())};
-            err.hint = formNte(Nte0157, g_LangSpec->name_opSlice.c_str());
+            err.hint = formNte(Nte0151, g_LangSpec->name_opSlice.c_str());
             err.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
@@ -452,7 +452,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (node->lowerBound->computedValue()->reg.u64 > node->upperBound->computedValue()->reg.u64)
         {
             Diagnostic err{node->lowerBound, formErr(Err0503, node->lowerBound->computedValue()->reg.u64, node->upperBound->computedValue()->reg.u64)};
-            err.addNote(node->upperBound, toNte(Nte0188));
+            err.addNote(node->upperBound, toNte(Nte0204));
             return context->report(err);
         }
     }
@@ -521,19 +521,19 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
         if (front->is(AstNodeKind::IdentifierRef) && front->firstChild()->is(AstNodeKind::ArrayPointerIndex))
         {
-            err.addNote(front, toNte(Nte0023));
+            err.addNote(front, toNte(Nte0028));
             return context->report(err);
         }
 
         if (front->is(AstNodeKind::IdentifierRef))
         {
-            err.hint = toNte(Nte0139);
-            err.addNote(front, formNte(Nte0212, front->token.c_str()));
+            err.hint = toNte(Nte0133);
+            err.addNote(front, formNte(Nte0052, front->token.c_str()));
             return context->report(err);
         }
 
         err.addNote(front, Diagnostic::isType(typeInfo));
-        err.hint = toNte(Nte0139);
+        err.hint = toNte(Nte0133);
         return context->report(err);
     }
 
@@ -706,7 +706,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             {
                 Diagnostic err{arrayNode->array, formErr(Err0158, arrayType->getDisplayNameC())};
                 if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0163));
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0157));
                 return context->report(err);
             }
 
@@ -754,7 +754,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
                 {
                     Diagnostic err{arrayNode->access, toErr(Err0235)};
-                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0163));
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0157));
                     return context->report(err);
                 }
 
@@ -876,7 +876,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
         {
             Diagnostic err{arrayNode->access, toErr(Err0235)};
-            err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0163));
+            err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0157));
             return context->report(err);
         }
 
@@ -928,7 +928,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 Diagnostic err{arrayNode->access, formErr(Err0207, arrayNode->resolvedSymbolName()->name.c_str(), arrayType->getDisplayNameC())};
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-                err.addNote(toNte(Nte0106));
+                err.addNote(toNte(Nte0103));
                 return context->report(err);
             }
 
@@ -1080,7 +1080,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 YIELD();
                 Diagnostic err{arrayNode->access, formErr(Err0156, arrayNode->array->token.c_str(), arrayType->getDisplayNameC())};
-                err.hint = formNte(Nte0157, g_LangSpec->name_opIndex.c_str());
+                err.hint = formNte(Nte0151, g_LangSpec->name_opIndex.c_str());
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err);
             }
@@ -1093,7 +1093,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         {
             Diagnostic err{arrayNode->array, formErr(Err0158, arrayNode->array->typeInfo->getDisplayNameC())};
             if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0163));
+                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0157));
             return context->report(err);
         }
     }
@@ -1117,12 +1117,12 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
             if (count->hasFlagComputedValue())
             {
                 Diagnostic err{expression, formErr(Err0575, node->token.c_str(), expression->typeInfo->getDisplayNameC())};
-                err.addNote(count, formNte(Nte0136, count->computedValue()->reg.u64));
+                err.addNote(count, formNte(Nte0130, count->computedValue()->reg.u64));
                 return context->report(err);
             }
 
             Diagnostic err{expression, formErr(Err0576, node->token.c_str(), expression->typeInfo->getDisplayNameC())};
-            err.addNote(count, toNte(Nte0137));
+            err.addNote(count, toNte(Nte0131));
             return context->report(err);
         }
     }
@@ -1173,7 +1173,7 @@ bool Semantic::resolveInit(SemanticContext* context)
             const auto child = node->parameters->firstChild();
 
             {
-                PushErrCxtStep ec(context, node->expression, ErrCxtStepKind::Note, [node] { return formNte(Nte0116, node->expression->typeInfo->getDisplayNameC()); });
+                PushErrCxtStep ec(context, node->expression, ErrCxtStepKind::Note, [node] { return formNte(Nte0110, node->expression->typeInfo->getDisplayNameC()); });
                 SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
             }
         }

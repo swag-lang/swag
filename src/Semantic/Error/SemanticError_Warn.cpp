@@ -54,7 +54,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     Diagnostic err{identifier, identifier->token, formErr(Wrn0002, Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()), DiagnosticLevel::Warning};
-    const auto note1   = Diagnostic::note(node, node->token, toNte(Nte0073));
+    const auto note1   = Diagnostic::note(node, node->token, toNte(Nte0180));
     note1->canBeMerged = false;
     err.addNote(note1);
 
@@ -93,7 +93,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 
     Diagnostic err{funcDecl, funcDecl->tokenName, formErr(Wrn0006, "function", "function", funcDecl->token.c_str()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        err.hint = formNte(Nte0039, funcDecl->token.c_str());
+        err.hint = formNte(Nte0047, funcDecl->token.c_str());
     return Report::report(err);
 }
 
@@ -179,7 +179,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0039, sym->name.c_str()));
+            err.addNote(formNte(Nte0047, sym->name.c_str()));
             isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
@@ -197,15 +197,15 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
             {
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
                 Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-                err.hint = toNte(Nte0158);
-                err.addNote(toNte(Nte0044));
+                err.hint = toNte(Nte0152);
+                err.addNote(toNte(Nte0060));
                 isOk = isOk && context->report(err);
             }
             else
             {
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
                 Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-                err.addNote(formNte(Nte0039, sym->name.c_str()));
+                err.addNote(formNte(Nte0047, sym->name.c_str()));
                 isOk = isOk && context->report(err);
             }
         }
@@ -213,14 +213,14 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0039, sym->name.c_str()));
+            err.addNote(formNte(Nte0047, sym->name.c_str()));
             isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_CONSTANT))
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0039, sym->name.c_str()));
+            err.addNote(formNte(Nte0047, sym->name.c_str()));
             isOk = isOk && context->report(err);
         }
     }

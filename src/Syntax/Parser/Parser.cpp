@@ -84,7 +84,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     else
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, formNte(Nte0185, related.c_str()));
+        err.addNote(sourceFile, start, start, formNte(Nte0200, related.c_str()));
     }
 
     if (parent)

@@ -36,19 +36,19 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0123, symbolName->name.c_str()));
-                        result->hint      = toNte(Nte0087);
+                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0117, symbolName->name.c_str()));
+                        result->hint      = toNte(Nte0041);
                         return result;
                     }
 
-                    return Diagnostic::note(c, c->token, toNte(Nte0169));
+                    return Diagnostic::note(c, c->token, toNte(Nte0163));
                 }
             }
 
             if (symbolName->is(SymbolKind::Variable))
                 return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.c_str()));
 
-            return Diagnostic::note(c, toNte(Nte0061));
+            return Diagnostic::note(c, toNte(Nte0083));
         }
     }
 
@@ -118,7 +118,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0030, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.hint          = formNte(Nte0157, userOp->symbol->name.c_str());
+                err.hint          = formNte(Nte0151, userOp->symbol->name.c_str());
                 return context->report(err);
             }
 
@@ -138,7 +138,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0030, realType->getDisplayNameC())};
-                    err.hint = toNte(Nte0087);
+                    err.hint = toNte(Nte0041);
                     return context->report(err);
                 }
             }

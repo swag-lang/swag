@@ -34,7 +34,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, toErr(Err0208)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(toNte(Nte0106));
+            err.addNote(toNte(Nte0103));
             return context->report(err);
         }
 
@@ -57,7 +57,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, toErr(Err0208)};
             err.addNote(right, Diagnostic::isType(rightTypeInfo));
-            err.addNote(toNte(Nte0106));
+            err.addNote(toNte(Nte0103));
             return context->report(err);
         }
 
@@ -96,7 +96,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
             Diagnostic err{node, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
-                err.addNote(toNte(Nte0041));
+                err.addNote(toNte(Nte0053));
             return context->report(err);
         }
         default:
@@ -229,7 +229,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         {
             Diagnostic err{node, node->token, toErr(Err0208)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(toNte(Nte0106));
+            err.addNote(toNte(Nte0103));
             return context->report(err);
         }
 
@@ -872,7 +872,7 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
     const auto node = context->node;
 
     {
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0140); }, true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0134); }, true);
         SWAG_CHECK(checkIsConstExpr(context, left->hasFlagComputedValue(), left));
         SWAG_CHECK(checkIsConstExpr(context, right->hasFlagComputedValue(), right));
     }
@@ -1074,14 +1074,14 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isAny())
     {
         Diagnostic err{node, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, toNte(Nte0031));
+        err.addNote(left, toNte(Nte0036));
         return context->report(err);
     }
 
     if (rightTypeInfo->isAny())
     {
         Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
-        err.addNote(right, toNte(Nte0031));
+        err.addNote(right, toNte(Nte0036));
         return context->report(err);
     }
 

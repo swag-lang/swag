@@ -205,8 +205,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic err{childFct, childFct->tokenName, formErr(Err0427, childFct->token.text.c_str(), typeInterface->name.c_str())};
-                err.hint = toNte(Nte0024);
-                err.addNote(toNte(Nte0018));
+                err.hint = toNte(Nte0029);
+                err.addNote(toNte(Nte0020));
                 return context->report(err);
             }
 
@@ -217,7 +217,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         {
             Diagnostic err{childFct, childFct->tokenName, formErr(Err0707, childFct->token.text.c_str(), typeInterface->getDisplayNameC())};
             if (childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
-                err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0129));
+                err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0123));
             err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
             return context->report(err);
         }
@@ -264,23 +264,23 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 case MatchResult::BadSignature:
                 {
                     Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    err.addNote(childFct->parameters->children[bi.badSignatureNum2], formNte(Nte0104, childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, formNte(Nte0109, typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                    err.addNote(childFct->parameters->children[bi.badSignatureNum2], formNte(Nte0102, childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, formNte(Nte0136, typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MissingReturnType:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    err.hint = toNte(Nte0017);
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0131, typeLambda->returnType->getDisplayNameC()));
+                    err.hint = toNte(Nte0019);
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0125, typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::NoReturnType:
                 {
                     Diagnostic err{childFct->returnType, formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0132));
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0126));
                     return context->report(err);
                 }
 
@@ -288,15 +288,15 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 {
                     Diagnostic err{childFct->returnType, formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
                     err.hint = Diagnostic::isType(childFct->returnType->typeInfo);
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0131, typeLambda->returnType->getDisplayNameC()));
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0125, typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MismatchThrow:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    err.hint          = toNte(Nte0101);
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0179));
+                    err.hint          = toNte(Nte0099);
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0181));
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);
@@ -305,7 +305,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 default:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0289, child->token.c_str(), typeBaseInterface->name.c_str())};
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0179));
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0181));
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);
@@ -571,7 +571,7 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Sc
     {
         Diagnostic err{node, node->token, formErr(Err0290, node->token.c_str())};
         err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
-        err.addNote(formNte(Nte0142, scopeImpl->parentScope->getFullName().c_str(), node->token.c_str(), scope->parentScope->getFullName().c_str()));
+        err.addNote(formNte(Nte0137, scopeImpl->parentScope->getFullName().c_str(), node->token.c_str(), scope->parentScope->getFullName().c_str()));
         return context->report(err);
     }
 
@@ -906,7 +906,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         if (child->typeInfo == typeInfo)
         {
             Diagnostic err{node, node->getTokenName(), formErr(Err0509, node->token.c_str())};
-            err.addNote(child, toNte(Nte0075));
+            err.addNote(child, toNte(Nte0183));
             return context->report(err);
         }
 

@@ -542,7 +542,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         Diagnostic err{node, node->token, errMsg};
         if (suffix && suffix->typeInfo)
-            err.addNote(suffix, formNte(Nte0191, suffix->typeInfo->getDisplayNameC()));
+            err.addNote(suffix, formNte(Nte0207, suffix->typeInfo->getDisplayNameC()));
         return context->report(err);
     }
 

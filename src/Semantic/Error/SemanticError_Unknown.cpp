@@ -23,7 +23,7 @@ namespace
             const auto err        = new Diagnostic{identifier, formErr(Err0705, identifier->token.c_str())};
             const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
-            const auto note       = Diagnostic::note(errNode, toNte(Nte0086));
+            const auto note       = Diagnostic::note(errNode, toNte(Nte0197));
             notes.push_back(note);
             return err;
         }
@@ -135,7 +135,7 @@ namespace
         {
             const auto userOp   = prev->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
             const auto typeInfo = TypeManager::concreteType(userOp->typeInfo);
-            const auto msg      = formNte(Nte0121, userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
+            const auto msg      = formNte(Nte0115, userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }
@@ -220,7 +220,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0667, identifier->token.c_str())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0204)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0203)));
         return context->report(*err, notes);
     }
 
@@ -228,7 +228,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0651, identifier->token.c_str())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0204)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0203)));
         return context->report(*err, notes);
     }
 
@@ -251,12 +251,12 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         case IdentifierSearchFor::Type:
             if (identifier->token.text == "int")
-                notes.push_back(Diagnostic::note(formNte(Nte0105, "s32")));
+                notes.push_back(Diagnostic::note(formNte(Nte0081, "s32")));
             break;
 
         case IdentifierSearchFor::Variable:
             if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->startScope)
-                notes.push_back(Diagnostic::note(toNte(Nte0216)));
+                notes.push_back(Diagnostic::note(toNte(Nte0080)));
             break;
     }
 

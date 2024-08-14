@@ -26,7 +26,7 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
     const auto msg = formErr(Err0062, whereExpr->token.c_str(), Naming::kindName(node).c_str(), node->token.c_str(), whereExpr->token.c_str());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
-    errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0074, whereExpr->token.c_str())));
+    errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0182, whereExpr->token.c_str())));
 }
 
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)
@@ -40,7 +40,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedSelf())
     {
-        const auto msg  = formNte(Nte0146, tryMatches[0]->overload->symbol->getFullName().c_str());
+        const auto msg  = formNte(Nte0141, tryMatches[0]->overload->symbol->getFullName().c_str());
         const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
@@ -61,7 +61,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = formNte(Nte0114,
+                const auto msg = formNte(Nte0108,
                                          Naming::kindName(overload).c_str(),
                                          node->token.c_str(),
                                          identifierRef->typeInfo->getDisplayNameC(),
@@ -73,7 +73,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
             {
                 if (s->is(ScopeKind::Impl) && s->symTable.find(node->token.text))
                 {
-                    auto msg = formNte(Nte0145, node->token.c_str(), s->getFullName().c_str());
+                    auto msg = formNte(Nte0140, node->token.c_str(), s->getFullName().c_str());
                     err->remarks.push_back(msg);
                 }
             }
@@ -115,7 +115,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
         what = Naming::kindName(thisKind);
 
     Diagnostic err{sourceFile, token, formErr(Err0510, what.c_str(), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
-    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0079));
+    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0190));
     return context->report(err);
 }
 

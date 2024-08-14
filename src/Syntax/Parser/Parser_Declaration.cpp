@@ -47,7 +47,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0352, tokenAttr.c_str(), tokenParse.token.c_str())};
-            err.addNote(tokenParse.token, toNte(Nte0167));
+            err.addNote(tokenParse.token, toNte(Nte0161));
             return context->report(err);
         }
     }
@@ -190,7 +190,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                 default:
                 {
                     Diagnostic err{sourceFile, tokenParse, toErr(Err0398)};
-                    err.addNote(child, child->token, toNte(Nte0082));
+                    err.addNote(child, child->token, toNte(Nte0193));
                     return context->report(err);
                 }
             }
@@ -446,7 +446,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0208)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0054), toNte(Nte0065)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
@@ -464,7 +464,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         if (tokenParse.isNot(TokenId::KwdDo))
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0425)};
-            err.addNote(parent, forToken, formNte(Nte0014, forToken.c_str()));
+            err.addNote(parent, forToken, formNte(Nte0013, forToken.c_str()));
             return context->report(err);
         }
 
@@ -890,7 +890,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0682)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
-                err.addNote(toNte(Nte0199));
+                err.addNote(toNte(Nte0070));
             return context->report(err);
         }
 

@@ -220,7 +220,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0012)};
                 auto       note = Diagnostic::note(lastParameter, formNte(Nte0001, lastParameter->type->token.c_str()));
-                note->hint      = formNte(Nte0206, lastParameter->type->token.c_str(), lastParameter->type->token.c_str());
+                note->hint      = formNte(Nte0050, lastParameter->type->token.c_str(), lastParameter->type->token.c_str());
                 err.addNote(note);
                 return context->report(err);
             }
@@ -462,13 +462,13 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
     Diagnostic err{sourceFile, tokenParse, toErr(Err0249)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
-        err.addNote(toNte(Nte0198));
+        err.addNote(toNte(Nte0059));
     else if (tokenParse.is(TokenId::SymDotDotDot))
-        err.addNote(toNte(Nte0147));
+        err.addNote(toNte(Nte0142));
     else if (Tokenizer::isKeyword(tokenParse.token.id))
-        err.addNote(formNte(Nte0133, tokenParse.token.c_str()));
+        err.addNote(formNte(Nte0127, tokenParse.token.c_str()));
     else if (tokenParse.is(TokenId::IntrinsicTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
-        err.addNote(toNte(Nte0043));
+        err.addNote(toNte(Nte0057));
 
     return context->report(err);
 }
