@@ -57,7 +57,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             case TokenId::SymLeftSquare:
             {
                 // This is ambiguous. Can be a literal array or an array type.
-                // If parameters are inside parenthesis, then this means that we can differentiate between the 2 cases
+                // If parameters are inside parentheses, then this means that we can differentiate between the 2 cases
                 // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
                 // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
                 tokenizer.saveState(tokenParse);
