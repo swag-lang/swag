@@ -1627,6 +1627,7 @@ bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode
 
 bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
+    bool     leftAlone = false;
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));
     Ast::removeFromParent(leftNode);
@@ -1686,15 +1687,56 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     else
     {
         Ast::addChildBack(parent, leftNode);
-        *result = leftNode;
+        *result   = leftNode;
+        leftAlone = true;
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0650)));
+    if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::KwdDo))
+        return true;
 
-    if (tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::KwdDo))
+    if (tokenParse.is(TokenId::SymSemiColon) ||
+        tokenParse.is(TokenId::EndOfFile) ||
+        tokenParse.is(TokenId::SymAsterisk) ||
+        tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    {
         SWAG_CHECK(eatSemiCol("left expression"));
+        return true;
+    }
 
-    return true;
+    if (!leftAlone)
+        return error(tokenParse, formErr(Err0440, "left statement"));
+
+    if (tokenParse.is(TokenId::SymEqualEqual))
+        return error(tokenParse, toErr(Err0650));
+
+    if (leftNode->is(AstNodeKind::IdentifierRef) &&
+        leftNode->lastChild()->is(AstNodeKind::Identifier) &&
+        tokenParse.is(TokenId::Identifier) &&
+        !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    {
+        const auto id = castAst<AstIdentifier>(leftNode->lastChild(), AstNodeKind::Identifier);
+        if (!id->callParameters)
+        {
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0748)};
+            err.addNote(leftNode, toNte(Nte0217));
+            return context->report(err);
+        }
+    }
+
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, []() { return toNte(Nte0218); });
+
+    Utf8 afterMsg = "left expression";
+    if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))
+        afterMsg = form("identifier [[%s]]", leftNode->lastChild()->token.c_str());
+    else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
+        afterMsg = "tuple unpacking";
+    else if (leftNode->is(AstNodeKind::MultiIdentifier))
+        afterMsg = "variable list";
+
+    if (Tokenizer::isSymbol(tokenParse.token.id))
+        return error(tokenParse, formErr(Err0749, tokenParse.token.c_str(), afterMsg.c_str()));
+
+    return error(tokenParse, formErr(Err0750, afterMsg.c_str()));
 }
 
 bool Parser::doInit(AstNode* parent, AstNode** result)
