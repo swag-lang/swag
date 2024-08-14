@@ -28,7 +28,6 @@ impl Image
                     let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
-                break
 
             case T180:
                 dstImage.visitPixels(&f)
@@ -40,7 +39,6 @@ impl Image
                     let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
-                break
 
             case T270:
                 dstImage.visitPixels(&f)
@@ -52,7 +50,6 @@ impl Image
                     let pixSrc   = srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
-                break
             }
         }
 

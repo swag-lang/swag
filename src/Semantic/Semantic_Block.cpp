@@ -1027,6 +1027,9 @@ bool Semantic::resolveBreak(SemanticContext* context)
     SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, toErr(Err0316)}));
     node->ownerBreakable()->breakList.push_back(node);
 
+    if (node->parent->is(AstNodeKind::SwitchCaseBlock) && node->parent->firstChild() != node)
+        SWAG_CHECK(context->report({node, toErr(Wrn0007), DiagnosticLevel::Warning}));
+
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitBreak;
     return true;

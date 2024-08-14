@@ -462,7 +462,6 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                 case State.NumericFrac, State.Numeric, State.NumericHex, State.NumericBin:
                     currentState = State.Default
-                    break
                 }
 
                 break

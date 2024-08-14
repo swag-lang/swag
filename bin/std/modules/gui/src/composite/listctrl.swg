@@ -272,7 +272,6 @@ impl IWnd for ListView
             startSelIdx = Math.min(startSelIdx, lineCount - 1)
             endSelIdx   = Math.min(endSelIdx, lineCount - 1)
             selChanged  = true
-            break
 
         case PageUp:
             let first  = list.getFirstVisibleLineIndex()
@@ -283,7 +282,6 @@ impl IWnd for ListView
             else do
                 startSelIdx, endSelIdx = list.focusIndex - offset
             selChanged = true
-            break
         }
 
         if selChanged

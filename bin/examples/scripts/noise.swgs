@@ -98,7 +98,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Noise.update()
         createUI(wnd)
         compute()
-        break
 
     case Paint:
         let paintEvt = cast(*PaintEvent) evt

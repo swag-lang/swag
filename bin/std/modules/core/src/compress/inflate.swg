@@ -328,7 +328,6 @@ impl Inflate
                             c = cast(u16) (stream.readBitsNoRefill(7) + 11)
                         default:
                             throw InvalidFormatError{"bad code lengths"}
-                            break
                         }
 
                         if ntot - n < c do

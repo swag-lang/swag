@@ -290,7 +290,6 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     {
     case WM_PAINT:
         display()
-        break
 
     case WM_SIZE:
         glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
