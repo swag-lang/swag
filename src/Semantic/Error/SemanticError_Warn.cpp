@@ -54,7 +54,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     Diagnostic err{identifier, identifier->token, formErr(Wrn0002, Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()), DiagnosticLevel::Warning};
-    const auto note1   = Diagnostic::note(node, node->token, toNte(Nte0180));
+    const auto note1   = Diagnostic::hereIs(node, toNte(Nte0180));
     note1->canBeMerged = false;
     err.addNote(note1);
 
