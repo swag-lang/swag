@@ -1718,7 +1718,13 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         if (!id->callParameters)
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0748)};
-            err.addNote(leftNode, toNte(Nte0217));
+            const auto nextToken = getNextToken();
+            if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
+                err.addNote(formNte(Nte0219, id->token.c_str(), tokenParse.token.c_str()));
+            else if (nextToken.is(TokenId::SymSemiColon) || nextToken.flags.has(TOKEN_PARSE_EOL_BEFORE))
+                err.addNote(formNte(Nte0069, tokenParse.token.c_str(), id->token.c_str()));
+            else
+                err.addNote(leftNode, toNte(Nte0217));
             return context->report(err);
         }
     }

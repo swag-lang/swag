@@ -290,7 +290,7 @@ func display()
     }
 
     // Score
-    g_Painter.drawString(40, 0, Format.toString("score: %", g_Score), g_Font, Argb.White)
+    g_Painter drawString(40, 0, Format.toString("score: %", g_Score), g_Font, Argb.White)
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool

@@ -958,7 +958,7 @@ void initErrors()
     SWAG_ERROR(Nte0066, "consider using square brackets [[%s[%s]]] to access an element by index");
     SWAG_ERROR(Nte0067, "consider using the [[@args()]] intrinsic to retrieve the program arguments");
     SWAG_ERROR(Nte0068, "consider using the full name of the enum value");
-    SWAG_ERROR(Nte0069, "consider using the syntax [[var %s: %s]] to declare a global variable");
+    SWAG_ERROR(Nte0069, "consider using the syntax [[var %s: %s]] to declare a variable");
     SWAG_ERROR(Nte0070, "consider using the syntax [[var name: type]] or [[var name = expression]] to declare a variable");
     SWAG_ERROR(Nte0071, "consider writing [[impl %s]] instead");
     SWAG_ERROR(Nte0072, "consider writing [[impl enum %s]] instead");
@@ -1108,7 +1108,7 @@ void initErrors()
     SWAG_ERROR(Nte0216, "consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type");
     SWAG_ERROR(Nte0217, "this should be a function call or an affectation");
     SWAG_ERROR(Nte0218, "this should be followed by an affectation");
-    SWAG_ERROR(Nte0219, nullptr);
+    SWAG_ERROR(Nte0219, "did you forget a [['.']] between [[%s]] and [[%s]]?");
     SWAG_ERROR(Nte0220, nullptr);
 }
 
