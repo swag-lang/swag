@@ -100,8 +100,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
 
 bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
 {
-    auto callParams = Ast::newFuncCallParams(this, parent);
-    *result         = callParams;
+    const auto callParams = Ast::newFuncCallParams(this, parent);
+    *result               = callParams;
 
     bool forAttrUse = false;
     if (callParams->getParent(3)->is(AstNodeKind::AttrUse))

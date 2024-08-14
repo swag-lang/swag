@@ -272,8 +272,8 @@ namespace
         cleanNotes(notes);
         log->writeEol();
 
-        bool        marginBefore = true;
-        Diagnostic* prevN        = nullptr;
+        bool              marginBefore = true;
+        const Diagnostic* prevN        = nullptr;
         for (const auto n : notes)
         {
             if (!n->display)

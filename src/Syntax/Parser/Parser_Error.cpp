@@ -44,7 +44,7 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
     return context->report(err);
 }
 
-bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
+bool Parser::invalidTokenError(InvalidTokenError kind)
 {
     Utf8 msg, note;
 

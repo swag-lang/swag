@@ -398,7 +398,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::CompilerType:
         {
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
-                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
             eatToken();
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
             (*result)->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
@@ -414,7 +414,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::SymCircumflex:
         case TokenId::SymAmpersand:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
-                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
             break;
 
@@ -444,7 +444,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::KwdFunc:
         case TokenId::KwdClosure:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
-                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
 
             if (exprFlags.has(EXPR_FLAG_TYPEOF))
                 SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
@@ -457,7 +457,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         default:
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
     }
 
     return true;
