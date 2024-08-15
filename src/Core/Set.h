@@ -2,15 +2,15 @@
 #include "Core/Path.h"
 
 template<typename T>
-struct Set : std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>
+struct Set : std::unordered_set<T, std::hash<T>, std::equal_to<>, StdAllocator<T>>
 {
     Set() :
-        std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>()
+        std::unordered_set<T, std::hash<T>, std::equal_to<>, StdAllocator<T>>()
     {
     }
 
     Set(const Set& other) :
-        std::unordered_set<T, std::hash<T>, std::equal_to<T>, StdAllocator<T>>(other)
+        std::unordered_set<T, std::hash<T>, std::equal_to<>, StdAllocator<T>>(other)
     {
     }
 };
