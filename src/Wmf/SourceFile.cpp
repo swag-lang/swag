@@ -58,7 +58,7 @@ bool SourceFile::checkFormat()
 void SourceFile::setExternalBuffer(const Utf8& content)
 {
     externalContent = content;
-    buffer          = const_cast<char*>(externalContent.c_str());
+    buffer          = const_cast<char*>(externalContent.cstr());
     bufferSize      = externalContent.length();
     addFlag(FILE_EXTERNAL);
 }
@@ -80,7 +80,7 @@ bool SourceFile::load()
     {
         numErrors++;
         ++module->numErrors;
-        Report::errorOS(formErr(Err0077, path.c_str()));
+        Report::errorOS(formErr(Err0077, path.cstr()));
         return false;
     }
 
@@ -107,7 +107,7 @@ bool SourceFile::load()
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
-        Report::errorOS(formErr(Err0079, path.c_str()));
+        Report::errorOS(formErr(Err0079, path.cstr()));
         return false;
     }
 
@@ -149,7 +149,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
         else
         {
             const auto    fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
-            std::ifstream fle(fileToRead->path.c_str(), std::ios::binary);
+            std::ifstream fle(fileToRead->path.cstr(), std::ios::binary);
             if (!fle.is_open())
                 return "?";
 

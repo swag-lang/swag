@@ -115,7 +115,7 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
         return true;
 
     // Convert to a concrete message for the user
-    msg->moduleName.buffer = static_cast<void*>(const_cast<char*>(name.c_str()));
+    msg->moduleName.buffer = static_cast<void*>(const_cast<char*>(name.cstr()));
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (no multithreading)

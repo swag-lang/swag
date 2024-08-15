@@ -437,7 +437,7 @@ Utf8 TypeInfoEnum::getDisplayName()
 {
     Utf8 str;
     computeWhateverName(str, ComputeNameKind::DisplayName);
-    return form("enum %s", str.c_str());
+    return form("enum %s", str.cstr());
 }
 
 bool TypeInfoEnum::contains(const Utf8& valueName)
@@ -1197,15 +1197,15 @@ bool TypeInfoStruct::isPlainOldData() const
 Utf8 TypeInfoStruct::getDisplayName()
 {
     if (declNode && declNode->is(AstNodeKind::InterfaceDecl))
-        return form("interface %s", name.c_str());
+        return form("interface %s", name.cstr());
     if (declNode && declNode->is(AstNodeKind::StructDecl) && declNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
-        return form("union %s", name.c_str());
+        return form("union %s", name.cstr());
 
     Utf8 str;
     computeWhateverName(str, ComputeNameKind::DisplayName);
     if (isTuple())
-        return form("%s", str.c_str());
-    return form("struct %s", str.c_str());
+        return form("%s", str.cstr());
+    return form("struct %s", str.cstr());
 }
 
 Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, ComputeNameKind nameKind)

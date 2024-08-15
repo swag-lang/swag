@@ -235,7 +235,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
     }
 
     auto     mode = context.mode;
-    auto     pz   = line.c_str();
+    auto     pz   = line.cstr();
     uint32_t c, offset;
     Utf8     result;
 

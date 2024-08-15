@@ -16,7 +16,7 @@ namespace
         }
         else if (arg.split[3] != "on" && arg.split[3] != "off")
         {
-            ByteCodeDebugger::printCmdError(form("invalid on/off argument [[%s]]", arg.split[3].c_str()));
+            ByteCodeDebugger::printCmdError(form("invalid on/off argument [[%s]]", arg.split[3].cstr()));
             return BcDbgCommandResult::Error;
         }
         else
@@ -54,7 +54,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSetRegister(ByteCodeRunContext* context,
 
     if (arg.split[2][0] != '$')
     {
-        printCmdError(form("invalid register [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid register [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -71,7 +71,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSetRegister(ByteCodeRunContext* context,
     }
 
     uint32_t regN;
-    if (!g_ByteCodeDebugger.getRegIdx(context, arg.split[2].c_str() + 1, regN))
+    if (!g_ByteCodeDebugger.getRegIdx(context, arg.split[2].cstr() + 1, regN))
         return BcDbgCommandResult::Error;
 
     Utf8 expr;
@@ -125,7 +125,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split[2] == "compsym")
             return setOnOff("print compiler symbols", arg, g_ByteCodeDebugger.printCompilerSymbols);
 
-        printCmdError(form("invalid [[set print]] argument [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid [[set print]] argument [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -139,7 +139,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split[2] == "source")
             return setOnOff("bytecode source code", arg, g_ByteCodeDebugger.printBcCode);
 
-        printCmdError(form("invalid [[set bytecode]] argument [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid [[set bytecode]] argument [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -153,13 +153,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split[2] == "source")
             return setOnOff("bytecode source code", arg, g_ByteCodeDebugger.printBtCode);
 
-        printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid [[set backtrace]] argument [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
     if (arg.split[1] == "register" || arg.split[1] == "reg")
         return cmdSetRegister(context, arg);
 
-    printCmdError(form("invalid [[set]] command [[%s]]", arg.split[1].c_str()));
+    printCmdError(form("invalid [[set]] command [[%s]]", arg.split[1].cstr()));
     return BcDbgCommandResult::Error;
 }

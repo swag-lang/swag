@@ -1477,8 +1477,8 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0437, funcNode->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(srcNode, formNte(Nte0109, Naming::kindName(srcNode).c_str(), srcNode->token.c_str())));
+        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0437, funcNode->token.cstr())};
+        return context->report(err, Diagnostic::hereIs(srcNode, formNte(Nte0109, Naming::kindName(srcNode).cstr(), srcNode->token.cstr())));
     }
 
     if (!raiseErrors)
@@ -1490,7 +1490,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic err{parent, parent->token, formErr(Err0388, parent->token.c_str(), srcNode->token.c_str())};
+            const Diagnostic err{parent, parent->token, formErr(Err0388, parent->token.cstr(), srcNode->token.cstr())};
             return context->report(err, Diagnostic::hereIs(srcNode));
         }
     }
@@ -2293,7 +2293,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
     if (funcNode->stackSize > g_CommandLine.limitStackRT)
-        Report::report({funcNode, formErr(Err0013, Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
+        Report::report({funcNode, formErr(Err0013, Utf8::toNiceSize(g_CommandLine.limitStackRT).cstr())});
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;

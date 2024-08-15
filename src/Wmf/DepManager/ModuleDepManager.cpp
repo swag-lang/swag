@@ -65,7 +65,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        Report::error(formErr(Fat0012, moduleName.c_str(), moduleFolder.c_str()));
+        Report::error(formErr(Fat0012, moduleName.cstr(), moduleFolder.cstr()));
         OS::exit(-1);
     }
 
@@ -150,14 +150,14 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     // No cfg file, we are done, we need one !
     std::error_code err;
     if (!std::filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0074, SWAG_CFG_FILE, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0074, SWAG_CFG_FILE, remotePath.cstr())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get information from the module
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, remotePath, "rbN"))
     {
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0076, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0076, remotePath.cstr())});
     }
 
     // Remove source configuration file
@@ -167,12 +167,12 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
 
     // Generate a unique name for the configuration file
     static int cacheNum = 0;
-    cfgFileName         = form("module%u.swg", cacheNum++).c_str();
+    cfgFileName         = form("module%u.swg", cacheNum++).cstr();
     destPath.append(cfgFileName);
     if (fopen_s(&fdest, destPath, "wbN"))
     {
         (void) fclose(fsrc);
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0070, SWAG_CFG_FILE, dep->name.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0070, SWAG_CFG_FILE, dep->name.cstr())});
     }
 
     // Copy content
@@ -206,7 +206,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!std::filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0082, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0082, remotePath.cstr())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -225,7 +225,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!std::filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0082, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0082, remotePath.cstr())});
     if (!fetch)
         return true;
 
@@ -236,7 +236,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePa
 bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
-        return Report::report({dep->node, formErr(Err0734, dep->name.c_str())});
+        return Report::report({dep->node, formErr(Err0734, dep->name.cstr())});
 
     Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
@@ -249,7 +249,7 @@ bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, 
 
     // Check mode
     if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0720, tokens[0].c_str())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0720, tokens[0].cstr())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();
@@ -357,7 +357,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             case CompareVersionResult::VersionGreater:
             case CompareVersionResult::VersionLower:
             {
-                Diagnostic err{dep->node, formErr(Err0731, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+                Diagnostic err{dep->node, formErr(Err0731, dep->name.cstr(), dep->verNum, cfgModule->fetchDep->verNum)};
                 err.addNote(cfgModule->fetchDep->node, toNte(Nte0194));
                 Report::report(err);
                 return false;
@@ -568,12 +568,12 @@ bool ModuleDepManager::execute()
         {
             if (dep->resolvedLocation.empty())
             {
-                Diagnostic err{dep->node, formErr(Err0732, dep->name.c_str(), dep->version.c_str())};
+                Diagnostic err{dep->node, formErr(Err0732, dep->name.cstr(), dep->version.cstr())};
                 Report::report(err);
             }
             else
             {
-                Diagnostic err{dep->node, formErr(Err0733, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Diagnostic err{dep->node, formErr(Err0733, dep->name.cstr(), dep->version.cstr(), dep->resolvedLocation.cstr())};
                 Report::report(err);
             }
             ok = false;
@@ -648,10 +648,10 @@ bool ModuleDepManager::execute()
                 {
                     std::error_code err;
                     auto            pathSrc = g_Workspace->dependenciesPath;
-                    pathSrc.append(val->name.c_str());
+                    pathSrc.append(val->name.cstr());
                     if (!std::filesystem::exists(pathSrc, err) && !std::filesystem::create_directories(pathSrc, err))
                     {
-                        Report::errorOS(formErr(Err0081, pathSrc.c_str()));
+                        Report::errorOS(formErr(Err0081, pathSrc.cstr()));
                         ok = false;
                         continue;
                     }

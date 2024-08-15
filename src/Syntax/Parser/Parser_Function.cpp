@@ -259,7 +259,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     const auto paramNode = Ast::newVarDecl("", this, parent, AstNodeKind::FuncDeclParam);
 
     if (tokenParse.is(TokenId::SymDotDotDot) || tokenParse.is(TokenId::NativeType))
-        return context->report({sourceFile, tokenParse.token, formErr(Err0461, tokenParse.token.c_str())});
+        return context->report({sourceFile, tokenParse.token, formErr(Err0461, tokenParse.cstr())});
 
     // Using variable
     if (tokenParse.is(TokenId::KwdUsing))
@@ -312,7 +312,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     unnamedTokens.push_back(tokenParse.token);
                 }
 
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, formErr(Err0100, tokenParse.token.c_str())));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, formErr(Err0100, tokenParse.cstr())));
                 SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0675)));
                 SWAG_CHECK(eatToken());
                 otherVariables.push_back(otherVarNode);
@@ -455,22 +455,22 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
 bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, formErr(Err0444, parent->token.c_str())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, formErr(Err0444, parent->token.cstr())));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = tokenParse.token.startLocation;
     if (tokenParse.isNot(TokenId::SymLeftParen))
     {
         if (parent->is(AstNodeKind::AttrDecl))
-            return eatToken(TokenId::SymLeftParen, form("to declare the attribute parameters of [[%s]]", parent->token.c_str()));
+            return eatToken(TokenId::SymLeftParen, form("to declare the attribute parameters of [[%s]]", parent->token.cstr()));
 
         if (tokenParse.is(TokenId::Identifier) && getNextToken().is(TokenId::SymLeftParen))
         {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&]() { return formNte(Nte0067, tokenParse.token.c_str(), parent->token.c_str()); });
-            return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str()));
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&]() { return formNte(Nte0067, tokenParse.cstr(), parent->token.cstr()); });
+            return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.cstr()));
         }
 
-        return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.c_str()));
+        return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.cstr()));
     }
 
     SWAG_CHECK(eatToken());
@@ -572,7 +572,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             if (isType)
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0179)};
-                err.addNote(Diagnostic::note(oneParam, formNte(Nte0007, oneParam->token.c_str())));
+                err.addNote(Diagnostic::note(oneParam, formNte(Nte0007, oneParam->token.cstr())));
                 err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0041)));
                 return context->report(err);
             }
@@ -598,7 +598,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0038, oneParam->token.c_str()); }, true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0038, oneParam->token.cstr()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -752,7 +752,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
         isIntrinsic = tokenParse.token.text[0] == '@';
         if (isIntrinsic)
-            SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse, formErr(Err0172, tokenParse.token.c_str())));
+            SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse, formErr(Err0172, tokenParse.cstr())));
         else
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0173)));
 
@@ -833,7 +833,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
             note = toNte(Nte0065);
-        return error(tokenParse, formErr(Err0676, funcNode->getDisplayNameC()), note.c_str());
+        return error(tokenParse, formErr(Err0676, funcNode->getDisplayNameC()), note.cstr());
     }
 
     // Return type
@@ -1044,7 +1044,7 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
     {
         if (flags.has(FUNC_DECL_INTERFACE))
         {
-            const Diagnostic err{sourceFile, tokenParse, formErr(Err0059, node->token.c_str())};
+            const Diagnostic err{sourceFile, tokenParse, formErr(Err0059, node->token.cstr())};
             return context->report(err);
         }
 

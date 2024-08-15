@@ -123,7 +123,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
             default:
             {
-                Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                 err.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(err);
             }
@@ -251,7 +251,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
@@ -322,7 +322,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
@@ -392,7 +392,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
                     return context->report(err);
                 }
@@ -452,7 +452,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isSlice() &&
              !leftTypeInfo->isInterface())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0598, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0598, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -461,7 +461,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !rightTypeInfo->isStruct() &&
              !rightTypeInfo->isInterface())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0599, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0599, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
         err.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(err);
     }
@@ -516,14 +516,14 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0620, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
 
         if (leftTypeInfo->isAny())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0620, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, toNte(Nte0034));
             return context->report(err);
         }

@@ -1117,8 +1117,8 @@ Utf8 formErr(ErrorID idx, ...)
 {
     va_list args;
     va_start(args, idx);
-    auto result = form("[%s] %s", g_ErrList[idx], g_E[idx].c_str());
-    result      = form(result.c_str(), args);
+    auto result = form("[%s] %s", g_ErrList[idx], g_E[idx].cstr());
+    result      = form(result.cstr(), args);
     va_end(args);
     return result;
 }
@@ -1128,14 +1128,14 @@ Utf8 formNte(ErrorID idx, ...)
     va_list args;
     va_start(args, idx);
     auto result = g_E[idx];
-    result      = form(result.c_str(), args);
+    result      = form(result.cstr(), args);
     va_end(args);
     return result;
 }
 
 Utf8 toErr(ErrorID idx)
 {
-    return form("[%s] %s", g_ErrList[idx], g_E[idx].c_str());
+    return form("[%s] %s", g_ErrList[idx], g_E[idx].cstr());
 }
 
 Utf8 toNte(ErrorID idx)

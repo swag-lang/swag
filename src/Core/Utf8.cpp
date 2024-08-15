@@ -162,7 +162,7 @@ Utf8 Utf8::toZeroTerminated() const
     return res;
 }
 
-const char* Utf8::c_str() const
+const char* Utf8::cstr() const
 {
     if (!buffer)
         return "";
@@ -290,7 +290,7 @@ void Utf8::operator+=(uint32_t c)
 
 Utf8::operator const char*() const
 {
-    return c_str();
+    return cstr();
 }
 
 Utf8::operator std::string_view() const

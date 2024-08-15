@@ -118,7 +118,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         std::error_code err;
         if (!std::filesystem::exists(outFileFame, err))
             return false;
-        const auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
+        const auto timeOut = OS::getFileWriteTime(outFileFame.cstr());
         if (!invert && timeOut < moreRecentSourceFile)
             return false;
         if (invert && timeOut > moreRecentSourceFile)
@@ -269,7 +269,7 @@ bool Backend::setupExportFile(bool force)
         return false;
 
     const Utf8 exportName = module->name + ".swg";
-    publicPath.append(exportName.c_str());
+    publicPath.append(exportName.cstr());
     exportFileName = exportName;
     exportFilePath = publicPath;
     if (!force)

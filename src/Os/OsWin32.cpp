@@ -103,7 +103,7 @@ namespace OS
 
         g_WinSdkFolder.append(bestName);
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(form("winsdk path is [[%s]]", g_WinSdkFolder.c_str()));
+            g_Log.messageVerbose(form("winsdk path is [[%s]]", g_WinSdkFolder.cstr()));
 
         return true;
     }
@@ -188,7 +188,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            Report::error(formErr(Err0538, cmdline.c_str()));
+            Report::error(formErr(Err0538, cmdline.cstr()));
             return false;
         }
 
@@ -202,7 +202,7 @@ namespace OS
 
         {
             if (!CreateProcessA(nullptr,
-                                const_cast<LPSTR>(cmdline.c_str()),
+                                const_cast<LPSTR>(cmdline.cstr()),
                                 nullptr,
                                 nullptr,
                                 TRUE,
@@ -212,7 +212,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                Report::errorOS(formErr(Err0537, cmdline.c_str()));
+                Report::errorOS(formErr(Err0537, cmdline.cstr()));
                 return false;
             }
         }
@@ -293,7 +293,7 @@ namespace OS
                         g_Log.lock();
                         g_Log.setColor(LogColor::Red);
                         numErrors++;
-                        std::cout << cmdline.c_str();
+                        std::cout << cmdline.cstr();
                         std::cout << ": access violation during process execution\n";
                         g_Log.setDefaultColor();
                         g_Log.unlock();
@@ -303,7 +303,7 @@ namespace OS
                         g_Log.lock();
                         g_Log.setColor(LogColor::Red);
                         numErrors++;
-                        std::cout << cmdline.c_str();
+                        std::cout << cmdline.cstr();
                         std::cout << ": process execution failed\n";
                         g_Log.setDefaultColor();
                         g_Log.unlock();

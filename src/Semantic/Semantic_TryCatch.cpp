@@ -22,10 +22,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline()->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, formErr(Err0311, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0311, node->token.cstr(), node->token.cstr(), parentFct->token.cstr())});
 
     if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, formErr(Err0312, node->token.c_str(), node->token.c_str(), parentFct->token.c_str())});
+        return context->report({node, node->token, formErr(Err0312, node->token.cstr(), node->token.cstr(), parentFct->token.cstr())});
 
     return true;
 }
@@ -44,7 +44,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->lastChild();
-    Diagnostic err{node, node->token, formErr(Err0385, lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())};
+    Diagnostic err{node, node->token, formErr(Err0385, lastChild->token.cstr(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).cstr())};
     err.addNote(lastChild, toNte(Nte0167));
     return context->report(err);
 }

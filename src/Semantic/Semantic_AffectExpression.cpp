@@ -163,7 +163,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (left == left->parent->lastChild())
         {
-            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             err.addNote(toNte(Nte0087));
@@ -172,13 +172,13 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
+            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
             return context->report(err);
         }
 
-        Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
         err.addNote(left, Diagnostic::isType(left->typeInfo));
         err.addNote(note);
         return context->report(err);
@@ -274,19 +274,19 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_nodrop.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_nodrop.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_moveraw.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_moveraw.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_move.c_str(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0557, leftConcrete->getDisplayNameC(), g_LangSpec->name_move.cstr(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
-        Diagnostic err{node, node->token, formErr(Err0620, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0620, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -337,7 +337,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic err{node, node->token, formErr(Err0623, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0623, node->token.cstr())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
@@ -357,7 +357,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     }
                     else if (forTuple)
                     {
-                        return context->report({node, node->token, formErr(Err0623, node->token.c_str())});
+                        return context->report({node, node->token, formErr(Err0623, node->token.cstr())});
                     }
                     else
                     {

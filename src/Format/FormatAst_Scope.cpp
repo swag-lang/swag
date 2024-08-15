@@ -38,7 +38,7 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
             AstFuncDecl* funcNode = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
             funcNode->computeFullNameForeignExport();
             concat->addIndent(context.indent);
-            concat->addStringFormat(R"(#[Foreign("%s", "%s")])", module->name.c_str(), funcNode->fullnameForeignExport.c_str());
+            concat->addStringFormat(R"(#[Foreign("%s", "%s")])", module->name.cstr(), funcNode->fullnameForeignExport.cstr());
             concat->addEol();
             SWAG_CHECK(outputAttributes(context, funcNode, funcNode->typeInfo));
 

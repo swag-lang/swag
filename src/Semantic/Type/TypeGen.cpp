@@ -91,7 +91,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     if (storageSegment->kind != SegmentKind::Compiler)
     {
         if (context && g_CommandLine.verboseConcreteTypes)
-            g_Log.messageVerbose(form("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
+            g_Log.messageVerbose(form("%s %s\n", context->sourceFile->module->name.cstr(), typeName.cstr()));
 #ifdef SWAG_STATS
         ++g_Stats.totalConcreteTypes;
 #endif

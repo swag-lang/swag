@@ -445,7 +445,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, formErr(Err0223, identifier->typeInfo->name.c_str())});
+        return context->report({callP, formErr(Err0223, identifier->typeInfo->name.cstr())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->is(AstNodeKind::ExpressionList))

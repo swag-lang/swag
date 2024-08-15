@@ -194,7 +194,7 @@ Utf8 AstFuncDecl::getNameForUserCompiler() const
 const char* AstFuncDecl::getDisplayNameC() const
 {
     const auto res = getDisplayName();
-    return _strdup(res.c_str()); // Leak and slow, but only for messages
+    return _strdup(res.cstr()); // Leak and slow, but only for messages
 }
 
 Utf8 AstFuncDecl::getDisplayName() const
@@ -321,7 +321,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                 const auto nodeFunc = castAst<AstFuncDecl>(sub, AstNodeKind::FuncDecl);
                 if (sym)
                 {
-                    const Diagnostic err{nodeFunc, nodeFunc->tokenName, formErr(Err0528, "function", sub->token.c_str())};
+                    const Diagnostic err{nodeFunc, nodeFunc->tokenName, formErr(Err0528, "function", sub->token.cstr())};
                     return context->report(err);
                 }
 
@@ -359,7 +359,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                 const auto nodeStruct = castAst<AstStruct>(sub, AstNodeKind::StructDecl);
                 if (sym)
                 {
-                    const Diagnostic err{nodeStruct, nodeStruct->tokenName, formErr(Err0528, "struct", sub->token.c_str())};
+                    const Diagnostic err{nodeStruct, nodeStruct->tokenName, formErr(Err0528, "struct", sub->token.cstr())};
                     return context->report(err);
                 }
 
@@ -371,7 +371,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
             case AstNodeKind::InterfaceDecl:
                 if (sym)
                 {
-                    const Diagnostic err{sub, sub->token, formErr(Err0528, "interface", sub->token.c_str())};
+                    const Diagnostic err{sub, sub->token, formErr(Err0528, "interface", sub->token.cstr())};
                     return context->report(err);
                 }
 

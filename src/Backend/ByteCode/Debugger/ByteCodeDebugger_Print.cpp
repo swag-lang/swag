@@ -42,7 +42,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
             exprCmds.pop_back();
         else if (exprCmds.back().startsWith("--"))
         {
-            printCmdError(form("invalid format [[%s]]", exprCmds.back().c_str()));
+            printCmdError(form("invalid format [[%s]]", exprCmds.back().cstr()));
             return BcDbgCommandResult::Error;
         }
     }
@@ -193,7 +193,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         }
         else if (arg.split.back().startsWith("--"))
         {
-            printCmdError(form("invalid format [[%s]]", arg.split.back().c_str()));
+            printCmdError(form("invalid format [[%s]]", arg.split.back().cstr()));
             return BcDbgCommandResult::Error;
         }
     }

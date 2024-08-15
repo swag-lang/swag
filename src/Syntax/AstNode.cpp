@@ -645,7 +645,7 @@ void AstNode::printLoc() const
 {
     if (!token.sourceFile)
         return;
-    printf("%s:%d:%d\n", token.sourceFile->path.c_str(), token.startLocation.line + 1, token.startLocation.column + 1);
+    printf("%s:%d:%d\n", token.sourceFile->path.cstr(), token.startLocation.line + 1, token.startLocation.column + 1);
 }
 
 uint32_t AstNode::childParentIdx() const

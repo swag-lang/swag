@@ -301,7 +301,7 @@ bool Concat::flushToFile(const Path& path)
     FILE* f = nullptr;
     if (fopen_s(&f, path, "wb"))
     {
-        Report::errorOS(formErr(Err0078, path.c_str()));
+        Report::errorOS(formErr(Err0078, path.cstr()));
         return false;
     }
 

@@ -286,14 +286,14 @@ void Log::write(const char* message, const LogWriteContext* logContext)
     if (logContext && logContext->raw)
         std::cout << message;
     else
-        std::cout << format(message, logContext).c_str();
+        std::cout << format(message, logContext).cstr();
 }
 
 void Log::print(const Utf8& message, const LogWriteContext* logContext)
 {
     if (message.length() == 0)
         return;
-    write(message.c_str(), logContext);
+    write(message.cstr(), logContext);
 }
 
 void Log::print(const char* message, LogColor color)

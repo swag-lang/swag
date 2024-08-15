@@ -618,7 +618,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 
         if (!ok)
         {
-            Diagnostic err{node, formErr(Err0454, node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
+            Diagnostic err{node, formErr(Err0454, node->token.cstr(), concreteTypeEnum->getDisplayNameC())};
             err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
             return context->report(err);
         }
@@ -674,7 +674,7 @@ bool Semantic::checkTypeSuffix(SemanticContext* context, const AstVarDecl* node)
     {
         if (!node->type || !node->type->typeInfo->isStruct())
         {
-            const Diagnostic err{node->assignment->firstChild(), formErr(Err0228, node->assignment->firstChild()->token.c_str())};
+            const Diagnostic err{node->assignment->firstChild(), formErr(Err0228, node->assignment->firstChild()->token.cstr())};
             return context->report(err);
         }
     }
@@ -1141,7 +1141,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     {
                         Diagnostic err{node->assignment, toErr(Err0029)};
                         err.hint = formNte(Nte0217, leftConcreteType->getDisplayNameC());
-                        err.addNote(node->assignToken, formNte(Nte0156, g_LangSpec->name_opAffect.c_str()));
+                        err.addNote(node->assignToken, formNte(Nte0156, g_LangSpec->name_opAffect.cstr()));
                         return context->report(err);
                     }
                 }
@@ -1257,7 +1257,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0742, Naming::kindName(node).c_str(), node->token.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0742, Naming::kindName(node).cstr(), node->token.cstr())}));
 
     // Type should be a correct one
     SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, toErr(Err0743)}));

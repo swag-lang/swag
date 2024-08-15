@@ -678,7 +678,7 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
 
     // Make the call
     const auto typeF = getOrCreateFuncType(buildParameters, typeFuncBC);
-    auto       func  = modu.getOrInsertFunction(funcName.c_str(), typeF);
+    auto       func  = modu.getOrInsertFunction(funcName.cstr(), typeF);
     const auto func1 = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
     // Why this can be null ????

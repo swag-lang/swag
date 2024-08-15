@@ -42,7 +42,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     // More than one match : ambiguous
     if (typeEnum.size() > 1)
     {
-        Diagnostic err{identifierRef, formErr(Err0006, identifier->token.c_str())};
+        Diagnostic err{identifierRef, formErr(Err0006, identifier->token.cstr())};
         bool       first = true;
         for (const auto t : hasEnum)
         {
@@ -75,7 +75,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             if (!hasEnum.empty())
             {
-                Diagnostic err{identifierRef, formErr(Err0698, identifier->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                Diagnostic err{identifierRef, formErr(Err0698, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
                 const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
@@ -85,7 +85,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifierRef, formErr(Err0704, identifier->token.c_str())};
+            Diagnostic err{identifierRef, formErr(Err0704, identifier->token.cstr())};
 
             // Call to a function ?
             if (testedOver.size() == 1)

@@ -34,14 +34,14 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::aKindName(ScopeKind::Enum).c_str())};
+                Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Enum).cstr())};
                 err.addNote(Diagnostic::hereIs(enumNode));
-                err.addNote(formNte(Nte0071, implNode->token.c_str()));
+                err.addNote(formNte(Nte0071, implNode->token.cstr()));
                 return context->report(err);
             }
 
-            const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0511, "symbol", "enum", enumNode->token.c_str(), asA.c_str())};
+            const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
+            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0511, "symbol", "enum", enumNode->token.cstr(), asA.cstr())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0195));
             return context->report(err);
         }

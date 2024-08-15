@@ -32,7 +32,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += form(" (path is [[%s]])", path.c_str());
+        errorStr += form(" (path is [[%s]])", path.cstr());
         Report::error(errorStr);
         OS::exit(-1);
     }
@@ -202,7 +202,7 @@ Path Workspace::getTargetPath() const
 {
     Path p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
-    p.append(getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
+    p.append(getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).cstr());
     return p;
 }
 
@@ -211,12 +211,12 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath();
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(form("target path is [[%s]]", targetPath.c_str()));
+        g_Log.messageVerbose(form("target path is [[%s]]", targetPath.cstr()));
 
     std::error_code err;
     if (!std::filesystem::exists(targetPath, err) && !std::filesystem::create_directories(targetPath, err))
     {
-        Report::errorOS(formErr(Fat0021, targetPath.c_str()));
+        Report::errorOS(formErr(Fat0021, targetPath.cstr()));
         OS::exit(-1);
     }
 
@@ -224,27 +224,27 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!std::filesystem::exists(cachePath, err))
     {
-        Report::errorOS(formErr(Fat0010, cachePath.c_str()));
+        Report::errorOS(formErr(Fat0010, cachePath.cstr()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!std::filesystem::exists(cachePath, err) && !std::filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(formErr(Fat0016, cachePath.c_str()));
+        Report::errorOS(formErr(Fat0016, cachePath.cstr()));
         OS::exit(-1);
     }
 
     const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-    cachePath.append(workspacePath.filename() + "-" + targetFullName.c_str());
+    cachePath.append(workspacePath.filename() + "-" + targetFullName.cstr());
     if (!std::filesystem::exists(cachePath, err) && !std::filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(formErr(Fat0016, cachePath.c_str()));
+        Report::errorOS(formErr(Fat0016, cachePath.cstr()));
         OS::exit(-1);
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(form("cache path is [[%s]]", cachePath.c_str()));
+        g_Log.messageVerbose(form("cache path is [[%s]]", cachePath.cstr()));
 }
 
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
@@ -280,11 +280,11 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     if (depNode)
     {
-        msg = formNte(Nte0110, Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), Naming::kindName(depNode).c_str(), depNode->token.c_str());
+        msg = formNte(Nte0110, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), Naming::kindName(depNode).cstr(), depNode->token.cstr());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = formNte(Nte0144, Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), prevJob->waitingType->getDisplayNameC());
+        msg  = formNte(Nte0144, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
@@ -297,7 +297,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     }
     else
     {
-        msg  = formNte(Nte0024, Naming::kindName(prevNode).c_str(), prevNode->token.c_str());
+        msg  = formNte(Nte0024, Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -310,7 +310,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
             case AstNodeKind::VarDecl:
             case AstNodeKind::EnumValue:
                 msg += " ";
-                msg += form("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.c_str());
+                msg += form("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).cstr(), prevJob->waitingHintNode->token.cstr());
                 break;
             default:
                 break;
@@ -323,7 +323,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     Utf8 remark, sym;
     if (prevJob->waitingSymbolSolved)
-        sym = form("%s [[%s]]", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
+        sym = form("%s [[%s]]", Naming::kindName(prevJob->waitingSymbolSolved->kind).cstr(), prevJob->waitingSymbolSolved->getFullName().cstr());
 
     switch (prevJob->waitingKind)
     {
@@ -338,10 +338,10 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
             remark = "waiting for the type to be exported";
             break;
         case JobWaitKind::SemFullResolve:
-            remark = form("waiting for %s to be fully solved", sym.c_str());
+            remark = form("waiting for %s to be fully solved", sym.cstr());
             break;
         case JobWaitKind::WaitSymbol:
-            remark = form("waiting for %s to be solved", sym.c_str());
+            remark = form("waiting for %s to be solved", sym.cstr());
             break;
     }
 
@@ -400,7 +400,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
-                    auto       msg    = formNte(Nte0110, Naming::kindName(front).c_str(), front->token.c_str(), Naming::kindName(back).c_str(), back->token.c_str());
+                    auto       msg    = formNte(Nte0110, Naming::kindName(front).cstr(), front->token.cstr(), Naming::kindName(back).cstr(), back->token.cstr());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
@@ -418,7 +418,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic err{prevNodeLocal, prevNodeLocal->token, formErr(Err0535, Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
+            Diagnostic err{prevNodeLocal, prevNodeLocal->token, formErr(Err0535, Naming::kindName(prevNodeLocal).cstr(), prevNodeLocal->token.cstr())};
             Report::report(err, notes);
             const auto sourceFile             = Report::getDiagFile(err);
             sourceFile->module->hasCycleError = true;
@@ -679,7 +679,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            Report::error(formErr(Fat0029, g_CommandLine.moduleName.c_str()));
+            Report::error(formErr(Fat0029, g_CommandLine.moduleName.cstr()));
             return false;
         }
 
@@ -694,7 +694,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    Report::error(formErr(Fat0011, dep->name.c_str()));
+                    Report::error(formErr(Fat0011, dep->name.cstr()));
                     return false;
                 }
 
@@ -827,20 +827,20 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.messageVerbose(form("workspace path is [[%s]]", workspacePath.c_str()));
+                g_Log.messageVerbose(form("workspace path is [[%s]]", workspacePath.cstr()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename());
             else
             {
                 const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-                g_Log.messageHeaderCentered("Workspace", form("%s [%s]", workspacePath.filename().c_str(), targetFullName.c_str()));
+                g_Log.messageHeaderCentered("Workspace", form("%s [%s]", workspacePath.filename().cstr(), targetFullName.cstr()));
             }
         }
         else
         {
             const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
             const Path p              = g_CommandLine.fileName;
-            g_Log.messageHeaderCentered("Script", form("%s [%s]", p.filename().c_str(), targetFullName.c_str()));
+            g_Log.messageHeaderCentered("Script", form("%s [%s]", p.filename().cstr(), targetFullName.cstr()));
         }
 
         addBootstrap();

@@ -51,7 +51,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
                 {
                     if (!bkp.autoDisabled)
                     {
-                        printMsgBkp(form("breakpoint hit #%d: function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
+                        printMsgBkp(form("breakpoint hit #%d: function with a match on [[%s]]", idxBkp, bkp.name.cstr()));
                         stepMode          = DebugStepMode::None;
                         context->debugOn  = true;
                         forcePrintContext = true;
@@ -185,17 +185,17 @@ void ByteCodeDebugger::printBreakpoint(const ByteCodeRunContext* context, uint32
     {
         case DebugBkpType::FuncName:
             if (bkp.funcNameCount == 1)
-                g_Log.print(form("start of function [[%s]] in file [[%s]]:[[%d]]", bkp.name.c_str(), bkp.bc->node->token.sourceFile->path.c_str(), bkp.bc->node->token.startLocation.line + 1));
+                g_Log.print(form("start of function [[%s]] in file [[%s]]:[[%d]]", bkp.name.cstr(), bkp.bc->node->token.sourceFile->path.cstr(), bkp.bc->node->token.startLocation.line + 1));
             else
-                g_Log.print(form("function with a match on [[%s]] (%d matches)", bkp.name.c_str(), bkp.funcNameCount));
+                g_Log.print(form("function with a match on [[%s]] (%d matches)", bkp.name.cstr(), bkp.funcNameCount));
             break;
 
         case DebugBkpType::FileLine:
-            g_Log.print(form("location [[%s]]:[[%d]]", bkp.file->path.c_str(), bkp.line));
+            g_Log.print(form("location [[%s]]:[[%d]]", bkp.file->path.cstr(), bkp.line));
             break;
 
         case DebugBkpType::InstructionIndex:
-            g_Log.print(form("instruction index [[%d]] in [[%s]]", bkp.line, bkp.bc->getPrintName().c_str()));
+            g_Log.print(form("instruction index [[%d]] in [[%s]]", bkp.line, bkp.bc->getPrintName().cstr()));
             break;
 
         case DebugBkpType::Memory:
@@ -272,9 +272,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnableDisable(ByteCodeRunContext* /
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].cstr()))
     {
-        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -342,9 +342,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const Bc
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].cstr()))
     {
-        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid breakpoint number [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -401,7 +401,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (match.empty())
     {
-        printCmdError(form("no function match for [[%s]]", bkp.name.c_str()));
+        printCmdError(form("no function match for [[%s]]", bkp.name.cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -424,9 +424,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].cstr()))
     {
-        printCmdError(form("invalid line number [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid line number [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -447,7 +447,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     (void) loc.file->getLine(0);
     if (bkp.line == 0 || bkp.line >= loc.file->allLines.size() + 1)
     {
-        printCmdError(form("out of range line number [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("out of range line number [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -468,9 +468,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakInstruction(ByteCodeRunContext* con
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].cstr()))
     {
-        printCmdError(form("invalid instruction index [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid instruction index [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -487,7 +487,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakInstruction(ByteCodeRunContext* con
 
     if (bkp.line >= g_ByteCodeDebugger.cxtBc->numInstructions)
     {
-        printCmdError(form("out of range instructionindex [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("out of range instructionindex [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -508,9 +508,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     if (arg.split.size() > 4)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[3].c_str()))
+    if (!Utf8::isNumber(arg.split[3].cstr()))
     {
-        printCmdError(form("invalid line number [[%s]]", arg.split[3].c_str()));
+        printCmdError(form("invalid line number [[%s]]", arg.split[3].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -519,14 +519,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
-    auto curFile = g_Workspace->getFileByName(arg.split[2].c_str());
+    auto curFile = g_Workspace->getFileByName(arg.split[2].cstr());
     if (!curFile)
         curFile = g_Workspace->getFileByName(arg.split[2] + ".swg");
     if (!curFile)
         curFile = g_Workspace->getFileByName(arg.split[2] + ".swgs");
     if (!curFile)
     {
-        printCmdError(form("cannot find file [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("cannot find file [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -540,7 +540,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     (void) curFile->getLine(0);
     if (bkp.line == 0 || bkp.line >= curFile->allLines.size() + 1)
     {
-        printCmdError(form("out of range line number [[%s]]", arg.split[3].c_str()));
+        printCmdError(form("out of range line number [[%s]]", arg.split[3].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -669,6 +669,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const
     if (arg.split[1] == "line")
         return cmdBreakLine(context, arg);
 
-    printCmdError(form("invalid [[break]] command [[%s]]", arg.split[1].c_str()));
+    printCmdError(form("invalid [[break]] command [[%s]]", arg.split[1].cstr()));
     return BcDbgCommandResult::Error;
 }

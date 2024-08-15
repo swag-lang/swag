@@ -325,7 +325,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, formErr(Err0527, expr->computedValue()->text.c_str())};
+                        Diagnostic err{expr, formErr(Err0527, expr->computedValue()->text.cstr())};
                         err.addNote(valDef[idx], toNte(Nte0195));
                         return context->report(err);
                     }
@@ -344,9 +344,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         const auto note = Diagnostic::note(valDef[idx], toNte(Nte0195));
                         if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, formErr(Err0526, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0526, expr->token.cstr())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, formErr(Err0526, expr->token.c_str())}, note);
+                            return context->report({expr, formErr(Err0526, expr->token.cstr())}, note);
                         if (typeExpr->isNativeInteger())
                             return context->report({expr, formErr(Err0524, expr->computedValue()->reg.u64)}, note);
                         return context->report({expr, formErr(Err0525, expr->computedValue()->reg.f64)}, note);
@@ -390,7 +390,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.cstr(), one->name.cstr())};
                             err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
                             return context->report(err);
                         }
@@ -404,7 +404,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.c_str(), one->name.c_str())};
+                            Diagnostic err{node, node->token, formErr(Err0429, typeEnum->name.cstr(), one->name.cstr())};
                             err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
                             return context->report(err);
                         }
@@ -623,7 +623,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             newExpression = identifierRef;
         }
 
-        callVisit = Ast::newIdentifier(identifierRef, form(R"(opVisit%s)", node->extraNameToken.c_str()), nullptr, identifierRef);
+        callVisit = Ast::newIdentifier(identifierRef, form(R"(opVisit%s)", node->extraNameToken.cstr()), nullptr, identifierRef);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node->token);
@@ -662,7 +662,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     if (!node->extraNameToken.text.empty())
     {
-        Diagnostic err{node, node->extraNameToken, formErr(Err0690, Naming::aKindName(typeInfo).c_str())};
+        Diagnostic err{node, node->extraNameToken, formErr(Err0690, Naming::aKindName(typeInfo).cstr())};
         err.addNote(node->expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -710,8 +710,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 2;
         content += "{ ";
-        content += form(R"(let __addr%u = cast(%s ^%s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
-        content += form(R"(loop%s %u { )", visitBack.c_str(), typeArray->totalCount);
+        content += form(R"(let __addr%u = cast(%s ^%s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.cstr(), id);
+        content += form(R"(loop%s %u { )", visitBack.cstr(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -751,7 +751,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 1;
         content += "{ ";
-        content += form(R"(loop%s %u { )", visitBack.c_str(), typeArray->totalCount);
+        content += form(R"(loop%s %u { )", visitBack.cstr(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -790,7 +790,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
-        content += form(R"(loop%s __tmp%u { )", visitBack.c_str(), id);
+        content += form(R"(loop%s __tmp%u { )", visitBack.cstr(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += "let ";
@@ -826,7 +826,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
-        content += form(R"(loop%s __tmp%u { )", visitBack.c_str(), id);
+        content += form(R"(loop%s __tmp%u { )", visitBack.cstr(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -855,11 +855,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(err);
         }
 
-        content += form(R"({ loop%s %s { )", visitBack.c_str(), result.c_str());
+        content += form(R"({ loop%s %s { )", visitBack.cstr(), result.cstr());
         firstAliasVar = 0;
         content += R"(let )";
         content += alias0Name;
-        content += form(R"( = %s[#index]; )", result.c_str());
+        content += form(R"( = %s[#index]; )", result.cstr());
 
         content += R"(let )";
         content += alias1Name;
@@ -877,8 +877,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += form(R"({ let __addr%u = @typeof(%s); )", id, result.c_str());
-        content += form(R"(loop%s %d { )", visitBack.c_str(), typeEnum->values.size());
+        content += form(R"({ let __addr%u = @typeof(%s); )", id, result.cstr());
+        content += form(R"(loop%s %d { )", visitBack.cstr(), typeEnum->values.size());
         firstAliasVar = 1;
         content += R"(let )";
         content += alias0Name;
@@ -1020,7 +1020,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
         auto breakable = node->safeOwnerBreakable();
         while (breakable && (breakable->isNot(AstNodeKind::ScopeBreakable) || breakable->token.text != node->label.text))
             breakable = breakable->safeOwnerBreakable();
-        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, formErr(Err0712, node->label.text.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, formErr(Err0712, node->label.text.cstr())}));
         node->setOwnerBreakable(breakable);
     }
 

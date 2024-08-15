@@ -684,7 +684,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 g_Log.print(LogSymbol::HorizontalLine);
             g_Log.writeEol();
 
-            g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
+            g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.cstr()));
 
             const Module* module = nullptr;
             if (context->bc->sourceFile)
@@ -782,16 +782,16 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         switch (result)
         {
             case BcDbgCommandResult::BadArguments:
-                printCmdError(form("bad arguments for command [[%s]]", arg.cmd.c_str()));
+                printCmdError(form("bad arguments for command [[%s]]", arg.cmd.cstr()));
                 break;
             case BcDbgCommandResult::NotEnoughArguments:
-                printCmdError(form("not enough arguments for command [[%s]]", arg.cmd.c_str()));
+                printCmdError(form("not enough arguments for command [[%s]]", arg.cmd.cstr()));
                 break;
             case BcDbgCommandResult::TooManyArguments:
-                printCmdError(form("too many arguments for command [[%s]]", arg.cmd.c_str()));
+                printCmdError(form("too many arguments for command [[%s]]", arg.cmd.cstr()));
                 break;
             case BcDbgCommandResult::Invalid:
-                printCmdError(form("unknown debugger command [[%s]]", arg.cmd.c_str()));
+                printCmdError(form("unknown debugger command [[%s]]", arg.cmd.cstr()));
                 break;
         }
 
@@ -830,7 +830,7 @@ bool ByteCodeDebugger::replaceSegmentPointer(Utf8& result, const Utf8& name, Seg
     }
 
     err = true;
-    printCmdError(form("no corresponding [[%s]] segment pointer", segName.c_str()));
+    printCmdError(form("no corresponding [[%s]] segment pointer", segName.cstr()));
     return false;
 }
 
@@ -843,7 +843,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
         Utf8 result;
         result.reserve(cmdExpr.length());
 
-        auto pz = cmdExpr.c_str();
+        auto pz = cmdExpr.cstr();
         while (*pz)
         {
             if (*pz != '$')
@@ -933,7 +933,7 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 const int num = value.toInt();
                 if (num >= static_cast<int>(evalExpr.size()))
                 {
-                    printCmdError(form("invalid expression number [[$%s]] (out of range)", value.c_str()));
+                    printCmdError(form("invalid expression number [[$%s]] (out of range)", value.cstr()));
                     return false;
                 }
 

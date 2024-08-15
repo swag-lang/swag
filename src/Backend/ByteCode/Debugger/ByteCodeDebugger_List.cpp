@@ -18,9 +18,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].cstr()))
     {
-        printCmdError(form("invalid instruction count [[%s]]", arg.split[1].c_str()));
+        printCmdError(form("invalid instruction count [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -69,9 +69,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].cstr()))
     {
-        printCmdError(form("invalid line count [[%s]]", arg.split[1].c_str()));
+        printCmdError(form("invalid line count [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -141,13 +141,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdSource(ByteCodeRunContext* context, cons
 
     if (!res.node || !res.node->resolvedSymbolOverload())
     {
-        printCmdError(form("cannot evaluate expression [[%s]]", arg.cmdExpr.c_str()));
+        printCmdError(form("cannot evaluate expression [[%s]]", arg.cmdExpr.cstr()));
         return BcDbgCommandResult::Error;
     }
 
     const auto   node = res.node->resolvedSymbolOverload()->node;
     Vector<Utf8> toPrint;
-    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).c_str(), node->token.sourceFile->path.c_str(), node->token.startLocation.line + 1));
+    toPrint.push_back(form("%s%s:%d", Log::colorToVTS(LogColor::Location).cstr(), node->token.sourceFile->path.cstr(), node->token.startLocation.line + 1));
 
     FormatConcat  tmpConcat;
     FormatAst     fmtAst{tmpConcat};

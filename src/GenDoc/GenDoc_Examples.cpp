@@ -6,20 +6,20 @@
 
 void GenDoc::addTitle(const Utf8& title, int level)
 {
-    helpContent += form("<h%d id=\"%s\">", level, title.c_str());
+    helpContent += form("<h%d id=\"%s\">", level, title.cstr());
     helpContent += title;
     helpContent += form("</h%d>", level);
 
-    helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", title.c_str(), title.c_str());
+    helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", title.cstr(), title.cstr());
 }
 
 bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 {
-    std::ifstream ifs(fileName.c_str());
+    std::ifstream ifs(fileName.cstr());
 
     if (!ifs)
     {
-        Report::errorOS(formErr(Err0078, fileName.c_str()));
+        Report::errorOS(formErr(Err0078, fileName.cstr()));
         return false;
     }
 
@@ -37,11 +37,11 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 {
-    std::ifstream ifs(fileName.c_str());
+    std::ifstream ifs(fileName.cstr());
 
     if (!ifs)
     {
-        Report::errorOS(formErr(Err0078, fileName.c_str()));
+        Report::errorOS(formErr(Err0078, fileName.cstr()));
         return false;
     }
 
@@ -113,7 +113,7 @@ bool GenDoc::generateExamples()
         addTocTitle(name, title, titleLevel);
 
         helpContent += "\n";
-        helpContent += form("<h%d id=\"%s\">", titleLevel + 1, getTocTitleRef().c_str());
+        helpContent += form("<h%d id=\"%s\">", titleLevel + 1, getTocTitleRef().cstr());
         helpContent += title;
         helpContent += form("</h%d>", titleLevel + 1);
 

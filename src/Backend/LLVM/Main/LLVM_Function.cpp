@@ -34,7 +34,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Function prototype
     auto funcType = getOrCreateFuncType(buildParameters, typeFunc);
-    auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee());
+    auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.cstr(), funcType).getCallee());
     setFuncAttributes(buildParameters, bcFuncNode, bc, func);
 
     // Content
@@ -4461,13 +4461,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicCompilerError:
             {
                 auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
-                emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+                emitCall(buildParameters, bcF->getCallName().cstr(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
             case ByteCodeOp::IntrinsicCompilerWarning:
             {
                 auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
-                emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+                emitCall(buildParameters, bcF->getCallName().cstr(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
 
@@ -5333,7 +5333,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 TypeInfoFuncAttr* typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
                 auto llvmFctTy = getOrCreateFuncType(buildParameters, typeFuncNode);
-                auto llvmFct   = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(callName.c_str(), llvmFctTy).getCallee());
+                auto llvmFct   = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(callName.cstr(), llvmFctTy).getCallee());
 
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
                 builder.CreateStore(TO_PTR_I8(llvmFct), r0);
@@ -6031,7 +6031,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, 
     const auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, form("%lld", ip).c_str(), func);
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, form("%lld", ip).cstr(), func);
         pp.labels[ip]           = label;
         return label;
     }

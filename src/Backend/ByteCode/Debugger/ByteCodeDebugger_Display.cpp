@@ -36,9 +36,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext*, const 
     if (arg.split.size() > 3)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].cstr()))
     {
-        printCmdError(form("invalid expression number [[%s]]", arg.split[2].c_str()));
+        printCmdError(form("invalid expression number [[%s]]", arg.split[2].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -65,7 +65,7 @@ void ByteCodeDebugger::printDisplayList() const
     g_Log.setColor(LogColor::Gray);
     for (uint32_t i = 0; i < display.size(); i++)
     {
-        g_Log.print(form("#%d: %s", i + 1, display[i].c_str()));
+        g_Log.print(form("#%d: %s", i + 1, display[i].cstr()));
         g_Log.writeEol();
     }
 }

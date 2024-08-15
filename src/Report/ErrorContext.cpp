@@ -103,7 +103,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 const auto sym      = exp.node->resolvedSymbolName();
 
                 if (overload && overload->node->ownerStructScope)
-                    name = form("%s.%s", overload->node->ownerStructScope->name.c_str(), overload->symbol->name.c_str());
+                    name = form("%s.%s", overload->node->ownerStructScope->name.cstr(), overload->symbol->name.cstr());
                 else if (sym)
                     name = sym->name;
                 else
@@ -116,30 +116,30 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::DuringGeneric:
-                    msg             = formNte(Nte0097, name.c_str());
+                    msg             = formNte(Nte0097, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringInline:
-                    msg             = formNte(Nte0098, name.c_str());
+                    msg             = formNte(Nte0098, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringCompileTime:
-                    msg             = formNte(Nte0093, name.c_str());
+                    msg             = formNte(Nte0093, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringWhere:
                     if (exp.node->is(AstNodeKind::StructDecl))
-                        msg = formNte(Nte0095, name.c_str());
+                        msg = formNte(Nte0095, name.cstr());
                     else
-                        msg = formNte(Nte0096, name.c_str());
+                        msg = formNte(Nte0096, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringWhereCall:
-                    msg             = formNte(Nte0094, name.c_str());
+                    msg             = formNte(Nte0094, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;

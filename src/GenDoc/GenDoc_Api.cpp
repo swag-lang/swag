@@ -193,7 +193,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                 parameters += ")";
             }
 
-            helpContent += form(R"(<span class="%s"><a href="#%s">%s</a></span>)", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
+            helpContent += form(R"(<span class="%s"><a href="#%s">%s</a></span>)", SYN_FUNCTION, toRef(n1->getScopedName()).cstr(), n1->token.text.cstr());
             SyntaxColorContext cxt;
             cxt.mode = SyntaxColorMode::ForDoc;
             helpContent += doSyntaxColor(parameters, cxt, true);
@@ -203,7 +203,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             SyntaxColorContext cxt;
             cxt.mode  = SyntaxColorMode::ForDoc;
             auto name = doSyntaxColor(n1->token.text, cxt, true);
-            helpContent += form("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
+            helpContent += form("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).cstr(), name.cstr());
         }
 
         helpContent += "</td>\n";
@@ -265,12 +265,12 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "<table class=\"api-item\">\n";
     helpContent += "<tr>\n";
     helpContent += "<td class=\"api-item\">\n";
-    helpContent += form("<span id=\"%s\">", toRef(c.fullName).c_str());
+    helpContent += form("<span id=\"%s\">", toRef(c.fullName).cstr());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
 
-    helpContent += form("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
+    helpContent += form("<span class=\"api-item-title-kind\">%s</span> ", name.cstr());
 
     helpContent += "<span class=\"api-item-title-light\">";
     for (uint32_t i = 0; i < tkn.size() - 1; i++)
@@ -303,14 +303,14 @@ void GenDoc::outputTitle(OneRef& c)
             {
                 Utf8 pathFile = c.nodes[0]->token.sourceFile->path;
                 pathFile.remove(0, module->path.length() + 1);
-                str.append(pathFile.c_str());
+                str.append(pathFile.cstr());
             }
             else
             {
-                str.append(c.nodes[0]->token.sourceFile->name.c_str());
+                str.append(c.nodes[0]->token.sourceFile->name.cstr());
             }
 
-            helpContent += form(R"(<a href="%s#L%d" class="src">[src]</a>)", str.c_str(), c.nodes[0]->token.startLocation.line + 1);
+            helpContent += form(R"(<a href="%s#L%d" class="src">[src]</a>)", str.cstr(), c.nodes[0]->token.startLocation.line + 1);
         }
 
         helpContent += "</td>\n";
@@ -476,7 +476,7 @@ void GenDoc::generateTocCategory(bool& first, AstNodeKind kind, const char* sect
     helpToc += form("<h4>%s</h4>\n", categName);
     helpToc += "<ul>\n";
     for (const auto& t : pendingNodes)
-        helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
+        helpToc += form("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).cstr(), t->tocName.cstr());
     helpToc += "</ul>\n";
 
     pendingNodes.clear();
@@ -816,7 +816,7 @@ void GenDoc::generateContentTypeAlias(uint32_t& i, OneRef& c)
 
         helpContent += "<tr>\n";
 
-        helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+        helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).cstr());
         helpContent += n->token.text;
         helpContent += "</td>\n";
 
@@ -856,7 +856,7 @@ void GenDoc::generateContentConst(uint32_t& i, OneRef& c)
 
         helpContent += "<tr>\n";
 
-        helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+        helpContent += form("<td id=\"%s\">", toRef(n->getScopedName()).cstr());
         helpContent += n->token.text;
         helpContent += "</td>\n";
 

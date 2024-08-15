@@ -283,14 +283,14 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     Diagnostic err{node,
                    node->getTokenName(),
                    formErr(Err0286,
-                           Naming::kindName(node->resolvedSymbolOverload()).c_str(),
-                           node->token.c_str(),
-                           Naming::kindName(culprit->resolvedSymbolOverload()).c_str(),
-                           culprit->token.c_str(),
+                           Naming::kindName(node->resolvedSymbolOverload()).cstr(),
+                           node->token.cstr(),
+                           Naming::kindName(culprit->resolvedSymbolOverload()).cstr(),
+                           culprit->token.cstr(),
                            accessCulprit)};
 
     if (onNode == culprit)
-        err.addNote(culprit, culprit->token, formNte(Nte0158, Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
+        err.addNote(culprit, culprit->token, formNte(Nte0158, Naming::kindName(culprit->resolvedSymbolOverload()).cstr(), accessCulprit));
     else
     {
         err.addNote(onNode, onNode->token, formNte(Nte0172, accessCulprit, onNode->typeInfo->getDisplayNameC()));

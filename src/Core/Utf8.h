@@ -41,7 +41,7 @@ struct Utf8
     void reserve(uint32_t newSize);
     void resize(uint32_t newSize);
 
-    const char* c_str() const;
+    const char* cstr() const;
     char*       data() const { return buffer; }
 
     uint32_t    hash() const;

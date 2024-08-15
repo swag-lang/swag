@@ -78,12 +78,12 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(scopeKind).c_str(), implNode->token.c_str(), Naming::aKindName(newScope->kind).c_str())};
+        Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(scopeKind).cstr(), implNode->token.cstr(), Naming::aKindName(newScope->kind).cstr())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
-            err.addNote(formNte(Nte0071, implNode->token.c_str()));
+            err.addNote(formNte(Nte0071, implNode->token.cstr()));
         else if (newScope->is(ScopeKind::Struct))
-            err.addNote(formNte(Nte0070, implNode->token.c_str()));
+            err.addNote(formNte(Nte0070, implNode->token.cstr()));
         return context->report(err);
     }
 
@@ -257,14 +257,14 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::aKindName(ScopeKind::Struct).c_str())};
+                Diagnostic err{implNode, formErr(Err0285, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Struct).cstr())};
                 err.addNote(Diagnostic::hereIs(structNode));
-                err.addNote(formNte(Nte0070, implNode->token.c_str()));
+                err.addNote(formNte(Nte0070, implNode->token.cstr()));
                 return context->report(err);
             }
 
-            const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0511, "symbol", "struct", structNode->token.c_str(), asA.c_str())};
+            const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
+            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0511, "symbol", "struct", structNode->token.cstr(), asA.cstr())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0195));
             return context->report(err);
         }

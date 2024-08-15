@@ -19,7 +19,7 @@ struct SourceLocation
 #pragma pack(push, 2)
 struct Token
 {
-    const char* c_str() const { return text.c_str(); }
+    const char* cstr() const { return text.cstr(); }
 
     bool is(TokenId what) const { return id == what; }
     bool isNot(TokenId what) const { return id != what; }

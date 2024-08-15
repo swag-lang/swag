@@ -62,7 +62,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (bcFuncNode && bcFuncNode->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-            pp.directives += form("/EXPORT:%s ", funcName.c_str());
+            pp.directives += form("/EXPORT:%s ", funcName.cstr());
     }
 
     // Symbol

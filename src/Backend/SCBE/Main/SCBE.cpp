@@ -148,7 +148,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 
     if (pp.pass == BackendPreCompilePass::Init)
     {
-        pp.filename = form("%s%d", buildParameters.module->name.c_str(), precompileIndex);
+        pp.filename = form("%s%d", buildParameters.module->name.cstr(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         switch (objFileType)
@@ -257,7 +257,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     FILE* f = nullptr;
     if (fopen_s(&f, filename, "wb"))
     {
-        Report::errorOS(formErr(Err0078, filename.c_str()));
+        Report::errorOS(formErr(Err0078, filename.cstr()));
         return;
     }
 

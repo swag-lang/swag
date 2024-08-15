@@ -30,11 +30,11 @@ void LLVMDebug::setup(LLVM* m, llvm::Module* module)
     llvmContext         = &module->getContext();
     mainFile            = dbgBuilder->createFile("<stdin>", "c:/");
     const Path expPath  = m->exportFilePath;
-    exportFile          = dbgBuilder->createFile(m->exportFileName.c_str(), expPath.parent_path().c_str());
+    exportFile          = dbgBuilder->createFile(m->exportFileName.cstr(), expPath.parent_path().cstr());
     const Utf8 compiler = form("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit         = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                         mainFile,
-                                                        compiler.c_str(),
+                                                        compiler.cstr(),
                                                         isOptimized,
                                                         "",
                                                         0,
@@ -94,7 +94,7 @@ llvm::DIFile* LLVMDebug::getOrCreateFile(const SourceFile* file)
         return it->second;
 
     const Path    filePath = file->path;
-    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().c_str(), filePath.parent_path().c_str());
+    llvm::DIFile* dbgfile  = dbgBuilder->createFile(filePath.filename().cstr(), filePath.parent_path().cstr());
     mapFiles[file->path]   = dbgfile;
     return dbgfile;
 }
@@ -120,7 +120,7 @@ llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
             {
                 if (!value->value)
                     continue;
-                const auto typeField = dbgBuilder->createEnumerator(value->name.c_str(), value->value->reg.u64, isUnsigned);
+                const auto typeField = dbgBuilder->createEnumerator(value->name.cstr(), value->value->reg.u64, isUnsigned);
                 subscripts.push_back(typeField);
             }
         }
@@ -129,7 +129,7 @@ llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
         const auto rawType = getType(typeInfoEnum->rawType, file);
         const auto content = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
         typeInfo->computeScopedName();
-        const auto result  = dbgBuilder->createEnumerationType(scope, typeInfo->scopedName.c_str(), file, lineNo, static_cast<size_t>(typeInfo->sizeOf) * 8, 0, content, rawType);
+        const auto result  = dbgBuilder->createEnumerationType(scope, typeInfo->scopedName.cstr(), file, lineNo, static_cast<size_t>(typeInfo->sizeOf) * 8, 0, content, rawType);
         mapTypes[typeInfo] = result;
         return result;
     }
@@ -168,7 +168,7 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
     const auto     lineNo = typeInfo->declNode->token.startLocation.line + 1;
     typeInfo->computeScopedName();
     auto result = dbgBuilder->createStructType(scope,
-                                               typeInfo->scopedName.c_str(),
+                                               typeInfo->scopedName.cstr(),
                                                file,
                                                lineNo,
                                                static_cast<size_t>(typeInfo->sizeOf) * 8,
@@ -178,7 +178,7 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
                                                llvm::DINodeArray(),
                                                0,
                                                nullptr,
-                                               typeInfo->scopedName.c_str());
+                                               typeInfo->scopedName.cstr());
 
     // Register it right away, so that even if a struct is referencing itself, this will work
     // and won't recurse forever
@@ -192,7 +192,7 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
         const auto fieldLine = field->declNode->token.startLocation.line + 1;
         const auto fieldType = getType(field->typeInfo, file);
         const auto typeField = dbgBuilder->createMemberType(result,
-                                                            field->name.c_str(),
+                                                            field->name.cstr(),
                                                             file,
                                                             fieldLine,
                                                             static_cast<size_t>(field->typeInfo->sizeOf) * 8,
@@ -218,8 +218,8 @@ llvm::DIType* LLVMDebug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType,
 
     const auto     fileScope = file->getScope();
     constexpr auto noFlag    = llvm::DINode::DIFlags::FlagZero;
-    const auto     name      = form("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
-    auto           result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+    const auto     name      = form("[..] %s", pointedType->name.cstr()); // debugger doesn't like 'const' before slice name
+    auto           result    = dbgBuilder->createStructType(fileScope, name.cstr(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     const auto realType = getPointerToType(pointedType, file);
     auto       v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
@@ -431,7 +431,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
 
     // Register function
     const auto          mangledName = typeFunc->declNode->getScopedName();
-    llvm::DISubprogram* sp          = dbgBuilder->createFunction(file, name.c_str(), mangledName.c_str(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
+    llvm::DISubprogram* sp          = dbgBuilder->createFunction(file, name.cstr(), mangledName.cstr(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
     if (decl)
         mapScopes[decl->content->ownerScope] = sp;
 
@@ -540,7 +540,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             const auto    scope     = sp;
             llvm::DIType* type      = getType(typeParam, file);
 
-            llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.c_str(), file, loc.line + 1, type, !isOptimized);
+            llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.cstr(), file, loc.line + 1, type, !isOptimized);
 
             const auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocaVariadic, builder.getInt64(0));
             const auto arg0 = func->getArg(0);
@@ -566,7 +566,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             if (typeParam->isString() || typeParam->isSlice())
             {
                 const auto             type  = getType(typeParam, file);
-                llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.c_str(), file, loc.line + 1, type, !isOptimized);
+                llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.cstr(), file, loc.line + 1, type, !isOptimized);
 
                 if (isDebug)
                 {
@@ -598,7 +598,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
                 if (typeParam->isSelf() && child->token.is(g_LangSpec->name_self))
                     flags |= llvm::DINode::FlagObjectPointer;
 
-                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.cstr(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
 
                 llvm::Value* value = func->getArg(idxParam);
 
@@ -632,7 +632,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             {
                 llvm::DIType*          type   = getPointerToType(typeInfo, file);
                 const auto             scope  = getOrCreateScope(file, localVar->ownerScope);
-                llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+                llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.cstr(), file, localVar->token.startLocation.line, type, !isOptimized);
                 const auto             allocA = allocaRetval[idxRetVal++];
                 dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
                 builder.CreateStore(func->getArg(static_cast<uint32_t>(func->arg_size()) - 1), allocA);
@@ -641,7 +641,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             {
                 llvm::DIType*          type  = getType(typeInfo, file);
                 const auto             scope = getOrCreateScope(file, localVar->ownerScope);
-                llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+                llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.cstr(), file, localVar->token.startLocation.line, type, !isOptimized);
                 const auto             v     = builder.CreateInBoundsGEP(I8_TY(), stack, pp.builder->getInt32(overload->computedValue.storageOffset));
                 dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
@@ -738,7 +738,7 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
         llvm::DIScope* newScope;
         if (toGenScope->is(ScopeKind::Namespace))
         {
-            newScope = dbgBuilder->createNameSpace(parent, toGenScope->name.c_str(), true);
+            newScope = dbgBuilder->createNameSpace(parent, toGenScope->name.cstr(), true);
         }
         else if (toGenScope->isGlobal())
         {
@@ -794,7 +794,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             continue;
 
         auto       nameU = node->getScopedName();
-        const auto name  = nameU.c_str();
+        const auto name  = nameU.cstr();
 
         if (node->hasFlagComputedValue())
         {
@@ -845,7 +845,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             if (constant)
             {
                 const auto g   = new llvm::GlobalVariable(modu, constant->getType(), true, llvm::GlobalValue::PrivateLinkage, constant, name);
-                const auto gve = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.c_str(), name, file, 1, dbgType, true);
+                const auto gve = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.cstr(), name, file, 1, dbgType, true);
                 g->addDebugInfo(gve);
             }
         }
@@ -867,7 +867,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
 
             const auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
             const auto dbgRefType = getReferenceToType(typeInfo, file);
-            const auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.c_str(), name, file, 0, dbgRefType, true);
+            const auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.cstr(), name, file, 0, dbgRefType, true);
             g->addDebugInfo(gve);
         }
     }

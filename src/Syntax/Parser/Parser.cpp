@@ -36,7 +36,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        const Diagnostic err{sourceFile, tokenParse, formErr(Err0058, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg)};
+        const Diagnostic err{sourceFile, tokenParse, formErr(Err0058, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg)};
         return context->report(err);
     }
 
@@ -69,9 +69,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (msg[0] == 0)
         msg = "$$$";
     if (tokenParse.is(TokenId::EndOfFile))
-        errMsg = formErr(Err0417, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+        errMsg = formErr(Err0417, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     else
-        errMsg = formErr(Err0418, Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg);
+        errMsg = formErr(Err0418, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     errMsg.replace(" $$$", "");
 
     Diagnostic err{sourceFile, tokenParse, errMsg};
@@ -84,7 +84,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     else
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, formNte(Nte0209, related.c_str()));
+        err.addNote(sourceFile, start, start, formNte(Nte0209, related.cstr()));
     }
 
     if (parent)
@@ -97,7 +97,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             if (Tokenizer::isCompiler(parent->token.id) ||
                 Tokenizer::isKeyword(parent->token.id))
             {
-                err.addNote(formNte(Nte0002, parent->token.c_str()));
+                err.addNote(formNte(Nte0002, parent->token.cstr()));
             }
         }
     }
@@ -149,7 +149,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
     const auto modl = fromNode->token.sourceFile->module;
 
     tmpFilePath = modl->publicPath;
-    tmpFileName = form("%s.%d.gwg", modl->name.c_str(), g_ThreadIndex);
+    tmpFileName = form("%s.%d.gwg", modl->name.cstr(), g_ThreadIndex);
 
     uint32_t   countEol = 0;
     const auto size     = content.length();
@@ -160,7 +160,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
     }
 
     const Utf8 sourceCode = form("// %s:%d:%d:%d:%d\n",
-                                 fromNode->token.sourceFile->path.c_str(),
+                                 fromNode->token.sourceFile->path.cstr(),
                                  fromNode->token.startLocation.line + 1,
                                  fromNode->token.startLocation.column + 1,
                                  fromNode->token.endLocation.line + 1,

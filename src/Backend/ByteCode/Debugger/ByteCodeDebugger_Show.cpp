@@ -144,7 +144,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowValues(ByteCodeRunContext* /*context
     {
         const auto expr = g_ByteCodeDebugger.evalExpr[idx];
         const auto val  = g_ByteCodeDebugger.evalExprResult[idx];
-        Utf8       str  = form("$%d = %s%s%s = %s", idx, Log::colorToVTS(LogColor::Name).c_str(), expr.c_str(), Log::colorToVTS(LogColor::Default).c_str(), val.c_str());
+        Utf8       str  = form("$%d = %s%s%s = %s", idx, Log::colorToVTS(LogColor::Name).cstr(), expr.cstr(), Log::colorToVTS(LogColor::Default).cstr(), val.cstr());
         all.push_back({str, ""});
     }
 
@@ -434,7 +434,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegisters(ByteCodeRunContext* contex
     {
         if (!getValueFormat(arg.split.back(), fmt))
         {
-            printCmdError(form("invalid format [[%s]]", arg.split.back().c_str()));
+            printCmdError(form("invalid format [[%s]]", arg.split.back().cstr()));
             return BcDbgCommandResult::Error;
         }
     }
@@ -446,15 +446,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdShowRegisters(ByteCodeRunContext* contex
         Utf8  str;
         appendLiteralValue(context, str, fmt, &regP);
         str.trim();
-        g_Log.print(form("%s$r%d%s = ", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), i, Log::colorToVTS(LogColor::Default).c_str()));
+        g_Log.print(form("%s$r%d%s = ", syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(), i, Log::colorToVTS(LogColor::Default).cstr()));
         g_Log.print(str);
         g_Log.writeEol();
     }
 
-    g_Log.print(form("%s$sp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->sp));
-    g_Log.print(form("%s$bp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->bp));
-    g_Log.print(form("%s$rr0%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[0].u64));
-    g_Log.print(form("%s$rr1%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(), Log::colorToVTS(LogColor::Default).c_str(), context->registersRR[1].u64));
+    g_Log.print(form("%s$sp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(), Log::colorToVTS(LogColor::Default).cstr(), context->sp));
+    g_Log.print(form("%s$bp%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(), Log::colorToVTS(LogColor::Default).cstr(), context->bp));
+    g_Log.print(form("%s$rr0%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(), Log::colorToVTS(LogColor::Default).cstr(), context->registersRR[0].u64));
+    g_Log.print(form("%s$rr1%s = 0x%016llx\n", syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(), Log::colorToVTS(LogColor::Default).cstr(), context->registersRR[1].u64));
 
     return BcDbgCommandResult::Continue;
 }
@@ -470,10 +470,10 @@ namespace
         for (const auto& b : seg->buckets)
         {
             g_Log.print(form("%s$%s%d%s = 0x%016llx (%d)\n",
-                             syntaxColorToVTS(SyntaxColor::SyntaxRegister).c_str(),
+                             syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(),
                              name,
                              index++,
-                             Log::colorToVTS(LogColor::Default).c_str(),
+                             Log::colorToVTS(LogColor::Default).cstr(),
                              b.buffer,
                              b.size));
         }
@@ -540,6 +540,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdShow(ByteCodeRunContext* context, const 
     if (arg.split[1] == "types" || arg.split[1] == "tp")
         return cmdShowTypes(context, arg);
 
-    printCmdError(form("invalid [[show]] command [[%s]]", arg.split[1].c_str()));
+    printCmdError(form("invalid [[show]] command [[%s]]", arg.split[1].cstr()));
     return BcDbgCommandResult::Error;
 }

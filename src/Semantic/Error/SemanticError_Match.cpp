@@ -74,15 +74,15 @@ namespace
             {
                 const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
                 if (tryResult[0]->ufcs && paramIdx == 0)
-                    note = Diagnostic::note(node, node->token, form("the UFCS argument does not match (type is [[%s]])", badType.c_str()));
+                    note = Diagnostic::note(node, node->token, form("the UFCS argument does not match (type is [[%s]])", badType.cstr()));
                 else
-                    note = Diagnostic::note(node, node->token, form("the %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
+                    note = Diagnostic::note(node, node->token, form("the %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr()));
                 break;
             }
             case MatchResult::BadGenericSignature:
             {
                 const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
-                note               = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).c_str(), badType.c_str()));
+                note               = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr()));
                 break;
             }
             default:
@@ -208,7 +208,7 @@ namespace
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // Multiple tryMatches
-        Diagnostic                err{node, node->token, formErr(Err0507, tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+        Diagnostic                err{node, node->token, formErr(Err0507, tryMatches.size(), tryMatches[0]->overload->symbol->name.cstr())};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 

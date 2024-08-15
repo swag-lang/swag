@@ -66,7 +66,7 @@ void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
         job->module     = module;
         job->sourcePath = one->path;
         job->destPath   = publicPath;
-        job->destPath.append(one->name.c_str());
+        job->destPath.append(one->name.cstr());
         job->dependentJob = this;
         jobsToAdd.push_back(job);
     }
@@ -253,7 +253,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
-                Report::error(module, formErr(Err0696, dep->name.c_str()));
+                Report::error(module, formErr(Err0696, dep->name.cstr()));
                 return JobResult::ReleaseJob;
             }
 
@@ -587,7 +587,7 @@ JobResult ModuleBuildJob::execute()
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_setupRuntime);
         SWAG_ASSERT(setupFct);
 
-        module->logStage(form("__setupRuntime %s\n", setupFct->node->token.sourceFile->name.c_str()));
+        module->logStage(form("__setupRuntime %s\n", setupFct->node->token.sourceFile->name.cstr()));
         ExecuteNodeParams execParams;
         auto              runtimeFlags = Backend::getRuntimeFlags();
         runtimeFlags |= static_cast<uint64_t>(SwagRuntimeFlags::FromCompiler);
@@ -610,7 +610,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeInitFunc)
             {
-                module->logStage(form("#init %s\n", func->node->token.sourceFile->name.c_str()));
+                module->logStage(form("#init %s\n", func->node->token.sourceFile->name.cstr()));
                 module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -620,7 +620,7 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodePreMainFunc)
             {
-                module->logStage(form("#premain %s\n", func->node->token.sourceFile->name.c_str()));
+                module->logStage(form("#premain %s\n", func->node->token.sourceFile->name.cstr()));
                 module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -642,7 +642,7 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                 ++g_Stats.runFunctions;
 #endif
-                module->logStage(form("#run %s\n", func->node->token.sourceFile->name.c_str()));
+                module->logStage(form("#run %s\n", func->node->token.sourceFile->name.cstr()));
                 module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -668,7 +668,7 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                     ++g_Stats.testFunctions;
 #endif
-                    module->logStage(form("#test %s\n", func->node->token.sourceFile->name.c_str()));
+                    module->logStage(form("#test %s\n", func->node->token.sourceFile->name.cstr()));
                     module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;
@@ -698,7 +698,7 @@ JobResult ModuleBuildJob::execute()
             }
             else
             {
-                module->logStage(form("#main %s\n", module->byteCodeMainFunc->node->token.sourceFile->name.c_str()));
+                module->logStage(form("#main %s\n", module->byteCodeMainFunc->node->token.sourceFile->name.cstr()));
                 ExecuteNodeParams params;
                 params.breakOnStart = g_CommandLine.dbgMain;
                 module->executeNode(module->byteCodeMainFunc->node->token.sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
@@ -715,7 +715,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeDropFunc)
             {
-                module->logStage(form("#drop %s\n", func->node->token.sourceFile->name.c_str()));
+                module->logStage(form("#drop %s\n", func->node->token.sourceFile->name.cstr()));
                 module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;

@@ -432,7 +432,7 @@ namespace
         if (!isZero)
             return true;
         if (overload)
-            return raiseError(cxt, formErr(San0002, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, formErr(San0002, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
         return raiseError(cxt, toErr(San0001));
     }
 
@@ -440,7 +440,7 @@ namespace
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
         if (overload)
-            return raiseError(cxt, formErr(San0004, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, formErr(San0004, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
         return raiseError(cxt, toErr(San0003));
     }
 
@@ -458,7 +458,7 @@ namespace
         if (value->reg.u64)
             return true;
         if (value->overload)
-            return raiseError(cxt, formErr(San0006, Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
+            return raiseError(cxt, formErr(San0006, Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr()), value->overload);
         return raiseError(cxt, toErr(San0005));
     }
 
@@ -469,7 +469,7 @@ namespace
         if (value.kind == ValueKind::Invalid)
         {
             if (overload)
-                return raiseError(cxt, formErr(San0008, Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+                return raiseError(cxt, formErr(San0008, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
             return raiseError(cxt, toErr(San0009));
         }
 

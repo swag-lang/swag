@@ -299,7 +299,7 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
                 {
                     if (v.find(cmd) == 0 && v[cmd.length()] == ':')
                     {
-                        line0 += v.c_str() + cmd.length() + 1;
+                        line0 += v.cstr() + cmd.length() + 1;
                         done = true;
                         break;
                     }
@@ -362,7 +362,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (!g_CommandLine.ignoreBadParams)
                 {
-                    Report::error(formErr(Fat0007, command.c_str()));
+                    Report::error(formErr(Fat0007, command.cstr()));
                     result = false;
                 }
                 continue;
@@ -376,7 +376,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (!g_CommandLine.ignoreBadParams)
             {
-                Report::error(formErr(Fat0007, command.c_str()));
+                Report::error(formErr(Fat0007, command.cstr()));
                 result = false;
             }
 
@@ -404,7 +404,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
                 if (index == static_cast<int>(tokens.size()))
                 {
-                    Report::error(formErr(Fat0005, it->first.c_str(), arg->param));
+                    Report::error(formErr(Fat0005, it->first.cstr(), arg->param));
                     result = false;
                     continue;
                 }
@@ -430,7 +430,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
                 if (index == static_cast<int>(tokens.size()))
                 {
-                    Report::error(formErr(Fat0005, it->first.c_str(), arg->param));
+                    Report::error(formErr(Fat0005, it->first.cstr(), arg->param));
                     result = false;
                     continue;
                 }
@@ -444,7 +444,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                     *static_cast<bool*>(arg->buffer) = false;
                 else
                 {
-                    Report::error(formErr(Fat0001, it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0001, it->first.cstr(), argument.cstr()));
                     result = false;
                     continue;
                 }
@@ -454,7 +454,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.cstr(), argument.cstr()));
                     result = false;
                     continue;
                 }
@@ -467,7 +467,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.cstr(), argument.cstr()));
                     result = false;
                     continue;
                 }
@@ -480,7 +480,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (argument.empty())
                 {
-                    Report::error(formErr(Fat0002, it->first.c_str(), argument.c_str()));
+                    Report::error(formErr(Fat0002, it->first.cstr(), argument.cstr()));
                     result = false;
                     continue;
                 }
@@ -491,7 +491,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
             case CommandLineType::Int:
             {
-                pz               = argument.c_str();
+                pz               = argument.cstr();
                 bool thisIsAnInt = !argument.empty();
 
                 while (*pz)
@@ -508,9 +508,9 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 if (!thisIsAnInt)
                 {
                     if (argument.empty())
-                        Report::error(formErr(Fat0004, it->first.c_str()));
+                        Report::error(formErr(Fat0004, it->first.cstr()));
                     else
-                        Report::error(formErr(Fat0003, it->first.c_str(), argument.c_str()));
+                        Report::error(formErr(Fat0003, it->first.cstr(), argument.cstr()));
                     result = false;
                     continue;
                 }

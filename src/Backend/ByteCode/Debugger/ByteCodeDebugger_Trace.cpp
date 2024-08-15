@@ -17,9 +17,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
-        if (!Utf8::isNumber(arg.split[1].c_str()))
+        if (!Utf8::isNumber(arg.split[1].cstr()))
         {
-            printCmdError(form("invalid [[step]] count [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid [[step]] count [[%s]]", arg.split[1].cstr()));
             return BcDbgCommandResult::Error;
         }
 
@@ -42,9 +42,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
-        if (!Utf8::isNumber(arg.split[1].c_str()))
+        if (!Utf8::isNumber(arg.split[1].cstr()))
         {
-            printCmdError(form("invalid [[next]] count [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid [[next]] count [[%s]]", arg.split[1].cstr()));
             return BcDbgCommandResult::Error;
         }
 
@@ -99,12 +99,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].cstr()))
     {
         if (g_ByteCodeDebugger.bcMode)
-            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].cstr()));
         else
-            printCmdError(form("invalid line number [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid line number [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
 
@@ -160,12 +160,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].cstr()))
     {
         if (g_ByteCodeDebugger.bcMode)
-            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid instruction index [[%s]]", arg.split[1].cstr()));
         else
-            printCmdError(form("invalid line number [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid line number [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
 

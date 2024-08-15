@@ -13,17 +13,17 @@ bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
     if (!g_CommandLine.output)
     {
         if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.c_str()));
+            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.cstr()));
         return true;
     }
 
     if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.c_str()));
+        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.cstr()));
 
     FILE* f = nullptr;
     if (fopen_s(&f, fileName, "wb"))
     {
-        Report::errorOS(formErr(Err0078, fileName.c_str()));
+        Report::errorOS(formErr(Err0078, fileName.cstr()));
         return false;
     }
 
@@ -67,7 +67,7 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
 
     // Load source file
     if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- loading file", fileName.c_str()));
+        g_Log.messageVerbose(form("[%s] -- loading file", fileName.cstr()));
     if (!tmpFile.load())
         return false;
 
@@ -78,7 +78,7 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
         SyntaxContext synContext;
         Parser        parser;
         if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- generating AST", fileName.c_str()));
+            g_Log.messageVerbose(form("[%s] -- generating AST", fileName.cstr()));
         parser.setup(&synContext, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
         const bool ok = parser.generateAst();
         if (!g_CommandLine.verboseErrors)
@@ -86,7 +86,7 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
         if (!ok)
         {
             if (g_CommandLine.verboseStages)
-                g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.c_str()));
+                g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.cstr()));
             return false;
         }
     }
@@ -94,12 +94,12 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
     if (tmpFile.hasFlag(FILE_NO_FORMAT))
     {
         if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.c_str()));
+            g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.cstr()));
         return false;
     }
 
     if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- formatting", fileName.c_str()));
+        g_Log.messageVerbose(form("[%s] -- formatting", fileName.cstr()));
 
     // Format
     FormatAst fmt;

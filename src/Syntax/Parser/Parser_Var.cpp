@@ -18,9 +18,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, formErr(Err0661, identifier->token.c_str()));
+            return error(identifier->genericParameters, formErr(Err0661, identifier->token.cstr()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, formErr(Err0170, identifier->token.c_str(), "a variable name"));
+            return error(identifier->callParameters, formErr(Err0170, identifier->token.cstr(), "a variable name"));
     }
 
     if (node->token.text[0] != '#')
@@ -40,7 +40,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, formErr(Err0105, node->token.c_str() + 4));
+                    return error(node->token, formErr(Err0105, node->token.cstr() + 4));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -66,7 +66,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, formErr(Err0104, node->token.c_str() + 6));
+                    return error(node->token, formErr(Err0104, node->token.cstr() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -81,7 +81,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         }
     }
 
-    return error(node->token, formErr(Err0254, node->token.c_str()));
+    return error(node->token, formErr(Err0254, node->token.cstr()));
 }
 
 bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
@@ -157,7 +157,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
 
 bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
 {
-    SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0399, Naming::aKindName(currentScope->kind).c_str())));
+    SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0399, Naming::aKindName(currentScope->kind).cstr())));
 
     const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
     *result               = parentNode;
@@ -228,7 +228,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-        identifier          = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.c_str(), idx++), this, varNode);
+        identifier          = Ast::newMultiIdentifierRef(form("%s.item%u", tmpVarName.cstr(), idx++), this, varNode);
         varNode->assignment = identifier;
         Semantic::setVarDeclResolve(varNode);
         varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
@@ -365,9 +365,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.cstr())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.c_str())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.cstr())));
             }
             else
             {
@@ -394,8 +394,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.c_str())};
-                    err.addNote(formNte(Nte0044, typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
+                    Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.cstr())};
+                    err.addNote(formNte(Nte0044, typeExpr->identifier->token.cstr(), typeExpr->identifier->token.cstr()));
                     err.addNote(toNte(Nte0037));
                     return context->report(err);
                 }

@@ -57,7 +57,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(form("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(form("%s", g_SilentErrorMsg.cstr()));
         }
 
         return false;
@@ -81,7 +81,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(form("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(form("%s", g_SilentErrorMsg.cstr()));
         return false;
     }
 
@@ -123,7 +123,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(form("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(form("%s", g_SilentErrorMsg.cstr()));
         return false;
     }
 
@@ -163,7 +163,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(form("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(form("%s", g_SilentErrorMsg.cstr()));
         }
 
         return false;

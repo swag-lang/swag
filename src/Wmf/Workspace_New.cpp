@@ -13,7 +13,7 @@ void newScriptFile()
     std::ofstream file(g_CommandLine.fileName);
     if (!file.is_open())
     {
-        Report::errorOS(formErr(Fat0020, g_CommandLine.fileName.c_str()));
+        Report::errorOS(formErr(Fat0020, g_CommandLine.fileName.cstr()));
         OS::exit(-1);
     }
 
@@ -34,8 +34,8 @@ void newScriptFile()
 
     file << content;
 
-    g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.fileName.c_str()));
-    g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.fileName.c_str(), g_CommandLine.fileName.c_str()));
+    g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.fileName.cstr()));
+    g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.fileName.cstr(), g_CommandLine.fileName.cstr()));
 }
 
 void Workspace::newModule(const Utf8& moduleName) const
@@ -44,27 +44,27 @@ void Workspace::newModule(const Utf8& moduleName) const
 
     // Create one module folder
     auto modulePath = g_CommandLine.test ? testsPath : modulesPath;
-    modulePath.append(moduleName.c_str());
+    modulePath.append(moduleName.cstr());
 
     if (std::filesystem::exists(modulePath, err))
     {
-        Report::errorOS(formErr(Fat0028, moduleName.c_str()));
+        Report::errorOS(formErr(Fat0028, moduleName.cstr()));
         OS::exit(-1);
     }
 
     if (!std::filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(formErr(Fat0017, modulePath.c_str()));
+        Report::errorOS(formErr(Fat0017, modulePath.cstr()));
         OS::exit(-1);
     }
 
     // Create a configuration file
     auto cfgFileName = modulePath;
     cfgFileName.append(SWAG_CFG_FILE);
-    std::ofstream fileCfg(cfgFileName.c_str());
+    std::ofstream fileCfg(cfgFileName.cstr());
     if (!fileCfg.is_open())
     {
-        Report::errorOS(formErr(Fat0018, cfgFileName.c_str()));
+        Report::errorOS(formErr(Fat0018, cfgFileName.cstr()));
         OS::exit(-1);
     }
 
@@ -93,7 +93,7 @@ void Workspace::newModule(const Utf8& moduleName) const
     modulePath.append(SWAG_SRC_FOLDER);
     if (!std::filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(formErr(Fat0017, modulePath.c_str()));
+        Report::errorOS(formErr(Fat0017, modulePath.cstr()));
         OS::exit(-1);
     }
 
@@ -116,10 +116,10 @@ void Workspace::newModule(const Utf8& moduleName) const
         modulePath.append("test1.swg");
     else
         modulePath.append("main.swg");
-    std::ofstream file(modulePath.c_str());
+    std::ofstream file(modulePath.cstr());
     if (!file.is_open())
     {
-        Report::errorOS(formErr(Fat0018, modulePath.c_str()));
+        Report::errorOS(formErr(Fat0018, modulePath.cstr()));
         OS::exit(-1);
     }
     if (g_CommandLine.test)
@@ -152,36 +152,36 @@ void Workspace::newCommand()
     {
         if (std::filesystem::exists(workspacePath, err))
         {
-            Report::error(formErr(Fat0034, workspacePath.c_str()));
+            Report::error(formErr(Fat0034, workspacePath.cstr()));
             OS::exit(-1);
         }
 
         // Create workspace folders
         if (!std::filesystem::create_directories(workspacePath, err))
         {
-            Report::errorOS(formErr(Fat0017, workspacePath.c_str()));
+            Report::errorOS(formErr(Fat0017, workspacePath.cstr()));
             OS::exit(-1);
         }
 
         if (!std::filesystem::create_directories(testsPath, err))
         {
-            Report::errorOS(formErr(Fat0017, testsPath.c_str()));
+            Report::errorOS(formErr(Fat0017, testsPath.cstr()));
             OS::exit(-1);
         }
 
         if (!std::filesystem::create_directories(modulesPath, err))
         {
-            Report::errorOS(formErr(Fat0017, modulesPath.c_str()));
+            Report::errorOS(formErr(Fat0017, modulesPath.cstr()));
             OS::exit(-1);
         }
 
         if (!std::filesystem::create_directories(dependenciesPath, err))
         {
-            Report::errorOS(formErr(Fat0017, dependenciesPath.c_str()));
+            Report::errorOS(formErr(Fat0017, dependenciesPath.cstr()));
             OS::exit(-1);
         }
 
-        g_Log.messageInfo(form("=> workspace [[%s]] has been created", workspacePath.c_str()));
+        g_Log.messageInfo(form("=> workspace [[%s]] has been created", workspacePath.cstr()));
         moduleName = workspacePath.filename();
     }
 
@@ -190,7 +190,7 @@ void Workspace::newCommand()
     {
         if (!std::filesystem::exists(workspacePath, err))
         {
-            Report::error(formErr(Fat0035, workspacePath.c_str()));
+            Report::error(formErr(Fat0035, workspacePath.cstr()));
             OS::exit(-1);
         }
 
@@ -202,14 +202,14 @@ void Workspace::newCommand()
 
     if (g_CommandLine.test)
     {
-        g_Log.messageInfo(form("=> test module [[%s]] has been created", moduleName.c_str()));
-        g_Log.messageInfo(form("=> type [[swag test -w:%s -m:%s]] to test that module only", workspacePath.c_str(), moduleName.c_str()));
-        g_Log.messageInfo(form("=> type [[swag test -w:%s]] to test all modules", workspacePath.c_str(), moduleName.c_str()));
+        g_Log.messageInfo(form("=> test module [[%s]] has been created", moduleName.cstr()));
+        g_Log.messageInfo(form("=> type [[swag test -w:%s -m:%s]] to test that module only", workspacePath.cstr(), moduleName.cstr()));
+        g_Log.messageInfo(form("=> type [[swag test -w:%s]] to test all modules", workspacePath.cstr(), moduleName.cstr()));
     }
     else
     {
-        g_Log.messageInfo(form("=> module [[%s]] has been created", moduleName.c_str()));
-        g_Log.messageInfo(form("=> type [[swag run -w:%s -m:%s]] to build and run that module", workspacePath.c_str(), moduleName.c_str()));
+        g_Log.messageInfo(form("=> module [[%s]] has been created", moduleName.cstr()));
+        g_Log.messageInfo(form("=> type [[swag run -w:%s -m:%s]] to build and run that module", workspacePath.cstr(), moduleName.cstr()));
     }
 
     OS::exit(0);

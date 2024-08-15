@@ -30,7 +30,7 @@ void Workspace::formatCommand()
             filePath = filePath1;
         if (!std::filesystem::exists(filePath, err))
         {
-            Report::error(formErr(Fat0030, filePath.c_str()));
+            Report::error(formErr(Fat0030, filePath.cstr()));
             OS::exit(-1);
         }
     }
@@ -46,7 +46,7 @@ void Workspace::formatCommand()
     {
         if (filePath.extension() != ".swg" && filePath.extension() != ".swgs")
         {
-            Report::error(formErr(Fat0038, filePath.c_str()));
+            Report::error(formErr(Fat0038, filePath.cstr()));
             OS::exit(-1);
         }
 
@@ -74,7 +74,7 @@ void Workspace::formatCommand()
     // Something else
     else
     {
-        Report::error(formErr(Fat0038, filePath.c_str()));
+        Report::error(formErr(Fat0038, filePath.cstr()));
         OS::exit(-1);
     }
 }

@@ -17,14 +17,14 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     std::error_code err;
     if (!std::filesystem::exists(cacheWorkspace, err) && !std::filesystem::create_directories(cacheWorkspace, err))
     {
-        Report::errorOS(formErr(Fat0016, cacheWorkspace.c_str()));
+        Report::errorOS(formErr(Fat0016, cacheWorkspace.cstr()));
         OS::exit(-1);
     }
 
     cacheWorkspace.append(name);
     if (!std::filesystem::exists(cacheWorkspace, err) && !std::filesystem::create_directories(cacheWorkspace, err))
     {
-        Report::errorOS(formErr(Fat0016, cacheWorkspace.c_str()));
+        Report::errorOS(formErr(Fat0016, cacheWorkspace.cstr()));
         OS::exit(-1);
     }
 
@@ -41,7 +41,7 @@ void Workspace::scriptCommand()
 {
     if (g_CommandLine.fileName.empty())
     {
-        Report::error(formErr(Fat0031, g_CommandLine.fileName.c_str()));
+        Report::error(formErr(Fat0031, g_CommandLine.fileName.cstr()));
         OS::exit(-1);
     }
 
@@ -50,9 +50,9 @@ void Workspace::scriptCommand()
     pathF                  = std::filesystem::absolute(pathF);
     g_CommandLine.fileName = pathF;
     std::error_code err;
-    if (!std::filesystem::exists(g_CommandLine.fileName.c_str(), err))
+    if (!std::filesystem::exists(g_CommandLine.fileName.cstr(), err))
     {
-        Report::error(formErr(Fat0030, g_CommandLine.fileName.c_str()));
+        Report::error(formErr(Fat0030, g_CommandLine.fileName.cstr()));
         OS::exit(-1);
     }
 
@@ -63,7 +63,7 @@ void Workspace::scriptCommand()
     g_Workspace->setupCachePath();
     if (!std::filesystem::exists(g_Workspace->cachePath, err))
     {
-        Report::error(formErr(Fat0010, g_Workspace->cachePath.c_str()));
+        Report::error(formErr(Fat0010, g_Workspace->cachePath.cstr()));
         OS::exit(-1);
     }
 

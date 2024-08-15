@@ -54,7 +54,7 @@ Utf8 TypeInfo::getDisplayName()
 const char* TypeInfo::getDisplayNameC()
 {
     const auto res = getDisplayName();
-    return _strdup(res.c_str()); // Leak and slow, but only for messages
+    return _strdup(res.cstr()); // Leak and slow, but only for messages
 }
 
 const Utf8& TypeInfo::computeWhateverName(ComputeNameKind nameKind)

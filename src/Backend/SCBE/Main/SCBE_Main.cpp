@@ -155,7 +155,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();
-            pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.c_str())});
+            pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.cstr())});
             pp.pushParams.push_back({CPUPushParamType::Imm, nameLib.length()});
             emitInternalCallExt(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }
@@ -255,7 +255,7 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -287,7 +287,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -341,7 +341,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -420,7 +420,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisDrop.c_str());
+        pp.directives += form("/EXPORT:%s ", thisDrop.cstr());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();

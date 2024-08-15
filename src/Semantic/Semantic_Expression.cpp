@@ -19,14 +19,14 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     {
         Diagnostic err{expression, expression->token, formErr(Err0030, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        err.hint          = formNte(Nte0156, userOp->symbol->name.c_str());
+        err.hint          = formNte(Nte0156, userOp->symbol->name.cstr());
         err.addNote(note);
         return context->report(err);
     }
 
     Utf8 message;
     if (errMsg.length() && errParam.length())
-        message = form(errMsg.c_str(), errParam.c_str());
+        message = form(errMsg.cstr(), errParam.cstr());
     else if (errMsg.length())
         message = errMsg;
     else

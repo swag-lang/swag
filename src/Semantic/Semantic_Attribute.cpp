@@ -67,7 +67,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (!oneAttribute->typeInfo->isFuncAttr())
-        return context->report({oneAttribute, formErr(Err0142, oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
+        return context->report({oneAttribute, formErr(Err0142, oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).cstr())});
 
     const auto kind     = checkNode->kind;
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -176,9 +176,9 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     {
         if (nakedName == "node")
             nakedName.clear();
-        Diagnostic err{oneAttribute, formErr(Err0368, oneAttribute->token.c_str())};
+        Diagnostic err{oneAttribute, formErr(Err0368, oneAttribute->token.cstr())};
         err.addNote(formNte(Nte0088, specificMsg));
-        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0023, nakedName.c_str()));
+        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0023, nakedName.cstr()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
@@ -187,7 +187,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         nakedName = "this";
     else
         nakedName = Naming::aKindName(checkNode);
-    Diagnostic err{oneAttribute, formErr(Err0370, oneAttribute->token.c_str(), nakedName.c_str())};
+    Diagnostic err{oneAttribute, formErr(Err0370, oneAttribute->token.cstr(), nakedName.cstr())};
     err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
 }
@@ -288,7 +288,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic err{child, formErr(Err0038, child->token.c_str())};
+                    Diagnostic err{child, formErr(Err0038, child->token.cstr())};
                     return context->report(err);
                 }
 
@@ -415,7 +415,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
                     else
                     {
-                        return context->report({child, attrParam->token, formErr(Err0719, w.c_str())});
+                        return context->report({child, attrParam->token, formErr(Err0719, w.cstr())});
                     }
                 }
             }
@@ -465,7 +465,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                         if (!done)
                         {
-                            return context->report({child, attrParam->token, formErr(Err0723, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0723, w.cstr())});
                         }
                     }
                 }
@@ -512,7 +512,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, formErr(Err0722, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0722, w.cstr())});
                         }
                     }
                 }
@@ -563,7 +563,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         }
                         else
                         {
-                            return context->report({child, attrParam->token, formErr(Err0721, w.c_str())});
+                            return context->report({child, attrParam->token, formErr(Err0721, w.cstr())});
                         }
                     }
                 }
@@ -674,7 +674,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         auto resolved     = identifier->resolvedSymbolOverload();
         if (resolvedName->isNot(SymbolKind::Attribute))
         {
-            Diagnostic err{identifier, identifier->token, formErr(Err0142, resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};
+            Diagnostic err{identifier, identifier->token, formErr(Err0142, resolvedName->name.cstr(), Naming::aKindName(resolvedName->kind).cstr())};
             context->report(err, Diagnostic::hereIs(resolved));
             return false;
         }
@@ -685,7 +685,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage.has(ATTR_USAGE_FILE)))
             {
-                Diagnostic err{identifier, identifier->token, formErr(Err0369, resolvedName->name.c_str())};
+                Diagnostic err{identifier, identifier->token, formErr(Err0369, resolvedName->name.cstr())};
                 context->report(err, Diagnostic::hereIs(resolved));
                 return false;
             }

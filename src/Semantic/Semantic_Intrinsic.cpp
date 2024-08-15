@@ -33,7 +33,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0021), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0587, node->token.c_str(), front->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0587, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
             node->typeInfo = g_TypeMgr->typeInfoBool;
             node->setFlagsValueIsComputed();
 
@@ -54,7 +54,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
             if (!done)
             {
-                return context->report({front, front->token, formErr(Err0723, w.c_str())});
+                return context->report({front, front->token, formErr(Err0723, w.cstr())});
             }
 
             return true;
@@ -66,7 +66,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0021), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0587, node->token.c_str(), front->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0587, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
             const auto tag = g_Workspace->hasTag(front->computedValue()->text);
             node->typeInfo = g_TypeMgr->typeInfoBool;
             node->setFlagsValueIsComputed();
@@ -85,8 +85,8 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             YIELD();
 
             SWAG_CHECK(checkIsConstExpr(context, nameNode->hasFlagComputedValue(), nameNode, toErr(Err0021), node->token.text));
-            SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0587, node->token.c_str(), nameNode->typeInfo->getDisplayNameC())}));
-            SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0136, Naming::aKindName(defaultVal).c_str())}));
+            SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0587, node->token.cstr(), nameNode->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0136, Naming::aKindName(defaultVal).cstr())}));
 
             {
                 PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0114); });
@@ -101,8 +101,8 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             {
                 if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
                 {
-                    Diagnostic err{typeNode, formErr(Err0554, typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
-                    err.addNote(formNte(Nte0119, tag->cmdLine.c_str()));
+                    Diagnostic err{typeNode, formErr(Err0554, typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.cstr())};
+                    err.addNote(formNte(Nte0119, tag->cmdLine.cstr()));
                     return context->report(err);
                 }
 
@@ -183,7 +183,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
-        return context->report({first, formErr(Err0579, node->token.c_str(), first->typeInfo->getDisplayNameC())});
+        return context->report({first, formErr(Err0579, node->token.cstr(), first->typeInfo->getDisplayNameC())});
 
     const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)

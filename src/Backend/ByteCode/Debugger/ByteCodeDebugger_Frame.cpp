@@ -14,9 +14,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
     uint32_t maxSteps = 0;
     if (arg.split.size() == 2)
     {
-        if (!Utf8::isNumber(arg.split[1].c_str()))
+        if (!Utf8::isNumber(arg.split[1].cstr()))
         {
-            printCmdError(form("invalid backtrace number [[%s]]", arg.split[1].c_str()));
+            printCmdError(form("invalid backtrace number [[%s]]", arg.split[1].cstr()));
             return BcDbgCommandResult::Error;
         }
 
@@ -38,9 +38,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (!Utf8::isNumber(arg.split[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].cstr()))
     {
-        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Continue;
     }
 
@@ -71,9 +71,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].cstr()))
     {
-        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
     uint32_t off = 1;
@@ -109,9 +109,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
     if (arg.split.size() > 2)
         return BcDbgCommandResult::TooManyArguments;
 
-    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].cstr()))
     {
-        printCmdError(form("invalid frame number [[%s]]", arg.split[1].c_str()));
+        printCmdError(form("invalid frame number [[%s]]", arg.split[1].cstr()));
         return BcDbgCommandResult::Error;
     }
 

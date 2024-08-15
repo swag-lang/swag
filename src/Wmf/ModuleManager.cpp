@@ -74,8 +74,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // will initialize it with its internal function
     const auto& callName = name;
     Ast::normalizeIdentifierName(callName);
-    const Utf8 funcName = form(g_LangSpec->name_globalInit, callName.c_str());
-    if (const auto ptr = OS::getProcAddress(h, funcName.c_str()))
+    const Utf8 funcName = form(g_LangSpec->name_globalInit, callName.cstr());
+    if (const auto ptr = OS::getProcAddress(h, funcName.cstr()))
     {
         using FuncCall = void (*)(void*);
         reinterpret_cast<FuncCall>(ptr)(&g_ProcessInfos);
@@ -96,7 +96,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
     if (const auto here = loadedModules.find(moduleName); here != loadedModules.end())
     {
         const auto name = funcName.toZeroTerminated();
-        return OS::getProcAddress(here->second, name.c_str());
+        return OS::getProcAddress(here->second, name.cstr());
     }
 
     return nullptr;
@@ -158,7 +158,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 #endif
 
         auto       foreign = one.funcDecl->getFullNameForeignImport().toZeroTerminated();
-        const auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.c_str());
+        const auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.cstr());
         if (!fnPtr)
         {
             loadModuleError = OS::getLastErrorAsString();

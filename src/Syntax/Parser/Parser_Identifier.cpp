@@ -43,7 +43,7 @@ bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
     if (node->token.text == "_")
         return error(loc ? *loc : node->token, toErr(Err0532));
     if (!testIsValidUserName(node))
-        return error(loc ? *loc : node->token, formErr(Err0533, node->token.c_str()));
+        return error(loc ? *loc : node->token, formErr(Err0533, node->token.cstr()));
 
     // Pour toi frangouille, ajouté le jour de ton départ
     if (node->token.text.compareNoCase("jyb37"))
@@ -102,11 +102,11 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             if (tokenParse.isNot(TokenId::LiteralNumber))
                 return error(tokenParse, toErr(Err0636));
             if (tokenParse.literalType != LiteralType::TypeUntypedInt && tokenParse.literalType != LiteralType::TypeUnsigned8)
-                return error(tokenParse, formErr(Err0108, tokenParse.token.c_str()));
+                return error(tokenParse, formErr(Err0108, tokenParse.cstr()));
             if (tokenParse.literalValue.u64 > 255)
                 return error(tokenParse, formErr(Err0494, tokenParse.literalValue.u64));
             if (tokenParse.literalValue.u8 == 0)
-                return error(tokenParse, formErr(Err0107, tokenParse.token.c_str()));
+                return error(tokenParse, formErr(Err0107, tokenParse.cstr()));
 
             scopeUpValue = tokenParse;
             SWAG_CHECK(eatToken());
@@ -121,9 +121,9 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
             {
-                err.addNote(formNte(Nte0064, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+                err.addNote(formNte(Nte0064, parent->lastChild()->token.cstr(), tokenParse.cstr()));
                 if (tokenParse.literalValue.u64 < 32)
-                    err.addNote(formNte(Nte0049, parent->lastChild()->token.c_str(), tokenParse.token.c_str()));
+                    err.addNote(formNte(Nte0049, parent->lastChild()->token.cstr(), tokenParse.cstr()));
             }
         }
 
@@ -161,7 +161,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (isIntrinsic && tokenParse.isNot(TokenId::SymLeftParen))
     {
-        const Diagnostic err{identifier, formErr(Err0434, "intrinsic", identifier->token.c_str())};
+        const Diagnostic err{identifier, formErr(Err0434, "intrinsic", identifier->token.cstr())};
         return context->report(err);
     }
 
@@ -323,7 +323,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0749, tokenParse.token.c_str())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0749, tokenParse.cstr())};
                 err.addNote(sourceFile, discardToken.token, toNte(Nte0161));
                 err.addNote(toNte(Nte0010));
                 return context->report(err);
@@ -379,7 +379,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     }
 
     *result = node;
-    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0387, node->token.c_str())));
+    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0387, node->token.cstr())));
     SWAG_CHECK(eatToken());
 
     ParserPushTryCatchAssume sc(this, castAst<AstTryCatchAssume>(node));
@@ -404,11 +404,11 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     }
     else
     {
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0146, node->token.c_str())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0146, node->token.cstr())));
         SWAG_CHECK(doIdentifierRef(node, &dummyResult));
     }
 
@@ -422,11 +422,11 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0387, node->token.c_str())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0386, tokenParse.token.c_str(), node->token.c_str())));
+    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0387, node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0386, tokenParse.cstr(), node->token.cstr())));
 
     if (tokenParse.is(TokenId::IntrinsicGetErr))
     {
@@ -447,7 +447,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0643, node->token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0643, node->token.cstr())));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(checkIsValidUserName(node));
@@ -476,7 +476,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0643, node->token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0643, node->token.cstr())));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(checkIsValidUserName(node));

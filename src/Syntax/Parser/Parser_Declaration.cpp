@@ -37,16 +37,16 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
             break;
         
         case TokenId::SymAttrStart:
-            return error(tokenParse, formErr(Err0355, tokenAttr.c_str(), tokenAttr.c_str()));
+            return error(tokenParse, formErr(Err0355, tokenAttr.cstr(), tokenAttr.cstr()));
         
         case TokenId::KwdPublic:
         case TokenId::KwdPrivate:
         case TokenId::KwdInternal:
-            return error(tokenParse, formErr(Err0519, tokenParse.token.c_str(), tokenAttr.c_str()));
+            return error(tokenParse, formErr(Err0519, tokenParse.cstr(), tokenAttr.cstr()));
         
         default:
         {
-            Diagnostic err{sourceFile, tokenAttr, formErr(Err0352, tokenAttr.c_str(), tokenParse.token.c_str())};
+            Diagnostic err{sourceFile, tokenAttr, formErr(Err0352, tokenAttr.cstr(), tokenParse.cstr())};
             err.addNote(tokenParse.token, toNte(Nte0166));
             return context->report(err);
         }
@@ -58,8 +58,8 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
     SWAG_ASSERT(tokenParse.is(TokenId::KwdPublic) || tokenParse.is(TokenId::KwdInternal));
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0351, tokenParse.token.c_str())));
-    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, formErr(Err0529, tokenParse.token.c_str())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0351, tokenParse.cstr())));
+    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, formErr(Err0529, tokenParse.cstr())));
 
     Scope*     orgScope  = currentScope;
     Scope*     newScope  = currentScope;
@@ -112,7 +112,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0351, tokenParse.token.c_str())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0351, tokenParse.cstr())));
 
     auto       privName = tokenParse;
     const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
@@ -284,7 +284,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->acceptsInternalStuff())
-            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse, formErr(Err0534, tokenParse.token.c_str())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse, formErr(Err0534, tokenParse.cstr())));
 
         // Add/Get namespace
         {
@@ -464,7 +464,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         if (tokenParse.isNot(TokenId::KwdDo))
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0425)};
-            err.addNote(parent, forToken, formNte(Nte0113, forToken.c_str()));
+            err.addNote(parent, forToken, formNte(Nte0113, forToken.cstr()));
             return context->report(err);
         }
 
@@ -871,7 +871,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdPublic:
         case TokenId::KwdInternal:
         case TokenId::KwdPrivate:
-            return error(tokenParse, formErr(Err0351, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0351, tokenParse.cstr()));
 
         case TokenId::SymDot:
         {
@@ -896,7 +896,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
-                return error(tokenParse, formErr(Err0749, tokenParse.token.c_str()));
+                return error(tokenParse, formErr(Err0749, tokenParse.cstr()));
             return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

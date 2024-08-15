@@ -36,8 +36,8 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     Utf8 content;
 
-    content += form("impl %s {\n", typeLeftStruct->structName.c_str());
-    content += form("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.c_str());
+    content += form("impl %s {\n", typeLeftStruct->structName.cstr());
+    content += form("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.cstr());
     if (!hasStruct)
     {
         content += "return @memcmp(cast(const ^void) self, cast(const ^void) &o, @sizeof(Self)) == 0\n";
@@ -47,8 +47,8 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
         for (uint32_t i = 0; i < typeLeftStruct->fields.size(); i++)
         {
             const auto typeField = typeLeftStruct->fields[i];
-            const auto leftN     = typeLeftStruct->fields[i]->name.c_str();
-            const auto rightN    = typeRightStruct->fields[i]->name.c_str();
+            const auto leftN     = typeLeftStruct->fields[i]->name.cstr();
+            const auto rightN    = typeRightStruct->fields[i]->name.cstr();
 
             if (typeField->typeInfo->isArray())
             {
@@ -130,8 +130,8 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 
             if (!defaultExportNode)
             {
-                Diagnostic err{node, node->getTokenName(), formErr(Err0455, typeBaseInterface->name.c_str(), typeStruct->getDisplayNameC())};
-                err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.c_str()));
+                Diagnostic err{node, node->getTokenName(), formErr(Err0455, typeBaseInterface->name.cstr(), typeStruct->getDisplayNameC())};
+                err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.cstr()));
                 return context->report(err);
             }
         }
@@ -146,7 +146,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             content += ", ";
             const auto type = typeFunc->parameters[i]->typeInfo;
             type->computeScopedNameExport();
-            content += form("p%d: %s", i, type->scopedNameExport.c_str());
+            content += form("p%d: %s", i, type->scopedNameExport.cstr());
         }
         content += ")";
 
@@ -157,7 +157,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             content += typeBaseInterface->name;
             content += ".__default.";
             content += missingNode->name;
-            content += form("(cast(*%s) self", typeBaseInterface->name.c_str());
+            content += form("(cast(*%s) self", typeBaseInterface->name.cstr());
             for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
             {
                 content += ", ";

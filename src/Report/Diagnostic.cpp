@@ -48,19 +48,19 @@ namespace
 {
     void addThe(Utf8& replace, const Utf8& verb)
     {
-        replace.replace(form(" %s identifier ", verb.c_str()), form(" %s the identifier ", verb.c_str()));
-        replace.replace(form(" %s type ", verb.c_str()), form(" %s the type ", verb.c_str()));
-        replace.replace(form(" %s literal ", verb.c_str()), form(" %s the literal ", verb.c_str()));
-        replace.replace(form(" %s intrinsic ", verb.c_str()), form(" %s the intrinsic ", verb.c_str()));
-        replace.replace(form(" %s keyword ", verb.c_str()), form(" %s the keyword ", verb.c_str()));
-        replace.replace(form(" %s compiler instruction ", verb.c_str()), form(" %s the compiler instruction ", verb.c_str()));
-        replace.replace(form(" %s symbol ", verb.c_str()), form(" %s the symbol ", verb.c_str()));
+        replace.replace(form(" %s identifier ", verb.cstr()), form(" %s the identifier ", verb.cstr()));
+        replace.replace(form(" %s type ", verb.cstr()), form(" %s the type ", verb.cstr()));
+        replace.replace(form(" %s literal ", verb.cstr()), form(" %s the literal ", verb.cstr()));
+        replace.replace(form(" %s intrinsic ", verb.cstr()), form(" %s the intrinsic ", verb.cstr()));
+        replace.replace(form(" %s keyword ", verb.cstr()), form(" %s the keyword ", verb.cstr()));
+        replace.replace(form(" %s compiler instruction ", verb.cstr()), form(" %s the compiler instruction ", verb.cstr()));
+        replace.replace(form(" %s symbol ", verb.cstr()), form(" %s the symbol ", verb.cstr()));
     }
 
     void addArticle(Utf8& replace, const Utf8& verb, const Utf8& a, const Utf8& an)
     {
-        replace.replace(form(" %s $$A$$ ", verb.c_str()), form(" %s %s ", verb.c_str(), a.c_str()));
-        replace.replace(form(" %s $$AN$$ ", verb.c_str()), form(" %s %s ", verb.c_str(), an.c_str()));
+        replace.replace(form(" %s $$A$$ ", verb.cstr()), form(" %s %s ", verb.cstr(), a.cstr()));
+        replace.replace(form(" %s $$AN$$ ", verb.cstr()), form(" %s %s ", verb.cstr(), an.cstr()));
     }
 }
 
@@ -193,31 +193,31 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
 void Diagnostic::replaceTokenName(const Token& token)
 {
     if (Tokenizer::isKeyword(token.id))
-        textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.cstr()));
     else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#mix") || token.text.startsWith("#alias"))
-        textMsg.replaceAll("$$TKN$$", form("compiler instruction [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("compiler instruction [[%s]]", token.cstr()));
     else if (Tokenizer::isIntrinsicReturn(token.id))
-        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.cstr()));
     else if (Tokenizer::isSymbol(token.id))
-        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.cstr()));
     else if (Tokenizer::isLiteral(token.id))
-        textMsg.replaceAll("$$TKN$$", form("literal [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("literal [[%s]]", token.cstr()));
     else if (token.is(TokenId::NativeType))
-        textMsg.replaceAll("$$TKN$$", form("type [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("type [[%s]]", token.cstr()));
     else if (token.is(TokenId::Identifier))
-        textMsg.replaceAll("$$TKN$$", form("identifier [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("identifier [[%s]]", token.cstr()));
     else if (Tokenizer::isIntrinsicNoReturn(token.id))
-        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.cstr()));
     else
-        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.c_str()));
+        textMsg.replaceAll("$$TKN$$", form("[[%s]]", token.cstr()));
 }
 
 void Diagnostic::replaceTokenName(const TokenParse& tokenParse)
 {
     if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeString)
-        textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse.token.c_str()));
+        textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse.cstr()));
     else if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeCharacter)
-        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse.token.c_str()));
+        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse.cstr()));
     else
         replaceTokenName(tokenParse.token);
 }
@@ -610,7 +610,7 @@ void Diagnostic::collectSourceCode()
     minBlanks   = 0;
 
     // Remove blanks on the left, but keep indentation
-    const auto pz = lineCode.c_str();
+    const auto pz = lineCode.cstr();
     if (*pz && SWAG_IS_NOT_WIN_EOL(*pz) && SWAG_IS_NOT_EOL(*pz))
     {
         const auto countBlanks = lineCode.countStartBlanks();
@@ -648,14 +648,14 @@ void Diagnostic::printSourceCode(Log* log, int num, const Utf8& line) const
     SyntaxColorContext cxt;
     cxt.mode = SyntaxColorMode::ForLog;
 
-    const auto pz = line.c_str();
+    const auto pz = line.cstr();
     if (*pz == 0 || SWAG_IS_WIN_EOL(*pz) || SWAG_IS_EOL(*pz))
         return;
     printMargin(log, false, true, num);
 
     log->setColor(LogColor::White);
 
-    const auto      colored = doSyntaxColor(line.c_str() + minBlanks, cxt);
+    const auto      colored = doSyntaxColor(line.cstr() + minBlanks, cxt);
     LogWriteContext logCxt;
     logCxt.raw = true;
     log->print(colored, &logCxt);
@@ -808,7 +808,7 @@ void Diagnostic::printRanges(Log* log)
     while (!ranges.empty())
     {
         auto&      r        = ranges.back();
-        auto       unFormat = Log::removeFormat(r.hint.c_str());
+        auto       unFormat = Log::removeFormat(r.hint.cstr());
         const auto mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
@@ -969,7 +969,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return formNte(Nte0160, Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return formNte(Nte0160, Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
@@ -1000,12 +1000,12 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
     if (msg)
     {
         const auto txt  = msg;
-        const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
+        const Utf8 txt1 = form(txt, Naming::kindName(node).cstr(), node->token.cstr());
         return note(node, node->getTokenName(), txt1);
     }
 
     const auto txt  = toNte(Nte0180);
-    const Utf8 txt1 = form(txt, Naming::kindName(node).c_str(), node->token.c_str());
+    const Utf8 txt1 = form(txt, Naming::kindName(node).cstr(), node->token.cstr());
     return note(node, node->getTokenName(), txt1);
 }
 
@@ -1040,7 +1040,7 @@ void Diagnostic::removeErrorId(Utf8& err)
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)
 {
-    const char* pz = err.c_str();
+    const char* pz = err.cstr();
     while (*pz)
     {
         Utf8 result;

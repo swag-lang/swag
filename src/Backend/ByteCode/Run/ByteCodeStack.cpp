@@ -93,7 +93,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step,
     str += " at ";
     str += Log::colorToVTS(LogColor::Location);
     if (sourceFile)
-        str += form("%s:%d:%d", sourceFile->path.c_str(), location->line + 1, location->column + 1);
+        str += form("%s:%d:%d", sourceFile->path.cstr(), location->line + 1, location->column + 1);
     if (sourceCode)
     {
         str += "\n";
@@ -120,7 +120,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step,
                 str += " at ";
                 str += Log::colorToVTS(LogColor::Location);
                 str += form("%s:%d:%d:%d:%d",
-                            owner->token.sourceFile->path.c_str(),
+                            owner->token.sourceFile->path.cstr(),
                             owner->token.startLocation.line + 1,
                             owner->token.startLocation.column + 1,
                             owner->token.endLocation.line + 1,
@@ -140,7 +140,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step,
     auto parent = ip->node->safeOwnerInline();
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
-        str += parent->hasOwnerInline() ? inl.c_str() : header.c_str();
+        str += parent->hasOwnerInline() ? inl.cstr() : header.cstr();
         str += Log::colorToVTS(LogColor::Name);
         str += getStepName(parent, ip);
 
@@ -150,7 +150,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step,
             str += " at ";
             str += Log::colorToVTS(LogColor::Location);
             str += form("%s:%d:%d:%d:%d",
-                        parent->token.sourceFile->path.c_str(),
+                        parent->token.sourceFile->path.cstr(),
                         parent->token.startLocation.line + 1,
                         parent->token.startLocation.column + 1,
                         parent->token.endLocation.line + 1,

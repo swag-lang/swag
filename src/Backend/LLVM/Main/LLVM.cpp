@@ -158,30 +158,30 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
 
     // LIBC functions without llvm intrinsics
     {
-        pp.fnAcosF32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnAcosF64  = modu.getOrInsertFunction(g_LangSpec->name_acos.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnAsinF32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnAsinF64  = modu.getOrInsertFunction(g_LangSpec->name_asin.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnTanF32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnTanF64   = modu.getOrInsertFunction(g_LangSpec->name_tan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnAtanF32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnAtanF64  = modu.getOrInsertFunction(g_LangSpec->name_atan.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnSinhF32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnSinhF64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnCoshF32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnCoshF64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnTanhF32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.c_str(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
-        pp.fnTanhF64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.c_str(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
-        pp.fnPowF32   = modu.getOrInsertFunction(g_LangSpec->name_powf.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
-        pp.fnPowF64   = modu.getOrInsertFunction(g_LangSpec->name_pow.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
-        pp.fnAtan2F32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.c_str(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
-        pp.fnAtan2F64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.c_str(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
-        pp.fnMemCmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.c_str(), llvm::FunctionType::get(I32_TY(), {PTR_I8_TY(), PTR_I8_TY(), I64_TY()}, false));
-        pp.fnStrlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY()}, false));
-        pp.fnStrcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.c_str(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY(), PTR_I8_TY()}, false));
-        pp.fnMalloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {I64_TY()}, false));
-        pp.fnReAlloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.c_str(), llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
-        pp.fnFree     = modu.getOrInsertFunction(g_LangSpec->name_free.c_str(), llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
+        pp.fnAcosF32  = modu.getOrInsertFunction(g_LangSpec->name_acosf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAcosF64  = modu.getOrInsertFunction(g_LangSpec->name_acos.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnAsinF32  = modu.getOrInsertFunction(g_LangSpec->name_asinf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAsinF64  = modu.getOrInsertFunction(g_LangSpec->name_asin.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnTanF32   = modu.getOrInsertFunction(g_LangSpec->name_tanf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnTanF64   = modu.getOrInsertFunction(g_LangSpec->name_tan.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnAtanF32  = modu.getOrInsertFunction(g_LangSpec->name_atanf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnAtanF64  = modu.getOrInsertFunction(g_LangSpec->name_atan.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnSinhF32  = modu.getOrInsertFunction(g_LangSpec->name_sinhf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnSinhF64  = modu.getOrInsertFunction(g_LangSpec->name_sinh.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnCoshF32  = modu.getOrInsertFunction(g_LangSpec->name_coshf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnCoshF64  = modu.getOrInsertFunction(g_LangSpec->name_cosh.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnTanhF32  = modu.getOrInsertFunction(g_LangSpec->name_tanhf.cstr(), llvm::FunctionType::get(F32_TY(), F32_TY(), false));
+        pp.fnTanhF64  = modu.getOrInsertFunction(g_LangSpec->name_tanh.cstr(), llvm::FunctionType::get(F64_TY(), F64_TY(), false));
+        pp.fnPowF32   = modu.getOrInsertFunction(g_LangSpec->name_powf.cstr(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fnPowF64   = modu.getOrInsertFunction(g_LangSpec->name_pow.cstr(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fnAtan2F32 = modu.getOrInsertFunction(g_LangSpec->name_atan2f.cstr(), llvm::FunctionType::get(F32_TY(), {F32_TY(), F32_TY()}, false));
+        pp.fnAtan2F64 = modu.getOrInsertFunction(g_LangSpec->name_atan2.cstr(), llvm::FunctionType::get(F64_TY(), {F64_TY(), F64_TY()}, false));
+        pp.fnMemCmp   = modu.getOrInsertFunction(g_LangSpec->name_memcmp.cstr(), llvm::FunctionType::get(I32_TY(), {PTR_I8_TY(), PTR_I8_TY(), I64_TY()}, false));
+        pp.fnStrlen   = modu.getOrInsertFunction(g_LangSpec->name_strlen.cstr(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY()}, false));
+        pp.fnStrcmp   = modu.getOrInsertFunction(g_LangSpec->name_strcmp.cstr(), llvm::FunctionType::get(I64_TY(), {PTR_I8_TY(), PTR_I8_TY()}, false));
+        pp.fnMalloc   = modu.getOrInsertFunction(g_LangSpec->name_malloc.cstr(), llvm::FunctionType::get(PTR_I8_TY(), {I64_TY()}, false));
+        pp.fnReAlloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.cstr(), llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
+        pp.fnFree     = modu.getOrInsertFunction(g_LangSpec->name_free.cstr(), llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
     }
 
     // Cache things
@@ -224,13 +224,13 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = form("%s%d", buildParameters.module->name.c_str(), precompileIndex);
+        pp.filename = form("%s%d", buildParameters.module->name.cstr(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         pp.llvmContext = new llvm::LLVMContext();
         pp.llvmContext->setDiscardValueNames(true);
 
-        pp.llvmModule = new llvm::Module(pp.filename.c_str(), *pp.llvmContext);
+        pp.llvmModule = new llvm::Module(pp.filename.cstr(), *pp.llvmContext);
         pp.builder    = new llvm::IRBuilder(*pp.llvmContext);
 
         if (buildParameters.buildCfg->backendDebugInfos)
@@ -329,15 +329,15 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
             break;
     }
 
-    Utf8 targetTriple = form("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    Utf8 targetTriple = form("%s-%s-%s-%s", archName.cstr(), vendorName.cstr(), osName.cstr(), abiName.cstr()).cstr();
     bool isDebug      = buildParameters.isDebug();
 
     // Setup target
-    modu.setTargetTriple(targetTriple.c_str());
+    modu.setTargetTriple(targetTriple.cstr());
     std::string error;
-    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
+    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.cstr(), error);
     if (!target)
-        Report::internalError(buildParameters.module, form("the LLVM backend failed to create the target [[%s]]", targetTriple.c_str()));
+        Report::internalError(buildParameters.module, form("the LLVM backend failed to create the target [[%s]]", targetTriple.cstr()));
 
     // Create target machine
     Utf8 cpu = "generic";
@@ -378,7 +378,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     opt.ApproxFuncFPMath    = buildParameters.buildCfg->backendLLVM.fpMathApproxFunc;
 
     auto rm            = std::optional<llvm::Reloc::Model>();
-    auto targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu.c_str(), features.c_str(), opt, rm);
+    auto targetMachine = target->createTargetMachine(targetTriple.cstr(), cpu.cstr(), features.cstr(), opt, rm);
 
     switch (buildParameters.buildCfg->backendOptimize)
     {
@@ -406,7 +406,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     auto path       = targetPath;
     path.append(pp.filename);
     std::error_code           err;
-    llvm::raw_fd_ostream      dest(path.c_str(), err, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream      dest(path.cstr(), err, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;
 
     // Pipeline configurations
@@ -477,11 +477,11 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     {
         Utf8 irName = path;
         irName.append(".ir");
-        llvm::raw_fd_ostream destFileIR(irName.c_str(), err, llvm::sys::fs::OF_None);
+        llvm::raw_fd_ostream destFileIR(irName.cstr(), err, llvm::sys::fs::OF_None);
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
-        g_Log.messageVerbose(form("generating llvm %s", irName.c_str()));
+        g_Log.messageVerbose(form("generating llvm %s", irName.cstr()));
     }
 
     delete targetMachine;

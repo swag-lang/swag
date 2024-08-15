@@ -46,7 +46,7 @@ void SemanticError::ambiguousArguments(SemanticContext*, Diagnostic& err, Vector
             }
 
             const auto callParam = i < matches[0]->paramParameters.size() ? matches[0]->paramParameters[i].param : matches[0]->parameters[i];
-            const auto note      = Diagnostic::note(callParam, formNte(Nte0117, matches[0]->solvedParameters[i]->declNode->token.c_str(), toWhat.c_str()));
+            const auto note      = Diagnostic::note(callParam, formNte(Nte0117, matches[0]->solvedParameters[i]->declNode->token.cstr(), toWhat.cstr()));
             err.addNote(note);
             break;
         }
@@ -59,7 +59,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     if (!node)
         node = context->node;
 
-    Diagnostic err{node, node->token, formErr(Err0010, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0010, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr())};
 
     bool first = true;
     for (const auto match : matches)
@@ -103,7 +103,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         return duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0009, Naming::kindName(matches[0]->symbolOverload).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, formErr(Err0009, Naming::kindName(matches[0]->symbolOverload).cstr(), symbol->name.cstr())};
 
     SetUtf8 here;
     bool    first = true;
@@ -120,9 +120,9 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         {
             const auto kindName = Naming::kindName(match->symbolOverload);
             if (here.contains(kindName))
-                couldBe = formNte(Nte0076, kindName.c_str());
+                couldBe = formNte(Nte0076, kindName.cstr());
             else
-                couldBe = formNte(Nte0075, kindName.c_str());
+                couldBe = formNte(Nte0075, kindName.cstr());
             here.insert(kindName);
         }
 
@@ -142,7 +142,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
-    Diagnostic err{identifier, formErr(Err0009, Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
+    Diagnostic err{identifier, formErr(Err0009, Naming::kindName(symbol->kind).cstr(), identifier->token.cstr())};
 
     bool    first = true;
     SetUtf8 here;
@@ -152,9 +152,9 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 
         const auto kindName = Naming::kindName(p1.symbol->kind);
         if (here.contains(kindName))
-            couldBe = formNte(Nte0076, kindName.c_str());
+            couldBe = formNte(Nte0076, kindName.cstr());
         else
-            couldBe = formNte(Nte0075, kindName.c_str());
+            couldBe = formNte(Nte0075, kindName.cstr());
         here.insert(kindName);
 
         if (!first)

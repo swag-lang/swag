@@ -37,7 +37,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
-            return context->report({fromNode, formErr(Saf0022, fromNode->token.c_str(), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, formErr(Saf0022, fromNode->token.cstr(), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
         }
     }
 
@@ -212,7 +212,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
                     remarks.push_back("mismatch return type");
                     break;
                 case MatchResult::BadSignature:
-                    remarks.push_back(form("mismatch signature (%s)", Naming::niceParameterRank(bi.badSignatureNum1 + 1).c_str()));
+                    remarks.push_back(form("mismatch signature (%s)", Naming::niceParameterRank(bi.badSignatureNum1 + 1).cstr()));
                     break;
             }
         }
@@ -228,8 +228,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         Utf8 toName, fromName;
         toType->computeWhateverName(toName, ComputeNameKind::DisplayName);
         fromType->computeWhateverName(fromName, ComputeNameKind::DisplayName);
-        remarks.push_back(form("the source type is [[%s]]", fromName.c_str()));
-        remarks.push_back(form("the requested type is [[%s]]", toName.c_str()));
+        remarks.push_back(form("the source type is [[%s]]", fromName.cstr()));
+        remarks.push_back(form("the requested type is [[%s]]", toName.cstr()));
 
         msg = toErr(Err0548);
     }

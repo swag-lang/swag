@@ -179,13 +179,13 @@ void Module::computePublicPath()
         {
             if (!std::filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(formErr(Fat0019, publicPath.c_str()));
+                Report::errorOS(formErr(Fat0019, publicPath.cstr()));
                 OS::exit(-1);
             }
         }
     }
 
-    publicPath.append(Workspace::getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
+    publicPath.append(Workspace::getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).cstr());
 
     if (!isScriptFile && isNot(ModuleKind::Script) && !isErrorModule)
     {
@@ -194,7 +194,7 @@ void Module::computePublicPath()
         {
             if (!std::filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(formErr(Fat0019, publicPath.c_str()));
+                Report::errorOS(formErr(Fat0019, publicPath.cstr()));
                 OS::exit(-1);
             }
         }
@@ -243,7 +243,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = form("invalid module name [[%s]], ", name.c_str());
+        errorStr = form("invalid module name [[%s]], ", name.cstr());
         errorStr += reason;
         return false;
     }
@@ -427,9 +427,9 @@ SourceFile* Module::findFile(const Utf8& fileName)
 {
     for (const auto p : files)
     {
-        if (p->path == fileName.c_str())
+        if (p->path == fileName.cstr())
             return p;
-        if (p->name == fileName.c_str())
+        if (p->name == fileName.cstr())
             return p;
     }
 
@@ -706,14 +706,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic err{importNode, tokenLocation, formErr(Err0514, dep->name.c_str(), dep->location.c_str())};
+                Diagnostic err{importNode, tokenLocation, formErr(Err0514, dep->name.cstr(), dep->location.cstr())};
                 err.addNote(dep->node, toNte(Nte0197));
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic err{importNode, tokenVersion, formErr(Err0516, dep->name.c_str(), dep->version.c_str())};
+                Diagnostic err{importNode, tokenVersion, formErr(Err0516, dep->name.cstr(), dep->version.cstr())};
                 err.addNote(dep->node, toNte(Nte0197));
                 return Report::report(err);
             }
@@ -1178,7 +1178,7 @@ void Module::callPreMain()
 
 Utf8 Module::getGlobalPrivateFct(const Utf8& nameFct) const
 {
-    return form(nameFct.c_str(), nameNormalized.c_str());
+    return form(nameFct.cstr(), nameNormalized.cstr());
 }
 
 bool Module::filterFunctionsToEmit()
@@ -1210,7 +1210,7 @@ void Module::logStage(const char* msg) const
 {
     if (!g_CommandLine.verboseStages)
         return;
-    g_Log.messageVerbose(form("[%s] -- %s", name.c_str(), msg));
+    g_Log.messageVerbose(form("[%s] -- %s", name.cstr(), msg));
 }
 
 void Module::logPass(ModuleBuildPass pass)

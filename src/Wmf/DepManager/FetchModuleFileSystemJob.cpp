@@ -19,14 +19,14 @@ JobResult FetchModuleFileSystemJob::execute()
     const auto dep = module->fetchDep;
 
     const auto depName = form("%s %u.%d.%d",
-                              dep->name.c_str(),
+                              dep->name.cstr(),
                               dep->module->buildCfg.moduleVersion,
                               dep->module->buildCfg.moduleRevision,
                               dep->module->buildCfg.moduleBuildNum);
     if (collectSourceFiles)
-        g_Log.messageHeaderCentered("Copying", depName.c_str());
+        g_Log.messageHeaderCentered("Copying", depName.cstr());
     else
-        g_Log.messageHeaderCentered("Using", depName.c_str());
+        g_Log.messageHeaderCentered("Using", depName.cstr());
 
     // Collect list of source files
     // Collect the module config file, and everything in src/ and publish/
@@ -64,7 +64,7 @@ JobResult FetchModuleFileSystemJob::execute()
     });
 
     auto destPath = g_Workspace->dependenciesPath;
-    destPath.append(dep->name.c_str());
+    destPath.append(dep->name.cstr());
 
     // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
     Vector<Utf8> dstFiles;
@@ -90,11 +90,11 @@ JobResult FetchModuleFileSystemJob::execute()
                 continue;
 
             auto n = destPath;
-            n.append(f.c_str());
+            n.append(f.cstr());
 
             if (!std::filesystem::remove(n))
             {
-                Report::errorOS(formErr(Err0071, n.c_str()));
+                Report::errorOS(formErr(Err0071, n.cstr()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -104,15 +104,15 @@ JobResult FetchModuleFileSystemJob::execute()
     for (auto& f : srcFiles)
     {
         auto srcFileName = dep->resolvedLocation;
-        srcFileName.append(f.c_str());
+        srcFileName.append(f.cstr());
         auto destFileName = destPath;
-        destFileName.append(f.c_str());
+        destFileName.append(f.cstr());
 
         auto            folder = destFileName.parent_path();
         std::error_code err;
         if (!std::filesystem::exists(folder, err) && !std::filesystem::create_directories(folder, err))
         {
-            Report::errorOS(formErr(Err0081, folder.c_str()));
+            Report::errorOS(formErr(Err0081, folder.cstr()));
             return JobResult::ReleaseJob;
         }
 

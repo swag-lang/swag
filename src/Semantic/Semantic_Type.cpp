@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0622, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, formErr(Err0622, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -140,7 +140,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, formErr(Err0482, overload->symbol->name.c_str(), overload->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic err{node, formErr(Err0482, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
 
         // Missing self ?
         if (node->childCount() <= 1 &&
@@ -164,12 +164,12 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err);
     }
 
-    Diagnostic err{node, formErr(Err0483, Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
+    Diagnostic err{node, formErr(Err0483, Naming::kindName(node->resolvedSymbolName()->kind).cstr(), node->resolvedSymbolName()->name.cstr())};
 
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
     if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(formNte(Nte0089, symbolName->name.c_str(), symbolName->name.c_str()));
+        err.addNote(formNte(Nte0089, symbolName->name.cstr(), symbolName->name.cstr()));
 
     return context->report(err);
 }
@@ -419,7 +419,7 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->isNot(SymbolKind::Struct) &&
                     symName->isNot(SymbolKind::Interface))
                 {
-                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0248, child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic err{child->token.sourceFile, child->token, formErr(Err0248, child->token.cstr(), Naming::aKindName(symName->kind).cstr())};
                     err.addNote(Diagnostic::hereIs(symOver));
                     return context->report(err);
                 }

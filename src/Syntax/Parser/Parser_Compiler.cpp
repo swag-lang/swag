@@ -106,7 +106,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
         Diagnostic err{sourceFile, tokenParse, toErr(Err0406)};
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, formNte(Nte0112, parent->token.c_str()));
+        err.addNote(parent, parent->token, formNte(Nte0112, parent->token.cstr()));
         return context->report(err);
     }
 
@@ -283,7 +283,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
         }
         else
         {
-            return error(tokenParse, formErr(Err0693, tokenParse.token.c_str()));
+            return error(tokenParse, formErr(Err0693, tokenParse.cstr()));
         }
     }
 
@@ -292,7 +292,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
         parent->token.is(g_LangSpec->name_opPostCopy) ||
         parent->token.is(g_LangSpec->name_opPostMove))
     {
-        return error(node, formErr(Err0349, parent->token.c_str()));
+        return error(node, formErr(Err0349, parent->token.cstr()));
     }
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
@@ -585,7 +585,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            context->report({sourceFile, tokenParse.token, formErr(Err0715, tokenParse.token.c_str())});
+            context->report({sourceFile, tokenParse.token, formErr(Err0715, tokenParse.cstr())});
             return false;
         }
 
@@ -715,7 +715,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return context->report({sourceFile, tokenParse.token, formErr(Err0691, tokenParse.token.c_str())});
+        return context->report({sourceFile, tokenParse.token, formErr(Err0691, tokenParse.cstr())});
     }
 
     return true;

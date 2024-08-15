@@ -98,7 +98,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
                 filePath = filePath1;
             if (!std::filesystem::exists(filePath, err))
             {
-                Report::report({n->token.sourceFile, n->token, formErr(Err0701, n->token.c_str())});
+                Report::report({n->token.sourceFile, n->token, formErr(Err0701, n->token.cstr())});
                 return false;
             }
         }
@@ -349,7 +349,7 @@ JobResult EnumerateModuleJob::execute()
         enumerateModules(g_Workspace->dependenciesPath);
 
         // If we are in script mode, then we add one single module with the script file
-        const auto parentFolder = Path(g_CommandLine.fileName.c_str()).parent_path();
+        const auto parentFolder = Path(g_CommandLine.fileName.cstr()).parent_path();
         const auto file         = Allocator::alloc<SourceFile>();
         file->name              = Path(g_CommandLine.fileName).filename().replace_extension();
         const auto scriptModule = g_Workspace->createModule(file->name, parentFolder, ModuleKind::Script);

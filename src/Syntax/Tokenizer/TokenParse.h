@@ -79,9 +79,10 @@ struct TokenComments
 
 struct TokenParse
 {
-    bool is(TokenId what) const { return token.id == what; }
-    bool isNot(TokenId what) const { return token.id != what; }
-    bool is(const Utf8& name) const { return token.text == name; }
+    bool        is(TokenId what) const { return token.id == what; }
+    bool        isNot(TokenId what) const { return token.id != what; }
+    bool        is(const Utf8& name) const { return token.text == name; }
+    const char* cstr() const { return token.cstr(); }
 
     Token           token;
     TokenComments   comments;

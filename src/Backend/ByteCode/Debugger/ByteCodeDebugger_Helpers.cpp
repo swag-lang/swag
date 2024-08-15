@@ -160,7 +160,7 @@ void ByteCodeDebugger::printLong(const Vector<std::pair<Utf8, Utf8>>& all, const
 
     if (!hasSomething && !filter.empty())
     {
-        printCmdError(form("...no match with filter [[%s]] (on %d tested elements)", filter.c_str(), all.size()));
+        printCmdError(form("...no match with filter [[%s]] (on %d tested elements)", filter.cstr(), all.size()));
     }
 }
 
@@ -237,7 +237,7 @@ void ByteCodeDebugger::printOneStepContext(ByteCodeRunContext* context, bool for
     {
         if (force || loc.file != stepLastFile)
         {
-            printTitleNameTypeLoc("=> file", "", "", loc.file->path.c_str());
+            printTitleNameTypeLoc("=> file", "", "", loc.file->path.cstr());
         }
     }
 

@@ -93,7 +93,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::String:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
                 err.addNote(toNte(Nte0051));
@@ -101,7 +101,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         }
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -257,7 +257,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -371,7 +371,7 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -498,7 +498,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -600,7 +600,7 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -678,7 +678,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -788,7 +788,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -916,7 +916,7 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
             break;
         default:
         {
-            Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
@@ -989,9 +989,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
             return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");
 
         if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS))
-            return context->report({node, formErr(Err0617, node->token.c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({node, formErr(Err0617, node->token.cstr(), leftTypeInfo->getDisplayNameC())});
         if (rightTypeInfo->isEnum() && !rightTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS))
-            return context->report({node, formErr(Err0618, node->token.c_str(), rightTypeInfo->getDisplayNameC())});
+            return context->report({node, formErr(Err0618, node->token.cstr(), rightTypeInfo->getDisplayNameC())});
     }
 
     // :ConcreteRef
@@ -1015,21 +1015,21 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     // Cannot factor tuples
     if (leftTypeInfo->isTuple() || leftTypeInfo->isListTuple())
     {
-        Diagnostic err{node, node->token, formErr(Err0623, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0623, node->token.cstr())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
     if (rightTypeInfo->isTuple() || rightTypeInfo->isListTuple())
     {
-        Diagnostic err{node, node->token, formErr(Err0623, node->token.c_str())};
+        Diagnostic err{node, node->token, formErr(Err0623, node->token.cstr())};
         err.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(err);
     }
 
     if (node->token.is(TokenId::SymPercent) && rightTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node, node->token, formErr(Err0622, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0622, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
         err.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(err);
     }
@@ -1073,14 +1073,14 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 
     if (leftTypeInfo->isAny())
     {
-        Diagnostic err{node, node->token, formErr(Err0621, node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0621, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, toNte(Nte0034));
         return context->report(err);
     }
 
     if (rightTypeInfo->isAny())
     {
-        Diagnostic err{node, node->token, formErr(Err0622, node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0622, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
         err.addNote(right, toNte(Nte0034));
         return context->report(err);
     }

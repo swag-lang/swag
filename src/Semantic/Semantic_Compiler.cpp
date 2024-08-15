@@ -36,7 +36,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0122, symbolName->name.c_str()));
+                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0122, symbolName->name.cstr()));
                         result->hint      = toNte(Nte0039);
                         return result;
                     }
@@ -46,7 +46,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
             }
 
             if (symbolName->is(SymbolKind::Variable))
-                return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.c_str()));
+                return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.cstr()));
 
             return Diagnostic::note(c, toNte(Nte0083));
         }
@@ -118,7 +118,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0030, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.hint          = formNte(Nte0156, userOp->symbol->name.c_str());
+                err.hint          = formNte(Nte0156, userOp->symbol->name.cstr());
                 return context->report(err);
             }
 
@@ -384,10 +384,10 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     const auto msg = node->firstChild();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0022, node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0022, node->token.cstr())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-    const Diagnostic err{node, node->token, formErr(Err0001, msg->computedValue()->text.c_str()), DiagnosticLevel::Error};
+    const Diagnostic err{node, node->token, formErr(Err0001, msg->computedValue()->text.cstr()), DiagnosticLevel::Error};
     return context->report(err);
 }
 
@@ -400,7 +400,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     const auto msg = node->firstChild();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0022, node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, formErr(Err0022, node->token.cstr())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     const Diagnostic err{node, node->token, msg->computedValue()->text, DiagnosticLevel::Warning};
@@ -715,25 +715,25 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
         // Search first in the same folder as the source file
         Path fullFileName = node->token.sourceFile->path.parent_path();
-        fullFileName.append(filename.c_str());
+        fullFileName.append(filename.cstr());
         std::error_code err;
         if (!std::filesystem::exists(fullFileName, err))
         {
             // Search relative to the module path
             fullFileName = node->token.sourceFile->module->path;
-            fullFileName.append(filename.c_str());
+            fullFileName.append(filename.cstr());
             if (!std::filesystem::exists(fullFileName, err))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!std::filesystem::exists(fullFileName, err))
-                    return context->report({back, formErr(Err0701, filename.c_str())});
+                    return context->report({back, formErr(Err0701, filename.cstr())});
             }
         }
 
         struct stat statBuf;
         const int   rc = stat(fullFileName, &statBuf);
-        SWAG_VERIFY(rc == 0, context->report({back, formErr(Err0075, back->computedValue()->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, formErr(Err0075, back->computedValue()->text.cstr())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", statBuf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         const auto newJob         = Allocator::alloc<LoadFileJob>();

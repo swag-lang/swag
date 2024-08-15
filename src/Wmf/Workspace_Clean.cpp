@@ -11,7 +11,7 @@ void Workspace::cleanFolderContent(const Path& path)
     if (g_CommandLine.cleanLog)
         return;
 
-    OS::visitFilesRec(path.c_str(), [&](const char* cFileName) {
+    OS::visitFilesRec(path.cstr(), [&](const char* cFileName) {
         std::error_code err;
         if (std::filesystem::remove_all(cFileName, err) == static_cast<std::uintmax_t>(-1))
         {
@@ -23,7 +23,7 @@ void Workspace::cleanFolderContent(const Path& path)
     std::error_code err;
     if (std::filesystem::remove_all(path, err) == static_cast<std::uintmax_t>(-1))
     {
-        Report::errorOS(formErr(Fat0022, path.c_str()));
+        Report::errorOS(formErr(Fat0022, path.cstr()));
         OS::exit(-1);
     }
 }
@@ -41,7 +41,7 @@ void Workspace::cleanPublic(const Path& basePath)
             if (std::filesystem::exists(path, inErr))
             {
                 // Clean all targets
-                OS::visitFolders(path.c_str(), [&path](const char* inFolder) {
+                OS::visitFolders(path.cstr(), [&path](const char* inFolder) {
                     auto cfgpath = path;
                     cfgpath.append(inFolder);
                     std::error_code inErr1;
@@ -76,7 +76,7 @@ void Workspace::cleanScript()
                          auto path = cacheFolder;
                          path.append(folder);
                          g_Log.messageHeaderCentered("Cleaning", path);
-                         cleanFolderContent(path); }, form("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
+                         cleanFolderContent(path); }, form("%s-*", SWAG_SCRIPT_WORKSPACE).cstr());
 }
 
 void Workspace::cleanCommand()
@@ -115,7 +115,7 @@ void Workspace::cleanCommand()
             const auto wkPath = workspacePath.filename() + "-";
 
             // We sure to only clean for the given workspace
-            if (strstr(folder, wkPath.c_str()) == folder)
+            if (strstr(folder, wkPath.cstr()) == folder)
             {
                 auto path = cachePath;
                 path.append(folder);

@@ -16,14 +16,14 @@ bool CommandLine::check()
     limitStackRT = Allocator::alignSize(limitStackRT);
     if (limitStackRT < SWAG_LIMIT_MIN_STACK || limitStackRT > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(formErr(Fat0006, Utf8::toNiceSize(limitStackRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(formErr(Fat0006, Utf8::toNiceSize(limitStackRT).cstr(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).cstr(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).cstr()));
         return false;
     }
 
     limitStackBC = Allocator::alignSize(limitStackBC);
     if (limitStackBC < SWAG_LIMIT_MIN_STACK || limitStackBC > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(formErr(Fat0006, Utf8::toNiceSize(limitStackBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(formErr(Fat0006, Utf8::toNiceSize(limitStackBC).cstr(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).cstr(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).cstr()));
         return false;
     }
 
@@ -86,7 +86,7 @@ bool CommandLine::check()
         }
         else if (p.extension() != ".swgs")
         {
-            Report::error(formErr(Fat0025, p.extension().c_str()));
+            Report::error(formErr(Fat0025, p.extension().cstr()));
             return false;
         }
     }

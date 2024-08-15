@@ -24,13 +24,13 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    Diagnostic err{context->node, formErr(Err0056, Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+    Diagnostic err{context->node, formErr(Err0056, Naming::kindName(overload).cstr(), overload->symbol->name.cstr())};
 
     err.addNote(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-        err.addNote(formNte(Nte0107, Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str()));
+        err.addNote(formNte(Nte0107, Naming::kindName(overload).cstr(), context->node->ownerFct->getDisplayName().cstr()));
     if (overload->fromInlineParam)
-        err.addNote(overload->fromInlineParam, formNte(Nte0200, overload->symbol->name.c_str()));
+        err.addNote(overload->fromInlineParam, formNte(Nte0200, overload->symbol->name.cstr()));
 
     return context->report(err);
 }
@@ -151,7 +151,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     else if (resolved->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         node->resultRegisterRc = identifier->identifierRef()->resultRegisterRc;
-        SWAG_VERIFY(node->resultRegisterRc.size() > 0, Report::internalError(context->node, form("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRc.size() > 0, Report::internalError(context->node, form("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.cstr()).cstr()));
         forStruct = true;
     }
 
@@ -578,7 +578,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->symRegisters.size() > 0,
-                    Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.c_str()).c_str()));
+                    Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
         SWAG_ASSERT(resolved->hasFlag(OVERLOAD_INLINE_REG));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 

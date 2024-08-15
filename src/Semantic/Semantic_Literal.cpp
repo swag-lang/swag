@@ -204,7 +204,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             VectorNative<uint32_t> uni;
             computedValue.text.toUni32(uni);
             if (uni.size() != 1)
-                return formErr(Err0149, computedValue.text.c_str());
+                return formErr(Err0149, computedValue.text.cstr());
 
             if (typeSuffix->isUntypedInteger())
             {
@@ -494,7 +494,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         const auto symbolName = suffix->resolvedSymbolName();
         if (symbolName && symbolName->isNot(SymbolKind::TypeAlias))
-            return context->report({suffix, formErr(Err0191, suffix->resolvedSymbolName()->name.c_str(), Naming::aKindName(symbolName->kind).c_str())});
+            return context->report({suffix, formErr(Err0191, suffix->resolvedSymbolName()->name.cstr(), Naming::aKindName(symbolName->kind).cstr())});
     }
 
     const auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);
