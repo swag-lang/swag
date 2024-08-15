@@ -48,6 +48,14 @@ bool Semantic::resolveIf(SemanticContext* context)
     node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitIfAfterExpr);
     node->ifBlock->setBcNotifyAfter(ByteCodeGen::emitIfAfterIf, ByteCodeGen::emitLeaveScope);
 
+    if (node->elseBlock &&
+        node->elseBlock->is(AstNodeKind::Statement) &&
+        !node->elseBlock->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
+        node->elseBlock->firstChild()->is(AstNodeKind::If))
+    {
+        SWAG_CHECK(context->report({node->elseBlock->firstChild(), node->elseBlock->firstChild()->token, toErr(Wrn0008), DiagnosticLevel::Warning}));
+    }
+
     return true;
 }
 

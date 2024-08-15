@@ -115,12 +115,15 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Wrn0001, "%s");
-    SWAG_ERROR(Wrn0002, "deprecated usage         $ %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])");
-    SWAG_ERROR(Wrn0003, "unchanged local variable $ the variable [[%s]] remains unchanged after its declaration $ if you don't need to modify it, declare it with [[let]] instead of [[var]] to ensure immutability");
-    SWAG_ERROR(Wrn0004, "unchanged local variable $ the variable [[%s]] is declared to its default value, and is never modified after that $ are you sure this variable is necessary?");
-    SWAG_ERROR(Wrn0005, "unreachable code         $ this code is not reachable and will never be executed");
-    SWAG_ERROR(Wrn0006, "unused %s                $ %s [[%s]] is not used");
-    SWAG_ERROR(Wrn0007, "unecessary [[break]]     $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
+    SWAG_ERROR(Wrn0002, "deprecated usage                $ %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])");
+    SWAG_ERROR(Wrn0003, "unchanged local variable        $ the variable [[%s]] remains unchanged after its declaration $ if you don't need to modify it, declare it with [[let]] instead of [[var]] to ensure immutability");
+    SWAG_ERROR(Wrn0004, "unchanged local variable        $ the variable [[%s]] is declared to its default value, and is never modified after that $ are you sure this variable is necessary?");
+    SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed");
+    SWAG_ERROR(Wrn0006, "unused %s                       $ %s [[%s]] is not used");
+    SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
+    SWAG_ERROR(Wrn0008, "unecessary [[else do if]]       $ consider replacing [[else do if]] with a single [[elif]]");
+    SWAG_ERROR(Wrn0009, "unecessary [[#else #do #if]]    $ consider replacing [[#else #do #if]] with a single [[#elif]]");
+    SWAG_ERROR(Wrn0010, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

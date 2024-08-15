@@ -36,6 +36,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         node->boolExpression->firstChild()->inheritTokenLocation(varDecl->token);
         node->boolExpression->inheritTokenLocation(varDecl->token);
 
+        // 'where' clause
         if (tokenParse.is(TokenId::KwdWhere))
         {
             const auto binaryNode = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, node);
@@ -53,18 +54,6 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
-
-        if (tokenParse.is(TokenId::KwdElse))
-        {
-            auto tokenElse = tokenParse;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
-            FormatAst::inheritFormatBefore(this, node->elseBlock, &tokenElse);
-        }
-        else if (tokenParse.is(TokenId::KwdElif))
-        {
-            SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
-        }
     }
 
     // If with a simple expression
@@ -72,18 +61,18 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
+    }
 
-        if (tokenParse.is(TokenId::KwdElse))
-        {
-            auto tokenElse = tokenParse;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
-            FormatAst::inheritFormatBefore(this, node->elseBlock, &tokenElse);
-        }
-        else if (tokenParse.is(TokenId::KwdElif))
-        {
-            SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
-        }
+    if (tokenParse.is(TokenId::KwdElse))
+    {
+        auto tokenElse = tokenParse;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
+        FormatAst::inheritFormatBefore(this, node->elseBlock, &tokenElse);
+    }
+    else if (tokenParse.is(TokenId::KwdElif))
+    {
+        SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
     }
 
     return true;

@@ -103,7 +103,7 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
     return true;
 }
 
-bool FormatAst::outputScopeContentAndChilds(FormatContext& context, Module* module, const Scope* scope)
+bool FormatAst::outputScopeContentAndChildren(FormatContext& context, Module* module, const Scope* scope)
 {
     SWAG_CHECK(outputScopeContent(context, module, scope));
     for (const auto oneScope : scope->childScopes)
@@ -117,7 +117,7 @@ bool FormatAst::outputScopeBlock(FormatContext& context, Module* module, const S
     concat->addChar('{');
     concat->addEol();
     context.indent++;
-    SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
+    SWAG_CHECK(outputScopeContentAndChildren(context, module, scope));
     context.indent--;
     concat->addIndent(context.indent);
     concat->addChar('}');
@@ -149,7 +149,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
         }
         else
         {
-            SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
+            SWAG_CHECK(outputScopeContentAndChildren(context, module, scope));
         }
     }
 
@@ -227,7 +227,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
     // Unnamed scope
     else
     {
-        SWAG_CHECK(outputScopeContentAndChilds(context, module, scope));
+        SWAG_CHECK(outputScopeContentAndChildren(context, module, scope));
     }
 
     return true;
