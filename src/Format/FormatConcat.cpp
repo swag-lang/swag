@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Format/FormatConcat.h"
 
-void FormatConcat::addChar(char c)
+void FormatConcat::addChar(uint8_t c)
 {
     ensureSpace(1);
     *currentSP++ = c;
@@ -48,7 +48,7 @@ void FormatConcat::addBlankLine()
         addChar('\n');
 }
 
-bool FormatConcat::removeLastChar(char c)
+bool FormatConcat::removeLastChar(uint8_t c)
 {
     if (currentSP == lastBucket->data)
     {

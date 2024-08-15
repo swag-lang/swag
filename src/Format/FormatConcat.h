@@ -16,8 +16,8 @@ struct FormatConcat : Concat
     void addString(const std::string_view& view);
     void addString(const char* v, uint32_t len);
     void addStringFormat(const char* format, ...);
-    void addChar(char c);
-    bool removeLastChar(char c);
+    void addChar(uint8_t c);
+    bool removeLastChar(uint8_t c);
 
     uint32_t totalEol = 0;
     uint32_t eol      = 1;
