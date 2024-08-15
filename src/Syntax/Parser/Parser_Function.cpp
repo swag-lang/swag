@@ -656,7 +656,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
     bool isConstMethod   = false;
     bool isIntrinsic     = false;
-    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC) || typeFuncId == TokenId::KwdWhere;
+    auto funcForCompiler = TOKEN_FLAGS[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC) || typeFuncId == TokenId::KwdWhere;
 
     // Name
     if (funcForCompiler)

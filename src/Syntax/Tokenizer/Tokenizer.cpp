@@ -9,22 +9,6 @@
 #include "Core/Timer.h"
 #endif
 
-const char* g_TokenNames[] =
-{
-#undef DEFINE_TOKEN_ID
-#define DEFINE_TOKEN_ID(__id, __flags) #__id,
-#include "TokenIds.h"
-
-};
-
-const TokenFlags g_TokenFlags[] =
-{
-#undef DEFINE_TOKEN_ID
-#define DEFINE_TOKEN_ID(__id, __flags) __flags,
-#include "TokenIds.h"
-
-};
-
 bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint) const
 {
     tokenParse.token.endLocation = location;

@@ -21,8 +21,21 @@ constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
 constexpr TokenizerFlags TOKENIZER_TRACK_COMMENTS = 0x00000001;
 constexpr TokenizerFlags TOKENIZER_TRACK_FORMAT   = 0x00000002;
 
-extern const char*      g_TokenNames[];
-extern const TokenFlags g_TokenFlags[];
+constexpr const char* TOKEN_NAMES[] =
+{
+#undef DEFINE_TOKEN_ID
+#define DEFINE_TOKEN_ID(__id, __flags) #__id,
+#include "TokenIds.h"
+
+};
+
+constexpr TokenFlags TOKEN_FLAGS[] =
+{
+#undef DEFINE_TOKEN_ID
+#define DEFINE_TOKEN_ID(__id, __flags) __flags,
+#include "TokenIds.h"
+
+};
 
 struct Tokenizer
 {
@@ -57,13 +70,13 @@ struct Tokenizer
 
     static TokenId tokenRelated(TokenId id);
 
-    static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_KWD); }
-    static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_SYM); }
-    static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_LITERAL); }
-    static bool isCompiler(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_COMPILER); }
-    static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_INTRINSIC_RETURN); }
-    static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
-    static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }
+    static bool isKeyword(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_KWD); }
+    static bool isSymbol(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_SYM); }
+    static bool isLiteral(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_LITERAL); }
+    static bool isCompiler(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_COMPILER); }
+    static bool isIntrinsicReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_RETURN); }
+    static bool isIntrinsicNoReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
+    static bool isTopLevelInst(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }
 
     SourceLocation location;
 

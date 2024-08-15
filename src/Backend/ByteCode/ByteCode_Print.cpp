@@ -275,7 +275,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         case ByteCodeOp::IntrinsicF32x2:
         case ByteCodeOp::IntrinsicF64x2:
         {
-            Utf8 name = g_TokenNames[ip->d.u32];
+            Utf8 name = TOKEN_NAMES[ip->d.u32];
             if (name.startsWith("Intrinsic"))
             {
                 name.remove(0, 9);
