@@ -149,7 +149,7 @@ void profiler()
 
     for (const auto bc : bcs)
     {
-        if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.c_str()) == -1)
+        if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.cstr()) == -1)
             continue;
         line = getProfileBc(bc, 0);
         g_Log.print(line);

@@ -446,7 +446,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
         if (ip->sourceFile)
         {
             const Path sf = ip->sourceFile;
-            line.devMode += form("%s:%d", sf.filename().c_str(), ip->sourceLine);
+            line.devMode += form("%s:%d", sf.filename().cstr(), ip->sourceLine);
         }
     }
 #endif

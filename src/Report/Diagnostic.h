@@ -176,23 +176,23 @@ struct Diagnostic
     void        addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
     bool        hasNotes() const { return !notes.empty(); }
 
-    void setupColors();
-    void collectSourceCode();
-    void sortRanges();
-    void collectRanges();
-    void printSourceCode(Log* log, int num, const Utf8& line) const;
-    void printSourceCode(Log* log) const;
-    void printSourceLine(Log* log) const;
-    void printErrorLevel(Log* log);
-    void printMarginLineNo(Log* log, int lineNo) const;
-    void printMargin(Log* log, bool eol = false, bool printLineNo = false, int lineNo = 0) const;
-    void printPreRemarks(Log* log) const;
-    void printRemarks(Log* log) const;
-    void setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt = nullptr) const;
-    void alignRangeColumn(Log* log, int& curColumn, int where, bool withCode = true) const;
-    int  printRangesVerticalBars(Log* log, size_t maxMarks);
-    void printLastRangeHint(Log* log, int curColumn);
-    void printRanges(Log* log);
+    void     setupColors();
+    void     collectSourceCode();
+    void     sortRanges();
+    void     collectRanges();
+    void     printSourceCode(Log* log, uint32_t num, const Utf8& line) const;
+    void     printSourceCode(Log* log) const;
+    void     printSourceLine(Log* log) const;
+    void     printErrorLevel(Log* log);
+    void     printMarginLineNo(Log* log, uint32_t lineNo) const;
+    void     printMargin(Log* log, bool eol = false, bool printLineNo = false, uint32_t lineNo = 0) const;
+    void     printPreRemarks(Log* log) const;
+    void     printRemarks(Log* log) const;
+    void     setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt = nullptr) const;
+    void     alignRangeColumn(Log* log, uint32_t& curColumn, uint32_t where, bool withCode = true) const;
+    uint32_t printRangesVerticalBars(Log* log, size_t maxMarks);
+    void     printLastRangeHint(Log* log, uint32_t curColumn);
+    void     printRanges(Log* log);
 
     void reportCompact(Log* log);
     void report(Log* log);
@@ -213,8 +213,8 @@ struct Diagnostic
         SourceLocation  endLocation;
         Utf8            hint;
         DiagnosticLevel errorLevel;
-        int             width     = 0;
-        int             mid       = 0;
+        uint32_t        width     = 0;
+        uint32_t        mid       = 0;
         bool            hasBar    = false;
         bool            mergeNext = false;
     };
@@ -229,11 +229,11 @@ struct Diagnostic
     Vector<RangeHint>         ranges;
     Utf8                      lineCode;
     Utf8                      lineCodePrev;
-    int                       lineCodeNum       = 0;
-    int                       lineCodeNumPrev   = 0;
-    int                       lineCodeNumDigits = 0;
-    int                       lineCodeMaxDigits = 0;
-    int                       minBlanks         = 0;
+    uint32_t                  lineCodeNum       = 0;
+    uint32_t                  lineCodeNumPrev   = 0;
+    uint32_t                  lineCodeNumDigits = 0;
+    uint32_t                  lineCodeMaxDigits = 0;
+    uint32_t                  minBlanks         = 0;
     LogColor                  errorColor;
     LogColor                  errorColorHint;
     LogColor                  errorColorHintHighLight;

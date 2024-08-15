@@ -108,7 +108,7 @@ struct Utf8
     bool toChar32(uint32_t& ch) const;
 
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
-    static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);
+    static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength);
     static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
     static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
     static Utf8        toStringF64(double v);

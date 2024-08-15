@@ -301,7 +301,7 @@ void Diagnostic::printSourceLine(Log* log) const
         log->write(": ");
 }
 
-void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
+void Diagnostic::printMarginLineNo(Log* log, uint32_t lineNo) const
 {
     log->setColor(codeLineNoColor);
 
@@ -313,7 +313,7 @@ void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
         numDigits++;
     }
 
-    int m = lineNo ? numDigits : 0;
+    uint32_t m = lineNo ? numDigits : 0;
     while (m++ < lineCodeMaxDigits + 1)
         log->write(" ");
     if (lineNo)
@@ -321,7 +321,7 @@ void Diagnostic::printMarginLineNo(Log* log, int lineNo) const
     log->write(" ");
 }
 
-void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, int lineNo) const
+void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, uint32_t lineNo) const
 {
     if (!printLineNo)
     {
@@ -446,15 +446,15 @@ void Diagnostic::printRemarks(Log* log) const
 
 namespace
 {
-    void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& range, char c1, char c2)
+    void fixRange(const Utf8& lineCode, SourceLocation& startLocation, uint32_t& range, char c1, char c2)
     {
         if (range == 1)
             return;
 
-        const int decal = static_cast<int>(startLocation.column);
-        int       cpt   = 0;
+        const auto decal = startLocation.column;
+        int        cpt   = 0;
 
-        for (int i = decal; i < static_cast<int>(lineCode.length()) && i < decal + range; i++)
+        for (uint32_t i = decal; i < lineCode.length() && i < decal + range; i++)
         {
             if (lineCode[i] == c1)
                 cpt++;
@@ -462,22 +462,24 @@ namespace
                 cpt--;
         }
 
-        if (cpt > 0 && decal + range < static_cast<int>(lineCode.length()) && lineCode[decal + range] == c2)
+        if (cpt > 0 && decal + range < lineCode.length() && lineCode[decal + range] == c2)
         {
             range++;
         }
-        else if (cpt > 0 && decal < static_cast<int>(lineCode.length()) && lineCode[decal] == c1)
+        else if (cpt > 0 && decal < lineCode.length() && lineCode[decal] == c1)
         {
             startLocation.column++;
+            SWAG_ASSERT(range);
             range--;
         }
-        else if (cpt < 0 && decal && decal - 1 < static_cast<int>(lineCode.length()) && lineCode[decal - 1] == c1)
+        else if (cpt < 0 && decal && decal - 1 < lineCode.length() && lineCode[decal - 1] == c1)
         {
             startLocation.column--;
             range++;
         }
-        else if (cpt < 0 && decal + range - 1 < static_cast<int>(lineCode.length()) && lineCode[decal + range - 1] == c2)
+        else if (cpt < 0 && decal + range - 1 < lineCode.length() && lineCode[decal + range - 1] == c2)
         {
+            SWAG_ASSERT(range);
             range--;
         }
     }
@@ -519,28 +521,28 @@ void Diagnostic::collectRanges()
     {
         r.hint = preprocess(r.hint);
 
-        // No multiline range... a test, to reduce verbosity
-        if (r.endLocation.line > r.startLocation.line)
-        {
-            r.endLocation.line   = r.startLocation.line;
-            r.endLocation.column = UINT32_MAX;
-        }
-
         // Be sure start column is before end column
         if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
             std::swap(r.startLocation.column, r.endLocation.column);
 
         r.width = 1;
         if (r.endLocation.line == r.startLocation.line)
+        {
+            SWAG_ASSERT(r.endLocation.column >= r.startLocation.column);
             r.width = r.endLocation.column - r.startLocation.column;
+        }
         else
+        {
+            SWAG_ASSERT(lineCode.length() >= r.startLocation.column);
             r.width = lineCode.length() - r.startLocation.column;
+        }
+        
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
         if (r.width == 1 && r.startLocation.column < lineCode.count)
         {
-            int decal = r.startLocation.column;
+            uint32_t decal = r.startLocation.column;
 
             // If this is a word, then take the whole word
             if ((lineCode[decal] & 0x80) == 0)
@@ -571,7 +573,7 @@ void Diagnostic::collectRanges()
         fixRange(lineCode, r.startLocation, r.width, '[', ']');
 
         r.mid = r.startLocation.column + r.width / 2;
-        if ((r.width & 1) == 0)
+        if (r.width && ((r.width & 1) == 0))
             r.mid--;
     }
 }
@@ -629,7 +631,7 @@ void Diagnostic::collectSourceCode()
                 prev.trim();
                 if (!prev.empty())
                 {
-                    const int countPrevBlanks = lineCodePrev.countStartBlanks();
+                    const uint32_t countPrevBlanks = lineCodePrev.countStartBlanks();
                     if (countPrevBlanks > MAX_INDENT_BLANKS)
                         minBlanks = min(minBlanks, countPrevBlanks - MAX_INDENT_BLANKS);
                     break;
@@ -639,7 +641,7 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-void Diagnostic::printSourceCode(Log* log, int num, const Utf8& line) const
+void Diagnostic::printSourceCode(Log* log, uint32_t num, const Utf8& line) const
 {
     if (line.empty())
         return;
@@ -715,11 +717,14 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
     }
 }
 
-void Diagnostic::alignRangeColumn(Log* log, int& curColumn, int where, bool withCode) const
+void Diagnostic::alignRangeColumn(Log* log, uint32_t& curColumn, uint32_t where, bool withCode) const
 {
+    if(curColumn >= where)
+        return;
+    
     while (curColumn < where)
     {
-        if (withCode && curColumn < static_cast<int>(lineCode.count) && lineCode[curColumn] == '\t')
+        if (withCode && curColumn < lineCode.count && lineCode[curColumn] == '\t')
             log->write("\t");
         else
             log->write(" ");
@@ -727,11 +732,11 @@ void Diagnostic::alignRangeColumn(Log* log, int& curColumn, int where, bool with
     }
 }
 
-int Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
+uint32_t Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
 {
     log->writeEol();
     printMargin(log, false, true);
-    int curColumn = minBlanks;
+    uint32_t curColumn = minBlanks;
     for (uint32_t ii = 0; ii < maxMarks; ii++)
     {
         auto& rr  = ranges[ii];
@@ -745,14 +750,14 @@ int Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
     return curColumn;
 }
 
-void Diagnostic::printLastRangeHint(Log* log, int curColumn)
+void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
 {
     const auto& r          = ranges.back();
     const auto  leftColumn = curColumn;
 
-    Vector<Utf8> tokens;
-    const int    maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    Utf8::wordWrap(r.hint, tokens, max(maxLength, (int) g_CommandLine.errorRightColumn / 2));
+    Vector<Utf8>   tokens;
+    const uint32_t maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
+    Utf8::wordWrap(r.hint, tokens, max(maxLength, g_CommandLine.errorRightColumn / 2));
 
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
@@ -776,7 +781,7 @@ void Diagnostic::printRanges(Log* log)
     printMargin(log, false, true);
 
     // Print all underlines
-    int curColumn = minBlanks;
+    uint32_t curColumn = minBlanks;
     for (uint32_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
@@ -786,7 +791,7 @@ void Diagnostic::printRanges(Log* log)
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(log, ranges[i + 1].errorLevel, HintPart::Underline);
 
-        while (curColumn < static_cast<int>(r.startLocation.column) + r.width && curColumn <= static_cast<int>(lineCode.length()) + 1)
+        while (curColumn < r.startLocation.column + r.width && curColumn <= lineCode.length() + 1)
         {
             curColumn++;
             log->print(LogSymbol::HorizontalLine);
@@ -809,7 +814,7 @@ void Diagnostic::printRanges(Log* log)
     {
         auto&      r        = ranges.back();
         auto       unFormat = Log::removeFormat(r.hint.cstr());
-        const auto mid      = r.mid - minBlanks;
+        const auto mid      = static_cast<int>(r.mid - minBlanks);
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
         setColorRanges(log, r.errorLevel, HintPart::Arrow);

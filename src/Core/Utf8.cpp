@@ -839,7 +839,7 @@ void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpt
     }
 }
 
-void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength)
+void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength)
 {
     tokens.clear();
 
