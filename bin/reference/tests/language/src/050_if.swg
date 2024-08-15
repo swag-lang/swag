@@ -1,6 +1,8 @@
 /**
-A basic test with `if`. Curlies are optional, but in that case you need to use 'do'.
-This will be the same rule for 'while', 'for', 'loop' and so on.
+A basic test with an `if`. 
+
+Curlies are optional, but in that case you need to use 'do'. The same rule will apply for 'while', 'for', 'loop' and so on.
+
 Unlike C/C++, the expression doesn't need to be enclosed with `()`.
 */
 
@@ -43,7 +45,10 @@ Unlike C/C++, the expression doesn't need to be enclosed with `()`.
 }
 
 /**
-You can also at the same time declare and test one variable in an `if` expression. `var`, `let` or `const` is mandatory in that case.
+# Variable declaration
+In an 'if' expression, you can at the same time declare and test one variable. `var`, `let` or `const` is mandatory in that case.
+
+The 'if' will implicitly convert the variable to 'true' or 'false', and make the test on that. So the 'if' will pass only if the declared variable is not '0'.
 */
 #test
 {
@@ -64,4 +69,26 @@ You can also at the same time declare and test one variable in an `if` expressio
         @assert(a == 1)
     else do
         @assert(false)
+}
+
+/**
+You can also specify an additional test with a 'where' clause, after the declaration.
+*/
+#test
+{
+    func retSomething() -> string => "string"
+    func retNothing()   -> string => null
+
+    // The 'where' clause will be executed only if the first boolean test has passed.
+    // In that case, the test will be done only if 'str' is not 0.
+    if let str = retSomething() where str[0] == `s` do
+        @assert(true)
+    else do
+        @assert(false)
+
+    // Here, the 'where' clause is not executed because the first boolean test fails.
+    if let str = retNothing() where str[0] == `s` do
+        @assert(false)
+    else do
+        @assert(true)
 }

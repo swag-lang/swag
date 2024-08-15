@@ -36,6 +36,22 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         node->boolExpression->firstChild()->inheritTokenLocation(varDecl->token);
         node->boolExpression->inheritTokenLocation(varDecl->token);
 
+        if (tokenParse.is(TokenId::KwdWhere))
+        {
+            const auto binaryNode = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, node);
+            binaryNode->addSpecFlag(AstBinaryOpNode::SPEC_FLAG_WHERE_AND);
+            binaryNode->semanticFct = Semantic::resolveBoolExpression;
+            binaryNode->token       = tokenParse.token;
+            binaryNode->token.id    = TokenId::KwdAnd;
+
+            Ast::removeFromParent(node->boolExpression);
+            Ast::addChildBack(binaryNode, node->boolExpression);
+            node->boolExpression = binaryNode;
+
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doExpression(binaryNode, EXPR_FLAG_NONE, &dummyResult));
+        }
+
         SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
 
         if (tokenParse.is(TokenId::KwdElse))

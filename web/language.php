@@ -198,6 +198,9 @@
 <li><a href="#_031_impl_swg">Impl</a></li>
 <li><a href="#_035_namespace_swg">Namespace</a></li>
 <li><a href="#_050_if_swg">If</a></li>
+<ul>
+<li><a href="#_050_if_swg_Variable_declaration">Variable declaration</a></li>
+</ul>
 <li><a href="#_051_loop_swg">Loop</a></li>
 <ul>
 <li><a href="#_051_loop_swg_break,_continue">break, continue</a></li>
@@ -675,9 +678,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">#alias0</span>
 <span class="SItr">#alias1</span>
 <span class="SItr">#alias2</span> <span class="SCmt">// and more generally #aliasN</span>
-<span class="SItr">#mixin0</span>
-<span class="SItr">#mixin1</span>
-<span class="SItr">#mixin2</span> <span class="SCmt">// and more generally #mixinN</span></span></div>
+<span class="SItr">#mix0</span>
+<span class="SItr">#mix1</span>
+<span class="SItr">#mix2</span> <span class="SCmt">// and more generally #mixinN</span></span></div>
 <h3 id="_005_keywords_swg_Misc_intrinsics">Misc intrinsics </h3>
 <p>Intrisic keywords always start with <span class="code-inline">@</span>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@err</span>
@@ -2709,7 +2712,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span></span></div>
 <p>All symbols from a Swag source file are exported to other files of the same module. So using <span class="code-inline">private</span> can protect from name conflicts. </p>
 
-<h2 id="_050_if_swg">If</h2><p>A basic test with <span class="code-inline">if</span>. Curlies are optional, but in that case you need to use <span class="code-inline">do</span>. This will be the same rule for <span class="code-inline">while</span>, <span class="code-inline">for</span>, <span class="code-inline">loop</span> and so on. Unlike C/C++, the expression doesn't need to be enclosed with <span class="code-inline">()</span>. </p>
+<h2 id="_050_if_swg">If</h2><p>A basic test with an <span class="code-inline">if</span>.  </p>
+<p>Curlies are optional, but in that case you need to use <span class="code-inline">do</span>. The same rule will apply for <span class="code-inline">while</span>, <span class="code-inline">for</span>, <span class="code-inline">loop</span> and so on. </p>
+<p>Unlike C/C++, the expression doesn't need to be enclosed with <span class="code-inline">()</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
@@ -2747,7 +2752,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span> <span class="SLgc">do</span>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
-<p>You can also at the same time declare and test one variable in an <span class="code-inline">if</span> expression. <span class="code-inline">var</span>, <span class="code-inline">let</span> or <span class="code-inline">const</span> is mandatory in that case. </p>
+<h3 id="_050_if_swg_Variable_declaration">Variable declaration </h3>
+<p>In an <span class="code-inline">if</span> expression, you can at the same time declare and test one variable. <span class="code-inline">var</span>, <span class="code-inline">let</span> or <span class="code-inline">const</span> is mandatory in that case. </p>
+<p>The <span class="code-inline">if</span> will implicitly convert the variable to <span class="code-inline">true</span> or <span class="code-inline">false</span>, and make the test on that. So the <span class="code-inline">if</span> will pass only if the declared variable is not <span class="code-inline">0</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// This will declare a variable 'a', and test it against 0.</span>
@@ -2767,6 +2774,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
     <span class="SLgc">else</span> <span class="SLgc">do</span>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+}</span></div>
+<p>You can also specify an additional test with a <span class="code-inline">where</span> clause, after the declaration. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">func</span> <span class="SFct">retSomething</span>() -&gt; <span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>
+    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()   -&gt; <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
+
+    <span class="SCmt">// The 'where' clause will be executed only if the first boolean test has passed.</span>
+    <span class="SCmt">// In that case, the test will be done only if 'str' is not 0.</span>
+    <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span> <span class="SLgc">do</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+    <span class="SLgc">else</span> <span class="SLgc">do</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+
+    <span class="SCmt">// Here, the 'where' clause is not executed because the first boolean test fails.</span>
+    <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retNothing</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span> <span class="SLgc">do</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">else</span> <span class="SLgc">do</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
 
 <h2 id="_051_loop_swg">Loop</h2><p><span class="code-inline">loop</span> are used to iterate a given amount of time. </p>
@@ -4867,8 +4893,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">toScope</span>()
     {
-        <span class="SKwd">var</span> <span class="SItr">#mixin0</span>: <span class="STpe">s32</span> = <span class="SNum">1</span>
-        total += <span class="SItr">#mixin0</span>
+        <span class="SKwd">var</span> <span class="SItr">#mix0</span>: <span class="STpe">s32</span> = <span class="SNum">1</span>
+        total += <span class="SItr">#mix0</span>
     }
 
     <span class="SFct">toScope</span>()
@@ -7600,7 +7626,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 25-07-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.37.0</div>
+Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
