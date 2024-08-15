@@ -21,7 +21,11 @@ bool Semantic::resolveIf(SemanticContext* context)
 
     // :ConcreteRef
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
+
+    {
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0220); }, true);
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
+    }
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())

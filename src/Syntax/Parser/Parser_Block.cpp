@@ -33,6 +33,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
         node->boolExpression = Ast::newIdentifierRef(varDecl->token.text, this, node);
         node->boolExpression->addAstFlag(AST_GENERATED);
+        node->boolExpression->firstChild()->inheritTokenLocation(varDecl->token);
         node->boolExpression->inheritTokenLocation(varDecl->token);
 
         SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));

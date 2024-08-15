@@ -1110,7 +1110,7 @@ void initErrors()
     SWAG_ERROR(Nte0217, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) should not have an explicitly specified type");
-    SWAG_ERROR(Nte0220, nullptr);
+    SWAG_ERROR(Nte0220, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
 }
 
 Utf8 formErr(ErrorID idx, ...)
