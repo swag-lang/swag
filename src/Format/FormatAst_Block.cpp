@@ -121,8 +121,22 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
         concat->addBlank();
         if (node->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
         {
-            SWAG_CHECK(outputIf(context, "where", node->firstChild()));
-            concat->addEol();
+            const auto parse = getTokenParse(node);
+            if(parse && parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+            {
+                concat->addEol();
+                context.indent++;
+                concat->addIndent(context.indent);
+                beautifyBefore(context, node);
+                SWAG_CHECK(outputIf(context, "where", node->firstChild()));
+                concat->addEol();
+                context.indent--;
+            }
+            else
+            {
+                SWAG_CHECK(outputIf(context, "where", node->firstChild()));
+                concat->addEol();
+            }
         }
         else
         {

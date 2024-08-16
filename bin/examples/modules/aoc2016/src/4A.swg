@@ -43,13 +43,10 @@ func day4A()
             visit c: l[idx + 1..idx + 5]
             {
                 var max, maxi = 0'u64
-                loop i: count
+                loop i: count where count[i] > max
                 {
-                    if count[i] > max
-                    {
-                        max  = count[i]
-                        maxi = i
-                    }
+                    max  = count[i]
+                    maxi = i
                 }
 
                 if c != maxi + `a`

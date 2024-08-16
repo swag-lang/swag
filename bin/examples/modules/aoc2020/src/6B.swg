@@ -61,9 +61,8 @@ func day6B0()
 
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
-            visit c: count do
-                if c == num do
-                    total += 1
+            visit c: count where c == num do
+                total += 1
             @init(count)
             num = 0
         }

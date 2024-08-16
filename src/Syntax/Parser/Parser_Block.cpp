@@ -314,7 +314,11 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     }
 
     if (tokenParse.is(TokenId::KwdWhere))
+    {
+        auto savedToken = tokenParse;
         SWAG_CHECK(doWhere(node, &node->block));
+        FormatAst::inheritFormatBefore(this, node->block, &savedToken);
+    }
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
 
@@ -399,6 +403,8 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // Creates a variable if we have a named index
     if (!name.empty())
     {
+        ParserPushFreezeFormat ff(this);
+
         const auto var = Ast::newVarDecl(name, this, node, AstNodeKind::VarDecl);
         var->token     = tokenName;
         var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_LET);
@@ -412,7 +418,11 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     }
 
     if (tokenParse.is(TokenId::KwdWhere))
+    {
+        auto savedToken = tokenParse;
         SWAG_CHECK(doWhere(node, &node->block));
+        FormatAst::inheritFormatBefore(this, node->block, &savedToken);
+    }
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
 

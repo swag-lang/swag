@@ -72,7 +72,7 @@ namespace SemanticError
     bool warnUnusedFunction(const Module* moduleToGen, const ByteCode* one);
     bool warnUnusedVariables(SemanticContext* context, const Scope* scope);
     bool warnUnreachableCode(SemanticContext* context);
-    bool warnSuggestionWhere(SemanticContext* context);
+    bool warnWhereDoIf(SemanticContext* context);
     bool warnElseDoIf(SemanticContext* context, const AstIf* ifNode);
     bool warnDeprecated(SemanticContext* context, AstNode* identifier);
 

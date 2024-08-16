@@ -162,25 +162,22 @@ impl GizmoRect
                 if hotAnchor != Swag.U32.Max do
                     view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
-                visit c, i: anchors
+                visit c, i: anchors where c.contains(pos)
                 {
-                    if c.contains(pos)
+                    switch i
                     {
-                        switch i
-                        {
-                        case 0, 7:
-                            view.getApp().pushCursor(Cursor.from(.SizeNWSE))
-                        case 1, 6:
-                            view.getApp().pushCursor(Cursor.from(.SizeNS))
-                        case 2, 5:
-                            view.getApp().pushCursor(Cursor.from(.SizeNESW))
-                        case 3, 4:
-                            view.getApp().pushCursor(Cursor.from(.SizeWE))
-                        }
-
-                        hotAnchor = i
-                        return true
+                    case 0, 7:
+                        view.getApp().pushCursor(Cursor.from(.SizeNWSE))
+                    case 1, 6:
+                        view.getApp().pushCursor(Cursor.from(.SizeNS))
+                    case 2, 5:
+                        view.getApp().pushCursor(Cursor.from(.SizeNESW))
+                    case 3, 4:
+                        view.getApp().pushCursor(Cursor.from(.SizeWE))
                     }
+
+                    hotAnchor = i
+                    return true
                 }
             }
         }

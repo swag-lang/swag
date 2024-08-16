@@ -37,12 +37,8 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 // Returns Swag.U64.Max if not found.
 func(T, V) findLinear(values: const [..] T, value: V)->u64
 {
-    visit v, i: values
-    {
-        if v == value do
+    visit v, i: values where v == value do
             return i
-    }
-
     return Swag.U64.Max
 }
 
@@ -83,12 +79,8 @@ func(T, V) containsSorted(values: const [..] T, value: V)->bool
 #[Swag.ConstExpr, Swag.Overload]
 func(T, V) contains(values: const [..] T, value: V)->bool
 {
-    visit v: values
-    {
-        if v == value do
-            return true
-    }
-
+    visit v: values where v == value do
+        return true
     return false
 }
 
@@ -98,11 +90,7 @@ func(T) equals(dst, src: const [..] T)->bool
 {
     if @countof(dst) != @countof(src) do
         return false
-    loop i: dst
-    {
-        if dst[i] != src[i] do
-            return false
-    }
-
+    loop i: dst where dst[i] != src[i] do
+        return false
     return true
 }

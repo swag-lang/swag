@@ -112,6 +112,9 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
 
 bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
 {
+    if(node->childCount() < 2)
+        return false;
+    
     if (!context.countFactorOp)
         context.startFactorOpColumn = concat->column;
     context.countFactorOp++;

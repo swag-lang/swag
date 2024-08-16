@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -250,10 +249,8 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
     return true;
 }
 
-bool SemanticError::warnSuggestionWhere(SemanticContext* context)
+bool SemanticError::warnWhereDoIf(SemanticContext* context)
 {
-    return true;
-    
     const auto     node       = context->node;
     const AstNode* block      = nullptr;
     const AstNode* expression = nullptr;
@@ -272,25 +269,21 @@ bool SemanticError::warnSuggestionWhere(SemanticContext* context)
     }
 
     if (block &&
+        expression &&
         block->is(AstNodeKind::Statement) &&
         !block->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE) &&
+        !block->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
         block->childCount() == 1 &&
-        block->firstChild()->is(AstNodeKind::If) &&
-        block->firstChild()->lastChild()->childCount() &&
-        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Return) &&
-        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Break) &&
-        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Throw))
+        block->firstChild()->is(AstNodeKind::If))
     {
         const auto ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
         if (!ifNode->elseBlock)
         {
-            Diagnostic    err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
-            FormatAst     fmtAst;
-            FormatContext fmtContext;
-            fmtAst.outputNode(fmtContext, ifNode->boolExpression);
             SourceLocation loc;
             expression->computeLocation(loc, loc);
-            err.addNote(loc, loc, formNte(Nte0221, Utf8::truncateDisplay(fmtAst.getUtf8(), 20).cstr()));
+
+            Diagnostic err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
+            err.addNote(loc, loc, toNte(Nte0221));
             SWAG_CHECK(context->report(err));
         }
     }

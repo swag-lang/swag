@@ -504,14 +504,11 @@ impl Deflate
             var numUsedSyms = 0'u32
             let symCount    = &d.huffCount[tableNum, 0]
 
-            loop i: tableLen
+            loop i: tableLen where symCount[i]
             {
-                if symCount[i]
-                {
-                    syms0[numUsedSyms].key      = cast(u16) symCount[i]
-                    syms0[numUsedSyms].symIndex = cast(u16) i
-                    numUsedSyms += 1
-                }
+                syms0[numUsedSyms].key      = cast(u16) symCount[i]
+                syms0[numUsedSyms].symIndex = cast(u16) i
+                numUsedSyms += 1
             }
 
             let syms = radixSortSyms(numUsedSyms, syms0, syms1)

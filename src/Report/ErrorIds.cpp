@@ -123,7 +123,7 @@ void initErrors()
     SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
     SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ consider replacing [[else do if]] with a single [[elif]]");
     SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ consider replacing [[#else #do #if]] with a single [[#elif]]");
-    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing the [[if]] statement by a [[where]] clause after the [[%s]] expression");
+    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing [[do if]] with a [[where]] clause after the [[%s]] expression");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1114,7 +1114,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) should not have an explicitly specified type");
     SWAG_ERROR(Nte0220, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
-    SWAG_ERROR(Nte0221, "consider adding [[where %s]] after this to replace the [[if]]");
+    SWAG_ERROR(Nte0221, "consider adding [[where <expression>]] after this to replace [[do if]]");
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);

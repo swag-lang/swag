@@ -132,9 +132,8 @@ func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
 
 func getKingCell(board: ^Cell, color: ContentEnum)->s8
 {
-    loop i: 96's8 do
-        if board[i].content == color and board[i].piece == .King do
-            return i
+    loop i: 96's8 where board[i].content == color and board[i].piece == .King do
+        return i
     return -1
 }
 

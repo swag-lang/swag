@@ -22,12 +22,8 @@ func getEnumValue(type: typeinfo, name: string)->const *TypeValue
         return null
 
     let typeEnum = cast(const *TypeInfoEnum) type
-    visit it: typeEnum.values
-    {
-        if it.name == name do
-            return it
-    }
-
+    visit it: typeEnum.values where it.name == name do
+        return it
     return null
 }
 

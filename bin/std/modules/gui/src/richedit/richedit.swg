@@ -178,12 +178,8 @@ internal impl RichEditCtrl
 
     mtd getFirstVisibleLine()->u64
     {
-        loop i: lines.count
-        {
-            if lines[i].isVisible() do
-                return i
-        }
-
+        loop i: lines.count where lines[i].isVisible() do
+            return i
         return 0
     }
 

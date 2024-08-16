@@ -149,12 +149,8 @@ public impl enum Argb
     func fromName(name: string)->Argb
     {
         let t = @typeof(Argb)
-        visit it: t.values
-        {
-            if it.name == name do
-                return dref cast(const *Argb) it.value
-        }
-
+        visit it: t.values where it.name == name do
+            return dref cast(const *Argb) it.value
         return Argb.Black
     }
 }

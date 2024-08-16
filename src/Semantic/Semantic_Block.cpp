@@ -578,7 +578,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
     if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
         propagateReturn(node->parent);
 
-    SWAG_CHECK(SemanticError::warnSuggestionWhere(context));
+    SWAG_CHECK(SemanticError::warnWhereDoIf(context));
 
     return true;
 }
@@ -977,7 +977,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     job->nodes.push_back(newExpression);
     job->nodes.push_back(node);
 
-    SWAG_CHECK(SemanticError::warnSuggestionWhere(context));
+    SWAG_CHECK(SemanticError::warnWhereDoIf(context));
 
     return true;
 }

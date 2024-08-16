@@ -159,13 +159,10 @@ impl HashTable
         // Need to drop every structs
         #if Reflection.hasDrop(@typeof(K)) or Reflection.hasDrop(@typeof(V))
         {
-            loop i: capacity
+            loop i: capacity where table[i].hash >= HASH_DELETED
             {
-                if table[i].hash >= HASH_DELETED
-                {
-                    @drop(&table[i].key)
-                    @drop(&table[i].value)
-                }
+                @drop(&table[i].key)
+                @drop(&table[i].value)
             }
         }
 
