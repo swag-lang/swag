@@ -205,7 +205,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
             context.genericReplaceValues[genName]                 = context.genericParametersCallValues[i];
 
             // We have a new type replacement, so we must be sure that every other types registered in the
-            // context.genericReplaceTypes are up to date too.
+            // context.genericReplaceTypes are up-to-date too.
             // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
             // be updated correspondingly.
             if (context.genericReplaceTypes.size() > 1)

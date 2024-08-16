@@ -328,7 +328,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
 
                 break;
 
-            // If the dependency does not specify something, that means that we don't know if we are up to date.
+            // If the dependency does not specify something, that means that we don't know if we are up-to-date.
             // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
             // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
             case CompareVersionResult::Equal:
@@ -621,7 +621,7 @@ bool ModuleDepManager::execute()
     // Fetch all dependencies in the dependencies/ folder of the workspace
     // The copy will occur if
     // 1/ The module is not present (first time)
-    // 2/ The module is present but is not up to date
+    // 2/ The module is present but is not up-to-date
     //////////////////////////////////////////////////
     if (g_CommandLine.fetchDep)
     {
