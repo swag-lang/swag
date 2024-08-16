@@ -38,7 +38,7 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 func(T, V) findLinear(values: const [..] T, value: V)->u64
 {
     visit v, i: values where v == value do
-            return i
+        return i
     return Swag.U64.Max
 }
 

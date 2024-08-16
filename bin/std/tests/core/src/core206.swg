@@ -45,7 +45,7 @@ const validTests: [] ValidTest = [
     {0x39111dd0, "Even if I could be Shakespeare, I think I should still choose to be Faraday. - A. Huxley"},
     {0x91dd304f, "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
     {0x2e5d1316, "How can you write a big system without C++?  -Paul Glick"},
-    {0xd0201df6, "'Invariant assertions' is the most elegant programming technique!  -Tom Szymanski"},
+    {0xd0201df6, "'Invariant assertions' is the most elegant programming technique!  -Tom Szymanski"}
     /*	{0x211297c8, strings.Repeat("\xff", 5548) + "8", "adl\x01\x9a\xa6\xcb\xc1"},
 	{0xbaa198c8, strings.Repeat("\xff", 5549) + "9", "adl\x01gu\xcc\xc0"},
 	{0x553499be, strings.Repeat("\xff", 5550) + "0", "adl\x01gu\xcc\xc0"},
