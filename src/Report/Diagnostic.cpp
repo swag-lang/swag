@@ -347,7 +347,7 @@ void Diagnostic::printErrorLevel(Log* log)
 {
     // Put the error ID right after the error level, instead at the beginning of the message
     Utf8 id;
-    if (hastErrorId(textMsg))
+    if (hasErrorId(textMsg))
     {
         id = Utf8(textMsg.buffer, 9);
         textMsg.remove(0, 10);
@@ -536,7 +536,7 @@ void Diagnostic::collectRanges()
             SWAG_ASSERT(lineCode.length() >= r.startLocation.column);
             r.width = lineCode.length() - r.startLocation.column;
         }
-        
+
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
@@ -719,9 +719,9 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
 
 void Diagnostic::alignRangeColumn(Log* log, uint32_t& curColumn, uint32_t where, bool withCode) const
 {
-    if(curColumn >= where)
+    if (curColumn >= where)
         return;
-    
+
     while (curColumn < where)
     {
         if (withCode && curColumn < lineCode.count && lineCode[curColumn] == '\t')
@@ -1014,7 +1014,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
     return note(node, node->getTokenName(), txt1);
 }
 
-bool Diagnostic::hastErrorId(const Utf8& textMsg)
+bool Diagnostic::hasErrorId(const Utf8& textMsg)
 {
     if (textMsg.length() > 9 &&
         textMsg[0] == '[' &&
@@ -1034,13 +1034,20 @@ bool Diagnostic::hastErrorId(const Utf8& textMsg)
     return false;
 }
 
-void Diagnostic::removeErrorId(Utf8& err)
+void Diagnostic::removeErrorId(Utf8& textMsg)
 {
-    if (hastErrorId(err))
+    if (hasErrorId(textMsg))
     {
-        err.remove(0, 10);
-        err.trimLeft();
+        textMsg.remove(0, 10);
+        textMsg.trimLeft();
     }
+}
+
+Utf8 Diagnostic::getErrorId(const Utf8& textMsg)
+{
+    if (!hasErrorId(textMsg))
+        return "";
+    return Utf8{textMsg.buffer + 1, 7};
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)

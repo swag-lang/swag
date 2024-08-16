@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/Context.h"
+#include "Error/SemanticError.h"
 #include "Jobs/FileJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -693,13 +694,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
             launchResolveSubDecl(context, n);
     }
 
-    if (node->elseBlock &&
-        node->elseBlock->firstChild()->is(AstNodeKind::Statement) &&
-        !node->elseBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
-        node->elseBlock->firstChild()->firstChild()->is(AstNodeKind::CompilerIf))
-    {
-        SWAG_CHECK(context->report({node->elseBlock->firstChild(), node->elseBlock->firstChild()->token, toErr(Wrn0009), DiagnosticLevel::Warning}));
-    }
+    SWAG_CHECK(SemanticError::warnElseDoIf(context, node));
 
     return true;
 }

@@ -1041,6 +1041,11 @@ SWAG_ERROR(Nte0217),
 SWAG_ERROR(Nte0218),
 SWAG_ERROR(Nte0219),
 SWAG_ERROR(Nte0220),
+SWAG_ERROR(Nte0221),
+SWAG_ERROR(Nte0222),
+SWAG_ERROR(Nte0223),
+SWAG_ERROR(Nte0224),
+SWAG_ERROR(Nte0225),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

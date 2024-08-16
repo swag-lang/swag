@@ -191,7 +191,13 @@ bool ErrorContext::report(const Diagnostic& err, const Vector<const Diagnostic*>
 {
     auto copyDiag  = err;
     auto copyNotes = notes;
+
+    for (auto note : err.notes)
+        copyNotes.push_back(note);
+    copyDiag.notes.clear();
+
     extract(copyDiag, copyNotes);
+
     return Report::report(copyDiag, copyNotes);
 }
 

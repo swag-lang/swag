@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -244,6 +245,84 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
 
         const auto idx = node->childParentIdx();
         return context->report({node->parent->children[idx + 1], toErr(Wrn0005), DiagnosticLevel::Warning});
+    }
+
+    return true;
+}
+
+bool SemanticError::warnSuggestionWhere(SemanticContext* context)
+{
+    return true;
+    
+    const auto     node       = context->node;
+    const AstNode* block      = nullptr;
+    const AstNode* expression = nullptr;
+
+    if (node->is(AstNodeKind::Loop))
+    {
+        const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
+        block               = loopNode->block;
+        expression          = loopNode->expression;
+    }
+    else if (node->is(AstNodeKind::Visit))
+    {
+        const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
+        block                = visitNode->block;
+        expression           = visitNode->expression;
+    }
+
+    if (block &&
+        block->is(AstNodeKind::Statement) &&
+        !block->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE) &&
+        block->childCount() == 1 &&
+        block->firstChild()->is(AstNodeKind::If) &&
+        block->firstChild()->lastChild()->childCount() &&
+        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Return) &&
+        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Break) &&
+        block->firstChild()->lastChild()->lastChild()->isNot(AstNodeKind::Throw))
+    {
+        const auto ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
+        if (!ifNode->elseBlock)
+        {
+            Diagnostic    err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
+            FormatAst     fmtAst;
+            FormatContext fmtContext;
+            fmtAst.outputNode(fmtContext, ifNode->boolExpression);
+            SourceLocation loc;
+            expression->computeLocation(loc, loc);
+            err.addNote(loc, loc, formNte(Nte0221, Utf8::truncateDisplay(fmtAst.getUtf8(), 20).cstr()));
+            SWAG_CHECK(context->report(err));
+        }
+    }
+
+    return true;
+}
+
+bool SemanticError::warnElseDoIf(SemanticContext* context, const AstIf* ifNode)
+{
+    const auto elseBlock = ifNode->elseBlock;
+    if (!elseBlock)
+        return true;
+
+    if (ifNode->is(AstNodeKind::CompilerIf) &&
+        elseBlock->firstChild() &&
+        elseBlock->firstChild()->is(AstNodeKind::Statement) &&
+        !elseBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
+        elseBlock->firstChild()->firstChild() &&
+        elseBlock->firstChild()->firstChild()->is(AstNodeKind::CompilerIf))
+    {
+        const Diagnostic err{ifNode->elseBlock->firstChild(), ifNode->elseBlock->firstChild()->token, toErr(Wrn0009), DiagnosticLevel::Warning};
+        SWAG_CHECK(context->report(err));
+    }
+
+    if (ifNode->is(AstNodeKind::If) &&
+        elseBlock->is(AstNodeKind::Statement) &&
+        !elseBlock->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
+        elseBlock->firstChild() &&
+        elseBlock->firstChild()->is(AstNodeKind::If))
+    {
+        const Diagnostic err{ifNode->elseBlock->firstChild(), ifNode->elseBlock->firstChild()->token, toErr(Wrn0008), DiagnosticLevel::Warning};
+        SWAG_CHECK(context->report(err));
     }
 
     return true;

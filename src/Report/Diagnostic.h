@@ -197,10 +197,11 @@ struct Diagnostic
     void reportCompact(Log* log);
     void report(Log* log);
 
-    static void        removeErrorId(Utf8& err);
+    static void        removeErrorId(Utf8& textMsg);
+    static bool        hasErrorId(const Utf8& textMsg);
+    static Utf8        getErrorId(const Utf8& textMsg);
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
     static Utf8        oneLiner(const Utf8& err);
-    static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(const SymbolOverload* overload);
     static Utf8        isType(const AstNode* node);

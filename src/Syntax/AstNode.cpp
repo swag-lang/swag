@@ -696,7 +696,7 @@ void AstNode::addAlternativeScopes(NodeExtensionMisc* ext)
     extMisc()->alternativeScopes.append(ext->alternativeScopes);
 }
 
-void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
+void AstNode::computeLocation(SourceLocation& start, SourceLocation& end) const
 {
     start = token.startLocation;
     end   = token.endLocation;

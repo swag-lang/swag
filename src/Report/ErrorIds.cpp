@@ -115,15 +115,15 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Wrn0001, "%s");
-    SWAG_ERROR(Wrn0002, "deprecated usage                $ %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])");
+    SWAG_ERROR(Wrn0002, "deprecated usage                $ the %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])");
     SWAG_ERROR(Wrn0003, "unchanged local variable        $ the variable [[%s]] remains unchanged after its declaration $ if you don't need to modify it, declare it with [[let]] instead of [[var]] to ensure immutability");
     SWAG_ERROR(Wrn0004, "unchanged local variable        $ the variable [[%s]] is declared to its default value, and is never modified after that $ are you sure this variable is necessary?");
     SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed");
-    SWAG_ERROR(Wrn0006, "unused %s                       $ %s [[%s]] is not used");
+    SWAG_ERROR(Wrn0006, "unused %s                       $ the %s [[%s]] is not used");
     SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
-    SWAG_ERROR(Wrn0008, "unecessary [[else do if]]       $ consider replacing [[else do if]] with a single [[elif]]");
-    SWAG_ERROR(Wrn0009, "unecessary [[#else #do #if]]    $ consider replacing [[#else #do #if]] with a single [[#elif]]");
-    SWAG_ERROR(Wrn0010, nullptr);
+    SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ consider replacing [[else do if]] with a single [[elif]]");
+    SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ consider replacing [[#else #do #if]] with a single [[#elif]]");
+    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing the [[if]] statement by a [[where]] clause after the [[%s]] expression");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1114,6 +1114,11 @@ void initErrors()
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) should not have an explicitly specified type");
     SWAG_ERROR(Nte0220, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
+    SWAG_ERROR(Nte0221, "consider adding [[where %s]] after this to replace the [[if]]");
+    SWAG_ERROR(Nte0222, nullptr);
+    SWAG_ERROR(Nte0223, nullptr);
+    SWAG_ERROR(Nte0224, nullptr);
+    SWAG_ERROR(Nte0225, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

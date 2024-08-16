@@ -351,7 +351,7 @@ struct AstNode
     bool         hasSpecialFuncCall(const Utf8& name) const;
     AstNode*     inSimpleReturn() const;
     bool         hasIntrinsicName() const;
-    void         computeLocation(SourceLocation& start, SourceLocation& end);
+    void         computeLocation(SourceLocation& start, SourceLocation& end) const;
     void         addAlternativeScope(Scope* scope, CollectedScopeFlags altFlags = 0);
     void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, CollectedScopeFlags altFlags = 0);
     void         printLoc() const;

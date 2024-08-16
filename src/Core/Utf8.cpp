@@ -999,7 +999,7 @@ Utf8 Utf8::truncateDisplay(const char* str, int maxLen)
     while (pz && *pz && cpt++ < maxLen)
         result += *pz++;
     if (*pz)
-        result += "...";
+        result += " ...";
     return result;
 }
 

@@ -4403,21 +4403,21 @@ namespace
                 case SwagExceptionKind::Error:
                 default:
                     level = DiagnosticLevel::Error;
-                    if (!Diagnostic::hastErrorId(txt))
+                    if (!Diagnostic::hasErrorId(txt))
                         userMsg = formErr(Err0002, txt.cstr());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Warning:
                     level = DiagnosticLevel::Warning;
-                    if (!Diagnostic::hastErrorId(txt))
+                    if (!Diagnostic::hasErrorId(txt))
                         userMsg = formErr(Wrn0001, txt.cstr());
                     else
                         userMsg = txt;
                     break;
                 case SwagExceptionKind::Panic:
                     level = DiagnosticLevel::Panic;
-                    if (!Diagnostic::hastErrorId(txt))
+                    if (!Diagnostic::hasErrorId(txt))
                         userMsg = formErr(Err0003, txt.cstr());
                     else
                         userMsg = txt;

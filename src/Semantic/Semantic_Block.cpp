@@ -48,13 +48,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitIfAfterExpr);
     node->ifBlock->setBcNotifyAfter(ByteCodeGen::emitIfAfterIf, ByteCodeGen::emitLeaveScope);
 
-    if (node->elseBlock &&
-        node->elseBlock->is(AstNodeKind::Statement) &&
-        !node->elseBlock->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
-        node->elseBlock->firstChild()->is(AstNodeKind::If))
-    {
-        SWAG_CHECK(context->report({node->elseBlock->firstChild(), node->elseBlock->firstChild()->token, toErr(Wrn0008), DiagnosticLevel::Warning}));
-    }
+    SWAG_CHECK(SemanticError::warnElseDoIf(context, node));
 
     return true;
 }
@@ -584,6 +578,8 @@ bool Semantic::resolveLoop(SemanticContext* context)
     if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
         propagateReturn(node->parent);
 
+    SWAG_CHECK(SemanticError::warnSuggestionWhere(context));
+
     return true;
 }
 
@@ -980,6 +976,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
     job->nodes.pop_back();
     job->nodes.push_back(newExpression);
     job->nodes.push_back(node);
+
+    SWAG_CHECK(SemanticError::warnSuggestionWhere(context));
 
     return true;
 }

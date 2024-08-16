@@ -372,17 +372,7 @@ namespace
             return false;
 
         // Get warning identifier
-        Utf8 warnMsg;
-        auto pz = err.textMsg.cstr();
-        while (*pz && *pz != '[')
-            pz++;
-        if (*pz == 0)
-            return true;
-        pz++;
-        while (*pz && *pz != ']')
-            warnMsg += *pz++;
-        if (*pz == 0)
-            return true;
+        auto warnMsg = Diagnostic::getErrorId(err.textMsg);
         warnMsg.makeLower();
 
         // Check attributes in the AST hierarchy
