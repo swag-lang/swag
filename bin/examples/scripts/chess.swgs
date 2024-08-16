@@ -145,24 +145,20 @@ func isCheck(board: ^Cell, white: bool)->bool
 
     var moves: Array's8
     getKnightMoves(board, kingCell, &moves)
-    visit v: moves do
-        if board[v].piece == .Knight do
-            return true
+    visit v: moves where board[v].piece == .Knight do
+        return true
     moves.clear()
     getPawnAttacks(board, kingCell, &moves)
-    visit v: moves do
-        if board[v].piece == .Pawn do
-            return true
+    visit v: moves where board[v].piece == .Pawn do
+        return true
     moves.clear()
     getBishopMoves(board, kingCell, &moves)
-    visit v: moves do
-        if board[v].piece == .Bishop or board[v].piece == .Queen do
-            return true
+    visit v: moves where board[v].piece == .Bishop or board[v].piece == .Queen do
+        return true
     moves.clear()
     getRookMoves(board, kingCell, &moves)
-    visit v: moves do
-        if board[v].piece == .Rook or board[v].piece == .Queen do
-            return true
+    visit v: moves where board[v].piece == .Rook or board[v].piece == .Queen do
+        return true
     return false
 }
 
