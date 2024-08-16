@@ -88,7 +88,7 @@ namespace Semantic
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
+    bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, const AstNode* left, const AstNode* right);
     bool checkForMissingInitialization(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, TypeInfo* concreteNodeType, bool isCompilerConstant);
     bool checkMixAlias(SemanticContext* context, AstVarDecl* node);
     bool checkTypeSuffix(SemanticContext* context, const AstVarDecl* node);
@@ -140,7 +140,7 @@ namespace Semantic
     bool           resolveGlobalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, DataSegment*& storageSegment, uint32_t& storageOffset);
     bool           resolveLocalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, const TypeInfo* typeInfo, uint32_t& storageOffset);
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
-    bool           boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
+    bool           boundCheck(SemanticContext* context, const TypeInfo* forType, const AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
     bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
     bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, OverloadFlags& symbolFlags);
     bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
@@ -387,7 +387,7 @@ namespace Semantic
     bool resolveTypeList(SemanticContext* context);
     bool resolveUnaryOp(SemanticContext* context);
     bool resolveUnaryOpExclam(SemanticContext* context, AstNode* child);
-    bool resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
+    bool resolveUnaryOpInvert(SemanticContext* context, const AstNode* child);
     bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child);
     bool resolveUnreachable(SemanticContext* context);
     bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);

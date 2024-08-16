@@ -50,7 +50,7 @@ namespace
     }
 }
 
-Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step, bool sourceCode)
+Utf8 ByteCodeStack::getLogStep(uint32_t level, bool current, ByteCodeStackStep& step, bool sourceCode)
 {
     auto bc = step.bc;
     auto ip = step.ip;

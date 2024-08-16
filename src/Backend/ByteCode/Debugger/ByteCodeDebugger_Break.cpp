@@ -569,7 +569,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
     auto endExpr = arg.split.size();
 
     // Count
-    int count = 0;
+    uint32_t count = 0;
     if (arg.split.back().length() > 2 &&
         arg.split.back()[0] == '-' &&
         arg.split.back()[1] == '-' &&

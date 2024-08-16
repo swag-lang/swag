@@ -273,7 +273,7 @@ void Diagnostic::addNote(SourceFile* file, const SourceLocation& start, const So
     notes.push_back(note(file, start, end, msg));
 }
 
-void Diagnostic::addNote(AstNode* node, const Utf8& h)
+void Diagnostic::addNote(const AstNode* node, const Utf8& h)
 {
     if (!node)
         return;

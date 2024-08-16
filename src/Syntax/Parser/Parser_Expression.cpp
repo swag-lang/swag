@@ -1729,7 +1729,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         }
     }
 
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, []() { return toNte(Nte0210); });
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return toNte(Nte0210); });
 
     Utf8 afterMsg = "left expression";
     if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))

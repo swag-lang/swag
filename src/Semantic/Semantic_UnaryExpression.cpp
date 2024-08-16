@@ -150,7 +150,7 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
     return true;
 }
 
-bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
+bool Semantic::resolveUnaryOpInvert(SemanticContext* context, const AstNode* child)
 {
     const auto node     = context->node;
     const auto typeInfo = TypeManager::concreteType(child->typeInfo);

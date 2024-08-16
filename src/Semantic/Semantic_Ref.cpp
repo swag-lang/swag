@@ -11,7 +11,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
+bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, const AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!arrayAccess->hasFlagComputedValue())
         return true;

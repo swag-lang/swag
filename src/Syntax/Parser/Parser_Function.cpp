@@ -466,7 +466,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
         if (tokenParse.is(TokenId::Identifier) && getNextToken().is(TokenId::SymLeftParen))
         {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&]() { return formNte(Nte0067, tokenParse.cstr(), parent->token.cstr()); });
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&] { return formNte(Nte0067, tokenParse.cstr(), parent->token.cstr()); });
             return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.cstr()));
         }
 

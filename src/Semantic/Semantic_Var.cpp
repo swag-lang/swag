@@ -1042,12 +1042,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else if (isCompilerConstant)
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0014); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0014); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0028)));
             }
             else
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0015); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0015); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0028)));
             }
         }

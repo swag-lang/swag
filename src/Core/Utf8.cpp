@@ -397,8 +397,8 @@ void Utf8::replaceAll(const Utf8& src, const Utf8& dst)
         Utf8 result;
         recom = false;
 
-        int  lastIt = 0;
-        auto it     = find(src);
+        uint32_t lastIt = 0;
+        auto     it     = find(src);
         while (it != -1)
         {
             recom = true;
@@ -883,7 +883,7 @@ void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength)
             i--;
         }
 
-        if (i && static_cast<int>(one.length() - extraLength) > maxLength && i > 10)
+        if (i && one.length() > extraLength && (one.length() - extraLength) > maxLength && i > 10)
         {
             tokens.push_back(one);
             one.clear();

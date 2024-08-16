@@ -168,7 +168,7 @@ struct Diagnostic
     bool        containsText(const Utf8& txt) const;
     void        addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void        addNote(AstNode* node, const Token& token, const Utf8& msg);
-    void        addNote(AstNode* node, const Utf8& h);
+    void        addNote(const AstNode* node, const Utf8& h);
     void        addNote(const Token& token, const Utf8& h);
     void        addNote(const Utf8& msg);
     void        addNote(const Diagnostic* note);

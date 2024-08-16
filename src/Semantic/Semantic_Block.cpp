@@ -23,11 +23,11 @@ bool Semantic::resolveIf(SemanticContext* context)
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
 
     {
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []() { return toNte(Nte0220); }, true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0220); }, true);
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
     }
 
-    // Do not generate backend if 'if' is constant, and has already been evaluated
+    // Do not generate backend if "if" is constant, and has already been evaluated
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())
     {
         node->boolExpression->addAstFlag(AST_NO_BYTECODE);
@@ -380,7 +380,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
             return context->report({back, back->token, toErr(Err0321)}, note);
         }
 
-        // When a switch is marked as complete, be sure every definitions have been covered
+        // When a switch is marked as complete, be sure every definition have been covered
         if (node->typeInfo->isEnum())
         {
             const auto                  typeEnum0 = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);

@@ -47,7 +47,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, const AstNode* left, const AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
         return true;
