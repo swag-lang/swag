@@ -104,7 +104,7 @@ bool FormatAst::outputExpressionList(FormatContext& context, AstNode* node)
         if (!child)
             continue;
 
-        if (prevChild)
+        if (prevChild && !child->is(AstNodeKind::EmptyNode))
         {
             concat->addChar(',');
             beautifyAfter(context, prevChild);
