@@ -18,7 +18,7 @@ bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNod
     return false;
 }
 
-bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg)
+bool TypeManager::safetyErrorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
     {
