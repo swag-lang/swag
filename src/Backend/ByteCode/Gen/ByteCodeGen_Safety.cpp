@@ -277,6 +277,8 @@ void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0
     if (!mustEmitSafety(context, SAFETY_MATH))
         return;
 
+    PushICFlags ic(context, BCI_SAFETY);
+
     const auto re = reserveRegisterRC(context);
     const auto rd = reserveRegisterRC(context);
 
@@ -284,12 +286,12 @@ void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0
     {
         case 8:
         {
-            if(dref)
+            if (dref)
             {
                 EMIT_INST2(context, ByteCodeOp::DeRef8, rd, r0);
                 r0 = rd;
             }
-            
+
             auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, r1, 0, re);
             inst->b.s64 = -1;
             inst->addFlag(BCI_IMM_B);
@@ -305,12 +307,12 @@ void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0
 
         case 16:
         {
-            if(dref)
+            if (dref)
             {
                 EMIT_INST2(context, ByteCodeOp::DeRef16, rd, r0);
                 r0 = rd;
             }
-            
+
             auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, r1, 0, re);
             inst->b.s64 = -1;
             inst->addFlag(BCI_IMM_B);
@@ -326,12 +328,12 @@ void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0
 
         case 32:
         {
-            if(dref)
+            if (dref)
             {
                 EMIT_INST2(context, ByteCodeOp::DeRef32, rd, r0);
                 r0 = rd;
             }
-            
+
             auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, r1, 0, re);
             inst->b.s64 = -1;
             inst->addFlag(BCI_IMM_B);
@@ -347,12 +349,12 @@ void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0
 
         case 64:
         {
-            if(dref)
+            if (dref)
             {
                 EMIT_INST2(context, ByteCodeOp::DeRef64, rd, r0);
                 r0 = rd;
             }
-            
+
             auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r1, 0, re);
             inst->b.s64 = -1;
             inst->addFlag(BCI_IMM_B);
