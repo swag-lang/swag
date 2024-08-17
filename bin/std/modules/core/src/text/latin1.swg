@@ -237,7 +237,7 @@ func trim(str: string)->string
     var cpt     = 0'u64
     while cpt < countof and Latin1.isSpace(str[cpt]) do
         cpt += 1
-    while countof and Latin1.isSpace(str[countof - 1]) do
+    while countof > cpt and Latin1.isSpace(str[countof - 1]) do
         countof -= 1
     if countof <= cpt do
         return ""
