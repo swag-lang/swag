@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Saf0019"
+#global testerror "Saf0020"
 #test
 {
 	var a = [0,1,2]

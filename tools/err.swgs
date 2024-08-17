@@ -1,3 +1,4 @@
+#global #[Swag.Safety("", false)]
 
 // Swag script file
 #dependencies
@@ -75,7 +76,7 @@ func addFiles(folder: string, extension: string)
         if !l.startsWith("SWAG_ERROR(") do continue
         let what = l[11..13]
 
-        if what != "Nte" do continue
+        if what != "Saf" do continue
 
         ids.findOrAdd(what).value += 1
 

@@ -1,4 +1,4 @@
-#global testerror "Saf0022";
+#global testerror "Saf0023";
 
 var a: u16 = 256;
 var b: u32 = 256;

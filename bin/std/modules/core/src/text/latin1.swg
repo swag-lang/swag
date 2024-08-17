@@ -239,5 +239,7 @@ func trim(str: string)->string
         cpt += 1
     while countof and Latin1.isSpace(str[countof - 1]) do
         countof -= 1
+    if countof <= cpt do
+        return ""
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }

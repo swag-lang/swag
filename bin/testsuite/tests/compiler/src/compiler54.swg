@@ -1,4 +1,4 @@
-#global testerror "Saf0024";
+#global testerror "Saf0025";
 
 var a: s8 = 127;
 var b: s8 = 0x80's8;

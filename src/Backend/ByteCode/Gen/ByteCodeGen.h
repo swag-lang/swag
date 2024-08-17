@@ -75,6 +75,7 @@ enum class SafetyMsg
     IntrinsicLog10,
     IntrinsicASin,
     IntrinsicACos,
+    IntrinsicPow,
     NullCheck,
     ErrCheck,
     CastAnyNull,
