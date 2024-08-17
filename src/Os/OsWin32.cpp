@@ -401,7 +401,7 @@ namespace OS
         return result;
     }
 
-    // Hack. Don't know why i have some flush problems on written files.
+    // Hack. Don't know why I have some flush problems on written files.
     void ensureFileIsWritten(const char* fileName)
     {
         auto writeTime = getFileWriteTime(fileName);

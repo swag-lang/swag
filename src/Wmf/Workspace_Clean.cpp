@@ -42,13 +42,13 @@ void Workspace::cleanPublic(const Path& basePath)
             {
                 // Clean all targets
                 OS::visitFolders(path.cstr(), [&path](const char* inFolder) {
-                    auto cfgpath = path;
-                    cfgpath.append(inFolder);
+                    auto cfgPath = path;
+                    cfgPath.append(inFolder);
                     std::error_code inErr1;
                     if (std::filesystem::exists(path, inErr1))
                     {
-                        g_Log.messageHeaderCentered("Cleaning", cfgpath);
-                        cleanFolderContent(cfgpath);
+                        g_Log.messageHeaderCentered("Cleaning", cfgPath);
+                        cleanFolderContent(cfgPath);
                     }
                 });
 

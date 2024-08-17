@@ -19,7 +19,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
         arguments.push_back(R"(/LIBPATH:)" + oneLibPath);
 
     // Register #foreignlib
-    // As this is defined by the user, we consider the library must exists
+    // As this is defined by the user, we consider the library must exist
     for (const auto& fl : buildParameters.foreignLibs)
     {
         Utf8 one = fl;
@@ -91,8 +91,24 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
             SWAG_ASSERT(false);
             break;
     }
-
+    
     const auto outFileName = Backend::getOutputFileName(g_CommandLine.target, buildParameters.module->name, outputKind);
+
+    std::error_code err;
+    if (std::filesystem::exists(outFileName))
+    {
+        if (!std::filesystem::remove(outFileName, err))
+        {
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+            printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+        }
+    }
+    
     arguments.push_back("/OUT:" + outFileName);
 
     // Add all object files
