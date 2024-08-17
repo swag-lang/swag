@@ -879,7 +879,7 @@ void initErrors()
     SWAG_ERROR(Err0748, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0749, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0750, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-    SWAG_ERROR(Err0751, nullptr);
+    SWAG_ERROR(Err0751, "division overflow                                 $ cannot divide because the result does not fit in [[%s]]                                                                                    $ ");
     SWAG_ERROR(Err0752, nullptr);
     SWAG_ERROR(Err0753, nullptr);
     SWAG_ERROR(Err0754, nullptr);

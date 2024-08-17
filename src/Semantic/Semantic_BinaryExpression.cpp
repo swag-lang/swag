@@ -512,17 +512,34 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
         switch (leftTypeInfo->nativeType)
         {
             case NativeTypeKind::S8:
+                if (left->computedValue()->reg.s32 == INT8_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->report({node, node->token, formErr(Err0751, leftTypeInfo->getDisplayNameC())});
+                if (right->computedValue()->reg.s32 == 0)
+                    return context->report({right, toErr(Err0037)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
+                break;
             case NativeTypeKind::S16:
+                if (left->computedValue()->reg.s32 == INT16_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->report({node, node->token, formErr(Err0751, leftTypeInfo->getDisplayNameC())});
+                if (right->computedValue()->reg.s32 == 0)
+                    return context->report({right, toErr(Err0037)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
+                break;
             case NativeTypeKind::S32:
+                if (left->computedValue()->reg.s32 == INT32_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->report({node, node->token, formErr(Err0751, leftTypeInfo->getDisplayNameC())});
                 if (right->computedValue()->reg.s32 == 0)
                     return context->report({right, toErr(Err0037)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S64:
+                if (left->computedValue()->reg.s64 == INT64_MIN && right->computedValue()->reg.s64 == -1)
+                    return context->report({node, node->token, formErr(Err0751, leftTypeInfo->getDisplayNameC())});
                 if (right->computedValue()->reg.s64 == 0)
                     return context->report({right, toErr(Err0037)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 / right->computedValue()->reg.s64;
                 break;
+            
             case NativeTypeKind::U8:
             case NativeTypeKind::U16:
             case NativeTypeKind::U32:
@@ -536,6 +553,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
                     return context->report({right, toErr(Err0037)});
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u64 / right->computedValue()->reg.u64;
                 break;
+            
             case NativeTypeKind::F32:
                 if (std::bit_cast<uint32_t>(right->computedValue()->reg.f32) == 0)
                     return context->report({right, toErr(Err0037)});
