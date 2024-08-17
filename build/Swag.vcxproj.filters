@@ -4,8 +4,6 @@
     <ClCompile Include="../src/pch.cpp" />
     <ClCompile Include="..\src\Backend\Backend.cpp" />
     <ClCompile Include="..\src\Backend\BackendFunctionBodyJob.cpp" />
-    <ClCompile Include="..\src\Backend\BackendLinker.cpp" />
-    <ClCompile Include="..\src\Backend\BackendLinker_Coff.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\ByteCode.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\ByteCode_Print.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger.cpp" />
@@ -252,12 +250,14 @@
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Helpers.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_List.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Debugger\ByteCodeDebugger_Show.cpp" />
+    <ClCompile Include="..\src\Syntax\Parser\Parser_Error.cpp" />
+    <ClCompile Include="..\src\Backend\Linker\BackendLinker.cpp" />
+    <ClCompile Include="..\src\Backend\Linker\BackendLinker_Coff.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
     <ClInclude Include="..\src\Backend\Backend.h" />
     <ClInclude Include="..\src\Backend\BackendFunctionBodyJob.h" />
-    <ClInclude Include="..\src\Backend\BackendLinker.h" />
     <ClInclude Include="..\src\Backend\BackendParameters.h" />
     <ClInclude Include="..\src\Backend\ByteCode\ByteCode.h" />
     <ClInclude Include="..\src\Backend\ByteCode\ByteCodeInstruction.h" />
@@ -382,6 +382,7 @@
     <ClInclude Include="..\src\Wmf\Workspace.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGenJob.h" />
     <ClInclude Include="..\src\Core\AtomicFlags.h" />
+    <ClInclude Include="..\src\Backend\Linker\BackendLinker.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Backend/Backend.h"
-#include "Backend/BackendLinker.h"
+#include "Backend/Linker/BackendLinker.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
