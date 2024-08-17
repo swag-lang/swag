@@ -274,7 +274,7 @@ void ByteCodeGen::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uin
 
 void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t bits, bool dref)
 {
-    if (!mustEmitSafety(context, SAFETY_MATH))
+    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
