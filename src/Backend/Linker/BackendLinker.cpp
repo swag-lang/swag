@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "Backend/Backend.h"
 #include "Backend/Linker/BackendLinker.h"
+#include "Backend/Backend.h"
+#include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
@@ -157,6 +158,32 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
         g_Log.messageVerbose(form("linker arguments for module [[%s]]:\n", buildParameters.module->name.cstr()));
         for (const auto& one : linkArguments)
             g_Log.messageVerbose(one);
+    }
+
+    Utf8 outFileName;
+    switch (buildParameters.buildCfg->backendKind)
+    {
+        case BuildCfgBackendKind::Executable:
+            outFileName = Backend::getOutputFileName(g_CommandLine.target, buildParameters.module->name, BuildCfgOutputKind::Executable);
+            break;
+        case BuildCfgBackendKind::Library:
+            outFileName = Backend::getOutputFileName(g_CommandLine.target, buildParameters.module->name, BuildCfgOutputKind::DynamicLib);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            return true;
+    }
+
+    if (std::filesystem::exists(outFileName.cstr()))
+    {
+        for (uint32_t i = 0; i < 10; i++)
+        {
+            std::error_code err;
+            if (std::filesystem::remove(outFileName.cstr(), err))
+                break;
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(100ms);
+        }
     }
 
     const auto objFileType = Backend::getObjType(g_CommandLine.target);
