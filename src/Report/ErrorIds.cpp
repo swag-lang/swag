@@ -91,7 +91,7 @@ void initErrors()
     SWAG_ERROR(Saf0023, "safety failed overflow $ value [[%I64u]] does not fit in type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
     SWAG_ERROR(Saf0024, "safety failed overflow $ value [[%I64d]] does not fit in type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
     SWAG_ERROR(Saf0025, "safety failed overflow $ value [[%g]] does not fit in type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0026, "safety failed overflow $ overflow in [[%s]] (type is [[%s]]) $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0026, "safety failed overflow $ overflow in [['%s']] operation (type is [[%s]]) $ [[#[Swag.Safety(\"overflow\")]]] is true");
     SWAG_ERROR(Saf0027, "safety failed overflow $ truncation from [[%s]] to [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
     SWAG_ERROR(Saf0028, "safety failed switch $ unexpected switch value $ [[#[Swag.Safety(\"switch\")]]] is true");
 
