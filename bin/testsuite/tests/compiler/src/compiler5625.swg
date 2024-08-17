@@ -1,0 +1,14 @@
+#global testerror "Saf0020"
+
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
+func toto(a: s32)
+{
+    let b: u8 = cast(u8) a
+    @print(b)
+}
+
+#test
+{
+    toto(-50)
+}
