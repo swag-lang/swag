@@ -747,18 +747,22 @@ bool ByteCodeGen::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, u
     {
         case NativeTypeKind::S8:
             emitSafetyDivZero(context, r1, 8);
+            emitSafetyDivOverflow(context, r0, r1, 8, true);
             EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS8, r0, r1);
             return true;
         case NativeTypeKind::S16:
             emitSafetyDivZero(context, r1, 16);
+            emitSafetyDivOverflow(context, r0, r1, 16, true);
             EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS16, r0, r1);
             return true;
         case NativeTypeKind::S32:
             emitSafetyDivZero(context, r1, 32);
+            emitSafetyDivOverflow(context, r0, r1, 32, true);
             EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS32, r0, r1);
             return true;
         case NativeTypeKind::S64:
             emitSafetyDivZero(context, r1, 64);
+            emitSafetyDivOverflow(context, r0, r1, 64, true);
             EMIT_INST2(context, ByteCodeOp::AffectOpDivEqS64, r0, r1);
             return true;
         case NativeTypeKind::U8:

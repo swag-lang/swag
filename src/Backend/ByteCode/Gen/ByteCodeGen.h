@@ -54,9 +54,11 @@ enum class SafetyMsg
     Plus,
     Minus,
     Mul,
+    Div,
     PlusEq,
     MinusEq,
     MulEq,
+    DivEq,
     Neg,
     SwitchComplete,
     IndexRange,
@@ -294,6 +296,7 @@ namespace ByteCodeGen
     void        emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r);
     void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
     void        emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
+    void        emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t bits, bool dref);
     void        emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     void        emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     void        emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs = false);

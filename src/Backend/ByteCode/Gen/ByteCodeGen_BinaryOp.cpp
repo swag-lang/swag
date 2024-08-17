@@ -231,18 +231,22 @@ bool ByteCodeGen::emitBinaryOpDiv(ByteCodeGenContext* context, const TypeInfo* t
     {
         case NativeTypeKind::S8:
             emitSafetyDivZero(context, r1, 8);
+            emitSafetyDivOverflow(context, r0, r1, 8, false);
             EMIT_INST3(context, ByteCodeOp::BinOpDivS8, r0, r1, r2);
             return true;
         case NativeTypeKind::S16:
             emitSafetyDivZero(context, r1, 16);
+            emitSafetyDivOverflow(context, r0, r1, 16, false);
             EMIT_INST3(context, ByteCodeOp::BinOpDivS16, r0, r1, r2);
             return true;
         case NativeTypeKind::S32:
             emitSafetyDivZero(context, r1, 32);
+            emitSafetyDivOverflow(context, r0, r1, 32, false);
             EMIT_INST3(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
             emitSafetyDivZero(context, r1, 64);
+            emitSafetyDivOverflow(context, r0, r1, 64, false);
             EMIT_INST3(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
             return true;
         case NativeTypeKind::U8:

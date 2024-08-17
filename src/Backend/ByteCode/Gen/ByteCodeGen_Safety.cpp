@@ -76,6 +76,10 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
                 SWAG_ASSERT(toType);
                 g_TypedMsg[m][i][j] = formErr(Saf0026, "*", toType->name.cstr());
                 break;
+            case SafetyMsg::Div:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "/", toType->name.cstr());
+                break;
             case SafetyMsg::PlusEq:
                 SWAG_ASSERT(toType);
                 g_TypedMsg[m][i][j] = formErr(Saf0026, "+=", toType->name.cstr());
@@ -87,6 +91,10 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
             case SafetyMsg::MulEq:
                 SWAG_ASSERT(toType);
                 g_TypedMsg[m][i][j] = formErr(Saf0026, "*=", toType->name.cstr());
+                break;
+            case SafetyMsg::DivEq:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = formErr(Saf0026, "/=", toType->name.cstr());
                 break;
             case SafetyMsg::Neg:
                 SWAG_ASSERT(toType);
@@ -262,6 +270,108 @@ void ByteCodeGen::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uin
         return;
 
     emitSafetyNotZero(context, r, bits, safetyMsg(SafetyMsg::NotZero));
+}
+
+void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t bits, bool dref)
+{
+    if (!mustEmitSafety(context, SAFETY_MATH))
+        return;
+
+    const auto re = reserveRegisterRC(context);
+    const auto rd = reserveRegisterRC(context);
+
+    switch (bits)
+    {
+        case 8:
+        {
+            if(dref)
+            {
+                EMIT_INST2(context, ByteCodeOp::DeRef8, rd, r0);
+                r0 = rd;
+            }
+            
+            auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, r1, 0, re);
+            inst->b.s64 = -1;
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST1(context, ByteCodeOp::JumpIfFalse, re)->b.s32 = 3;
+
+            inst       = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
+            inst->b.s8 = INT8_MIN;
+            inst->addFlag(BCI_IMM_B);
+
+            emitAssert(context, re, safetyMsg(SafetyMsg::Div, g_TypeMgr->typeInfoS8));
+            break;
+        }
+
+        case 16:
+        {
+            if(dref)
+            {
+                EMIT_INST2(context, ByteCodeOp::DeRef16, rd, r0);
+                r0 = rd;
+            }
+            
+            auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual16, r1, 0, re);
+            inst->b.s64 = -1;
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST1(context, ByteCodeOp::JumpIfFalse, re)->b.s32 = 3;
+
+            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
+            inst->b.s16 = INT16_MIN;
+            inst->addFlag(BCI_IMM_B);
+
+            emitAssert(context, re, safetyMsg(SafetyMsg::Div, g_TypeMgr->typeInfoS16));
+            break;
+        }
+
+        case 32:
+        {
+            if(dref)
+            {
+                EMIT_INST2(context, ByteCodeOp::DeRef32, rd, r0);
+                r0 = rd;
+            }
+            
+            auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual32, r1, 0, re);
+            inst->b.s64 = -1;
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST1(context, ByteCodeOp::JumpIfFalse, re)->b.s32 = 3;
+
+            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
+            inst->b.s32 = INT32_MIN;
+            inst->addFlag(BCI_IMM_B);
+
+            emitAssert(context, re, safetyMsg(SafetyMsg::Div, g_TypeMgr->typeInfoS32));
+            break;
+        }
+
+        case 64:
+        {
+            if(dref)
+            {
+                EMIT_INST2(context, ByteCodeOp::DeRef64, rd, r0);
+                r0 = rd;
+            }
+            
+            auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r1, 0, re);
+            inst->b.s64 = -1;
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST1(context, ByteCodeOp::JumpIfFalse, re)->b.s32 = 3;
+
+            inst        = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
+            inst->b.s64 = INT64_MIN;
+            inst->addFlag(BCI_IMM_B);
+
+            emitAssert(context, re, safetyMsg(SafetyMsg::Div, g_TypeMgr->typeInfoS64));
+            break;
+        }
+
+        default:
+            SWAG_ASSERT(false);
+    }
+
+    freeRegisterRC(context, rd);
+    freeRegisterRC(context, re);
 }
 
 void ByteCodeGen::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)

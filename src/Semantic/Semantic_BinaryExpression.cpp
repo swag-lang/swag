@@ -539,7 +539,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
                     return context->report({right, toErr(Err0037)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 / right->computedValue()->reg.s64;
                 break;
-            
+
             case NativeTypeKind::U8:
             case NativeTypeKind::U16:
             case NativeTypeKind::U32:
@@ -553,7 +553,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
                     return context->report({right, toErr(Err0037)});
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u64 / right->computedValue()->reg.u64;
                 break;
-            
+
             case NativeTypeKind::F32:
                 if (std::bit_cast<uint32_t>(right->computedValue()->reg.f32) == 0)
                     return context->report({right, toErr(Err0037)});
