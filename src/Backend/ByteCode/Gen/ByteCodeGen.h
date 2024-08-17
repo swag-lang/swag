@@ -305,6 +305,7 @@ namespace ByteCodeGen
     void        emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     void        emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType);
     void        emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode);
+    void        emitSafetyIntrinsics(ByteCodeGenContext* context);
     void        emitSafetyRange(ByteCodeGenContext* context, const AstRange* node);
     void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node);
 

@@ -4,6 +4,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 
 thread_local Utf8 g_TypedMsg[static_cast<int>(SafetyMsg::Count)][static_cast<int>(NativeTypeKind::Count)][static_cast<int>(NativeTypeKind::Count)];
@@ -1277,4 +1278,105 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
     }
 
     freeRegisterRC(context, re);
+}
+
+void ByteCodeGen::emitSafetyIntrinsics(ByteCodeGenContext* context)
+{
+    const auto node       = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    const auto callParams = castAst<AstNode>(node->firstChild(), AstNodeKind::FuncCallParams);
+
+    if (!mustEmitSafety(context, SAFETY_MATH))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+    switch (node->token.id)
+    {
+        case TokenId::IntrinsicAbs:
+        {
+            const auto t0 = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            emitSafetyNeg(context, callParams->firstChild()->resultRegisterRc, t0, true);
+            break;
+        }
+        case TokenId::IntrinsicSqrt:
+        {
+            const auto t0   = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            const auto re   = reserveRegisterRC(context);
+            const auto op   = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
+            const auto inst = EMIT_INST3(context, op, callParams->firstChild()->resultRegisterRc, 0, re);
+            inst->b.f64     = 0;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicLog:
+        {
+            const auto t0   = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            const auto re   = reserveRegisterRC(context);
+            const auto op   = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            const auto inst = EMIT_INST3(context, op, callParams->firstChild()->resultRegisterRc, 0, re);
+            inst->b.f64     = 0;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicLog2:
+        {
+            const auto t0   = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            const auto re   = reserveRegisterRC(context);
+            const auto op   = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            const auto inst = EMIT_INST3(context, op, callParams->firstChild()->resultRegisterRc, 0, re);
+            inst->b.f64     = 0;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicLog10:
+        {
+            const auto t0   = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            const auto re   = reserveRegisterRC(context);
+            const auto op   = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+            const auto inst = EMIT_INST3(context, op, callParams->firstChild()->resultRegisterRc, 0, re);
+            inst->b.f64     = 0;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
+            freeRegisterRC(context, re);
+            break;
+        }
+        case TokenId::IntrinsicASin:
+        case TokenId::IntrinsicACos:
+        {
+            const auto t0  = TypeManager::concreteType(callParams->firstChild()->typeInfo);
+            const auto msg = node->token.is(TokenId::IntrinsicASin) ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+            const auto re  = reserveRegisterRC(context);
+            if (t0->nativeType == NativeTypeKind::F32)
+            {
+                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->firstChild()->resultRegisterRc, 0, re);
+                inst->b.f32 = -1;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, msg);
+                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, callParams->firstChild()->resultRegisterRc, 0, re);
+                inst->b.f32 = 1;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, msg);
+            }
+            else
+            {
+                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->firstChild()->resultRegisterRc, 0, re);
+                inst->b.f64 = -1;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, msg);
+                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, callParams->firstChild()->resultRegisterRc, 0, re);
+                inst->b.f64 = 1;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, msg);
+            }
+            freeRegisterRC(context, re);
+            break;
+        }
+        default:
+            break;
+    }
 }
