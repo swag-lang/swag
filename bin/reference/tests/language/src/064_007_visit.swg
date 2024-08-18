@@ -131,7 +131,7 @@ impl MyStruct
     var cpt      = 0
 
     // To call a variant, add the extra name after ':'.
-    visit:Reverse v, i: myStruct
+    visit(Reverse) v, i: myStruct
     {
         switch i
         {

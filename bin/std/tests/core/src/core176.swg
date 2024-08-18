@@ -5,7 +5,7 @@ using Core
 {
     var str: String = "toto"
     var cpt  = 0
-    visit:Runes str
+    visit(Runes) str
     {
         cpt += 1
     }

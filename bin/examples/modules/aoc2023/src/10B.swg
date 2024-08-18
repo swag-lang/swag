@@ -125,7 +125,7 @@ func day10B()
     var startX, startY: s64
     visit l, line: lines
     {
-        visit:Bytes c, col: l
+        visit(Bytes) c, col: l
         {
             let one =,ref mp(cast(s64) col, cast(s64) line)
             switch c
@@ -190,7 +190,7 @@ func day10B()
     var total: u64
     visit l, line: lines
     {
-        visit:Bytes c, col: l
+        visit(Bytes) c, col: l
         {
             let one = mp(cast(s64) col, cast(s64) line)
             if one & .Edge do

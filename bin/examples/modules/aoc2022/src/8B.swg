@@ -49,7 +49,7 @@ func day8B()
         if line == 0 or line == lines.count - 1 do
             continue
 
-        visit:Bytes c, col: l
+        visit(Bytes) c, col: l
         {
             if col == 0 or col == l.length - 1 do
                 continue

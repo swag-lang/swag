@@ -262,12 +262,14 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Specialized name
-    if (tokenParse.is(TokenId::SymColon))
+    if (tokenParse.is(TokenId::SymLeftParen))
     {
+        const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0264)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the visit specialization name"));
     }
 
     // Reverse loop
@@ -509,7 +511,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     {
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
-        
+
         if (tokenParse.is(g_LangSpec->name_err))
         {
             SWAG_CHECK(eatToken());
