@@ -112,9 +112,9 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
 
 bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
 {
-    if(node->childCount() < 2)
+    if (node->childCount() < 2)
         return false;
-    
+
     if (!context.countFactorOp)
         context.startFactorOpColumn = concat->column;
     context.countFactorOp++;
@@ -220,16 +220,17 @@ bool FormatAst::outputConditionalExpression(FormatContext& context, AstNode* nod
 bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 {
     concat->addString("cast");
+
+    concat->addChar('(');
+    SWAG_CHECK(outputNode(context, node->firstChild()));
+    concat->addChar(')');
+
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
         concat->addString(",over");
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
         concat->addString(",bit");
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
         concat->addString(",unconst");
-
-    concat->addChar('(');
-    SWAG_CHECK(outputNode(context, node->firstChild()));
-    concat->addChar(')');
 
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->secondChild()));

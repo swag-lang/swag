@@ -588,7 +588,7 @@ impl Decimal
         if overflow
         {
             mant = 0
-            exp  = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast,over(u64) Swag.F64.Bias)
+            exp  = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast(u64),over Swag.F64.Bias)
         }
 
         // Assemble bits.

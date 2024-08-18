@@ -218,14 +218,14 @@ impl Decoder
                 while k >= 8
                 {
                     let c = src[0]
-                    dest[0] = cast,bit(u8) ((c >> 7) * mul)
-                    dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
-                    dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
-                    dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
-                    dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
-                    dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
-                    dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
-                    dest[7] = cast,bit(u8) ((c & 1) * mul)
+                    dest[0] = cast(u8),bit ((c >> 7) * mul)
+                    dest[1] = cast(u8),bit (((c >> 6) & 1) * mul)
+                    dest[2] = cast(u8),bit (((c >> 5) & 1) * mul)
+                    dest[3] = cast(u8),bit (((c >> 4) & 1) * mul)
+                    dest[4] = cast(u8),bit (((c >> 3) & 1) * mul)
+                    dest[5] = cast(u8),bit (((c >> 2) & 1) * mul)
+                    dest[6] = cast(u8),bit (((c >> 1) & 1) * mul)
+                    dest[7] = cast(u8),bit ((c & 1) * mul)
                     dest += 8
                     src += 1
                     k -= 8
@@ -233,19 +233,19 @@ impl Decoder
                 if k > 0
                 {
                     let c = src[0]
-                    dest[0] = cast,bit(u8) ((c >> 7) * mul)
+                    dest[0] = cast(u8),bit ((c >> 7) * mul)
                     if k > 1 do
-                        dest[1] = cast,bit(u8) (((c >> 6) & 1) * mul)
+                        dest[1] = cast(u8),bit (((c >> 6) & 1) * mul)
                     if k > 2 do
-                        dest[2] = cast,bit(u8) (((c >> 5) & 1) * mul)
+                        dest[2] = cast(u8),bit (((c >> 5) & 1) * mul)
                     if k > 3 do
-                        dest[3] = cast,bit(u8) (((c >> 4) & 1) * mul)
+                        dest[3] = cast(u8),bit (((c >> 4) & 1) * mul)
                     if k > 4 do
-                        dest[4] = cast,bit(u8) (((c >> 3) & 1) * mul)
+                        dest[4] = cast(u8),bit (((c >> 3) & 1) * mul)
                     if k > 5 do
-                        dest[5] = cast,bit(u8) (((c >> 2) & 1) * mul)
+                        dest[5] = cast(u8),bit (((c >> 2) & 1) * mul)
                     if k > 6 do
-                        dest[6] = cast,bit(u8) (((c >> 1) & 1) * mul)
+                        dest[6] = cast(u8),bit (((c >> 1) & 1) * mul)
                 }
             }
         }
@@ -263,10 +263,10 @@ impl Decoder
                 while k >= 2
                 {
                     let c = src[0]
-                    dest[0] = cast,bit(u8) ((c >> 6) * mul)
-                    dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
-                    dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
-                    dest[3] = cast,bit(u8) ((c & 3) * mul)
+                    dest[0] = cast(u8),bit ((c >> 6) * mul)
+                    dest[1] = cast(u8),bit (((c >> 4) & 3) * mul)
+                    dest[2] = cast(u8),bit (((c >> 2) & 3) * mul)
+                    dest[3] = cast(u8),bit ((c & 3) * mul)
                     dest += 4
                     src += 1
                     k -= 4
@@ -274,11 +274,11 @@ impl Decoder
                 if k > 0
                 {
                     let c = src[0]
-                    dest[0] = cast,bit(u8) ((c >> 6) * mul)
+                    dest[0] = cast(u8),bit ((c >> 6) * mul)
                     if k > 1 do
-                        dest[1] = cast,bit(u8) (((c >> 4) & 3) * mul)
+                        dest[1] = cast(u8),bit (((c >> 4) & 3) * mul)
                     if k > 2 do
-                        dest[2] = cast,bit(u8) (((c >> 2) & 3) * mul)
+                        dest[2] = cast(u8),bit (((c >> 2) & 3) * mul)
                 }
             }
         }
@@ -296,15 +296,15 @@ impl Decoder
                 while k >= 2
                 {
                     let c = src[0]
-                    dest[0] = cast,bit(u8) ((c >> 4) * mul)
-                    dest[1] = cast,bit(u8) ((c & 15) * mul)
+                    dest[0] = cast(u8),bit ((c >> 4) * mul)
+                    dest[1] = cast(u8),bit ((c & 15) * mul)
                     dest += 2
                     src += 1
                     k -= 2
                 }
                 if k > 0
                 {
-                    dest[0] = cast,bit(u8) ((src[0] >> 4) * mul)
+                    dest[0] = cast(u8),bit ((src[0] >> 4) * mul)
                 }
             }
         }
@@ -350,34 +350,34 @@ impl Decoder
                 loop i: inChannels do
                     destOff[i] = src[i]
                 loop k: nk do
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over destOff[k])
+                    destOff[inChannels + k] = cast(u8),bit (src[inChannels + k] +,over destOff[k])
 
             case Up:
                 loop k: rowStrideIn do
-                    destOff[k] = cast,bit(u8) (src[k] +,over up[k])
+                    destOff[k] = cast(u8),bit (src[k] +,over up[k])
 
             case Average:
                 loop i: inChannels
                 {
                     let avg = up[i] >> 1
-                    destOff[i] = cast,bit(u8) (src[i] +,over avg)
+                    destOff[i] = cast(u8),bit (src[i] +,over avg)
                 }
                 loop k: nk
                 {
                     let avg = cast(u8) ((cast(u16) up[inChannels + k] + cast(u16) destOff[k]) >> 1)
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over avg)
+                    destOff[inChannels + k] = cast(u8),bit (src[inChannels + k] +,over avg)
                 }
 
             case Paeth:
                 loop i: inChannels
                 {
                     let paeth = cast(u32) filterPaeth(0, up[i], 0)
-                    destOff[i] = cast,bit(u8) (src[i] + paeth)
+                    destOff[i] = cast(u8),bit (src[i] + paeth)
                 }
                 loop k: nk
                 {
                     let paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
-                    destOff[inChannels + k] = cast,bit(u8) (src[inChannels + k] +,over paeth)
+                    destOff[inChannels + k] = cast(u8),bit (src[inChannels + k] +,over paeth)
                 }
             }
 

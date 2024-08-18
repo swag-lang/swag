@@ -174,7 +174,7 @@ impl Properties
                 if kind == .Grid do
                     .margin.x = leftMargin
                 .dockStyle = .Left
-                .userData  = cast,unconst(*void) v.value
+                .userData  = cast(*void),unconst v.value
             }
 
             itemB.checkBox = ed

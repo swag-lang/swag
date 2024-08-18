@@ -1,20 +1,20 @@
 #assert cast(s8) (cast(u8) (45)) == 45;
 #assert cast(s8) (cast(u8) (45)) == 45;
-#assert cast,bit(s8) (cast(u16) (0xFFFF)) == -1;
+#assert cast(s8),bit (cast(u16) (0xFFFF)) == -1;
 #assert cast(s8) (cast(u32) (45)) == 45;
-#assert cast,bit(s8) (cast(u32) (0xFFFFFFFF)) == -1;
+#assert cast(s8),bit (cast(u32) (0xFFFFFFFF)) == -1;
 
 #assert cast(s16) (cast(u8) (45)) == 45;
 #assert cast(s16) (cast(u8) (45)) == 45;
-#assert cast,bit(s16) (cast(u16) (0xFFFF)) == -1;
+#assert cast(s16),bit (cast(u16) (0xFFFF)) == -1;
 #assert cast(s16) (cast(u32) (45)) == 45;
-#assert cast,bit(s16) (cast(u32) (0xFFFFFFFF)) == -1;
+#assert cast(s16),bit (cast(u32) (0xFFFFFFFF)) == -1;
 
 #assert cast(s32) (cast(u8) (45)) == 45;
 #assert cast(s32) (cast(u8) (45)) == 45;
 #assert cast(s32) (cast(u16) (0xFFFF)) == cast(s32) (0xFFFF);
 #assert cast(s32) (cast(u32) (45)) == 45;
-#assert cast,bit(s32) (cast(u32) (0xFFFFFFFF)) == -1;
+#assert cast(s32),bit (cast(u32) (0xFFFFFFFF)) == -1;
 
 #assert cast(s64) (cast(u8) (45)) == 45;
 #assert cast(s64) (cast(u8) (45)) == 45;

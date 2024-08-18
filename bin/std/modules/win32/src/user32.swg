@@ -732,8 +732,8 @@ const GWLP_ID         = -12
 
 const HWND_TOP       = cast(HWND) 0'u64
 const HWND_BOTTOM    = cast(HWND) 1'u64
-const HWND_TOPMOST   = cast(HWND) cast,bit(u64) -1's64
-const HWND_NOTOPMOST = cast(HWND) cast,bit(u64) -2's64
+const HWND_TOPMOST   = cast(HWND) cast(u64),bit -1's64
+const HWND_NOTOPMOST = cast(HWND) cast(u64),bit -2's64
 
 const SWP_NOSIZE         = 0x0001
 const SWP_NOMOVE         = 0x0002
@@ -955,11 +955,11 @@ struct ICONINFO
 }
 
 typealias DPI_AWARENESS_CONTEXT = *void
-const DPI_AWARENESS_CONTEXT_UNAWARE              = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -1's64
-const DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -2's64
-const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -3's64
-const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -4's64
-const DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED    = cast(DPI_AWARENESS_CONTEXT) cast,bit(u64) -5's64
+const DPI_AWARENESS_CONTEXT_UNAWARE              = cast(DPI_AWARENESS_CONTEXT) cast(u64),bit -1's64
+const DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         = cast(DPI_AWARENESS_CONTEXT) cast(u64),bit -2's64
+const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    = cast(DPI_AWARENESS_CONTEXT) cast(u64),bit -3's64
+const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = cast(DPI_AWARENESS_CONTEXT) cast(u64),bit -4's64
+const DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED    = cast(DPI_AWARENESS_CONTEXT) cast(u64),bit -5's64
 
 func GET_X_LPARAM(lp: LPARAM) => cast(s32) LOWORD(lp)
 func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)

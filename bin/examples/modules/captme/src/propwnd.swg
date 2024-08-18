@@ -971,11 +971,11 @@ impl PropWnd
         let ctrl = createSlider("Start Size", acast MinCapSize, acast MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.startSize), true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormLine, @nameof(FormLine.startSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.startSize), false)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormLine, @nameof(FormLine.startSize), false)
         }
     }
 
@@ -989,11 +989,11 @@ impl PropWnd
         let ctrl   = createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.endSize), true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormLine, @nameof(FormLine.endSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormLine, @nameof(FormLine.endSize), false)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormLine, @nameof(FormLine.endSize), false)
         }
     }
 
@@ -1010,11 +1010,11 @@ impl PropWnd
         let ctrl = createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormShape, @nameof(FormShape.roundSize), true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormShape, @nameof(FormShape.roundSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormShape, @nameof(FormShape.roundSize), false)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormShape, @nameof(FormShape.roundSize), false)
         }
     }
 
@@ -1045,11 +1045,11 @@ impl PropWnd
         let ctrl = createSlider(labl, acast minS, acast maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), true, true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), true, true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), false, true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), false, true)
         }
     }
 
@@ -1063,11 +1063,11 @@ impl PropWnd
         let ctrl   = createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.fontSize), true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormText, @nameof(FormText.fontSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.fontSize), false)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormText, @nameof(FormText.fontSize), false)
         }
     }
 
@@ -1081,11 +1081,11 @@ impl PropWnd
         let ctrl   = createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.boldSize), true)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormText, @nameof(FormText.boldSize), true)
         }
         ctrl.slider.sigChanged += closure|self|(slider)
         {
-            self.pushTypedValue(cast,bit(u32) slider.getValue(), FormText, @nameof(FormText.boldSize), false)
+            self.pushTypedValue(cast(u32),bit slider.getValue(), FormText, @nameof(FormText.boldSize), false)
         }
     }
 

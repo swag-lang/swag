@@ -652,6 +652,11 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
 
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
+    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
+
     // Cast modifiers
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
@@ -676,11 +681,6 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
     }
-
-    const auto startLoc = tokenParse.token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
-    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;

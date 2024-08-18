@@ -31,7 +31,7 @@ impl BitStream
     {
         while numBits <= width
         {
-            if codeBuffer == 0 and numBits == cast,bit(u8) -1 do
+            if codeBuffer == 0 and numBits == cast(u8),bit -1 do
                 numBits = 0
 
             if codeBuffer >= 1'u32 << numBits

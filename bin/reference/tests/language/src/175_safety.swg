@@ -63,13 +63,13 @@ Swag will also check that a cast does not lose information.
     //var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    let y1 = cast,over(s8) x1 // But ',over' can be used on the cast operation too
+    let y1 = cast(s8),over x1 // But ',over' can be used on the cast operation too
     @assert(y1 == -1)
 
     let x2 = -1's8
     //var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
-    let y2 = cast,over(u8) x2
+    let y2 = cast(u8),over x2
     @assert(y2 == 255)
 }
 

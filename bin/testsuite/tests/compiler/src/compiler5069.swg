@@ -2,5 +2,5 @@
 
 #test
 {
-    let b = cast,bit(u32) 1'u8
+    let b = cast(u32),bit 1'u8
 }
