@@ -35,10 +35,10 @@ Use the `bit` modifier to convert a native type to another without converting th
 #test
 {
     let x: f32 = 1.0
-    let y: u32 = cast(u32),bit x
+    let y: u32 = cast(u32) #bit x
     @assert(y == 0x3f800000)
-    #assert cast(u32),bit 1.0 == 0x3f800000
-    #assert cast(f32),bit 0x3f800000 == 1.0
+    #assert cast(u32) #bit 1.0 == 0x3f800000
+    #assert cast(f32) #bit 0x3f800000 == 1.0
 }
 
 /**

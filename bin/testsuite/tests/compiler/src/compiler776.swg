@@ -23,7 +23,7 @@ impl Point
 
 	@assert(pt1.x == 10)
 	@assert(pt1.y == 20)
-	pt2 =,move pt1
+	pt2 = #move pt1
 	@assert(pt2.x == 10)
 	@assert(pt2.y == 20)
 	@assert(pt1.x == 0)

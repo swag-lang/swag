@@ -55,7 +55,7 @@ impl HashSet
             loop i: capacity
             {
                 newTable[i].hash = table[i].hash
-                newTable[i].key  =,nodrop table[i].key
+                newTable[i].key  = #nodrop table[i].key
             }
         }
         #else
@@ -221,7 +221,7 @@ impl HashSet
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop key
+            table[index].key = #nodrop key
         }
         else
         {
@@ -250,13 +250,13 @@ impl HashSet
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,move key
+            table[index].key = #nodrop #move key
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key =,move key
+            table[index].key = #move key
         }
 
         table[index].hash = hashVal
@@ -279,13 +279,13 @@ impl HashSet
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key =,nodrop,moveraw key
+            table[index].key = #nodrop #moveraw key
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key =,moveraw key
+            table[index].key = #moveraw key
         }
 
         table[index].hash = hashVal

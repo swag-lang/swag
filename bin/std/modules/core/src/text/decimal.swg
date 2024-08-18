@@ -548,7 +548,7 @@ impl Decimal
             exp -= 1
 
             // Minimum representable exponent is flt.bias+1.
-            // If the exponent is smaller,,move it up and
+            // If the exponent is smaller, #move it up and
             // adjust d accordingly.
             if exp < Swag.F64.Bias + 1
             {
@@ -588,7 +588,7 @@ impl Decimal
         if overflow
         {
             mant = 0
-            exp  = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast(u64),over Swag.F64.Bias)
+            exp  = cast(s64) ((1'u64 << Swag.F64.MantBits) - 1 + cast(u64) #over Swag.F64.Bias)
         }
 
         // Assemble bits.

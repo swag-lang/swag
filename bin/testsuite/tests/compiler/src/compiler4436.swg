@@ -3,7 +3,7 @@ using Swag
 
 func toto(x, y: &string)
 {
-	x =,move y
+	x = #move y
 	@assert(x == "1")
 }
 

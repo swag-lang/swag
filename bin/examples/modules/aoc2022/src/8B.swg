@@ -55,7 +55,7 @@ func day8B()
                 continue
 
             var score0 = 0
-            loop,back x: 0 until col
+            loop #back x: 0 until col
             {
                 score0 += 1
                 if l[x] >= l[col] do
@@ -71,7 +71,7 @@ func day8B()
             }
 
             var score2 = 0
-            loop,back y: 0 until line
+            loop #back y: 0 until line
             {
                 score2 += 1
                 if lines[y][col] >= l[col] do

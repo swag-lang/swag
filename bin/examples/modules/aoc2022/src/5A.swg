@@ -77,7 +77,7 @@ func day5A()
 
             while count
             {
-                let str =,ref stacks[colFrom]
+                let str = #ref stacks[colFrom]
                 stacks[colTo].insert(0, str[0])
                 str.remove(0, 1)
                 count -= 1

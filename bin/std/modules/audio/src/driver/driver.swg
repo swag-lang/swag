@@ -47,7 +47,7 @@ private func updateThreadProc(th: Threading.Thread)
 
         // Make a copy of the list of voices to update, to reduce contention
         driver.mutexVoicesToUpdate.lock()
-        let copyVoices =,move driver.voicesToUpdate
+        let copyVoices = #move driver.voicesToUpdate
         driver.voicesToUpdate.clear()
         driver.mutexVoicesToUpdate.unlock()
 

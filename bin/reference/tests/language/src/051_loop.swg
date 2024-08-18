@@ -81,7 +81,7 @@ You can loop in reverse order by adding the modifier `back` just after the `loop
     var cpt = 0
 
     // Index will be 2, 1 and then 0.
-    loop,back 3
+    loop #back 3
     {
         if cpt == 0 do
             @assert(#index == 2)
@@ -174,17 +174,17 @@ With a range, you can also loop in reverse order if you add the `back` modifier.
 #test
 {
     // Loop from 5 to 0
-    loop,back 0 to 5
+    loop #back 0 to 5
     {
     }
 
     // Loop from 1 to -1
-    loop,back -1 to 1
+    loop #back -1 to 1
     {
     }
 
     // Loop from 1 to -2 because we exclude the upper limit.
-    loop,back -2 until 2
+    loop #back -2 until 2
     {
     }
 }

@@ -1,9 +1,9 @@
-#global testerror "Err0709"
+#global testerror "Err0695"
 
 //#[Swag.PrintBc]
 #test
 {
     var x = 0
     var y = 0
-    x =,raw,raw y
+    x = #raw #raw y
 }

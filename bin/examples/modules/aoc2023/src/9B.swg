@@ -57,7 +57,7 @@ func day9B()
         }
 
         var prev: s64
-        visit,back c: column
+        visit #back c: column
         {
             let c1 = c - prev
             prev = c1

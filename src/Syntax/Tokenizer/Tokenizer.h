@@ -17,6 +17,7 @@ constexpr TokenFlags TOKEN_COMPILER           = 0x00000010;
 constexpr TokenFlags TOKEN_LITERAL            = 0x00000020;
 constexpr TokenFlags TOKEN_COMPILER_FUNC      = 0x00000040;
 constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
+constexpr TokenFlags TOKEN_MODIFIER           = 0x00000100;
 
 constexpr TokenizerFlags TOKENIZER_TRACK_COMMENTS = 0x00000001;
 constexpr TokenizerFlags TOKENIZER_TRACK_FORMAT   = 0x00000002;
@@ -74,6 +75,7 @@ struct Tokenizer
     static bool isSymbol(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_SYM); }
     static bool isLiteral(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_LITERAL); }
     static bool isCompiler(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_COMPILER); }
+    static bool isModifier(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_MODIFIER); }
     static bool isIntrinsicReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_RETURN); }
     static bool isIntrinsicNoReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
     static bool isTopLevelInst(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }

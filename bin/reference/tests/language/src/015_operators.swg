@@ -243,12 +243,12 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 
 /**
 This means that a 8/16 bits operation (like an addition) can more easily **overflow** if you do not take care.
-In that case, you can use the `,prom` **modifier** on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
+In that case, you can use the ` #prom` **modifier** on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
 */
 #test
 {
-    #assert @typeof(255'u8 +,prom 1'u8) == u32
-    #assert 255'u8 +,prom 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
+    #assert @typeof(255'u8 + #prom 1'u8) == u32
+    #assert 255'u8 + #prom 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
 }
 
 /**

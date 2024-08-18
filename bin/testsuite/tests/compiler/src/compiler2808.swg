@@ -1,9 +1,9 @@
 // Swap two values
 func swap(x, y: *s32)
 {
-    let tmp =,moveraw dref x
-    dref x =,nodrop,moveraw dref y
-    dref y =,nodrop,moveraw tmp
+    let tmp = #moveraw dref x
+    dref x = #nodrop #moveraw dref y
+    dref y = #nodrop #moveraw tmp
 }
 
 // Quick sort algorithm
@@ -25,7 +25,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
             return
         }
 
-        // Pick a pivot and,move it out of the way
+        // Pick a pivot and #move it out of the way
         let pivot = (begin + end) / 2
         swap(&buffer[pivot], &buffer[end])
 
@@ -55,8 +55,8 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         @print(cast(s64) high)
         @print("\n")*/
 
-        //var set1 = cast(s64) ((low -,over 1) - begin)
-        //var set2 = cast(s64) (end -,over (high +,over 1))
+        //var set1 = cast(s64) ((low - #over 1) - begin)
+        //var set2 = cast(s64) (end - #over (high + #over 1))
         //if set1 > 0 and set2 > 0
         {
             /*if set1 <= set2

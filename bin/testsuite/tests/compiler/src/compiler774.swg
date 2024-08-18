@@ -24,7 +24,7 @@ var cpt: s32 = 0
 //#[Swag.PrintBc]
 func toto()->Point
 {
-	return Point(1, 2) // one,move
+	return Point(1, 2) // one #move
 }
 
 //#[Swag.PrintBc]
@@ -33,7 +33,7 @@ func toto()->Point
 	cpt = 0
 
 	var pt: Point
-	pt = toto() // one,move
+	pt = toto() // one #move
 
 	//@print(cpt)
 	@assert(cpt == 2)

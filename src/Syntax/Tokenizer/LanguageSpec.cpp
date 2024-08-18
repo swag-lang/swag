@@ -154,19 +154,20 @@ void LanguageSpec::setupNames()
     name_location    = "location";
     name_version     = "version";
 
-    name_prom     = "prom";
-    name_over     = "over";
-    name_nodrop   = "nodrop";
-    name_move     = "move";
-    name_moveraw  = "moveraw";
-    name_bit      = "bit";
-    name_unconst  = "unconst";
-    name_back     = "back";
-    name_ref      = "ref";
-    name_constref = "constref";
-    name_err      = "err";
-    name_noerr    = "noerr";
-    name_call     = "call";
+    name_prom     = "#prom";
+    name_over     = "#over";
+    name_nodrop   = "#nodrop";
+    name_move     = "#move";
+    name_moveraw  = "#moveraw";
+    name_bit      = "#bit";
+    name_unconst  = "#unconst";
+    name_back     = "#back";
+    name_ref      = "#ref";
+    name_constref = "#constref";
+
+    name_err   = "err";
+    name_noerr = "noerr";
+    name_call  = "call";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
@@ -314,6 +315,17 @@ void LanguageSpec::setupKeywords()
     keywords.add("#scope", TokenId::CompilerScope);
     keywords.add("#up", TokenId::CompilerUp);
     keywords.add("#do", TokenId::CompilerDo);
+
+    keywords.add("#prom", TokenId::ModifierPromote);
+    keywords.add("#over", TokenId::ModifierOver);
+    keywords.add("#nodrop", TokenId::ModifierNoDrop);
+    keywords.add("#move", TokenId::ModifierMove);
+    keywords.add("#moveraw", TokenId::ModifierMoveRaw);
+    keywords.add("#bit", TokenId::ModifierBit);
+    keywords.add("#unconst", TokenId::ModifierUnconst);
+    keywords.add("#back", TokenId::ModifierBack);
+    keywords.add("#ref", TokenId::ModifierRef);
+    keywords.add("#constref", TokenId::ModifierConstRef);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

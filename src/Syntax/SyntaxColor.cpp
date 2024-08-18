@@ -482,33 +482,6 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             }
         }
 
-        // Modifier
-        if (c == ',')
-        {
-            Utf8     identifier;
-            uint32_t c1;
-            uint32_t offset1;
-            auto     pz1 = Utf8::decodeUtf8(pz, c1, offset1);
-            while (SWAG_IS_ALPHA(c1))
-            {
-                identifier += c1;
-                pz1 = Utf8::decodeUtf8(pz1, c1, offset1);
-            }
-
-            auto it = g_LangSpec->modifiers.find(identifier);
-            if (it)
-            {
-                result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
-                result += ',';
-                result += identifier;
-                pz     = pz1;
-                c      = c1;
-                offset = offset1;
-                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                continue;
-            }
-        }
-
         // Word
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {

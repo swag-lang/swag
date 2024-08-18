@@ -28,7 +28,7 @@ func day7B()
 
     loop i: lines
     {
-        let l =,ref lines[i]
+        let l = #ref lines[i]
         if l[0] == `$` do
             l.remove(0, 1)
 

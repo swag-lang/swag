@@ -42,7 +42,7 @@ func process(intro: &Node)->&Node
 {
     intro.kids.add({String.from("root")})
 
-    let internalIntro =,ref intro.kids[0]
+    let internalIntro = #ref intro.kids[0]
     internalIntro.print()
     intro.print()
 

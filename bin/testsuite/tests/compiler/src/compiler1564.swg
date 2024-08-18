@@ -5,5 +5,5 @@
 {
     var x = 0
     var y = 0
-    x =,moveraw,moveraw,move,moveraw,move y
+    x = #moveraw #moveraw #move #moveraw #move y
 }

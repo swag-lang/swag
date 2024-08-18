@@ -32,7 +32,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64)->{ f: f64, ok: bool }
         result.ok = true
         return result
     case exp > 0 and exp <= 15 + 22:
-        // If exponent is big but number of digits is not'f64, can,move a few zeros
+        // If exponent is big but number of digits is not'f64, can #move a few zeros
         // into the integer part.
         if exp > 22
         {
@@ -769,7 +769,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     if man == 0
     {
         if neg do
-            result.f = cast(f64),bit 0x8000000000000000 // Negative zero.
+            result.f = cast(f64) #bit 0x8000000000000000 // Negative zero.
         return result
     }
 
@@ -834,7 +834,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
     if neg do
         retBits |= 0x8000000000000000
-    result.f  = cast(f64),bit retBits
+    result.f  = cast(f64) #bit retBits
     result.ok = true
     return result
 }
@@ -912,6 +912,6 @@ public func parse(s: const [..] u8)->{ value: f64, eat: u32, ovf: bool } throw
     read.trunc = read.bigtrunc
     let (b, ovf) = read.floatBits()
     result.ovf   = ovf
-    result.value = cast(f64),bit b
+    result.value = cast(f64) #bit b
     return result
 }

@@ -1,6 +1,6 @@
 #test
 {
-    loop,back 0
+    loop #back 0
     {
         @assert(false)
     }

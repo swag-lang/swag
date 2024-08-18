@@ -228,7 +228,7 @@ impl Transform
         rangeTest(pg.buffer[highI])
         initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
         initEdge(&edges[highI], &edges[0], &edges[highI - 1], pg.buffer[highI])
-        loop,back i: 1 until highI
+        loop #back i: 1 until highI
         {
             rangeTest(pg.buffer[i])
             initEdge(&edges[i], &edges[i + 1], &edges[i - 1], pg.buffer[i])
@@ -769,9 +769,9 @@ impl Transform
             }
             else
             {
-                maxRit = maximaList.count -,over 1
+                maxRit = maximaList.count - #over 1
                 while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > horzEdge.bot.x do
-                    maxRit = maxRit -,over 1
+                    maxRit = maxRit - #over 1
                 if maxRit != Swag.U64.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x do
                     maxRit = Swag.U64.Max
             }
@@ -801,7 +801,7 @@ impl Transform
                         {
                             if horzEdge.outIdx >= 0 and !isOpen do
                                 addOutPt(horzEdge, IntPoint{maximaList.buffer[maxRit], horzEdge.bot.y})
-                            maxRit = maxRit -,over 1
+                            maxRit = maxRit - #over 1
                         }
                     }
                 }

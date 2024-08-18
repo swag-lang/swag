@@ -1062,7 +1062,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         node->token.isNot(TokenId::SymCircumflex))
     {
         SWAG_CHECK(TypeManager::promote(context, left, right));
-        if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
+        if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
         {
             TypeManager::promote32(context, left);
             TypeManager::promote32(context, right);

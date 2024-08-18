@@ -3,6 +3,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool FormatAst::outputArrayPointerSlicing(FormatContext& context, AstNode* node)
 {
@@ -100,9 +101,16 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     concat->addString(node->token.text);
 
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
-        concat->addString(",over");
-    if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
-        concat->addString(",up");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_over);
+    }
+    
+    if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_prom);
+    }
 
     addBlank(node->secondChild());
     SWAG_CHECK(outputNode(context, node->secondChild()));
@@ -125,10 +133,18 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addBlank();
     concat->addString(node->token.text);
+
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
-        concat->addString(",over");
-    if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
-        concat->addString(",up");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_over);
+    }
+    if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_prom);
+    }
+
     concat->addBlank();
 
     if (const auto parse = getTokenParse(node->secondChild()))
@@ -226,11 +242,22 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
     concat->addChar(')');
 
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
-        concat->addString(",over");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_over);
+    }
+    
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
-        concat->addString(",bit");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_bit);
+    }
+    
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
-        concat->addString(",unconst");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_unconst);
+    }
 
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->secondChild()));

@@ -100,7 +100,7 @@ impl List
     mtd addFront(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
-        n.value =,move value
+        n.value = #move value
         count += 1
 
         if head
@@ -142,7 +142,7 @@ impl List
     mtd addBack(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
-        n.value =,move value
+        n.value = #move value
         count += 1
 
         if tail
@@ -184,7 +184,7 @@ impl List
         Debug.assert(node != null)
 
         let n = Memory.new'ListNode()
-        n.value =,move value
+        n.value = #move value
         count += 1
 
         n.next = node
@@ -223,7 +223,7 @@ impl List
         Debug.assert(node != null)
 
         let n = Memory.new'ListNode()
-        n.value =,move value
+        n.value = #move value
         count += 1
 
         n.prev = node

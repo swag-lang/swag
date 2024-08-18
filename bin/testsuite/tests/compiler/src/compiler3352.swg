@@ -15,6 +15,6 @@ impl Vector3
 {
     var a = Vector3{}
     var b = Vector3{1, 2, 3}
-    a =,move b
+    a = #move b
     @assert(b.x == 666)
 }

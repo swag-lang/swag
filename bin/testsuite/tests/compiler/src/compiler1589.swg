@@ -12,7 +12,7 @@ impl Array
 {
     func emplace(using self, x: *T)
     {
-        buffer[0] =,nodrop,move dref x
+        buffer[0] = #nodrop #move dref x
     }
 }
 

@@ -44,7 +44,7 @@ impl Vector3
     // 2. This will raw copy 'b' to 'a'
     // 3. This will call 'opPostMove' on 'a' if it exists
     // 4. This will reinitialize 'b' to the default values if 'opDrop' exists
-    a =,move b
+    a = #move b
     @assert(a.x == 102) // +2 because of the call to opPostMove
     @assert(a.y == 202)
     @assert(a.z == 302)
@@ -53,20 +53,20 @@ impl Vector3
     // the default values after the 'move'. Default values are 666.
     @assert(b.x == 666)
 
-    // If you know what you're doing, you can avoid the first call to 'opDrop' with '=,nodrop'
+    // If you know what you're doing, you can avoid the first call to 'opDrop' with '= #nodrop'
     // Do it when you know the state of 'a' and do not want an extra unnecessary call
     // (for example if 'a' is in an undetermined state).
 
-    a =,nodrop b // Copy b to a without dropping 'a' first
-    a =,nodrop,move b // Move b to a without dropping 'a' first
+    a = #nodrop b // Copy b to a without dropping 'a' first
+    a = #nodrop #move b // Move b to a without dropping 'a' first
 
     // For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. 
     // Of course, do this at your own risk, if you know that 'b' will never by dropped by the 
     // compiler or if you reinitialize its state yourself.
 
     // instead of 'move'
-    a =,moveraw b
-    a =,nodrop,moveraw b
+    a = #moveraw b
+    a = #nodrop #moveraw b
 }
 
 /**
@@ -81,7 +81,7 @@ impl Vector3
     #[Swag.Overload]
     func assign(assignTo: &Vector3, from: &&Vector3)
     {
-        assignTo =,move from
+        assignTo = #move from
     }
 
     // This is the normal 'copy' version. In this version, 'from' will not be changed, that's 

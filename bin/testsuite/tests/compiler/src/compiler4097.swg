@@ -23,6 +23,6 @@ struct T
 #test
 {
     var t1, t2: T
-    t1 =,move t2
+    t1 = #move t2
     @assert(G==5)
 }

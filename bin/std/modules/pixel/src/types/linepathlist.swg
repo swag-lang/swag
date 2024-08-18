@@ -93,7 +93,7 @@ impl LinePathList
         }
 
         clear()
-        paths =,move newList.paths
+        paths = #move newList.paths
         clean()
     }
 
@@ -111,6 +111,6 @@ impl LinePathList
         }
 
         clear()
-        paths =,move newList.paths
+        paths = #move newList.paths
     }
 }

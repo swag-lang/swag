@@ -89,7 +89,7 @@ impl Variant
         drop()
 
         type                  = TN
-        dref cast(*TN) buffer =,nodrop value
+        dref cast(*TN) buffer = #nodrop value
     }
 
     // Get the variant value of the given type

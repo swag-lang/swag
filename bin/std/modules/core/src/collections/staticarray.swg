@@ -90,7 +90,7 @@ impl StaticArray
         #if Reflection.hasPostCopy(T)
         {
             loop i: countof do
-                buffer[i] =,nodrop dataof[i]
+                buffer[i] = #nodrop dataof[i]
         }
         #else
         {
@@ -197,7 +197,7 @@ impl StaticArray
         if contains(value) do
             return
         Debug.assert(count != N, "the array is full")
-        buffer[count] =,nodrop value
+        buffer[count] = #nodrop value
         count += 1
     }
 
@@ -207,7 +207,7 @@ impl StaticArray
         where Reflection.canCopy(T)
     {
         Debug.assert(count != N, "the array is full")
-        buffer[count] =,nodrop value
+        buffer[count] = #nodrop value
         count += 1
     }
 
@@ -216,7 +216,7 @@ impl StaticArray
     mtd add(value: &&T)
     {
         Debug.assert(count != N, "the array is full")
-        buffer[count] =,nodrop,move value
+        buffer[count] = #nodrop #move value
         count += 1
     }
 
@@ -256,14 +256,14 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             for var idx = count - 1; idx > index; idx -= 1 do
-                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+                buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
         {
             Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
         }
 
-        buffer[index] =,nodrop value
+        buffer[index] = #nodrop value
     }
 
     // Move a value at the given index.
@@ -281,14 +281,14 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             for var idx = count - 1; idx > index; idx -= 1 do
-                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+                buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
         {
             Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
         }
 
-        buffer[index] =,nodrop,move value
+        buffer[index] = #nodrop #move value
     }
 
     // Insert some values at the given index.
@@ -311,7 +311,7 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
-                buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
+                buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
         {
@@ -321,7 +321,7 @@ impl StaticArray
         #if Reflection.hasPostCopy(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1 do
-                buffer[index + idx] =,nodrop values[idx]
+                buffer[index + idx] = #nodrop values[idx]
         }
         #else
         {
@@ -348,7 +348,7 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
-                buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
+                buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
         {
@@ -358,7 +358,7 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1 do
-                buffer[index + idx] =,nodrop,move values[idx]
+                buffer[index + idx] = #nodrop #move values[idx]
         }
         #else
         {
@@ -383,7 +383,7 @@ impl StaticArray
             var destPtr = &buffer[0] + oldCount
             loop sliceCount
             {
-                dref destPtr =,nodrop values[#index]
+                dref destPtr = #nodrop values[#index]
                 destPtr += 1
             }
         }
@@ -409,7 +409,7 @@ impl StaticArray
         {
             loop i: count - num
             {
-                buffer[index + i] =,moveraw buffer[index + num + i]
+                buffer[index + i] = #moveraw buffer[index + num + i]
             }
         }
 
@@ -436,7 +436,7 @@ impl StaticArray
         if index == count do
             @drop(&buffer[0] + count)
         else do
-            buffer[index] =,moveraw buffer[count]
+            buffer[index] = #moveraw buffer[count]
     }
 
     // Remove 'numValues' elements at 'index' by shifting all others.
@@ -462,7 +462,7 @@ impl StaticArray
             var idx = index
             loop count - index
             {
-                buffer[idx] =,nodrop,moveraw buffer[idx + numValues]
+                buffer[idx] = #nodrop #moveraw buffer[idx + numValues]
                 idx += 1
             }
         }
@@ -544,7 +544,7 @@ impl StaticArray
     {
         Debug.assert(count > 0, "array is empty")
         var result: retval = undefined
-        result =,nodrop,moveraw buffer[count - 1]
+        result = #nodrop #moveraw buffer[count - 1]
         count -= 1
         return result
     }

@@ -124,7 +124,7 @@ impl Polygon
         loop i: points.count do
             copy.add(getPoint(i, value))
 
-        points =,move copy
+        points = #move copy
     }
 
     internal mtd storeClipperResult(res: Clipper.ClipperPath)

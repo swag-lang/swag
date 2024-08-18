@@ -650,10 +650,10 @@ impl Tessellate
     public mtd getResult()->Result
     {
         var result: retval
-        result.points     =,move points
-        result.edges      =,move edges
-        result.triangles  =,move triangles
-        result.triIndices =,move triIndices
+        result.points     = #move points
+        result.edges      = #move edges
+        result.triangles  = #move triangles
+        result.triIndices = #move triIndices
         return result
     }
 

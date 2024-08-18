@@ -29,14 +29,14 @@ const MaxMillis:   u64 = (DaysTo10000 * MillisPerDay)
 func nowMilliseconds()->u32
 {
     let ticks = nowPrecise() / (preciseFrequency() / 1000)
-    return cast(u32),bit ticks
+    return cast(u32) #bit ticks
 }
 
 // Returns the current time expressed in microseconds
 func nowMicroseconds()->u32
 {
     let ticks = nowPrecise() / (preciseFrequency() / 1000000)
-    return cast(u32),bit ticks
+    return cast(u32) #bit ticks
 }
 
 typealias Ticks = u64
@@ -77,7 +77,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 
     let days = isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     let y    = cast(u64) (year - 1)
-    let n    = y * 365 +,over y / 4 +,over y / 400 +,over days[month - 1] +,over day - 1 -,over y / 100
+    let n    = y * 365 + #over y / 4 + #over y / 400 + #over days[month - 1] + #over day - 1 - #over y / 100
     return n * TicksPerDay
 }
 

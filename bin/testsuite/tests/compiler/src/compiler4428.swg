@@ -12,7 +12,7 @@ func toto(x: &*s32)
 {
 	var a = 10
 	var ptr = &a
-	var r =,ref &ptr
+	var r = #ref &ptr
 	toto(&r)
 
 	//@print(dref ptr)

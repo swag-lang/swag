@@ -8,7 +8,6 @@
     { "include": "#visit-call" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
-    { "include": "#instruction-modifier" },
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#keywords-invalid" },
@@ -28,6 +27,7 @@
     { "include": "#compiler-statement" },
     { "include": "#compiler-ret" },
     { "include": "#compiler-keywords" },
+    { "include": "#compiler-modifiers" },
     { "include": "#compiler-invalid" },
     { "include": "#types" },
     { "include": "#strings" },
@@ -207,6 +207,14 @@
         }
       ]
     },
+    "compiler-modifiers": {
+      "patterns": [
+        {
+          "name": "keyword",
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+        }
+      ]
+    },    
     "compiler-invalid": {
       "patterns": [
         {
@@ -430,14 +438,6 @@
         {
           "name": "keyword.operator",
           "match": "[\\/=\\-+!*%<>&|^~.`'!:]"
-        }
-      ]
-    },
-    "instruction-modifier": {
-      "patterns": [
-        {
-          "name": "constant.character.escape",
-          "match": "\\,(up|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     }

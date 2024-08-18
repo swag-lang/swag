@@ -146,7 +146,7 @@ impl Decoder
             if type == String
             {
                 let strBuf = cast(*String) data
-                dref strBuf =,nodrop serializer.readNative'String()
+                dref strBuf = #nodrop serializer.readNative'String()
                 return
             }
 

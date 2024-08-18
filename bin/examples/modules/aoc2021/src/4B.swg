@@ -93,7 +93,7 @@ func day4B()
         if score > bestScore
         {
             bestScore = score
-            bestCard  =,move card
+            bestCard  = #move card
         }
     }
 

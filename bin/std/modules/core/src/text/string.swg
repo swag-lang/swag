@@ -91,9 +91,9 @@ impl String
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
         #if op == "+=" #do
-            buffer[index] +=,over value
+            buffer[index] += #over value
         #elif op == "-=" #do
-            buffer[index] -=,over value
+            buffer[index] -= #over value
         #else #do
             #error "invalid operator '" ++ op ++ "'"
     }

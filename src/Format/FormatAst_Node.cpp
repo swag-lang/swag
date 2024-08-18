@@ -403,16 +403,18 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             return true;
 
         case AstNodeKind::KeepRef:
+            concat->addBlank();
             if (node->hasAstFlag(AST_CONST))
-                concat->addString(",constref");
+                concat->addString(g_LangSpec->name_constref);
             else
-                concat->addString(",ref");
+                concat->addString(g_LangSpec->name_ref);
             addBlank(node->firstChild());
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
 
         case AstNodeKind::NoDrop:
-            concat->addString(",nodrop");
+            concat->addBlank();
+            concat->addString(g_LangSpec->name_nodrop);
             addBlank(node->firstChild());
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;
@@ -420,13 +422,15 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Move:
             if (node->firstChild()->is(AstNodeKind::NoDrop))
             {
-                concat->addString(",moveraw");
+                concat->addBlank();
+                concat->addString(g_LangSpec->name_moveraw);
                 addBlank(node->firstChild()->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()->firstChild()));
             }
             else
             {
-                concat->addString(",move");
+                concat->addBlank();
+                concat->addString(g_LangSpec->name_move);
                 addBlank(node->firstChild());
                 SWAG_CHECK(outputNode(context, node->firstChild()));
             }

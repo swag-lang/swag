@@ -99,20 +99,20 @@ private func execute(lines: Array'String) assume
         switch
         {
         case r0.match(l):
-            let bot =,ref getBot(StrConv.toS32(r0[2]))
+            let bot = #ref getBot(StrConv.toS32(r0[2]))
             bot.add(StrConv.toS32(r0[1]))
             bot.execute()
 
         case r1.match(l):
-            let bot =,ref getBot(StrConv.toS32(r1[1]))
+            let bot = #ref getBot(StrConv.toS32(r1[1]))
             if bot.count != 2
             {
                 bot.pending.add(l)
                 break
             }
 
-            let low  =,ref getBot(StrConv.toS32(r1[3]))
-            let high =,ref getBot(StrConv.toS32(r1[5]))
+            let low  = #ref getBot(StrConv.toS32(r1[3]))
+            let high = #ref getBot(StrConv.toS32(r1[5]))
 
             if r1[2] == "bot" do
                 low.add(bot.eatLow())

@@ -4,7 +4,7 @@ using Core
 {
     var x:  Array's32 = [1, 2, 3, 4]
     var cpt = 0
-    visit,back v: x
+    visit #back v: x
     {
         if cpt == 0 do
             @assert(v == 4)

@@ -4,7 +4,7 @@
     let x = 10
     let y = 5
     var c = 0
-    loop,back y to x
+    loop #back y to x
     {
         c += #index
     }

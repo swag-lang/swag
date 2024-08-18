@@ -390,7 +390,7 @@ impl RegExp
                 if curState.node.terminal and (forGrep or curState.parseIdx >= bufLength)
                 {
                     closeGroup(&curState)
-                    groups =,move curState.groups
+                    groups = #move curState.groups
                     return {true, bufStart + curState.parseIdx}
                 }
 
@@ -839,7 +839,7 @@ impl RegExp
 
     mtd setTable(node: *DfaNode, tbl: *Array'(*NfaNode))
     {
-        node.table =,move dref tbl
+        node.table = #move dref tbl
         visit n: node.table
         {
             if node.group == 0 do

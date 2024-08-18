@@ -3,7 +3,7 @@ func toto(x, y: s32)
 {
     var g = 0
     var cpt = 0
-    loop,back x to y
+    loop #back x to y
     {
         if cpt == 0 do @assert(#index == 3)
         if cpt == 1 do @assert(#index == 2)

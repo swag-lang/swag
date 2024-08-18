@@ -23,12 +23,12 @@ Operators that can overflow are : `+ - * << >>` and their equivalent `+= -= *= <
 }
 
 /**
-But if you know what your are doing, you can use a special version of those operators, which will not panic. Add the `,over` modifier after the operation. This will disable safety checks.
+But if you know what your are doing, you can use a special version of those operators, which will not panic. Add the ` #over` modifier after the operation. This will disable safety checks.
 */
 #test
 {
     var x = 255'u8
-    x +=,over 1 // Overflow is expected, so this will wrap around
+    x += #over 1 // Overflow is expected, so this will wrap around
     @assert(x == 0)
 }
 
@@ -39,16 +39,16 @@ You can also use `#[Swag.Overflow(true)]` to authorize overflow on a more global
 #test
 {
     var x = 255'u8
-    x += 1 // No need for operator modifier ',over'
+    x += 1 // No need for operator modifier ' #over'
     @assert(x == 0)
 }
 
 /**
-For 8 or 16 bits, you can promote an operation to 32 bits by using ',prom'.
+For 8 or 16 bits, you can promote an operation to 32 bits by using ' #prom'.
 */
 #test
 {
-    let x = 255'u8 +,prom 1
+    let x = 255'u8 + #prom 1
     @assert(x == 256)
     @assert(@typeof(x) == u32)
 }
@@ -63,13 +63,13 @@ Swag will also check that a cast does not lose information.
     //var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'
     //@print(y0)
 
-    let y1 = cast(s8),over x1 // But ',over' can be used on the cast operation too
+    let y1 = cast(s8) #over x1 // But ' #over' can be used on the cast operation too
     @assert(y1 == -1)
 
     let x2 = -1's8
     //var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'
     //@print(y)
-    let y2 = cast(u8),over x2
+    let y2 = cast(u8) #over x2
     @assert(y2 == 255)
 }
 

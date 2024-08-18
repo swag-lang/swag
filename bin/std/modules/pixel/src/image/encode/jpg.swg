@@ -336,10 +336,10 @@ impl Encoder
                 hT[stdTable[posInTable]].value  = codevalue
                 hT[stdTable[posInTable]].length = cast(u8) k
                 posInTable += 1
-                codevalue +=,over 1
+                codevalue += #over 1
             }
 
-            codevalue *=,over 2
+            codevalue *= #over 2
         }
     }
 
@@ -371,7 +371,7 @@ impl Encoder
 
             loop nr: -(nrupper - 1) to -nrlower
             {
-                let nof = cast(u64),bit cast(s64) nr
+                let nof = cast(u64) #bit cast(s64) nr
                 category[nof]       = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -563,7 +563,7 @@ impl Encoder
             dataFloat[i] = data[i]
 
         var dataptr = &dataFloat
-        loop,back ctr: 0 to 7
+        loop #back ctr: 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[7]
             let tmp7 = dataptr[0] - dataptr[7]
@@ -608,7 +608,7 @@ impl Encoder
 
         dataptr = dataFloat
 
-        loop,back ctr: 0 to 7
+        loop #back ctr: 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[56]
             let tmp7 = dataptr[0] - dataptr[56]
@@ -674,7 +674,7 @@ impl Encoder
             writeBits(hTDC[0])
         else
         {
-            let diffc = cast(u64),bit cast(s64) diff // If negative
+            let diffc = cast(u64) #bit cast(s64) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
@@ -703,7 +703,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            let offc = cast(u64),bit cast(s64) du[i] // If negative
+            let offc = cast(u64) #bit cast(s64) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1

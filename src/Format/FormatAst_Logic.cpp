@@ -69,7 +69,10 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
     concat->addString("loop");
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
-        concat->addString(",back");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_back);
+    }
 
     if (loopNode->specificName)
     {
@@ -100,7 +103,10 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
     }
 
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-        concat->addString(",back");
+    {
+        concat->addBlank();
+        concat->addString(g_LangSpec->name_back);
+    }
 
     concat->addBlank();
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))

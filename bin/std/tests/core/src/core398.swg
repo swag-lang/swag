@@ -51,7 +51,7 @@ func process(intro: *Node)->*Node
     tree.name = "root"
     intro.kids.add(tree)
 
-    let internalIntro =,ref intro.kids[0]
+    let internalIntro = #ref intro.kids[0]
     internalIntro.print()
     tree.print()
 

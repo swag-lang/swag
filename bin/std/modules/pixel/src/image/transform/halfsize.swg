@@ -15,11 +15,11 @@ impl Image
             let pixSrcb8   = pixSrc + b8
             let pixSrcw8   = pixSrc + w8
             let pixSrcw8b8 = pixSrcw8 + b8
-            pix[0] = cast(u8) ((pixSrc[0] +,prom pixSrcb8[0] +,prom pixSrcw8[0] +,prom pixSrcw8b8[0]) >> 2)
-            pix[1] = cast(u8) ((pixSrc[1] +,prom pixSrcb8[1] +,prom pixSrcw8[1] +,prom pixSrcw8b8[1]) >> 2)
-            pix[2] = cast(u8) ((pixSrc[2] +,prom pixSrcb8[2] +,prom pixSrcw8[2] +,prom pixSrcw8b8[2]) >> 2)
+            pix[0] = cast(u8) ((pixSrc[0] + #prom pixSrcb8[0] + #prom pixSrcw8[0] + #prom pixSrcw8b8[0]) >> 2)
+            pix[1] = cast(u8) ((pixSrc[1] + #prom pixSrcb8[1] + #prom pixSrcw8[1] + #prom pixSrcw8b8[1]) >> 2)
+            pix[2] = cast(u8) ((pixSrc[2] + #prom pixSrcb8[2] + #prom pixSrcw8[2] + #prom pixSrcw8b8[2]) >> 2)
             if image.bpp == 32 do
-                pix[3] = cast(u8) ((pixSrc[3] +,prom pixSrcb8[3] +,prom pixSrcw8[3] +,prom pixSrcw8b8[3]) >> 2)
+                pix[3] = cast(u8) ((pixSrc[3] + #prom pixSrcb8[3] + #prom pixSrcw8[3] + #prom pixSrcw8b8[3]) >> 2)
         }
     }
 

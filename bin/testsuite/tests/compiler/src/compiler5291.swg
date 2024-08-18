@@ -1,7 +1,7 @@
 #test
 {
     var x = 66
-    var y =,ref &x
+    var y = #ref &x
     @init(y)
     @assert(x == 0)
     @init(y)(20)

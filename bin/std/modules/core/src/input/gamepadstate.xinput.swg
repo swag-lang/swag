@@ -54,7 +54,7 @@ impl GamePadState
         position[LeftTrigger].y  = bLeftTrigger / 255.0'f32
         position[RightTrigger].y = bRightTrigger / 255.0'f32
 
-        // Simulate pressed with,move
+        // Simulate pressed with #move
         #[Swag.Inline]
         mtd getToler(btn: GamePadButton)->f32
         {

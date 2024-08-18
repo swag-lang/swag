@@ -699,7 +699,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Utf8 visitBack;
     if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
     {
-        visitBack += ",";
+        visitBack += " ";
         visitBack += g_LangSpec->name_back;
     }
 
@@ -730,7 +730,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( =,ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[#index]; )", id);
         }
         else
         {
@@ -770,7 +770,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( =,ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[#index]; )", id);
         }
         else
         {
@@ -809,7 +809,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( =,ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[#index]; )", id);
         }
         else
         {

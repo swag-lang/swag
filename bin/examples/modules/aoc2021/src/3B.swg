@@ -51,7 +51,7 @@ func calc(a, b: u8)->u64
                 next.add(l)
         }
 
-        scan =,move next
+        scan = #move next
         if scan.count == 1 do
             break
     }

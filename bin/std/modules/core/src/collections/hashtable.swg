@@ -56,8 +56,8 @@ impl HashTable
             loop i: capacity
             {
                 newTable[i].hash  = table[i].hash
-                newTable[i].key   =,nodrop table[i].key
-                newTable[i].value =,nodrop table[i].value
+                newTable[i].key   = #nodrop table[i].key
+                newTable[i].value = #nodrop table[i].value
             }
         }
         #else
@@ -267,8 +267,8 @@ impl HashTable
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key   =,nodrop key
-            table[index].value =,nodrop value
+            table[index].key   = #nodrop key
+            table[index].value = #nodrop value
         }
         else
         {
@@ -298,21 +298,21 @@ impl HashTable
         if table[index].hash >= HASH_FIRST
         {
             if updateValue do
-                table[index].value =,move value
+                table[index].value = #move value
             return table + index
         }
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key   =,nodrop key
-            table[index].value =,nodrop,move value
+            table[index].key   = #nodrop key
+            table[index].value = #nodrop #move value
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
             table[index].key   = key
-            table[index].value =,move value
+            table[index].value = #move value
         }
 
         table[index].hash = hashVal
@@ -332,21 +332,21 @@ impl HashTable
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST
         {
-            table[index].value =,moveraw value
+            table[index].value = #moveraw value
             return table + index
         }
 
         if table[index].hash == HASH_FREE
         {
-            table[index].key   =,nodrop,moveraw key
-            table[index].value =,nodrop,moveraw value
+            table[index].key   = #nodrop #moveraw key
+            table[index].value = #nodrop #moveraw value
         }
         else
         {
             if table[index].hash == HASH_DELETED do
                 deleted -= 1
-            table[index].key   =,moveraw key
-            table[index].value =,moveraw value
+            table[index].key   = #moveraw key
+            table[index].value = #moveraw value
         }
 
         table[index].hash = hashVal

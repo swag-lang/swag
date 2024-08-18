@@ -70,7 +70,7 @@ You can visit in reverse order by adding the 'back' modifier.
     // Here we visit every bytes of the string.
     // At each iteration, the byte will be stored in the variable 'value'
     var cpt = 0
-    visit,back value: "ABC"
+    visit #back value: "ABC"
     {
         // '#index' is also available. It stores the loop index.
         switch cpt

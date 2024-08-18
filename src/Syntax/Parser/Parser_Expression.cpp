@@ -582,11 +582,9 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     const auto opId = tokenId;
 
     mdfFlags = 0;
-    while (tokenParse.is(TokenId::SymComma) && !tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    while (Tokenizer::isModifier(tokenParse.token.id))
     {
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.token.is(g_LangSpec->name_prom))
+        if (tokenParse.is(TokenId::ModifierPromote))
         {
             switch (opId)
             {
@@ -606,7 +604,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_over))
+        if (tokenParse.is(TokenId::ModifierOver))
         {
             switch (opId)
             {
@@ -628,7 +626,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_nodrop))
+        if (tokenParse.is(TokenId::ModifierNoDrop))
         {
             switch (opId)
             {
@@ -644,7 +642,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_ref))
+        if (tokenParse.is(TokenId::ModifierRef))
         {
             switch (opId)
             {
@@ -661,7 +659,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_constref))
+        if (tokenParse.is(TokenId::ModifierConstRef))
         {
             switch (opId)
             {
@@ -678,7 +676,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_back))
+        if (tokenParse.is(TokenId::ModifierBack))
         {
             switch (opId)
             {
@@ -695,7 +693,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_bit))
+        if (tokenParse.is(TokenId::ModifierBit))
         {
             switch (opId)
             {
@@ -711,7 +709,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_unconst))
+        if (tokenParse.is(TokenId::ModifierUnconst))
         {
             switch (opId)
             {
@@ -727,7 +725,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_move))
+        if (tokenParse.is(TokenId::ModifierMove))
         {
             switch (opId)
             {
@@ -743,7 +741,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.token.is(g_LangSpec->name_moveraw))
+        if (tokenParse.is(TokenId::ModifierMoveRaw))
         {
             switch (opId)
             {
@@ -760,7 +758,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        return error(tokenParse, formErr(Err0709, tokenParse.cstr()));
+        SWAG_ASSERT(false);
     }
 
     return true;
@@ -939,7 +937,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
 
         if (mdfFlags.has(MODIFIER_PROM))
         {
-            binaryNode->addSpecFlag(AstOp::SPEC_FLAG_UP);
+            binaryNode->addSpecFlag(AstOp::SPEC_FLAG_PROM);
         }
 
         Ast::addChildBack(binaryNode, leftNode);

@@ -4,8 +4,8 @@ func toto()
     var toto1 = 1
     var toto2 = 2
 
-    let ref1 =,ref &toto1
-    let ref2 =,ref &toto2
+    let ref1 = #ref &toto1
+    let ref2 = #ref &toto2
 
     @assert(-ref1 == -1)
 }

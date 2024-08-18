@@ -127,7 +127,7 @@ func day10B()
     {
         visit(Bytes) c, col: l
         {
-            let one =,ref mp(cast(s64) col, cast(s64) line)
+            let one = #ref mp(cast(s64) col, cast(s64) line)
             switch c
             {
             case `-`:
@@ -150,7 +150,7 @@ func day10B()
     }
 
     // Determin the shape of the start 'S'
-    let start =,ref mp(startX, startY)
+    let start = #ref mp(startX, startY)
     if mp(startX - 1, startY) & .East do
         start |= .West
     if mp(startX + 1, startY) & .West do
@@ -165,7 +165,7 @@ func day10B()
     var visitY = startY
     loop
     {
-        let one =,ref mp(visitX, visitY)
+        let one = #ref mp(visitX, visitY)
         one |= .Edge
 
         switch

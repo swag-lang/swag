@@ -9,7 +9,7 @@ var G = 0
 		G = 1
 	}
 
-	let r =,ref &x
+	let r = #ref &x
 	r()
 	@assert(G == 1)
 }

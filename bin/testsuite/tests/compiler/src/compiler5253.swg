@@ -2,6 +2,6 @@
 #test
 {
     var x = 5
-    var y =,ref &x
-    y =,constref &x
+    var y = #ref &x
+    y = #constref &x
 }

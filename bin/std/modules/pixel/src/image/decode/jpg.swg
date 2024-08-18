@@ -116,7 +116,7 @@ private
     {
         func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
         func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
-        func clamp(i: s32)->u8            => cast(u8) ((i & cast(s32),bit 0xFFFFFF00) ? ((~i >> 31) & 0xFF) : i)
+        func clamp(i: s32)->u8            => cast(u8) ((i & cast(s32) #bit 0xFFFFFF00) ? ((~i >> 31) & 0xFF) : i)
     }
 }
 
@@ -526,7 +526,7 @@ impl Decoder
         var pdstPtr = buf
         var dataPtr = data
 
-        loop,back rowctr: 0 to 7
+        loop #back rowctr: 0 to 7
         {
             // Original code:
             // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
@@ -607,12 +607,12 @@ impl Decoder
 
         dataPtr = data
 
-        loop,back rowctr: 0 to 7
+        loop #back rowctr: 0 to 7
         {
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
                 var dcval = descale(cast(s32) dataPtr[0], Pass1Bits + 3)
-                dcval +=,over 128
+                dcval += #over 128
                 dcval = Math.clamp(dcval, 0's16, 255's16)
                 let dcval8 = cast(u8) dcval
 
@@ -793,7 +793,7 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d   = scanLine0.buffer
         var s   = pSampleBuf + row * 8
-        loop,back i: 1 to maxMcusPerRow
+        loop #back i: 1 to maxMcusPerRow
         {
             d[0] = s[0]
             d[1] = s[1]
@@ -814,7 +814,7 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d   = scanLine0.buffer
         var s   = pSampleBuf + row * 8
-        loop,back i: 1 to maxMcusPerRow
+        loop #back i: 1 to maxMcusPerRow
         {
             loop j: 8
             {
@@ -822,9 +822,9 @@ impl Decoder
                 let cb = s[64 + j]
                 let cr = s[128 + j]
 
-                d[2] = clamp(y +,over crr[cr])
-                d[1] = clamp(y +,over ((crg[cr] + cbg[cb]) >> 16))
-                d[0] = clamp(y +,over cbb[cb])
+                d[2] = clamp(y + #over crr[cr])
+                d[1] = clamp(y + #over ((crg[cr] + cbg[cb]) >> 16))
+                d[0] = clamp(y + #over cbb[cb])
                 d += 3
             }
 
@@ -845,7 +845,7 @@ impl Decoder
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
         var c = pSampleBuf + 64 * 2 + (row >> 1) * 8
-        loop,back i: 1 to maxMcusPerRow
+        loop #back i: 1 to maxMcusPerRow
         {
             loop j: 8
             {
@@ -879,7 +879,7 @@ impl Decoder
         var y   = pSampleBuf + row * 8
         var c   = pSampleBuf + 2 * 64 + row * 8
 
-        loop,back i: 1 to maxMcusPerRow
+        loop #back i: 1 to maxMcusPerRow
         {
             loop l: 2
             {
@@ -892,14 +892,14 @@ impl Decoder
                     let bc = cbb[cb]
                     var yy = cast(s32) y[j << 1]
 
-                    d0[2] = clamp(yy +,over rc)
-                    d0[1] = clamp(yy +,over gc)
-                    d0[0] = clamp(yy +,over bc)
+                    d0[2] = clamp(yy + #over rc)
+                    d0[1] = clamp(yy + #over gc)
+                    d0[0] = clamp(yy + #over bc)
 
                     yy    = y[(j << 1) + 1]
-                    d0[5] = clamp(yy +,over rc)
-                    d0[4] = clamp(yy +,over gc)
-                    d0[3] = clamp(yy +,over bc)
+                    d0[5] = clamp(yy + #over rc)
+                    d0[4] = clamp(yy + #over gc)
+                    d0[3] = clamp(yy + #over bc)
 
                     d0 += 6
 
@@ -927,7 +927,7 @@ impl Decoder
             y = pSampleBuf + 64 * 2 + (row & 7) * 8
         var c = pSampleBuf + 64 * 4 + (row >> 1) * 8
 
-        loop,back i: 1 to maxMcusPerRow
+        loop #back i: 1 to maxMcusPerRow
         {
             loop l: 2
             {
@@ -940,24 +940,24 @@ impl Decoder
                     let bc = cbb[cb]
                     var yy = cast(s32) y[j]
 
-                    d0[2] = clamp(yy +,over rc)
-                    d0[1] = clamp(yy +,over gc)
-                    d0[0] = clamp(yy +,over bc)
+                    d0[2] = clamp(yy + #over rc)
+                    d0[1] = clamp(yy + #over gc)
+                    d0[0] = clamp(yy + #over bc)
 
                     yy    = y[j + 1]
-                    d0[5] = clamp(yy +,over rc)
-                    d0[4] = clamp(yy +,over gc)
-                    d0[3] = clamp(yy +,over bc)
+                    d0[5] = clamp(yy + #over rc)
+                    d0[4] = clamp(yy + #over gc)
+                    d0[3] = clamp(yy + #over bc)
 
                     yy    = y[j + 8]
-                    d1[2] = clamp(yy +,over rc)
-                    d1[1] = clamp(yy +,over gc)
-                    d1[0] = clamp(yy +,over bc)
+                    d1[2] = clamp(yy + #over rc)
+                    d1[1] = clamp(yy + #over gc)
+                    d1[0] = clamp(yy + #over bc)
 
                     yy    = y[j + 8 + 1]
-                    d1[5] = clamp(yy +,over rc)
-                    d1[4] = clamp(yy +,over gc)
-                    d1[3] = clamp(yy +,over bc)
+                    d1[5] = clamp(yy + #over rc)
+                    d1[4] = clamp(yy + #over gc)
+                    d1[3] = clamp(yy + #over bc)
 
                     d0 += 6
                     d1 += 6

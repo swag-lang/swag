@@ -18,6 +18,6 @@ impl A
 #test
 {
     var a: [4] A
-    var b: [4] A =,move a
+    var b: [4] A = #move a
     @assert(G == 4)
 }

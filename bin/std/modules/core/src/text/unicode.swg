@@ -55,7 +55,7 @@ public
     func isSymbol(c: rune)->bool
     {
         if isLatin1(c) do
-            return Latin1.isSymbol(cast(u8),bit c)
+            return Latin1.isSymbol(cast(u8) #bit c)
         return isInTable(TableSymbol, c)
     }
 
@@ -332,12 +332,12 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->
                 // bit in the sequence offset.
                 // The constants UpperCase and TitleCase are even while LowerCase
                 // is odd so we take the low bit from _case.
-                result.mappedRune   = cr.lo +,over ((r - cr.lo) & ~1'u32 | (cast(rune) wCase & 1))
+                result.mappedRune   = cr.lo + #over ((r - cr.lo) & ~1'u32 | (cast(rune) wCase & 1))
                 result.foundMapping = true
                 return result
             }
 
-            result.mappedRune   = r +,over cast(rune),bit delta
+            result.mappedRune   = r + #over cast(rune) #bit delta
             result.foundMapping = true
             return result
         }

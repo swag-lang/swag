@@ -6,5 +6,5 @@
     var xp = @dataof(x)
     let yp = @dataof(y)
 
-    xp =,move yp
+    xp = #move yp
 }

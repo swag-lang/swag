@@ -488,7 +488,7 @@ impl Encoder
                 x = x - paeth(a, b, c)
             }
 
-            filtered[i] = cast(u8),bit x
+            filtered[i] = cast(u8) #bit x
         }
     }
 
