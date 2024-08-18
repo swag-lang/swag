@@ -270,7 +270,7 @@
     "visit-call": {
       "patterns": [
         {
-          "match": "\\b(visit|defer|where)(:\\w*)",
+          "match": "\\b(visit|defer|where)\\((\\w*)\\)",
           "captures": {
             "1": {
               "name": "keyword.control"
