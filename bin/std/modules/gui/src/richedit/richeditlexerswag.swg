@@ -38,6 +38,7 @@ struct RichEditLexerSwag
         CompilerFunction
         CompilerGlobal
         CompilerStatement
+        Modifier
         FunctionCall
         FunctionSpecOp
         Type
@@ -75,6 +76,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.CompilerGlobal]    = Preprocessor
         mapStyles[State.CompilerStatement] = Preprocessor
         mapStyles[State.Compiler]          = CharEscape
+        mapStyles[State.Modifier]          = Keyword
         mapStyles[State.FunctionSpecOp]    = Intrinsic
         mapStyles[State.Type]              = Type
         mapStyles[State.StorageModifier]   = Keyword
@@ -125,7 +127,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("discard", State.Keyword)
 
         mapWords.add("is", State.Error)
-        mapWords.add("in", State.Error)
         mapWords.add("not", State.Error)
 
         mapWords.add("public", State.StorageModifier)
@@ -171,7 +172,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("to", State.Control)
         mapWords.add("until", State.Control)
         mapWords.add("where", State.Control)
-        mapWords.add("check", State.Control)
+        mapWords.add("in", State.Control)
 
         mapWords.add("@defined", State.Intrinsic)
         mapWords.add("@location", State.Intrinsic)
@@ -385,6 +386,17 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#code", State.Compiler)
         mapWords.add("#type", State.Compiler)
         mapWords.add("#up", State.Compiler)
+
+        mapWords.add("#prom", State.Modifier)
+        mapWords.add("#over", State.Modifier)
+        mapWords.add("#nodrop", State.Modifier)
+        mapWords.add("#move", State.Modifier)
+        mapWords.add("#moveraw", State.Modifier)
+        mapWords.add("#bit", State.Modifier)
+        mapWords.add("#unconst", State.Modifier)
+        mapWords.add("#back", State.Modifier)
+        mapWords.add("#ref", State.Modifier)
+        mapWords.add("#constref", State.Modifier)
     }
 
     mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool

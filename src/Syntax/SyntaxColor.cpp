@@ -520,6 +520,15 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 }
             }
 
+            // Modifier
+            if (identifier[0] == '#' && g_LangSpec->modifiers.find(identifier))
+            {
+                result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
+                result += identifier;
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
+            }            
+
             auto it = g_LangSpec->keywords.find(identifier);
             if (it)
             {

@@ -27,6 +27,7 @@ to
 until
 do
 where
+in
 
 true
 false
@@ -71,7 +72,6 @@ moveref
 These keywords are reserved by the language, just in case...
 ```swag
 is
-in
 not
 ```
 # Basic types
