@@ -26,11 +26,11 @@ func day5B0()
 
     var here: [128, 8] bool
 
-    visit l: lines
+    visit l in lines
     {
         var row0 = 0
         var row1 = 127
-        loop c: 7
+        loop c in 7
         {
             if l[c] == `F` do
                 row1 = (row1 + row0) / 2
@@ -40,7 +40,7 @@ func day5B0()
         var col0 = 0
 
         var col1 = 7
-        loop c: 3
+        loop c in 3
         {
             if l[7 + c] == `L` do
                 col1 = (col1 + col0) / 2
@@ -51,15 +51,15 @@ func day5B0()
         here[row0, col0] = true
     }
 
-    loop r: 128
+    loop r in 128
     {
         var cpt = 0
-        loop c: 8 do
+        loop c in 8 do
             cpt += cast(s32) here[r, c]
 
         if cpt == 7 // Search for one missing seat in the row
         {
-            loop c: 1 to 6 // Can't be on the side
+            loop c in 1 to 6 // Can't be on the side
             {
                 if !here[r, c]
                 {
@@ -80,13 +80,13 @@ func day5B1()
     let lines    = assume File.readAllLines(dataPath)
 
     var seats: Array's32
-    visit l: lines
+    visit l in lines
     {
         var row0 = 0
         var row1 = 127
         var col0 = 0
         var col1 = 7
-        loop c: 10
+        loop c in 10
         {
             switch
             {
@@ -105,7 +105,7 @@ func day5B1()
     }
 
     seats.sort()
-    loop i: seats
+    loop i in seats
     {
         if seats[i + 1] - seats[i] != 1
         {

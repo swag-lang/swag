@@ -37,10 +37,10 @@ func day3B()
     while idx < lines.count
     {
         var stack: [3] Array's32
-        loop ii: 3
+        loop ii in 3
         {
             let l = lines[idx]
-            loop i: l
+            loop i in l
             {
                 var s: s32
                 if Latin1.isLower(l[i]) do
@@ -53,7 +53,7 @@ func day3B()
             idx += 1
         }
 
-        visit c: stack[0]
+        visit c in stack[0]
         {
             let f1 = Slice.findLinear(stack[1].toSlice(), c)
             if f1 != Swag.U64.Max

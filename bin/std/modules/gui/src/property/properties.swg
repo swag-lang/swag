@@ -135,7 +135,7 @@ internal impl Properties
     mtd hitTest(ptLoc: Math.Point)->*PropertiesItem
     {
         var pt = ptLoc + scrollWnd.getScrollPos()
-        visit item: items
+        visit item in items
         {
             if !item.line.isVisible() do
                 continue
@@ -627,7 +627,7 @@ internal impl Properties
             let numItemsBefore = items.count
 
             var newData = data
-            loop i: typeArr.count
+            loop i in typeArr.count
             {
                 var subValue: Swag.TypeValue
                 subValue.name        = Format.toString("%", i).toString()
@@ -693,7 +693,7 @@ internal impl Properties
             parentItem.ntfyItf = @mkinterface(addr, typeStruct, IPropertyNotify)
 
         var categItem: *PropertiesItem
-        visit value: typeStruct.fields
+        visit value in typeStruct.fields
         {
             // Category
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
@@ -814,7 +814,7 @@ impl Properties
     // Refresh all displayed values.
     mtd refresh()
     {
-        visit it: items do
+        visit it in items do
             refreshItem(it)
     }
 
@@ -910,7 +910,7 @@ impl Properties
     // Update the show/hide state of all content
     mtd updateStates()
     {
-        visit it: items do
+        visit it in items do
             updateItemState(it)
         applyLayout()
         scrollWnd.view.sendResizeEvent()
@@ -923,7 +923,7 @@ impl Properties
             return
 
         gridColumnSize = Math.clamp(size, gridMarginColumn, cast(s32) position.width - gridMarginColumn - leftMargin - rightMargin)
-        visit item: items
+        visit item in items
         {
             if !item.label do
                 continue

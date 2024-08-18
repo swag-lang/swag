@@ -2,10 +2,10 @@
 {
     var cpt1 = 0'u64
     var cpt2 = 0'u64
-    visit i: "toto"
+    visit i in "toto"
     {
         cpt1 += #alias1
-        visit j: "titi"
+        visit j in "titi"
         {
             cpt2 += #alias1
         }

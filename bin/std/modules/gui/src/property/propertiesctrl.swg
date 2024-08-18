@@ -97,7 +97,7 @@ impl PropertiesCtrl
         }
 
         var parentLine: *ListLine
-        visit &it, idx: prop.sections
+        visit &it, idx in prop.sections
         {
             let str   = it.item0.label.getText()
             let naked = RichString.getNaked(str)

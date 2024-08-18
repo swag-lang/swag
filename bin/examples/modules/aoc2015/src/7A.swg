@@ -54,7 +54,7 @@ using Core
 
     assume
     {
-        visit l: File.readAllLines(dataPath)
+        visit l in File.readAllLines(dataPath)
         {
             l.replace("is", "_is")
             l.replace("if", "_if")

@@ -41,12 +41,12 @@ func day3A()
     let lines    = assume File.readAllLines(dataPath)
 
     var gamma, epsilon: u32
-    loop c: lines[0]
+    loop c in lines[0]
     {
         gamma, epsilon <<= 1
 
         var count = 0
-        visit l: lines do
+        visit l in lines do
             count += cast(s32) (l[c] == `1`)
 
         gamma |= cast(s32) (count > lines.count / 2)

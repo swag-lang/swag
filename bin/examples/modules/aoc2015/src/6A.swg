@@ -40,24 +40,24 @@ func day6A0()
     var r1 = assume Parser.RegExp.create(#"turn off (\d+),(\d+) through (\d+),(\d+)"#)
     var r2 = assume Parser.RegExp.create(#"toggle (\d+),(\d+) through (\d+),(\d+)"#)
 
-    visit l: lines
+    visit l in lines
     {
         if r0.match(l)
         {
-            loop x: cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)) do
-                loop y: assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)) do
+            loop x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)) do
+                loop y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)) do
                     lights.add((x << 32) | y)
         }
         elif r1.match(l)
         {
-            loop x: cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)) do
-                loop y: assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)) do
+            loop x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)) do
+                loop y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)) do
                     lights.remove((x << 32) | y)
         }
         elif r2.match(l)
         {
-            loop x: cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)) do
-                loop y: assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)) do
+            loop x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)) do
+                loop y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)) do
                     if lights.contains((x << 32) | y) do
                         lights.remove((x << 32) | y)
                     else do
@@ -82,7 +82,7 @@ func day6A1()
     lights.resize(1000 * 1000)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
-    visit l: lines
+    visit l in lines
     {
         let nums = r.grepAll(l)
         let x0   = assume StrConv.toU64(nums[0])
@@ -90,9 +90,9 @@ func day6A1()
         let x1   = assume StrConv.toU64(nums[2])
         let y1   = assume StrConv.toU64(nums[3])
 
-        loop x: x0 to x1
+        loop x in x0 to x1
         {
-            loop y: y0 to y1
+            loop y in y0 to y1
             {
                 if l[6] == `n` do
                     lights.ref2(x, y, 1000) = true
@@ -105,7 +105,7 @@ func day6A1()
     }
 
     var total: u64
-    visit v: lights do
+    visit v in lights do
         total += cast(s32) v
 
     //Console.print("total: ", total)
@@ -125,7 +125,7 @@ func day6A2()
     lights.reserve(1000 * 1000'u64, false)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
-    visit l: lines
+    visit l in lines
     {
         let nums = r.grepAll(l)
         let x0   = assume StrConv.toU64(nums[0])
@@ -133,9 +133,9 @@ func day6A2()
         let x1   = assume StrConv.toU64(nums[2])
         let y1   = assume StrConv.toU64(nums[3])
 
-        loop x: x0 to x1
+        loop x in x0 to x1
         {
-            loop y: y0 to y1
+            loop y in y0 to y1
             {
                 let coord = x + (y * 1000)
                 if l[6] == `n` do
@@ -149,7 +149,7 @@ func day6A2()
     }
 
     var total: u64
-    visit v: lights do
+    visit v in lights do
         total += cast(s32) v
 
     //Console.print("total: ", total)

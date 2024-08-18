@@ -84,18 +84,18 @@ private
             var nextCode: [HuffmanMaxBits] u16
 
             @init(self, 1)
-            visit v: codeLengths do
+            visit v in codeLengths do
                 sizes[v] += 1
             sizes[0] = 0
 
-            loop i: 1 to 16
+            loop i in 1 to 16
             {
                 if sizes[i] > (1 << i) do
                     throw InvalidFormatError{"bad huffman sizes"}
             }
 
             var k, cde = 0'u16
-            loop i: 1 to 15
+            loop i in 1 to 15
             {
                 nextCode[i]    = cde
                 firstCode[i]   = cde
@@ -109,7 +109,7 @@ private
             }
 
             maxCode[16] = 0x10000
-            visit v, ci: codeLengths
+            visit v, ci in codeLengths
             {
                 if !v do
                     continue
@@ -291,7 +291,7 @@ impl Inflate
                 let hlit  = stream.readBitsNoRefill(5) + 257
                 let hdist = stream.readBitsNoRefill(5) + 1
                 let hclen = stream.readBitsNoRefill(4) + 4
-                loop i: hclen
+                loop i in hclen
                 {
                     let s = cast(u8) stream.readBits(3)
                     codeLengthSizes[LengthDezigzag[i]] = s

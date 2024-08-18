@@ -51,7 +51,7 @@ func day8A() assume
 
         loop nc do
             start = read(n, start)
-        loop i: nm do
+        loop i in nm do
             total += n[start + i]
         return start + nm
     }

@@ -38,7 +38,7 @@ func day6A()
     let lines    = assume File.readAllLines(dataPath)
     let str      = #ref lines[0]
 
-    loop i: 0 to str.length - 4
+    loop i in 0 to str.length - 4
     {
         if str[i + 0] != str[i + 1] and str[i + 0] != str[i + 2] and str[i + 0] != str[i + 3] and
            str[i + 1] != str[i + 2] and str[i + 1] != str[i + 3] and

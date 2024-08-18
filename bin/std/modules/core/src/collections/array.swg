@@ -112,7 +112,7 @@ impl Array
         grow(countof)
         #if Reflection.hasPostCopy(T)
         {
-            loop i: countof do
+            loop i in countof do
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -330,7 +330,7 @@ impl Array
     // Fill the array with the given value
     mtd fill(value: T)
     {
-        loop i: count do
+        loop i in count do
             buffer[i] = value
     }
 
@@ -566,7 +566,7 @@ impl Array
         }
         #else
         {
-            loop i: count - num
+            loop i in count - num
             {
                 buffer[index + i] = #moveraw buffer[index + num + i]
             }
@@ -609,7 +609,7 @@ impl Array
 
         #if Reflection.hasDrop(T)
         {
-            loop idx: numValues do
+            loop idx in numValues do
                 @drop(buffer + index + idx)
         }
 
@@ -722,7 +722,7 @@ impl StrConv.IConvert for Array
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        loop i: count
+        loop i in count
         {
             if i do
                 buf.addBytes(", ")

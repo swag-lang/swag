@@ -89,7 +89,7 @@ impl StaticArray
 
         #if Reflection.hasPostCopy(T)
         {
-            loop i: countof do
+            loop i in countof do
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -407,7 +407,7 @@ impl StaticArray
         }
         #else
         {
-            loop i: count - num
+            loop i in count - num
             {
                 buffer[index + i] = #moveraw buffer[index + num + i]
             }
@@ -450,7 +450,7 @@ impl StaticArray
 
         #if Reflection.hasDrop(T)
         {
-            loop idx: numValues do
+            loop idx in numValues do
                 @drop(&buffer[0] + index + idx)
         }
 

@@ -278,7 +278,7 @@ impl Encoder
             subimage[0].height = ihdr.height
         }
 
-        loop i: 6
+        loop i in 6
         {
             if subimage[i].width == 0 or subimage[i].height == 0 do
                 continue
@@ -325,7 +325,7 @@ impl Encoder
             let row_uc = row
             Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
 
-            loop k: subimage[pass].width
+            loop k in subimage[pass].width
             {
                 let ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
@@ -348,7 +348,7 @@ impl Encoder
             return encodeScanLine(scanline)
         }
 
-        loop k: subimage[pass].width
+        loop k in subimage[pass].width
         {
             let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
             Memory.copy(scanline + k * pixelSize, row + ioffset, pixelSize)
@@ -365,7 +365,7 @@ impl Encoder
         let chl = cast(s32) encodeFlags.filterChoice
         if !(chl & (chl - 1))
         {
-            loop i: 5
+            loop i in 5
             {
                 if chl == 1 << (i + 3) do
                     return acast i
@@ -377,7 +377,7 @@ impl Encoder
         var filterScores = [Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max]
 
         var sum: s32
-        loop i: 5
+        loop i in 5
         {
             let flag = 1 << (i + 3)
             if !(chl & flag) do
@@ -417,7 +417,7 @@ impl Encoder
         var sum: s32
         var a, b, c: s32
 
-        loop i: size
+        loop i in size
         {
             if i >= bytesPerPixel
             {
@@ -457,7 +457,7 @@ impl Encoder
 
     mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
     {
-        loop i: size
+        loop i in size
         {
             var a, b, c: s32
             if i >= bytesPerPixel

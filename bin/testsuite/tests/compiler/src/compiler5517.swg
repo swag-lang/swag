@@ -2,5 +2,5 @@
 
 #test
 {
-    visit #os: "tto" {}
+    visit #os in "tto" {}
 }

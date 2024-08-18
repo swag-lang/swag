@@ -107,20 +107,20 @@ func day10A()
     var arr: Array'Math.Vector2
     var tot: Array's32
 
-    visit l, y: lines do
-        visit c, x: l do
+    visit l, y in lines do
+        visit c, x in l do
             if c == `#` do
                 arr.add({cast(f32) x + 0.5, cast(f32) y + 0.5})
     tot.resize(arr.count)
 
-    loop i: arr
+    loop i in arr
     {
         let v0 = arr[i]
-        loop j: i + 1 until arr.count
+        loop j in i + 1 until arr.count
         {
             let v1  = arr[j]
             var hit = false
-            loop k: arr
+            loop k in arr
             {
                 if k == i or k == j do
                     continue

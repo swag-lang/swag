@@ -18,7 +18,7 @@ func day4B()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit l: lines
+    visit l in lines
     {
         var idx  = 0
         var str: String
@@ -31,7 +31,7 @@ func day4B()
 
         let res = assume StrConv.parseS64(l[idx..])
 
-        loop i: str do
+        loop i in str do
             str[i] = `a` + cast(u8) ((str[i] + res.value) % 26)
 
         if Utf8.contains(str, "north")

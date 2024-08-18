@@ -32,7 +32,7 @@ func day2B()
     let lines    = assume File.readAllLines(dataPath)
 
     var h, d, a: u64
-    visit l: lines
+    visit l in lines
     {
         let cmd = Tokenize.split(l, ` `'u8)
         let val = assume StrConv.toS32(cmd[1])

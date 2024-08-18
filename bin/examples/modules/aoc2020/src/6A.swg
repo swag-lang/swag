@@ -49,9 +49,9 @@ func day6A()
 
     var map:   HashSet'u8
     var total: u64
-    visit l: lines
+    visit l in lines
     {
-        visit(Bytes) c: l do
+        visit(Bytes) c in l do
             map.add(c)
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {

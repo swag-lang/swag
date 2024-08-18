@@ -2,5 +2,5 @@
 
 #message()
 {
-    loop a: {}
+    loop a in {}
 }

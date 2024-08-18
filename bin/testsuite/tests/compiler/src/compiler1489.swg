@@ -28,6 +28,6 @@ impl S
     @assert(G == 2)
     visit x {}
     @assert(G == 4)
-    visit &xxx: x {}
+    visit &xxx in x {}
     @assert(G == 5)
 }

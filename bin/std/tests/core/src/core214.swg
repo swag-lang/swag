@@ -36,7 +36,7 @@ var g: Array'OneFunc
 
     builderFct.appendString("func printAll() {\n")
 
-    visit t: g
+    visit t in g
     {
         builderVars.appendFormat("var gen_%: s32\n", t.name)
         builderVars.appendFormat("func %(){}\n", t.name)

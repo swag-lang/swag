@@ -289,16 +289,16 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, formErr(Err0430, tokenParse.cstr())));
     SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
 
-    if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::SymComma))
+    if (tokenParse.is(TokenId::KwdIn) || tokenParse.is(TokenId::SymComma))
     {
         SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
         SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
         node->aliasNames.push_back(node->expression->lastChild()->token);
         node->expression->release();
-        while (tokenParse.isNot(TokenId::SymColon))
+        while (tokenParse.isNot(TokenId::KwdIn))
         {
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or ':' to specify the visit variable"));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(prevTokenParse.token, toErr(Err0431)));
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or [[in]] to specify the variable to visit"));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdIn), error(prevTokenParse.token, toErr(Err0431)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
@@ -306,7 +306,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
             node->expression->release();
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymColon, "to define the [[visit]] variable"));
+        SWAG_CHECK(eatToken(TokenId::KwdIn, "to specify the variable to visit"));
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0430)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
     }
@@ -371,7 +371,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
 
         tokenName = node->expression->token;
-        if (tokenParse.is(TokenId::SymColon))
+        if (tokenParse.is(TokenId::KwdIn))
         {
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[loop]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));

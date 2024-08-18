@@ -108,7 +108,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] string)
     {
         #if op == "+=" #do
-            visit v: value do
+            visit v in value do
                 append(v)
         #else #do
             #error "invalid operator '" ++ op ++ "'"
@@ -118,7 +118,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] rune)
     {
         #if op == "+=" #do
-            visit v: value do
+            visit v in value do
                 append(v)
         #else #do
             #error "invalid operator '" ++ op ++ "'"
@@ -128,7 +128,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] u8)
     {
         #if op == "+=" #do
-            visit v: value do
+            visit v in value do
                 append(v)
         #else #do
             #error "invalid operator '" ++ op ++ "'"
@@ -431,7 +431,7 @@ impl String
         var tmp: [4] u8
         let eat  = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
-        loop i: eat do
+        loop i in eat do
             buffer[length + i] = tmp[i]
         length += eat
         buffer[length] = 0

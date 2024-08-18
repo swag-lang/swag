@@ -15,7 +15,7 @@ impl AA
 
     mtd call(params: ...)
     {
-        visit fn: arr
+        visit fn in arr
         {
             #ast
             {
@@ -23,7 +23,7 @@ impl AA
                 let ts  = @typeof(T)
 
                 sb.appendString("fn(")
-                loop i: @countof(ts.parameters)
+                loop i in @countof(ts.parameters)
                 {
                     if i do
                         sb.appendString(",")

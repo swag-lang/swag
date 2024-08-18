@@ -104,7 +104,7 @@ impl Application
         if hWnd == null do
             return null
 
-        visit s: surfaces
+        visit s in surfaces
         {
             if s.native.hWnd == hWnd
             {

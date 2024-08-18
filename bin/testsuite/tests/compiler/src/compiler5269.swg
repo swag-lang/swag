@@ -1,7 +1,7 @@
 #test
 {
     var t = 0
-    visit i: [4, 5]
+    visit i in [4, 5]
     {
         t += i
     }

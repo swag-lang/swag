@@ -35,7 +35,7 @@ impl Library
 
     mtd removeFile(name: string)
     {
-        visit fi, idx: files
+        visit fi, idx in files
         {
             if fi.fullname == name
             {

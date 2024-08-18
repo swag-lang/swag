@@ -115,7 +115,7 @@ internal impl RenderOgl
         Debug.assert(@countof(datas) <= 8 * 8)
 
         var arr: [64] u32
-        visit p, i: datas do
+        visit p, i in datas do
             arr[i] = p ? 0xFFFFFFFF : 0
 
         var result: GLuint
@@ -213,9 +213,9 @@ impl RenderOgl
 {
     mtd opDrop()
     {
-        visit rt: stackReleasedRT do
+        visit rt in stackReleasedRT do
             Memory.delete(rt)
-        visit rt: stackRT do
+        visit rt in stackRT do
             Memory.delete(rt)
         Memory.delete(curRT)
     }
@@ -732,7 +732,7 @@ impl RenderOgl
             glActiveTexture(GL_TEXTURE1)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-            visit &atlas: font.atlases
+            visit &atlas in font.atlases
             {
                 if !atlas.dirty do
                     continue
@@ -877,11 +877,11 @@ impl RenderOgl
         setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
-        loop i: 16 do
+        loop i in 16 do
             glEnableVertexAttribArray(cast(GLuint) i)
-        visit cmd, cmdIdx: dc.commandBuffer do
+        visit cmd, cmdIdx in dc.commandBuffer do
             executeCommand(dc, cmd, cmdIdx, width, height)
-        loop i: 16 do
+        loop i in 16 do
             glDisableVertexAttribArray(cast(GLuint) i)
     }
 
@@ -901,7 +901,7 @@ impl RenderOgl
         let w2 = Math.roundUpToPowerOf2(cast(u32) w)
         let h2 = Math.roundUpToPowerOf2(cast(u32) h)
 
-        visit rt, i: stackReleasedRT
+        visit rt, i in stackReleasedRT
         {
             if rt.colorBuffer.width == w2 and rt.colorBuffer.height == h2
             {
@@ -910,7 +910,7 @@ impl RenderOgl
             }
         }
 
-        visit rt, i: stackReleasedRT
+        visit rt, i in stackReleasedRT
         {
             if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
             {

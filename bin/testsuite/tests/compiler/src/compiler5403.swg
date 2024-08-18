@@ -11,7 +11,7 @@ func titi()->const &s32
 #test
 {
     var cpt = 0
-    loop x: 2 to titi()
+    loop x in 2 to titi()
     {
         cpt += 1
     }

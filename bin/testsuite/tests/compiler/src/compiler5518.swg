@@ -2,5 +2,5 @@
 
 #test
 {
-    visit toto(): "tto" {}
+    visit toto() in "tto" {}
 }

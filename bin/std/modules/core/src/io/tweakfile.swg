@@ -54,7 +54,7 @@ impl TweakFile
 
         var refs:          Array'Ref
         var currentFolder: *Folder
-        visit oneit, idx: lines
+        visit oneit, idx in lines
         {
             var one = Tokenize.eatSpaces(oneit)
             if @countof(one) == 0 do
@@ -70,7 +70,7 @@ impl TweakFile
                 if @err() != null do
                     throw SyntaxError{"invalid folder name", line: idx + 1}
 
-                visit &folder: folders
+                visit &folder in folders
                 {
                     if folder.type.name == folderName
                     {

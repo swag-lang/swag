@@ -39,12 +39,12 @@ func day9B()
     let lines    = assume File.readAllLines(dataPath)
 
     let target = 552655238
-    visit l, i: lines
+    visit l, i in lines
     {
         var sum = 0
         var min = Swag.S32.Max
         var max = 0
-        visit l1: lines[i..]
+        visit l1 in lines[i..]
         {
             let v1 = assume StrConv.toS32(l1)
             min = Math.min(min, v1)

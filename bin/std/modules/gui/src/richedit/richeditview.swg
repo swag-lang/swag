@@ -239,7 +239,7 @@ impl IWnd for RichEditView
             {
                 var selBeg = ed.getBegSelection()
                 var selEnd = ed.getEndSelection()
-                loop caretI: selBeg.lineIndex to selEnd.lineIndex
+                loop caretI in selBeg.lineIndex to selEnd.lineIndex
                 {
                     var cp = ed.cursorPos
                     cp.lineIndex = caretI

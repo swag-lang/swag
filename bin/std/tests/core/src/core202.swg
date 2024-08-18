@@ -59,7 +59,7 @@ const invalidSequenceTests: [] string = [
 
 #test
 {
-    visit it: invalidSequenceTests
+    visit it in invalidSequenceTests
     {
         var res = decodeRune(it)
         @assert(res.c == RuneError)

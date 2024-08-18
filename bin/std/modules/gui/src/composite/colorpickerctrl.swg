@@ -358,7 +358,7 @@ impl ColorPickerCtrl
         // Setup palette
         with let palette = PalettePicker.create(parent, {16, 16, picker.position.width - 16, 48})
         {
-            loop i: 9
+            loop i in 9
             {
                 if i >= pal.count
                 {

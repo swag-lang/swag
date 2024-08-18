@@ -78,7 +78,8 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
     {
         concat->addBlank();
         concat->addString(loopNode->specificName->token.text);
-        concat->addChar(':');
+        concat->addBlank();
+        concat->addString("in");
     }
 
     if (loopNode->expression)
@@ -127,7 +128,8 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 
     if (!visitNode->aliasNames.empty())
     {
-        concat->addChar(':');
+        concat->addBlank();
+        concat->addString("in");
         concat->addBlank();
     }
 

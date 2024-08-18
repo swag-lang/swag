@@ -59,7 +59,7 @@ func day6A()
     let lines    = assume File.readAllLines(dataPath)
 
     var map: HashTable'(string, string)
-    visit l: lines
+    visit l in lines
     {
         let split = Tokenize.split(l, `)`'u8)
         map.add(split[1], split[0])
@@ -74,7 +74,7 @@ func day6A()
     }
 
     var total = 0
-    visit v: map do
+    visit v in map do
         total += count(&map, v)
 
     //Console.print("total: ", total)

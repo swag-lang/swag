@@ -12,7 +12,7 @@ impl Image
         let g = 1.0 / Math.clamp(level, Math.ConstF32.Epsilon, 5)
 
         var convArr: [256] u8 = undefined
-        loop i: 256 do
+        loop i in 256 do
             convArr[i] = cast(u8) (Math.pow(i / 255.0, g) * 255)
 
         let f = &convArr[0]

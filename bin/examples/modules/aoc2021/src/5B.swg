@@ -37,7 +37,7 @@ func day5B()
     const W = 1000'u64
     m.resize(W * W)
 
-    visit l: lines
+    visit l in lines
     {
         assume
         {
@@ -48,7 +48,7 @@ func day5B()
             let y1 = StrConv.toS32(r.getCapture(4))
         }
 
-        loop i: Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) + 1
+        loop i in Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) + 1
         {
             let x: u64 = x0 + i * Math.sign(x1 - x0)
             let y: u64 = y0 + i * Math.sign(y1 - y0)

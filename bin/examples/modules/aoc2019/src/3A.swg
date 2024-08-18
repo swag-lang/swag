@@ -63,7 +63,7 @@ func day3A0()
     {
         var x, y = S / 2
         var dx, dy = 0
-        visit v: Tokenize.split(line, `,`'u8)
+        visit v in Tokenize.split(line, `,`'u8)
         {
             switch v[0]
             {
@@ -116,7 +116,7 @@ func day3A1()
         var result: retval
         var pos:    Vector2
         result.add(pos)
-        visit v: Tokenize.split(line, `,`'u8)
+        visit v in Tokenize.split(line, `,`'u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
@@ -139,9 +139,9 @@ func day3A1()
     let t1 = trace(lines[1])
 
     var best = Swag.S32.Max
-    loop i: t1.count - 1
+    loop i in t1.count - 1
     {
-        loop j: t0.count - 1
+        loop j in t0.count - 1
         {
             let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()

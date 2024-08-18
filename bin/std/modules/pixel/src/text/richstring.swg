@@ -178,7 +178,7 @@ impl RichString
     {
         if !hasUrl do
             return null
-        visit &c: chunks
+        visit &c in chunks
         {
             if !c.isUrl do
                 continue

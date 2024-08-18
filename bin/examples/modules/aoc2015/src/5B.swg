@@ -23,10 +23,10 @@ func day5B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l: lines
+    visit l in lines
     {
         var dbl0, dbl1 = 0
-        loop i: l.length - 2
+        loop i in l.length - 2
         {
             if Utf8.indexOf(l[i + 2..], l[i..i + 1]) != Swag.U64.Max do
                 dbl0 += 1

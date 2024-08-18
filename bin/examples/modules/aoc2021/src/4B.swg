@@ -63,7 +63,7 @@ func day4B()
     let lines    = assume File.readAllLines(dataPath)
 
     var numbers: Array's32
-    visit v: Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8) do
         numbers.add(assume StrConv.toS32(v))
 
     var bestScore: u64
@@ -73,9 +73,9 @@ func day4B()
         var card: Array'u64
         var maxCol, maxLine: [5] u64
 
-        loop y: line to line + 4
+        loop y in line to line + 4
         {
-            visit v, x: Tokenize.split(lines[y], ` `'u8)
+            visit v, x in Tokenize.split(lines[y], ` `'u8)
             {
                 let n = assume StrConv.toS32(v)
                 let i = Slice.findLinear(numbers.toSlice(), n)
@@ -87,7 +87,7 @@ func day4B()
         }
 
         var score = Swag.U64.Max
-        loop i: 5 do
+        loop i in 5 do
             score = Math.min(score, maxCol[i], maxLine[i])
 
         if score > bestScore
@@ -98,7 +98,7 @@ func day4B()
     }
 
     var total = 0'u64
-    visit v: bestCard do
+    visit v in bestCard do
         if v > bestScore do
             total += numbers[v]
     total *= numbers[bestScore]

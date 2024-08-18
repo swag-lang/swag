@@ -16,7 +16,7 @@ const runecounttests: [] RuneCountTest = [
 
 #test
 {
-    visit it: runecounttests
+    visit it in runecounttests
     {
         @assert(countRunes(it.inT) == it.outT)
     }

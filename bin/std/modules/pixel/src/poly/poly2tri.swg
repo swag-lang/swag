@@ -113,11 +113,11 @@ impl Result
 
     mtd release()
     {
-        visit t: points do
+        visit t in points do
             Memory.delete(t)
-        visit t: edges do
+        visit t in edges do
             Memory.delete(t)
-        visit t: triangles do
+        visit t in triangles do
             Memory.delete(t)
         points.clear()
         edges.clear()
@@ -622,13 +622,13 @@ impl Tessellate
         deleteNode(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
-        visit p: points do
+        visit p in points do
             deletePoint(p)
-        visit p: edges do
+        visit p in edges do
             deleteEdge(p)
-        visit p: triangles do
+        visit p in triangles do
             deleteTriangle(p)
-        visit p: nodes do
+        visit p in nodes do
             deleteNode(p)
 
         points.clear()
@@ -641,7 +641,7 @@ impl Tessellate
     // Clear cache
     mtd clearCache()
     {
-        visit p: freeNodes do
+        visit p in freeNodes do
             Memory.delete(p)
         freeNodes.clear()
     }
@@ -680,7 +680,7 @@ impl Tessellate
     {
         mtd initEdges(polyline: [..] *Point)
         {
-            visit pt, i: polyline
+            visit pt, i in polyline
             {
                 let nexti = (i + 1) % @countof(polyline)
                 let edge  = newEdge()
@@ -699,7 +699,7 @@ impl Tessellate
         points.grow(points.count + poly.points.count)
 
         startPolyLine()
-        loop i: 0 until poly.points.count - 1
+        loop i in 0 until poly.points.count - 1
         {
             let p  = newPoint()
             let pt = poly.getPoint(i)
@@ -729,11 +729,11 @@ impl Tessellate
 
     mtd sweepPoints()
     {
-        loop i: 1 until points.count
+        loop i in 1 until points.count
         {
             let point = points[i]
             let node  = pointEvent(point)
-            visit e: point.edges do
+            visit e in point.edges do
                 addEdgeEvent2(e, node)
         }
     }
@@ -1304,7 +1304,7 @@ impl Tessellate
 
     mtd legalize(t: *Triangle)->bool
     {
-        loop i: 3
+        loop i in 3
         {
             if t.delaunayEdge[i] do
                 continue
@@ -1393,7 +1393,7 @@ impl Tessellate
 
     mtd mapTriangleToNodes(t: *Triangle)
     {
-        loop i: 3
+        loop i in 3
         {
             if !t.neighbors[i]
             {
@@ -1444,10 +1444,10 @@ impl Tessellate
         }
 
         // Remove neighbors which are not part of the mesh
-        visit i: triIndices
+        visit i in triIndices
         {
             let tri = triangles[i]
-            loop e: 3
+            loop e in 3
             {
                 let neighbor = tri.neighbors[e]
                 if neighbor and !neighbor.interior do
@@ -1460,7 +1460,7 @@ impl Tessellate
     {
         var xmin, xmax = points[0].x
         var ymin, ymax = points[0].y
-        visit p: points
+        visit p in points
         {
             xmax = Math.max(xmax, p.x)
             xmin = Math.min(xmin, p.x)

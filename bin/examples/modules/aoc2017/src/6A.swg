@@ -34,7 +34,7 @@ func day6A()
     loop
     {
         var best, besti: u64
-        visit v, i: blocks
+        visit v, i in blocks
         {
             if v > best
             {
@@ -52,7 +52,7 @@ func day6A()
         }
 
         var val: String
-        loop i: blocks.count do
+        loop i in blocks.count do
             val += Format.toString("%.", blocks[i])
 
         total += 1

@@ -3,7 +3,7 @@ using Core, Audio
 #test
 {
     var files = assume Directory.enumerateFiles(dataPath(), matchExtension: ".wav")
-    visit f: files
+    visit f in files
     {
         var _x = assume SoundFile.load(f.fullname)
     }

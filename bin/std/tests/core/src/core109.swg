@@ -7,15 +7,15 @@ using Core
         x.add(cast(s32) #index)
 
     var total = 0
-    visit v: x do
+    visit v in x do
         total += v
     @assert(total == 10)
 
-    visit &v: x do
+    visit &v in x do
         dref v = 5
 
     total = 0
-    visit v: x do
+    visit v in x do
         total += v
     @assert(total == 25)
 }

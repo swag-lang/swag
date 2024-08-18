@@ -4,7 +4,7 @@ using Swag
 #[Swag.ConstExpr]
 func(T, V) contains(values: const [..] T, value: V)->bool
 {
-    visit v: values
+    visit v in values
     {
         if v == value do
             return true

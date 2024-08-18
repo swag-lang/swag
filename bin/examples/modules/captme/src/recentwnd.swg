@@ -70,7 +70,7 @@ impl IWnd for RecentView
 
         // Hit test
         var ht = Swag.U64.Max
-        visit i, idx: items
+        visit i, idx in items
         {
             if i.rect.contains(pos)
             {
@@ -146,7 +146,7 @@ impl IWnd for RecentView
 
         painter.setParams(.Antialiased)
         var x = clientRect.x
-        visit i, idx: items
+        visit i, idx in items
         {
             let w = clientRect.height * 4.0 / 3
 
@@ -216,7 +216,7 @@ impl RecentWnd
         })
 
         var cptRecent = 0
-        visit r, idx: res
+        visit r, idx in res
         {
             let capture = catch recent.addRecent(r.fullname, front: false)
             defer(err) Memory.delete(capture)
@@ -303,7 +303,7 @@ impl RecentWnd
     mtd addRecent(file: string, preview: Image, front = true, sel = false)
     {
         // Already there ?
-        visit it, i: recentView.items
+        visit it, i in recentView.items
         {
             if it.file == file
             {

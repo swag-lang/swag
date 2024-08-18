@@ -1299,10 +1299,10 @@ func drawMap()
     g_Painter.drawTexture(0, 0, 224, 248, g_MapTex)
 
     // Content
-    loop x: 28
+    loop x in 28
     {
         g_Painter.pushTransform()
-        loop y: 31
+        loop y in 31
         {
             // Determine size of big pills to draw depending on ticks
             let bigPill = cast(s32) Math.floor((g_Ticks % 40) / 20.0)
@@ -1337,7 +1337,7 @@ func drawNumberAsSprite(number: s32)
     g_Painter.pushTransform()
 
     let str = Format.toString("%", number)
-    loop #back i: str
+    loop #back i in str
     {
         switch str[i]
         {
@@ -1404,7 +1404,7 @@ func drawLives()
     g_Painter.pushTransform()
     translateMapOrigin()
     translateMapCoords(1, 31.5)
-    loop i: g_Lives
+    loop i in g_Lives
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_LifeTex)
         translateMapCoords(2, 0)
@@ -1417,7 +1417,7 @@ func drawFruits()
     g_Painter.pushTransform()
     translateMapOrigin()
     translateMapCoords(25, 31.5)
-    loop i: g_Fruits
+    loop i in g_Fruits
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[i])
         translateMapCoords(-2, 0)
@@ -1428,7 +1428,7 @@ func drawFruits()
 func drawCharacters()
 {
     g_PacMan.draw()
-    loop i: 4 do
+    loop i in 4 do
         g_Ghosts[i].draw()
 }
 
@@ -1515,13 +1515,13 @@ func display()
 
     case FRUIT:
         drawPlayScreen()
-        loop i: 4 do
+        loop i in 4 do
             g_Ghosts[i].draw()
         g_PacMan.drawFruitScore()
 
     case EAT:
         drawPlayScreen()
-        loop i: 4 do
+        loop i in 4 do
             g_Ghosts[i].drawEaten()
 
     case PAUSE:
@@ -1577,7 +1577,7 @@ func soundState()
     }
 
     var soundState = SoundState.SIREN
-    visit g: g_Ghosts
+    visit g in g_Ghosts
     {
         if g.ai == .DEAD
         {
@@ -1660,7 +1660,7 @@ func checkCollisions()
     // If score is increased by 50, a big pill has been eaten - set ghosts to FRIGHTENED
     if scoreIncrement == 50
     {
-        visit g: g_Ghosts
+        visit g in g_Ghosts
         {
             g.zeroTimeout()
             if g.ai == g_Wave or g.ai == .FRIGHTENED do
@@ -1698,7 +1698,7 @@ func checkCollisions()
         g_Ghosts[3].setAI(.LEAVE, false)
 
     // Check for ghost collisions
-    visit g: g_Ghosts
+    visit g in g_Ghosts
     {
         if g.getX() == g_PacMan.getX() and g.getY() == g_PacMan.getY()
         {
@@ -1805,7 +1805,7 @@ func aiWave()
 
     // Update ghost AI to new wave only if they are in CHASE/SCATTER mode
     // Checked every frame to ensure ghost AI correctly reset following FRIGHTENED mode
-    visit g: g_Ghosts
+    visit g in g_Ghosts
     {
         let ai = g.ai
         if (ai == .SCATTER or ai == .CHASE) and ai != g_Wave do
@@ -1863,9 +1863,9 @@ func spawnFruit()
  */
 func resetMap()
 {
-    loop x: 28
+    loop x in 28
     {
-        loop y: 31
+        loop y in 31
         {
             switch getTile(x, y)
             {
@@ -1883,9 +1883,9 @@ func resetMap()
  */
 func resetFruit()
 {
-    loop x: 28
+    loop x in 28
     {
-        loop y: 31
+        loop y in 31
         {
             // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
             if getTile(x, y) == .F do
@@ -1908,7 +1908,7 @@ func resetLevel()
     g_Wave        = .SCATTER
     g_GhostsEaten = 0
     g_PacMan.reset()
-    visit g: g_Ghosts do
+    visit g in g_Ghosts do
         g.reset()
     g_Mode         = .STARTLEVEL
     g_FruitSpawned = false
@@ -1973,7 +1973,7 @@ func gameLoop()
             checkCollisions()
             aiWave()
             // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
-            visit g: g_Ghosts do
+            visit g in g_Ghosts do
                 g.move(g_Ghosts[0])
             // If no fruit is currently spawned, enough pills have been eaten,
             // The eaten fruit count doesn't exceed the level and a random quantifier is satisfied, spawn a fruit

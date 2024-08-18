@@ -16,7 +16,7 @@ func day6B()
     let str      = Tokenize.split(lines[0], `,`'u8)
 
     var state: [9] u64
-    visit v: str do
+    visit v in str do
         state[assume StrConv.toS32(v)] += 1
 
     var total: u64
@@ -28,7 +28,7 @@ func day6B()
         state[6], state[8] = oldState[0]
         total = oldState[0] * 2
 
-        visit f, i: oldState[1..]
+        visit f, i in oldState[1..]
         {
             state[i] += oldState[i + 1]
             total += oldState[i + 1]

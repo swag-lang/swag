@@ -20,7 +20,7 @@ func day3B()
     var here: HashSet's32
     ids.resize(1000 * 1000)
     here.reserve(1000)
-    visit l: lines
+    visit l in lines
     {
         discard r.match(l)
         let id     = assume StrConv.toS32(r[1])
@@ -30,9 +30,9 @@ func day3B()
         let height = assume StrConv.toS32(r[5])
 
         var alone = true
-        loop x: startX until startX + width
+        loop x in startX until startX + width
         {
-            loop y: startY until startY + height
+            loop y in startY until startY + height
             {
                 let re = #ref ids.ref2(x, y, 1000)
                 if re

@@ -40,7 +40,7 @@ func day2A()
         [1 + 6, 2 + 0, 3 + 3]]
 
     var total: u64
-    visit l: lines
+    visit l in lines
     {
         total += Score[l[0] - `A`, l[2] - `X`]
     }

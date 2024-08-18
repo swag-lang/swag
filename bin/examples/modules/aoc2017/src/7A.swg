@@ -56,14 +56,14 @@ func day7A() assume
     //Console.print(g)
 
     var set: HashTable'(string, s32)
-    visit v: g
+    visit v in g
     {
         let it = set.find(v)
         set.add(v, it ? it.value + 1 : 1)
     }
 
     var result: String
-    visit k, v: set
+    visit k, v in set
     {
         if v == 1
         {

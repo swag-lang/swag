@@ -10,11 +10,11 @@ using test_foreign
     @assert(@countof(m[0].types) > 0)
     @assert(@countof(m[1].types) > 0)
 
-    /*visit x: m
+    /*visit x in m
     {
         @print("XXXXX ", x.name, "XXXXXX\n")
         @print(@countof(x.types), "\n")
-        visit t: x.types
+        visit t in x.types
         {
             @print(t.name, "\n")
         }

@@ -408,9 +408,9 @@ void LanguageSpec::setupKeywords()
     keywords.add("until", TokenId::KwdUntil);
     keywords.add("do", TokenId::KwdDo);
     keywords.add("where", TokenId::KwdWhere);
-
+    keywords.add("in", TokenId::KwdIn);
+    
     keywords.add("is", TokenId::KwdReserved);
-    keywords.add("in", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);

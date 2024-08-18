@@ -31,7 +31,7 @@ func day2A()
     assume r.compile(#"(\d+)-(\d+) ([a-z]): ([a-z])+"#)
 
     var total: u32
-    visit l: lines
+    visit l in lines
     {
         discard r.match(l)
 
@@ -42,7 +42,7 @@ func day2A()
 
         var count: [26] s32
 
-        visit c: pwd do
+        visit c in pwd do
             count[c - `a`] += 1
         if count[letter] >= min and count[letter] <= max do
             total += 1

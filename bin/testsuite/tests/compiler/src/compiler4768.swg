@@ -3,7 +3,7 @@
     const A = [1, 2, 3]
 
     var cpt = 0
-    visit #back v: A
+    visit #back v in A
     {
         if cpt == 0 do @assert(v == 3)
         if cpt == 1 do @assert(v == 2)
@@ -17,7 +17,7 @@
     const A = "ABC"
 
     var cpt = 0
-    visit #back v: A
+    visit #back v in A
     {
         if cpt == 0 do @assert(v == `C`)
         if cpt == 1 do @assert(v == `B`)

@@ -1,6 +1,6 @@
 #test
 {
-    loop i: 4
+    loop i in 4
     {
         switch i
         {

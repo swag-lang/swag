@@ -28,7 +28,7 @@ func day1B()
 
     var pos: Pos
 
-    visit it: split
+    visit it in split
     {
         let v = Latin1.trim(it)
         let n = assume StrConv.toS32(v[1..])

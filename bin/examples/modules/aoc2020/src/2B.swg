@@ -25,7 +25,7 @@ func day2B()
     assume r.compile(#"(\d+)-(\d+) ([a-z]): ([a-z])+"#)
 
     var total: u32
-    visit l: lines
+    visit l in lines
     {
         discard r.match(l)
 

@@ -248,7 +248,7 @@ impl IWnd for Tab
         if !views.isEmpty()
         {
             clientRect = getBarRectItems()
-            loop idx: firstVisibleIdx until cast(u32) views.count
+            loop idx in firstVisibleIdx until cast(u32) views.count
             {
                 if idx == selectedIdx do
                     continue
@@ -322,7 +322,7 @@ internal impl Tab
     mtd showPopup(x, y: f32)
     {
         popup = PopupListCtrl.create(self)
-        visit item: views do
+        visit item in views do
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         popup.sigSelected = closure|self|(list, idx)
@@ -356,7 +356,7 @@ internal impl Tab
             return Swag.U32.Max
 
         var rect = getBarRectItems()
-        loop idx: firstVisibleIdx until cast(u32) views.count
+        loop idx in firstVisibleIdx until cast(u32) views.count
         {
             let v = views[idx]
             if v.pos + v.width > rect.right() do
@@ -378,7 +378,7 @@ internal impl Tab
         case Divide:
             var w = cast(f32) (rect.width / views.count)
             w = Math.max(w, itemMinWidth)
-            visit v: views
+            visit v in views
             {
                 v.width = w
                 mostRightPos += w
@@ -386,14 +386,14 @@ internal impl Tab
 
         case Fixed:
             let w = Math.max(itemFixedLayoutWidth, itemMinWidth)
-            visit v: views
+            visit v in views
             {
                 v.width = w
                 mostRightPos += w
             }
 
         case Auto:
-            visit v: views
+            visit v in views
             {
                 var mes = Painter.measureString(v.item.name.raw, getFont().regular)
 
@@ -412,7 +412,7 @@ internal impl Tab
         }
 
         var x = rect.x
-        loop idx: firstVisibleIdx until cast(u32) views.count
+        loop idx in firstVisibleIdx until cast(u32) views.count
         {
             let v = views[idx]
             v.pos = x

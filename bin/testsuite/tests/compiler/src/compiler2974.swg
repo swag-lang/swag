@@ -8,7 +8,7 @@ enum X: const [..] u32
 {
     let ptr = @typeof(X)
     var cpt = 0'u64
-    visit p: ptr.values
+    visit p in ptr.values
     {
         let ptr1 = cast(const [..] u32) p.value
         @assert(@countof(ptr1) == 4 or @countof(ptr1) == 2)

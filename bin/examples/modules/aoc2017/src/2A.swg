@@ -25,11 +25,11 @@ func day2A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l: lines
+    visit l in lines
     {
         var max = 0
         var min = Swag.S32.Max
-        visit v: Tokenize.splitAny(l, [` `, `\t`])
+        visit v in Tokenize.splitAny(l, [` `, `\t`])
         {
             let val = assume StrConv.toS32(Latin1.trim(v))
             min = Math.min(min, val)

@@ -1,7 +1,7 @@
 func(T) toto(x: T...)->T
 {
     var res: T
-    visit c: x do
+    visit c in x do
         res += c
     return res
 }

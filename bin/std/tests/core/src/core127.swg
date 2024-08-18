@@ -7,14 +7,14 @@ using Core
         arr.add(cast(u32) #index)
     arr.sort(func(x, y) => y <=> x)
 
-    loop i: arr
+    loop i in arr
     {
         if i != @countof(arr) - 1 do
             @assert(arr[cast(u32) i] >= arr[cast(u32) i + 1])
     }
 
     arr.sort()
-    loop i: arr
+    loop i in arr
     {
         if i != @countof(arr) - 1 do
             @assert(arr[cast(u32) i] <= arr[cast(u32) i + 1])

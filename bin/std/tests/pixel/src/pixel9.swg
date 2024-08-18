@@ -8,7 +8,7 @@ using Core, Pixel
 
     var pathName = dataPath()
     var files    = try Directory.enumerateFiles(pathName)
-    visit f: files
+    visit f in files
     {
         if Image.canLoad(f.fullname)
         {

@@ -33,12 +33,12 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    visit v: lines do
+    visit v in lines do
         arr.add(assume StrConv.toS32(v))
 
     arr.sort()
 
-    visit v: arr
+    visit v in arr
     {
         if Slice.findSorted(arr[..], 2020 - v) != Swag.U64.Max
         {

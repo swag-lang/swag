@@ -25,7 +25,7 @@ func day5A()
     const IDX = [797564, 938629, 1617991, 2104453, 2564359, 2834991, 3605750, 7183955]
 
     var pwd: String
-    visit idx: IDX
+    visit idx in IDX
     {
         let str    = Format.toString("reyedfim%", idx)
         let result = Hash.Md5.toString(Hash.Md5.compute(str))

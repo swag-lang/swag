@@ -24,7 +24,7 @@ func day5B()
 
     var pwd: String = "        "
     var cpt  = 0
-    visit idx: IDX
+    visit idx in IDX
     {
         let str    = Format.toString("reyedfim%", idx)
         let result = Hash.Md5.toString(Hash.Md5.compute(str))

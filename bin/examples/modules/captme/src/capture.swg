@@ -61,7 +61,7 @@ impl Capture
 {
     func freeForms(forms: Array'IForm)
     {
-        visit it: forms
+        visit it in forms
         {
             let type = @kindof(it)
             Memory.delete(@dataof(it), type)
@@ -118,7 +118,7 @@ impl Capture
 
         if onlySel
         {
-            visit sel: selection
+            visit sel in selection
             {
                 let f = forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
@@ -129,7 +129,7 @@ impl Capture
         }
         else
         {
-            visit f: forms
+            visit f in forms
             {
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel do
@@ -191,7 +191,7 @@ impl Capture
         let capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
-        visit itf: capture.forms do
+        visit itf in capture.forms do
             itf.setup(capture)
 
         return capture
@@ -212,7 +212,7 @@ impl Capture
         var arr: Array'IForm
 
         var imgDone = false
-        visit s: selection
+        visit s in selection
         {
             let itf = forms[s]
 
@@ -277,7 +277,7 @@ impl Capture
 
         var boundRect: Math.Rectangle
 
-        visit &itf, idx: res
+        visit &itf, idx in res
         {
             itf.setup(self)
             var bound = itf.boundRect()
@@ -300,7 +300,7 @@ impl Capture
         pt.x /= zoom
         pt.y /= zoom
 
-        visit itf: undo.oldForms
+        visit itf in undo.oldForms
         {
             let dx = -boundRect.x + pt.x - (boundRect.width * 0.5)
             let dy = -boundRect.y + pt.y - (boundRect.height * 0.5)
@@ -312,7 +312,7 @@ impl Capture
 
         // Select added forms
         selection.clear()
-        loop i: undo.oldForms do
+        loop i in undo.oldForms do
             selection.add(countBefore + i)
 
         selectionHasChanged()
@@ -519,11 +519,11 @@ impl Capture
 
         // Shapes
         let app = editView.getApp()
-        visit f: forms do
+        visit f in forms do
             paintForm(app, painter, rect, f, zoom)
 
         // Gizmos
-        visit f, i: forms
+        visit f, i in forms
         {
             var flags = FormFlags.Zero
             if i == hotForm do
@@ -613,7 +613,7 @@ impl Capture
             return editForm.boundRect()
 
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
-        visit s: selection
+        visit s in selection
         {
             let f = forms[s]
             let r = f.boundRect()
@@ -654,7 +654,7 @@ impl Capture
         arrY.add(height)
         arrY.add(height / 2)
 
-        visit f, i: forms
+        visit f, i in forms
         {
             let autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
             let form    = cast(*BaseForm) @dataof(f)
@@ -676,7 +676,7 @@ impl Capture
 
             case FormPolygon:
                 let form2 = cast(*FormPolygon) form
-                visit pt, idx: form2.points
+                visit pt, idx in form2.points
                 {
                     if !autoSel or idx != idxPt
                     {
@@ -711,7 +711,7 @@ impl Capture
 
         if x
         {
-            visit ax: arrX
+            visit ax in arrX
             {
                 let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbX = Math.abs(p.x - ax)
@@ -725,7 +725,7 @@ impl Capture
 
         if y
         {
-            visit ay: arrY
+            visit ay in arrY
             {
                 let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbY = Math.abs(p.y - ay)
@@ -997,7 +997,7 @@ impl Capture
 
             r.set(movingStart, movingEnd)
 
-            visit f, idx: forms
+            visit f, idx in forms
             {
                 let b = cast(*BaseForm) @dataof(f)
                 if b.paintPos.intersectWith(r) and !selection.contains(idx) do
@@ -1137,7 +1137,7 @@ impl Capture
     {
         if !forms.count do
             return Swag.U64.Max
-        loop #back i: forms
+        loop #back i in forms
         {
             let f = forms[i]
             let b = cast(*BaseForm) @dataof(f)

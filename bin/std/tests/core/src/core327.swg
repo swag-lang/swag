@@ -27,7 +27,7 @@ struct A
     sb.appendString("mtd opEquals(other: Self)->bool {\n")
     sb.appendString("\treturn ")
 
-    visit f: types.fields
+    visit f in types.fields
     {
         if #index do
             sb.appendString(" and ")

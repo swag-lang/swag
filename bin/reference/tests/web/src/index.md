@@ -62,7 +62,7 @@ struct(T) IsSet
     {
         var str = StrConv.StringBuilder{}
         let typeof = @typeof(T)
-        visit f: typeof.fields
+        visit f in typeof.fields
             str.appendFormat("%: bool\n", f.name)
         return str.toString()
     }
@@ -76,7 +76,7 @@ struct(T) IsSet
     const PowerOfTwo: [N] s32 = #run
         {
             var arr: [N] s32
-            loop i: arr
+            loop i in arr
                 arr[i] = 1 << cast(u32) i
             return arr
         }

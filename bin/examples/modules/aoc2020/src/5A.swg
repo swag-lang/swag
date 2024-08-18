@@ -54,11 +54,11 @@ func day5A0()
     let lines    = assume File.readAllLines(dataPath)
 
     var total: s32
-    visit l: lines
+    visit l in lines
     {
         var row0 = 0
         var row1 = 127
-        loop c: 7
+        loop c in 7
         {
             if l[c] == `F` do
                 row1 = (row1 + row0) / 2
@@ -68,7 +68,7 @@ func day5A0()
         var col0 = 0
 
         var col1 = 7
-        loop c: 3
+        loop c in 3
         {
             if l[7 + c] == `L` do
                 col1 = (col1 + col0) / 2
@@ -90,7 +90,7 @@ func day5A1()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
 
     var seats: Array'u64
-    visit l: assume File.readAllLines(dataPath)
+    visit l in assume File.readAllLines(dataPath)
     {
         l.replace("F", "0")
         l.replace("B", "1")

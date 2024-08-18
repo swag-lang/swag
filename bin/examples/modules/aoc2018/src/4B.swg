@@ -18,7 +18,7 @@ func day4B() assume
     var curGuard, startSleep, curMin = 0
     var count: [60] HashTable'(s32, s32)
 
-    visit l: lines
+    visit l in lines
     {
         curMin = StrConv.parseS32(l[15..]).value
 
@@ -27,14 +27,14 @@ func day4B() assume
         elif Utf8.contains(l, "falls asleep") do
             startSleep = curMin
         elif Utf8.contains(l, "wakes up") do
-            loop i: startSleep until curMin do
+            loop i in startSleep until curMin do
                 count[i].findOrAdd(curGuard).value += 1
     }
 
     var minCount, min, guard = 0'u64
-    visit v, i: count
+    visit v, i in count
     {
-        visit k1, v1: v
+        visit k1, v1 in v
         {
             if v1 > minCount
             {

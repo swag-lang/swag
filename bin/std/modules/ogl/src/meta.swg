@@ -29,7 +29,7 @@ var g_Functions: Array'OneFunc
 
     builderInit.appendString("public func glInitExtensions()\n{\n")
 
-    visit e: g_Functions
+    visit e in g_Functions
     {
         let typeFunc = cast(const *TypeInfoFunc) e.type
 
@@ -38,7 +38,7 @@ var g_Functions: Array'OneFunc
 
         // Make a wrapper function
         builderVars.appendFormat("public func %(", e.name)
-        visit p, i: typeFunc.parameters
+        visit p, i in typeFunc.parameters
         {
             if i != 0 do
                 builderVars.appendString(", ")
@@ -50,7 +50,7 @@ var g_Functions: Array'OneFunc
         else do
             builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
         builderVars.appendFormat("\treturn ext_%(", e.name)
-        visit p, i: typeFunc.parameters
+        visit p, i in typeFunc.parameters
         {
             if i != 0 do
                 builderVars.appendString(", ")

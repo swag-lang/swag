@@ -4,7 +4,7 @@
     const PowerOfTwo: [N] s32 = #run
         {
             var arr: [N] s32
-            loop i: arr do
+            loop i in arr do
                 arr[i] = 1 << cast(u32) i
             return arr
         }

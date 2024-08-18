@@ -40,7 +40,7 @@ func day7B() assume
     var lines    = File.readAllLines(dataPath)
 
     var steps: HashTable'(u8, { prev, next: String })
-    visit l: lines
+    visit l in lines
     {
         steps.findOrAdd(l[5]).value.next.append(l[36])
         steps.findOrAdd(l[36]).value.prev.append(l[5])
@@ -48,7 +48,7 @@ func day7B() assume
 
     var first: Array'u8
     var last:  u8
-    visit k, v: steps
+    visit k, v in steps
     {
         if v.next.length == 0 do
             last = k
@@ -60,7 +60,7 @@ func day7B() assume
     var current: Array'u8
     var workers: [5] { val: u8, tick: s32 }
 
-    visit cc, i: first
+    visit cc, i in first
     {
         workers[i].val  = cc
         workers[i].tick = (cc - `A`) + 61
@@ -73,7 +73,7 @@ func day7B() assume
         total += 1
 
         var done: Array'u64
-        visit &w: workers
+        visit &w in workers
         {
             if w.val == 0 do
                 continue
@@ -83,7 +83,7 @@ func day7B() assume
         }
 
         var avail: Array'u8
-        visit d: done
+        visit d in done
         {
             let w = &workers[d]
             let c = w.val
@@ -98,7 +98,7 @@ func day7B() assume
                 return
             }
 
-            visit k, v: steps
+            visit k, v in steps
             {
                 if result.contains(k) or current.contains(k) do
                     continue
@@ -109,7 +109,7 @@ func day7B() assume
         }
 
         //Slice.sort(avail.toSlice(), bigFirst: true)
-        visit &w1: workers
+        visit &w1 in workers
         {
             if w1.val or avail.isEmpty() do
                 continue

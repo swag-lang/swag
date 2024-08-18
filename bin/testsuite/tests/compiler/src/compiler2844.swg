@@ -1,6 +1,6 @@
 func print(params: ...)
 {
-    visit c: params
+    visit c in params
     {
         @assert(cast(string) c == "this is a string")
     }

@@ -37,14 +37,14 @@ private var lines: Array'String
 func calc(a, b: u8)->u64
 {
     var scan = lines
-    loop c: scan[0]
+    loop c in scan[0]
     {
         var count = 0
-        visit l: scan do
+        visit l in scan do
             count += cast(s32) (l[c] == `1`)
 
         var next: Array'String
-        visit l: scan
+        visit l in scan
         {
             let v = count >= scan.count - count ? a : b
             if l[c] == v do

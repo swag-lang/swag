@@ -5,7 +5,7 @@ using Core
     let x = @modules()
     @assert(@countof(x) >= 4)
     var cpt = 0
-    visit m: x
+    visit m in x
     {
         switch m.name
         {

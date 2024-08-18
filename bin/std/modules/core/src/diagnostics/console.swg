@@ -46,7 +46,7 @@ func print(params: ...)
     var buf:     ConcatBuffer
     var convFmt: StrConv.ConvertFormat
 
-    visit v: params do
+    visit v in params do
         StrConv.convertAny(&buf, v, convFmt, null)
     printf(buf.toString())
 }

@@ -1,7 +1,7 @@
 #global testerror "Err0705"
 #test
 {
-    visit x: toto
+    visit x in toto
     {
     }
 }

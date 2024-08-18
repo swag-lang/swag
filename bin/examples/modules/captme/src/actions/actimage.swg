@@ -196,7 +196,7 @@ impl MainWnd
             btn.userData = cast(*void) id
             btn.sigChanged += func(btn)
             {
-                visit c: btn.parent.childs
+                visit c in btn.parent.childs
                 {
                     if c.userData
                     {
@@ -225,7 +225,7 @@ impl MainWnd
         let res = dlg.doModal()
 
         g_KeepRatio = btnRatio.checked == .Checked
-        visit c: dlg.childs
+        visit c in dlg.childs
         {
             if c.userData
             {
@@ -286,7 +286,7 @@ impl MainWnd
         var maxX = 0'f32
         var maxY = 0'f32
 
-        visit f, idx: capture.forms
+        visit f, idx in capture.forms
         {
             var r = f.boundRect()
             if r.x > 0 do
@@ -309,11 +309,11 @@ impl MainWnd
         }
 
         #scope Left
-        loop x: capture.backImg.width
+        loop x in capture.backImg.width
         {
             if x + capture.backImagePos.x < 0 do
                 continue
-            loop y: capture.backImg.height
+            loop y in capture.backImg.height
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -325,11 +325,11 @@ impl MainWnd
         }
 
         #scope Right
-        loop x: capture.backImg.width - 1 to 0
+        loop x in capture.backImg.width - 1 to 0
         {
             if x + capture.backImagePos.x >= capture.width do
                 continue
-            loop y: capture.backImg.height
+            loop y in capture.backImg.height
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -341,11 +341,11 @@ impl MainWnd
         }
 
         #scope Up
-        loop y: capture.backImg.height
+        loop y in capture.backImg.height
         {
             if y + capture.backImagePos.y < 0 do
                 continue
-            loop x: capture.backImg.width
+            loop x in capture.backImg.width
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -357,11 +357,11 @@ impl MainWnd
         }
 
         #scope Down
-        loop y: capture.backImg.height - 1 to 0
+        loop y in capture.backImg.height - 1 to 0
         {
             if y + capture.backImagePos.y >= capture.height do
                 continue
-            loop x: capture.backImg.width
+            loop x in capture.backImg.width
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a

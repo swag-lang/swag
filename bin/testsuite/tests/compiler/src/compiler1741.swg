@@ -9,7 +9,7 @@
         @assert(@countof(array) == 2)
 
         /*var result = 0
-        visit it: array
+        visit it in array
         {
             result += it
         }

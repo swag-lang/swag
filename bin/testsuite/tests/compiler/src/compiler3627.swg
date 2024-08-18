@@ -9,7 +9,7 @@ var g_RD: [40] C
 
 #test
 {
-    loop i: g_RD.length
+    loop i in g_RD.length
     {
     }
 }

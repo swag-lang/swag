@@ -36,7 +36,7 @@ func day8B() assume
         if !nc
         {
             var sum: u32
-            loop i: nm do
+            loop i in nm do
                 sum += n[start + i]
             return {start + nm, sum}
         }
@@ -50,7 +50,7 @@ func day8B() assume
         }
 
         var sum: u32
-        loop i: nm
+        loop i in nm
         {
             let idx = n[start + i]
             if idx and idx - 1 < childs.count do

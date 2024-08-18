@@ -35,14 +35,14 @@ impl IWnd for StackLayoutCtrl
         if layoutKind == .HorzCenter or layoutKind == .HorzCenterVertCenter
         {
             var totalW = 0'f32
-            visit c, i: childs do
+            visit c, i in childs do
                 totalW += c.position.width + c.margin.x + c.margin.z
             totalW += cast(f32) ((childs.count - 1) * spacing)
 
             var x = position.width * 0.5 - totalW * 0.5
             x = Math.max(x, padding.x)
             let y = getClientRectPadding().vertCenter()
-            visit c: childs
+            visit c in childs
             {
                 var pos = c.position
                 if layoutKind == .HorzCenterVertCenter do
@@ -55,13 +55,13 @@ impl IWnd for StackLayoutCtrl
         elif layoutKind == .VertCenter
         {
             var totalH = 0'f32
-            visit c, i: childs do
+            visit c, i in childs do
                 totalH += c.position.height + c.margin.y + c.margin.w
             totalH += cast(f32) ((childs.count - 1) * spacing)
 
             var y = position.height * 0.5 - totalH * 0.5
             y = Math.max(y, padding.y)
-            visit c: childs
+            visit c in childs
             {
                 var pos = c.position
                 pos.y = Math.round(y + c.margin.y)
@@ -71,7 +71,7 @@ impl IWnd for StackLayoutCtrl
         }
         else
         {
-            visit c, i: childs
+            visit c, i in childs
             {
                 switch layoutKind
                 {

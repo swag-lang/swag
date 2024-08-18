@@ -338,14 +338,14 @@ func bigLoop()
 {
     if Env.hasArg("swag.test")
     {
-        loop i: MAX_IMAGES
+        loop i in MAX_IMAGES
         {
             g_ImageIdx = i
             loadImg()
             display()
         }
 
-        loop j: MAX_EFFECTS
+        loop j in MAX_EFFECTS
         {
             g_ImageIdx  = 0
             g_EffectIdx = j

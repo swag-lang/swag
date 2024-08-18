@@ -8,7 +8,7 @@ enum AA: const [2] s32
 
 #test
 {
-    visit &x: AA
+    visit &x in AA
     {
     }
 }

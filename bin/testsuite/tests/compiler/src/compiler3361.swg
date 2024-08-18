@@ -39,7 +39,7 @@ impl A
 {
     var v: A
     var xx = 0
-    visit i: v
+    visit i in v
     {
         xx += i
     }

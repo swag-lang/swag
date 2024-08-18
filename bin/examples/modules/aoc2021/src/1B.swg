@@ -42,7 +42,7 @@ func day1B()
 
     var total: u64
     var last   = Swag.U64.Max
-    loop i: lines.count - 2
+    loop i in lines.count - 2
     {
         let cur = assume StrConv.toS32(lines[i]) + assume StrConv.toS32(lines[i + 1]) + assume StrConv.toS32(lines[i + 2])
         total += cur > last ? 1 : 0

@@ -12,7 +12,7 @@ using Pixel.Image
 
     /*var pathName = dataPath()
     var files = try Directory.enumerateFiles(pathName)
-    visit f: files
+    visit f in files
     {
         var img = try image.load(f.fullname)
     }  */

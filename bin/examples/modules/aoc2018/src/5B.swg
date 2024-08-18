@@ -31,7 +31,7 @@ func day5B0() assume
     var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
-    loop x: 26
+    loop x in 26
     {
         var line = read
         var idx  = 0
@@ -74,14 +74,14 @@ func day5B1() assume
     var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
-    visit x: "abcdefghijklmnopqrstuvwxyz"
+    visit x in "abcdefghijklmnopqrstuvwxyz"
     {
         var line = read
         line.replace(cast(rune) x, "")
         line.replace(cast(rune) Latin1.toUpper(x), "")
 
         var result: String
-        visit c, i: line
+        visit c, i in line
         {
             if i and result.back() ^ c == 32 do
                 result.removeBack()

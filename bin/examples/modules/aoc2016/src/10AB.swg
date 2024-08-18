@@ -94,7 +94,7 @@ private func getBot(x: s32)->&Bot
 
 private func execute(lines: Array'String) assume
 {
-    visit l: lines
+    visit l in lines
     {
         switch
         {

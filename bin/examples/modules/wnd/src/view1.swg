@@ -8,7 +8,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     list.iconSize      = 16
 
     var str: String
-    loop i: maxItems
+    loop i in maxItems
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
@@ -33,7 +33,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     list.iconSize                     = 16
 
     var str: String
-    loop i: 50
+    loop i in 50
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
@@ -116,13 +116,13 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.sigCheckChanged += func(list)
         {
             let sl = list.getCheckedLines()
-            visit l: sl do
+            visit l in sl do
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
         list.sigRightClick += func(list, pt)
         {
             let sel = list.getSelectedLines()
-            visit l: sel do
+            visit l in sel do
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }
@@ -146,7 +146,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.sigSelChanged += func(list)
         {
             let sel = list.getSelectedLines()
-            visit l: sel do
+            visit l in sel do
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }

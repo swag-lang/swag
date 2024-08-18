@@ -22,11 +22,11 @@ impl S
 #test
 {
     var s: S
-    visit c: s
+    visit c in s
     {
     }
 
-    visit(Bytes) #back c: s
+    visit(Bytes) #back c in s
     {
     }
 }

@@ -43,7 +43,7 @@ func day4B()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit l: lines
+    visit l in lines
     {
         let first = Tokenize.split(l, `:`'u8)
         let game  = Tokenize.split(first[1], `|`'u8)
@@ -51,13 +51,13 @@ func day4B()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v: val0 do
+        visit v in val0 do
             v0.add(assume StrConv.toS32(v))
-        visit v: val1 do
+        visit v in val1 do
             v1.add(assume StrConv.toS32(v))
 
         var score = 0
-        visit v: v1
+        visit v in v1
         {
             if v0.contains(v) do
                 score += 1
@@ -67,9 +67,9 @@ func day4B()
     }
 
     var total = 0'u64
-    visit c, i: cards
+    visit c, i in cards
     {
-        loop x: c.win
+        loop x in c.win
         {
             cards[i + x + 1].num += c.num
         }

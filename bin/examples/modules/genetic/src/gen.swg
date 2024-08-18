@@ -38,7 +38,7 @@ func genInit()
     {
         let soluce = g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
-        loop i: g_NumGenes do
+        loop i in g_NumGenes do
             soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
@@ -81,7 +81,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
-    loop i: soluce.genes do
+    loop i in soluce.genes do
         soluce.score += evaluateSolution(soluce.genes[i], acast i)
     soluce.score /= g_NumGenes
 }
@@ -89,7 +89,7 @@ func evaluateSolution(soluce: *Solution)
 func pickToMate(other: *Solution = null)->*Solution
 {
     var rnd = g_Rng.nextF32(0, g_TotalWeight)
-    visit child: g_Gen[g_CurGen].all
+    visit child in g_Gen[g_CurGen].all
     {
         if rnd <= child.weight and child != other do
             return child
@@ -162,7 +162,7 @@ func genGo()->*u8
 
     // Compute stuff for selection
     g_TotalWeight = 0'f32
-    visit child: g_Gen[g_CurGen].all
+    visit child in g_Gen[g_CurGen].all
     {
         child.weight = 1 - child.score
         g_TotalWeight += child.weight
@@ -188,13 +188,13 @@ func genGo()->*u8
         // Copy solution from father
         let child1 = g_Gen[nextGenIdx].all[index]
         Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * @sizeof(u32))
-        loop i: crossPoint1 do
+        loop i in crossPoint1 do
             done[child1.genes.buffer[i]] = true
 
         // Copy solution from mother, in order, except of already present
         var holes: Array'u32
         var cpt    = 0'u32
-        loop i: g_NumGenes - crossPoint1
+        loop i in g_NumGenes - crossPoint1
         {
             let g = mother.genes[i + crossPoint1]
             if !done[g]
@@ -211,7 +211,7 @@ func genGo()->*u8
         }
 
         // Fill the rest
-        loop i: g_NumGenes
+        loop i in g_NumGenes
         {
             if done[i] do
                 continue
@@ -239,13 +239,13 @@ func genGo()->*u8
     }
 
     // Get from previous generation
-    loop i: TakeBest
+    loop i in TakeBest
     {
         copyToNext(numChilds, i)
         numChilds += 1
     }
 
-    loop i: TakeWorst
+    loop i in TakeWorst
     {
         copyToNext(numChilds, PopulationCount - i - 1)
         numChilds += 1
@@ -257,7 +257,7 @@ func genGo()->*u8
         return x.score <=> y.score
     })
 
-    visit child, idx: g_Gen[nextGenIdx].all
+    visit child, idx in g_Gen[nextGenIdx].all
     {
         mutate(child, acast idx)
         evaluateSolution(child)
@@ -279,7 +279,7 @@ func genGo()->*u8
         g_BestScore = bestScore
         //Console.print(g_NumGen, ": ", bestScore, "\n")
 
-        loop i: best.genes
+        loop i in best.genes
         {
             let idx = best.genes[i]
             g_Result[(i * 3) + 0] = g_Image0.pixels[(idx * 3) + 0]

@@ -15,7 +15,7 @@ impl ArrayPtr
 
     mtd opPostCopy()
     {
-        loop i: count
+        loop i in count
         {
             let newPtr = Memory.new'T(allocator)
             dref newPtr = dref buffer[i]
@@ -26,7 +26,7 @@ impl ArrayPtr
     // Release content
     mtd clear()
     {
-        visit item: dref self do
+        visit item in dref self do
             Memory.delete(item, allocator)
         base.count = 0
     }

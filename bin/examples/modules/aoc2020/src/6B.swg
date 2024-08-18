@@ -51,17 +51,17 @@ func day6B0()
     var count: [26] s32
     var total, num: u64
 
-    visit l: lines
+    visit l in lines
     {
         if l.length do
             num += 1
 
-        visit(Bytes) c: l do
+        visit(Bytes) c in l do
             count[c - `a`] += 1
 
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
-            visit c: count where c == num do
+            visit c in count where c == num do
                 total += 1
             @init(count)
             num = 0
@@ -83,12 +83,12 @@ func day6B1()
     var lineVal:  u32
     var interVal: u32 = ~0
 
-    visit l: lines
+    visit l in lines
     {
         if l.length
         {
             lineVal = 0
-            visit(Bytes) c: l do
+            visit(Bytes) c in l do
                 lineVal |= 1 << cast(u32) (c - `a`)
             interVal &= lineVal
         }

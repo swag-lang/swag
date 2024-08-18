@@ -17,7 +17,7 @@ using Core
 
     assume
     {
-        visit l: File.readAllLines(dataPath)
+        visit l in File.readAllLines(dataPath)
         {
             l.makeUpper()
             result += "private const "

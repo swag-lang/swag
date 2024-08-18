@@ -45,17 +45,17 @@ func day10A() assume
     let nums     = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
 
     var arr, tmp: Array's32
-    loop i: 256 do
+    loop i in 256 do
         arr.add(i)
 
     var cur, skip = 0
-    visit n: nums
+    visit n in nums
     {
         tmp.clear()
-        loop i: n do
+        loop i in n do
             tmp.add(arr[(cur + i) % 256])
         Slice.reverse(tmp.toSlice())
-        visit v, i: tmp do
+        visit v, i in tmp do
             arr[(cur + i) % 256] = v
         cur = (cur + n + skip) % 256
         skip += 1

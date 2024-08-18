@@ -49,7 +49,7 @@ func day8B()
 
     var startNode: Array'u64
 
-    visit l, i: lines
+    visit l, i in lines
     {
         if i == 0 do
             instructions = l.toString()
@@ -63,7 +63,7 @@ func day8B()
     }
 
     nodes.resize(lines.count - 2)
-    visit l, i: lines
+    visit l, i in lines
     {
         if i <= 1 do
             continue
@@ -82,7 +82,7 @@ func day8B()
 
     // For each starting node, cound the length of the path to the first ending node
     // Count is stored in 'onEnd'
-    loop i: curNode
+    loop i in curNode
     {
         var instIndex: u64
         loop
@@ -102,7 +102,7 @@ func day8B()
     }
 
     var total = onEnd[0]
-    loop i: 1 until onEnd.count do
+    loop i in 1 until onEnd.count do
         total = Math.lcm(cast(s64) total, cast(s64) onEnd[i])
 
     //Console.print("total: ", total)

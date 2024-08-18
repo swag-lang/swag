@@ -54,7 +54,7 @@ impl IWnd for LibraryView
 
         // Hit test
         var ht = Swag.U64.Max
-        visit it, idx: items
+        visit it, idx in items
         {
             if it.rect.contains(pos)
             {
@@ -103,12 +103,12 @@ impl IWnd for LibraryView
         const W      = H * 4.0 / 3.0
         const Margin = 8.0
 
-        visit &it, i: items
+        visit &it, i in items
         {
             // Retrieve the loaded capture if it exists
             if !it.capture
             {
-                visit l, idx: copyLoaded
+                visit l, idx in copyLoaded
                 {
                     if l.file == it.fi.fullname
                     {
@@ -150,7 +150,7 @@ impl LibraryView
 {
     mtd opDrop()
     {
-        visit c: loaded do
+        visit c in loaded do
             Memory.delete(c)
     }
 
@@ -164,7 +164,7 @@ impl LibraryView
 
         // Filter
         var res: Array'File.FileInfo
-        visit fi: g_Library.files
+        visit fi in g_Library.files
         {
             if (filterYear == 0 or fi.lastWriteTime.year == filterYear) and
                (filterMonth == 0 or fi.lastWriteTime.month == filterMonth) and
@@ -180,13 +180,13 @@ impl LibraryView
         })
 
         let renderer = getApp().getRenderer()
-        visit &it: items do
+        visit &it in items do
             renderer.removeTexture(&it.texture)
 
         // Add items
         items.clear()
         items.reserve(res.count)
-        visit fi: res
+        visit fi in res
         {
             var item: LibraryItem
             item.fi = fi
@@ -201,7 +201,7 @@ impl LibraryView
         {
             thread.init(closure|self|(th: Thread)
             {
-                visit &it: self.items
+                visit &it in self.items
                 {
                     let capture = catch Capture.load(it.fi.fullname)
                     if capture
@@ -292,7 +292,7 @@ impl LibraryWnd
             }
         }
 
-        visit fi: g_Library.files
+        visit fi in g_Library.files
         {
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {

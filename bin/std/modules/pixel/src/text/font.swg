@@ -48,7 +48,7 @@ internal var g_HashFont: HashTable'(String, *Font)
 
 #drop
 {
-    visit k, v: g_HashFont do
+    visit k, v in g_HashFont do
         Memory.delete(v)
     g_HashFont.free()
 }
@@ -59,7 +59,7 @@ public impl Font
 
     mtd opDrop()
     {
-        visit k, v: unicodeRef do
+        visit k, v in unicodeRef do
             Memory.delete(v)
     }
 
@@ -182,7 +182,7 @@ public impl Font
         var buffer = atlas.datas.buffer + x + (atlas.width * (atlas.height - 1))
         buffer -= (y * atlas.width)
         var src = bmp.buffer
-        loop j: bmp.rows
+        loop j in bmp.rows
         {
             Memory.copy(buffer, src, cast(u64) bmp.width)
             src += bmp.pitch

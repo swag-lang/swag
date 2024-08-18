@@ -321,7 +321,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFo
 
     // Do it field by field
     buf.addBytes("{")
-    visit field: kindof.fields
+    visit field in kindof.fields
     {
         if #index do
             buf.addBytes(", ")

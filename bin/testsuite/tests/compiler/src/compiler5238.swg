@@ -5,9 +5,9 @@ var g: [4*4] s32 = 5
     #[Swag.Mixin]
     func mp(x0, y0: u64)->&s32 => &g[0] + (x0 + y0*4)
 
-    loop x: 0 to 3'u64
+    loop x in 0 to 3'u64
     {
-        loop y: 0 to 3'u64
+        loop y in 0 to 3'u64
         {
             //@print(mp(x,y), " ")
             //@assert(mp(x, y) == 5)

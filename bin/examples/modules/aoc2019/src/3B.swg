@@ -40,7 +40,7 @@ func day3B()
         var result: retval
         var pos:    Vector2
         result.add(pos)
-        visit v: Tokenize.split(line, `,`'u8)
+        visit v in Tokenize.split(line, `,`'u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
@@ -64,10 +64,10 @@ func day3B()
 
     var best = Swag.F32.Max
     var di   = 0'f32
-    loop i: t1.count - 1
+    loop i in t1.count - 1
     {
         var dj = 0'f32
-        loop j: t0.count - 1
+        loop j in t0.count - 1
         {
             let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()

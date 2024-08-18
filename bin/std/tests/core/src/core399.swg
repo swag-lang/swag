@@ -12,7 +12,7 @@ typealias WalkAction = closure(const &Node, s32)
 func walk(tree: const &Node, action: WalkAction, depth = 0)
 {
     action(tree, depth)
-    visit kid: tree.kids
+    visit kid in tree.kids
     {
         walk(kid, action, depth + 1)
     }
@@ -47,7 +47,7 @@ func process(intro: &Node)->&Node
     intro.print()
 
     var totalDepth = 0
-    loop i: 200_000 do
+    loop i in 200_000 do
         totalDepth += intro.calcTotalDepth()
 
     //Console.printf("Total depth: %", totalDepth)

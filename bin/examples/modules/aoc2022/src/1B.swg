@@ -18,7 +18,7 @@ func day1B()
 
     var count: [3] u64
     var one:   u64
-    visit l: lines
+    visit l in lines
     {
         one += catch StrConv.toU64(l)
         if l.isEmpty() or #index == lines.count - 1

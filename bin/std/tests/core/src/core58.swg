@@ -8,7 +8,7 @@ using Core
     var y: BitArray
     y.reserve(4, false)
 
-    visit val, idx: x
+    visit val, idx in x
     {
         y[idx] = val
     }

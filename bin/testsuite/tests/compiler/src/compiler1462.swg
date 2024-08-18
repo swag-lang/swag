@@ -30,7 +30,7 @@ impl S
     var x: S
     var cpt = 0
     var cpt1 = 0
-    visit i, j: x
+    visit i, j in x
     {
         cpt +=  i
         cpt1 += cast(s32) j

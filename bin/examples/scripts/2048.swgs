@@ -47,9 +47,9 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     painter.fillRoundRect(rectBack, RoundCorners, RoundCorners, Color.fromRgb(187, 173, 160))
 
     const CellSizeW = CellSize - (2 * Margin)
-    loop x: 4
+    loop x in 4
     {
-        loop y: 4
+        loop y in 4
         {
             let xi = rectGrid.x + (x * CellSize) + Margin
             let yi = rectGrid.y + (y * CellSize) + Margin
@@ -57,7 +57,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         }
     }
 
-    visit &c: g_Cells
+    visit &c in g_Cells
     {
         var color: Color
 
@@ -123,7 +123,7 @@ func animate(wnd: *Wnd)
 
     let wasMoving = g_IsMoving
     g_IsMoving = false
-    visit &c: g_Cells
+    visit &c in g_Cells
     {
         // End of scale
         if Math.isEqualEpsilon(c.z, c.zd, 0.01) do
@@ -176,7 +176,7 @@ func animate(wnd: *Wnd)
 
 func cellAt(x, y: s32, me: *Cell = null)->*Cell
 {
-    visit &c: g_Cells
+    visit &c in g_Cells
     {
         if c == me do
             continue
@@ -190,7 +190,7 @@ func cellAt(x, y: s32, me: *Cell = null)->*Cell
 func canMoveTo(val, x, y: s32)->bool
 {
     var cpt = 0
-    visit c: g_Cells
+    visit c in g_Cells
     {
         if (c.val and c.moving and c.xd == x and c.yd == y) or
            (c.val and !c.moving and c.x == x and c.y == y)
@@ -231,12 +231,12 @@ func keyboard(wnd: *Wnd)
     while recom
     {
         recom = false
-        visit c: g_Cells
+        visit c in g_Cells
         {
             if c.val == 0 do
                 continue
 
-            loop i: 1 to CellCount
+            loop i in 1 to CellCount
             {
                 if g_MoveDirX != 0
                 {
@@ -265,7 +265,7 @@ func keyboard(wnd: *Wnd)
             }
         }
 
-        visit c: g_Cells
+        visit c in g_Cells
         {
             if !c.val do
                 continue

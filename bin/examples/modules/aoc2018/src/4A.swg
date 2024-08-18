@@ -73,7 +73,7 @@ func day4A()
     var count: [60] HashTable'(s32, s32)
     var total: HashTable'(s32, s32)
 
-    visit l: lines
+    visit l in lines
     {
         discard when.grep(l)
         curMin = assume StrConv.toS32(when[5])
@@ -99,7 +99,7 @@ func day4A()
     }
 
     var minCount, min, guard = 0'u64
-    visit k, v: total
+    visit k, v in total
     {
         if v > min
         {
@@ -108,9 +108,9 @@ func day4A()
         }
     }
 
-    visit v, i: count
+    visit v, i in count
     {
-        visit k1, v1: v
+        visit k1, v1 in v
         {
             if k1 == curGuard and v1 > minCount
             {

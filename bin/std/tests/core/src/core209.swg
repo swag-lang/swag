@@ -12,10 +12,10 @@ func entry(th: Threading.Thread)
 {
     var th: [N] Threading.Thread
 
-    visit &t: th do
+    visit &t in th do
         catch t.init(&entry)
-    visit &t: th do
+    visit &t in th do
         catch t.start()
-    loop i: N do
+    loop i in N do
         Threading.wait(&th[i])
 }

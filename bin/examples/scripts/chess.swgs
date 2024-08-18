@@ -78,7 +78,7 @@ var g_Game:      GameInfo
 
 func moveIsPossible(fromP, toP: s8)->bool
 {
-    visit move: g_Game.possibleMoves do
+    visit move in g_Game.possibleMoves do
         if move.fromP == fromP and move.toP == toP do
             return true
     return false
@@ -92,7 +92,7 @@ func initGame()
 
 func initCells()
 {
-    loop i: 96'u8
+    loop i in 96'u8
     {
         let x = i % 12
         let y = i / 12
@@ -111,7 +111,7 @@ func initCells()
 
     const FirstLine = [PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
 
-    loop x: 8
+    loop x in 8
     {
         g_Board[x + 2].piece          = FirstLine[x]
         g_Board[x + 2 + 12].piece     = .Pawn
@@ -132,7 +132,7 @@ func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
 
 func getKingCell(board: ^Cell, color: ContentEnum)->s8
 {
-    loop i: 96's8 where board[i].content == color and board[i].piece == .King do
+    loop i in 96's8 where board[i].content == color and board[i].piece == .King do
         return i
     return -1
 }
@@ -145,19 +145,19 @@ func isCheck(board: ^Cell, white: bool)->bool
 
     var moves: Array's8
     getKnightMoves(board, kingCell, &moves)
-    visit v: moves where board[v].piece == .Knight do
+    visit v in moves where board[v].piece == .Knight do
         return true
     moves.clear()
     getPawnAttacks(board, kingCell, &moves)
-    visit v: moves where board[v].piece == .Pawn do
+    visit v in moves where board[v].piece == .Pawn do
         return true
     moves.clear()
     getBishopMoves(board, kingCell, &moves)
-    visit v: moves where board[v].piece == .Bishop or board[v].piece == .Queen do
+    visit v in moves where board[v].piece == .Bishop or board[v].piece == .Queen do
         return true
     moves.clear()
     getRookMoves(board, kingCell, &moves)
-    visit v: moves where board[v].piece == .Rook or board[v].piece == .Queen do
+    visit v in moves where board[v].piece == .Rook or board[v].piece == .Queen do
         return true
     return false
 }
@@ -167,7 +167,7 @@ func computeMoves()
     let contentToTreat = g_Game.whiteTurn ? ContentEnum.White : ContentEnum.Black
     g_Game.possibleMoves.clear()
 
-    visit cell: g_Board
+    visit cell in g_Board
     {
         if cell.content != contentToTreat do
             continue
@@ -193,7 +193,7 @@ func computeMoves()
             getKingMoves(g_Board, i, &moves)
         }
 
-        visit move: moves
+        visit move in moves
         {
             var board = doMove(g_Board, i, move)
             if !isCheck(board, g_Game.whiteTurn) do
@@ -277,21 +277,21 @@ func getPieceMove(board: ^Cell, fromP, offset: s8, moves: *Array's8)->bool
 const KnightMovesDeltas = [10's8, 23, 25, 14, -10, -23, -25, -14]
 func getKnightMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    visit delta: KnightMovesDeltas do
+    visit delta in KnightMovesDeltas do
         discard getPieceMove(board, fromP, delta, moves)
 }
 
 const KingMovesDeltas = [11's8, 12, 13, 1, -11, -12, -13, -1]
 func getKingMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    visit delta: KingMovesDeltas do
+    visit delta in KingMovesDeltas do
         discard getPieceMove(board, fromP, delta, moves)
 }
 
 const BishopMovesDeltas = [11's8, 13, -11, -13]
 func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    visit delta: BishopMovesDeltas
+    visit delta in BishopMovesDeltas
     {
         var offset = delta
         while getPieceMove(board, fromP, offset, moves) do
@@ -302,7 +302,7 @@ func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 const RookMovesDeltas = [12's8, 1, -12, -1]
 func getRookMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    visit delta: RookMovesDeltas
+    visit delta in RookMovesDeltas
     {
         var offset = delta
         while getPieceMove(board, fromP, offset, moves) do
@@ -356,7 +356,7 @@ func doMove(board: ^Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell
 
-    loop i: 96 do
+    loop i in 96 do
         result[i] = board[i]
 
     result[toP].piece     = result[fromP].piece
@@ -409,7 +409,7 @@ func paintBoard(evt: *Event)
     var rect = Math.Rectangle{b, b + s, CellSize, b}
     var str: String = "A"
 
-    loop column: 8
+    loop column in 8
     {
         str.buffer[0] = cast(u8) (65 + column)
         rs.set(str)
@@ -418,7 +418,7 @@ func paintBoard(evt: *Event)
     }
 
     rect = Math.Rectangle{0, b, b, CellSize}
-    loop row: 8
+    loop row in 8
     {
         str.buffer[0] = cast(u8) (56 - row)
         rs.set(str)
@@ -426,7 +426,7 @@ func paintBoard(evt: *Event)
         rect.y += CellSize
     }
 
-    loop i: 96's8 do
+    loop i in 96's8 do
         paintCell(painter, i)
 
     if g_Game.selectedCell != -1
@@ -434,7 +434,7 @@ func paintBoard(evt: *Event)
         var cellInfo = g_BoardInfo[g_Game.selectedCell]
         painter.drawRect(cellInfo.rect, ColorSelection, penSize: 3)
 
-        visit move: g_Game.possibleMoves
+        visit move in g_Game.possibleMoves
         {
             if move.fromP == g_Game.selectedCell
             {
@@ -577,7 +577,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     let rdr = surface.app.getRenderer()
     var y   = 0
-    loop i: 2
+    loop i in 2
     {
         using Res
         piecesTexture[i, cast(s8) PiecesEnum.King - 1]   = rdr.addImage(img.toCrop(0, y, 128, 128))

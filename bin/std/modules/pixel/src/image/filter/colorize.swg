@@ -19,7 +19,7 @@ impl Image
 
         if pf == .BGR8 or pf == .BGRA8
         {
-            loop i: 256
+            loop i in 256
             {
                 let c = Color.fromHsl(h, s, i / 255.0)
                 convArr[i, 0] = cast(f32) c.b
@@ -29,7 +29,7 @@ impl Image
         }
         elif pf == .RGB8 or pf == .RGBA8
         {
-            loop i: 256
+            loop i in 256
             {
                 let c = Color.fromHsl(h, s, i / 255.0)
                 convArr[i, 0] = cast(f32) c.r

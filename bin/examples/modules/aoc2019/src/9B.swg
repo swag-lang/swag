@@ -98,7 +98,7 @@ func day9B()
     let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's64
-    visit v: Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8) do
         prg.add(assume StrConv.toS64(v))
 
     let total = run(&prg, 2)

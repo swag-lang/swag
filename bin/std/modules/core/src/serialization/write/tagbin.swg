@@ -101,7 +101,7 @@ impl TagBin
 
             // Write fat table
             output.addNative(TagBinSignatures.Fat)
-            visit k, v: sec.mapSeek
+            visit k, v in sec.mapSeek
             {
                 output.addNative(k) // Crc
                 output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer

@@ -84,7 +84,7 @@ You can spread the content of an array or a slice to variadic parameters with `@
     {
         // Note that variadic parameters can be visited, as this is a slice
         var total = 0
-        visit v: params do
+        visit v in params do
             total += v
         return total
     }

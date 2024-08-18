@@ -159,7 +159,7 @@ internal impl ComboBox
         popup.simFitY        = true
         popup.selectedIdx    = selectedIdx
 
-        visit item: items
+        visit item in items
         {
             if item.isSeparator do
                 popup.addSeparator()

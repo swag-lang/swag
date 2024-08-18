@@ -72,13 +72,13 @@ func energy(bodies: ^Planet)->f64
     //return bodies.vx * bodies.vx + bodies.vy
     var e: f64 = 0.0
 
-    //visit bi, i: bodies[..@countof(bodies)-2]
+    //visit bi, i in bodies[..@countof(bodies)-2]
     for var i = 0; i < 5; i += 1
     {
         let bi = &bodies[i]
         e += 0.5 * (bi.vx * bi.vx + bi.vy * bi.vy + bi.vz * bi.vz) * bi.mass
 
-        //visit bj: bodies[i+1..]
+        //visit bj in bodies[i+1..]
         for var j = i+1; j < 5; j += 1
         {
             let bj = &bodies[j]
@@ -95,11 +95,11 @@ func energy(bodies: ^Planet)->f64
 
 func advance(bodies: [..] Planet, dt: f64, steps: u64)
 {
-    loop s: steps
+    loop s in steps
     {
         for var i = 0; i < 5; i += 1
-        //loop i: 3
-        //visit &bi, j:  bodies[..@countof(bodies)-2]
+        //loop i in 3
+        //visit &bi, j in  bodies[..@countof(bodies)-2]
         {
             let bi = &bodies[i]
             var vx = bi.vx
@@ -107,7 +107,7 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
             var vz = bi.vz
 
             for var j = i+1; j < 5; j += 1
-            //visit &bj: bodies[j+1 ..]
+            //visit &bj in bodies[j+1 ..]
             {
                 let bj = &bodies[j]
 
@@ -145,7 +145,7 @@ func offset_momentum(bodies: [..] Planet) {
     var py: f64 = 0.0
     var pz: f64 = 0.0
 
-    visit b: bodies {
+    visit b in bodies {
         px -= b.vx * b.mass
         py -= b.vy * b.mass
         pz -= b.vz * b.mass

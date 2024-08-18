@@ -89,10 +89,10 @@ internal impl FileDlg
         comboPathStr.clear()
 
         var all = Tokenize.split(curFolder.toString(), `/`'rune)
-        loop #back i: all
+        loop #back i in all
         {
             var str: String
-            loop j: i + 1
+            loop j in i + 1
             {
                 str += all[j]
                 str += `/`'u8
@@ -113,7 +113,7 @@ internal impl FileDlg
         var l = treeCtrl.createLine("Shortcuts")
         l.separator = true
 
-        visit v: dlgOptions.shortcuts
+        visit v in dlgOptions.shortcuts
         {
             var c  = Env.getSpecialDirectory(v.item0)
             var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
@@ -127,7 +127,7 @@ internal impl FileDlg
         l.separator = true
 
         var volumes = catch Directory.getDrives()
-        visit v: volumes
+        visit v in volumes
         {
             v.removeBack()
             var ic = getApp().getDirectoryIcon(v, true)
@@ -165,7 +165,7 @@ internal impl FileDlg
         var filter = dlgOptions.filters[cast(u64) item.userData0]
         var tokens = Tokenize.split(filter.item1, `;`'rune)
 
-        visit &fi: curList
+        visit &fi in curList
         {
             let fname = Path.getFileName(fi.fullname)
 
@@ -174,7 +174,7 @@ internal impl FileDlg
             if !fi.isDirectory() and @countof(filter.item1)
             {
                 show = false
-                visit t: tokens
+                visit t in tokens
                 {
                     if Path.isExtension(fname, t)
                     {
@@ -335,7 +335,7 @@ impl FileDlg
             {
                 var sel  = list.getSelectedLines()
                 var txt: String
-                visit l: sel
+                visit l in sel
                 {
                     let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
@@ -430,7 +430,7 @@ impl FileDlg
             if opt.mode == .SelectFolder do
                 .addItem("Folders")
             else do
-                visit f, idx: opt.filters do
+                visit f, idx in opt.filters do
                     .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
@@ -506,7 +506,7 @@ impl FileDlg
         var fi   = dlgOptions.filters[cast(u64) item.userData0]
 
         var tokens = Tokenize.split(editFile.text, `;`'rune)
-        visit t: tokens
+        visit t in tokens
         {
             // Be sure this is a valid file/folder name
             var t1 = String.from(t)

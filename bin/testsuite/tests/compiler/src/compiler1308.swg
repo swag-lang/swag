@@ -4,7 +4,7 @@
 {
 	var error = false
     #scope Outer
-    loop x: 10
+    loop x in 10
     {
         #scope Outer
         loop 20

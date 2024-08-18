@@ -31,8 +31,8 @@ func day3B()
     func sum(x, y: s32, a: @decltype(arr))->s32
     {
         var s: s32
-        loop dx: -1 to 1 do
-            loop dy: -1 to 1 do
+        loop dx in -1 to 1 do
+            loop dy in -1 to 1 do
                 s += a.get({x + dx, y + dy}, 0)
         return s
     }
@@ -43,7 +43,7 @@ func day3B()
     loop
     {
         const O = [{dl: 1, dx: 1, dy: 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
-        visit v: O
+        visit v in O
         {
             l += v.dl
             loop l

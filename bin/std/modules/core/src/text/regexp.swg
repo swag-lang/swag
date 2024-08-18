@@ -144,7 +144,7 @@ impl RegExp
     // Returns 'null' if the capture group does not exist
     public mtd opIndex(idx: u64)->string
     {
-        visit v: groups
+        visit v in groups
         {
             if v.rank == idx do
                 return v.value
@@ -196,7 +196,7 @@ impl RegExp
     // Returns the parsed string associated with a given captured group
     public mtd getCapture(rank: u32)->string
     {
-        visit g: groups
+        visit g in groups
         {
             if g.rank == rank do
                 return g.value
@@ -209,7 +209,7 @@ impl RegExp
     public mtd getCaptures()->Array'string
     {
         var result: retval
-        visit v: groups do
+        visit v in groups do
             result.add(v.value)
         return result
     }
@@ -308,7 +308,7 @@ impl RegExp
 
     func setCapture(state: *DfaState, rank: s32, str: string)
     {
-        visit &v: state.groups
+        visit &v in state.groups
         {
             if v.rank == rank
             {
@@ -363,7 +363,7 @@ impl RegExp
             swap(&pstack1, &pstack2)
 
             var cptReachedEnd = 0
-            visit &v: dref pstack1
+            visit &v in dref pstack1
             {
                 if v.parseIdx >= bufLength do
                     cptReachedEnd += 1
@@ -426,7 +426,7 @@ impl RegExp
             closeGroup(state)
 
             var strGroup: string
-            visit g: state.groups
+            visit g in state.groups
             {
                 if g.rank == 1 + (what - RuneGroup1)
                 {
@@ -692,7 +692,7 @@ impl RegExp
             if canGroup
             {
                 group += 1
-                visit n: table1.nodes
+                visit n in table1.nodes
                 {
                     if n.group == 0 do
                         n.group = group
@@ -817,7 +817,7 @@ impl RegExp
         outH.clear()
 
         var stack: Array'(*NfaNode)
-        visit n: dref inH do
+        visit n in dref inH do
             stack.add(n)
 
         while stack.count
@@ -829,7 +829,7 @@ impl RegExp
             if !find do
                 continue
 
-            visit t: find.value
+            visit t in find.value
             {
                 if !outH.contains(t) do
                     stack.add(t)
@@ -840,7 +840,7 @@ impl RegExp
     mtd setTable(node: *DfaNode, tbl: *Array'(*NfaNode))
     {
         node.table = #move dref tbl
-        visit n: node.table
+        visit n in node.table
         {
             if node.group == 0 do
                 node.group = groupTransform[n.group]
@@ -853,13 +853,13 @@ impl RegExp
     func dfaMoveNode(out: *Array'(*NfaNode), c: rune, inH: Array'(*NfaNode))
     {
         out.clear()
-        visit state: inH
+        visit state in inH
         {
             // The real terminal character
             let pfind = state.transitions.find(c)
             if pfind
             {
-                visit t: pfind.value do
+                visit t in pfind.value do
                     out.add(t)
             }
         }
@@ -869,7 +869,7 @@ impl RegExp
     {
         if s1.count != s2.count do
             return false
-        visit t1: dref s1
+        visit t1 in dref s1
         {
             if !s2.contains(t1) do
                 return false
@@ -888,14 +888,14 @@ impl RegExp
 
         // Group transformation
         var grp: Array'u32
-        visit n: table.nodes do
+        visit n in table.nodes do
             grp.add(n.group)
         grp.sort()
 
         var curGroup, curGroupSwap: u32
 
         groupTransform.resize(cast(u64) group + 1)
-        visit n: grp
+        visit n in grp
         {
             if n != curGroup do
                 curGroupSwap += 1
@@ -918,7 +918,7 @@ impl RegExp
         while stack.count
         {
             state = stack.popBack()
-            visit c: charSet
+            visit c in charSet
             {
                 dfaMoveNode(&moveRes, c, state.table)
                 if moveRes.count == 0 do
@@ -926,7 +926,7 @@ impl RegExp
                 dfaEClosure(&moveRes, &epsilonRes)
 
                 var found: *DfaNode
-                visit tstate: dfaNodes
+                visit tstate in dfaNodes
                 {
                     if equals(&tstate.table, &epsilonRes)
                     {

@@ -91,7 +91,7 @@ using Swag
     func maxSizeOf(v: const [..] typeinfo)->u64
     {
         var res = 0'u32
-        visit p: v do
+        visit p in v do
             res = @max(res, p.sizeof)
         return res
     }
@@ -100,7 +100,7 @@ using Swag
     func orFlags(v: const [..] typeinfo)->Swag.TypeInfoFlags
     {
         var res: Swag.TypeInfoFlags = Zero
-        visit p: v do
+        visit p in v do
             res |= p.flags
         return res
     }
@@ -125,9 +125,9 @@ internal var g_HashLock: Sync.RWLock
 #premain
 {
     Sync.scopedLock(&g_HashLock)
-    visit m: @pinfos().modules
+    visit m in @pinfos().modules
     {
-        visit t: m.types
+        visit t in m.types
         {
             g_HashCrcToType.add(t.crc32, t)
             g_HashNameToType.add(t.fullname, t)

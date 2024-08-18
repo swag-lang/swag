@@ -76,11 +76,11 @@ func day8A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l: lines
+    visit l in lines
     {
         let parts = Tokenize.split(l, "|")
         let part2 = Tokenize.split(parts[1], " ")
-        visit it: part2
+        visit it in part2
         {
             switch @countof(it)
             {

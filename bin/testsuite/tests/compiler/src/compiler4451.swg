@@ -2,7 +2,7 @@
 func(T, N: s64) fill(v: T)->[N] T
 {
     var result: retval
-    loop i: N do result[i] = v
+    loop i in N do result[i] = v
     return result
 }
 

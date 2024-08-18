@@ -29,7 +29,7 @@ func day1A()
     var x     = 0
     var y     = 1
     var px, py = 0
-    visit it: split
+    visit it in split
     {
         let v = Latin1.trim(it)
         let n = assume StrConv.toS32(v[1..])

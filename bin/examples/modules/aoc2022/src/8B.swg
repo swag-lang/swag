@@ -44,18 +44,18 @@ func day8B()
     //Time.Stopwatch.scopeMeasure()
 
     var total: s32
-    visit l, line: lines
+    visit l, line in lines
     {
         if line == 0 or line == lines.count - 1 do
             continue
 
-        visit(Bytes) c, col: l
+        visit(Bytes) c, col in l
         {
             if col == 0 or col == l.length - 1 do
                 continue
 
             var score0 = 0
-            loop #back x: 0 until col
+            loop #back x in 0 until col
             {
                 score0 += 1
                 if l[x] >= l[col] do
@@ -63,7 +63,7 @@ func day8B()
             }
 
             var score1 = 0
-            loop x: col + 1 to l.length - 1
+            loop x in col + 1 to l.length - 1
             {
                 score1 += 1
                 if l[x] >= l[col] do
@@ -71,7 +71,7 @@ func day8B()
             }
 
             var score2 = 0
-            loop #back y: 0 until line
+            loop #back y in 0 until line
             {
                 score2 += 1
                 if lines[y][col] >= l[col] do
@@ -79,7 +79,7 @@ func day8B()
             }
 
             var score3 = 0
-            loop y: line + 1 to lines.count - 1
+            loop y in line + 1 to lines.count - 1
             {
                 score3 += 1
                 if lines[y][col] >= l[col] do

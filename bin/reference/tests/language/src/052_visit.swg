@@ -5,7 +5,7 @@
 {
     // Here we visit every bytes of the string.
     // At each iteration, the byte will be stored in the variable 'value'
-    visit value: "ABC"
+    visit value in "ABC"
     {
         // '#index' is also available. It stores the loop index.
         let a = #index
@@ -26,7 +26,7 @@ You can name both the **value** and the loop **index**, in that order.
 */
 #test
 {
-    visit value, index: "ABC"
+    visit value, index in "ABC"
     {
         let a = index
         switch a
@@ -70,7 +70,7 @@ You can visit in reverse order by adding the 'back' modifier.
     // Here we visit every bytes of the string.
     // At each iteration, the byte will be stored in the variable 'value'
     var cpt = 0
-    visit #back value: "ABC"
+    visit #back value in "ABC"
     {
         // '#index' is also available. It stores the loop index.
         switch cpt
@@ -98,7 +98,7 @@ You can visit arrays or slices.
     var array = [10, 20, 30]
 
     var result = 0
-    visit it: array do
+    visit it in array do
         result += it
 
     @assert(result == 10 + 20 + 30)
@@ -112,7 +112,7 @@ Works also for multi dimensional arrays.
     var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
     var result = 0
-    visit it: array do
+    visit it in array do
         result += it
 
     @assert(result == 10 + 20 + 30 + 40)
@@ -126,7 +126,7 @@ You can visit with a pointer to the value, and not the value itself, by adding `
     var array: [2, 2] s32 = [[1, 2], [3, 4]]
 
     var result = 0
-    visit &it: array
+    visit &it in array
     {
         result += dref it
         dref it = 555
@@ -150,21 +150,21 @@ You can add a 'where' instruction after the 'visit', to apply a filter on the el
     var result = 0
 
     // Just get even values
-    visit value: array where value & 1 == 0 do
+    visit value in array where value & 1 == 0 do
         result += value
 
     @assert(result == 6)
 
     // This is equivalent of:
     result = 0
-    visit value: array do 
+    visit value in array do 
         if value & 1 == 0 do
             result += value  
     @assert(result == 6) 
 
     // This is equivalent of:  
     result = 0
-    visit value: array
+    visit value in array
     {
         if (value & 1) != 0 do
             continue

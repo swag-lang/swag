@@ -11,7 +11,7 @@ impl Wnd
 {
     mtd toto()
     {
-        visit &c: childs
+        visit &c in childs
         {
             switch c.x
             {

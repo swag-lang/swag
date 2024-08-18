@@ -4,7 +4,7 @@ struct(TTT) Soa
 {
     #ast
     {
-        visit p: @typeof(TTT).name
+        visit p in @typeof(TTT).name
         {
             G += 1
         }

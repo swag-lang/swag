@@ -57,7 +57,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
                     content += form("if @memcmp(&%s[0], &o.%s[0], @sizeof(%s)) != 0 do return false\n", leftN, rightN, leftN);
                 else
                 {
-                    content += form("loop i: %s do ", leftN);
+                    content += form("loop i in %s do ", leftN);
                     content += form("if %s[i] != o.%s[i] do return false\n", leftN, rightN);
                 }
 

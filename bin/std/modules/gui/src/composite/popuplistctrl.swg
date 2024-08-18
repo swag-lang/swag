@@ -65,7 +65,7 @@ impl IWnd for PopupListView
         else
         {
             var y = pos.y + scrollPos.y
-            visit v, i: list.items
+            visit v, i in list.items
             {
                 if v.isSeparator
                 {
@@ -139,7 +139,7 @@ impl IWnd for PopupListView
         var colorText: Color
 
         var y = 0'f32
-        visit i, idx: list.items
+        visit i, idx in list.items
         {
             labelPos.x      = clientRect.x
             labelPos.y      = y

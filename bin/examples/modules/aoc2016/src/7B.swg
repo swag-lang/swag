@@ -21,12 +21,12 @@ func day7B() assume
     let lines    = File.readAllLines(dataPath)
 
     var total = 0
-    visit l: lines
+    visit l in lines
     {
         l.replace("]", "[")
 
         var outside, inside: String
-        visit it, i: Tokenize.split(l, `[`'u8)
+        visit it, i in Tokenize.split(l, `[`'u8)
         {
             if !(i & 1) do
                 outside += it
@@ -34,7 +34,7 @@ func day7B() assume
                 inside += it
         }
 
-        loop i: 0 until @countof(outside) - 2
+        loop i in 0 until @countof(outside) - 2
         {
             if outside[i] == outside[i + 2] and
                outside[i] != outside[i + 1] and

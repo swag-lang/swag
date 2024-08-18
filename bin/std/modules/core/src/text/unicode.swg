@@ -224,7 +224,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
     if ignoreCase
     {
         #[Swag.Safety("boundcheck", false)]
-        loop i: minLen
+        loop i in minLen
         {
             let c1 = toLower(src[i])
             let c2 = toLower(dst[i])
@@ -274,7 +274,7 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     const LinearLimit = 18
     if @countof(ranges) <= LinearLimit or r <= 255
     {
-        visit &range: ranges
+        visit &range in ranges
         {
             if r < range.lo do
                 return false

@@ -170,7 +170,7 @@ impl DateTime
             // Day of week name
             var done       = false
             var dayOfWeek: DayOfWeek
-            visit dow, idx: DayOfWeekNames
+            visit dow, idx in DayOfWeekNames
             {
                 let len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
@@ -190,7 +190,7 @@ impl DateTime
             parseSep(&buf, ` `, &result.eat)
 
             // Month name
-            visit dow, idx: MonthNames
+            visit dow, idx in MonthNames
             {
                 let len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow

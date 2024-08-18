@@ -50,21 +50,21 @@ func day8A() assume
     var screen, nscreen: [W, H] bool
     var re: Parser.RegExp
 
-    visit l: lines
+    visit l in lines
     {
         nscreen = screen
         switch
         {
         case re.match(#"rect (\d+)x(\d+)"#, l):
-            loop x: StrConv.toS32(re[1]) do
-                loop y: StrConv.toS32(re[2]) do
+            loop x in StrConv.toS32(re[1]) do
+                loop y in StrConv.toS32(re[2]) do
                     screen[x, y] = true
 
         case re.match(#"rotate column x=(\d+) by (\d+)"#, l):
             let x = StrConv.toS32(re[1])
             loop StrConv.toS32(re[2])
             {
-                loop i: H do
+                loop i in H do
                     screen[x, (i + 1) % H] = nscreen[x, i]
                 nscreen = screen
             }
@@ -73,7 +73,7 @@ func day8A() assume
             let y = StrConv.toS32(re[1])
             loop StrConv.toS32(re[2])
             {
-                loop i: W do
+                loop i in W do
                     screen[(i + 1) % W, y] = nscreen[i, y]
                 nscreen = screen
             }
@@ -81,9 +81,9 @@ func day8A() assume
     }
 
     var total = 0
-    loop y: H
+    loop y in H
     {
-        loop x: W
+        loop x in W
         {
             total += screen[x, y] ? 1 : 0
             //@print(screen[x, y] ? "X" : ".")

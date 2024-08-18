@@ -55,12 +55,12 @@ func day9A()
 
     var sum, val: Array's32
     const N = 25
-    visit l: lines
+    visit l in lines
     {
         let v1 = assume StrConv.toS32(l)
         if #index < N
         {
-            visit v0: val do
+            visit v0 in val do
                 sum.add(v0 + v1)
             val.add(v1)
             continue
@@ -76,7 +76,7 @@ func day9A()
         let v = val[0]
         val.removeAtOrdered(0)
 
-        visit v0: val
+        visit v0 in val
         {
             sum.remove(v + v0)
             sum.add(v0 + v1)

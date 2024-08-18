@@ -185,7 +185,7 @@ impl PropWnd
         mtd updateBtnState(layout: *Wnd)
         {
             let curSel = cast(*FormShape) getSelectedBaseForm()
-            visit c: layout.childs
+            visit c in layout.childs
             {
                 let btn  = cast(*IconButton) c
                 let kind = cast(FormShapeKind) cast(u64) btn.userData
@@ -196,7 +196,7 @@ impl PropWnd
 
         let curSel = cast(*FormShape) getSelectedBaseForm()
 
-        loop i: @countof(FormShapeKind)
+        loop i in @countof(FormShapeKind)
         {
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
@@ -246,7 +246,7 @@ impl PropWnd
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
 
-        loop i: @countof(FormStepKind)
+        loop i in @countof(FormStepKind)
         {
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
@@ -294,7 +294,7 @@ impl PropWnd
         mtd updateBtnState(layout: *Wnd)
         {
             let curSel = cast(*FormLine) getSelectedBaseForm()
-            visit c: layout.childs
+            visit c in layout.childs
             {
                 let btn = cast(*IconButton) c
                 let cap = cast(LineCapStyle) cast(u64) btn.userData
@@ -304,7 +304,7 @@ impl PropWnd
         }
 
         let curSel = cast(*FormLine) getSelectedBaseForm()
-        visit i: LineCapStyle
+        visit i in LineCapStyle
         {
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 40})
             btn0.userData = cast(*void) cast(u64) i
@@ -347,7 +347,7 @@ impl PropWnd
         mtd updateBtnState(layout: *Wnd)
         {
             let curSel = cast(*FormLine) getSelectedBaseForm()
-            visit c: layout.childs
+            visit c in layout.childs
             {
                 let btn = cast(*IconButton) c
                 let cap = cast(LineCapStyle) cast(u64) btn.userData
@@ -357,7 +357,7 @@ impl PropWnd
         }
 
         let curSel = cast(*FormLine) getSelectedBaseForm()
-        visit i: LineCapStyle
+        visit i in LineCapStyle
         {
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 40})
             btn0.userData = cast(*void) cast(u64) i
@@ -400,7 +400,7 @@ impl PropWnd
         mtd updateBtnState(layout: *Wnd)
         {
             let curSel = getSelectedBaseForm()
-            visit c: layout.childs
+            visit c in layout.childs
             {
                 let btn  = cast(*IconButton) c
                 let dash = cast(DashStyle) cast(u64) btn.userData
@@ -410,7 +410,7 @@ impl PropWnd
         }
 
         let curSel = getSelectedBaseForm()
-        visit i: DashStyle
+        visit i in DashStyle
         {
             if i == .Pattern do
                 continue
@@ -793,7 +793,7 @@ impl PropWnd
         combo.addSeparator()
 
         sysFonts = FontFamily.enumerateFromOs()
-        visit &fnt: sysFonts
+        visit &fnt in sysFonts
         {
             combo.addItem(fnt.name, userData0: fnt)
             if curSel.fontName == fnt.name do
@@ -1118,7 +1118,7 @@ impl PropWnd
         ctrl.comboSize = 210
         with ctrl.combo
         {
-            visit v: @typeof(FormImageKind).values do
+            visit v in @typeof(FormImageKind).values do
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.kind)
             .sigChanged += closure|self|(combo, val)
@@ -1132,7 +1132,7 @@ impl PropWnd
         ctrl1.comboSize = 210
         with ctrl1.combo
         {
-            visit v: @typeof(FormImagePlacement).values do
+            visit v in @typeof(FormImagePlacement).values do
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.place)
             .sigChanged += closure|self|(combo, val)
@@ -1221,7 +1221,7 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        visit it: mainLayout.childs do
+        visit it in mainLayout.childs do
             it.destroy()
         if !getSelectedBaseForm() do
             return

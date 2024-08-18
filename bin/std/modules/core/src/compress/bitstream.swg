@@ -107,7 +107,7 @@ impl BitStream
     mtd peekBytes(width: u8, dest: ^u8)
     {
         // To optim
-        loop i: width
+        loop i in width
         {
             dest[i] = cast(u8) peekBits(8)
             consumeBits(8)

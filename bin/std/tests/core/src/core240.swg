@@ -5,7 +5,7 @@ using Core
     var x: Array's32
     x.resize(2)
 
-    visit &p, cpt: x
+    visit &p, cpt in x
     {
         var v   = #index
         var str = Format.toString("%", #index)

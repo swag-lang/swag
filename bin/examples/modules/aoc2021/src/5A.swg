@@ -53,7 +53,7 @@ func day5A()
     const W = 1000'u64
     m.resize(W * W)
 
-    visit l: lines
+    visit l in lines
     {
         assume
         {
@@ -71,14 +71,14 @@ func day5A()
         Core.orderMinMax(&y0, &y1)
 
         if x0 != x1 do
-            loop x: x0 to x1
+            loop x in x0 to x1
             {
                 let c = #ref (m.buffer + (x + y0 * W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }
         elif y0 != y1 do
-            loop y: y0 to y1
+            loop y in y0 to y1
             {
                 let c = #ref (m.buffer + (x0 + y * W))
                 total += (c == 1 ? 1 : 0)

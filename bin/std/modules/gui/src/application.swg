@@ -54,7 +54,7 @@ internal impl Application
     mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
         // Global hook events
-        visit hook: hookOnEvent do
+        visit hook in hookOnEvent do
             hook.itf.onHookEvent(event)
 
         if event.kind == .Quit
@@ -189,7 +189,7 @@ internal impl Application
         }
 
         // Detect changes
-        loop i: mouse.previousState.pressed
+        loop i in mouse.previousState.pressed
         {
             let lastP = mouse.previousState.pressed[i]
             let curP  = mouse.currentState.pressed[i]
@@ -245,7 +245,7 @@ internal impl Application
         let modifiers = keyb.getPressedModifiers()
 
         // Detect changes
-        loop i: keyb.previousState.pressed
+        loop i in keyb.previousState.pressed
         {
             let lastP = keyb.previousState.pressed[i]
             let curP  = keyb.currentState.pressed[i]
@@ -320,7 +320,7 @@ internal impl Application
     {
         if inModalLoop do
             return
-        visit w: postDestroy do
+        visit w in postDestroy do
             destroyWnd(w)
         postDestroy.clear()
     }
@@ -328,7 +328,7 @@ internal impl Application
     // Update UI state of all surfaces
     mtd updateCommandState()
     {
-        visit s: surfaces do
+        visit s in surfaces do
             s.wnd.updateCommandState()
     }
 
@@ -357,7 +357,7 @@ internal impl Application
             keybFocusWnd = null
 
         // Be sure there's no timer for that window
-        visit t: timers
+        visit t in timers
         {
             if t.target == wnd and !t.toDelete
             {
@@ -371,7 +371,7 @@ internal impl Application
         hookOnEvent.remove(wnd)
 
         // Be sure there's no posted event for that window
-        visit e: postedEvents
+        visit e in postedEvents
         {
             if e.target == wnd do
                 e.target = null
@@ -381,7 +381,7 @@ internal impl Application
     mtd sendTimerEvents()
     {
         duringTimerEvents = true
-        visit t: timers
+        visit t in timers
         {
             if t.toDelete do
                 continue
@@ -401,12 +401,12 @@ internal impl Application
         duringTimerEvents = false
 
         // Add new registered timers
-        visit t: timersToAdd do
+        visit t in timersToAdd do
             timers.add(t)
         timersToAdd.clear()
 
         // Remove some timers
-        visit t: timersToDelete
+        visit t in timersToDelete
         {
             t.toDelete = false
             deleteTimer(t)
@@ -417,7 +417,7 @@ internal impl Application
 
     mtd sendFrameEvents()
     {
-        visit t: frameEvents
+        visit t in frameEvents
         {
             var evt = FrameEvent{}
             t.sendEvent(&evt)
@@ -428,7 +428,7 @@ internal impl Application
     {
         if inModalLoop do
             return
-        visit p: toDelete do
+        visit p in toDelete do
             Memory.delete(p.item0, p.item1)
         toDelete.clear()
     }
@@ -451,7 +451,7 @@ internal impl Application
         sendPostedEvents()
         sendDestroyEvents()
 
-        visit s: surfaces do
+        visit s in surfaces do
             s.paint()
 
         deletePointers()
@@ -464,7 +464,7 @@ internal impl Application
         inModalLoop += 1
         defer inModalLoop -= 1
 
-        visit s: surfaces
+        visit s in surfaces
         {
             if s != surface do
                 s.disable()
@@ -494,7 +494,7 @@ internal impl Application
         }
         else
         {
-            visit s, idx: surfaces
+            visit s, idx in surfaces
             {
                 if s != surface
                 {
@@ -516,10 +516,10 @@ impl Application
 {
     mtd opDrop()
     {
-        visit it: surfaces do
+        visit it in surfaces do
             it.destroy()
         sendDestroyEvents()
-        visit it: postedEvents do
+        visit it in postedEvents do
             toDelete.add({it, it.type})
         deletePointers()
         theme.freeDefault()
@@ -605,7 +605,7 @@ impl Application
     internal mtd serializeState(ser: *Serializer) throw
     {
         ser.beginSection(.Unordered)
-        visit s: surfaces do
+        visit s in surfaces do
             s.serializeState(ser)
         ser.endSection()
     }
@@ -689,7 +689,7 @@ impl Application
         if isActivated == activated do
             return
         isActivated = activated
-        visit s: modalSurfaces do
+        visit s in modalSurfaces do
             s.bringToTop()
         invalidate()
     }
@@ -697,7 +697,7 @@ impl Application
     // Force all surfaces to be painted
     mtd invalidate()
     {
-        visit s: surfaces do
+        visit s in surfaces do
             s.invalidate()
     }
 
@@ -803,7 +803,7 @@ impl Application
     #[Swag.Discardable]
     mtd run()->s32
     {
-        visit s: surfaces
+        visit s in surfaces
         {
             var evt = FrameEvent{}
             evt.firstFrame = true
@@ -830,7 +830,7 @@ impl Application
     #[Swag.Overload]
     mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd) throw
     {
-        visit &c: hotKeys
+        visit &c in hotKeys
         {
             if c.mdf == mdf and c.key == key
             {
@@ -847,7 +847,7 @@ impl Application
     // Get the id associated with a shortcut. null if none
     mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{ id: WndId, wnd: *Wnd }
     {
-        visit c: hotKeys
+        visit c in hotKeys
         {
             if c.mdf == mdf and c.key == key do
                 return {c.id, c.target}
@@ -860,7 +860,7 @@ impl Application
     mtd getHotKeyShortcutNameFor(wndId: WndId)->String
     {
         var result: retval
-        visit c: hotKeys
+        visit c in hotKeys
         {
             if c.id == wndId
             {

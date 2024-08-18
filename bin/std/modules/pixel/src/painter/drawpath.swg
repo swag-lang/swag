@@ -264,7 +264,7 @@ impl Painter
         }
 
         var v1 = startPos
-        loop i: 1 until sharedRoundTmp.count
+        loop i in 1 until sharedRoundTmp.count
         {
             let v2    = sharedRoundTmp[i].pos
             let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
@@ -497,7 +497,7 @@ impl Painter
         }
 
         patternTotalLen = 0
-        loop i: patternCount do
+        loop i in patternCount do
             patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
 
@@ -646,7 +646,7 @@ impl Painter
         // (because of cap styles)
         if path.polygon.points.count > 2
         {
-            loop i: 1 until path.polygon.points.count - 1
+            loop i in 1 until path.polygon.points.count - 1
             {
                 var p = path.polygon.getPoint(i, cxt.offsetPath)
                 drawLine(cxt, p)
@@ -720,7 +720,7 @@ public impl Painter
             return
         if mode == .Separate
         {
-            visit p: pathList.paths do
+            visit p in pathList.paths do
                 drawPath(p, pen)
             return
         }
@@ -737,7 +737,7 @@ public impl Painter
         startOverlapMode(pen)
 
         var cxt: Context
-        visit p: pathList.paths
+        visit p in pathList.paths
         {
             cxt.path = p
             cxt.pen  = &pen

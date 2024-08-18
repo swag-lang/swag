@@ -169,7 +169,7 @@ func __printF64(value: f64)
 // Basic print to console function
 func @print(params: ...)
 {
-    visit it: params
+    visit it in params
     {
         var v  = it
         var ko = @kindof(v)

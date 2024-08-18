@@ -3,7 +3,7 @@ func toto()
 {
     var values = [[1], [2]]
     var a = 0
-    visit b, a: values
+    visit b, a in values
     {
         @print(a)
     }

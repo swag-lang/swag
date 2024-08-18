@@ -31,7 +31,7 @@ impl MyStruct
             #error "visiting myStruct in reverse order is not supported"
 
         // Loop on the 3 fields
-        loop idx: 3
+        loop idx in 3
         {
             // The '#macro' keyword forces its body to be in the scope of the caller
             #macro
@@ -73,7 +73,7 @@ So now that the `opVisit` has been defined, we can `visit` a variable of type 'M
     // Visiting each field in declaration order
     // 'v' is an alias for #alias0 (value)
     // 'i' is an alias for #alias1 (index)
-    visit v, i: myStruct
+    visit v, i in myStruct
     {
         switch i
         {
@@ -103,7 +103,7 @@ impl MyStruct
         // Note that visiting in reverse order should be implemented in the normal 'opVisit'
         // function by checking the 'back' generic parameter. But this is just to make the
         // point of special dedicated visit versions.
-        loop idx: 3
+        loop idx in 3
         {
             #macro
             {
@@ -131,7 +131,7 @@ impl MyStruct
     var cpt      = 0
 
     // To call a variant, add the extra name after ':'.
-    visit(Reverse) v, i: myStruct
+    visit(Reverse) v, i in myStruct
     {
         switch i
         {

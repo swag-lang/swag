@@ -58,10 +58,10 @@ impl IWnd for GridLayoutCtrl
         var done: Array'(*Wnd)
         var maxW, maxH = 0'f32
         var y = padding.y
-        loop j: numRows
+        loop j in numRows
         {
             var x = padding.x
-            loop i: numColumns
+            loop i in numColumns
             {
                 let colW = forcedW orelse colSizes[i]
                 defer x += colW + spacingHorz
@@ -160,11 +160,11 @@ impl GridLayoutCtrl
         Debug.assert(col + spanH <= numColumns and row + spanV <= numRows)
         Debug.assert(spanH and spanV)
 
-        loop i: spanH
+        loop i in spanH
         {
             var x = col + (row * numColumns)
             x += i
-            loop j: spanV
+            loop j in spanV
             {
                 let x1 = x + (j * numColumns)
                 layout[x1] = child

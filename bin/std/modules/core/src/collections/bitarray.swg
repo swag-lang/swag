@@ -68,7 +68,7 @@ public impl BitArray
         let len = @countof(what)
         reserve(len)
         buffer[len >> 5] = 0
-        visit value, index: what do
+        visit value, index in what do
             set(index, value)
     }
 
@@ -102,7 +102,7 @@ public impl BitArray
         var countBits     = 0'u64
 
         #scope Up
-        loop idx: Math.max(count >> 5, 1)
+        loop idx in Math.max(count >> 5, 1)
         {
             var shift: u32 = 1
             loop Math.min(remainingBits, 32)

@@ -336,7 +336,7 @@ public impl LinePath
         polygon.points.add(endPosBuffer)
 
         let lastElem = elements.count - 1
-        visit elem, i: elements
+        visit elem, i in elements
         {
             var pos = elem.position
 
@@ -454,7 +454,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1 until tmp.count do
+        loop i in 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -490,7 +490,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1 until tmp.count do
+        loop i in 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -521,7 +521,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1 until tmp.count do
+        loop i in 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -553,7 +553,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1 until tmp.count do
+        loop i in 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 

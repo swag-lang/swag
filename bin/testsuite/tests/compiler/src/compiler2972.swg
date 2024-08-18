@@ -2,7 +2,7 @@ enum RGB { R; G; B; }
 #test
 {
     var cpt = 0
-    visit e: RGB
+    visit e in RGB
     {
         switch e
         {

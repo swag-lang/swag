@@ -5,7 +5,7 @@
     func init()->u64
     {
         var sum = 0'u64
-        loop i: 3
+        loop i in 3
         {
             var T: typeinfo = undefined
             switch i

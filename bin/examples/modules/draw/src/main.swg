@@ -220,7 +220,7 @@ func displayPage1(painter: *Pixel.Painter)
     painter.translateTransform(50, 50)
 
     var cpt, cptLines = 0
-    visit e: HatchStyle
+    visit e in HatchStyle
     {
         brush.type   = .Hatch
         brush.hatch  = e

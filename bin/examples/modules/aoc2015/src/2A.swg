@@ -21,7 +21,7 @@ func day2A()
     assume
     {
         var r = Parser.RegExp.create(#"(\d+)x(\d+)x(\d+)"#)
-        visit line: File.readAllLines(dataPath)
+        visit line in File.readAllLines(dataPath)
         {
             discard r.match(line)
             let l = StrConv.toS32(r.getCapture(1))

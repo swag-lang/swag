@@ -7,7 +7,7 @@ impl A {
 #test
 {
     var x: A
-    visit c: x.toString()
+    visit c in x.toString()
     {
     }
 }

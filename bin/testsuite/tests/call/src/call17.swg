@@ -6,7 +6,7 @@ using test_foreign
     var x: tcf_Point
 
     var t = @typeof(tcf_Point)
-    visit p: t.methods
+    visit p in t.methods
     {
         if p.name != "set" do
             continue
@@ -24,7 +24,7 @@ using test_foreign
     @assert(x.z == 666)
 
     t.opInit(&x)
-    /*visit p: t.methods
+    /*visit p in t.methods
     {
         if p.name != "opInit"
             continue

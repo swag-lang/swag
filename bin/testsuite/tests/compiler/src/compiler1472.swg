@@ -24,7 +24,7 @@ impl S
 {
     var x: S
     var cpt = 0
-    visit i: x
+    visit i in x
     {
         var xx = 666
         cpt += i

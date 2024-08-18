@@ -7,13 +7,13 @@ struct AA
 #test
 {
     var arr: [4] AA
-    visit v: arr
+    visit v in arr
     {
         @assert(v.s == "toto")
     }
 
     var arr1: [4, 4] AA
-    visit v: arr1
+    visit v in arr1
     {
         @assert(v.s == "toto")
     }

@@ -44,7 +44,7 @@ func day3A()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit l, y: lines
+    visit l, y in lines
     {
         for var x = 0; x < l.length; x += 1
         {
@@ -74,7 +74,7 @@ func day3A()
     }
 
     var total = 0'u64
-    visit n: nums
+    visit n in nums
     {
         for var x = n.x; x <= n.lx; x += 1
         {

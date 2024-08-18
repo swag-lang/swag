@@ -1,7 +1,7 @@
 /*#test
 {
     var cpt = 0
-    visit c: 16
+    visit c in 16
     {
         cpt += 1
     }

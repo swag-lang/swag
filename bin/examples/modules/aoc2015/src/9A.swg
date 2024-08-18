@@ -36,7 +36,7 @@ func day9A()
     var dist:  HashTable'(u64, u64)
     var combi: Array'u64
 
-    visit l: lines
+    visit l in lines
     {
         discard r.match(l)
         if !town.contains(r[1]) do
@@ -47,14 +47,14 @@ func day9A()
         dist.add(town.find(r[1]).value | town.find(r[2]).value << 32, assume StrConv.toU64(r[3]))
     }
 
-    loop i: town.count do
+    loop i in town.count do
         combi.add(i)
 
     var total = Swag.U64.Max
     loop
     {
         var calc = 0'u64
-        loop i: cast(s64) combi.count - 1 do
+        loop i in cast(s64) combi.count - 1 do
             calc += dist.find(combi[i] << 32 | combi[i + 1]).value
         total = Math.min(total, calc)
         if !Slice.nextPermutation(combi.toSlice()) do

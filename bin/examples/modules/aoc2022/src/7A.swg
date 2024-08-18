@@ -84,7 +84,7 @@ func day7A()
     var folder:  String
     var folders: HashTable'(String, s32)
 
-    loop i: lines
+    loop i in lines
     {
         let l = #ref lines[i]
         if l[0] == `$` do
@@ -118,7 +118,7 @@ func day7A()
     }
 
     var total: u64
-    visit name, val: folders do
+    visit name, val in folders do
         if val <= 100_000 do
             total += val
 

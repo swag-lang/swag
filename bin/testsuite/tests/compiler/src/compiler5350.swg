@@ -6,9 +6,9 @@ func day7A()
 {
     var steps: HashTable'(u8, { prev, next: String })
 
-    visit k, v: steps
+    visit k, v in steps
     {
-        visit c: v.prev
+        visit c in v.prev
         {
             let it = steps.find(c)
             visit it.value.next

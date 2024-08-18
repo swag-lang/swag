@@ -37,7 +37,7 @@ impl HashSet
 
     mtd opAffect(slice: const [..] K)
     {
-        visit v: slice do
+        visit v in slice do
             add(v)
     }
 
@@ -52,7 +52,7 @@ impl HashSet
         let newTable = cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
         {
-            loop i: capacity
+            loop i in capacity
             {
                 newTable[i].hash = table[i].hash
                 newTable[i].key  = #nodrop table[i].key
@@ -119,7 +119,7 @@ impl HashSet
         // Need to drop every structs
         #if Reflection.hasDrop(@typeof(K))
         {
-            loop i: capacity
+            loop i in capacity
             {
                 if table[i].hash >= HASH_DELETED do
                     @drop(&table[i].key)
@@ -162,7 +162,7 @@ impl HashSet
         // Copy the last table to the new table, removing deleted entries
         let oldCapacity = capacity
         capacity = reqCapacity
-        loop i: oldCapacity
+        loop i in oldCapacity
         {
             let h = oldTable[i].hash
             if h >= HASH_FIRST
@@ -342,7 +342,7 @@ impl HashSet
         // Drop the key and the value if necessary
         if count or deleted
         {
-            loop i: capacity
+            loop i in capacity
             {
                 let hashval = table[i].hash
                 if hashval >= HASH_DELETED do
@@ -367,7 +367,7 @@ impl StrConv.IConvert for HashSet
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        visit k: dref self
+        visit k in dref self
         {
             if #index do
                 buf.addBytes(", ")

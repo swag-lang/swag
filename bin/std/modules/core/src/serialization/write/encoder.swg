@@ -197,7 +197,7 @@ impl Encoder
                 if !treated
                 {
                     var bufArr = cast(const ^u8) ptrArr.buffer
-                    loop i: ptrArr.count
+                    loop i in ptrArr.count
                     {
                         writeValue(bufArr, valueType)
                         bufArr += valueType.sizeof
@@ -223,7 +223,7 @@ impl Encoder
                 return
 
             // Generic structure save
-            visit field: structType.fields
+            visit field in structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize) do
                     continue

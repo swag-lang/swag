@@ -33,20 +33,20 @@ func day7B() assume
     let lines    = assume File.readAllLines(dataPath)
 
     var r0 = Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
-    visit l: lines
+    visit l in lines
     {
         discard r0.partialMatch(l)
         set.add(r0[1], Pile{StrConv.toS32(r0[2])})
     }
 
     var r1 = Parser.RegExp.create(#"\l+"#)
-    visit l: lines
+    visit l in lines
     {
         let n = r1.grepAll(l)
         if n.count == 1 do
             continue
         let me = set.find(n[0])
-        visit v: n[1..] do
+        visit v in n[1..] do
             me.value.childs.add(v)
     }
 
@@ -58,7 +58,7 @@ func day7B() assume
         var total: u64
         var sums:  Array'{ rank: u64, total: s64 }
 
-        visit v, i: w.childs
+        visit v, i in w.childs
         {
             let s = sum(set.find(v).value)
             sums.add({i, s})

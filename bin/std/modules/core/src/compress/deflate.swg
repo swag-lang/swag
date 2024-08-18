@@ -342,7 +342,7 @@ impl Deflate
     func radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->^SymFreq
     {
         var hist: [256 * 2] u32
-        loop i: numSyms
+        loop i in numSyms
         {
             let freq = sym0[i].key
             hist[freq & 0xFF] += 1
@@ -356,19 +356,19 @@ impl Deflate
         var curSym    = sym0
         var newSym    = sym1
         var passShift = 0
-        loop pass: totalPasses
+        loop pass in totalPasses
         {
             let pHist  = &hist[pass << 8]
             var curOfs = 0
 
             var offsets: [256] u32 = undefined
-            loop i: 256
+            loop i in 256
             {
                 offsets[i] = curOfs
                 curOfs += pHist[i]
             }
 
-            loop i: numSyms
+            loop i in numSyms
             {
                 var ptr = &offsets[(curSym[i].key >> passShift) & 0xFF]
                 newSym[dref ptr] = curSym[i]
@@ -504,7 +504,7 @@ impl Deflate
             var numUsedSyms = 0'u32
             let symCount    = &d.huffCount[tableNum, 0]
 
-            loop i: tableLen where symCount[i]
+            loop i in tableLen where symCount[i]
             {
                 syms0[numUsedSyms].key      = cast(u16) symCount[i]
                 syms0[numUsedSyms].symIndex = cast(u16) i
@@ -514,7 +514,7 @@ impl Deflate
             let syms = radixSortSyms(numUsedSyms, syms0, syms1)
             calculateMinimumRedundancy(syms, numUsedSyms)
 
-            loop i: numUsedSyms
+            loop i in numUsedSyms
             {
                 numCodes[syms[i].key] += 1
             }
@@ -704,7 +704,7 @@ impl Deflate
         var rleRepeatCount       = 0
 
         Memory.clear(&d.huffCount[2, 0], cast(u64) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
-        loop i: totalCodeSizesToPack
+        loop i in totalCodeSizesToPack
         {
             let codeSize = codeSizesToPack[i]
             if !codeSize
@@ -764,7 +764,7 @@ impl Deflate
 
         numBitLengths = Math.max(4, numBitLengths + 1)
         putBits(numBitLengths - 4, 4)
-        loop i: numBitLengths
+        loop i in numBitLengths
         {
             putBits(cast(u32) d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
         }
@@ -889,7 +889,7 @@ impl Deflate
                 d.totalLzBytes ^= 0xFFFF
             }
 
-            loop i: d.totalLzBytes
+            loop i in d.totalLzBytes
             {
                 putBits(cast(u32) d.dict[(d.lzCodeBufDictPos + i) & LzDictSizeMask], 8)
             }

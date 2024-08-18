@@ -30,14 +30,14 @@ func day1B()
     let lines    = assume File.readAllLines(dataPath)
 
     var values: Array's64
-    visit l: lines do
+    visit l in lines do
         values.add(assume StrConv.toS64(l[1..]) * (l[0] == `-` ? -1 : 1))
 
     var total = 0's64
     var done: HashSet's64
     loop
     {
-        visit v: values
+        visit v in values
         {
             total += v
             if done.contains(total)

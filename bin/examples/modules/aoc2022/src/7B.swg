@@ -26,7 +26,7 @@ func day7B()
     var folder:  String
     var folders: HashTable'(String, s32)
 
-    loop i: lines
+    loop i in lines
     {
         let l = #ref lines[i]
         if l[0] == `$` do
@@ -61,7 +61,7 @@ func day7B()
 
     var total     = folders.find("").value
     let needSpace = 30_000_000 - (70_000_000 - total)
-    visit name, val: folders
+    visit name, val in folders
     {
         if val >= needSpace and val < total do
             total = val

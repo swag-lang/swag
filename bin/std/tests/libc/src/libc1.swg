@@ -13,7 +13,7 @@ func titi(x, y: *s32)->s32
 
     var x = [1, 6, 3, 20, 4, 5]
     qsort(&x, @countof(x), 4, cast(*void) @mkcallback(&titi))
-    //visit v: x
+    //visit v in x
     //    @print(v, " ")
     @assert(x[0] == 1)
     @assert(x[1] == 3)

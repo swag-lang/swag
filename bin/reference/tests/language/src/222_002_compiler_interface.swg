@@ -62,7 +62,7 @@ This is called once all functions of the module have been typed, and this is the
     builderInit.appendString("public func glInitExtensions()\n{\n");
 
     // Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.
-    visit e: g_Functions
+    visit e in g_Functions
     {
         let typeFunc = cast(const *TypeInfoFunc) e.type
 
@@ -71,7 +71,7 @@ This is called once all functions of the module have been typed, and this is the
 
         // Make a wrapper function
         builderVars.appendFormat("public func %(", e.name)
-        visit p, i: typeFunc.parameters
+        visit p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%: %", i, p.pointedType.name)
@@ -82,7 +82,7 @@ This is called once all functions of the module have been typed, and this is the
         else
             builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
         builderVars.appendFormat("\treturn ext_%(", e.name)
-        visit p, i: typeFunc.parameters
+        visit p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%", i)

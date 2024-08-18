@@ -14,7 +14,7 @@ The `where` expression is evaluated **only once**, whatever the call, so it is t
         where T == s32 or T == s64
     {
         var total = 0'T
-        visit it: x do
+        visit it in x do
             total += it
         return total
     }
@@ -70,7 +70,7 @@ Instead of a single expression, `where` can be followed by a block that needs to
         }
     {
         var total = 0'T
-        visit it: x do
+        visit it in x do
             total += it
         return total
     }

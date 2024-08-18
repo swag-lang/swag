@@ -1,7 +1,7 @@
 func(T) largest(list: [..] T)->&T
 {
     var largest = #ref &list[0]
-    visit item: list
+    visit item in list
     {
         if item > largest do
             largest = item

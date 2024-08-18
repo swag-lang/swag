@@ -17,7 +17,7 @@ public impl Painter
         }
 
         // Paint
-        visit i: p.triangles.triIndices
+        visit i in p.triangles.triIndices
         {
             let tri  = p.triangles.triangles[i]
             let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
@@ -117,7 +117,7 @@ public impl Painter
             else
             {
                 var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
-                loop i: count
+                loop i in count
                 {
                     let v0   = polygon.getPoint(i)
                     let v1   = polygon.getPoint((i + 1) % count)
@@ -165,7 +165,7 @@ public impl Painter
         // Everything in the cache ?
         var serial = 0
         var dirty  = false
-        visit p: pathList.paths
+        visit p in pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
@@ -192,7 +192,7 @@ public impl Painter
         serial = 0
         flush  = null
 
-        visit p: pathList.paths
+        visit p in pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
@@ -235,7 +235,7 @@ public impl Painter
         {
             path.polygon.isClockwise = true
             var res = path.polygon.getClean()
-            visit p: res.paths do
+            visit p in res.paths do
                 fillPath(p, brush)
         }
     }

@@ -50,7 +50,7 @@ func day4A()
 
     var total: u64
     var r:     Parser.RegExp
-    visit l: lines
+    visit l in lines
     {
         discard catch r.match(#"(\d+)-(\d+),(\d+)-(\d+)"#, l)
         let v0a = assume StrConv.toS32(r.getCapture(1))

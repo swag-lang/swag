@@ -21,7 +21,7 @@ func wait(threads: *Thread...)
     while total > 0
     {
         let toTreat = Math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
-        loop i: toTreat
+        loop i in toTreat
         {
             Debug.assert(threads[i].isValid())
             handles[i] = threads[i].handle
@@ -32,7 +32,7 @@ func wait(threads: *Thread...)
     }
 
     // Close all
-    visit th: threads
+    visit th in threads
     {
         CloseHandle(th.handle)
         th.handle = null

@@ -42,7 +42,7 @@ private func sort()
         if a.value != b.value do
             return a.value <=> b.value
 
-        loop i: a.val
+        loop i in a.val
         {
             let it0 = map[a.val[i]]
             let it1 = map[b.val[i]]
@@ -73,13 +73,13 @@ func day7B()
     map[`2`] = 1
     map[`J`] = 0
 
-    visit l: lines
+    visit l in lines
     {
         let first = Tokenize.split(l, ` `'u8)
 
         var card:    Card
         var maxCount = 0
-        visit c: first[0]
+        visit c in first[0]
         {
             let it = map[c]
             card.count[it] += 1
@@ -87,7 +87,7 @@ func day7B()
                 maxCount = Math.max(maxCount, card.count[it])
         }
 
-        visit c, i: card.count
+        visit c, i in card.count
         {
             if c and i do
                 card.countV[c] += 1
@@ -120,7 +120,7 @@ func day7B()
     sort()
 
     var total: u64
-    visit c, idx: cards do
+    visit c, idx in cards do
         total += (idx + 1) * c.bid
 
     //Console.print("total: ", total)

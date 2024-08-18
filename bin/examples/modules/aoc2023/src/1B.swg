@@ -27,7 +27,7 @@ private func process(line: String)->u64
     var bestEnd   = 0'u64
     var bestStartValue, bestEndValue: u64
 
-    visit n, i: N
+    visit n, i in N
     {
         let start = Utf8.indexOf(line, n)
         if start != Swag.U64.Max and start < bestStart
@@ -53,7 +53,7 @@ func day1B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0'u64
-    visit l: lines
+    visit l in lines
     {
         total += process(l)
     }

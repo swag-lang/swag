@@ -13,7 +13,7 @@ impl A
     func(ptr: bool) toto(using self, stmt: code)
     {
         #assert ptr == true
-        loop idx: titi's32(1, 1)
+        loop idx in titi's32(1, 1)
         {
             let shift: u32 = 0
             loop 1

@@ -2,7 +2,7 @@
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {
-    visit &f: files
+    visit &f in files
     {
         var idx = 0'u64
         loop
@@ -19,7 +19,7 @@ func replace(dst, src: string, inSwg, inCpp: &s32)
             if f.newContent[idx..idx+6] != dst[..6]
             {
                 Console.printf("% => % %\n", f.content[idx..idx+6], dst, f.name)
-                loop i: 7 do f.newContent[idx+i] = dst[i]
+                loop i in 7 do f.newContent[idx+i] = dst[i]
                 f.changed = true
             }
 

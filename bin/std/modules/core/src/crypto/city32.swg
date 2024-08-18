@@ -23,7 +23,7 @@ impl City32
     {
         var b = crc
         var c = 9'u32
-        visit v: data
+        visit v in data
         {
             b = b * C1 + v
             c ^= b

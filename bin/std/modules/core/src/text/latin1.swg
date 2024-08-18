@@ -41,14 +41,14 @@ internal func isUpperUtf8(c: u8)->bool
 // Make an utf8 buffer upper case, dealing only with latin1 table
 func makeUpper(buffer: [..] u8)
 {
-    visit &p: buffer where isLowerUtf8(dref p) do
+    visit &p in buffer where isLowerUtf8(dref p) do
         dref p -= 0x20
 }
 
 // Make an utf8 buffer lower case, dealing only with latin1 table
 func makeLower(buffer: [..] u8)
 {
-    visit &p: buffer where isUpperUtf8(dref p) do
+    visit &p in buffer where isUpperUtf8(dref p) do
         dref p += 0x20
 }
 
@@ -64,7 +64,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
     if ignoreCase
     {
         #[Swag.Safety("boundcheck", false)]
-        loop i: minLen
+        loop i in minLen
         {
             var c1 = src[i]
             var c2 = dst[i]

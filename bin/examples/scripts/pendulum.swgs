@@ -125,7 +125,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             var lp: LinePath
             lp.start(linePath[0].x, linePath[0].y)
-            visit v: linePath do
+            visit v in linePath do
                 lp.curveTo(v.x, v.y)
             painter.drawPath(&lp, Argb.Red, 2)
         }

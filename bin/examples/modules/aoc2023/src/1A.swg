@@ -32,7 +32,7 @@ func day1A()
 
     var total = 0
 
-    visit l: lines
+    visit l in lines
     {
         let first = Utf8.indexOfAny(l, "0123456789")
         let last  = Utf8.lastIndexOfAny(l, "0123456789")

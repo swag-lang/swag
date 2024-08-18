@@ -5,7 +5,7 @@
         const array: [2] s32 = [1, 2]
 
         var result = 0
-        visit it: array
+        visit it in array
         {
             result += it
         }

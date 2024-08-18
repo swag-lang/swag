@@ -72,9 +72,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         let size = cast(f32) g_Font.size * 0.8
 
-        loop x: g_Img.width
+        loop x in g_Img.width
         {
-            loop y: g_Img.height
+            loop y in g_Img.height
             {
                 let col = g_Img.getPixelColor(x, y)
                 let idx = Math.map(cast(f32) col.r, 0, 255, 0, cast(f32) @countof(GrayRamp))

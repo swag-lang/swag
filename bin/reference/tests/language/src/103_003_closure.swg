@@ -67,7 +67,7 @@ You can capture arrays, structs, slices etc... as long as it fits in the maximum
     fct = closure|x|(toAdd)
     {
         var res = 0
-        visit v: x do
+        visit v in x do
             res += v
         res += toAdd
         return res

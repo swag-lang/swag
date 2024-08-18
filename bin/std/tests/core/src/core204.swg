@@ -39,7 +39,7 @@ const validTests: [] ValidTest = [
 
 #test
 {
-    visit &it: validTests
+    visit &it in validTests
     {
         @assert(isValid(it.inT) == it.outT)
     }

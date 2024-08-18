@@ -187,7 +187,7 @@ impl Surface
             return
 
         var monitors = Env.getMonitors()
-        visit m: monitors
+        visit m in monitors
         {
             var r1 = position
             r1.intersect(m.rect)

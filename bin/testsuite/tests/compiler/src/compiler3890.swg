@@ -17,7 +17,7 @@ impl A {
     var x = 0
 
     var a: A
-    visit x: a
+    visit x in a
     {
     }
 }

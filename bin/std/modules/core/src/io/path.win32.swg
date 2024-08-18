@@ -9,7 +9,7 @@ func isValidPathName(fullname: string)->bool
     if @countof(fullname) == 0 do
         return false
 
-    visit c: fullname
+    visit c in fullname
     {
         if c < 32 do
             return false
@@ -35,7 +35,7 @@ func isValidFileName(fullname: string)->bool
 {
     if @countof(fullname) == 0 do
         return false
-    visit c: fullname
+    visit c in fullname
     {
         if c < 32 do
             return false
@@ -72,7 +72,7 @@ func getRootLength(fullname: string)->u32
         if sourceLength < valueLength do
             return false
 
-        loop i: valueLength
+        loop i in valueLength
         {
             if value[i] != source[i] do
                 return false

@@ -7,7 +7,7 @@ func toto(val1, val2: s32)
 {
     let isFlags = G
 
-    loop it: 2
+    loop it in 2
     {
         if isFlags and false
         {

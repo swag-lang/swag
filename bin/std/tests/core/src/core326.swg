@@ -11,7 +11,7 @@ func gen(type: const *Swag.TypeInfoStruct)->String
 {
     var result: String = "return "
 
-    visit f: type.fields
+    visit f in type.fields
     {
         if #index do
             result += " and "

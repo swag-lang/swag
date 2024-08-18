@@ -1,21 +1,21 @@
 func toto8(s: string, x: s8...)->s8
 {
     var total = 0's8
-    visit c: x do total += c
+    visit c in x do total += c
     return total
 }
 
 func toto16(s: string, x: s16...)->s16
 {
     var total = 0's16
-    visit c: x do total += c
+    visit c in x do total += c
     return total
 }
 
 func toto32(s: string, x: s32...)->s32
 {
     var total = 0's32
-    visit c: x
+    visit c in x
     {
         //@print(cast(s64)c)
         //@print(" ")
@@ -29,7 +29,7 @@ func toto64(s: string, x: s64...)->s64
 {
     @assert(s == "titi")
     var total = 0's64
-    visit c: x
+    visit c in x
     {
         //@print(cast(s64)c)
         //@print(" ")

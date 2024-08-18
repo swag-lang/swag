@@ -289,7 +289,7 @@ func fromUnicode(dest: [..] u8, src: const [..] rune)->u64
     var remain = @countof(dest)
 
     var total = 0'u64
-    visit ch: src
+    visit ch in src
     {
         Debug.assert(remain >= 4, "destination buffer is too small")
         let sl  = @mkslice(dataof + total, remain)

@@ -42,7 +42,7 @@ impl Offset
 
     mtd clear()
     {
-        visit node: polyNodes.childs do
+        visit node in polyNodes.childs do
             Memory.delete(node)
         polyNodes.childs.clear()
         lowest.x = -1
@@ -62,7 +62,7 @@ impl Offset
         newNode.contour.add(path.buffer[0])
 
         var j, k: s32
-        loop i: 1 to highI
+        loop i in 1 to highI
         {
             if newNode.contour.buffer[j] != path.buffer[i]
             {
@@ -99,7 +99,7 @@ impl Offset
         doOffset(delta)
 
         var clpr: Transform
-        visit &p: destPolys do
+        visit &p in destPolys do
             clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
@@ -132,7 +132,7 @@ impl Offset
         var a  = 0'f64
         var j  = size - 1
         var pJ = poly[j]
-        loop i: size
+        loop i in size
         {
             var pI = poly[i]
             a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
@@ -153,7 +153,7 @@ impl Offset
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
-            visit node: polyNodes.childs do
+            visit node in polyNodes.childs do
                 Slice.reverse(node.contour.toSlice())
         }
     }
@@ -187,7 +187,7 @@ impl Offset
         if Math.isZeroEpsilon(delta)
         {
             destPolys.reserve(polyNodes.childs.count)
-            visit node: polyNodes.childs do
+            visit node in polyNodes.childs do
                 destPolys.add(node.contour)
             return
         }
@@ -217,7 +217,7 @@ impl Offset
             sinVal = -sinVal
 
         destPolys.reserve(polyNodes.childs.count * 2)
-        visit node, i: polyNodes.childs
+        visit node, i in polyNodes.childs
         {
             srcPoly = node.contour
 
@@ -246,7 +246,7 @@ impl Offset
                 {
                     var x = -1.0'f64
                     var y = -1.0'f64
-                    loop j: 4
+                    loop j in 4
                     {
                         let r1 = cround(srcPoly[0].x + x * delta)
                         let r2 = cround(srcPoly[0].y + y * delta)
@@ -267,12 +267,12 @@ impl Offset
             // Build normals
             normals.clear()
             normals.reserve(cast(u64) len)
-            loop j: len - 1 do
+            loop j in len - 1 do
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
             normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
 
             var k = len - 1
-            loop j: len do
+            loop j in len do
                 offsetPoint(j, &k, node.jointype)
             destPolys.add(destPoly)
         }
@@ -372,7 +372,7 @@ impl Offset
 
         var x = kN.x
         var y = kN.y
-        loop i: steps
+        loop i in steps
         {
             let r1 = cround(jP.x + x * deltaVal)
             let r2 = cround(jP.y + y * deltaVal)

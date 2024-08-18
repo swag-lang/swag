@@ -116,7 +116,7 @@ impl ListLine
     // Get an item by index
     mtd getItem(column: u32)->*ListItem
     {
-        visit item: items
+        visit item in items
         {
             if item.column == column do
                 return item
@@ -129,7 +129,7 @@ impl ListLine
     #[Swag.Discardable]
     mtd setItem(column: u32, name: string, icon: Icon = {})->*ListItem
     {
-        visit item: items
+        visit item in items
         {
             if item.column == column
             {
@@ -189,7 +189,7 @@ impl IWnd for ListView
         case Space:
             if focusLine.canCheck
             {
-                visit l: list.selModel
+                visit l in list.selModel
                 {
                     let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck do
@@ -209,7 +209,7 @@ impl IWnd for ListView
         case Enter:
             if focusLine.canCheck
             {
-                visit l: list.selModel
+                visit l in list.selModel
                 {
                     let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck do
@@ -292,7 +292,7 @@ impl IWnd for ListView
                 startSelIdx = endSelIdx
             }
 
-            loop i: startSelIdx to endSelIdx do
+            loop i in startSelIdx to endSelIdx do
                 list.selectLine(i, true)
             list.focusIndex = endSelIdx
             list.ensureVisibleLine(list.focusIndex)
@@ -407,7 +407,7 @@ impl IWnd for ListView
                         let checked = !list.checkModel.isSelected(idxLine)
                         if list.selModel.isSelected(idxLine)
                         {
-                            visit l: list.selModel do
+                            visit l in list.selModel do
                                 list.checkModel.select(l, checked)
                         }
                         else do
@@ -464,7 +464,7 @@ impl IWnd for ListView
                 let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 let idx0     = Math.min(startIdx, idx)
                 let idx1     = Math.max(startIdx, idx)
-                loop i: idx0 to idx1
+                loop i in idx0 to idx1
                 {
                     let idxLine = list.isVirtual ? i : list.lines[i].index
                     list.selModel.select(idxLine, true)
@@ -517,7 +517,7 @@ impl IWnd for ListView
         if list.isVirtual
         {
             Debug.assert(list.sigVirtualFill != null)
-            loop i: firstIdx to lastIdx
+            loop i in firstIdx to lastIdx
             {
                 var line: ListLine
                 list.sigVirtualFill(&line, i)
@@ -530,7 +530,7 @@ impl IWnd for ListView
         }
         else
         {
-            loop i: firstIdx to lastIdx
+            loop i in firstIdx to lastIdx
             {
                 let line = list.lines[i]
                 paintLine(bc, i, line, rect)
@@ -544,7 +544,7 @@ impl IWnd for ListView
         if list.header and list.listFlags.has(.VertLines)
         {
             rect = getClientRectPadding()
-            loop idx: 1 until list.header.items.count
+            loop idx in 1 until list.header.items.count
             {
                 var x = getXPos(list.header.items[idx].column)
                 x -= scrollPos.x
@@ -626,7 +626,7 @@ internal impl ListView
         }
 
         var format: RichStringFormat
-        visit item, idxItem: line.items
+        visit item, idxItem in line.items
         {
             var colorFg: Color = undefined
             if item.colorFg.a and !isSelected do
@@ -909,7 +909,7 @@ impl ListCtrl
         if selectionMode == .None or lineCount == 0 do
             return
 
-        loop i: start to end
+        loop i in start to end
         {
             let idxLine = isVirtual ? i : lines[i].index
             selModel.select(idxLine, select)
@@ -1084,7 +1084,7 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty() do
             return result
 
-        visit i: selModel
+        visit i in selModel
         {
             let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
@@ -1100,7 +1100,7 @@ impl ListCtrl
         if isVirtual or checkModel.isEmpty() do
             return result
 
-        visit i: checkModel
+        visit i in checkModel
         {
             let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
@@ -1123,7 +1123,7 @@ impl ListCtrl
     internal mtd mapIndexes()
     {
         idxLineToIdxList.clear()
-        visit l, idx: lines do
+        visit l, idx in lines do
             idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
@@ -1228,7 +1228,7 @@ impl ListCtrl
         {
             let toI       = tmp.popBack()
             let idxInsert = idxLineToIdxList.find(toI.index).value
-            visit l, i: toI.lines
+            visit l, i in toI.lines
             {
                 l.index = cptIdxLine
                 cptIdxLine += 1
@@ -1264,7 +1264,7 @@ impl ListCtrl
         while tmp.count
         {
             let toI = tmp.popBack()
-            visit l: toI.lines
+            visit l in toI.lines
             {
                 removeCount += 1
                 if l.expanded do
@@ -1296,14 +1296,14 @@ impl ListCtrl
     {
         func collapseRec(sl: [..] *ListLine)
         {
-            visit l: sl
+            visit l in sl
             {
                 l.expanded = false
                 collapseRec(l.lines.toSlice())
             }
         }
 
-        visit l: lines
+        visit l in lines
         {
             if l.expanded do
                 collapse(l)

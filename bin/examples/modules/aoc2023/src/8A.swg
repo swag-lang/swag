@@ -44,7 +44,7 @@ func day8A()
 
     var startNode, endNode: u64
 
-    visit l, i: lines
+    visit l, i in lines
     {
         if i == 0 do
             instructions = l.toString()
@@ -60,7 +60,7 @@ func day8A()
     }
 
     nodes.resize(lines.count - 2)
-    visit l, i: lines
+    visit l, i in lines
     {
         if i <= 1 do
             continue
@@ -75,7 +75,7 @@ func day8A()
     var curNode: u64 = startNode
     while curNode != endNode
     {
-        visit inst: instructions
+        visit inst in instructions
         {
             if inst == `L` do
                 curNode = nodes[curNode].left

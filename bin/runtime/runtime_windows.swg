@@ -328,7 +328,7 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
 
     var hasStarted = false
 
-    loop i: wh
+    loop i in wh
     {
         let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], &displacement, psym)
         let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], acast &displacement, &line)
@@ -348,7 +348,7 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
                 continue
 
             var samePath = true
-            loop it: @countof(fileName)
+            loop it in @countof(fileName)
             {
                 if fileName[it] == startAfter.fileName[it] do
                     continue

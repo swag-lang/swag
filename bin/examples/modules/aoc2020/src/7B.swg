@@ -44,10 +44,10 @@ func day7B0()
     var id: HashTable'(string, Array'({ count: u32, name: string }))
 
     var r = assume Parser.RegExp.create(#"\d+ \w+ \w+"#)
-    visit l: lines
+    visit l in lines
     {
         let split = Tokenize.split(l, " bags contain ")
-        visit v: r.grepAll(split[1])
+        visit v in r.grepAll(split[1])
         {
             let splitVal = Tokenize.split(v, ` `'u8, 1)
             let count    = assume StrConv.toU32(splitVal[0])
@@ -63,7 +63,7 @@ func day7B0()
             return 0
 
         var total: u32
-        visit v: it.value do
+        visit v in it.value do
             total += v.count + (v.count * count(id, v.name))
 
         return total
@@ -84,10 +84,10 @@ func day7B1()
     var id: HashTable'(string, Array'({ count: u32, name: string }))
 
     var r = assume Parser.RegExp.create(#"(\d+) (\w+ \w+)"#)
-    visit l: lines
+    visit l in lines
     {
         let split = Tokenize.split(l, " bags contain ")
-        visit v: r.grepAll(split[1])
+        visit v in r.grepAll(split[1])
         {
             discard r.match(v)
             let count = assume StrConv.toU32(r.getCapture(1))
@@ -103,7 +103,7 @@ func day7B1()
             return 0
 
         var total: u32
-        visit v: it.value do
+        visit v in it.value do
             total += v.count + (v.count * count(id, v.name))
 
         return total

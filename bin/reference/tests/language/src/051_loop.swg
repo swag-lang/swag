@@ -35,7 +35,7 @@ But you can name that index if you want.
     var cpt  = 0
     var cpt1 = 0
 
-    loop i: 5 // index is named 'i'
+    loop i in 5 // index is named 'i'
     {
         cpt += i
         cpt1 += #index // #index is always available, even when named
@@ -105,7 +105,7 @@ You can exit a loop with `break`.
 #test
 {
     var cpt = 0
-    loop x: 10
+    loop x in 10
     {
         if x == 5 do
             break
@@ -121,7 +121,7 @@ You can force to return to the loop evaluation with `continue`.
 #test
 {
     var cpt = 0
-    loop x: 10
+    loop x in 10
     {
         if x == 5 do
             continue // Do not count 5
@@ -143,7 +143,7 @@ You can add 'to' to loop from a given value *to* a given value. Note that the ra
 {
     var count = 0
     var sum   = 0
-    loop i: -1 to 1 // loop from -1 to 1, all included
+    loop i in -1 to 1 // loop from -1 to 1, all included
     {
         count += 1
         sum += i
@@ -160,7 +160,7 @@ You can exclude the last value with by using 'until' instead of 'to'.
 {
     // Will loop from 1 to 2 and **not** 1 to 3
     var cpt = 0
-    loop i: 1 until 3
+    loop i in 1 until 3
     {
         cpt += i
     }
@@ -211,7 +211,7 @@ You can add a 'where' instruction after the 'loop', to apply a filter on the ind
     var result = 0
 
     // Will only visit 'even' indexes.
-    loop i: 10 where i % 2 == 0
+    loop i in 10 where i % 2 == 0
     {
         result += i
     }

@@ -39,10 +39,10 @@ func day3A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    visit l: lines
+    visit l in lines
     {
         let div = l.length / 2
-        loop i: div
+        loop i in div
         {
             let c = l[i]
             let f = Slice.findLinear(cast(const [..] u8) l[div..], c)

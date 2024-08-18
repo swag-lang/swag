@@ -55,7 +55,7 @@ func day5A()
     let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
-    visit v: Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8) do
         op.add(assume StrConv.toS32(v))
 
     var ip, output = 0

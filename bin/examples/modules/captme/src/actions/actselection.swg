@@ -77,7 +77,7 @@ impl IActionUI for ActionSelection
 
         case CmdIdInvertSelection:
             var newSel: Array'u64
-            loop i: capture.forms where !capture.selection.contains(i) do
+            loop i in capture.forms where !capture.selection.contains(i) do
                 newSel.add(i)
             capture.selection = newSel
             capture.selectionHasChanged()

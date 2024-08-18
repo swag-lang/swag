@@ -32,7 +32,7 @@ public func(T) addCodec()
 func getCodec(dstEncoding, srcEncoding: SoundFileEncoding)->*CodecDesc
 {
     var found: *CodecDesc
-    visit &codec: g_Codecs
+    visit &codec in g_Codecs
     {
         if codec.itf.canEncode(dstEncoding) and codec.itf.canDecode(srcEncoding)
         {

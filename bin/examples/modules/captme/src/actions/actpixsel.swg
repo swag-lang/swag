@@ -25,7 +25,7 @@ impl IActionUI for ActionPixSel
         var hasPixSel = false
         if capture
         {
-            visit s: capture.selection
+            visit s in capture.selection
             {
                 let f = capture.forms[s]
                 let b = cast(*BaseForm) @dataof(f)
@@ -91,7 +91,7 @@ impl MainWnd
     {
         var result: retval
         let capture = getCapture()
-        visit s: capture.selection
+        visit s in capture.selection
         {
             let f = capture.forms[s]
             let b = cast(*BaseForm) @dataof(f)
@@ -114,14 +114,14 @@ impl MainWnd
         undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
-        visit f: forms do
+        visit f in forms do
             boundRects.add(f.boundRect())
 
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData
-            visit f, idx: dref p.forms
+            visit f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
@@ -152,14 +152,14 @@ impl MainWnd
         undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
-        visit f: forms do
+        visit f in forms do
             boundRects.add(f.boundRect())
 
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData
-            visit f, idx: dref p.forms
+            visit f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
@@ -197,7 +197,7 @@ impl MainWnd
 
         var infos: Array'Info
 
-        visit f: forms
+        visit f in forms
         {
             var i: Info
 
@@ -211,13 +211,13 @@ impl MainWnd
             }
 
             // Compute colors at the start and at the end of the column, to interpolate
-            loop x: undo.newImg.width
+            loop x in undo.newImg.width
             {
                 var col1, col2: Color
                 var pt = Math.Point{cast(f32) x, 0}
                 var y1 = cast(s32) (br.bottom() - capture.backImagePos.y)
                 y1 = undo.newImg.height - y1
-                loop i: undo.newImg.height
+                loop i in undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y1) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
@@ -232,7 +232,7 @@ impl MainWnd
 
                 var y2 = cast(s32) (br.y - capture.backImagePos.y)
                 y2 = undo.newImg.height - y2
-                loop i: undo.newImg.height
+                loop i in undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y2) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
@@ -255,7 +255,7 @@ impl MainWnd
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData
-            visit f, idx: dref p.forms
+            visit f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
@@ -315,7 +315,7 @@ impl MainWnd
         var undo = capture.newUndo(.CreateForm, serial)
 
         let startCount = capture.forms.count - forms.count
-        visit f: forms
+        visit f in forms
         {
             var br = f.boundRect()
 
@@ -342,7 +342,7 @@ impl MainWnd
         var masks: Array'Image
         pixSelSmartFill(serial, &masks)
 
-        visit f, idx: undo.oldForms
+        visit f, idx in undo.oldForms
         {
             let nf = cast(*FormImage) f
             nf.IForm.backCaptureMask(getApp(), masks.buffer + idx)
@@ -352,7 +352,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        loop i: startCount until capture.forms.count do
+        loop i in startCount until capture.forms.count do
             capture.selection.add(i)
     }
 }

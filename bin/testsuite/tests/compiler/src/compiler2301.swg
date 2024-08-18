@@ -15,6 +15,6 @@ var spaceTest: []rune = [
 #test
 {
     var g = 0
-    visit c: spaceTest do g += 1
+    visit c in spaceTest do g += 1
     @assert(g == 10)
 }

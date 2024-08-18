@@ -6,7 +6,7 @@ func decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64
         var src = cast(^TS) srcBuffer
 
         var write = 0
-        loop i: srcLength
+        loop i in srcLength
         {
             if write + @sizeof(TD) > destLength do
                 break

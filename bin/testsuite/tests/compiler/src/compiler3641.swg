@@ -4,7 +4,7 @@
     const t = [10, 10, 10]
 
     var x = 0'f32
-    loop i: 3
+    loop i in 3
     {
         defer x += t[i]
 

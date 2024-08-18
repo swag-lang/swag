@@ -35,19 +35,19 @@ func day10B() assume
     nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32
-    loop i: 256 do
+    loop i in 256 do
         arr.add(i)
 
     var cur, skip = 0
     loop 64
     {
-        visit n: nums
+        visit n in nums
         {
             tmp.clear()
-            loop i: n do
+            loop i in n do
                 tmp.add(arr[(cur + i) % 256])
             Slice.reverse(tmp.toSlice())
-            visit v, i: tmp do
+            visit v, i in tmp do
                 arr[(cur + i) % 256] = v
             cur = (cur + n + skip) % 256
             skip += 1
@@ -56,10 +56,10 @@ func day10B() assume
 
     var res: String
 
-    loop i: 16
+    loop i in 16
     {
         var v = arr[i * 16]
-        loop j: 15 do
+        loop j in 15 do
             v ^= arr[(i * 16) + j + 1]
         res += Format.toString("%{X}", v)
     }
@@ -67,7 +67,7 @@ func day10B() assume
     @assert(res == "62E2204D2CA4F4924F6E7A80F1288786")
 
     res.clear()
-    loop i: 16
+    loop i in 16
     {
         let v = arr[i * 16..(i * 16) + 15]
         res += Format.toString("%{X}", Slice.reduce(v, func(x, y) => x ^ y))

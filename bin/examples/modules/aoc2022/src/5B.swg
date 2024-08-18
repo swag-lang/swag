@@ -54,7 +54,7 @@ func day5B()
     var stacks:  Array'String
     var r:       Parser.RegExp
     var moveMode = false
-    visit l: lines
+    visit l in lines
     {
         if moveMode
         {
@@ -88,7 +88,7 @@ func day5B()
     }
 
     var total: String
-    visit s: stacks do
+    visit s in stacks do
         total += s[0]
 
     //Console.print("total: ", total)

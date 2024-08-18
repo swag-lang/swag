@@ -267,7 +267,7 @@ impl Wnd
     mtd destroyNow()
     {
         Debug.assert(!isPendingDestroy)
-        visit c: childs do
+        visit c in childs do
             c.destroyNow()
         surface.app.destroyWnd(self)
     }
@@ -279,7 +279,7 @@ impl Wnd
         if isPendingDestroy do
             return
         isPendingDestroy = true
-        visit c: childs do
+        visit c in childs do
             c.destroy()
         surface.app.postDestroy.add(self)
         invalidate()
@@ -290,7 +290,7 @@ impl Wnd
 
     internal mtd firstTopMostIndex()->u64
     {
-        visit c, i: childs
+        visit c, i in childs
         {
             if c.wndFlags.has(.TopMost) do
                 return i
@@ -513,7 +513,7 @@ impl Wnd
             painter.setTransform(curTrs)
 
             // Childs
-            visit c: childs
+            visit c in childs
             {
                 if c.wndFlags.has(.Hidden) do
                     continue
@@ -822,7 +822,7 @@ impl Wnd
         var centerLayout = Array.createTemp'(*Wnd)()
         var oldSizes     = Array.createTemp'Math.Point()
 
-        visit c: childs
+        visit c in childs
         {
             if c.anchorStyle == .None do
                 continue
@@ -854,7 +854,7 @@ impl Wnd
             c.setPosition(pos, false)
         }
 
-        visit c: childs
+        visit c in childs
         {
             oldSizes.add({c.position.width, c.position.height})
             if !c.isVisibleState() do
@@ -912,7 +912,7 @@ impl Wnd
             }
         }
 
-        visit c: centerLayout
+        visit c in centerLayout
         {
             var pos = clientRect
 
@@ -932,7 +932,7 @@ impl Wnd
             c.setPosition(pos, false)
         }
 
-        visit c, i: childs
+        visit c, i in childs
         {
             if !c.isVisible() do
                 continue
@@ -1004,7 +1004,7 @@ impl Wnd
     // Retrieve the child with the given id
     mtd getChildById(childId: string)->*Wnd
     {
-        visit c: childs
+        visit c in childs
         {
             if c.id == childId do
                 return c
@@ -1111,7 +1111,7 @@ impl Wnd
     // Register a keyboard shortcut
     mtd registerKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
     {
-        visit &c: keyShortcuts
+        visit &c in keyShortcuts
         {
             if c.mdf == mdf and c.key == key
             {
@@ -1126,7 +1126,7 @@ impl Wnd
     // Get the id associated with a shortcut. null if none
     mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->WndId
     {
-        visit c: keyShortcuts
+        visit c in keyShortcuts
         {
             if c.mdf == mdf and c.key == key do
                 return c.id
@@ -1142,7 +1142,7 @@ impl Wnd
     mtd getKeyShortcutNameFor(wndId: WndId)->String
     {
         var result: retval
-        visit c: keyShortcuts
+        visit c in keyShortcuts
         {
             if c.id == wndId
             {
@@ -1268,7 +1268,7 @@ impl Wnd
             return
         }
 
-        visit c: childs do
+        visit c in childs do
             c.updateCommandState()
     }
 
@@ -1339,7 +1339,7 @@ impl Wnd
         cxt.wnd = self
         cxt.id  = evt.id
 
-        visit act: actions
+        visit act in actions
         {
             if act.accept(cxt)
             {
@@ -1358,7 +1358,7 @@ impl Wnd
         cxt.wnd = self
         cxt.id  = evt.id
 
-        visit act: actions
+        visit act in actions
         {
             if act.accept(cxt)
             {
@@ -1385,7 +1385,7 @@ impl Wnd
 
         if !evt.accepted
         {
-            visit c: childs do
+            visit c in childs do
                 c.serializeState(ser)
         }
     }

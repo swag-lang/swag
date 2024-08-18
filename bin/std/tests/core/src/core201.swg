@@ -44,14 +44,14 @@ var utf8Map: [] Utf8Map = [
 
 #test
 {
-    visit &it: utf8Map
+    visit &it in utf8Map
     {
         @assert(isValidRune(it.c))
 
         var arr: [4] u8
         let eat  = encodeRune(arr, it.c)
         @assert(eat == @countof(it.str))
-        loop i: eat do
+        loop i in eat do
             @assert(arr[i] == it.str[i])
 
         var res = decodeRune(it.str)

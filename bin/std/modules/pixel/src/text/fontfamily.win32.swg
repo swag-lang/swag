@@ -55,7 +55,7 @@ impl FontFamily
 
             // Already here ?
             let ret = cast(*Array'FontFamilyEnumerate) cast(u64) lParam
-            visit here: dref ret
+            visit here in dref ret
             {
                 if here.name == x do
                     return TRUE
@@ -143,7 +143,7 @@ impl FontFamily
 
         if logFont.face.lfWidth == 0
         {
-            loop i: @countof(FontFamilyStyle)
+            loop i in @countof(FontFamilyStyle)
             {
                 logFont = enumerate.faces[i]
                 if logFont.face.lfWidth != 0 do

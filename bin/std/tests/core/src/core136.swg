@@ -10,7 +10,7 @@ using Core
     var arr1: Array'String
     arr1 = arr
 
-    loop i: 10 do
+    loop i in 10 do
         @assert(arr[cast(u32) i] == arr1[cast(u32) i])
     @assert(arr.buffer != arr1.buffer)
     @assert(arr.count == arr1.count)

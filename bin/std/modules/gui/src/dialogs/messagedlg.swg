@@ -54,7 +54,7 @@ public impl MessageDlg
 
         // Width
         var w = 0'f32
-        visit btn: buttons do
+        visit btn in buttons do
             w += btn.position.width
         w += cast(f32) ((buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding

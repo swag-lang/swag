@@ -79,7 +79,7 @@ impl IForm for FormPolygon
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        visit &pt: points
+        visit &pt in points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -92,7 +92,7 @@ impl IForm for FormPolygon
         let fx   = newSizeX / rect.width
         let fy   = newSizeY / rect.height
 
-        visit &pt: points
+        visit &pt in points
         {
             pt.x -= rect.x
             pt.y -= rect.y
@@ -105,7 +105,7 @@ impl IForm for FormPolygon
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        visit &pt: points
+        visit &pt in points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -134,7 +134,7 @@ impl IForm for FormPolygon
         var y0    = Swag.F32.Max
         var x1    = 0'f32
         var y1    = 0'f32
-        visit &pt: points
+        visit &pt in points
         {
             x0 = Math.min(x0, pt.x - bSize)
             y0 = Math.min(y0, pt.y - bSize)
@@ -158,7 +158,7 @@ impl IForm for FormPolygon
         var rect = boundRect()
 
         paintPoints.clear()
-        visit pt: points
+        visit pt in points
         {
             let x0 = (pt.x * z) - (rect.x * z) + paintPos.x
             let x1 = (pt.y * z) - (rect.y * z) + paintPos.y
@@ -177,7 +177,7 @@ impl IForm for FormPolygon
         {
             computePaintCoords(z)
             gizmo.anchors.clear()
-            visit pt: paintPoints do
+            visit pt in paintPoints do
                 gizmo.anchors.add({pt.x, pt.y})
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
@@ -198,7 +198,7 @@ impl IForm for FormPolygon
         if backColor.a == 0
         {
             var v = Math.Vector2{pt.x, pt.y}
-            loop i: paintPoints
+            loop i in paintPoints
             {
                 let ni = (i + 1) % paintPoints.count
                 let p0 = Math.Vector2{paintPoints[i].x, paintPoints[i].y}
@@ -235,7 +235,7 @@ impl IForm for FormPolygon
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i: 1 until paintPoints.count do
+        loop i in 1 until paintPoints.count do
             linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         linePath.close()
 

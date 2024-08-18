@@ -22,7 +22,7 @@ func entry(th: Thread)
     ths.resize(files.count)
 
     var validImgs = 0
-    visit f: files
+    visit f in files
     {
         if !Image.canLoad(f.fullname) do
             continue
@@ -33,6 +33,6 @@ func entry(th: Thread)
         validImgs += 1
     }
 
-    loop i: validImgs do
+    loop i in validImgs do
         ths[i].wait()
 }

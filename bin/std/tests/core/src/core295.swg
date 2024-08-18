@@ -6,7 +6,7 @@ using Core
     loop 65 do
         h.add(#index)
 
-    visit v: h
+    visit v in h
     {
         @assert(h.contains(v))
     }

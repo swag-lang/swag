@@ -19,9 +19,9 @@ func entry(th: Thread)
     catch createThread(&th[0], &entry)
     catch createThread(&th[1], &entry)
     catch createThread(&th[2], &entry)
-    visit &t: th do
+    visit &t in th do
         catch t.start()
-    visit &t: th do
+    visit &t in th do
         t.wait()
     @assert(G == 3 * ITER)
 }

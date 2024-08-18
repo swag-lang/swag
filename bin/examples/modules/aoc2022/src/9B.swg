@@ -441,7 +441,7 @@ func day9B()
     var set:  HashSet'W
     var rope: [10] W
 
-    visit l: lines
+    visit l in lines
     {
         let cmd = Tokenize.split(l, ` `'u8)
         let cpt = assume StrConv.toS32(cmd[1])
@@ -464,7 +464,7 @@ func day9B()
             rope[0].x += incx
             rope[0].y += incy
 
-            loop i: 1 until @countof(rope)
+            loop i in 1 until @countof(rope)
             {
                 var dx  = rope[i - 1].x - rope[i].x
                 var dy  = rope[i - 1].y - rope[i].y

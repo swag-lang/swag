@@ -251,7 +251,7 @@ func day9A()
     struct W { x, y: s32 }
     var H, T: W
 
-    visit l: lines
+    visit l in lines
     {
         let cmd = Tokenize.split(l, ` `'u8)
         let cpt = assume StrConv.toS32(cmd[1])

@@ -73,7 +73,7 @@ impl RichEditCtrl
                 var rankBeg, rankEnd: u64
                 if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
-                    loop i: rankEnd - rankBeg
+                    loop i in rankEnd - rankBeg
                     {
                         result.text.add(lines[li].chars[rankBeg + i])
                         result.styles.add(lines[li].styles[rankBeg + i])
@@ -240,7 +240,7 @@ impl RichEditCtrl
 
         if !selRect
         {
-            loop i: #self.runes
+            loop i in #self.runes
             {
                 let c = #self.runes[i]
                 let s = #self.styles[i]
@@ -392,7 +392,7 @@ public impl RichEditCtrl
     mtd clear()
     {
         clearUndo()
-        visit l: lines do
+        visit l in lines do
             freeLines.add(l)
         lines.clear()
         countVisibleLines    = 0
@@ -614,7 +614,7 @@ public impl RichEditCtrl
         {
             var sb = getBegSelection()
             var se = getEndSelection()
-            loop caretI: sb.lineIndex to se.lineIndex
+            loop caretI in sb.lineIndex to se.lineIndex
             {
                 var cp = se
                 cp.lineIndex = caretI
@@ -807,7 +807,7 @@ public impl RichEditCtrl
         result.h += cast(f32) ((lines.count - 1) * lineSpacing)
 
         let fontR = getFont().getFont(styles[0].fontMode)
-        visit l: lines
+        visit l in lines
         {
             let arr     = Painter.getGlyphs(l.chars, fontR)
             let measure = Painter.measureString(arr)

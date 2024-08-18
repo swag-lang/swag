@@ -57,7 +57,7 @@ impl GizmoPoints
                 hotAnchor = Swag.U32.Max
 
                 var rect: Math.Rectangle = undefined
-                visit c, i: anchors
+                visit c, i in anchors
                 {
                     rect.x = c.x - anchorSize * 0.5
                     rect.y = c.y - anchorSize * 0.5
@@ -79,7 +79,7 @@ impl GizmoPoints
     {
         let anchorSize2 = anchorSize * 0.5
         let color       = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
-        visit c: anchors
+        visit c in anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
             painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, 1)

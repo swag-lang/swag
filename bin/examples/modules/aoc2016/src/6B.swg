@@ -19,18 +19,18 @@ func day6B() assume
     var freq: [8, 26] u32
     var pwd:  String = "        "
 
-    visit l: lines
+    visit l in lines
     {
-        visit c, i: l
+        visit c, i in l
         {
             freq[i, c - `a`] += 1
         }
     }
 
     var best: [8] u32 = Swag.U32.Max
-    loop c0: 8
+    loop c0 in 8
     {
-        loop c1: 26
+        loop c1 in 26
         {
             let v = freq[c0, c1]
             if v and v < best[c0]

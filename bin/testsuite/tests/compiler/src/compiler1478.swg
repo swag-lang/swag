@@ -3,7 +3,7 @@
 {
     let arr : const [..] u32 = [10, 20, 30, 40]
     var cpt = 0
-    visit xxx: arr
+    visit xxx in arr
     {
         //@print(cast(s64) xxx)
         cpt += cast(s32) xxx

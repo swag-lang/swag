@@ -95,7 +95,7 @@ func day7A()
     let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
-    visit v: Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8) do
         op.add(assume StrConv.toS32(v))
 
     var phase = [0, 1, 2, 3, 4]
@@ -103,7 +103,7 @@ func day7A()
     loop
     {
         var input, cpt = 0
-        loop amp: 5
+        loop amp in 5
         {
             input = run(op, [phase[cpt], input])
             cpt += 1

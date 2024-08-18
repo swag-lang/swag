@@ -35,7 +35,7 @@ func day7B()
 
     var crabs: Array's32
     var mean:  s32
-    visit v: str
+    visit v in str
     {
         let c = assume StrConv.toS32(v)
         mean += c
@@ -46,7 +46,7 @@ func day7B()
         mean = cast(s32) (mean / cast(f32) crabs.count)
 
     var total = 0
-    visit v: crabs
+    visit v in crabs
     {
         let n = Math.abs(v - mean)
         total += (n * (n + 1)) / 2

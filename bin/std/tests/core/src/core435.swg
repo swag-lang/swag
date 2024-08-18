@@ -36,7 +36,7 @@ const TestCases: [] Test = [
 
 #test
 {
-    visit t: TestCases
+    visit t in TestCases
     {
         var parser: Parser.RegExp
         assume parser.compile(t.exp)

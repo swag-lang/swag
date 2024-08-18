@@ -187,7 +187,7 @@ impl Decoder
             if treated do
                 return
 
-            visit field: structType.fields
+            visit field in structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize) do
                     continue

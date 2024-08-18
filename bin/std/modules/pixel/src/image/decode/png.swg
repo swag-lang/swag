@@ -347,34 +347,34 @@ impl Decoder
                 Memory.copy(destOff, src, rowStrideIn)
 
             case Sub:
-                loop i: inChannels do
+                loop i in inChannels do
                     destOff[i] = src[i]
-                loop k: nk do
+                loop k in nk do
                     destOff[inChannels + k] = cast(u8) #bit (src[inChannels + k] + #over destOff[k])
 
             case Up:
-                loop k: rowStrideIn do
+                loop k in rowStrideIn do
                     destOff[k] = cast(u8) #bit (src[k] + #over up[k])
 
             case Average:
-                loop i: inChannels
+                loop i in inChannels
                 {
                     let avg = up[i] >> 1
                     destOff[i] = cast(u8) #bit (src[i] + #over avg)
                 }
-                loop k: nk
+                loop k in nk
                 {
                     let avg = cast(u8) ((cast(u16) up[inChannels + k] + cast(u16) destOff[k]) >> 1)
                     destOff[inChannels + k] = cast(u8) #bit (src[inChannels + k] + #over avg)
                 }
 
             case Paeth:
-                loop i: inChannels
+                loop i in inChannels
                 {
                     let paeth = cast(u32) filterPaeth(0, up[i], 0)
                     destOff[i] = cast(u8) #bit (src[i] + paeth)
                 }
-                loop k: nk
+                loop k in nk
                 {
                     let paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
                     destOff[inChannels + k] = cast(u8) #bit (src[inChannels + k] + #over paeth)
@@ -411,7 +411,7 @@ impl Decoder
     {
         var tmpArr: Array'u8
         var input   = dcmpBuf.buffer
-        loop p: 7
+        loop p in 7
         {
             let x = (header.width - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
             let y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
@@ -424,15 +424,15 @@ impl Decoder
             defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
 
             var t = tmpArr.buffer
-            loop j: y
+            loop j in y
             {
-                loop i: x
+                loop i in x
                 {
                     let out_y   = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
                     let out_x   = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     var out_off = out_y * header.width * inChannels
                     out_off += out_x * inChannels
-                    loop z: inChannels do
+                    loop z in inChannels do
                         dstPixels[out_off + z] = t[z]
                     t += inChannels
                 }

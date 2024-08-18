@@ -205,7 +205,7 @@ func day10A() assume
 
     var cycle, x = 1
     var total = 0
-    visit l: lines
+    visit l in lines
     {
         toCheck()
         if l != "noop"

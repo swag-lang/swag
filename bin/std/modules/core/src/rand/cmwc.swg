@@ -15,7 +15,7 @@ impl CMWC4096
     {
         var rng: MWC
         rng.seedU32(value)
-        loop idx: q do
+        loop idx in q do
             q[idx] = rng.nextU32()
         i = 4095
         c = value % 809430660

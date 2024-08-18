@@ -421,11 +421,11 @@ By type reflection, you can loop/visit all values of an enum.
     enum RGB { R, G, B }
 
     var cpt = 0
-    loop idx: RGB do
+    loop idx in RGB do
         cpt += 1
     @assert(cpt == 3)
 
-    visit val: RGB
+    visit val in RGB
     {
         switch val
         {

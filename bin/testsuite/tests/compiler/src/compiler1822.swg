@@ -22,7 +22,7 @@ impl IPrintable for Point
     var pt: Point
 
     let type = @typeof(pt)
-    visit itf: type.interfaces
+    visit itf in type.interfaces
     {
         /*if(itf.pointedType == IPrintable)
         {

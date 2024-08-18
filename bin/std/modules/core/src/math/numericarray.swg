@@ -17,7 +17,7 @@ impl NumericArray
 
     mtd const opEquals(other: Self)->bool
     {
-        loop i: N
+        loop i in N
         {
             if buf[i] != other.buf[i] do
                 return false
@@ -29,7 +29,7 @@ impl NumericArray
     mtd(op: string) const opBinary(other: Self)->Self
     {
         var result: retval
-        loop i: N
+        loop i in N
         {
             #if op == "+" #do
                 result.buf[i] = buf[i] + other.buf[i]
@@ -48,7 +48,7 @@ impl NumericArray
     #[Overload]
     func(op: string) opAssign(using self, value: T)
     {
-        loop i: N
+        loop i in N
         {
             #if op == "+=" #do
                 buf[i] += value
@@ -66,7 +66,7 @@ impl NumericArray
     #[Overload]
     func(op: string) opAssign(using self, value: Self)
     {
-        loop i: N
+        loop i in N
         {
             #if op == "+=" #do
                 buf[i] += value.buf[i]
@@ -84,7 +84,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: T)
     {
-        loop i: N do
+        loop i in N do
             buf[i] = what
     }
 
@@ -92,7 +92,7 @@ impl NumericArray
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
-        loop i: N do
+        loop i in N do
             buf[i] = what[i]
     }
 
@@ -111,7 +111,7 @@ impl NumericArray
     mtd set(values: T...)
     {
         Debug.assert(@countof(values) == N)
-        loop i: N do
+        loop i in N do
             buf[i] = values[i]
     }
 
@@ -119,7 +119,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: T)
     {
-        loop i: N do
+        loop i in N do
             buf[i] = (buf[i] * value1) + value2
     }
 
@@ -127,7 +127,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: Self)
     {
-        loop i: N do
+        loop i in N do
             buf[i] = (buf[i] * value1[i]) + value2.buf[i]
     }
 }

@@ -31,7 +31,7 @@ func fillGrid()
     rng.seedNow()
 
     // Put a mine at random
-    visit &g: g_Grid
+    visit &g in g_Grid
     {
         @init(g)
         if rng.nextU32(0, 100) < g_Density
@@ -42,13 +42,13 @@ func fillGrid()
     }
 
     // Count neighbours for each cell
-    loop i: GridSize
+    loop i in GridSize
     {
-        loop j: GridSize
+        loop j in GridSize
         {
-            loop ii: -1 to 1
+            loop ii in -1 to 1
             {
-                loop jj: -1 to 1
+                loop jj in -1 to 1
                 {
                     let ti = i + ii
                     let tj = j + jj
@@ -78,9 +78,9 @@ func floodFill(x, y: s32)
         if g_Grid[pt.x, pt.y].score do
             continue
 
-        loop ii: -1 to 1
+        loop ii in -1 to 1
         {
-            loop jj: -1 to 1
+            loop jj in -1 to 1
             {
                 let ti = pt.x + ii
                 let tj = pt.y + jj
@@ -165,7 +165,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.fillRect(bk, Argb.White)
 
         // Paint grid
-        loop i: GridSize
+        loop i in GridSize
         {
             let x = CellSize + (i * CellSize)
             let w = CellSize * GridSize
@@ -175,9 +175,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         // Paint content
         painter.setParams(.Antialiased)
-        loop i: GridSize
+        loop i in GridSize
         {
-            loop j: GridSize
+            loop j in GridSize
             {
                 let x    = CellSize + (i * CellSize)
                 let y    = CellSize + (j * CellSize)

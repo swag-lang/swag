@@ -46,7 +46,7 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total, one: u64
-    visit l: lines
+    visit l in lines
     {
         one += catch StrConv.toU64(l)
         if l.isEmpty()

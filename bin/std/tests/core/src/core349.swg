@@ -16,7 +16,7 @@ using Core
     var res1    = try decomp.decompress(res.toSlice())
 
     @assert(arr.count == res1.count)
-    visit v, i: arr
+    visit v, i in arr
     {
         @assert(v == res1[i])
     }

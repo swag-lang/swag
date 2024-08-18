@@ -2,7 +2,7 @@
 
 func toto(x: ...)
 {
-    visit &a: x
+    visit &a in x
     {
     }
 }

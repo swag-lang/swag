@@ -74,7 +74,7 @@ impl Undo
         if kind == .SetFormFromModel
         {
             Memory.delete(mdlValue, mdlType)
-            visit f: oldForm do
+            visit f in oldForm do
                 Memory.delete(f, mdlType)
         }
     }
@@ -118,7 +118,7 @@ impl Undo
 
         case SetImageInside:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage do
@@ -131,7 +131,7 @@ impl Undo
 
         case SetText:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -142,7 +142,7 @@ impl Undo
 
         case SetFont:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -154,7 +154,7 @@ impl Undo
 
         case SetFontStyle:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -165,7 +165,7 @@ impl Undo
 
         case SetFormFromModel:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -180,7 +180,7 @@ impl Undo
             minP      = Swag.S32.Max
             maxP      = Swag.S32.Min
             oldS32.reserve(selection.count)
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -194,7 +194,7 @@ impl Undo
             minP      = Swag.S32.Max
             maxP      = Swag.S32.Min
             oldS32.reserve(selection.count)
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -208,7 +208,7 @@ impl Undo
 
         case SetTypedValue:
             selection = capture.selection
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -236,7 +236,7 @@ impl Undo
             toFreeForms.clear()
             selection.sort()
             var offset = 0
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s - offset]
                 offset += 1
@@ -290,7 +290,7 @@ impl Undo
             capture.dirtyBackImg = true
 
         case SetImageInside:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage do
@@ -303,7 +303,7 @@ impl Undo
             }
 
         case SetText:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -314,7 +314,7 @@ impl Undo
             }
 
         case SetFont:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -326,7 +326,7 @@ impl Undo
             }
 
         case SetFontStyle:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -337,7 +337,7 @@ impl Undo
             }
 
         case SetFormFromModel:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -349,7 +349,7 @@ impl Undo
             }
 
         case SetTypedValue:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -360,7 +360,7 @@ impl Undo
             capture.updateModelFromSelection()
 
         case AlignLeft:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -368,7 +368,7 @@ impl Undo
             }
 
         case AlignRight:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -376,7 +376,7 @@ impl Undo
             }
 
         case AlignCenter:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -384,7 +384,7 @@ impl Undo
             }
 
         case AlignTop:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -392,7 +392,7 @@ impl Undo
             }
 
         case AlignBottom:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -400,7 +400,7 @@ impl Undo
             }
 
         case AlignMiddle:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -416,7 +416,7 @@ impl Undo
         case MoveCapture:
             capture.backImagePos.x += newPosX
             capture.backImagePos.y += newPosY
-            visit f: capture.forms do
+            visit f in capture.forms do
                 f.moveForm(newPosX, newPosY)
             capture.width += newSizeX
             capture.height += newSizeY
@@ -424,7 +424,7 @@ impl Undo
             capture.height = Math.clamp(capture.height, Capture.MinSize, Capture.MaxSize)
 
         case OffsetSelection:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 f.moveForm(newPosX, newPosY)
@@ -433,7 +433,7 @@ impl Undo
         case MoveToFront:
             capture.hotForm = Swag.U64.Max
             var dstIdx = cast(s32) (capture.forms.count - 1)
-            loop #back i: selection
+            loop #back i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != dstIdx
@@ -451,7 +451,7 @@ impl Undo
         case MoveToBack:
             capture.hotForm = Swag.U64.Max
             var dstIdx = 0
-            loop i: selection
+            loop i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != dstIdx
@@ -468,7 +468,7 @@ impl Undo
 
         case MoveForward:
             capture.hotForm = Swag.U64.Max
-            loop #back i: selection
+            loop #back i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != capture.forms.count - 1
@@ -483,7 +483,7 @@ impl Undo
 
         case MoveBackward:
             capture.hotForm = Swag.U64.Max
-            loop i: selection
+            loop i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != 0
@@ -501,7 +501,7 @@ impl Undo
 
         case CreateForm:
             toFreeForms.clear()
-            visit f: oldForms do
+            visit f in oldForms do
                 capture.forms.add(f)
         }
 
@@ -543,7 +543,7 @@ impl Undo
             capture.dirtyBackImg = true
 
         case SetImageInside:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage do
@@ -556,7 +556,7 @@ impl Undo
             }
 
         case SetText:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -567,7 +567,7 @@ impl Undo
             }
 
         case SetFont:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -579,7 +579,7 @@ impl Undo
             }
 
         case SetFontStyle:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText do
@@ -590,7 +590,7 @@ impl Undo
             }
 
         case SetFormFromModel:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -602,7 +602,7 @@ impl Undo
             }
 
         case SetTypedValue:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)) do
@@ -613,7 +613,7 @@ impl Undo
             capture.updateModelFromSelection()
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
-            visit s, i: selection
+            visit s, i in selection
             {
                 let b = cast(*BaseForm) @dataof(capture.forms[s])
                 b.x = oldS32[i]
@@ -628,13 +628,13 @@ impl Undo
         case MoveCapture:
             capture.backImagePos.x += -newPosX
             capture.backImagePos.y += -newPosY
-            visit f: capture.forms do
+            visit f in capture.forms do
                 f.moveForm(-newPosX, -newPosY)
             capture.width -= newSizeX
             capture.height -= newSizeY
 
         case OffsetSelection:
-            visit s: selection
+            visit s in selection
             {
                 let f = capture.forms[s]
                 f.moveForm(-newPosX, -newPosY)

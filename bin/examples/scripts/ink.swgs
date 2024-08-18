@@ -46,14 +46,14 @@ impl Drop
     mtd constructPath()
     {
         lp.start(vertices[0].x, vertices[0].y)
-        visit v: vertices do
+        visit v in vertices do
             lp.lineTo(v.x, v.y)
         lp.close()
     }
 
     mtd construct()
     {
-        loop i: circleDetail
+        loop i in circleDetail
         {
             let angle = map(cast(f32) i, 0.0, cast(f32) circleDetail, 0, ConstF32.TwoPi)
             var v     = Vector2{cos(angle), sin(angle)}
@@ -68,7 +68,7 @@ impl Drop
     mtd marble(other: Drop)
     {
         let otherr = other.r * other.r
-        visit v: lp.polygon.points
+        visit v in lp.polygon.points
         {
             var p    = v - other.center
             let root = sqrt(1 + (otherr / p.lengthSquared()))
@@ -93,7 +93,7 @@ func addInk(x, y, r: f32, col: Color)
         .construct()
     }
 
-    visit other: drops do
+    visit other in drops do
         other.marble(drop)
     drops.add(drop)
 }
@@ -140,7 +140,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
             else
             {
-                visit other: drops do
+                visit other in drops do
                     other.marble(dref drops.back())
             }
         }
@@ -149,7 +149,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             newDrop = true
         }
 
-        visit drop: drops do
+        visit drop in drops do
             drop.show(painter)
 
         wnd.invalidate()

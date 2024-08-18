@@ -18,7 +18,7 @@ struct(T) IsSet
     {
         var str    = StrConv.StringBuilder{}
         let typeof = @typeof(T)
-        visit f: typeof.fields do
+        visit f in typeof.fields do
             str.appendFormat("%: bool\n", f.name)
         return str.toString()
     }
@@ -45,7 +45,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     var allArgs: retval
 
     // Clean all arguments
-    visit it: args
+    visit it in args
     {
         var oneArg = it
         oneArg = Tokenize.eatSpaces(oneArg)
@@ -77,7 +77,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
 
 func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->const *Swag.TypeValue
 {
-    visit it: typeStruct.fields
+    visit it in typeStruct.fields
     {
         // Test normal name (field)
         if it.name == name do

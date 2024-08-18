@@ -5,7 +5,7 @@
 func toto()
 {
     var x: [4] s32
-    loop i: 10
+    loop i in 10
     {
         @assert(x[i] == 0)
     }

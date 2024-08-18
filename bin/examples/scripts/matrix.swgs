@@ -28,7 +28,7 @@ var g_Rng:  Random.Rng
 func initC(i: s32)
 {
     g_RD[i].length = g_Rng.nextS32(MinTrailSize, MaxTrailSize - 1)
-    loop j: g_RD[i].length do
+    loop j in g_RD[i].length do
         g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
     g_RD[i].speed = g_Rng.nextF32(400, 800)
     g_RD[i].y     = 0
@@ -40,7 +40,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
     case Create:
         g_Font = wnd.getTheme().createDefaultFont(FontSize)
-        loop i: MaxColumns do
+        loop i in MaxColumns do
             initC(i)
 
     case Paint:
@@ -51,10 +51,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.fillRect(rect, Argb.Black)
 
         var str: String
-        loop i: MaxColumns
+        loop i in MaxColumns
         {
             let x = cast(f32) i * FontSize
-            loop j: g_RD[i].length
+            loop j in g_RD[i].length
             {
                 // Once in a while, change the rune in the trail
                 if g_Rng.nextU32(0, 300) < 2 do

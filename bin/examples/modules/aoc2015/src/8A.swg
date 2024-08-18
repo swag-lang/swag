@@ -29,7 +29,7 @@ func day8A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total0, total1: s64
-    visit l: lines
+    visit l in lines
     {
         var i = 0
         while i < l.length

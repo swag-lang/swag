@@ -37,7 +37,7 @@ impl RichEditCtrl
         result.y = line.drawingRect.bottom()
 
         result.x = getMarginLeft()
-        loop i: Math.min(cp.charPosInLine, line.length())
+        loop i in Math.min(cp.charPosInLine, line.length())
         {
             var size = getRuneSize(line, i, result.x)
             result.x += size.x
@@ -166,7 +166,7 @@ impl RichEditCtrl
 
                 if count
                 {
-                    loop j: count
+                    loop j in count
                     {
                         var size = getRuneSize(line, j, rect.x)
                         rect.width = size.x

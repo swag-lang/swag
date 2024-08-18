@@ -1,6 +1,6 @@
 func combine(fullnames: string...)
 {
-    visit one: fullnames
+    visit one in fullnames
     {
         @print(one)
     }

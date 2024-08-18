@@ -33,7 +33,7 @@ impl IconBar
 {
     internal mtd computeLayout()
     {
-        visit c: childs
+        visit c in childs
         {
             if iconBarFlags.has(.Vertical) do
                 c.dockStyle = .Top

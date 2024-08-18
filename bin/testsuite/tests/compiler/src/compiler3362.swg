@@ -10,7 +10,7 @@ func toto()->string
 //#[Swag.PrintBc]
 #test
 {
-    visit i: toto()
+    visit i in toto()
     {
     }
 

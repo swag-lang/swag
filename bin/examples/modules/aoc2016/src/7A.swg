@@ -22,7 +22,7 @@ func day7A() assume
 
     var cpt, total = 0
     var ok = false
-    visit l: lines
+    visit l in lines
     {
         cpt = 0
         ok  = false

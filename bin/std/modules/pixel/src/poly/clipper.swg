@@ -192,7 +192,7 @@ impl Transform
 {
     public mtd opDrop()
     {
-        visit it: edgeList do
+        visit it in edgeList do
             Memory.delete(it.item0, it.item1)
     }
 
@@ -228,7 +228,7 @@ impl Transform
         rangeTest(pg.buffer[highI])
         initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
         initEdge(&edges[highI], &edges[0], &edges[highI - 1], pg.buffer[highI])
-        loop #back i: 1 until highI
+        loop #back i in 1 until highI
         {
             rangeTest(pg.buffer[i])
             initEdge(&edges[i], &edges[i + 1], &edges[i - 1], pg.buffer[i])
@@ -629,7 +629,7 @@ impl Transform
         minimaList.sort()
 
         scanBeamList.clear()
-        visit lm: minimaList
+        visit lm in minimaList
         {
             insertScanbeam(lm.y)
             var e = lm.leftBound
@@ -1016,14 +1016,14 @@ impl Transform
 
     mtd clearJoins()
     {
-        visit p: joinList do
+        visit p in joinList do
             Memory.delete(p)
         joinList.clear()
     }
 
     mtd clearGhostJoins()
     {
-        visit p: ghostJoinList do
+        visit p in ghostJoinList do
             Memory.delete(p)
         ghostJoinList.clear()
     }
@@ -1050,7 +1050,7 @@ impl Transform
         }
 
         // Fix orientations
-        visit outRec: polyOuts
+        visit outRec in polyOuts
         {
             if !outRec.pts or outRec.isOpen do
                 continue
@@ -1061,7 +1061,7 @@ impl Transform
         if joinList.count do
             joinCommonEdges()
 
-        visit outRec: polyOuts
+        visit outRec in polyOuts
         {
             if !outRec.pts do
                 continue
@@ -1080,7 +1080,7 @@ impl Transform
 
     mtd doSimplePolygons()
     {
-        visit outrec: polyOuts
+        visit outrec in polyOuts
         {
             var op = outrec.pts
             if !op or outrec.isOpen do
@@ -1595,7 +1595,7 @@ impl Transform
     mtd fixupFirstLefts2(innerOutRec, outerOutRec: *OutRec)
     {
         let orfl = outerOutRec.firstLeft
-        visit outRec: polyOuts
+        visit outRec in polyOuts
         {
             if !outRec.pts or outRec == outerOutRec or outRec == innerOutRec do
                 continue
@@ -1613,7 +1613,7 @@ impl Transform
 
     mtd fixupFirstLefts1(oldOutRec, newOutRec: *OutRec)
     {
-        visit outRec: polyOuts
+        visit outRec in polyOuts
         {
             let firstLeft = parseFirstLeft(outRec.firstLeft)
             if outRec.pts and firstLeft == oldOutRec
@@ -1626,7 +1626,7 @@ impl Transform
 
     mtd fixupFirstLefts3(oldOutRec, newOutRec: *OutRec)
     {
-        visit outRec: polyOuts
+        visit outRec in polyOuts
         {
             let firstLeft = parseFirstLeft(outRec.firstLeft)
             if outRec.pts and firstLeft == oldOutRec do
@@ -1636,7 +1636,7 @@ impl Transform
 
     mtd joinCommonEdges()
     {
-        visit join: joinList
+        visit join in joinList
         {
             let outRec1 = getOutRec(join.outPt1.idx)
             var outRec2 = getOutRec(join.outPt2.idx)
@@ -1956,7 +1956,7 @@ impl Transform
     {
         copyAELToSEL()
         intersectList.sort()
-        loop i: intersectList
+        loop i in intersectList
         {
             if !edgesAdjacent(intersectList[i])
             {
@@ -1976,7 +1976,7 @@ impl Transform
 
     mtd processIntersectList()
     {
-        visit iNode: intersectList
+        visit iNode in intersectList
         {
             intersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
             swapPositionsInAEL(iNode.edge1, iNode.edge2)
@@ -3019,7 +3019,7 @@ impl Transform
             //if any output polygons share an edge, they'll need joining later ...
             if op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
             {
-                loop i: ghostJoinList.count
+                loop i in ghostJoinList.count
                 {
                     let jr = ghostJoinList[i]
                     if horzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x) do
@@ -3083,7 +3083,7 @@ impl Transform
     mtd buildResult(polys: *ClipperPaths)
     {
         polys.reserve(polyOuts.count)
-        loop i: polyOuts
+        loop i in polyOuts
         {
             if !polyOuts[i].pts do
                 continue
@@ -3107,7 +3107,7 @@ impl Transform
 
     mtd disposeAllOutRecs()
     {
-        loop i: polyOuts do
+        loop i in polyOuts do
             disposeOutRec(i)
         polyOuts.clear()
     }
