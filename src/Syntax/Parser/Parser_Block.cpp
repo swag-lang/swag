@@ -509,6 +509,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     {
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
+        
         if (tokenParse.is(g_LangSpec->name_err))
         {
             SWAG_CHECK(eatToken());

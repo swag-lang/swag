@@ -273,9 +273,11 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // 'Call' mode
-    if (tokenParse.is(TokenId::SymColon))
+    if (tokenParse.is(TokenId::SymLeftParen))
     {
+        const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
+
         if (tokenParse.token.is(g_LangSpec->name_call))
         {
             SWAG_CHECK(eatToken());
@@ -285,6 +287,8 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
         {
             return error(tokenParse, formErr(Err0693, tokenParse.cstr()));
         }
+
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the [[where]]mode"));
     }
 
     // Not for the 3 special functions

@@ -2,7 +2,7 @@
 
 //#[Swag.Macro]
 func toto(x: string)
-    where:titi
+    where(titi)
     {
         let y = x
         @print(y)
