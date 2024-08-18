@@ -269,7 +269,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0264)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the visit specialization name"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the visit specialization name"));
     }
 
     // Reverse loop
@@ -527,7 +527,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
             return error(tokenParse, formErr(Err0692, tokenParse.cstr()));
         }
 
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the defer mode"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[defer]] mode"));
     }
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);

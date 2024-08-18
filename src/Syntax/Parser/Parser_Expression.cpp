@@ -221,7 +221,7 @@ bool Parser::doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNo
     FormatAst::inheritFormatAfter(this, *result, &tokenParse);
 
     Utf8 msg;
-    if (parent)
+    if (parent && parent->isNot(AstNodeKind::Statement))
         msg = form("to end the expression after [[%s]]", parent->token.cstr());
     else
         msg = "to end the left expression";

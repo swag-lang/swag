@@ -288,7 +288,7 @@ bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
             return error(tokenParse, formErr(Err0693, tokenParse.cstr()));
         }
 
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the [[where]]mode"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[where]] mode"));
     }
 
     // Not for the 3 special functions

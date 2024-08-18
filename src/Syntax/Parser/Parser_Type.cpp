@@ -655,7 +655,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[cast]] type expression"));
 
     // Cast modifiers
     ModifierFlags mdfFlags = 0;
