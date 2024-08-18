@@ -4322,7 +4322,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setTextSilent">setTextSilent</a></span></td>
-<td>Set the editbox content, but do not notify change. </td>
+<td>Set the editbox content, but: not notify change. </td>
 </tr>
 </table>
 <p>
@@ -4579,7 +4579,7 @@
 </tr>
 </table>
 </p>
-<p>Set the editbox content, but do not notify change. </p>
+<p>Set the editbox content, but: not notify change. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTextSilent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4747,7 +4747,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_EditCtrl_create">create</a></span></td>
-<td>Create the popup list, but do not display it. </td>
+<td>Create the popup list, but: not display it. </td>
 </tr>
 </table>
 <p>
@@ -4773,7 +4773,7 @@
 </tr>
 </table>
 </p>
-<p>Create the popup list, but do not display it. </p>
+<p>Create the popup list, but: not display it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, text: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, flags: <span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span> = <span class="SCst">Zero</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditCtrl">EditCtrl</a></span></span></div>
 <p>
 <table class="api-item">
@@ -4923,7 +4923,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_EmbInfoCtrl_create">create</a></span></td>
-<td>Create the popup list, but do not display it. </td>
+<td>Create the popup list, but: not display it. </td>
 </tr>
 </table>
 <p>
@@ -4937,7 +4937,7 @@
 </tr>
 </table>
 </p>
-<p>Create the popup list, but do not display it. </p>
+<p>Create the popup list, but: not display it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, kind: <span class="SCst"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span>, height = <span class="SNum">40</span>, top = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span></span></div>
 <p>
 <table class="api-item">
@@ -10031,7 +10031,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_create">create</a></span></td>
-<td>Create the popup list, but do not display it. </td>
+<td>Create the popup list, but: not display it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_show">show</a></span></td>
@@ -10075,7 +10075,7 @@
 </tr>
 </table>
 </p>
-<p>Create the popup list, but do not display it. </p>
+<p>Create the popup list, but: not display it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(owner: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
@@ -12147,7 +12147,7 @@
 <span id="Gui_RichEditCtrl_charPressed"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">charPressed</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L348" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L344" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12233,7 +12233,7 @@
 <span id="Gui_RichEditCtrl_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L243" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12581,7 +12581,7 @@
 <span id="Gui_RichEditCtrl_isReadOnly"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">isReadOnly</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L340" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L336" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12606,7 +12606,7 @@
 <span id="Gui_RichEditCtrl_keyPressed"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">keyPressed</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L380" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L376" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12619,7 +12619,7 @@
 <span id="Gui_RichEditCtrl_lexAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">lexAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L398" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L394" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12896,7 +12896,7 @@
 <span id="Gui_RichEditCtrl_setFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">setFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L276" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L272" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12908,7 +12908,7 @@
 <span id="Gui_RichEditCtrl_setForm"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">setForm</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L290" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L286" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12921,7 +12921,7 @@
 <span id="Gui_RichEditCtrl_setLexer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">setLexer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L391" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L387" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12946,7 +12946,7 @@
 <span id="Gui_RichEditCtrl_setRichEdFlags"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RichEditCtrl.</span><span class="api-item-title-strong">setRichEdFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L282" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richedit.swg#L278" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13108,7 +13108,7 @@
 <span id="Gui_RichEditLexerSwag_IRichEditLexer_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IRichEditLexer.</span><span class="api-item-title-strong">compute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L435" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13120,7 +13120,7 @@
 <span id="Gui_RichEditLexerSwag_IRichEditLexer_insertRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IRichEditLexer.</span><span class="api-item-title-strong">insertRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L403" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13132,7 +13132,7 @@
 <span id="Gui_RichEditLexerSwag_IRichEditLexer_setup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IRichEditLexer.</span><span class="api-item-title-strong">setup</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L64" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14339,7 +14339,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_create">create</a></span></td>
-<td>Create the popup list, but do not display it. </td>
+<td>Create the popup list, but: not display it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_getValue">getValue</a></span></td>
@@ -14385,7 +14385,7 @@
 </tr>
 </table>
 </p>
-<p>Create the popup list, but do not display it. </p>
+<p>Create the popup list, but: not display it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></div>
 <p>
 <table class="api-item">
@@ -21361,7 +21361,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

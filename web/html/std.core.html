@@ -4544,7 +4544,7 @@
 <span id="Core_Compress_Deflate_CompressionFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1098" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1095" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4569,7 +4569,7 @@
 <span id="Core_Compress_Deflate_CompressionLevel"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionLevel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4602,7 +4602,7 @@
 <span id="Core_Compress_Deflate_CompressionStrategy"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionStrategy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1115" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4635,7 +4635,7 @@
 <span id="Core_Compress_Deflate_compress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">compress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1143" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4648,7 +4648,7 @@
 <span id="Core_Compress_Deflate_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">init</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4661,7 +4661,7 @@
 <span id="Core_Compress_Deflate_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8962,7 +8962,7 @@
 <span id="Core_HashTable_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L475" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L472" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8974,7 +8974,7 @@
 <span id="Core_HashTable_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L292" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L289" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8991,7 +8991,7 @@
 <span id="Core_HashTable_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L443" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L440" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9004,7 +9004,7 @@
 <span id="Core_HashTable_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L384" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L381" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9017,7 +9017,7 @@
 <span id="Core_HashTable_emplaceInternal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">emplaceInternal</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L328" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L325" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9030,7 +9030,7 @@
 <span id="Core_HashTable_find"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">find</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L404" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L401" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9044,7 +9044,7 @@
 <span id="Core_HashTable_findOrAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">findOrAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L433" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L430" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9070,7 +9070,7 @@
 <span id="Core_HashTable_get"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">get</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L424" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L421" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9084,7 +9084,7 @@
 <span id="Core_HashTable_getNewIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">getNewIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L222" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9096,7 +9096,7 @@
 <span id="Core_HashTable_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L177" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L174" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9211,7 +9211,7 @@
 <span id="Core_HashTable_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L361" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L358" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9224,7 +9224,7 @@
 <span id="Core_HashTable_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11684,7 +11684,7 @@
 <span id="Core_Latin1_compare"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Latin1.</span><span class="api-item-title-strong">compare</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11697,7 +11697,7 @@
 <span id="Core_Latin1_compareNatural"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Latin1.</span><span class="api-item-title-strong">compareNatural</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11879,7 +11879,7 @@
 <span id="Core_Latin1_makeLower"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Latin1.</span><span class="api-item-title-strong">makeLower</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11929,7 +11929,7 @@
 <span id="Core_Latin1_trim"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Latin1.</span><span class="api-item-title-strong">trim</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1.swg#L234" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18844,7 +18844,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_canCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">canCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18894,7 +18894,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_getAttribute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">getAttribute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18925,7 +18925,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_getAttributes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">getAttributes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18940,7 +18940,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_getEnumName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">getEnumName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\enum.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\enum.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18966,7 +18966,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_getField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">getField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18979,7 +18979,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_getFieldValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">getFieldValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19020,7 +19020,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasAttribute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasAttribute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L156" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\attribute.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19035,7 +19035,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19047,7 +19047,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasInterface"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasInterface</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19060,7 +19060,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasMethod"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasMethod</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19073,7 +19073,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L124" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19085,7 +19085,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_hasPostMove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">hasPostMove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19205,7 +19205,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_isPod"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">isPod</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19465,7 +19465,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Reflection_setFieldValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Reflection.</span><span class="api-item-title-strong">setFieldValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\reflection\struct.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22863,7 +22863,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Slice_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slice.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22876,7 +22876,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Slice_containsSorted"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slice.</span><span class="api-item-title-strong">containsSorted</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22890,7 +22890,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Slice_equals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slice.</span><span class="api-item-title-strong">equals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22917,7 +22917,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Slice_findSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slice.</span><span class="api-item-title-strong">findSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\slice\find.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -29359,7 +29359,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

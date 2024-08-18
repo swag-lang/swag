@@ -1066,7 +1066,7 @@
 <p>Set the general output volume. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

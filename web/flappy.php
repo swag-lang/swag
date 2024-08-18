@@ -152,9 +152,9 @@
         <span class="SCmt">// Change something...</span>
         <span class="SCmt">// Here, for example, we force all safety guards to be present in 'debug', and we remove all</span>
         <span class="SCmt">// of them in 'release'.</span>
-        <span class="SCmp">#if</span> <span class="SCmp">#cfg</span> == <span class="SStr">"debug"</span> <span class="SCmp">#do</span>
+        <span class="SCmp">#if</span> <span class="SCmp">#cfg</span> == <span class="SStr">"debug"</span>:
             cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyAll</span>
-        <span class="SCmp">#else</span> <span class="SCmp">#do</span>
+        <span class="SCmp">#else</span>:
             cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyNone</span>
     }
 }</span></div>
@@ -180,7 +180,7 @@
 
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
     <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) <span class="SLgc">do</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>):
         app.maxRunFrame = <span class="SNum">100</span>
 
     <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
@@ -190,14 +190,14 @@
 }</span></div>
 <h1 id="">Global definitions </h1>
 <h2 id="">Constants </h2>
-<p>We declare global constants with <span class="code-inline">const</span>. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection. </p>
+<p>We declare global constants with <span class="code-inline">const</span>. Note that we: not specify types for thoses constants. They will be deduced thanks to the affection. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>       <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
 <span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>       <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></div>
 <h2 id="">Variables </h2>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird: <span class="SCst">Bird</span> <span class="SCmt">// 'Bird' is a structure, and will be defined later</span></span></div>
-<p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module, but thanks to the global <span class="code-inline">using Core</span>, we do not need to write <span class="code-inline">Core.Array'Pipe</span>. </p>
+<p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module, but thanks to the global <span class="code-inline">using Core</span>, we: not need to write <span class="code-inline">Core.Array'Pipe</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes: <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
@@ -336,7 +336,7 @@
     <span class="SCmt">// Draw pipes.</span>
     <span class="SCmt">// 'visit' loop on all the pipes stored in the dynamic array, and returns each value</span>
     <span class="SCmt">// as a pointer/reference.</span>
-    <span class="SLgc">visit</span> pipe: g_Pipes
+    <span class="SLgc">visit</span> pipe in g_Pipes
     {
         painter.<span class="SFct">drawTexture</span>(pipe.rectUp, g_PipeTextureU)
         painter.<span class="SFct">drawTexture</span>(pipe.rectDown, g_PipeTextureD)
@@ -345,9 +345,9 @@
     <span class="SCmt">// Base</span>
     painter.<span class="SFct">drawTexture</span>(-g_BasePos, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
     painter.<span class="SFct">drawTexture</span>(-g_BasePos + g_BaseTexture.width, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
-    <span class="SLgc">if</span> !g_GameOver <span class="SLgc">do</span>
+    <span class="SLgc">if</span> !g_GameOver:
         g_BasePos += <span class="SCst">SpeedHorz</span> * g_Dt
-    <span class="SLgc">if</span> g_BasePos &gt;= g_BaseTexture.width <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_BasePos &gt;= g_BaseTexture.width:
         g_BasePos = <span class="SNum">0</span>
 
     <span class="SCmt">// Gameover text, centered</span>
@@ -410,24 +410,24 @@
 <p>The <span class="code-inline">update</span> part of the game. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
 {
-    <span class="SLgc">if</span> g_GameOver <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_GameOver:
         <span class="SLgc">return</span>
 
     g_Bird.pos += g_Bird.speed * g_Dt
     g_Bird.pos.y = <span class="SCst">Math</span>.<span class="SFct">max</span>(g_Bird.pos.y, <span class="SNum">0</span>)
-    <span class="SLgc">if</span> g_Start <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_Start:
         g_Bird.speed += {<span class="SNum">0</span>, <span class="SCst">Gravity</span>}
 
     g_Bird.frame += <span class="SNum">10</span> * g_Dt
 
     <span class="SCmt">// Be sure to have at least one pipe</span>
-    <span class="SLgc">if</span> g_Pipes.count == <span class="SNum">0</span> <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_Pipes.count == <span class="SNum">0</span>:
         <span class="SFct">createPipe</span>()
 
     <span class="SCmt">// Move each pipe, and test collisions against the bird</span>
     <span class="SLgc">if</span> g_Start
     {
-        <span class="SLgc">visit</span> &pipe: g_Pipes
+        <span class="SLgc">visit</span> &pipe in g_Pipes
         {
             pipe.rectUp.x -= <span class="SCst">SpeedHorz</span> * g_Dt
             pipe.rectDown.x -= <span class="SCst">SpeedHorz</span> * g_Dt
@@ -451,11 +451,11 @@
     }
 
     <span class="SCmt">// If the first pipe is out of screen, remove it</span>
-    <span class="SLgc">if</span> g_Pipes[<span class="SNum">0</span>].rectUp.<span class="SFct">right</span>() &lt; <span class="SNum">0</span> <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_Pipes[<span class="SNum">0</span>].rectUp.<span class="SFct">right</span>() &lt; <span class="SNum">0</span>:
         g_Pipes.<span class="SFct">removeAt</span>(<span class="SNum">0</span>)
 
     <span class="SCmt">// If the last pipe is enough inside, create a new one</span>
-    <span class="SLgc">if</span> g_Rect.width - g_Pipes.<span class="SFct">back</span>().rectUp.<span class="SFct">right</span>() &gt; g_Pipes.<span class="SFct">back</span>().distToNext <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_Rect.width - g_Pipes.<span class="SFct">back</span>().rectUp.<span class="SFct">right</span>() &gt; g_Pipes.<span class="SFct">back</span>().distToNext:
         <span class="SFct">createPipe</span>()
 
     <span class="SCmt">// Collision with the ground</span>
@@ -466,7 +466,7 @@
     }
 
     <span class="SCmt">// Play dying sound</span>
-    <span class="SLgc">if</span> g_GameOver <span class="SLgc">do</span>
+    <span class="SLgc">if</span> g_GameOver:
         <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SCst">Voice</span>.<span class="SFct">play</span>(&g_SoundDie)
 }</span></div>
 <p>Creates a random up and down part of a new Pipe. </p>
@@ -550,7 +550,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

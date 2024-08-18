@@ -1920,7 +1920,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Opaque"><span class="SCst">Opaque</span></a></td>
-<td>When exporting the following struct, do not export its content. </td>
+<td>When exporting the following struct,: not export its content. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Optim"><span class="SCst">Optim</span></a></td>
@@ -3998,7 +3998,7 @@
 </tr>
 </table>
 </p>
-<p>When exporting the following struct, do not export its content. </p>
+<p>When exporting the following struct,: not export its content. </p>
 <div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Opaque">Opaque</a></span></span></div>
@@ -5417,7 +5417,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 15-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
