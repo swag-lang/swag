@@ -182,7 +182,7 @@ struct LanguageSpec
     Utf8 name_location;
     Utf8 name_version;
 
-    Utf8 name_up;
+    Utf8 name_prom;
     Utf8 name_over;
     Utf8 name_nodrop;
     Utf8 name_move;

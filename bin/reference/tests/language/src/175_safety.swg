@@ -44,11 +44,11 @@ You can also use `#[Swag.Overflow(true)]` to authorize overflow on a more global
 }
 
 /**
-For 8 or 16 bits, you can promote an operation to 32 bits by using ',up'.
+For 8 or 16 bits, you can promote an operation to 32 bits by using ',prom'.
 */
 #test
 {
-    let x = 255'u8 +,up 1
+    let x = 255'u8 +,prom 1
     @assert(x == 256)
     @assert(@typeof(x) == u32)
 }

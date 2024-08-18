@@ -154,7 +154,7 @@ void LanguageSpec::setupNames()
     name_location    = "location";
     name_version     = "version";
 
-    name_up       = "up";
+    name_prom     = "prom";
     name_over     = "over";
     name_nodrop   = "nodrop";
     name_move     = "move";
@@ -575,7 +575,7 @@ void LanguageSpec::setupAttributesFlags()
 
 void LanguageSpec::setupModifiers()
 {
-    modifiers.add(name_up, MODIFIER_UP);
+    modifiers.add(name_prom, MODIFIER_PROM);
     modifiers.add(name_over, MODIFIER_OVERFLOW);
     modifiers.add(name_nodrop, MODIFIER_NO_LEFT_DROP);
     modifiers.add(name_move, MODIFIER_MOVE);

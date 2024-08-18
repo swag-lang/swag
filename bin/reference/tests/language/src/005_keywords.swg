@@ -264,7 +264,7 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 # Modifiers
 Modifiers can be applied to some specific keywords or operators to change their behaviours.
 ```swag
-,up
+,prom
 ,over
 ,nodrop
 ,move

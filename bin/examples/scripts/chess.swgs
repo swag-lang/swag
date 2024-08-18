@@ -342,7 +342,7 @@ func doMove(fromP, toP: s8)
     }
 
     if g_Board[toP].piece == .Pawn and Math.abs(cast(s8) (fromP - toP)) == 24 do
-        g_Game.priseEnPassant = cast(s8) ((fromP +,up toP) / 2)
+        g_Game.priseEnPassant = cast(s8) ((fromP +,prom toP) / 2)
     else do
         g_Game.priseEnPassant = -1
 

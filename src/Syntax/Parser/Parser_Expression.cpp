@@ -586,7 +586,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     {
         SWAG_CHECK(eatToken());
 
-        if (tokenParse.token.is(g_LangSpec->name_up))
+        if (tokenParse.token.is(g_LangSpec->name_prom))
         {
             switch (opId)
             {
@@ -600,8 +600,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                     return error(tokenParse, formErr(Err0670, tokenParse.cstr(), forNode.cstr()));
             }
 
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_UP), error(tokenParse, formErr(Err0040, tokenParse.cstr())));
-            mdfFlags.add(MODIFIER_UP);
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_PROM), error(tokenParse, formErr(Err0040, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_PROM);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -937,7 +937,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
             binaryNode->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
 
-        if (mdfFlags.has(MODIFIER_UP))
+        if (mdfFlags.has(MODIFIER_PROM))
         {
             binaryNode->addSpecFlag(AstOp::SPEC_FLAG_UP);
         }
