@@ -505,8 +505,9 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Defer kind
-    if (tokenParse.is(TokenId::SymColon))
+    if (tokenParse.is(TokenId::SymLeftParen))
     {
+        const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
         if (tokenParse.is(g_LangSpec->name_err))
         {
@@ -522,6 +523,8 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         {
             return error(tokenParse, formErr(Err0692, tokenParse.cstr()));
         }
+
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the defer mode"));
     }
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);

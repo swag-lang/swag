@@ -216,8 +216,8 @@ Throwing an error is equivalent to returning from the function. So a 'defer' exp
 
 But `defer` can have a specific mode (`err` or `noerr`) to control if it should be executed depending on the error status.
 
-| `defer:err`   | will be called for each 'throw', so only when an error is raised
-| `defer:noerr` | will be called only when the function returns in a normal way
+| `defer(err)`   | will be called for each 'throw', so only when an error is raised
+| `defer(noerr)` | will be called only when the function returns in a normal way
 | `defer`       | will always be called whatever the reason is (normal way or error)
 */
 var g_Defer = 0
@@ -229,8 +229,8 @@ func raiseError() throw
 
 func testDefer(err: bool) throw
 {
-    defer:err g_Defer += 1 // This will be called in case an error is raised, before exiting
-    defer:noerr g_Defer += 2 // This will only be called in case an error is not raised
+    defer(err) g_Defer += 1 // This will be called in case an error is raised, before exiting
+    defer(noerr) g_Defer += 2 // This will only be called in case an error is not raised
     defer g_Defer += 3 // This will be called in both cases
     if err do
         raiseError()
@@ -240,9 +240,9 @@ func testDefer(err: bool) throw
 {
     g_Defer = 0
     catch testDefer(true)
-    @assert(g_Defer == 4) // Will call only defer:err and the normal defer
+    @assert(g_Defer == 4) // Will call only defer(err) and the normal defer
 
     g_Defer = 0
     catch testDefer(false)
-    @assert(g_Defer == 5) // Will call only defer:noerr and the normal defer
+    @assert(g_Defer == 5) // Will call only defer(noerr) and the normal defer
 }
