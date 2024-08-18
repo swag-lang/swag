@@ -12,9 +12,9 @@ impl Point
 	{
 		#if op == "="
 		{
-			if(i == 0) do
+			if(i == 0):
 				self.x = v;
-			else do
+			else:
 				self.y = v;
 		}
 

@@ -34,7 +34,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
              ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
         concat->addBlank();
-        concat->addString("#do");
+        concat->addChar(':');
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
@@ -71,7 +71,7 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
             ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
         {
             concat->addBlank();
-            concat->addString("#do");
+            concat->addChar(':');
             concat->addEol();
             context.indent++;
             concat->addIndent(context.indent);

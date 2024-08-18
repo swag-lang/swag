@@ -18,7 +18,7 @@ public impl C1961ITF for C1961AA
 func(T) gen(x: T)
 {
     let itf = @mkinterface(x, @typeof(T), C1961ITF)
-    if itf != null do
+    if itf != null:
         itf.toto()
 }
 

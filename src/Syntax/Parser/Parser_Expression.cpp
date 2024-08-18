@@ -1689,7 +1689,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         leftAlone = true;
     }
 
-    if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::KwdDo))
+    if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::SymColon))
         return true;
 
     if (tokenParse.is(TokenId::SymSemiColon) ||

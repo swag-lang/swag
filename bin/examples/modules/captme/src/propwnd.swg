@@ -123,11 +123,11 @@ impl PropWnd
         // Change selection
         else
         {
-            if !first do
+            if !first:
                 capture.undo()
             let undo = capture.newUndo(.SetTypedValue)
             undo.valU32 = val
-            if !common do
+            if !common:
                 undo.mdlType = #self.type
             undo.valRef = Reflection.getField(#self.type, #self.name)
             capture.pushUndo(undo)
@@ -201,7 +201,7 @@ impl PropWnd
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
-            if curSel.kind == i do
+            if curSel.kind == i:
                 btn0.isChecked = true
 
             let me = self
@@ -412,7 +412,7 @@ impl PropWnd
         let curSel = getSelectedBaseForm()
         visit i in DashStyle
         {
-            if i == .Pattern do
+            if i == .Pattern:
                 continue
 
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 32})
@@ -446,7 +446,7 @@ impl PropWnd
     mtd propBorderColor(stack: *Wnd)
     {
         let curSel = cast(*FormText) getSelectedBaseForm()
-        if curSel.subKind == .Highlight or curSel.subKind == .PixSel do
+        if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
@@ -471,7 +471,7 @@ impl PropWnd
             rect.x = rect.horzCenter() - 16
             rect.y = rect.vertCenter() - 16
             rect.width, rect.height = 32
-            if !curSel.borderColor.isOpaque() do
+            if !curSel.borderColor.isOpaque():
                 bc.painter.drawRoundRect(rect, 5, 5, Pen.createHatch(.CheckBoardLarge, Argb.DarkGray, 5))
             bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
         }
@@ -497,13 +497,13 @@ impl PropWnd
             let curSelType = getSelectedFormType()
             if curSelType == FormLine or
                curSelType == FormArrow or
-               curSelType == FormDraw do
+               curSelType == FormDraw:
                 return
 
             if curSelType == FormImage
             {
                 let imgSel = cast(*FormImage) curSel
-                if imgSel.kind != .Image do
+                if imgSel.kind != .Image:
                     return
             }
         }
@@ -520,7 +520,7 @@ impl PropWnd
             rect.y = rect.vertCenter() - 21
             rect.width, rect.height = 42
             var backCol = curSel.subKind == .PixSel ? g_Main.pixSelFillCol : curSel.backColor
-            if !backCol.isOpaque() do
+            if !backCol.isOpaque():
                 bc.painter.fillRoundRect(rect, 10, 10, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
             bc.painter.fillRoundRect(rect, 10, 10, backCol)
         }
@@ -553,10 +553,10 @@ impl PropWnd
     mtd propShape(stack: *Wnd)
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormShape do
+        if curSelType != FormShape:
             return
         let curSel = getSelectedBaseForm()
-        if curSel.subKind == .PixSel do
+        if curSel.subKind == .PixSel:
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
@@ -595,7 +595,7 @@ impl PropWnd
     mtd propStep(stack: *Wnd)
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormStep do
+        if curSelType != FormStep:
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
@@ -634,7 +634,7 @@ impl PropWnd
     mtd propStartCapStyle(stack: *Wnd)
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormLine and curSelType != FormArrow do
+        if curSelType != FormLine and curSelType != FormArrow:
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
@@ -664,7 +664,7 @@ impl PropWnd
     mtd propEndCapStyle(stack: *Wnd)
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormLine and curSelType != FormArrow do
+        if curSelType != FormLine and curSelType != FormArrow:
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
@@ -694,11 +694,11 @@ impl PropWnd
     mtd propDashStyle(stack: *Wnd)
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon do
+        if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
-        if curSel.subKind == .Highlight or curSel.subKind == .PixSel do
+        if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
@@ -724,7 +724,7 @@ impl PropWnd
     mtd propNextStep()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormStep do
+        if curSelType != FormStep:
             return
 
         let stack = Wnd.create'Wnd(mainLayout, {0, 0, 0, getThemeMetrics().comboBox_Height})
@@ -765,7 +765,7 @@ impl PropWnd
             .surface.setTitle("Enter Text")
             .surface.center(surface)
         }
-        if dlg.doModal() != Dialog.BtnOk do
+        if dlg.doModal() != Dialog.BtnOk:
             return curText
         let capture = self.main.getCapture()
         let undo    = capture.newUndo(.SetText)
@@ -777,7 +777,7 @@ impl PropWnd
     mtd propText()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormText do
+        if curSelType != FormText:
             return
         let curSel = cast(*FormText) getSelectedBaseForm()
 
@@ -788,7 +788,7 @@ impl PropWnd
         let combo = ComboBox.create(stack)
 
         combo.addItem(g_App.theme.res.defaultTypeFaceR.getFamilyName())
-        if !curSel.typeFace do
+        if !curSel.typeFace:
             combo.selectedIdx = 0
         combo.addSeparator()
 
@@ -796,13 +796,13 @@ impl PropWnd
         visit &fnt in sysFonts
         {
             combo.addItem(fnt.name, userData0: fnt)
-            if curSel.fontName == fnt.name do
+            if curSel.fontName == fnt.name:
                 combo.selectedIdx = cast(u32) combo.items.count - 1
         }
 
         combo.sigChanged += closure|self|(combo, idx)
         {
-            if idx == Swag.U32.Max do
+            if idx == Swag.U32.Max:
                 return
 
             var capture = self.main.getCapture()
@@ -875,23 +875,23 @@ impl PropWnd
                 switch btn.id
                 {
                 case CmdIdTextBold:
-                    if btn.isChecked and style == .Regular do
+                    if btn.isChecked and style == .Regular:
                         style = .Bold
-                    elif btn.isChecked and style == .Italic do
+                    elif btn.isChecked and style == .Italic:
                         style = .BoldItalic
-                    elif !btn.isChecked and style == .Bold do
+                    elif !btn.isChecked and style == .Bold:
                         style = .Regular
-                    elif !btn.isChecked and style == .BoldItalic do
+                    elif !btn.isChecked and style == .BoldItalic:
                         style = .Italic
 
                 case CmdIdTextItalic:
-                    if btn.isChecked and style == .Regular do
+                    if btn.isChecked and style == .Regular:
                         style = .Italic
-                    elif btn.isChecked and style == .Bold do
+                    elif btn.isChecked and style == .Bold:
                         style = .BoldItalic
-                    elif !btn.isChecked and style == .Italic do
+                    elif !btn.isChecked and style == .Italic:
                         style = .Regular
-                    elif !btn.isChecked and style == .BoldItalic do
+                    elif !btn.isChecked and style == .BoldItalic:
                         style = .Bold
                 }
 
@@ -964,7 +964,7 @@ impl PropWnd
     mtd propStartSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormLine and curSelType != FormArrow do
+        if curSelType != FormLine and curSelType != FormArrow:
             return
         let curSel = cast(*FormLine) getSelectedBaseForm()
 
@@ -982,7 +982,7 @@ impl PropWnd
     mtd propEndSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormLine and curSelType != FormArrow do
+        if curSelType != FormLine and curSelType != FormArrow:
             return
 
         let curSel = cast(*FormLine) getSelectedBaseForm()
@@ -1000,11 +1000,11 @@ impl PropWnd
     mtd propRoundSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormShape do
+        if curSelType != FormShape:
             return
 
         let curSel = cast(*FormShape) getSelectedBaseForm()
-        if curSel.kind != .RoundRectangle do
+        if curSel.kind != .RoundRectangle:
             return
 
         let ctrl = createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
@@ -1021,11 +1021,11 @@ impl PropWnd
     mtd propBorderSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType == FormStep do
+        if curSelType == FormStep:
             return
 
         let curSel = getSelectedBaseForm()
-        if curSel.subKind == .PixSel do
+        if curSel.subKind == .PixSel:
             return
 
         var minS = MinBorderSize
@@ -1056,7 +1056,7 @@ impl PropWnd
     mtd propFontSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormText do
+        if curSelType != FormText:
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
@@ -1074,7 +1074,7 @@ impl PropWnd
     mtd propBoldSize()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormText do
+        if curSelType != FormText:
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
@@ -1092,7 +1092,7 @@ impl PropWnd
     mtd propOpacity()
     {
         let curSel = getSelectedBaseForm()
-        if curSel.subKind == .PixSel do
+        if curSel.subKind == .PixSel:
             return
 
         let ctrl = createSlider("Opacity", 0, 100, acast curSel.alpha)
@@ -1109,7 +1109,7 @@ impl PropWnd
     mtd propImageKind()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormImage do
+        if curSelType != FormImage:
             return
 
         let curSel = cast(*FormImage) getSelectedBaseForm()
@@ -1118,7 +1118,7 @@ impl PropWnd
         ctrl.comboSize = 210
         with ctrl.combo
         {
-            visit v in @typeof(FormImageKind).values do
+            visit v in @typeof(FormImageKind).values:
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.kind)
             .sigChanged += closure|self|(combo, val)
@@ -1132,7 +1132,7 @@ impl PropWnd
         ctrl1.comboSize = 210
         with ctrl1.combo
         {
-            visit v in @typeof(FormImagePlacement).values do
+            visit v in @typeof(FormImagePlacement).values:
                 .addItem(v.name)
             .selectItem(cast(u32) curSel.place)
             .sigChanged += closure|self|(combo, val)
@@ -1145,10 +1145,10 @@ impl PropWnd
     mtd propStrength()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormImage do
+        if curSelType != FormImage:
             return
         let curSel = cast(*FormImage) getSelectedBaseForm()
-        if curSel.kind == .Image do
+        if curSel.kind == .Image:
             return
 
         let ctrl = createSlider("Strength", 0, 100, acast curSel.strength)
@@ -1165,7 +1165,7 @@ impl PropWnd
     mtd propJoinStyle()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormText and curSelType != FormPolygon do
+        if curSelType != FormText and curSelType != FormPolygon:
             return
         let curSel = getSelectedBaseForm()
 
@@ -1189,7 +1189,7 @@ impl PropWnd
     mtd propShadow()
     {
         let curSel = getSelectedBaseForm()
-        if curSel.subKind == .PixSel do
+        if curSel.subKind == .PixSel:
             return
 
         let ctrl = ComboCtrl.create(mainLayout, "Shadow")
@@ -1210,7 +1210,7 @@ impl PropWnd
     mtd propPixSel()
     {
         let curSel = getSelectedBaseForm()
-        if curSel.subKind != .PixSel do
+        if curSel.subKind != .PixSel:
             return
 
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
@@ -1221,9 +1221,9 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        visit it in mainLayout.childs do
+        visit it in mainLayout.childs:
             it.destroy()
-        if !getSelectedBaseForm() do
+        if !getSelectedBaseForm():
             return
 
         let stack0 = StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnColorHeight + 12})
@@ -1231,14 +1231,14 @@ impl PropWnd
         propBorderColor(stack0)
         propShape(stack0)
         propStep(stack0)
-        if stack0.childs.count == 0 do
+        if stack0.childs.count == 0:
             stack0.destroyNow()
 
         let stack1 = StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnStyleHeight + 12})
         propStartCapStyle(stack1)
         propDashStyle(stack1)
         propEndCapStyle(stack1)
-        if stack1.childs.count == 0 do
+        if stack1.childs.count == 0:
             stack1.destroyNow()
 
         propImageKind()
@@ -1257,13 +1257,13 @@ impl PropWnd
         propPixSel()
 
         mainLayout.computeLayout()
-        if mainLayout.childs.count do
+        if mainLayout.childs.count:
             setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)
-        else do
+        else:
             setScrollSize(0, 0)
 
         let capture = main.getCapture()
-        if capture do
+        if capture:
             capture.editView.setFocus()
     }
 

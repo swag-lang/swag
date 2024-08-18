@@ -15,7 +15,7 @@ impl AA
 func toto()->s64
 {
     var x: AA
-    if true do
+    if true:
         return x
     let v = 10's64
     return v

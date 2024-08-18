@@ -6,7 +6,7 @@ using Swag
 #[ConstExpr]
 func isStructOfName(type: typeinfo, name: string)->bool
 {
-    if !isStruct(type) do
+    if !isStruct(type):
         return false
 
     let typeStruct = cast(const *TypeInfoStruct) type
@@ -18,11 +18,11 @@ func isStructOfName(type: typeinfo, name: string)->bool
 #[ConstExpr]
 func getMethod(type: typeinfo, name: string)->const *TypeValue
 {
-    if !isStruct(type) do
+    if !isStruct(type):
         return null
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.methods where it.name == name do
+    visit it in typeStruct.methods where it.name == name:
         return it
     return null
 }
@@ -32,11 +32,11 @@ func getMethod(type: typeinfo, name: string)->const *TypeValue
 #[ConstExpr]
 func getField(type: typeinfo, name: string)->const *TypeValue
 {
-    if !isStruct(type) do
+    if !isStruct(type):
         return null
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.fields where it.name == name do
+    visit it in typeStruct.fields where it.name == name:
         return it
     return null
 }
@@ -59,7 +59,7 @@ func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bo
     case string:
         dref cast(*string) dest = dref cast(*string) patch
     default:
-        if !hardCast do
+        if !hardCast:
             Debug.assert(false, "unsupported getFieldValue type")
         switch type.pointedType.sizeof
         {
@@ -95,7 +95,7 @@ func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCa
     case string:
         dref cast(*string) patch = dref cast(const *string) src
     default:
-        if !hardCast do
+        if !hardCast:
             Debug.assert(false, "unsupported setFieldValue type")
         switch type.pointedType.sizeof
         {
@@ -130,11 +130,11 @@ func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != n
 #[ConstExpr]
 func hasInterface(type: typeinfo, itf: typeinfo)->bool
 {
-    if !isStruct(type) do
+    if !isStruct(type):
         return false
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.interfaces where it.name == itf.fullname do
+    visit it in typeStruct.interfaces where it.name == itf.fullname:
         return true
     return false
 }

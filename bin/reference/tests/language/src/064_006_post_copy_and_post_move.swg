@@ -54,14 +54,14 @@ impl Vector3
     @assert(b.x == 666)
 
     // If you know what you're doing, you can avoid the first call to 'opDrop' with '= #nodrop'
-    // Do it when you know the state of 'a' and do not want an extra unnecessary call
+    // Do it when you know the state of 'a' and: not want an extra unnecessary call
     // (for example if 'a' is in an undetermined state).
 
     a = #nodrop b // Copy b to a without dropping 'a' first
     a = #nodrop #move b // Move b to a without dropping 'a' first
 
     // For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. 
-    // Of course, do this at your own risk, if you know that 'b' will never by dropped by the 
+    // Of course,: this at your own risk, if you know that 'b' will never by dropped by the 
     // compiler or if you reinitialize its state yourself.
 
     // instead of 'move'

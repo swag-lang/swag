@@ -33,7 +33,7 @@ public impl Image
     {
         visit &encoder in encoders
         {
-            if encoder.itf.canEncode(fileName) do
+            if encoder.itf.canEncode(fileName):
                 return true
         }
 
@@ -56,14 +56,14 @@ public impl Image
             }
         }
 
-        if !found do
+        if !found:
             throw UnsupportedFormatError{"no matching image encoder"}
 
         // Create an encoder instance
         let ptrEncoder = Memory.new(found.type)
         defer
         {
-            if found.type.opDrop do
+            if found.type.opDrop:
                 found.type.opDrop(ptrEncoder)
             Memory.free(ptrEncoder, cast(u64) found.type.sizeof)
         }

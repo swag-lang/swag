@@ -44,7 +44,7 @@ impl Icon
     // Paint icon at the given position
     mtd const paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
-        if !imageList or !imageList.totalFrames do
+        if !imageList or !imageList.totalFrames:
             return
 
         let idx  = index % imageList.totalFrames
@@ -54,9 +54,9 @@ impl Icon
         srcX *= imageList.frameSizeX
         srcY *= imageList.frameSizeY
 
-        if sizeX == imageList.frameSizeX and sizeY == imageList.frameSizeY do
+        if sizeX == imageList.frameSizeX and sizeY == imageList.frameSizeY:
             painter.setInterpolationMode(InterpolationMode.Pixel)
-        else do
+        else:
             painter.setInterpolationMode(InterpolationMode.Linear)
         painter.drawTexture({x, y, sizeX, sizeY}, {srcX, srcY, imageList.frameSizeX, imageList.frameSizeY}, imageList.texture, color)
     }

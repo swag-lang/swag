@@ -18,7 +18,7 @@ impl IWnd for SliderCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !label do
+        if !label:
             return
         var rect    = getClientRect()
         let metrics = getThemeMetrics()
@@ -34,14 +34,14 @@ impl IWnd for SliderCtrl
 
 impl SliderCtrl
 {
-    // Create the popup list, but do not display it
+    // Create the popup list, but: not display it
     func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = metrics.slider_Width + metrics.editBox_Width * 2
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
 
         with let ctrl = Wnd.create'SliderCtrl(parent, pos, id)

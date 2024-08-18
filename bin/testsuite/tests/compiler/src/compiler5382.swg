@@ -1,9 +1,9 @@
-#global testerror "Err0425"
+#global testerror "Err0406"
 
 var G = 0
 #test
 {
-    if false do
+    if false:
         G = 1
     else
         G = 2

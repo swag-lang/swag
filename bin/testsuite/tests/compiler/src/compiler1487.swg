@@ -3,9 +3,9 @@ var G = 0
 #[Swag.Macro]
 func(op: bool) toto()
 {
-    #if op #do
+    #if op:
         G += 1
-    #else #do
+    #else:
         G += 2
 }
 

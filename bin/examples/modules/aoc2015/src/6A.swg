@@ -6,7 +6,7 @@ Furthermore, because you've been especially nice this year, Santa has mailed you
 
 Lights in your grid are numbered from 0 to 999 in each direction; the lights at each corner are at 0,0, 0,999, 999,999, and 999,0. The instructions include whether to turn on, turn off, or toggle various inclusive ranges given as coordinate pairs. Each coordinate pair represents opposite corners of a rectangle, inclusive; a coordinate pair like 0,0 through 2,2 therefore refers to 9 lights in a 3x3 square. The lights all start turned off.
 
-To defeat your neighbors this year, all you have to do is set up your lights by doing the instructions Santa sent you in order.
+To defeat your neighbors this year, all you have to: is set up your lights by doing the instructions Santa sent you in order.
 
 For example:
 
@@ -44,23 +44,23 @@ func day6A0()
     {
         if r0.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)) do
-                loop y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)) do
+            loop x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)):
+                loop y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)):
                     lights.add((x << 32) | y)
         }
         elif r1.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)) do
-                loop y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)) do
+            loop x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)):
+                loop y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)):
                     lights.remove((x << 32) | y)
         }
         elif r2.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)) do
-                loop y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)) do
-                    if lights.contains((x << 32) | y) do
+            loop x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)):
+                loop y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)):
+                    if lights.contains((x << 32) | y):
                         lights.remove((x << 32) | y)
-                    else do
+                    else:
                         lights.add((x << 32) | y)
         }
     }
@@ -94,18 +94,18 @@ func day6A1()
         {
             loop y in y0 to y1
             {
-                if l[6] == `n` do
+                if l[6] == `n`:
                     lights.ref2(x, y, 1000) = true
-                elif l[6] == `f` do
+                elif l[6] == `f`:
                     lights.ref2(x, y, 1000) = false
-                else do
+                else:
                     lights.ref2(x, y, 1000) = !lights.ref2(x, y, 1000)
             }
         }
     }
 
     var total: u64
-    visit v in lights do
+    visit v in lights:
         total += cast(s32) v
 
     //Console.print("total: ", total)
@@ -138,18 +138,18 @@ func day6A2()
             loop y in y0 to y1
             {
                 let coord = x + (y * 1000)
-                if l[6] == `n` do
+                if l[6] == `n`:
                     lights.set(coord, true)
-                elif l[6] == `f` do
+                elif l[6] == `f`:
                     lights.set(coord, false)
-                else do
+                else:
                     lights.invert(coord)
             }
         }
     }
 
     var total: u64
-    visit v in lights do
+    visit v in lights:
         total += cast(s32) v
 
     //Console.print("total: ", total)

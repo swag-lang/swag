@@ -49,14 +49,14 @@ func day7A0()
 
     visit l in lines
     {
-        visit r in ["bags", "bag", "."] do
+        visit r in ["bags", "bag", "."]:
             l.replace(r, "")
         l.replace(" , ", ",")
         l.replace("  ", " ")
         l.trim()
 
         let split = Tokenize.split(l, " contain ")
-        if split[1] == "no other" do
+        if split[1] == "no other":
             continue
 
         let split1 = Tokenize.split(split[1], `,`'u8)
@@ -66,7 +66,7 @@ func day7A0()
             visit can in splitVal[1..]
             {
                 let it = id.find(split[0])
-                if it do
+                if it:
                     it.value.add(can)
                 else
                 {
@@ -81,14 +81,14 @@ func day7A0()
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
-        if !it do
+        if !it:
             return false
 
         visit v in it.value
         {
-            if v == "shiny gold" do
+            if v == "shiny gold":
                 return true
-            if contains(id, v) do
+            if contains(id, v):
                 return true
         }
 
@@ -96,7 +96,7 @@ func day7A0()
     }
 
     var total: u32
-    visit v in id do
+    visit v in id:
         total += cast(s32) contains(&id, v)
 
     //Console.print("total: ", total)
@@ -126,12 +126,12 @@ func day7A1()
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
-        if !it do
+        if !it:
             return false
 
         visit v in it.value
         {
-            if v == "shiny gold" or contains(id, v) do
+            if v == "shiny gold" or contains(id, v):
                 return true
         }
 
@@ -139,7 +139,7 @@ func day7A1()
     }
 
     var total: u32
-    visit v in id do
+    visit v in id:
         total += cast(s32) contains(&id, v)
 
     //Console.print("total: ", total)

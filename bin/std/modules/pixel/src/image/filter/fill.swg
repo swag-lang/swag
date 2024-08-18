@@ -6,7 +6,7 @@ impl Image
     public mtd fill(color: Color)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8 do
+        if pf.channels() < 3 or pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]

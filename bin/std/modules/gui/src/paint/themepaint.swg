@@ -12,7 +12,7 @@ impl Theme
     #[Swag.Overload]
     func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
-        if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0 do
+        if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0:
             return
 
         painter.setInterpolationMode(interpol)
@@ -26,9 +26,9 @@ impl Theme
 
         let cx, cy = subRect.corner
         var cxd, cyd = subRect.corner
-        if cxd * 2 > dstRect.width do
+        if cxd * 2 > dstRect.width:
             cxd = dstRect.width / 2
-        if cyd * 2 > dstRect.height do
+        if cyd * 2 > dstRect.height:
             cyd = dstRect.height / 2
 
         if subRect.keepBordersRatio
@@ -82,7 +82,7 @@ impl Theme
                 d.height = dstRect.height - (cyd * 2)
                 s.width  = subRect.rect.width - (cx * 2)
                 s.height = subRect.rect.height - (cy * 2)
-                if center do
+                if center:
                     painter.drawTexture(d, s, texture, color)
 
             case 5:
@@ -109,7 +109,7 @@ impl Theme
     func drawIconText(painter: *Painter, position: Math.Rectangle, icon: Icon, name: *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
     {
         let count = @countof(dref name)
-        if count == 0 and !icon.isValid() do
+        if count == 0 and !icon.isValid():
             return
 
         var pos = position
@@ -123,14 +123,14 @@ impl Theme
         }
 
         // Text + icon
-        if icon.isValid() do
+        if icon.isValid():
             pos.moveLeft(icon.sizeX + iconMargin)
 
         // Text
         painter.drawRichString(pos, name, stringFormat)
 
         // Icon
-        if icon.isValid() do
+        if icon.isValid():
             icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
     }
 

@@ -4,6 +4,6 @@ using Swag;
 
 func main ()->s32
 {
-	if(true) do
+	if(true):
 		return 0;
 }

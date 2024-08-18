@@ -123,7 +123,7 @@ An **anonymous struct** can be used to return multiple values in a function.
     func returns2()->{ x: s32, y: s32 }
     {
         // You can return a tuple literal as long as the types match
-        if false do
+        if false:
             return {1, 2}
 
         // Or use the specifal type 'retval' which is an typealias to the

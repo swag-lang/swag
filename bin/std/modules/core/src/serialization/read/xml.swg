@@ -32,14 +32,14 @@ public impl Xml
         zapBlanks()
 
         var c = stream.readU8()
-        if c != `<` do
+        if c != `<`:
             throw getError("malformed tag, missing opening [[<]]")
 
         let start = stream.getSeek()
         c = stream.readU8()
-        while c and c != `>` do
+        while c and c != `>`:
             c = stream.readU8()
-        if c != `>` do
+        if c != `>`:
             throw getError("malformed tag, missing closing [[>]]")
 
         let end = stream.getSeek() - 1
@@ -57,7 +57,7 @@ public impl Xml
     {
         let tag   = readTag()
         let start = stackTags.popBack()
-        if tag[1..] != start do
+        if tag[1..] != start:
             throw getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
     }
 
@@ -125,7 +125,7 @@ public impl Xml
     mtd beginElement(val: TypeValue)->bool throw
     {
         let tag = readStartTag()
-        if tag != val.name do
+        if tag != val.name:
             throw getError("invalid property name")
         return true
     }

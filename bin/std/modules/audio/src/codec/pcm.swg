@@ -50,7 +50,7 @@ impl ICodec for CodecPcmToPcm16
             var write, read = 0
             loop i in srcLength / TS
             {
-                if write + @sizeof(s16) > destLength do
+                if write + @sizeof(s16) > destLength:
                     break
 
                 #if EN == .Pcm8
@@ -78,7 +78,7 @@ impl ICodec for CodecPcmToPcm16
                     let intS   = Math.clamp(cast(s32) #over sample, -32768, 32767)
                     dst[0] = cast(s16) intS
                 }
-                #else #do
+                #else:
                     #assert false
 
                 dst += 1

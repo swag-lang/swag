@@ -59,7 +59,7 @@ impl IWnd for FrameWnd
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if frameForm == .Transparent do
+        if frameForm == .Transparent:
             return
 
         let bc      = evt.bc
@@ -84,7 +84,7 @@ impl IWnd for FrameWnd
         if showFocus
         {
             let focus = getFocus()
-            if !focus or !isParentOf(focus) do
+            if !focus or !isParentOf(focus):
                 showFocus = false
         }
 
@@ -105,9 +105,9 @@ impl IWnd for FrameWnd
 
     mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
-        if frameForm == .Transparent do
+        if frameForm == .Transparent:
             return
-        if !(frameFlags & .Borders) do
+        if !(frameFlags & .Borders):
             return
 
         let bc      = evt.bc
@@ -133,7 +133,7 @@ impl IWnd for FrameWnd
         if showFocus
         {
             let focus = getFocus()
-            if !focus or !isParentOf(focus) do
+            if !focus or !isParentOf(focus):
                 showFocus = false
         }
 
@@ -206,7 +206,7 @@ impl IWnd for FrameWnd
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !view do
+        if !view:
             return
         var rect = getClientRectPadding()
         rect.applyPadding(view.margin)
@@ -227,7 +227,7 @@ impl FrameWnd
 
     mtd setView(what: *Wnd)
     {
-        if view do
+        if view:
             view.destroy()
         what.setParent(self)
         view = what
@@ -240,21 +240,21 @@ impl FrameWnd
         frameFlags.add(add)
         frameFlags.remove(remove)
 
-        if frameFlags.has(.SmallShadow) do
+        if frameFlags.has(.SmallShadow):
             wndFlags.add(.PreChildsPaint)
-        else do
+        else:
             wndFlags.remove(.PreChildsPaint)
 
-        if frameFlags.has(.SmallShadow) do
+        if frameFlags.has(.SmallShadow):
             invalidatePadding = -getThemeMetrics().frameWnd_SmallShadowSize
-        else do
+        else:
             invalidatePadding.clear()
     }
 
     // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if frameForm == #self.form do
+        if frameForm == #self.form:
             return
         frameForm = #self.form
 

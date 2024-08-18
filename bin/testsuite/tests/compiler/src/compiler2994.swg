@@ -7,8 +7,8 @@ interface I
 #test
 {
     var x: I
-    if !x do
+    if !x:
         @assert(true)
-    else do
+    else:
         @assert(false)
 }

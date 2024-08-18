@@ -2,7 +2,7 @@
 #test
 {
     var g = 0
-    loop i in 6 until 8 do
+    loop i in 6 until 8:
         g += i
     @assert(g == 6 + 7)
 }

@@ -3,6 +3,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    loop 10 do
+    loop 10:
         #assert(true)
 }

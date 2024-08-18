@@ -4,7 +4,7 @@ using Core
 func maxSize(T: const [..] typeinfo)->u64
 {
     var ms: u32 = 0
-    visit p in T do
+    visit p in T:
         ms = @max(p.sizeof, ms)
     return ms
 }
@@ -21,15 +21,15 @@ impl AA
     func isIn(V: typeinfo)->bool
     {
         var ms: u64 = 0
-        visit p in T do
-            if p == V do
+        visit p in T:
+            if p == V:
                 return true
         return false
     }
 
     mtd(TV) set(v: TV)
     {
-        #if !isIn(TV) #do
+        #if !isIn(TV):
             #error "invalid type " ++ @stringof(@typeof(TV))
 
         if cur and cur != TV and cur.flags & Swag.TypeInfoFlags.HasDrop
@@ -45,7 +45,7 @@ impl AA
 
     mtd(TV) get()->TV
     {
-        #if !isIn(TV) #do
+        #if !isIn(TV):
             #error "invalid type " ++ @stringof(@typeof(TV))
         @assert(cur == TV)
         return dref cast(*TV) buf

@@ -35,7 +35,7 @@ internal impl RichEditCtrl
         while count
         {
             if (undoMgr[count - 1].type == .Delete) or
-               (undoMgr[count - 1].type == .Insert) do
+               (undoMgr[count - 1].type == .Insert):
                 return count
             count -= 1
         }
@@ -46,7 +46,7 @@ internal impl RichEditCtrl
     mtd resetUndo()
     {
         // Its impossible to restore an unmodified state in that case
-        if modifiedUndoMarker > currentUndo do
+        if modifiedUndoMarker > currentUndo:
             modifiedUndoMarker = Swag.U64.Max
 
         while undoMgr.count > currentUndo
@@ -70,7 +70,7 @@ impl RichEditCtrl
 
     mtd pushUndo()
     {
-        // Nested undo, do not increment serial
+        // Nested undo,: not increment serial
         if undoCounter == 0
         {
             serialUndo += 1
@@ -103,16 +103,16 @@ impl RichEditCtrl
 
     mtd canUndo()->bool
     {
-        if undoMgr.count == 0 do
+        if undoMgr.count == 0:
             return false
-        if !currentUndo do
+        if !currentUndo:
             return false
         return true
     }
 
     mtd undo()
     {
-        if !canUndo() do
+        if !canUndo():
             return
 
         currentUndo -= 1
@@ -140,33 +140,33 @@ impl RichEditCtrl
             selBeg    = undo.begSelectionBefore
             cursorPos = undo.endSelectionBefore
             setRectangularSelection(undo.hasSelRect)
-            if !currentUndo do
+            if !currentUndo:
                 break
             undo = undoMgr[currentUndo - 1]
-            if undo.serial != serial do
+            if undo.serial != serial:
                 break
             currentUndo -= 1
         }
 
-        if getLastModificationUndo() == modifiedUndoMarker do
+        if getLastModificationUndo() == modifiedUndoMarker:
             setModified(false)
-        else do
+        else:
             setModified(true)
         computeScrollY()
     }
 
     mtd canRedo()->bool
     {
-        if undoMgr.count == 0 do
+        if undoMgr.count == 0:
             return false
-        if currentUndo == undoMgr.count do
+        if currentUndo == undoMgr.count:
             return false
         return true
     }
 
     mtd redo()
     {
-        if !canRedo() do
+        if !canRedo():
             return
 
         var undo   = undoMgr[currentUndo]
@@ -195,17 +195,17 @@ impl RichEditCtrl
             setCursorPos(undo.endSelectionAfter)
             setRectangularSelection(undo.hasSelRect)
 
-            if currentUndo == undoMgr.count do
+            if currentUndo == undoMgr.count:
                 break
             undo = undoMgr[currentUndo]
-            if undo.serial != serial do
+            if undo.serial != serial:
                 break
             currentUndo += 1
         }
 
-        if getLastModificationUndo() == modifiedUndoMarker do
+        if getLastModificationUndo() == modifiedUndoMarker:
             setModified(false)
-        else do
+        else:
             setModified(true)
         computeScrollY()
     }

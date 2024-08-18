@@ -14,7 +14,7 @@ impl B5453
 {
     mtd toto(parent: bool)
     {
-        if parent do
+        if parent:
             @print("Q")
     }
 }

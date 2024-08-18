@@ -90,48 +90,48 @@ func day4B0()
             {
             case "byr":
                 let val = catch StrConv.toS32(res1[1])
-                if val >= 1920 and val <= 2002 do
+                if val >= 1920 and val <= 2002:
                     pass |= 1
             case "iyr":
                 let val = catch StrConv.toS32(res1[1])
-                if val >= 2010 and val <= 2020 do
+                if val >= 2010 and val <= 2020:
                     pass |= 2
             case "eyr":
                 let val = catch StrConv.toS32(res1[1])
-                if val >= 2020 and val <= 2030 do
+                if val >= 2020 and val <= 2030:
                     pass |= 4
             case "hgt":
                 let val = catch StrConv.parseS32(res1[1])
-                if @err() != null do
+                if @err() != null:
                     break
-                if val.eat == @countof(res1[1]) do
+                if val.eat == @countof(res1[1]):
                     break
                 let sub = res1[1][val.eat..]
-                if sub != "cm" and sub != "in" do
+                if sub != "cm" and sub != "in":
                     break
-                if sub == "cm" and val.value >= 150 and val.value <= 193 do
+                if sub == "cm" and val.value >= 150 and val.value <= 193:
                     pass |= 8
-                elif sub == "in" and val.value >= 59 and val.value <= 76 do
+                elif sub == "in" and val.value >= 59 and val.value <= 76:
                     pass |= 8
             case "hcl":
-                if @countof(res1[1]) != 7 or res1[1][0] != `#` do
+                if @countof(res1[1]) != 7 or res1[1][0] != `#`:
                     break
                 discard catch StrConv.parseX64(res1[1][1..])
-                if @err() == null do
+                if @err() == null:
                     pass |= 16
             case "ecl":
-                if Slice.contains(["amb", "blu", "brn", "gry", "grn", "hzl", "oth"], res1[1]) do
+                if Slice.contains(["amb", "blu", "brn", "gry", "grn", "hzl", "oth"], res1[1]):
                     pass |= 32
             case "pid":
                 discard catch StrConv.toS32(res1[1])
-                if @err() == null and @countof(res1[1]) == 9 do
+                if @err() == null and @countof(res1[1]) == 9:
                     pass |= 64
             }
         }
 
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
-            if pass & 0b1111111 == 0b1111111 do
+            if pass & 0b1111111 == 0b1111111:
                 total += 1
             pass = 0
         }
@@ -176,7 +176,7 @@ func day4B1()
         {
             let res1 = Tokenize.split(r, `:`'u8)
             let it   = map.find(res1[0])
-            if it and it.value.r.match(res1[1]) do
+            if it and it.value.r.match(res1[1]):
                 pass |= it.value.b
         }
 

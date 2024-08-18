@@ -16,7 +16,7 @@ impl A
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    if true do
+    if true:
         return
     loop 4
     {

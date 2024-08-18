@@ -30,7 +30,7 @@ func day1B()
     let lines    = assume File.readAllLines(dataPath)
 
     var values: Array's64
-    visit l in lines do
+    visit l in lines:
         values.add(assume StrConv.toS64(l[1..]) * (l[0] == `-` ? -1 : 1))
 
     var total = 0's64

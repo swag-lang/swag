@@ -11,7 +11,7 @@ func itoa(result: ^u8, value: s64)->^u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue do
+        if !orgValue:
             break
     }
 
@@ -57,13 +57,13 @@ func ftoa(result: ^u8, value: f64)
         dref n = `0`'u8
         n += 1
     }
-    else do
+    else:
         n = itoa(result, ipart);
 
     dref n = `.`'u8; n += 1
 
     var afterPoint = 5
-    if fpart < 0 do
+    if fpart < 0:
         fpart = -fpart
     while afterPoint
     {
@@ -72,7 +72,7 @@ func ftoa(result: ^u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5 do ipart += 1
+    if fpart - ipart > 0.5: ipart += 1
     itoa(n, ipart)
 }
 

@@ -2,6 +2,6 @@
 #test
 {
     var x: u8
-    if !x do
+    if !x:
         return
 }

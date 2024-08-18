@@ -8,9 +8,9 @@ impl Point
 {
 	func opIndexAffect(self, i: u64, v: s32)
 	{
-        if(i == 0) do
+        if(i == 0):
             self.x = v;
-        else do
+        else:
             self.y = v;
 	}
 }

@@ -56,7 +56,7 @@ The 199th asteroid to be vaporized is at 9,6.
 The 200th asteroid to be vaporized is at 8,2.
 The 201st asteroid to be vaporized is at 10,9.
 The 299th and final asteroid to be vaporized is at 11,1.
-The Elves are placing bets on which will be the 200th asteroid to be vaporized. Win the bet by determining which asteroid that will be; what do you get if you multiply its X coordinate by 100 and then add its Y coordinate? (For example, 8,2 becomes 802.)
+The Elves are placing bets on which will be the 200th asteroid to be vaporized. Win the bet by determining which asteroid that will be; what: you get if you multiply its X coordinate by 100 and then add its Y coordinate? (For example, 8,2 becomes 802.)
 */
 
 using Core
@@ -76,9 +76,9 @@ func day10B()
     var arr: Array'Pos
     var tot: Array's32
 
-    visit l, y in lines do
-        visit c, x in l do
-            if c == `#` do
+    visit l, y in lines:
+        visit c, x in l:
+            if c == `#`:
                 arr.add({{cast(f32) x, cast(f32) y}})
     tot.resize(arr.count)
 
@@ -91,7 +91,7 @@ func day10B()
             var hit = false
             loop k in arr
             {
-                if k == i or k == j do
+                if k == i or k == j:
                     continue
                 let f = arr[k].pos.distanceToSegment(v0, v1)
                 if Math.isZeroEpsilon(f)
@@ -124,7 +124,7 @@ func day10B()
     // Sort from small angle to big angle. If angles are the same, sort by distance (closest first)
     arr.sort(func(x, y)
     {
-        if Math.isEqualEpsilon(x.angle, y.angle) do
+        if Math.isEqualEpsilon(x.angle, y.angle):
             return x.dist <=> y.dist
         return x.angle <=> y.angle
     })
@@ -145,7 +145,7 @@ func day10B()
         arr.removeAtOrdered(index)
 
         var nindex = index
-        while Math.isEqualEpsilon(arr[nindex].angle, curAngle) do
+        while Math.isEqualEpsilon(arr[nindex].angle, curAngle):
             nindex = (nindex + 1) % arr.count
         index = nindex
     }

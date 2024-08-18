@@ -1,6 +1,6 @@
 /*
 --- Day 7: No Space Left On Device ---
-You can hear birds chirping and raindrops hitting leaves as the expedition proceeds. Occasionally, you can even hear much louder sounds in the distance; how big do the animals get out here, anyway?
+You can hear birds chirping and raindrops hitting leaves as the expedition proceeds. Occasionally, you can even hear much louder sounds in the distance; how big: the animals get out here, anyway?
 
 The device the Elves gave you has problems with more than just its communication system. You try to run a system update:
 
@@ -62,7 +62,7 @@ Given the commands and output in the example above, you can determine that the f
     - k (file, size=7214296)
 Here, there are four directories: / (the outermost directory), a and d (which are in /), and e (which is in a). These directories also contain files of various sizes.
 
-Since the disk is full, your first step should probably be to find directories that are good candidates for deletion. To do this, you need to determine the total size of each directory. The total size of a directory is the sum of the sizes of the files it contains, directly or indirectly. (Directories themselves do not count as having any intrinsic size.)
+Since the disk is full, your first step should probably be to find directories that are good candidates for deletion. To: this, you need to determine the total size of each directory. The total size of a directory is the sum of the sizes of the files it contains, directly or indirectly. (Directories themselves: not count as having any intrinsic size.)
 
 The total sizes of the directories above can be found as follows:
 
@@ -87,18 +87,18 @@ func day7A()
     loop i in lines
     {
         let l = #ref lines[i]
-        if l[0] == `$` do
+        if l[0] == `$`:
             l.remove(0, 1)
 
         let cmd = Tokenize.split(l, ` `'u8)
         switch cmd[0]
         {
         case "cd":
-            if cmd[1] == "/" do
+            if cmd[1] == "/":
                 folder = ""
-            elif cmd[1] == ".." do
+            elif cmd[1] == "..":
                 folder = Path.getDirectoryName(folder)
-            else do
+            else:
                 folder = Path.combine(folder, cmd[1])
 
         case "ls", "dir":
@@ -110,7 +110,7 @@ func day7A()
             loop
             {
                 folders.findOrAdd(tmp).value += size
-                if !tmp.length do
+                if !tmp.length:
                     break
                 tmp = Path.getDirectoryName(tmp)
             }
@@ -118,8 +118,8 @@ func day7A()
     }
 
     var total: u64
-    visit name, val in folders do
-        if val <= 100_000 do
+    visit name, val in folders:
+        if val <= 100_000:
             total += val
 
     //Console.print("total: ", total)

@@ -24,9 +24,9 @@ impl Queue
         let node = cast(*Node) @alloc(@sizeof(Node))
         @init(node)
         node.data = value
-        if end do
+        if end:
             end.next = node
-        else do
+        else:
             start = node
         end = node
     }
@@ -35,9 +35,9 @@ impl Queue
     {
         let start = start orelse null
         defer gpa.destroy(start)
-        if start.next do
+        if start.next:
             start = next
-        else do
+        else:
             start, end = null
         return data;
     }        

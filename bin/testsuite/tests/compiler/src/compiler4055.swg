@@ -9,7 +9,7 @@
         toto += 1
     }
 
-    loop 5 do
+    loop 5:
         x()
     @assert(toto == 5)
 }

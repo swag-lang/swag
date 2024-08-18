@@ -40,7 +40,7 @@ impl PropertiesCtrl
             .list.sigSelChanged += closure|ed|(list)
             {
                 let sel = list.getFocusLine()
-                if !sel do
+                if !sel:
                     return
                 list.toggleExpand(sel)
                 let item = cast(*PropertiesItem) sel.userData0
@@ -53,7 +53,7 @@ impl PropertiesCtrl
             .splitter.addPane(.list)
             .splitter.addPane(.prop)
 
-            if !flags.has(.SectionPane) do
+            if !flags.has(.SectionPane):
                 .splitter.showPane(0, false)
         }
 
@@ -110,13 +110,13 @@ impl PropertiesCtrl
             }
 
             // In the left pane
-            if it.item1 == 0 do
+            if it.item1 == 0:
                 parentLine = null
 
             let line = list.createLine(naked, parentLine: parentLine)
             line.userData0 = it.item0
 
-            if it.item1 == 0 do
+            if it.item1 == 0:
                 parentLine = line
         }
     }

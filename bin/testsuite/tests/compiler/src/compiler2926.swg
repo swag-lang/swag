@@ -4,7 +4,7 @@
     var cpt = 0
     loop
     {
-        if #index == 4 do
+        if #index == 4:
             break
         cpt += 1
     }

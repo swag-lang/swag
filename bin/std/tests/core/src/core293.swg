@@ -26,7 +26,7 @@ using Core
         loop
         {
             let val = r.grep(res)
-            if !val do
+            if !val:
                 break
             let newStart = @dataof(val) + @countof(val)
             res = @mkstring(newStart, end - newStart)

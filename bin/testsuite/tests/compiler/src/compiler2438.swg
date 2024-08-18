@@ -7,19 +7,19 @@ impl A
 {
     func(op: string) opBinary(using self, o: s32)->A
     {
-        #if op == "+" #do
+        #if op == "+":
             return {v + o}
-        #if op == "*" #do
+        #if op == "*":
             return {v * o}
-        #if op == "/" #do
+        #if op == "/":
             return {v / o}
-        #if op == "%" #do
+        #if op == "%":
             return {v % o}
-        #if op == "|" #do
+        #if op == "|":
             return {v | o}
-        #if op == "&" #do
+        #if op == "&":
             return {v & o}
-        #if op == "^" #do
+        #if op == "^":
             return {v ^ o}
     }
 }

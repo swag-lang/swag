@@ -128,7 +128,7 @@ impl IWnd for ColorPicker
         if dirty
         {
             dirty = false
-            if !img.pixels.buffer do
+            if !img.pixels.buffer:
                 img = Image.create(cast(s32) clientRect.width, cast(s32) clientRect.height, .RGBA8)
 
             var modeFill: Image.FillHslType = undefined
@@ -238,9 +238,9 @@ impl IWnd for ColorPicker
                 img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
             }
 
-            if texture.valid do
+            if texture.valid:
                 getApp().renderer.updateTexture(texture, img.pixels.buffer)
-            else do
+            else:
                 texture = getApp().renderer.addImage(img)
             computeXY()
         }
@@ -251,7 +251,7 @@ impl IWnd for ColorPicker
         painter.endClippingRegion()
 
         // Image
-        if mode == .AlphaHorz or mode == .AlphaVert do
+        if mode == .AlphaHorz or mode == .AlphaVert:
             painter.fillRect(clientRect, Brush.createHatch(.CheckBoardLarge, colors.colorPicker_BackAlpha))
         painter.drawTexture(clientRect, texture)
         painter.resetClippingRegion()

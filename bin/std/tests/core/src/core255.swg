@@ -8,7 +8,7 @@ const ITER = 100000
 
 func entry(th: Threading.Thread)
 {
-    loop ITER do
+    loop ITER:
         G += 1
     @assert(G == ITER)
 }
@@ -17,9 +17,9 @@ func entry(th: Threading.Thread)
 #test
 {
     var th: [N] Threading.Thread
-    visit &t in th do
+    visit &t in th:
         catch t.init(&entry)
-    visit &t in th do
+    visit &t in th:
         catch t.start()
     Threading.wait(&th[0], &th[1], &th[2])
 }

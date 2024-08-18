@@ -6,7 +6,7 @@ func(T) inc(x: T)->T
 
 func(T) map(values: [..] T, cb: func(T)->T)
 {
-    loop values do
+    loop values:
         values[#index] = cb(values[#index])
 }
 

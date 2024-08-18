@@ -29,18 +29,18 @@ func day7B()
     loop i in lines
     {
         let l = #ref lines[i]
-        if l[0] == `$` do
+        if l[0] == `$`:
             l.remove(0, 1)
 
         let cmd = Tokenize.split(l, ` `'u8)
         switch cmd[0]
         {
         case "cd":
-            if cmd[1] == "/" do
+            if cmd[1] == "/":
                 folder = ""
-            elif cmd[1] == ".." do
+            elif cmd[1] == "..":
                 folder = Path.getDirectoryName(folder)
-            else do
+            else:
                 folder = Path.combine(folder, cmd[1])
 
         case "ls", "dir":
@@ -52,7 +52,7 @@ func day7B()
             loop
             {
                 folders.findOrAdd(tmp).value += size
-                if !tmp.length do
+                if !tmp.length:
                     break
                 tmp = Path.getDirectoryName(tmp)
             }
@@ -63,7 +63,7 @@ func day7B()
     let needSpace = 30_000_000 - (70_000_000 - total)
     visit name, val in folders
     {
-        if val >= needSpace and val < total do
+        if val >= needSpace and val < total:
             total = val
     }
 

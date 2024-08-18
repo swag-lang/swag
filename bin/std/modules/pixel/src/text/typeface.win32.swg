@@ -27,7 +27,7 @@ impl TypeFace
 
         let str  = String.from(fullname)
         let here = g_HashTypeFace.find(str)
-        if here do
+        if here:
             return here.value
 
         let tf = Memory.new'TypeFace()

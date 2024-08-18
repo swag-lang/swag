@@ -27,7 +27,7 @@ func day3A()
             let v     = [StrConv.toS32(split[0]), StrConv.toS32(split[1]), StrConv.toS32(split[2])]
 
             var ok = 0
-            loop i in 3 do
+            loop i in 3:
                 ok += cast(s32) (v[i] + v[(i + 1) % 3] > v[(i + 2) % 3])
             total += cast(s32) (ok == 3)
         }

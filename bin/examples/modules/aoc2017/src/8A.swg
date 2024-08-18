@@ -37,11 +37,11 @@ func day8A() assume
         @assert(re.match(l))
         var v0 = StrConv.toS32(re[3])
         let v1 = StrConv.toS32(re[6])
-        if !regs.contains(re[1]) do
+        if !regs.contains(re[1]):
             regs.add(re[1], 0)
-        if !regs.contains(re[4]) do
+        if !regs.contains(re[4]):
             regs.add(re[4], 0)
-        if re[2] == "dec" do
+        if re[2] == "dec":
             v0 = -v0
 
         let test  = regs[re[4]]
@@ -62,11 +62,11 @@ func day8A() assume
             valid = test < v1
         }
 
-        if valid do
+        if valid:
             regs.find(re[1]).value += v0
     }
 
-    visit k, v in regs do
+    visit k, v in regs:
         total = Math.max(total, v)
     @assert(total == 4066)
 }

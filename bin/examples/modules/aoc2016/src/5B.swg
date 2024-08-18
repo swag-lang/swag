@@ -38,7 +38,7 @@ func day5B()
             }
         }
 
-        if cpt == 8 do
+        if cpt == 8:
             break
     }
 

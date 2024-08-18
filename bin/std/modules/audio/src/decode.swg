@@ -4,11 +4,11 @@ impl Voice
 {
     mtd readBuffer()->{ buffer: ^void, size: u64 } throw
     {
-        // If we are at the end of the file, then nothing to do, except if we need
+        // If we are at the end of the file, then nothing to:, except if we need
         // to loop. In that case, we rewind datas to the start
         if streamCurSeek >= file.dataSize
         {
-            if !playFlags.has(.Loop) do
+            if !playFlags.has(.Loop):
                 return {null, 0}
             rewindData()
         }
@@ -24,7 +24,7 @@ impl Voice
         }
 
         // Otherwise we need to decode datas in a temporary buffer
-        if !decodedBuffers[decodedBufferIdx].buffer do
+        if !decodedBuffers[decodedBufferIdx].buffer:
             decodedBuffers[decodedBufferIdx].resize(DecodedBufferSize)
 
         let destBuffer = decodedBuffers[decodedBufferIdx].buffer
@@ -42,7 +42,7 @@ impl Voice
     mtd createCodec() throw
     {
         let desc = getCodec(requestedEncoding, file.encoding)
-        if !desc do
+        if !desc:
             throw UnsupportedFormatError{"unsupported encoding"}
         let decoder = cast(*Codec) Memory.new(desc.type)
         decoder.srcEncoding = file.encoding
@@ -53,10 +53,10 @@ impl Voice
 
     mtd destroyCodec()
     {
-        if codec == null do
+        if codec == null:
             return
         let decoder = cast(*Codec) @dataof(codec)
-        if decoder.type.opDrop do
+        if decoder.type.opDrop:
             decoder.type.opDrop(decoder)
         Memory.free(decoder, cast(u64) decoder.type.sizeof)
         codec = null
@@ -91,7 +91,7 @@ impl Voice
     mtd readData(destBuffer: ^void, length: u64)->u64 throw
     {
         // Out of datas
-        if streamCurSeek >= file.dataSize do
+        if streamCurSeek >= file.dataSize:
             return 0
 
         var wantedLength = length
@@ -103,15 +103,15 @@ impl Voice
             let remain = Math.min(file.datas.count - streamCurSeek, length)
             Memory.copy(destBuffer, file.datas.buffer + streamCurSeek, remain)
             streamCurSeek += remain
-            if streamCurSeek >= file.dataSize do
+            if streamCurSeek >= file.dataSize:
                 return remain
             wantedLength -= remain
-            if !wantedLength do
+            if !wantedLength:
                 return remain
         }
 
         // Open file for streaming
-        if !stream.isOpen() do
+        if !stream.isOpen():
             stream = File.open(file.fullname, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
 
         // Read from file
@@ -123,14 +123,14 @@ impl Voice
     mtd rewindData() throw
     {
         streamCurSeek = 0
-        if stream.isOpen() do
+        if stream.isOpen():
             stream.setPosition(.Begin, file.dataSeek)
     }
 
     mtd closeData()
     {
         streamCurSeek = 0
-        if stream.isOpen() do
+        if stream.isOpen():
             stream.close()
     }
 }

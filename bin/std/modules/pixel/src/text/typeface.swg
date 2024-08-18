@@ -20,7 +20,7 @@ var g_HashTypeFace: HashTable'(String, *TypeFace)
 
 #drop
 {
-    visit k, v in g_HashTypeFace do
+    visit k, v in g_HashTypeFace:
         Memory.delete(v)
     g_HashTypeFace.free()
 }
@@ -82,7 +82,7 @@ public impl TypeFace
     // Release the given typeface
     func release(typeface: *TypeFace)
     {
-        if !typeface do
+        if !typeface:
             return
         Sync.scopedLock(&lock)
         g_HashTypeFace.remove(typeface.fullname)
@@ -95,7 +95,7 @@ public impl TypeFace
         Sync.scopedLock(&lock)
 
         let here = g_HashTypeFace.find(fullname)
-        if here do
+        if here:
             return here.value
 
         let tf = Memory.new'TypeFace()
@@ -113,7 +113,7 @@ public impl TypeFace
         Sync.scopedLock(&lock)
 
         let here = g_HashTypeFace.find(fullname)
-        if here do
+        if here:
             return here.value
 
         let tf = Memory.new'TypeFace()
@@ -140,9 +140,9 @@ public impl TypeFace
     {
         var emb = self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
         emb += embolden
-        if emb do
+        if emb:
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
-        if self.forceItalic or #self.forceItalic do
+        if self.forceItalic or #self.forceItalic:
             FT_GlyphSlot_Oblique(face.glyph)
     }
 
@@ -177,7 +177,7 @@ public impl TypeFace
 
         if prevIdx != pathList.paths.count
         {
-            loop i in prevIdx until pathList.paths.count do
+            loop i in prevIdx until pathList.paths.count:
                 pathList.paths[i].isClosed = true
         }
 

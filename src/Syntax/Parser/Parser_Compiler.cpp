@@ -91,7 +91,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
 bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind, bool forIf)
 {
-    if (tokenParse.is(TokenId::CompilerDo))
+    if (tokenParse.is(TokenId::SymColon))
     {
         const auto tokenDo = tokenParse.token;
         SWAG_CHECK(eatToken());

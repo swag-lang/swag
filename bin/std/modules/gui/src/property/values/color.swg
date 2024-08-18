@@ -37,7 +37,7 @@ impl Properties
         btn.sigPaintIcon = closure|color|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
-            if !color.isOpaque() do
+            if !color.isOpaque():
                 bc.painter.fillRoundRect(pos, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
@@ -48,7 +48,7 @@ impl Properties
             self.editPopup = frame
 
             var pal: Array'Color
-            loop i in 9 do
+            loop i in 9:
                 pal.add(Color.getBlendKeepAlpha(Argb.White, Argb.Black, i / 8.0))
 
             var flags = ColorPickerFlags.All

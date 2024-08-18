@@ -60,7 +60,7 @@ func day9A()
         let v1 = assume StrConv.toS32(l)
         if #index < N
         {
-            visit v0 in val do
+            visit v0 in val:
                 sum.add(v0 + v1)
             val.add(v1)
             continue

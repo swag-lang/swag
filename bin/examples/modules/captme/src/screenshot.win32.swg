@@ -63,10 +63,10 @@ private
     var g_Ignore:  HWND
     func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
     {
-        if !IsWindowVisible(hWnd) do
+        if !IsWindowVisible(hWnd):
             return TRUE
 
-        if hWnd == g_Ignore do
+        if hWnd == g_Ignore:
             return TRUE
 
         var r: RECT
@@ -89,7 +89,7 @@ private
         g_Hit     = null
         g_Ignore  = hWnd
         EnumWindows(acast &enumProc, 0)
-        if !g_Hit do
+        if !g_Hit:
             return null
 
         loop
@@ -97,7 +97,7 @@ private
             var pt1 = pt
             ScreenToClient(g_Hit, &pt1)
             let child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
-            if !child or child == g_Hit do
+            if !child or child == g_Hit:
                 break
             g_Hit = child
         }
@@ -110,7 +110,7 @@ private
         switch msg
         {
         case WM_KEYDOWN:
-            if wParam == VK_ESCAPE do
+            if wParam == VK_ESCAPE:
                 PostQuitMessage(0)
             return 0
 
@@ -200,7 +200,7 @@ private
                 let yy1 = cast(s32) g_RStartGrabY
                 let xx2 = cast(s32) g_REndGrabX
                 let yy2 = cast(s32) g_REndGrabY
-                if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2 do
+                if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2:
                     InvalidateRect(hWnd, null, FALSE)
                 x1 = xx1
                 x2 = xx2
@@ -307,7 +307,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     elif captureMode == .ActiveWindow
     {
         g_Hit = GetForegroundWindow()
-        if !g_Hit do
+        if !g_Hit:
             return result
         var r: RECT
         GetWindowRect(g_Hit, &r)
@@ -365,7 +365,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         DeleteObject(acast g_MemBitmap)
 
         catch DestroyWindow(hWnd)
-        if !g_GrabDone do
+        if !g_GrabDone:
             return result
     }
 

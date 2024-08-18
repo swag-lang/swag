@@ -63,7 +63,7 @@ func day4A()
     let lines    = assume File.readAllLines(dataPath)
 
     var numbers: Array's32
-    visit v in Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8):
         numbers.add(assume StrConv.toS32(v))
 
     var bestScore = Swag.U64.Max
@@ -87,7 +87,7 @@ func day4A()
         }
 
         var score = Swag.U64.Max
-        loop i in 5 do
+        loop i in 5:
             score = Math.min(score, maxCol[i], maxLine[i])
 
         if score < bestScore
@@ -100,7 +100,7 @@ func day4A()
     var total = 0'u64
     visit v in bestCard
     {
-        if v > bestScore do
+        if v > bestScore:
             total += numbers[v]
     }
     total *= numbers[bestScore]

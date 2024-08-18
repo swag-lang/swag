@@ -48,9 +48,9 @@ private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{ output: s32,
         let inst = op[ip] % 10
 
         var param0, param1 = 0's32
-        if inst != 3 do
+        if inst != 3:
             param0 = imm0 ? op[ip + 1] : op[op[ip + 1]]
-        if inst != 3 and inst != 4 do
+        if inst != 3 and inst != 4:
             param1 = imm1 ? op[ip + 2] : op[op[ip + 2]]
 
         switch inst
@@ -91,7 +91,7 @@ func day7B()
     let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's32
-    visit v in Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8):
         prg.add(assume StrConv.toS32(v))
 
     var phase = [5, 6, 7, 8, 9]
@@ -107,11 +107,11 @@ func day7B()
             total = Math.max(total, result.output)
             input = result.output
             cpt   = (cpt + 1) % 5
-            if result.stopped and !cpt do
+            if result.stopped and !cpt:
                 break
         }
 
-        if !Slice.nextPermutation(phase[..]) do
+        if !Slice.nextPermutation(phase[..]):
             break
     }
 

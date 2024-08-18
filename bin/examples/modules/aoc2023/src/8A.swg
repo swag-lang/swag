@@ -46,15 +46,15 @@ func day8A()
 
     visit l, i in lines
     {
-        if i == 0 do
+        if i == 0:
             instructions = l.toString()
         elif i > 1
         {
             let name = l[0..2]
             nameToNode.add(name, i - 2)
-            if name == "AAA" do
+            if name == "AAA":
                 startNode = i - 2
-            elif name == "ZZZ" do
+            elif name == "ZZZ":
                 endNode = i - 2
         }
     }
@@ -62,7 +62,7 @@ func day8A()
     nodes.resize(lines.count - 2)
     visit l, i in lines
     {
-        if i <= 1 do
+        if i <= 1:
             continue
         let left   = l[7..9]
         let right  = l[12..14]
@@ -77,12 +77,12 @@ func day8A()
     {
         visit inst in instructions
         {
-            if inst == `L` do
+            if inst == `L`:
                 curNode = nodes[curNode].left
-            else do
+            else:
                 curNode = nodes[curNode].right
             total += 1
-            if curNode == endNode do
+            if curNode == endNode:
                 break
         }
     }

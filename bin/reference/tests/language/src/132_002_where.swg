@@ -14,7 +14,7 @@ The `where` expression is evaluated **only once**, whatever the call, so it is t
         where T == s32 or T == s64
     {
         var total = 0'T
-        visit it in x do
+        visit it in x:
             total += it
         return total
     }
@@ -64,13 +64,13 @@ Instead of a single expression, `where` can be followed by a block that needs to
     func(T) sum(x: T...)->T
         where
         {
-            if @typeof(T) == s32 or @typeof(T) == s64 do
+            if @typeof(T) == s32 or @typeof(T) == s64:
                 return true
             return false
         }
     {
         var total = 0'T
-        visit it in x do
+        visit it in x:
             total += it
         return total
     }
@@ -84,7 +84,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     func(T) sum(x, y: T)->T
         where
         {
-            if T == s32 or T == s64 do
+            if T == s32 or T == s64:
                 return true
             @compilererror("invalid type " ++ @stringof(T), @location(T))
             return false
@@ -128,10 +128,10 @@ The expression will then not only be called once per instance, but will be evalu
             where(call)
             {
                 // Here we use '@isconstexpr'.
-                // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
-                if !@isconstexpr(y) do
+                // If 'y' cannot be evaluated at compile time, then we can: nothing about it.
+                if !@isconstexpr(y):
                     return true
-                if y == 0 do
+                if y == 0:
                     @compilererror("division by zero", @location(y))
                 return true
             }

@@ -41,7 +41,7 @@ func compute()
             a += ca
             b += cb
             n += 1
-            if a * a + b * b > 4 do
+            if a * a + b * b > 4:
                 break
         }
 
@@ -90,7 +90,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #main
 {
     try Jobs.setNumWorkers(4)
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent, init: &test)
 }

@@ -213,24 +213,24 @@ public func getKeyName(mdf: KeyModifiers, key: Key)->String
 {
     var result: retval
 
-    if mdf & .Alt do
+    if mdf & .Alt:
         result += "Alt"
 
     if mdf & .Control
     {
-        if result.length do
+        if result.length:
             result += "+"
         result += "Ctrl"
     }
 
     if mdf & .Shift
     {
-        if result.length do
+        if result.length:
             result += "+"
         result += "Shift"
     }
 
-    if result.length do
+    if result.length:
         result += "+"
     var k = key
 

@@ -54,7 +54,7 @@ public impl MessageDlg
 
         // Width
         var w = 0'f32
-        visit btn in buttons do
+        visit btn in buttons:
             w += btn.position.width
         w += cast(f32) ((buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding
@@ -65,15 +65,15 @@ public impl MessageDlg
 
         // Height
         var h = Math.min(512, label.name.boundRect.height + metrics.dialog_Padding)
-        if labelIcon do
+        if labelIcon:
             h += labelIcon.position.height
-        else do
+        else:
             h += metrics.dialog_Padding
         h += wndBottom.position.height
         h += 2 * metrics.wnd_BorderSize
-        if surface.flags & .SmallCaption do
+        if surface.flags & .SmallCaption:
             h += metrics.wnd_SmallCaptionCY
-        elif surface.flags & .BigCaption do
+        elif surface.flags & .BigCaption:
             h += metrics.wnd_BigCaptionCY
 
         var pos = surface.position
@@ -95,10 +95,10 @@ public impl MessageDlg
     // Set big icon
     mtd setIcon(icon: Icon, color: Color = Argb.Zero)
     {
-        if !icon.isValid() do
+        if !icon.isValid():
             return
 
-        if !labelIcon do
+        if !labelIcon:
             labelIcon = Label.create(surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
 
         with labelIcon
@@ -177,7 +177,7 @@ public impl MessageDlg
     func error(from: *Surface, message: string = null)
     {
         var txt: String = String.from(message)
-        if !txt.isEmpty() do
+        if !txt.isEmpty():
             txt += "\n"
 
         if @err() != null

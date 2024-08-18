@@ -1,6 +1,6 @@
 /*
 --- Part Two ---
-On the other hand, if the coordinates are safe, maybe the best you can do is try to find a region near as many coordinates as possible.
+On the other hand, if the coordinates are safe, maybe the best you can: is try to find a region near as many coordinates as possible.
 
 For example, suppose you want the sum of the Manhattan distance to all of the coordinates to be less than 32. For each location, add up the distances to all of the given coordinates; if the total of those distances is less than 32, that location is within the desired region. Using the same coordinates as above, the resulting region looks like this:
 
@@ -61,7 +61,7 @@ func day6B() assume
     }
 
     var total = 0
-    visit v in arr do
+    visit v in arr:
         total += cast(s32) (v < 10000)
 
     //Console.print("total: ", total)

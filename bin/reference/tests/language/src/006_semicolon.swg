@@ -27,12 +27,12 @@ The semicolons are not mandatory, but it's possible to use them if you want.
     // This is due to type inference (we will see that later).
     var x, y = 0;
 
-    // You can also notice the short syntax to do the same operation on multiple variables at once.
+    // You can also notice the short syntax to: the same operation on multiple variables at once.
     x, y += 1;
 }
 
 /**
-Semicolons can be usefull if you want to do multiple things on the same line.
+Semicolons can be usefull if you want to: multiple things on the same line.
 */
 #test
 {

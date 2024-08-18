@@ -1,37 +1,37 @@
 func toto()
 {
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
-    #if false #do struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
+    #if false: struct AA {}
 }
 
 #test

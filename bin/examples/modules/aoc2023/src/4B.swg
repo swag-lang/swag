@@ -25,7 +25,7 @@ Your fourteen instances of card 5 (one original and thirteen copies) have no mat
 Your one instance of card 6 (one original) has no matching numbers and wins no more cards.
 Once all of the originals and copies have been processed, you end up with 1 instance of card 1, 2 instances of card 2, 4 instances of card 3, 8 instances of card 4, 14 instances of card 5, and 1 instance of card 6. In total, this example pile of scratchcards causes you to ultimately have 30 scratchcards!
 
-Process all of the original and copied scratchcards until no more scratchcards are won. Including the original set of scratchcards, how many total scratchcards do you end up with?
+Process all of the original and copied scratchcards until no more scratchcards are won. Including the original set of scratchcards, how many total scratchcards: you end up with?
 */
 
 using Core
@@ -51,15 +51,15 @@ func day4B()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v in val0 do
+        visit v in val0:
             v0.add(assume StrConv.toS32(v))
-        visit v in val1 do
+        visit v in val1:
             v1.add(assume StrConv.toS32(v))
 
         var score = 0
         visit v in v1
         {
-            if v0.contains(v) do
+            if v0.contains(v):
                 score += 1
         }
 

@@ -2,7 +2,7 @@
 --- Day 8: Treetop Tree House ---
 The expedition comes across a peculiar patch of tall trees all planted carefully in a grid. The Elves explain that a previous expedition planted these trees as a reforestation effort. Now, they're curious if this would be a good location for a tree house.
 
-First, determine whether there is enough tree cover here to keep a tree house hidden. To do this, you need to count the number of trees that are visible from outside the grid when looking directly along a row or column.
+First, determine whether there is enough tree cover here to keep a tree house hidden. To: this, you need to count the number of trees that are visible from outside the grid when looking directly along a row or column.
 
 The Elves have already launched a quadcopter to generate a map with the height of each tree (your puzzle input). For example:
 
@@ -45,21 +45,21 @@ func day8A()
 
     visit l, line in lines
     {
-        if line == 0 or line == lines.count - 1 do
+        if line == 0 or line == lines.count - 1:
             continue
 
         var maxLeft: u8
 
         visit(Bytes) c, col in l
         {
-            if col == 0 or col == l.length - 1 do
+            if col == 0 or col == l.length - 1:
                 continue
 
             var hidden = 0
 
-            if l[col] <= maxLeft do
+            if l[col] <= maxLeft:
                 hidden += 1
-            else do
+            else:
                 loop x in 0 until col
                 {
                     if l[x] >= l[col]
@@ -97,7 +97,7 @@ func day8A()
                 }
             }
 
-            if hidden != 4 do
+            if hidden != 4:
                 total += 1
         }
     }

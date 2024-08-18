@@ -115,21 +115,21 @@ impl MainWnd
 
         let res = dlg.doModal()
         g_KeepRatio = btnRatio.checked == .Checked
-        if res != Dialog.BtnOk do
+        if res != Dialog.BtnOk:
             return
 
         let w = trycatch StrConv.toS32(edit0.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize do
+        if w < Capture.MinSize or w > Capture.MaxSize:
             return
         let h = trycatch StrConv.toS32(edit1.edit.text)
-        if h < Capture.MinSize or h > Capture.MaxSize do
+        if h < Capture.MinSize or h > Capture.MaxSize:
             return
-        if w == capture.width and h == capture.height do
+        if w == capture.width and h == capture.height:
             return
 
         if capture.forms.count > 0
         {
-            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes do
+            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes:
                 return
         }
 
@@ -238,16 +238,16 @@ impl MainWnd
             }
         }
 
-        if res != Dialog.BtnOk do
+        if res != Dialog.BtnOk:
             return
 
         let w = trycatch StrConv.toS32(edit0.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize do
+        if w < Capture.MinSize or w > Capture.MaxSize:
             return
         let h = trycatch StrConv.toS32(edit1.edit.text)
-        if h < Capture.MinSize or h > Capture.MaxSize do
+        if h < Capture.MinSize or h > Capture.MaxSize:
             return
-        if w == capture.width and h == capture.height do
+        if w == capture.width and h == capture.height:
             return
 
         let nw = w - capture.width
@@ -289,13 +289,13 @@ impl MainWnd
         visit f, idx in capture.forms
         {
             var r = f.boundRect()
-            if r.x > 0 do
+            if r.x > 0:
                 minX = Math.min(minX, r.x)
-            if r.y > 0 do
+            if r.y > 0:
                 minY = Math.min(minY, r.y)
-            if r.right() < capture.width do
+            if r.right() < capture.width:
                 maxX = Math.max(maxX, r.right())
-            if r.bottom() < capture.height do
+            if r.bottom() < capture.height:
                 maxY = Math.max(maxY, r.bottom())
 
             // Select forms outside capture
@@ -311,7 +311,7 @@ impl MainWnd
         #scope Left
         loop x in capture.backImg.width
         {
-            if x + capture.backImagePos.x < 0 do
+            if x + capture.backImagePos.x < 0:
                 continue
             loop y in capture.backImg.height
             {
@@ -327,7 +327,7 @@ impl MainWnd
         #scope Right
         loop x in capture.backImg.width - 1 to 0
         {
-            if x + capture.backImagePos.x >= capture.width do
+            if x + capture.backImagePos.x >= capture.width:
                 continue
             loop y in capture.backImg.height
             {
@@ -343,7 +343,7 @@ impl MainWnd
         #scope Up
         loop y in capture.backImg.height
         {
-            if y + capture.backImagePos.y < 0 do
+            if y + capture.backImagePos.y < 0:
                 continue
             loop x in capture.backImg.width
             {
@@ -359,7 +359,7 @@ impl MainWnd
         #scope Down
         loop y in capture.backImg.height - 1 to 0
         {
-            if y + capture.backImagePos.y >= capture.height do
+            if y + capture.backImagePos.y >= capture.height:
                 continue
             loop x in capture.backImg.width
             {
@@ -402,13 +402,13 @@ impl MainWnd
            capture.backImagePos.y + capture.backImg.height > capture.height
         {
             var cropRect = Math.Rectangle{0, 0, capture.backImg.width, capture.backImg.height}
-            if capture.backImagePos.x < 0 do
+            if capture.backImagePos.x < 0:
                 cropRect.moveLeft(-capture.backImagePos.x)
-            if capture.backImagePos.y < 0 do
+            if capture.backImagePos.y < 0:
                 cropRect.moveTop(-capture.backImagePos.y)
-            if capture.backImagePos.x + capture.backImg.width > capture.width do
+            if capture.backImagePos.x + capture.backImg.width > capture.width:
                 cropRect.width -= (capture.backImagePos.x + capture.backImg.width) - capture.width
-            if capture.backImagePos.y + capture.backImg.height > capture.height do
+            if capture.backImagePos.y + capture.backImg.height > capture.height:
                 cropRect.height -= (capture.backImagePos.y + capture.backImg.height) - capture.height
 
             let undo = capture.newUndo(.SetImage, serial)

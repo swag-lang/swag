@@ -15,17 +15,17 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
     while min <= max
     {
         let mid = (max + min) / 2
-        if mid >= countof do
+        if mid >= countof:
             break
 
         let res = values[mid] <=> value
-        if res == 0 do
+        if res == 0:
             return mid
-        if res < 0 do
+        if res < 0:
             min = mid + 1
-        elif mid == 0 do
+        elif mid == 0:
             break
-        else do
+        else:
             max = mid - 1
     }
 
@@ -37,7 +37,7 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 // Returns Swag.U64.Max if not found.
 func(T, V) findLinear(values: const [..] T, value: V)->u64
 {
-    visit v, i in values where v == value do
+    visit v, i in values where v == value:
         return i
     return Swag.U64.Max
 }
@@ -45,7 +45,7 @@ func(T, V) findLinear(values: const [..] T, value: V)->u64
 // Returns true if the given slice contains the sub slice 'value'
 func(T) findSlice(values, value: const [..] T)->u32
 {
-    if @countof(value) > @countof(values) do
+    if @countof(value) > @countof(values):
         return Swag.U32.Max
 
     loop it0 in 0 to @countof(values) - @countof(value)
@@ -60,7 +60,7 @@ func(T) findSlice(values, value: const [..] T)->u32
             }
         }
 
-        if ok do
+        if ok:
             return acast it0
     }
 
@@ -79,7 +79,7 @@ func(T, V) containsSorted(values: const [..] T, value: V)->bool
 #[Swag.ConstExpr, Swag.Overload]
 func(T, V) contains(values: const [..] T, value: V)->bool
 {
-    visit v in values where v == value do
+    visit v in values where v == value:
         return true
     return false
 }
@@ -88,9 +88,9 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 #[Swag.ConstExpr]
 func(T) equals(dst, src: const [..] T)->bool
 {
-    if @countof(dst) != @countof(src) do
+    if @countof(dst) != @countof(src):
         return false
-    loop i in dst where dst[i] != src[i] do
+    loop i in dst where dst[i] != src[i]:
         return false
     return true
 }

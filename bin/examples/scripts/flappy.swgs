@@ -51,9 +51,9 @@ So in our case, we need to import the module 'gui'. This module is used to creat
         // Change something...
         // Here, for example, we force all safety guards to be present in 'debug', and we remove all
         // of them in 'release'.
-        #if #cfg == "debug" #do
+        #if #cfg == "debug":
             cfg.safetyGuards = Swag.SafetyAll
-        #else #do
+        #else:
             cfg.safetyGuards = Swag.SafetyNone
     }
 }
@@ -90,7 +90,7 @@ The '#main' special function is usually the entry point of an executable. It's e
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
     // to exit after 100 frames. This is usefull for batch testing.
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
 
     // Creates and run one surface (i.e. window) at the given position and with the given size and title.
@@ -102,7 +102,7 @@ The '#main' special function is usually the entry point of an executable. It's e
 /**
 # Global definitions
 ## Constants
-We declare global constants with 'const'. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection.
+We declare global constants with 'const'. Note that we: not specify types for thoses constants. They will be deduced thanks to the affection.
 */
 const Gravity      = 2.5       // 2.5 is a 32 bits float, so the type of Gravity is 'f32'
 const GroundHeight = 40.0
@@ -116,7 +116,7 @@ const BirdImpulseY = 350       // 350 is an integer, so the type of BirdImpulseY
 var g_Bird: Bird // 'Bird' is a structure, and will be defined later
 
 /**
-'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module, but thanks to the global `using Core`, we do not need to write `Core.Array'Pipe`.
+'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module, but thanks to the global `using Core`, we: not need to write `Core.Array'Pipe`.
 */
 
 var g_Pipes: Array'Pipe
@@ -298,9 +298,9 @@ func paint(painter: *Painter)
     // Base
     painter.drawTexture(-g_BasePos, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
     painter.drawTexture(-g_BasePos + g_BaseTexture.width, g_Rect.bottom() - GroundHeight, cast(f32) g_BaseTexture.width, GroundHeight, g_BaseTexture)
-    if !g_GameOver do
+    if !g_GameOver:
         g_BasePos += SpeedHorz * g_Dt
-    if g_BasePos >= g_BaseTexture.width do
+    if g_BasePos >= g_BaseTexture.width:
         g_BasePos = 0
 
     // Gameover text, centered
@@ -372,18 +372,18 @@ The 'update' part of the game.
 */
 func move()
 {
-    if g_GameOver do
+    if g_GameOver:
         return
 
     g_Bird.pos += g_Bird.speed * g_Dt
     g_Bird.pos.y = Math.max(g_Bird.pos.y, 0)
-    if g_Start do
+    if g_Start:
         g_Bird.speed += {0, Gravity}
 
     g_Bird.frame += 10 * g_Dt
 
     // Be sure to have at least one pipe
-    if g_Pipes.count == 0 do
+    if g_Pipes.count == 0:
         createPipe()
 
     // Move each pipe, and test collisions against the bird
@@ -413,11 +413,11 @@ func move()
     }
 
     // If the first pipe is out of screen, remove it
-    if g_Pipes[0].rectUp.right() < 0 do
+    if g_Pipes[0].rectUp.right() < 0:
         g_Pipes.removeAt(0)
 
     // If the last pipe is enough inside, create a new one
-    if g_Rect.width - g_Pipes.back().rectUp.right() > g_Pipes.back().distToNext do
+    if g_Rect.width - g_Pipes.back().rectUp.right() > g_Pipes.back().distToNext:
         createPipe()
 
     // Collision with the ground
@@ -428,7 +428,7 @@ func move()
     }
 
     // Play dying sound
-    if g_GameOver do
+    if g_GameOver:
         assume Audio.Voice.play(&g_SoundDie)
 }
 

@@ -52,18 +52,18 @@ func day9A() assume
     var garbage, group, score = 0
     for var i = 0; i < @countof(line); i += 1
     {
-        if line[i] == `!` and garbage do
+        if line[i] == `!` and garbage:
             i += 1
-        elif line[i] == `>` and garbage do
+        elif line[i] == `>` and garbage:
             garbage -= 1
-        elif line[i] == `<` and !garbage do
+        elif line[i] == `<` and !garbage:
             garbage += 1
         elif line[i] == `{` and !garbage
         {
             group += 1
             score += group
         }
-        elif line[i] == `}` and !garbage do
+        elif line[i] == `}` and !garbage:
             group -= 1
     }
 

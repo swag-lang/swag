@@ -10,7 +10,7 @@
     }
 
     //@print("pressed")
-    while Keyboard.isKeyPressed(Key.Space) do
+    while Keyboard.isKeyPressed(Key.Space):
         break
 
     //@print("unpressed")

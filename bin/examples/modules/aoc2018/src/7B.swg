@@ -50,9 +50,9 @@ func day7B() assume
     var last:  u8
     visit k, v in steps
     {
-        if v.next.length == 0 do
+        if v.next.length == 0:
             last = k
-        if v.prev.length == 0 do
+        if v.prev.length == 0:
             first.add(k)
     }
 
@@ -75,10 +75,10 @@ func day7B() assume
         var done: Array'u64
         visit &w in workers
         {
-            if w.val == 0 do
+            if w.val == 0:
                 continue
             w.tick -= 1
-            if w.tick == 0 do
+            if w.tick == 0:
                 done.add(#index)
         }
 
@@ -100,9 +100,9 @@ func day7B() assume
 
             visit k, v in steps
             {
-                if result.contains(k) or current.contains(k) do
+                if result.contains(k) or current.contains(k):
                     continue
-                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x) => result.contains(x)) do
+                if !Slice.allOf(v.prev.toSlice(), closure|&result|(x) => result.contains(x)):
                     continue
                 avail.add(k)
             }
@@ -111,7 +111,7 @@ func day7B() assume
         //Slice.sort(avail.toSlice(), bigFirst: true)
         visit &w1 in workers
         {
-            if w1.val or avail.isEmpty() do
+            if w1.val or avail.isEmpty():
                 continue
             let cc = avail.popBack()
             w1.val  = cc

@@ -10,14 +10,14 @@ func parseX64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
     var result: retval
 
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
     var buffer = @dataof(str)
     var cpt    = 0'u32
     var value  = 0'u64
 
-    if !Latin1.isHexDigit(dref buffer) do
+    if !Latin1.isHexDigit(dref buffer):
         throw SyntaxError{}
     while cpt < countof and Latin1.isHexDigit(dref buffer)
     {
@@ -29,11 +29,11 @@ func parseX64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
         {
             value <<= 4
             let c = dref buffer
-            if Latin1.isDigit(c) do
+            if Latin1.isDigit(c):
                 value += cast(u64) (c - `0`'u8)
-            elif c <= `F`'u8 do
+            elif c <= `F`'u8:
                 value += cast(u64) 10 + (c - `A`'u8)
-            else do
+            else:
                 value += cast(u64) 10 + (c - `a`'u8)
         }
 
@@ -53,14 +53,14 @@ func parseB64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
     var result: retval
 
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
     var buffer = @dataof(str)
     var cpt    = 0'u32
     var value  = 0'u64
 
-    if !Latin1.isBinDigit(dref buffer) do
+    if !Latin1.isBinDigit(dref buffer):
         throw SyntaxError{}
     while cpt < countof and Latin1.isBinDigit(dref buffer)
     {
@@ -88,7 +88,7 @@ func parseB64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
 func parseU8(str: string)->{ value: u8, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseU64(str)
-    if res > Swag.U8.Max do
+    if res > Swag.U8.Max:
         return {Swag.U8.Max, eat, true}
     return {cast(u8) res, eat, ovf}
 }
@@ -96,7 +96,7 @@ func parseU8(str: string)->{ value: u8, eat: u32, ovf: bool } throw
 func parseU16(str: string)->{ value: u16, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseU64(str)
-    if res > Swag.U16.Max do
+    if res > Swag.U16.Max:
         return {Swag.U16.Max, eat, true}
     return {cast(u16) res, eat, ovf}
 }
@@ -104,7 +104,7 @@ func parseU16(str: string)->{ value: u16, eat: u32, ovf: bool } throw
 func parseU32(str: string)->{ value: u32, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseU64(str)
-    if res > Swag.U32.Max do
+    if res > Swag.U32.Max:
         return {Swag.U32.Max, eat, true}
     return {cast(u32) res, eat, ovf}
 }
@@ -114,7 +114,7 @@ func parseU64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
     var result: retval
 
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
     // Detect 0x for hexa, 0b for binary
@@ -142,7 +142,7 @@ func parseU64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
     var cpt    = 0'u32
     var value  = 0'u64
 
-    if !Latin1.isDigit(dref buffer) do
+    if !Latin1.isDigit(dref buffer):
         throw SyntaxError{}
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
@@ -152,7 +152,7 @@ func parseU64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
             result.ovf = true
             value      = Swag.U64.Max
         }
-        else do
+        else:
             value = value1
 
         if !result.ovf
@@ -163,7 +163,7 @@ func parseU64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
                 result.ovf = true
                 value      = Swag.U64.Max
             }
-            else do
+            else:
                 value += add
         }
 
@@ -181,9 +181,9 @@ func parseU64(str: string)->{ value: u64, eat: u32, ovf: bool } throw
 func parseS8(str: string)->{ value: s8, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseS64(str)
-    if res < Swag.S8.Min do
+    if res < Swag.S8.Min:
         return {Swag.S8.Min, eat, true}
-    if res > Swag.S8.Max do
+    if res > Swag.S8.Max:
         return {Swag.S8.Max, eat, true}
     return {cast(s8) res, eat, ovf}
 }
@@ -191,9 +191,9 @@ func parseS8(str: string)->{ value: s8, eat: u32, ovf: bool } throw
 func parseS16(str: string)->{ value: s16, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseS64(str)
-    if res < Swag.S16.Min do
+    if res < Swag.S16.Min:
         return {Swag.S16.Min, eat, true}
-    if res > Swag.S16.Max do
+    if res > Swag.S16.Max:
         return {Swag.S16.Max, eat, true}
     return {cast(s16) res, eat, ovf}
 }
@@ -201,9 +201,9 @@ func parseS16(str: string)->{ value: s16, eat: u32, ovf: bool } throw
 func parseS32(str: string)->{ value: s32, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseS64(str)
-    if res < Swag.S32.Min do
+    if res < Swag.S32.Min:
         return {Swag.S32.Min, eat, true}
-    if res > Swag.S32.Max do
+    if res > Swag.S32.Max:
         return {Swag.S32.Max, eat, true}
     return {cast(s32) res, eat, ovf}
 }
@@ -213,7 +213,7 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
     var result: retval
 
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
     var buffer = @dataof(str)
@@ -229,18 +229,18 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
         buffer, cpt += 1
         signed = true
         maxValue += 1
-        if !Latin1.isDigit(dref buffer) and cpt == countof do
+        if !Latin1.isDigit(dref buffer) and cpt == countof:
             throw ParseIncompleteError{}
     }
     elif c == g_CultureInfo.numberFormat.positiveSign
     {
         buffer, cpt += 1
-        if !Latin1.isDigit(dref buffer) and cpt == countof do
+        if !Latin1.isDigit(dref buffer) and cpt == countof:
             throw ParseIncompleteError{}
     }
 
     // Parse the rest
-    if !Latin1.isDigit(dref buffer) do
+    if !Latin1.isDigit(dref buffer):
         throw SyntaxError{}
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
@@ -250,7 +250,7 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
             result.ovf = true
             value      = Swag.U64.Max
         }
-        else do
+        else:
             value = value1
 
         if !result.ovf
@@ -261,7 +261,7 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
                 result.ovf = true
                 value      = maxValue
             }
-            else do
+            else:
                 value += toAdd
         }
 
@@ -272,12 +272,12 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
     {
         if signed
         {
-            if value == maxValue do
+            if value == maxValue:
                 result.value = Swag.S64.Min
-            else do
+            else:
                 result.value = -cast(s64) value
         }
-        else do
+        else:
             result.value = cast(s64) value
     }
 
@@ -291,9 +291,9 @@ func parseS64(str: string)->{ value: s64, eat: u32, ovf: bool } throw
 func parseF32(str: string)->{ value: f32, eat: u32, ovf: bool } throw
 {
     let (res, eat, ovf) = try parseF64(str)
-    if res != 0 and res < Swag.F32.Min do
+    if res != 0 and res < Swag.F32.Min:
         return {Swag.F32.Min, eat, true}
-    if res > Swag.F32.Max do
+    if res > Swag.F32.Max:
         return {Swag.F32.Max, eat, true}
     return {cast(f32) res, eat, ovf}
 }
@@ -328,7 +328,7 @@ func parseBool(str: string)->{ value: bool, eat: u32 } throw
 func parseRune(str: string)->{ value: rune, eat: u32 } throw
 {
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
     return Utf8.decodeRune(str)
 }
@@ -337,14 +337,14 @@ func parseRune(str: string)->{ value: rune, eat: u32 } throw
 func parseIdentifier(str: string)->string throw
 {
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
-    if str[0] != `_`'u8 and !Latin1.isLetter(str[0]) do
+    if str[0] != `_`'u8 and !Latin1.isLetter(str[0]):
         throw SyntaxError{}
 
     var cpt = 1'u64
-    while cpt < countof and (str[cpt] == `_`'u8 or Latin1.isLetterOrDigit(str[cpt])) do
+    while cpt < countof and (str[cpt] == `_`'u8 or Latin1.isLetterOrDigit(str[cpt])):
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }
@@ -356,7 +356,7 @@ func parseString(str: string)->{ value: String, eat: u32 } throw
     var result: retval
 
     let countof = @countof(str)
-    if !countof do
+    if !countof:
         throw SyntaxError{}
 
     var isQuoted = false
@@ -370,14 +370,14 @@ func parseString(str: string)->{ value: String, eat: u32 } throw
     while cpt < countof
     {
         // End dilimiter
-        if str[cpt] == `"`'u8 and isQuoted do
+        if str[cpt] == `"`'u8 and isQuoted:
             break
 
         // Escape character
         if str[cpt] == `"`'u8
         {
             cpt += 1
-            if cpt == countof do
+            if cpt == countof:
                 throw SyntaxError{}
             switch str[cpt]
             {
@@ -389,15 +389,15 @@ func parseString(str: string)->{ value: String, eat: u32 } throw
                 result.value += str[cpt]
             }
         }
-        else do
+        else:
             result.value += str[cpt]
 
         cpt += 1
     }
 
-    if cpt == countof and isQuoted do
+    if cpt == countof and isQuoted:
         throw ParseIncompleteError{}
-    if isQuoted do
+    if isQuoted:
         cpt += 1
     result.eat = cpt
     return result
@@ -407,9 +407,9 @@ func parseString(str: string)->{ value: String, eat: u32 } throw
 func toS8(str: string)->s8 throw
 {
     let (v, eat, ovf) = parseS8(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -418,9 +418,9 @@ func toS8(str: string)->s8 throw
 func toS16(str: string)->s16 throw
 {
     let (v, eat, ovf) = parseS16(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -429,9 +429,9 @@ func toS16(str: string)->s16 throw
 func toS32(str: string)->s32 throw
 {
     let (v, eat, ovf) = parseS32(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -440,9 +440,9 @@ func toS32(str: string)->s32 throw
 func toS64(str: string)->s64 throw
 {
     let (v, eat, ovf) = parseS64(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -451,9 +451,9 @@ func toS64(str: string)->s64 throw
 func toU8(str: string)->u8 throw
 {
     let (v, eat, ovf) = parseU8(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -462,9 +462,9 @@ func toU8(str: string)->u8 throw
 func toU16(str: string)->u16 throw
 {
     let (v, eat, ovf) = parseU16(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -473,9 +473,9 @@ func toU16(str: string)->u16 throw
 func toU32(str: string)->u32 throw
 {
     let (v, eat, ovf) = parseU32(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -484,9 +484,9 @@ func toU32(str: string)->u32 throw
 func toU64(str: string)->u64 throw
 {
     let (v, eat, ovf) = parseU64(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -495,9 +495,9 @@ func toU64(str: string)->u64 throw
 func toF32(str: string)->f32 throw
 {
     let (v, eat, ovf) = parseF32(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -506,9 +506,9 @@ func toF32(str: string)->f32 throw
 func toF64(str: string)->f64 throw
 {
     let (v, eat, ovf) = parseF64(str)
-    if ovf do
+    if ovf:
         throw OverflowError{}
-    if eat != @countof(str) do
+    if eat != @countof(str):
         throw SyntaxError{}
     return v
 }
@@ -516,27 +516,27 @@ func toF64(str: string)->f64 throw
 // Transform a string to an integer or float
 func(T) toNum(str: string)->T throw
 {
-    #if T == u8 #do
+    #if T == u8:
         return toU8(str)
-    #elif T == u16 #do
+    #elif T == u16:
         return toU16(str)
-    #elif T == u32 #do
+    #elif T == u32:
         return toU32(str)
-    #elif T == u64 #do
+    #elif T == u64:
         return toU64(str)
-    #elif T == s8 #do
+    #elif T == s8:
         return toS8(str)
-    #elif T == s16 #do
+    #elif T == s16:
         return toS16(str)
-    #elif T == s32 #do
+    #elif T == s32:
         return toS32(str)
-    #elif T == s64 #do
+    #elif T == s64:
         return toS64(str)
-    #elif T == f32 #do
+    #elif T == f32:
         return toF32(str)
-    #elif T == f64 #do
+    #elif T == f64:
         return toF64(str)
-    #else #do
+    #else:
         #error "invalid type"
     return 0
 }

@@ -3,7 +3,7 @@ using Core
 #test
 {
     var arr: Array'u8
-    loop i in 100 do
+    loop i in 100:
         arr.add(6)
 
     var comp: Compress.Deflate
@@ -16,6 +16,6 @@ using Core
     var res1    = try decomp.decompress(res.toSlice())
 
     @assert(res1.count == 100)
-    visit v, i in res1 do
+    visit v, i in res1:
         @assert(v == 6)
 }

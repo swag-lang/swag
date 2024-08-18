@@ -13,12 +13,12 @@ func G()
     GG = false
 
     var x: T
-    if x do
+    if x:
         @assert(false)
     x = &G
-    if !x do
+    if !x:
         @assert(false)
-    if x do
+    if x:
         x()
 
     @assert(GG)

@@ -271,7 +271,7 @@ impl Rectangle
         let x2 = min(a.x + a.width, b.x + b.width)
         let y1 = max(a.y, b.y)
         let y2 = min(a.y + a.height, b.y + b.height)
-        if x2 >= x1 and y2 >= y1 do
+        if x2 >= x1 and y2 >= y1:
             return Rectangle{x1, y1, x2 - x1, y2 - y1}
         return Zero
     }
@@ -302,13 +302,13 @@ impl Rectangle
     // (so the other rectangle must be bigger)
     mtd constrainIn(other: Rectangle)
     {
-        if x < other.x do
+        if x < other.x:
             x += other.x - x
-        if y < other.y do
+        if y < other.y:
             y += other.y - y
-        if right() > other.right() do
+        if right() > other.right():
             x -= right() - other.right()
-        if bottom() > other.bottom() do
+        if bottom() > other.bottom():
             y -= bottom() - other.bottom()
     }
 }

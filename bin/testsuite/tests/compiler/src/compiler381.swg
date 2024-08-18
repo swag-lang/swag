@@ -11,7 +11,7 @@
 	{
 		//@print("toto");
 		cpt += 1;
-		if(cpt == 2) do
+		if(cpt == 2):
 			break;
 	}
 

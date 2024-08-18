@@ -4,7 +4,7 @@ Something is jamming your communications with Santa. Fortunately, your signal is
 
 In this model, the same message is sent repeatedly. You've recorded the repeating message signal (your puzzle input), but the data seems quite corrupted - almost too badly to recover. Almost.
 
-All you need to do is figure out which character is most frequent for each position. For example, suppose you had recorded the following messages:
+All you need to: is figure out which character is most frequent for each position. For example, suppose you had recorded the following messages:
 
 eedadn
 drvtee

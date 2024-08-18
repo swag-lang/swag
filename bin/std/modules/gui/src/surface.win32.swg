@@ -55,7 +55,7 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             return 0
 
         case WM_DEADCHAR:
-            if (wParam == 27) do
+            if (wParam == 27):
                 return 1
             if surface.lastDeadChar != wParam
             {
@@ -66,7 +66,7 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             fallthrough
 
         case WM_CHAR:
-            if (wParam == 27) do
+            if (wParam == 27):
                 return 1
 
             surface.lastDeadChar = 0
@@ -166,7 +166,7 @@ internal impl Surface
             doneClass = true
 
             var hIcon: HICON
-            if app.appIcon.isValid() do
+            if app.appIcon.isValid():
                 hIcon = app.appIcon.toHICON()
 
             var wc: WNDCLASSW
@@ -184,9 +184,9 @@ internal impl Surface
         winFlags |= WS_POPUP | WS_CLIPCHILDREN
 
         var winFlagsEx = 0'u32
-        if flags & .Secondary do
+        if flags & .Secondary:
             winFlagsEx |= WS_EX_TOOLWINDOW
-        if flags & .TopMost do
+        if flags & .TopMost:
             winFlagsEx |= WS_EX_TOPMOST
 
         // Create window
@@ -213,13 +213,13 @@ impl Surface
     {
         var clampPos = pos
 
-        if minSize.x > 0 do
+        if minSize.x > 0:
             clampPos.width = Math.max(clampPos.width, minSize.x)
-        if minSize.y > 0 do
+        if minSize.y > 0:
             clampPos.height = Math.max(clampPos.height, minSize.y)
-        if maxSize.x > 0 do
+        if maxSize.x > 0:
             clampPos.width = Math.min(clampPos.width, maxSize.x)
-        if maxSize.y > 0 do
+        if maxSize.y > 0:
             clampPos.height = Math.min(clampPos.height, maxSize.y)
 
         position = clampPos
@@ -235,7 +235,7 @@ impl Surface
     // Enable the surface
     mtd enable()
     {
-        if !isDisabled do
+        if !isDisabled:
             return
         isDisabled = false
         EnableWindow(hWnd, TRUE)
@@ -244,7 +244,7 @@ impl Surface
     // Enable the surface
     mtd disable()
     {
-        if isDisabled do
+        if isDisabled:
             return
         isDisabled = true
         EnableWindow(hWnd, FALSE)
@@ -253,7 +253,7 @@ impl Surface
     // Show the surface
     mtd show()
     {
-        if !isHidden do
+        if !isHidden:
             return
 
         isHidden = false
@@ -263,7 +263,7 @@ impl Surface
         ShowWindow(hWnd, SW_SHOW)
 
         let curFocus = wnd.view.getFocus()
-        if !curFocus or !wnd.isParentOf(curFocus) do
+        if !curFocus or !wnd.isParentOf(curFocus):
             wnd.view.setFocus()
         SetActiveWindow(hWnd)
         SetFocus(hWnd)
@@ -274,7 +274,7 @@ impl Surface
     // Hide the surface
     mtd hide()
     {
-        if isHidden do
+        if isHidden:
             return
         isHidden = true
 
@@ -285,7 +285,7 @@ impl Surface
     // Show the surface as maximized
     mtd showMaximized()
     {
-        if isMaximized do
+        if isMaximized:
             return
         isMaximized          = true
         isMinimized          = false
@@ -296,7 +296,7 @@ impl Surface
     // Show the surface in its default state
     mtd showNormal()
     {
-        if !isMaximized and !isMinimized do
+        if !isMaximized and !isMinimized:
             return
         isMaximized = false
         isMinimized = false
@@ -306,7 +306,7 @@ impl Surface
     // Show the surface as minimized
     mtd showMinimized()
     {
-        if isMinimized do
+        if isMinimized:
             return
         isMinimized = true
         ShowWindow(hWnd, SW_SHOWMINIMIZED)

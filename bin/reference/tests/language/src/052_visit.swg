@@ -98,7 +98,7 @@ You can visit arrays or slices.
     var array = [10, 20, 30]
 
     var result = 0
-    visit it in array do
+    visit it in array:
         result += it
 
     @assert(result == 10 + 20 + 30)
@@ -112,7 +112,7 @@ Works also for multi dimensional arrays.
     var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
     var result = 0
-    visit it in array do
+    visit it in array:
         result += it
 
     @assert(result == 10 + 20 + 30 + 40)
@@ -150,15 +150,15 @@ You can add a 'where' instruction after the 'visit', to apply a filter on the el
     var result = 0
 
     // Just get even values
-    visit value in array where value & 1 == 0 do
+    visit value in array where value & 1 == 0:
         result += value
 
     @assert(result == 6)
 
     // This is equivalent of:
     result = 0
-    visit value in array do 
-        if value & 1 == 0 do
+    visit value in array: 
+        if value & 1 == 0:
             result += value  
     @assert(result == 6) 
 
@@ -166,7 +166,7 @@ You can add a 'where' instruction after the 'visit', to apply a filter on the el
     result = 0
     visit value in array
     {
-        if (value & 1) != 0 do
+        if (value & 1) != 0:
             continue
         result += value        
     }

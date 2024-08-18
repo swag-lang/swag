@@ -1093,25 +1093,25 @@ private namespace User32Priv
 {
     func RegisterHotKey(hWnd: HWND, id: s32, fsModifiers: UINT, vk: UINT) throw
     {
-        if !User32Priv.RegisterHotKey(hWnd, id, fsModifiers, vk) do
+        if !User32Priv.RegisterHotKey(hWnd, id, fsModifiers, vk):
             throwWinError(GetLastError())
     }
 
     func UnregisterHotKey(hWnd: HWND, id: s32) throw
     {
-        if !User32Priv.UnregisterHotKey(hWnd, id) do
+        if !User32Priv.UnregisterHotKey(hWnd, id):
             throwWinError(GetLastError())
     }
 
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {
-        if !User32Priv.PostMessageA(hWnd, msg, wParam, lParam) do
+        if !User32Priv.PostMessageA(hWnd, msg, wParam, lParam):
             throwWinError(GetLastError())
     }
 
     func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {
-        if !User32Priv.PostMessageW(hWnd, msg, wParam, lParam) do
+        if !User32Priv.PostMessageW(hWnd, msg, wParam, lParam):
             throwWinError(GetLastError())
     }
 
@@ -1119,7 +1119,7 @@ private namespace User32Priv
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
     {
         let res = User32Priv.RegisterClassA(lpWndClass)
-        if !res do
+        if !res:
             throwWinError(GetLastError())
         return res
     }
@@ -1128,59 +1128,59 @@ private namespace User32Priv
     func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
     {
         let res = User32Priv.RegisterClassW(lpWndClass)
-        if !res do
+        if !res:
             throwWinError(GetLastError())
         return res
     }
 
     func UpdateWindow(hWnd: HWND) throw
     {
-        if !User32Priv.UpdateWindow(hWnd) do
+        if !User32Priv.UpdateWindow(hWnd):
             throwWinError(GetLastError())
     }
 
     func DestroyWindow(hWnd: HWND) throw
     {
-        if !User32Priv.DestroyWindow(hWnd) do
+        if !User32Priv.DestroyWindow(hWnd):
             throwWinError(GetLastError())
     }
 
     func MoveWindow(hWnd: HWND, x, y, nWidth, nHeight: s32, bRepaint: BOOL) throw
     {
-        if !User32Priv.MoveWindow(hWnd, x, y, nWidth, nHeight, bRepaint) do
+        if !User32Priv.MoveWindow(hWnd, x, y, nWidth, nHeight, bRepaint):
             throwWinError(GetLastError())
     }
 
     func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT) throw
     {
-        if !User32Priv.SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags) do
+        if !User32Priv.SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags):
             throwWinError(GetLastError())
     }
 
     func SetLayeredWindowAttributes(hwnd: HWND, crKey: COLORREF, bAlpha: BYTE, dwFlags: DWORD) throw
     {
-        if !User32Priv.SetLayeredWindowAttributes(hwnd, crKey, bAlpha, dwFlags) do
+        if !User32Priv.SetLayeredWindowAttributes(hwnd, crKey, bAlpha, dwFlags):
             throwWinError(GetLastError())
     }
 
     func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
     {
         lpmi.cbSize = @sizeof(MONITORINFO)
-        if !User32Priv.GetMonitorInfoA(hMonitor, lpmi) do
+        if !User32Priv.GetMonitorInfoA(hMonitor, lpmi):
             throwWinError(GetLastError())
     }
 
     func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
     {
         lpmi.cbSize = @sizeof(MONITORINFO)
-        if !User32Priv.GetMonitorInfoW(hMonitor, lpmi) do
+        if !User32Priv.GetMonitorInfoW(hMonitor, lpmi):
             throwWinError(GetLastError())
     }
 
     func RegisterClipboardFormatA(name: LPCSTR)->UINT throw
     {
         let res = User32Priv.RegisterClipboardFormatA(name)
-        if !res do
+        if !res:
             throwWinError(GetLastError())
         return res
     }
@@ -1188,27 +1188,27 @@ private namespace User32Priv
     func RegisterClipboardFormatW(name: LPCWSTR)->UINT throw
     {
         let res = User32Priv.RegisterClipboardFormatW(name)
-        if !res do
+        if !res:
             throwWinError(GetLastError())
         return res
     }
 
     func DestroyIcon(hIcon: HICON) throw
     {
-        if !User32Priv.DestroyIcon(hIcon) do
+        if !User32Priv.DestroyIcon(hIcon):
             throwWinError(GetLastError())
     }
 
     func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO) throw
     {
-        if !User32Priv.GetIconInfo(hIcon, piconinfo) do
+        if !User32Priv.GetIconInfo(hIcon, piconinfo):
             throwWinError(GetLastError())
     }
 
     func CreateIconIndirect(piconinfo: *ICONINFO)->HICON throw
     {
         let h = User32Priv.CreateIconIndirect(piconinfo)
-        if !h do
+        if !h:
             throwWinError(GetLastError())
         return h
     }

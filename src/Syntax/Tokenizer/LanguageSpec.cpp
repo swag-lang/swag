@@ -314,7 +314,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#code", TokenId::CompilerCode);
     keywords.add("#scope", TokenId::CompilerScope);
     keywords.add("#up", TokenId::CompilerUp);
-    keywords.add("#do", TokenId::CompilerDo);
 
     keywords.add("#prom", TokenId::ModifierPromote);
     keywords.add("#over", TokenId::ModifierOver);
@@ -406,12 +405,12 @@ void LanguageSpec::setupKeywords()
     keywords.add("unreachable", TokenId::KwdUnreachable);
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
-    keywords.add("do", TokenId::KwdDo);
     keywords.add("where", TokenId::KwdWhere);
     keywords.add("in", TokenId::KwdIn);
-    
+
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
+    keywords.add("do", TokenId::KwdReserved);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);

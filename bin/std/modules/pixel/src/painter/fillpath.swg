@@ -24,24 +24,24 @@ public impl Painter
             if curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
-                if e do
+                if e:
                     addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
@@ -51,7 +51,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
-        if !pathList.paths.count do
+        if !pathList.paths.count:
             return
         sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
@@ -62,7 +62,7 @@ public impl Painter
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
-        if Math.isZeroEpsilon(path.polygon.totalLen) do
+        if Math.isZeroEpsilon(path.polygon.totalLen):
             return
 
         let polygon = &path.polygon
@@ -186,7 +186,7 @@ public impl Painter
         }
 
         // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
-        if flush and !flush.triangles.triIndices.count do
+        if flush and !flush.triangles.triIndices.count:
             dirty = true
 
         serial = 0
@@ -204,12 +204,12 @@ public impl Painter
             if p.polygon.points.count >= 3
             {
                 flush = p
-                if dirty do
+                if dirty:
                     tess.addPolyLine(p.polygon)
             }
         }
 
-        if flush do
+        if flush:
             fillPath(dirty ? &tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 
@@ -235,7 +235,7 @@ public impl Painter
         {
             path.polygon.isClockwise = true
             var res = path.polygon.getClean()
-            visit p in res.paths do
+            visit p in res.paths:
                 fillPath(p, brush)
         }
     }

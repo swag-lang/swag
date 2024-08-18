@@ -38,10 +38,10 @@ func day8A()
     {
         count[c - `0`] += 1
         x = (x + 1) % 25
-        if x != 0 do
+        if x != 0:
             continue
         y = (y + 1) % 6
-        if y != 0 do
+        if y != 0:
             continue
 
         if count[0] < best0

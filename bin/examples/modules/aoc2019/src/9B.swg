@@ -4,7 +4,7 @@ You've just said goodbye to the rebooted rover and left Mars when you receive a 
 
 In order to lock on to the signal, you'll need to boost your sensors. The Elves send up the latest BOOST program - Basic Operation Of System Test.
 
-While BOOST (your puzzle input) is capable of boosting your sensors, for tenuous safety reasons, it refuses to do so until the computer it runs on passes some checks to demonstrate it is a complete Intcode computer.
+While BOOST (your puzzle input) is capable of boosting your sensors, for tenuous safety reasons, it refuses to: so until the computer it runs on passes some checks to demonstrate it is a complete Intcode computer.
 
 Your existing Intcode computer is missing one key feature: it needs support for parameters in relative mode.
 
@@ -98,7 +98,7 @@ func day9B()
     let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's64
-    visit v in Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8):
         prg.add(assume StrConv.toS64(v))
 
     let total = run(&prg, 2)

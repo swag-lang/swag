@@ -124,9 +124,9 @@ impl TagBin
             // Struct version
             output.addNative(TagBinSignatures.Version)
             let version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
-            if version == null do
+            if version == null:
                 output.addNative(0'u32)
-            else do
+            else:
                 output.addNative(cast(u32) version)
 
             // Start unordered section
@@ -148,7 +148,7 @@ impl TagBin
         let sec = sections.back()
 
         // If section is raw, then we just have values without versionning
-        if sec.kind == .Raw do
+        if sec.kind == .Raw:
             return
 
         // Register the current seek for the fat generation

@@ -7,9 +7,9 @@ var c: s32 = 0
 #test
 {
 	let op = "toto10"
-	if(op == "toto") do
+	if(op == "toto"):
 		c = 1
-	elif(op == "toto1") do
+	elif(op == "toto1"):
 		c = 2
 	@assert(c == 0)
 }

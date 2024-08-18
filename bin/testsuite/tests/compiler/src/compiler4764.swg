@@ -5,9 +5,9 @@ func toto(x, y: s32)
     var cpt = 0
     loop #back x to y
     {
-        if cpt == 0 do @assert(#index == 3)
-        if cpt == 1 do @assert(#index == 2)
-        if cpt == 2 do @assert(#index == 1)
+        if cpt == 0: @assert(#index == 3)
+        if cpt == 1: @assert(#index == 2)
+        if cpt == 2: @assert(#index == 1)
         cpt += 1
 
         //@print(#index)

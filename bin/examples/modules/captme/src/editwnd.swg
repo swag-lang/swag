@@ -34,7 +34,7 @@ impl IWnd for EditView
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
-        if !capture do
+        if !capture:
             return
 
         if capture.mouse(self, evt)
@@ -70,7 +70,7 @@ impl IWnd for EditView
         var rect = getClientRect()
         rect.offset(scrollPos)
         painter.fillRect(rect, main.editorOptions.editBackColor)
-        if !capture do
+        if !capture:
             return
 
         // Capture content
@@ -145,7 +145,7 @@ impl EditView
 
     mtd zoomToFit(canZoom = true)
     {
-        if !capture do
+        if !capture:
             return
         var rect = getClientRect()
         rect.inflate(-viewMargin * 2)
@@ -164,12 +164,12 @@ impl EditView
 
     mtd setCapture(c: *Capture)
     {
-        if capture do
+        if capture:
             Memory.delete(capture)
         capture = c
-        if capture do
+        if capture:
             capture.setup(self)
-        if main do
+        if main:
             main.captureHasChanged()
         invalidate()
     }

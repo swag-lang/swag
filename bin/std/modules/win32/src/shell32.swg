@@ -321,13 +321,13 @@ private namespace Shell32Priv
 {
     func SHGetSpecialFolderPathA(hwnd: HWND, pszPath: LPSTR, csidl: s32, fCreate: BOOL) throw
     {
-        if !Shell32Priv.SHGetSpecialFolderPathA(hwnd, pszPath, csidl, fCreate) do
+        if !Shell32Priv.SHGetSpecialFolderPathA(hwnd, pszPath, csidl, fCreate):
             throwWinError(GetLastError())
     }
 
     func SHGetSpecialFolderPathW(hwnd: HWND, pszPath: LPWSTR, csidl: s32, fCreate: BOOL) throw
     {
-        if !Shell32Priv.SHGetSpecialFolderPathW(hwnd, pszPath, csidl, fCreate) do
+        if !Shell32Priv.SHGetSpecialFolderPathW(hwnd, pszPath, csidl, fCreate):
             throwWinError(GetLastError())
     }
 
@@ -335,7 +335,7 @@ private namespace Shell32Priv
     func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
         let res = Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
-        if res == Swag.U32.Max do
+        if res == Swag.U32.Max:
             throwWinError(GetLastError())
         return res
     }
@@ -344,33 +344,33 @@ private namespace Shell32Priv
     func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
         let res = Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
-        if res == Swag.U32.Max do
+        if res == Swag.U32.Max:
             throwWinError(GetLastError())
         return res
     }
 
     func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO) throw
     {
-        if Shell32Priv.SHGetStockIconInfo(siid, uFlags, psii) != S_OK do
+        if Shell32Priv.SHGetStockIconInfo(siid, uFlags, psii) != S_OK:
             throwWinError(GetLastError())
     }
 
     func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA) throw
     {
-        if !Shell32Priv.Shell_NotifyIconA(dwMessage, lpData) do
+        if !Shell32Priv.Shell_NotifyIconA(dwMessage, lpData):
             throwWinError(GetLastError())
     }
 
     func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW) throw
     {
-        if !Shell32Priv.Shell_NotifyIconW(dwMessage, lpData) do
+        if !Shell32Priv.Shell_NotifyIconW(dwMessage, lpData):
             throwWinError(GetLastError())
     }
 
     func ShellExecuteA(hwnd: HWND, lpOperation: LPCSTR, lpFile: LPCSTR, lpParameters: LPCSTR, lpDirectory: LPCSTR, nShowCmd: INT)->HINSTANCE throw
     {
         let result = Shell32Priv.ShellExecuteA(hwnd, lpOperation, lpFile, lpParameters, lpDirectory, nShowCmd)
-        if cast(u64) result <= 32 do // ?!
+        if cast(u64) result <= 32: // ?!
             throwWinError(GetLastError())
         return result
     }

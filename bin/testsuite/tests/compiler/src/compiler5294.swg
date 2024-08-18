@@ -31,6 +31,6 @@ func toto()->Array'u32
 #[Swag.Optim("", false)]
 #test
 {
-    visit v in toto()[1..] do
+    visit v in toto()[1..]:
         @assert(v > 0)
 }

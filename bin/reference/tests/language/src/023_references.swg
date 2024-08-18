@@ -48,7 +48,7 @@ You must then use `ref` modifier in the affectation.
     @assert(myRef == 1)
 
     // Here we force 'myRef' to point to 'y' and not to 'x' anymore.
-    // We do *NOT* change the value of 'x'.
+    // We: *NOT* change the value of 'x'.
     myRef = #ref &y
     @assert(myRef == 1000)
 }

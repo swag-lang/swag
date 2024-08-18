@@ -44,7 +44,7 @@ impl IForm for FormDraw
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        if evt.kind == .MouseReleased and evt.button == .Left do
+        if evt.kind == .MouseReleased and evt.button == .Left:
             return false
 
         let x0 = (localPos.x - paintRect.x) / zoom
@@ -61,7 +61,7 @@ impl IForm for FormDraw
         {
             let xs = Math.abs(x0 - points.back().x)
             let ys = Math.abs(y0 - points.back().y)
-            if xs > 5 or ys > 5 do
+            if xs > 5 or ys > 5:
                 points.add({x0, y0})
         }
         else
@@ -117,7 +117,7 @@ impl IForm for FormDraw
 
     mtd impl boundRect()->Math.Rectangle
     {
-        if !points.count do
+        if !points.count:
             setDefaultShape()
 
         var result: retval
@@ -190,13 +190,13 @@ impl IForm for FormDraw
 
         computePaintCoords(z)
 
-        if subKind == .PixSel do
+        if subKind == .PixSel:
             return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
 
         var v = Math.Vector2{pt.x, pt.y}
         loop i in 0 until paintPoints.count - 1
         {
-            if v.distanceToSegment(paintPoints[i], paintPoints[i + 1]) <= bSize do
+            if v.distanceToSegment(paintPoints[i], paintPoints[i + 1]) <= bSize:
                 return true
         }
 
@@ -211,7 +211,7 @@ impl IForm for FormDraw
 
         var pl: LinePath
         pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i in 1 until paintPoints.count do
+        loop i in 1 until paintPoints.count:
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
 
         if subKind == .PixSel

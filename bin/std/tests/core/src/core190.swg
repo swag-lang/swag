@@ -40,8 +40,8 @@ var notupperTest: [] rune = [
 //#[Swag.PrintBc]
 #test
 {
-    visit c in upperTest do
+    visit c in upperTest:
         @assert(Unicode.isUpper(c))
-    visit c in notupperTest do
+    visit c in notupperTest:
         @assert(!Unicode.isUpper(c))
 }

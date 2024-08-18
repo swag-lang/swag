@@ -68,9 +68,9 @@ impl Image
     public mtd turn(angle: TurnAngle)
     {
         Debug.assert(pixels.buffer != null)
-        if angle == .T180 do
+        if angle == .T180:
             allocWorkingBuffer()
-        else do
+        else:
             allocWorkingBuffer(height, width, pf)
         doTurn(workingBuffer, angle)
         applyWorkingBuffer()
@@ -82,9 +82,9 @@ impl Image
         Debug.assert(pixels.buffer != null)
 
         var result: retval
-        if angle == .T180 do
+        if angle == .T180:
             result = create(width, height, pf)
-        else do
+        else:
             result = create(height, width, pf)
         doTurn(&result, angle)
         return result

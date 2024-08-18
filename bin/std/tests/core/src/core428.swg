@@ -6,11 +6,11 @@ using Core
     var cpt  = 0
     visit(Bytes) #back v in str
     {
-        if cpt == 0 do
+        if cpt == 0:
             @assert(v == `C`)
-        if cpt == 1 do
+        if cpt == 1:
             @assert(v == `B`)
-        if cpt == 2 do
+        if cpt == 2:
             @assert(v == `A`)
         cpt += 1
     }

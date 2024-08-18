@@ -66,11 +66,11 @@ impl Surface
 
     internal mtd applySurfaceFlags()
     {
-        if flags.has(.BigCaption) do
+        if flags.has(.BigCaption):
             wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
-        elif flags.has(.SmallCaption) do
+        elif flags.has(.SmallCaption):
             wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
-        else do
+        else:
             wnd.padding.y = 0
 
         if flags.has(.Border)
@@ -183,7 +183,7 @@ impl Surface
     // Constraint a window to be inside the closest monitor
     mtd constaintToScreen()
     {
-        if isMaximized or isMinimized do
+        if isMaximized or isMinimized:
             return
 
         var monitors = Env.getMonitors()
@@ -217,7 +217,7 @@ impl Surface
     {
         createRT()
 
-        if !isDirty do
+        if !isDirty:
             return
         var clipRect = dirtyRect
         dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
@@ -301,7 +301,7 @@ impl Surface
 
     mtd setView(view: *Wnd)
     {
-        if wnd.view do
+        if wnd.view:
             wnd.view.destroy()
         wnd.view = view
         wnd.sendResizeEvent()

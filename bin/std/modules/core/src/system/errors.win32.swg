@@ -4,7 +4,7 @@ using Win32
 
 func transformWinErrors(val0: string = null) throw
 {
-    if @err() == null do
+    if @err() == null:
         return
 
     let err = cast(const &Swag.SystemError) @err()

@@ -1,11 +1,11 @@
 //#[Swag.PrintBc]
 func toto(x: s32)->s32
 {
-    if x == 0 or x == 1 do
+    if x == 0 or x == 1:
         return 0
-    if x == 2 or x == 3 do
+    if x == 2 or x == 3:
         return 2
-    if x == 4 do
+    if x == 4:
         return 4
     return 666
 }

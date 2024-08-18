@@ -6,9 +6,9 @@ func __strcat(start: ^u8, max: s32, src: string)
 {
     let dstLen = @strlen(start)
     var srcLen = @countof(src)
-    if dstLen + srcLen + 1 > max do
+    if dstLen + srcLen + 1 > max:
         srcLen = max - (dstLen + 1)
-    if !srcLen do
+    if !srcLen:
         return
     @memcpy(start + dstLen, @dataof(src), srcLen)
     start[dstLen + srcLen] = 0
@@ -27,7 +27,7 @@ func __itoa(result: ^u8, value: s64)->^u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue do
+        if !orgValue:
             break
     }
 
@@ -67,7 +67,7 @@ func __utoa(result: ^u8, value: u64)->^u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue do
+        if !orgValue:
             break
     }
 
@@ -106,7 +106,7 @@ func __ftoa(result: ^u8, value: f64)
         n[0] = `0`
         n += 1
     }
-    else do
+    else:
         n = __itoa(result, ipart)
 
     n[0] = `.`
@@ -114,20 +114,20 @@ func __ftoa(result: ^u8, value: f64)
 
     const AfterFracN = 8
     var afterPoint   = AfterFracN
-    if fpart < 0 do
+    if fpart < 0:
         fpart = -fpart
 
     var leadingZeros = 0
     while afterPoint
     {
         fpart *= 10
-        if fpart < 1 do
+        if fpart < 1:
             leadingZeros += 1
         afterPoint -= 1
     }
 
     // Zeros before the value part
-    if leadingZeros == AfterFracN do
+    if leadingZeros == AfterFracN:
         leadingZeros = 0
     while leadingZeros
     {
@@ -137,7 +137,7 @@ func __ftoa(result: ^u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5 do
+    if fpart - ipart > 0.5:
         ipart += 1
     __itoa(n, ipart)
 }
@@ -249,13 +249,13 @@ func @stringcmp(str1: string, str2: string)->bool
 {
     let num1 = @countof(str1)
     let num2 = @countof(str2)
-    if num1 != num2 do
+    if num1 != num2:
         return false
-    if num1 == 0 and num2 == 0 do
+    if num1 == 0 and num2 == 0:
         return true
     let data1 = @dataof(str1)
     let data2 = @dataof(str2)
-    if data1 == null or data2 == null do
+    if data1 == null or data2 == null:
         return data1 == data2
     return !@memcmp(data1, data2, num1)
 }

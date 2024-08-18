@@ -18,7 +18,7 @@ impl FontFamily
     func enumSubFamily(fa: const *LOGFONTW, _tm: const *TEXTMETRICW, _fontType: DWORD, lParam: LPARAM)->BOOL
     {
         let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
-        if !len do
+        if !len:
             return TRUE
         var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
@@ -27,12 +27,12 @@ impl FontFamily
 
         if fa.lfWeight > FW_REGULAR
         {
-            if fa.lfItalic == 255 do
+            if fa.lfItalic == 255:
                 idx = cast(u64) FontFamilyStyle.BoldItalic
-            else do
+            else:
                 idx = cast(u64) FontFamilyStyle.Bold
         }
-        elif fa.lfItalic == 255 do
+        elif fa.lfItalic == 255:
             idx = cast(u64) FontFamilyStyle.Italic
 
         ret.faces[idx].name = x
@@ -45,19 +45,19 @@ impl FontFamily
         if fontType & TRUETYPE_FONTTYPE
         {
             let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
-            if !len do
+            if !len:
                 return TRUE
             var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
             // ???
-            if x[0] == `@` do
+            if x[0] == `@`:
                 return TRUE
 
             // Already here ?
             let ret = cast(*Array'FontFamilyEnumerate) cast(u64) lParam
             visit here in dref ret
             {
-                if here.name == x do
+                if here.name == x:
                     return TRUE
             }
 
@@ -103,7 +103,7 @@ impl FontFamily
         let v    = Utf16.toZeroTerminated(fontFamily)
         EnumFontFamiliesW(hdc, v.buffer, @mkcallback(&enumFamily), cast(LPARAM) cast(u64) &arr)
 
-        if arr.isEmpty() do
+        if arr.isEmpty():
             return {}
         return arr[0]
     }
@@ -114,30 +114,30 @@ impl FontFamily
         var logFont = enumerate.faces[cast(u64) style]
         if style == .Regular
         {
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
         }
         elif style == .Bold
         {
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
         }
         elif style == .Italic
         {
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.BoldItalic]
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
         }
         elif style == .BoldItalic
         {
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Italic]
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Bold]
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 logFont = enumerate.faces[cast(u64) FontFamilyStyle.Regular]
         }
 
@@ -146,11 +146,11 @@ impl FontFamily
             loop i in @countof(FontFamilyStyle)
             {
                 logFont = enumerate.faces[i]
-                if logFont.face.lfWidth != 0 do
+                if logFont.face.lfWidth != 0:
                     break
             }
 
-            if logFont.face.lfWidth == 0 do
+            if logFont.face.lfWidth == 0:
                 return null
         }
 
@@ -160,9 +160,9 @@ impl FontFamily
         let fontName = Format.toString("%_%", logFont.name, cast(u32) style)
         let typeFace = try TypeFace.createFromHFONT(fontName, hf)
 
-        if (style == .Italic or style == .BoldItalic) and !typeFace.isItalic() do
+        if (style == .Italic or style == .BoldItalic) and !typeFace.isItalic():
             typeFace.forceItalic = true
-        if (style == .Bold or style == .BoldItalic) and !typeFace.isBold() do
+        if (style == .Bold or style == .BoldItalic) and !typeFace.isBold():
             typeFace.forceBold = true
 
         return typeFace

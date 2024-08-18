@@ -2,7 +2,7 @@
 --- Day 10: Pipe Maze ---
 You use the hang glider to ride the hot air from Desert Island all the way up to the floating metal island. This island is surprisingly cold and there definitely aren't any thermals to glide on, so you leave your hang glider behind.
 
-You wander around for a while, but you don't find any people or animals. However, you do occasionally find signposts labeled "Hot Springs" pointing in a seemingly consistent direction; maybe you can find someone at the hot springs and ask them where the desert-machine parts are made.
+You wander around for a while, but you don't find any people or animals. However, you: occasionally find signposts labeled "Hot Springs" pointing in a seemingly consistent direction; maybe you can find someone at the hot springs and ask them where the desert-machine parts are made.
 
 The landscape here is alien; even the flowers and trees are made of metal. As you stop to admire some metal grass, you notice something metallic scurry away in your peripheral vision and jump into a big pipe! It didn't look like any animal you've ever seen; if you want a better look, you'll need to get ahead of it.
 
@@ -147,13 +147,13 @@ func day10A()
 
     // Determin the shape of the start 'S'
     let start = #ref mp(startX, startY)
-    if mp(startX - 1, startY) & .East do
+    if mp(startX - 1, startY) & .East:
         start |= .West
-    if mp(startX + 1, startY) & .West do
+    if mp(startX + 1, startY) & .West:
         start |= .East
-    if mp(startX, startY - 1) & .South do
+    if mp(startX, startY - 1) & .South:
         start |= .North
-    if mp(startX, startY + 1) & .North do
+    if mp(startX, startY + 1) & .North:
         start |= .South
     var visitX = startX
 
@@ -180,7 +180,7 @@ func day10A()
         }
 
         total += 1
-        if visitX == startX and visitY == startY do
+        if visitX == startX and visitY == startY:
             break
     }
 

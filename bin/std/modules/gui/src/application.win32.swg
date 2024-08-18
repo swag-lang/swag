@@ -45,11 +45,11 @@ impl Application
     func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key) throw
     {
         var mod: u32
-        if mdf & .Alt do
+        if mdf & .Alt:
             mod |= MOD_ALT
-        if mdf & .Control do
+        if mdf & .Control:
             mod |= MOD_CONTROL
-        if mdf & .Shift do
+        if mdf & .Shift:
             mod |= MOD_SHIFT
         var winkey = Input.Keyboard.keyToVirtualKey(key)
 
@@ -67,16 +67,16 @@ impl Application
     {
         using Input
         var mdf: KeyModifiers
-        if msg.lParam & MOD_ALT do
+        if msg.lParam & MOD_ALT:
             mdf |= .Alt
-        if msg.lParam & MOD_CONTROL do
+        if msg.lParam & MOD_CONTROL:
             mdf |= .Control
-        if msg.lParam & MOD_SHIFT do
+        if msg.lParam & MOD_SHIFT:
             mdf |= .Shift
         let key = Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
 
         let (id, target) = getHotKeyShortcut(mdf, key)
-        if id and target do
+        if id and target:
             target.sendCommandEvent(id)
     }
 
@@ -85,7 +85,7 @@ impl Application
         var msg: MSG
         while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
         {
-            if msg.message == WM_HOTKEY do
+            if msg.message == WM_HOTKEY:
                 sendHotKey(msg)
             else
             {
@@ -101,14 +101,14 @@ impl Application
         pt.x = cast(s32) x
         pt.y = cast(s32) y
         let hWnd = WindowFromPoint(pt)
-        if hWnd == null do
+        if hWnd == null:
             return null
 
         visit s in surfaces
         {
             if s.native.hWnd == hWnd
             {
-                if modalSurfaces.count and s != modalSurfaces.back() do
+                if modalSurfaces.count and s != modalSurfaces.back():
                     return null
                 return s
             }
@@ -145,18 +145,18 @@ impl Application
         // Convert icon to image
         var img = catch Image.from(hIcon)
         defer catch DestroyIcon(hIcon)
-        if @err() != null do
+        if @err() != null:
             return result
         img.resize(sizeIcon, sizeIcon)
 
         // Append to the image list
         var nimage = Image.create(sizeIcon * (index + 1), sizeIcon, .BGRA8)
-        if curImg.isValid() do
+        if curImg.isValid():
             nimage.mix(curImg, 0, 0)
         nimage.mix(img, sizeIcon * index, 0)
         dref curImg = nimage
 
-        if curImgList.texture.isValid() do
+        if curImgList.texture.isValid():
             renderer.removeTexture(&curImgList.texture)
         curImgList.set(renderer.addImage(curImg), sizeIcon, sizeIcon)
 
@@ -171,13 +171,13 @@ impl Application
         if small
         {
             let here = mapFileSmallIcons.find(name)
-            if here do
+            if here:
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
             let here = mapFileBigIcons.find(name)
-            if here do
+            if here:
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
 
@@ -204,7 +204,7 @@ impl Application
         }
 
         catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
-        if !sgi.hIcon do
+        if !sgi.hIcon:
             return {}
         return addIconToImageList(name, sgi.hIcon, small)
     }
@@ -212,34 +212,34 @@ impl Application
     mtd getFileDirectoryIcon(name: string, isDirectory: bool, small = true)->Icon
     {
         var result: retval
-        if !@countof(name) do
+        if !@countof(name):
             return result
 
         var ext = Path.getExtension(name)
 
         var extractFromFile = false
-        if isDirectory and name[@countof(name) - 1] == Path.VolumeSeparatorChar do
+        if isDirectory and name[@countof(name) - 1] == Path.VolumeSeparatorChar:
             ext = "c:"
-        elif isDirectory do
+        elif isDirectory:
             ext = "c:/temp"
         elif ext == ".exe" or ext == ".dll"
         {
             extractFromFile = true
             ext             = name
         }
-        elif ext == null do
+        elif ext == null:
             ext = ".txt"
 
         if small
         {
             let here = mapFileSmallIcons.find(ext)
-            if here do
+            if here:
                 return Icon.from(&fileSmallIconsImageList, here.value)
         }
         else
         {
             let here = mapFileBigIcons.find(ext)
-            if here do
+            if here:
                 return Icon.from(&fileBigIconsImageList, here.value)
         }
 
@@ -253,21 +253,21 @@ impl Application
                 if small
                 {
                     let here = mapFileSmallIcons.find(ext)
-                    if here do
+                    if here:
                         return Icon.from(&fileSmallIconsImageList, here.value)
                 }
                 else
                 {
                     let here = mapFileBigIcons.find(ext)
-                    if here do
+                    if here:
                         return Icon.from(&fileBigIconsImageList, here.value)
                 }
             }
         }
 
-        if !sfi.hIcon do
+        if !sfi.hIcon:
             discard SHGetFileInfoA(@dataof(ext), isDirectory ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, @sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
-        if !sfi.hIcon do
+        if !sfi.hIcon:
             return result
 
         return addIconToImageList(ext, sfi.hIcon, small)

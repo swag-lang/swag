@@ -35,9 +35,9 @@ impl IActionUI for ActionCopyPaste
 
         case CmdIdPaste:
             evt.setFlags |= .Disabled | .Name | .Icon
-            if !capture do
+            if !capture:
                 evt.disabled = true
-            elif !Clipboard.hasTypedValue(@typeof(Capture.forms)) and !Clipboard.hasImage() do
+            elif !Clipboard.hasTypedValue(@typeof(Capture.forms)) and !Clipboard.hasImage():
                 evt.disabled = true
             evt.name = "Paste"
             evt.icon = main.getTheme().getIcon24(.Paste)
@@ -53,10 +53,10 @@ impl IActionUI for ActionCopyPaste
                 visit it in capture.selection
                 {
                     let itfForm = capture.forms[it]
-                    if @kindof(itfForm) != FormImage do
+                    if @kindof(itfForm) != FormImage:
                         continue
                     let b = cast(*FormImage) @dataof(itfForm)
-                    if b.kind != .Image do
+                    if b.kind != .Image:
                         continue
                     evt.hidden = false
                     if hasImg

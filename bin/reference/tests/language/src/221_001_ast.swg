@@ -72,7 +72,7 @@ It works with generics too, and can be mixed with static declarations.
 }
 
 /**
-`#ast` needs to return a *string like* value, which can of course be dynamically constructed. In real life we should use the Core.String struct here. But instead we do it by hand, for the purpose of the example.
+`#ast` needs to return a *string like* value, which can of course be dynamically constructed. In real life we should use the Core.String struct here. But instead we: it by hand, for the purpose of the example.
 */
 #test
 {
@@ -80,7 +80,7 @@ It works with generics too, and can be mixed with static declarations.
     func append(buf: ^u8, val: string)
     {
         var len = 0
-        while buf[len] do
+        while buf[len]:
             len += 1
         @memcpy(buf + len, @dataof(val), cast(u64) @countof(val) + 1)
     }

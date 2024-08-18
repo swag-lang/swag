@@ -5,7 +5,7 @@ var G = 0
 {
     defer
     {
-        loop 10 do
+        loop 10:
             G += 1
         @assert(G == 10)
     }

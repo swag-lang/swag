@@ -11,6 +11,6 @@ using Core
         buffer[0] = 666
     }
 
-    loop x do
+    loop x:
         @assert(x[#index] == 666)
 }

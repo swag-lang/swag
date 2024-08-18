@@ -1,6 +1,6 @@
 func test2 (v: s32)->s32
 {
-	if(v == 1) do
+	if(v == 1):
 		return 1;
 	return v * test1(v - 1);
 }
@@ -8,7 +8,7 @@ func test2 (v: s32)->s32
 //#[Swag.PrintBc]
 func test1 (v: s32)->s32
 {
-	if(v == 1) do
+	if(v == 1):
 		return 1;
 	return v * test2(v - 1);
 }

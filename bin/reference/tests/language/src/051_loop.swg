@@ -8,7 +8,7 @@ The loop expression value is evaluated **once**, and must be a **positive value*
 #test
 {
     var cpt = 0
-    loop 10 do // Loops 10 times
+    loop 10: // Loops 10 times
         cpt += 1
     @assert(cpt == 10)
 }
@@ -54,7 +54,7 @@ But you can name that index if you want.
     #assert @countof(arr) == 4
 
     var cpt = 0
-    loop arr do // The array contains 4 elements, so the loop count is 4
+    loop arr: // The array contains 4 elements, so the loop count is 4
         cpt += arr[#index]
     @assert(cpt == 10 + 20 + 30 + 40)
 }
@@ -66,7 +66,7 @@ But you can name that index if you want.
 #test
 {
     var cpt = 0
-    loop "⻘" do
+    loop "⻘":
         cpt += 1
 
     // cpt is equal to 3 because '⻘' is encoded with 3 bytes
@@ -83,11 +83,11 @@ You can loop in reverse order by adding the modifier `back` just after the `loop
     // Index will be 2, 1 and then 0.
     loop #back 3
     {
-        if cpt == 0 do
+        if cpt == 0:
             @assert(#index == 2)
-        elif cpt == 1 do
+        elif cpt == 1:
             @assert(#index == 1)
-        elif cpt == 2 do
+        elif cpt == 2:
             @assert(#index == 0)
 
         cpt += 1
@@ -107,7 +107,7 @@ You can exit a loop with `break`.
     var cpt = 0
     loop x in 10
     {
-        if x == 5 do
+        if x == 5:
             break
         cpt += 1
     }
@@ -123,7 +123,7 @@ You can force to return to the loop evaluation with `continue`.
     var cpt = 0
     loop x in 10
     {
-        if x == 5 do
+        if x == 5:
             continue // Do not count 5
         cpt += 1
     }
@@ -197,7 +197,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
 {
     loop
     {
-        if #index == 4 do // #index is still valid in that case (but cannot be renamed)
+        if #index == 4: // #index is still valid in that case (but cannot be renamed)
             break
     }
 }

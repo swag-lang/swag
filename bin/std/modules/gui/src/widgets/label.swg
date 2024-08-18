@@ -42,9 +42,9 @@ impl IWnd for Label
             return
 
         case MousePressed:
-            if evt.button == .Left and hotChunk do
+            if evt.button == .Left and hotChunk:
                 sigUrlClicked.call(self, hotChunk.slice)
-            else do
+            else:
                 evt.accepted = false
 
         case MouseMove:
@@ -111,7 +111,7 @@ impl IWnd for Label
 
             // Icon
             var color = iconColor
-            if !color.a do
+            if !color.a:
                 color = (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             icon.paint(painter, posIcon.x, posIcon.y, color)
         }
@@ -136,9 +136,9 @@ impl Label
 
         var sf: retval
         sf.flags |= .Clip
-        if labelFlags.has(.WordWrap) do
+        if labelFlags.has(.WordWrap):
             sf.flags.add(.WordWrap)
-        if labelFlags.has(.DontAdaptSingleLineHeight) do
+        if labelFlags.has(.DontAdaptSingleLineHeight):
             sf.flags.add(.DontAdaptSingleLineHeight)
         sf.font          = getFont()
         sf.horzAlignment = horzAlignmentText
@@ -155,9 +155,9 @@ impl Label
         }
         else
         {
-            if labelFlags.has(.LightText) do
+            if labelFlags.has(.LightText):
                 sf.palette[0] = theme.colors.label_TextLight
-            else do
+            else:
                 sf.palette[0] = theme.colors.label_Text
             sf.palette[1]  = theme.colors.label_Text1
             sf.palette[2]  = theme.colors.label_Text2
@@ -174,7 +174,7 @@ impl Label
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().label_Height
         let lbl = Wnd.create'Label(parent, "", pos, id)
         lbl.labelFlags = flags

@@ -363,7 +363,7 @@ func bigLoop()
         @getcontext().tempAllocator.freeAll()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
-            if msg.message == WM_QUIT do
+            if msg.message == WM_QUIT:
                 return
             TranslateMessage(&msg)
             DispatchMessageA(&msg)

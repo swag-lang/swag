@@ -4,7 +4,7 @@ var G = 0
 func toto(y: *u8, x: string)
 {
     let concatLength = @countof(x)
-    if concatLength == 0 do
+    if concatLength == 0:
         return
     G = 1
 }

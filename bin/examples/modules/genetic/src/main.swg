@@ -18,7 +18,7 @@ impl IWnd for MyView
 {
     mtd impl onKeyEvent(event: *KeyEvent)
     {
-        if event.key == .Escape do
+        if event.key == .Escape:
             event.target.postQuitEvent()
     }
 
@@ -30,7 +30,7 @@ impl IWnd for MyView
         painter.drawTexture({20, 20, 256, 256}, g_Texture0)
 
         let best = genGo()
-        if best do
+        if best:
             surface.app.getRenderer().updateTexture(g_Texture2, best)
         painter.drawTexture({300, 20, 256, 256}, g_Texture2)
 
@@ -46,7 +46,7 @@ impl IWnd for MyView
 #main
 {
     var app: Gui.Application
-    if Env.hasArg("swag.test") do
+    if Env.hasArg("swag.test"):
         app.maxRunFrame = @isbytecode() ? 2 : 10
 
     assume

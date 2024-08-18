@@ -7,11 +7,11 @@ impl AA
 {
     mtd(T) opAffect(other: T)
     {
-        if T == bool do
+        if T == bool:
             x = 1
-        elif T == s32 do
+        elif T == s32:
             x = 2
-        else do
+        else:
             x = 3
     }
 }

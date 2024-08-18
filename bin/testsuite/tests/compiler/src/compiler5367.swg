@@ -12,7 +12,7 @@ impl Arr
 
     mtd toto()->const [..] T
     {
-        if G == 1 do
+        if G == 1:
             @assert(@typeof(T).name == "C")
         return [{1, 2}]
     }

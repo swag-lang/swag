@@ -159,7 +159,7 @@ impl Image
     {
         Debug.assert(pixels.buffer != null)
 
-        if newPf == pf do
+        if newPf == pf:
             return
 
         allocWorkingBuffer(width, height, newPf)
@@ -172,7 +172,7 @@ impl Image
     {
         Debug.assert(pixels.buffer != null)
 
-        if newPf == pf do
+        if newPf == pf:
             return dref self
 
         var result: retval = create(width, height, newPf)

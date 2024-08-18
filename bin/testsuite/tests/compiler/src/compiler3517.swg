@@ -5,7 +5,7 @@ func toto()->s32
     let a = 0
     loop
     {
-        if a do
+        if a:
             return 1
         break
     }

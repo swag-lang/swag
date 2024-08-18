@@ -88,7 +88,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
 
         let off = (1 - c.z) * 40
         painter.fillRoundRect(xi + off, yi + off, CellSizeW - 2 * off, CellSizeW - 2 * off, RoundCorners, RoundCorners, color)
-        if !c.val do
+        if !c.val:
             continue
 
         // Paint cell value
@@ -105,7 +105,7 @@ func randValue()
     {
         let x = Random.shared().nextS32(0, CellCount)
         let y = Random.shared().nextS32(0, CellCount)
-        if cellAt(x, y) do
+        if cellAt(x, y):
             continue
 
         var cell: Cell
@@ -126,10 +126,10 @@ func animate(wnd: *Wnd)
     visit &c in g_Cells
     {
         // End of scale
-        if Math.isEqualEpsilon(c.z, c.zd, 0.01) do
+        if Math.isEqualEpsilon(c.z, c.zd, 0.01):
             c.zd = 1
         c.z = Math.lerp(c.z, c.zd, 20 * dt)
-        if Math.isEqualEpsilon(c.z, 1, 0.01) do
+        if Math.isEqualEpsilon(c.z, 1, 0.01):
             c.z = 1
 
         // End of move
@@ -160,7 +160,7 @@ func animate(wnd: *Wnd)
         }
     }
 
-    if wasMoving and !g_IsMoving do
+    if wasMoving and !g_IsMoving:
         randValue()
 
     for var i = 0'u64; i < g_Cells.count; i += 1
@@ -178,9 +178,9 @@ func cellAt(x, y: s32, me: *Cell = null)->*Cell
 {
     visit &c in g_Cells
     {
-        if c == me do
+        if c == me:
             continue
-        if c.x == x and c.y == y do
+        if c.x == x and c.y == y:
             return c
     }
 
@@ -195,10 +195,10 @@ func canMoveTo(val, x, y: s32)->bool
         if (c.val and c.moving and c.xd == x and c.yd == y) or
            (c.val and !c.moving and c.x == x and c.y == y)
         {
-            if c.val != val do
+            if c.val != val:
                 return false
             cpt += 1
-            if cpt > 1 do
+            if cpt > 1:
                 return false
         }
     }
@@ -208,7 +208,7 @@ func canMoveTo(val, x, y: s32)->bool
 
 func keyboard(wnd: *Wnd)
 {
-    if g_IsMoving or g_GameOver do
+    if g_IsMoving or g_GameOver:
         return
 
     let kb = wnd.getApp().getKeyboard()
@@ -233,7 +233,7 @@ func keyboard(wnd: *Wnd)
         recom = false
         visit c in g_Cells
         {
-            if c.val == 0 do
+            if c.val == 0:
                 continue
 
             loop i in 1 to CellCount
@@ -241,7 +241,7 @@ func keyboard(wnd: *Wnd)
                 if g_MoveDirX != 0
                 {
                     let nx = cast(s32) (c.xd + i * g_MoveDirX)
-                    if nx < 0 or nx >= CellCount do
+                    if nx < 0 or nx >= CellCount:
                         break
                     if c.xd == nx or canMoveTo(c.val, nx, cast(s32) c.y)
                     {
@@ -253,7 +253,7 @@ func keyboard(wnd: *Wnd)
                 elif g_MoveDirY != 0
                 {
                     let ny = cast(s32) (c.yd + i * g_MoveDirY)
-                    if ny < 0 or ny >= CellCount do
+                    if ny < 0 or ny >= CellCount:
                         break
                     if c.yd == ny or canMoveTo(c.val, cast(s32) c.x, ny)
                     {
@@ -267,9 +267,9 @@ func keyboard(wnd: *Wnd)
 
         visit c in g_Cells
         {
-            if !c.val do
+            if !c.val:
                 continue
-            if Math.isEqualEpsilon(c.xd, c.nxd) and Math.isEqualEpsilon(c.yd, c.nyd) do
+            if Math.isEqualEpsilon(c.xd, c.nxd) and Math.isEqualEpsilon(c.yd, c.nyd):
                 continue
             recom = true
             c.xd  = c.nxd
@@ -310,7 +310,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 730, title: "2048", hook: &onEvent, init: &test)
 }

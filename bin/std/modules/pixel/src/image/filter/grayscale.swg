@@ -6,7 +6,7 @@ impl Image
     public mtd grayScale(factor: f32 = 1)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8 do
+        if pf.channels() < 3 or pf.bitDepth() != 8:
             return
 
         var f = Math.saturate(factor)

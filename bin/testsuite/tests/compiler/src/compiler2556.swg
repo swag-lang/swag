@@ -2,7 +2,7 @@
 
 func toto()
 {
-    #if false #do enum AA {}
+    #if false: enum AA {}
     var x: AA
 }
 

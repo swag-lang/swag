@@ -8,7 +8,7 @@ Once you have determined the sequence of lengths to use, add the following lengt
 
 Second, instead of merely running one round like you did above, run a total of 64 rounds, using the same length sequence in each round. The current position and skip size should be preserved between rounds. For example, if the previous example was your first round, you would start your second round with the same length sequence (3, 4, 1, 5, 17, 31, 73, 47, 23, now assuming they came from ASCII codes and include the suffix), but start with the previous round's current position (4) and skip size (4).
 
-Once the rounds are complete, you will be left with the numbers from 0 to 255 in some order, called the sparse hash. Your next task is to reduce these to a list of only 16 numbers called the dense hash. To do this, use numeric bitwise XOR to combine each consecutive block of 16 numbers in the sparse hash (there are 16 such blocks in a list of 256 numbers). So, the first element in the dense hash is the first sixteen elements of the sparse hash XOR'd together, the second element in the dense hash is the second sixteen elements of the sparse hash XOR'd together, etc.
+Once the rounds are complete, you will be left with the numbers from 0 to 255 in some order, called the sparse hash. Your next task is to reduce these to a list of only 16 numbers called the dense hash. To: this, use numeric bitwise XOR to combine each consecutive block of 16 numbers in the sparse hash (there are 16 such blocks in a list of 256 numbers). So, the first element in the dense hash is the first sixteen elements of the sparse hash XOR'd together, the second element in the dense hash is the second sixteen elements of the sparse hash XOR'd together, etc.
 
 For example, if the first sixteen elements of your sparse hash are as shown below, and the XOR operator is ^, you would calculate the first output number like this:
 
@@ -35,7 +35,7 @@ func day10B() assume
     nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32
-    loop i in 256 do
+    loop i in 256:
         arr.add(i)
 
     var cur, skip = 0
@@ -44,10 +44,10 @@ func day10B() assume
         visit n in nums
         {
             tmp.clear()
-            loop i in n do
+            loop i in n:
                 tmp.add(arr[(cur + i) % 256])
             Slice.reverse(tmp.toSlice())
-            visit v, i in tmp do
+            visit v, i in tmp:
                 arr[(cur + i) % 256] = v
             cur = (cur + n + skip) % 256
             skip += 1
@@ -59,7 +59,7 @@ func day10B() assume
     loop i in 16
     {
         var v = arr[i * 16]
-        loop j in 15 do
+        loop j in 15:
             v ^= arr[(i * 16) + j + 1]
         res += Format.toString("%{X}", v)
     }

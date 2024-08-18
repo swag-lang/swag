@@ -4,7 +4,7 @@ The gravity assist was successful, and you're well on your way to the Venus refu
 
 Opening the front panel reveals a jumble of wires. Specifically, two wires are connected to a central port and extend outward on a grid. You trace the path each wire takes as it leaves the central port, one wire per line of text (your puzzle input).
 
-The wires twist and turn, but the two wires occasionally cross paths. To fix the circuit, you need to find the intersection point closest to the central port. Because the wires are on a grid, use the Manhattan distance for this measurement. While the wires do technically cross right at the central port where they both start, this point does not count, nor does a wire count as crossing with itself.
+The wires twist and turn, but the two wires occasionally cross paths. To fix the circuit, you need to find the intersection point closest to the central port. Because the wires are on a grid, use the Manhattan distance for this measurement. While the wires: technically cross right at the central port where they both start, this point does not count, nor does a wire count as crossing with itself.
 
 For example, if the first wire's path is R8,U5,L5,D3, then starting from the central port (o), it goes right 8, up 5, left 5, and finally down 3:
 
@@ -86,7 +86,7 @@ func day3A0()
             {
                 x = x + dx
                 y = y + dy
-                if idx == 0 do
+                if idx == 0:
                     grid[x, y] = true
                 if idx == 1 and grid[x, y]
                 {

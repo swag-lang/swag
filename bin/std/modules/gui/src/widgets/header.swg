@@ -88,9 +88,9 @@ impl IWnd for Header
         if sortMark != 0 and sortColumn == idx
         {
             var icon: Icon = undefined
-            if sortMark == 1 do
+            if sortMark == 1:
                 icon = theme.getIcon24(ThemeIcons24.SortArrowDown)
-            else do
+            else:
                 icon = theme.getIcon24(ThemeIcons24.SortArrowUp)
             if labelPos.width > icon.sizeX
             {
@@ -162,7 +162,7 @@ impl IWnd for Header
             if clicked and sigClicked
             {
                 let (hit, ?) = hitTest(evt.surfacePos)
-                if hit == hotIdx do
+                if hit == hotIdx:
                     sigClicked(self, items[hotIdx].column)
             }
 
@@ -182,9 +182,9 @@ impl IWnd for Header
             // Hot, if not a separator, is disabled if item is not clickable
             if hit != Swag.U32.Max
             {
-                if !headerFlags.has(.Clickable) and !sep do
+                if !headerFlags.has(.Clickable) and !sep:
                     hit = Swag.U32.Max
-                elif !items[hit].clickable do
+                elif !items[hit].clickable:
                     hit = Swag.U32.Max
             }
 
@@ -200,9 +200,9 @@ impl IWnd for Header
                 invalidate()
             }
 
-            if hotSeparator do
+            if hotSeparator:
                 cursor = Cursor.from(CursorShape.SizeWE)
-            else do
+            else:
                 cursor.clear()
         }
 
@@ -264,10 +264,10 @@ internal impl Header
         var x = padding.x
         visit item, idx in items
         {
-            if pos.x >= x and pos.x < x + item.width do
+            if pos.x >= x and pos.x < x + item.width:
                 return {cast(u32) idx, false}
             x += item.width
-            if pos.x >= x and pos.x <= x + metrics.header_Separator and item.sizeable do
+            if pos.x >= x and pos.x <= x + metrics.header_Separator and item.sizeable:
                 return {cast(u32) idx, true}
             x += metrics.header_Separator
         }
@@ -285,7 +285,7 @@ impl Header
 
         let metrics = parent.getThemeMetrics()
         var pos     = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = metrics.header_Height
         let res = Wnd.create'Header(parent, null, pos, id)
         res.padding       = metrics.header_Padding
@@ -320,7 +320,7 @@ impl Header
 
         visit item in items
         {
-            if item.column == column do
+            if item.column == column:
                 return item
         }
 
@@ -341,7 +341,7 @@ impl Header
 
         visit item in items
         {
-            if item.column == column do
+            if item.column == column:
                 return item.width
         }
 
@@ -364,7 +364,7 @@ impl Header
         let m = getThemeMetrics().header_Separator
         visit item, i in items
         {
-            if item.column == column do
+            if item.column == column:
                 return x
             x += item.width + m
         }
@@ -395,12 +395,12 @@ impl Header
 
         let item = getItemByCol(column)
         var move = Math.max(width, item.minWidth)
-        if item.maxWidth > 0 do
+        if item.maxWidth > 0:
             move = Math.min(move, item.maxWidth)
-        if item.width == move do
+        if item.width == move:
             return
         item.width = move
-        if sigLayoutChanged do
+        if sigLayoutChanged:
             sigLayoutChanged(self)
         invalidate()
     }

@@ -94,9 +94,9 @@ func day10A() assume
     var cpt1, cpt3, prev = 0's64
     visit v in vals
     {
-        if v - prev == 1 do
+        if v - prev == 1:
             cpt1 += 1
-        elif v - prev == 3 do
+        elif v - prev == 3:
             cpt3 += 1
         prev = v
     }

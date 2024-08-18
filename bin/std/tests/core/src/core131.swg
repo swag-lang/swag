@@ -6,7 +6,7 @@ using Core
     var arr:  Array's32
 
     rand.seedU32(0)
-    loop 10 do
+    loop 10:
         arr.add(rand.nextS32(0, 100))
 
     arr.sort(func(x, y) => y <=> x)

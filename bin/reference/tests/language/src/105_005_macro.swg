@@ -155,7 +155,7 @@ When you need `break` in the user code to break outside of a multi loop.
     repeatSquare(5)
     {
         a += 1
-        if a == 10 do
+        if a == 10:
             break
     }
 

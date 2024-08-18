@@ -30,7 +30,7 @@ impl IActionUI for ActionPixSel
                 let f = capture.forms[s]
                 let b = cast(*BaseForm) @dataof(f)
                 hasPixSel = b.subKind == .PixSel
-                if hasPixSel do
+                if hasPixSel:
                     break
             }
         }
@@ -95,7 +95,7 @@ impl MainWnd
         {
             let f = capture.forms[s]
             let b = cast(*BaseForm) @dataof(f)
-            if b.subKind == .PixSel do
+            if b.subKind == .PixSel:
                 result.add(f)
         }
 
@@ -105,7 +105,7 @@ impl MainWnd
     mtd pixSelClear()
     {
         var forms = getPixSels()
-        if forms.count == 0 do
+        if forms.count == 0:
             return
 
         let capture = getCapture()
@@ -114,7 +114,7 @@ impl MainWnd
         undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
-        visit f in forms do
+        visit f in forms:
             boundRects.add(f.boundRect())
 
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
@@ -126,7 +126,7 @@ impl MainWnd
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
-                if !p.boundRects[idx].contains(pt) do
+                if !p.boundRects[idx].contains(pt):
                     continue
 
                 if f.isInside(pt)
@@ -143,7 +143,7 @@ impl MainWnd
     mtd pixSelFill()
     {
         var forms = getPixSels()
-        if forms.count == 0 do
+        if forms.count == 0:
             return
 
         let capture = getCapture()
@@ -152,7 +152,7 @@ impl MainWnd
         undo.newImg      = capture.backImg
 
         var boundRects: Array'Math.Rectangle
-        visit f in forms do
+        visit f in forms:
             boundRects.add(f.boundRect())
 
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
@@ -164,7 +164,7 @@ impl MainWnd
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
-                if !p.boundRects[idx].contains(pt) do
+                if !p.boundRects[idx].contains(pt):
                     continue
 
                 if f.isInside(pt)
@@ -181,7 +181,7 @@ impl MainWnd
     mtd pixSelSmartFill(serial: u32 = 0, masks: *Array'Image = null)
     {
         var forms = getPixSels()
-        if forms.count == 0 do
+        if forms.count == 0:
             return
 
         let capture = getCapture()
@@ -260,7 +260,7 @@ impl MainWnd
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
                 pt.x += p.capture.backImagePos.x
                 pt.y += p.capture.backImagePos.y
-                if !p.infos[idx].boundRect.contains(pt) do
+                if !p.infos[idx].boundRect.contains(pt):
                     continue
 
                 if f.isInside(pt)
@@ -304,7 +304,7 @@ impl MainWnd
     mtd pixSelSmartMove()
     {
         var forms = getPixSels()
-        if forms.count == 0 do
+        if forms.count == 0:
             return
 
         let capture = getCapture()
@@ -352,7 +352,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        loop i in startCount until capture.forms.count do
+        loop i in startCount until capture.forms.count:
             capture.selection.add(i)
     }
 }

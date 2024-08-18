@@ -5,7 +5,7 @@ func toto()->s32
     {
         var az: [512] u8
         @memcpy(&az[0], @dataof("return "), 7)
-        loop i in 10'u64 do
+        loop i in 10'u64:
             az[i + 7] = `1`'u8
 
         let str1 = @mkstring(&az[0], 16)

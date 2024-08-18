@@ -73,10 +73,10 @@ impl IWnd for SurfaceWnd
         switch evt.kind
         {
         case MousePressed:
-            if evt.button != .Left do
+            if evt.button != .Left:
                 break
             surface.bringToTop()
-            if surface.isMaximized do
+            if surface.isMaximized:
                 break
             captureMouse()
             movingSurface = true
@@ -90,7 +90,7 @@ impl IWnd for SurfaceWnd
             }
 
         case MouseReleased:
-            if evt.button != .Left do
+            if evt.button != .Left:
                 break
 
             if cursorSet
@@ -104,9 +104,9 @@ impl IWnd for SurfaceWnd
             fallthrough
 
         case MouseMove:
-            if surface.isMaximized do
+            if surface.isMaximized:
                 break
-            if getApp().mouseEnterWnd != self do
+            if getApp().mouseEnterWnd != self:
                 break
 
             if !movingSurface and surface.flags.has(.Sizeable)
@@ -144,7 +144,7 @@ impl IWnd for SurfaceWnd
                 surface.app.popCursor()
             }
 
-            if !movingSurface do
+            if !movingSurface:
                 break
 
             var hasChanged = false
@@ -243,7 +243,7 @@ impl IWnd for SurfaceWnd
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if isPendingDestroy do
+        if isPendingDestroy:
             return
         let bc     = evt.bc
         let theme  = getTheme()
@@ -280,11 +280,11 @@ impl IWnd for SurfaceWnd
             posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
             var posClip = posCaption
-            if surface.flags.has(.MinimizeBtn) do
+            if surface.flags.has(.MinimizeBtn):
                 posClip.setRight(minimizeBtn.position.x)
-            elif surface.flags.has(.MaximizeBtn) do
+            elif surface.flags.has(.MaximizeBtn):
                 posClip.setRight(maximizeBtn.position.x)
-            elif surface.flags.has(.CloseBtn) do
+            elif surface.flags.has(.CloseBtn):
                 posClip.setRight(closeBtn.position.x)
             bc.painter.pushClippingRect(posClip)
             defer bc.painter.popClippingRect()
@@ -330,7 +330,7 @@ impl SurfaceWnd
     internal mtd applySurfaceFlags()
     {
         let theme = surface.app.theme
-        if !theme.intialized do
+        if !theme.intialized:
             return
 
         if surface.flags.has(.MinimizeBtn)

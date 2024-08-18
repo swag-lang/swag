@@ -7,8 +7,8 @@ struct(A, B) Foozle
 var G = 0
 func(T, TT) yes_auto2(x: T, y: TT)
 {
-    if(@typeof(x.a) == s32) do G |= 1
-    if(@typeof(y.a) == bool) do G |= 2
+    if(@typeof(x.a) == s32): G |= 1
+    if(@typeof(y.a) == bool): G |= 2
 }
 
 #test

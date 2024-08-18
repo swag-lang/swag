@@ -157,7 +157,7 @@ impl IWnd for PushButton
         format.vertAlignment = .Center
         format.flags         = .Clip
         format.font          = getFont()
-        if form == .Strong do
+        if form == .Strong:
             format.fontStyle = .Bold
         var labelPos = clientRect
         labelPos.inflate(-metrics.btnPush_Padding)
@@ -166,7 +166,7 @@ impl IWnd for PushButton
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt) do
+        if processMouseEvent(evt):
             postCommandEvent(id)
     }
 }
@@ -178,12 +178,12 @@ impl PushButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().btnPush_Width
         let res = Wnd.create'PushButton(parent, name, pos, id)
-        if id != null do
+        if id != null:
             res.updateCommandState()
         return res
     }

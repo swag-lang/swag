@@ -21,7 +21,7 @@ So that means that you can call everything compile-time, even a function from an
 func sum(values: s32...)->s32
 {
     var result = 0's32
-    visit v in values do
+    visit v in values:
         result += v
     return result
 }
@@ -82,7 +82,7 @@ The return type is deduced from the `return` statement.
     const Value = #run
     {
         var result: f32
-        loop 10 do
+        loop 10:
             result += 1
         return result // 'Value' will be of type 'f32'
     }
@@ -98,7 +98,7 @@ Can also be used to initialize a static array.
     const PowerOfTwo: [N] s32 = #run
     {
         var arr: [N] s32
-        loop i in arr do
+        loop i in arr:
             arr[i] = 1 << cast(u32) i
         return arr
     }

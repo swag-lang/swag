@@ -22,6 +22,6 @@ struct ST
         result.add(x)
     }
 
-    visit &c in result do
+    visit &c in result:
         @assert(c.str == "AB")
 }

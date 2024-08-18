@@ -223,7 +223,7 @@ Works also for basic types like integers.
 
 /**
 # Type promotion
-Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type.
+Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation: not have the same type.
 */
 #test
 {
@@ -242,7 +242,7 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 }
 
 /**
-This means that a 8/16 bits operation (like an addition) can more easily **overflow** if you do not take care.
+This means that a 8/16 bits operation (like an addition) can more easily **overflow** if you: not take care.
 In that case, you can use the ` #prom` **modifier** on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
 */
 #test

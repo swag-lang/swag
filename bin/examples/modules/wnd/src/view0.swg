@@ -99,7 +99,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         button.form = .Strong
         button.sigPressed += func(btn)
         {
-            discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet</p>, consectetur <b>adipiscing</b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+            discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet</p>, consectetur <b>adipiscing</b> elit, sed: eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         }
 
         button      = PushButton.create(view, "OK", {5, 270})
@@ -108,7 +108,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         button.style.addStyleSheetColors("btnPushFlat_PressedBk 0xFF00BB00")
         button.sigPressed += func(btn)
         {
-            MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet</p>, consectetur <b>adipiscing</b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
+            MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet</p>, consectetur <b>adipiscing</b> elit, sed: eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
         }
 
         button      = PushButton.create(view, "YesNoCancel", {5, 310})
@@ -463,7 +463,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         }
         slider.sigChanged += closure|img2|(slider)
         {
-            if !img2.movie.inPause do
+            if !img2.movie.inPause:
                 return
             img2.movie.sigFrameChanged.disable()
             img2.movie.setFrameIndex(cast(s32) slider.getValue())

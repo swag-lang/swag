@@ -19,7 +19,7 @@ Looking right, its view is not blocked; it can see 2 trees.
 Looking down, its view is blocked eventually; it can see 2 trees (one of height 3, then the tree of height 5 that blocks its view).
 A tree's scenic score is found by multiplying together its viewing distance in each of the four directions. For this tree, this is 4 (found by multiplying 1 * 1 * 2 * 2).
 
-However, you can do even better: consider the tree of height 5 in the middle of the fourth row:
+However, you can: even better: consider the tree of height 5 in the middle of the fourth row:
 
 30373
 25512
@@ -46,19 +46,19 @@ func day8B()
     var total: s32
     visit l, line in lines
     {
-        if line == 0 or line == lines.count - 1 do
+        if line == 0 or line == lines.count - 1:
             continue
 
         visit(Bytes) c, col in l
         {
-            if col == 0 or col == l.length - 1 do
+            if col == 0 or col == l.length - 1:
                 continue
 
             var score0 = 0
             loop #back x in 0 until col
             {
                 score0 += 1
-                if l[x] >= l[col] do
+                if l[x] >= l[col]:
                     break
             }
 
@@ -66,7 +66,7 @@ func day8B()
             loop x in col + 1 to l.length - 1
             {
                 score1 += 1
-                if l[x] >= l[col] do
+                if l[x] >= l[col]:
                     break
             }
 
@@ -74,7 +74,7 @@ func day8B()
             loop #back y in 0 until line
             {
                 score2 += 1
-                if lines[y][col] >= l[col] do
+                if lines[y][col] >= l[col]:
                     break
             }
 
@@ -82,7 +82,7 @@ func day8B()
             loop y in line + 1 to lines.count - 1
             {
                 score3 += 1
-                if lines[y][col] >= l[col] do
+                if lines[y][col] >= l[col]:
                     break
             }
 

@@ -72,7 +72,7 @@ impl IWnd for IconButton
 {
     mtd hidePopup()
     {
-        if !popup do
+        if !popup:
             return
 
         getApp().unregisterHookEvents(self)
@@ -85,14 +85,14 @@ impl IWnd for IconButton
 
     mtd impl onHookEvent(evt: *Event)
     {
-        if !popup do
+        if !popup:
             return
 
         if evt.kind == .MousePressed
         {
-            if evt.target == self or evt.target == popup do
+            if evt.target == self or evt.target == popup:
                 return
-            if evt.target and popup.isParentOf(evt.target) do
+            if evt.target and popup.isParentOf(evt.target):
                 return
             hidePopup()
         }
@@ -105,7 +105,7 @@ impl IWnd for IconButton
 
     mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
-        if evt.id != id do
+        if evt.id != id:
             return
 
         if evt.setFlags.has(.ToolTip)
@@ -198,9 +198,9 @@ impl IWnd for IconButton
         var pos     = getClientRectPadding()
         let hasIcon = icon.isValid() or sigPaintIcon != null
 
-        if iconSizeX do
+        if iconSizeX:
             icon.sizeX = iconSizeX
-        if iconSizeY do
+        if iconSizeY:
             icon.sizeY = iconSizeY
 
         // Center everything
@@ -324,12 +324,12 @@ impl IWnd for IconButton
             {
             case Left:
                 sf.horzAlignment = .Left
-                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom) do
+                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom):
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
                 pos.moveLeft(name.boundRect.width + metrics.btnIcon_SpacingTextH)
 
-                if !icon.isValid() do
+                if !icon.isValid():
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
@@ -345,12 +345,12 @@ impl IWnd for IconButton
 
             case Right:
                 sf.horzAlignment = .Right
-                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom) do
+                if !hasIcon and (arrowPos == .Top or arrowPos == .Bottom):
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
                 pos.width -= name.boundRect.width + metrics.btnIcon_SpacingTextH
 
-                if !icon.isValid() do
+                if !icon.isValid():
                     icon.sizeX = pos.width
                 if pos.width < icon.sizeX
                 {
@@ -368,7 +368,7 @@ impl IWnd for IconButton
                 bc.painter.drawRichString(pos, &name, sf)
                 pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingTextV)
 
-                if !icon.isValid() do
+                if !icon.isValid():
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
@@ -387,7 +387,7 @@ impl IWnd for IconButton
                 bc.painter.drawRichString(pos, &name, sf)
 
                 pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingTextV
-                if !icon.isValid() do
+                if !icon.isValid():
                     icon.sizeY = pos.height
                 if pos.height < icon.sizeY
                 {
@@ -395,7 +395,7 @@ impl IWnd for IconButton
                     icon.sizeX = pos.height * ratio
                     icon.sizeY = pos.height
                 }
-                else do
+                else:
                     pos.height = icon.sizeY
             }
         }
@@ -463,7 +463,7 @@ impl IWnd for IconButton
                 if !popup
                 {
                     sigShowPopup.call(self)
-                    if popup do
+                    if popup:
                         getApp().registerHookEvents(self)
                 }
             }
@@ -478,14 +478,14 @@ impl IconButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().btnPush_Width
         let res = Wnd.create'IconButton(parent, null, pos, id)
         res.icon    = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
-        if id != null do
+        if id != null:
             res.updateCommandState()
         return res
     }
@@ -493,9 +493,9 @@ impl IconButton
     // Set the check state of the button (if the button is checkable)
     mtd setCheck(checked: bool)
     {
-        if !iconBtnFlags.has(.Checkable) do
+        if !iconBtnFlags.has(.Checkable):
             return
-        if isChecked == checked do
+        if isChecked == checked:
             return
         isChecked = checked
         postCommandEvent(id)

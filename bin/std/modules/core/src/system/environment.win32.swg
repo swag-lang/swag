@@ -57,7 +57,7 @@ public func getMonitors()->Array'Monitor
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)
-        if @err() != null do
+        if @err() != null:
             return TRUE
 
         var m:  Monitor

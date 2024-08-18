@@ -13,7 +13,7 @@ You pull out your handy Oasis And Sand Instability Sensor and analyze your surro
 0 3 6 9 12 15
 1 3 6 10 15 21
 10 13 16 21 30 45
-To best protect the oasis, your environmental report should include a prediction of the next value in each history. To do this, start by making a new sequence from the difference at each step of your history. If that sequence is not all zeroes, repeat this process, using the sequence you just generated as the input sequence. Once all of the values in your latest sequence are zeroes, you can extrapolate what the next value of the original history should be.
+To best protect the oasis, your environmental report should include a prediction of the next value in each history. To: this, start by making a new sequence from the difference at each step of your history. If that sequence is not all zeroes, repeat this process, using the sequence you just generated as the input sequence. Once all of the values in your latest sequence are zeroes, you can extrapolate what the next value of the original history should be.
 
 In the above dataset, the first history is 0 3 6 9 12 15. Because the values increase by 3 each step, the first sequence of differences that you generate will be 3 3 3 3 3. Note that this sequence has one fewer value than the input sequence because at each step it considers two numbers from the input. Since these values aren't all zero, repeat the process: the values differ by 0 at each step, so the next sequence is 0 0 0 0. This means you have enough information to extrapolate the history! Visually, these sequences can be arranged like this:
 
@@ -79,7 +79,7 @@ func day9A()
         let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
-        visit v in vals do
+        visit v in vals:
             values.add(assume StrConv.toS64(v))
         total += values.back()
 

@@ -34,13 +34,13 @@ func day8A()
         var i = 0
         while i < l.length
         {
-            if i != l.length - 1 and l[i] == `\\` and l[i + 1] == `"` do
+            if i != l.length - 1 and l[i] == `\\` and l[i + 1] == `"`:
                 i += 2
-            elif i < l.length - 1 and l[i] == `\\` and l[i + 1] == `\\` do
+            elif i < l.length - 1 and l[i] == `\\` and l[i + 1] == `\\`:
                 i += 2
-            elif l.length > 3 and i < l.length - 3 and l[i] == `\\` and l[i + 1] == `x` and Latin1.isHexDigit(l[i + 2]) and Latin1.isHexDigit(l[i + 3]) do
+            elif l.length > 3 and i < l.length - 3 and l[i] == `\\` and l[i + 1] == `x` and Latin1.isHexDigit(l[i + 2]) and Latin1.isHexDigit(l[i + 3]):
                 i += 4
-            else do
+            else:
                 i += 1
             total1 += 1
         }

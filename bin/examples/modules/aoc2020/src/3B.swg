@@ -11,7 +11,7 @@ Right 7, down 1.
 Right 1, down 2.
 In the above example, these slopes would find 2, 7, 3, 4, and 2 tree(s) respectively; multiplied together, these produce the answer 336.
 
-What do you get if you multiply together the number of trees encountered on each of the listed slopes?
+What: you get if you multiply together the number of trees encountered on each of the listed slopes?
 */
 
 using Core
@@ -28,7 +28,7 @@ func day3B()
         loop
         {
             y += s.item1
-            if y >= lines.count do
+            if y >= lines.count:
                 break
             x = cast(u32) ((x + s.item0) % lines[0].length)
             count += lines[y][x] == `#` ? 1 : 0

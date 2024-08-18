@@ -20,9 +20,9 @@ impl Vector4
 
     mtd(op: string) opUnary()->Self
     {
-        #if op == "-" #do
+        #if op == "-":
             return Vector4{-x, -y, -z, -w}
-        #else #do
+        #else:
             #error "unsupported unary operation [[" ++ op ++ "]]"
     }
 

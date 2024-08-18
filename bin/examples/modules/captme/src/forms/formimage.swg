@@ -52,7 +52,7 @@ impl IForm for FormImage
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormImage) ptr
-        if kind == .Image and backColor != other.backColor do
+        if kind == .Image and backColor != other.backColor:
             return false
         return borderColor == other.borderColor and
                borderSize == other.borderSize and
@@ -73,7 +73,7 @@ impl IForm for FormImage
         dstf.kind        = srcf.kind
         dstf.paintShadow = srcf.paintShadow
         dstf.strength    = srcf.strength
-        if srcf.image.isValid() do
+        if srcf.image.isValid():
             dstf.image = srcf.image
     }
 
@@ -259,7 +259,7 @@ impl IForm for FormImage
             var maskImg = cast(*Image) userData
             var pix1    = maskImg.pixels.buffer + x * 4
             pix1 += maskImg.width * y * 4
-            if !pix1[0] do
+            if !pix1[0]:
                 dref cast(*u32) pix = 0
         }
 
@@ -309,9 +309,9 @@ impl IForm for FormImage
                     textureKind = kind
                     renderer.removeTexture(&texture)
                     texture = renderer.addImage(image)
-                    if !freePos.width do
+                    if !freePos.width:
                         freePos.width = image.width
-                    if !freePos.height do
+                    if !freePos.height:
                         freePos.height = image.height
                 }
 
@@ -381,7 +381,7 @@ impl IForm for FormImage
             }
         }
 
-        if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize) do
+        if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
             painter.fillRect(pp, borderColor)
         else
         {

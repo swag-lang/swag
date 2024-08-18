@@ -23,7 +23,7 @@ impl BitArray
     {
         count = maxBits
         capacity = maxBits >> 5
-        if capacity << 5 < maxBits do
+        if capacity << 5 < maxBits:
             capacity += 1
 
         capacity *= 4

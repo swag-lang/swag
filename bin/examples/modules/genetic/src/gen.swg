@@ -38,7 +38,7 @@ func genInit()
     {
         let soluce = g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
-        loop i in g_NumGenes do
+        loop i in g_NumGenes:
             soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
@@ -81,7 +81,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
-    loop i in soluce.genes do
+    loop i in soluce.genes:
         soluce.score += evaluateSolution(soluce.genes[i], acast i)
     soluce.score /= g_NumGenes
 }
@@ -91,7 +91,7 @@ func pickToMate(other: *Solution = null)->*Solution
     var rnd = g_Rng.nextF32(0, g_TotalWeight)
     visit child in g_Gen[g_CurGen].all
     {
-        if rnd <= child.weight and child != other do
+        if rnd <= child.weight and child != other:
             return child
         rnd -= child.weight
     }
@@ -188,7 +188,7 @@ func genGo()->*u8
         // Copy solution from father
         let child1 = g_Gen[nextGenIdx].all[index]
         Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * @sizeof(u32))
-        loop i in crossPoint1 do
+        loop i in crossPoint1:
             done[child1.genes.buffer[i]] = true
 
         // Copy solution from mother, in order, except of already present
@@ -213,7 +213,7 @@ func genGo()->*u8
         // Fill the rest
         loop i in g_NumGenes
         {
-            if done[i] do
+            if done[i]:
                 continue
 
             var bestRes  = Swag.F32.Max

@@ -42,7 +42,7 @@ impl Offset
 
     mtd clear()
     {
-        visit node in polyNodes.childs do
+        visit node in polyNodes.childs:
             Memory.delete(node)
         polyNodes.childs.clear()
         lowest.x = -1
@@ -51,9 +51,9 @@ impl Offset
     mtd addPath(path: ClipperPath, joinType: JoinType)
     {
         var highI = path.count - 1
-        if highI < 0 do
+        if highI < 0:
             return
-        while highI > 0 and path.buffer[0] == path.buffer[highI] do
+        while highI > 0 and path.buffer[0] == path.buffer[highI]:
             highI -= 1
 
         let newNode = Memory.new'PolyNode()
@@ -69,7 +69,7 @@ impl Offset
                 j += 1
                 newNode.contour.add(path.buffer[i])
                 var kC = newNode.contour[k]
-                if path[i].y > kC.y or (path[i].y == kC.y and path[i].x < kC.x) do
+                if path[i].y > kC.y or (path[i].y == kC.y and path[i].x < kC.x):
                     k = j
             }
         }
@@ -82,12 +82,12 @@ impl Offset
 
         polyNodes.addChild(newNode)
 
-        if lowest.x < 0 do
+        if lowest.x < 0:
             lowest = IntPoint{polyNodes.childs.count - 1, k}
         else
         {
             var ip = polyNodes.childs[cast(s32) lowest.x].contour[cast(s32) lowest.y]
-            if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x) do
+            if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x):
                 lowest = IntPoint{polyNodes.childs.count - 1, k}
         }
     }
@@ -99,7 +99,7 @@ impl Offset
         doOffset(delta)
 
         var clpr: Transform
-        visit &p in destPolys do
+        visit &p in destPolys:
             clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
@@ -118,7 +118,7 @@ impl Offset
             clpr.addPath(&outer, PolyType.Subject)
             clpr.reverseOutput = reverseNeg
             clpr.execute(ClipType.Union, solution, PolyFillType.Negative, PolyFillType.Negative)
-            if solution.count > 0 do
+            if solution.count > 0:
                 solution.removeAt(0)
         }
     }
@@ -126,7 +126,7 @@ impl Offset
     func area(poly: ClipperPath)->f64
     {
         let size = cast(s32) poly.count
-        if size < 3 do
+        if size < 3:
             return 0
 
         var a  = 0'f64
@@ -153,7 +153,7 @@ impl Offset
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
-            visit node in polyNodes.childs do
+            visit node in polyNodes.childs:
                 Slice.reverse(node.contour.toSlice())
         }
     }
@@ -161,7 +161,7 @@ impl Offset
     func getUnitNormal(pt1, pt2: const &IntPoint)->DoublePoint
     {
         var result: retval
-        if pt2.x == pt1.x and pt2.y == pt1.y do
+        if pt2.x == pt1.x and pt2.y == pt1.y:
             return result
 
         var dx = cast(f64) (pt2.x - pt1.x)
@@ -187,33 +187,33 @@ impl Offset
         if Math.isZeroEpsilon(delta)
         {
             destPolys.reserve(polyNodes.childs.count)
-            visit node in polyNodes.childs do
+            visit node in polyNodes.childs:
                 destPolys.add(node.contour)
             return
         }
 
-        if miterLimit > 2 do
+        if miterLimit > 2:
             miterLim = 2 / (miterLimit * miterLimit)
-        else do
+        else:
             miterLim = 0.5
 
         var arcT: f64 = undefined
-        if arcTolerance <= 0.0 do
+        if arcTolerance <= 0.0:
             arcT = DefaultArcTolerance
-        elif arcTolerance > abs(delta) * DefaultArcTolerance do
+        elif arcTolerance > abs(delta) * DefaultArcTolerance:
             arcT = abs(delta) * DefaultArcTolerance
-        else do
+        else:
             arcT = arcTolerance
 
         const Pi    = ConstF64.Pi
         const TwoPi = ConstF64.TwoPi
         var steps   = Pi / acos(1 - arcT / abs(delta))
-        if steps > abs(delta) * Pi do
+        if steps > abs(delta) * Pi:
             steps = abs(delta) * Pi
         sinVal      = sin(TwoPi / steps)
         cosVal      = cos(TwoPi / steps)
         stepsPerRad = steps / TwoPi
-        if delta < 0.0 do
+        if delta < 0.0:
             sinVal = -sinVal
 
         destPolys.reserve(polyNodes.childs.count * 2)
@@ -222,7 +222,7 @@ impl Offset
             srcPoly = node.contour
 
             let len = cast(s32) srcPoly.count
-            if len == 0 or (delta <= 0 and len < 3) do
+            if len == 0 or (delta <= 0 and len < 3):
                 continue
 
             destPoly.clear()
@@ -251,11 +251,11 @@ impl Offset
                         let r1 = cround(srcPoly[0].x + x * delta)
                         let r2 = cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
-                        if x < 0 do
+                        if x < 0:
                             x = 1
-                        elif y < 0 do
+                        elif y < 0:
                             y = 1
-                        else do
+                        else:
                             x = -1
                     }
                 }
@@ -267,12 +267,12 @@ impl Offset
             // Build normals
             normals.clear()
             normals.reserve(cast(u64) len)
-            loop j in len - 1 do
+            loop j in len - 1:
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
             normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
 
             var k = len - 1
-            loop j in len do
+            loop j in len:
                 offsetPoint(j, &k, node.jointype)
             destPolys.add(destPoly)
         }
@@ -298,9 +298,9 @@ impl Offset
                 return
             }
         }
-        elif sinaVal > 1.0 do
+        elif sinaVal > 1.0:
             sinaVal = 1.0
-        elif sinaVal < -1.0 do
+        elif sinaVal < -1.0:
             sinaVal = -1.0
 
         if sinaVal * deltaVal < 0
@@ -319,9 +319,9 @@ impl Offset
             {
             case Miter:
                 let r = 1 + (jN.x * kN.x + jN.y * kN.y)
-                if r >= miterLim do
+                if r >= miterLim:
                     doMiter(j, k, r)
-                else do
+                else:
                     doSquare(j, k)
             case Square:
                 doSquare(j, k)

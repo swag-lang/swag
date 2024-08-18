@@ -31,7 +31,7 @@ impl Image
         var result: retval
         result.init(width, height, pf)
         result.allocPixels()
-        if buffer do
+        if buffer:
             Memory.copy(result.pixels.buffer, @dataof(buffer), @countof(buffer))
         return result
     }

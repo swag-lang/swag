@@ -4,7 +4,7 @@ using Win32, Core
 
 func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
-    if msg == WM_DESTROY do
+    if msg == WM_DESTROY:
         PostQuitMessage(0)
     return DefWindowProcA(hwnd, msg, wParam, lParam)
 }
@@ -33,7 +33,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     var msg: MSG
     while GetMessageA(&msg, null, 0, 0) != 0
     {
-        if msg.message == WM_QUIT do
+        if msg.message == WM_QUIT:
             break
         var tm = TranslateMessage(&msg)
         var dm = DispatchMessageA(&msg)

@@ -19,42 +19,42 @@ public
 {
     func isDigit(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isDigit(cast(u8) c)
         return isInTable(TableDigit, c)
     }
 
     func isNumber(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isNumber(cast(u8) c)
         return isInTable(TableNumber, c)
     }
 
     func isControl(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isControl(cast(u8) c)
         return false
     }
 
     func isSpace(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isSpace(cast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 
     func isLetter(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isLetter(cast(u8) c)
         return isInTable(TableLetter, c)
     }
 
     func isSymbol(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isSymbol(cast(u8) #bit c)
         return isInTable(TableSymbol, c)
     }
@@ -66,28 +66,28 @@ public
 
     func isLetterOrDigit(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isLetterOrDigit(cast(u8) c)
         return isDigit(c) or isLetter(c)
     }
 
     func isTitle(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return false
         return isInTable(TableTitle, c)
     }
 
     func isLower(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isLower(cast(u8) c)
         return isInTable(TableLower, c)
     }
 
     func isUpper(c: rune)->bool
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return Latin1.isUpper(cast(u8) c)
         return isInTable(TableUpper, c)
     }
@@ -99,28 +99,28 @@ public
 
     func toLower(c: rune)->rune
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return acast Latin1.toLower(cast(u8) c)
 
         var res = caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
-        if res.foundMapping do
+        if res.foundMapping:
             return res.mappedRune
         res = caseChangeTo(WantedCase.LowerCase, c, TableCaseRanges)
-        if !res.foundMapping do
+        if !res.foundMapping:
             return c
         return res.mappedRune
     }
 
     func toUpper(c: rune)->rune
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return acast Latin1.toUpper(cast(u8) c)
 
         var res = caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
-        if res.foundMapping do
+        if res.foundMapping:
             return res.mappedRune
         res = caseChangeTo(WantedCase.UpperCase, c, TableCaseRanges)
-        if !res.foundMapping do
+        if !res.foundMapping:
             return c
 
         return res.mappedRune
@@ -128,14 +128,14 @@ public
 
     func toTitle(c: rune)->rune
     {
-        if isLatin1(c) do
+        if isLatin1(c):
             return acast Latin1.toUpper(cast(u8) c)
 
         var res = caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
-        if res.foundMapping do
+        if res.foundMapping:
             return res.mappedRune
         res = caseChangeTo(WantedCase.TitleCase, c, TableCaseRanges)
-        if !res.foundMapping do
+        if !res.foundMapping:
             return c
 
         return res.mappedRune
@@ -209,9 +209,9 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
     var minLen: u64 = undefined
     if len
     {
-        if length < len do
+        if length < len:
             return -1
-        if otherLength < len do
+        if otherLength < len:
             return 1
         minLen = len
     }
@@ -229,7 +229,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
             let c1 = toLower(src[i])
             let c2 = toLower(dst[i])
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0 do
+            if result != 0:
                 return Math.sign(result)
         }
     }
@@ -238,9 +238,9 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
         result = Memory.compare(@dataof(src), @dataof(dst), minLen * @sizeof(rune))
     }
 
-    if result != 0 do
+    if result != 0:
         return Math.sign(result)
-    if len do
+    if len:
         return 0
     return length <=> otherLength
 }
@@ -276,9 +276,9 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     {
         visit &range in ranges
         {
-            if r < range.lo do
+            if r < range.lo:
                 return false
-            if r <= range.hi do
+            if r <= range.hi:
                 return range.stride == 1 or (r - range.lo) % range.stride == 0
         }
 
@@ -297,9 +297,9 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
             return range.stride == 1 or (r - range.lo) % range.stride == 0
         }
 
-        if r < range.lo do
+        if r < range.lo:
             hi = m
-        else do
+        else:
             lo = m + 1
     }
 
@@ -342,9 +342,9 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->
             return result
         }
 
-        if r < cr.lo do
+        if r < cr.lo:
             hi = m
-        else do
+        else:
             lo = m + 1
     }
 

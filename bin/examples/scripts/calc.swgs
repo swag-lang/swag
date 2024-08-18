@@ -41,9 +41,9 @@ func validateOp(str: string)
         case Mul:
             g_ComputeValue *= g_CurValue
         case Div:
-            if g_CurValue == 0 do
+            if g_CurValue == 0:
                 g_Error = "divide by zero"
-            else do
+            else:
                 g_ComputeValue /= g_CurValue
         default:
             g_ComputeValue = g_CurValue
@@ -54,9 +54,9 @@ func validateOp(str: string)
         g_Op       = str
     }
 
-    if g_Error do
+    if g_Error:
         g_Edit.setText(g_Error)
-    else do
+    else:
         g_Edit.setText(Format.toString("%", g_CurValue))
 }
 
@@ -130,7 +130,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 400, 400, title: "Calc", hook: &onEvent, init: &test)
 }

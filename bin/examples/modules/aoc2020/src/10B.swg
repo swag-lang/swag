@@ -64,17 +64,17 @@ func day10B() assume
 
     func count(i: u64, input: Array's64, storage: &HashTable'(u64, u64))->u64
     {
-        if i == input.count - 1 do
+        if i == input.count - 1:
             return 1
 
         let it = storage.find(i)
-        if it do
+        if it:
             return it.value
 
         var total = 0'u64
         loop j in i + 1 until input.count
         {
-            if input[j] - input[i] <= 3 do
+            if input[j] - input[i] <= 3:
                 total += count(j, input, storage)
         }
 

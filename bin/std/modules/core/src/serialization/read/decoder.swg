@@ -176,7 +176,7 @@ impl Decoder
             let itf      = @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.read(idecoder) do
+                if itf.read(idecoder):
                     return
             }
 
@@ -184,14 +184,14 @@ impl Decoder
             let structType = cast(const *TypeInfoStruct) type
             let treated    = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
-            if treated do
+            if treated:
                 return
 
             visit field in structType.fields
             {
-                if Reflection.hasAttribute(field, NoSerialize) do
+                if Reflection.hasAttribute(field, NoSerialize):
                     continue
-                if Reflection.hasAttribute(field.pointedType, NoSerialize) do
+                if Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
                 if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
@@ -199,19 +199,19 @@ impl Decoder
                     let doIt = catch serializer.beginElement(field)
                     defer(noerr) serializer.endElement()
 
-                    if @err() != null and !(flags & .IgnoreStructFieldError) do
+                    if @err() != null and !(flags & .IgnoreStructFieldError):
                         throw @err()
-                    if !doIt do
+                    if !doIt:
                         continue
 
                     catch readValue(cast(^u8) data + field.offset, field.pointedType)
-                    if @err() != null and !(flags & .IgnoreStructFieldError) do
+                    if @err() != null and !(flags & .IgnoreStructFieldError):
                         throw @err()
                 }
             }
 
             // Inform user code we are done
-            if itf do
+            if itf:
                 itf.postRead(data, idecoder)
 
             return
@@ -224,7 +224,7 @@ impl Decoder
             var count   = typeArr.count
             let treated = serializer.beginSequence(typeArr.pointedType, data, &count)
             defer(noerr) serializer.endSequence()
-            if treated do
+            if treated:
                 return
 
             var bufArr = cast(^u8) data
@@ -283,7 +283,7 @@ impl IDecoder for Decoder
 
     mtd impl beginField(val: Swag.TypeValue)->bool throw
     {
-        if !serializer.beginElement(val) do
+        if !serializer.beginElement(val):
             return false
         serializer.beginValue()
         return true

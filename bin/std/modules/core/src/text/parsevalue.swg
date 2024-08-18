@@ -39,7 +39,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
         var cpt       = 0
         while @countof(one) and one[0] != `#`
         {
-            if cpt == arrayType.totalCount do
+            if cpt == arrayType.totalCount:
                 throw InvalidFormatError{"too many static array values"}
             one = parseValue(addrVal, arrayType.finalType, one)
             one = Tokenize.eatSpaces(one)
@@ -54,7 +54,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     if Reflection.isEnum(type)
     {
         let enumType = cast(const *TypeInfoEnum) type
-        if enumType.rawType != string and enumType.sizeof > 8 do
+        if enumType.rawType != string and enumType.sizeof > 8:
             throw UnsupportedFormatError{Errors.mkString(Format.toString("unsupported enum type [[%]]", enumType.rawType.name))}
         let enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
@@ -63,7 +63,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = Tokenize.eatSpaces(one)
             let id = parseIdentifier(one)
             let v  = Reflection.getEnumValue(type, id)
-            if !v do
+            if !v:
                 throw InvalidFormatError{Errors.mkString(Format.toString("unknown enum value [[%]]", id))}
 
             if enumType.rawType == string
@@ -100,16 +100,16 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             }
 
             one = Tokenize.eatCount(one, @countof(id))
-            if !enumFlags do
+            if !enumFlags:
                 break
 
             one = Tokenize.eatSpaces(one)
-            if !@countof(one) do
+            if !@countof(one):
                 break
-            if one[0] == `#` do
+            if one[0] == `#`:
                 break
 
-            if one[0] != `|` do
+            if one[0] != `|`:
                 throw InvalidFormatError{"invalid enum flags format"}
             one = Tokenize.eatCount(one, 1)
         }
@@ -134,70 +134,70 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     case s8:
         var val: s8 = undefined
         (val, eat, ovf) = parseS8(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*s8) patch = val
 
     case s16:
         var val: s16 = undefined
         (val, eat, ovf) = parseS16(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*s16) patch = val
 
     case s32:
         var val: s32 = undefined
         (val, eat, ovf) = parseS32(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*s32) patch = val
 
     case s64, s64:
         var val: s64 = undefined
         (val, eat, ovf) = parseS64(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*s64) patch = val
 
     case u8:
         var val: u8 = undefined
         (val, eat, ovf) = parseU8(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*u8) patch = val
 
     case u16:
         var val: u16 = undefined
         (val, eat, ovf) = parseU16(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*u16) patch = val
 
     case u32:
         var val: u32 = undefined
         (val, eat, ovf) = parseU32(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*u32) patch = val
 
     case u64, u64:
         var val: u64 = undefined
         (val, eat, ovf) = parseU64(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*u64) patch = val
 
     case f32:
         var val: f32 = undefined
         (val, eat, ovf) = parseF32(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*f32) patch = val
 
     case f64:
         var val: f64 = undefined
         (val, eat, ovf) = parseF64(one)
-        if ovf do
+        if ovf:
             throw OverflowError{}
         dref cast(*f64) patch = val
 

@@ -68,7 +68,7 @@ impl IWnd for GridLayoutCtrl
 
                 let idx    = i + (j * numColumns)
                 let curWnd = layout[idx]
-                if !curWnd or done.contains(curWnd) do
+                if !curWnd or done.contains(curWnd):
                     continue
 
                 done.add(curWnd)
@@ -108,7 +108,7 @@ impl IWnd for GridLayoutCtrl
             y += spacingVert
         }
 
-        if gridLayoutFlags.has(.AdaptSizeToContent) do
+        if gridLayoutFlags.has(.AdaptSizeToContent):
             resize(maxW, maxH)
         wnd.IWnd.onResizeEvent(evt)
     }
@@ -126,9 +126,9 @@ impl GridLayoutCtrl
         res.numRows    = numRows
 
         res.layout.resize(cast(u64) (numColumns * numRows))
-        loop numColumns do
+        loop numColumns:
             res.colSizes.add(100)
-        loop numRows do
+        loop numRows:
             res.rowSizes.add(30)
 
         return res

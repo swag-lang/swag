@@ -151,15 +151,15 @@ impl IForm for FormStep
         case Ellipse:
             var pos = Math.Vector2{pt.x, pt.y}
             var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
-            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5) do
+            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5):
                 return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2 * borderSize), (paintPos.height * 0.5) - (2 * borderSize)) do
+            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2 * borderSize), (paintPos.height * 0.5) - (2 * borderSize)):
                 return false
 
         case Rectangle, RoundRectangle:
             var rect = paintPos
             rect.inflate(-2 * borderSize)
-            if backColor.a == 0 and rect.contains(pt) do
+            if backColor.a == 0 and rect.contains(pt):
                 return false
         }
 
@@ -175,7 +175,7 @@ impl IForm for FormStep
 
         let face = g_App.theme.res.defaultTypeFaceR
 
-        if fSize != cachefSize or typeIndex != cacheTypeIndex do
+        if fSize != cachefSize or typeIndex != cacheTypeIndex:
             isDirty = true
 
         if isDirty
@@ -206,7 +206,7 @@ impl IForm for FormStep
         }
 
         var bk = backColor
-        if quickMode and alpha != 100 do
+        if quickMode and alpha != 100:
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         #[Swag.Complete]
@@ -215,19 +215,19 @@ impl IForm for FormStep
         case Ellipse:
             let sizeX = pp.width * 0.5
             let sizeY = pp.height * 0.5
-            if quickMode and alpha != 100 do
+            if quickMode and alpha != 100:
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
 
         case Rectangle:
-            if quickMode and alpha != 100 do
+            if quickMode and alpha != 100:
                 painter.fillRect(pp, backBrush)
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
             var round = cast(f32) Math.min(w, h)
             round /= 3
-            if quickMode and alpha != 100 do
+            if quickMode and alpha != 100:
                 painter.fillRoundRect(pp, round, round, backBrush)
             painter.fillRoundRect(pp, round, round, backColor)
         }

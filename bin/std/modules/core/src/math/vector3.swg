@@ -54,7 +54,7 @@ impl Vector3
             y /= other.y
             z /= other.z
         }
-        #else #do
+        #else:
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
@@ -85,45 +85,45 @@ impl Vector3
             y /= value
             z /= value
         }
-        #else #do
+        #else:
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opBinary(other: Self)->Self
     {
-        #if op == "+" #do
+        #if op == "+":
             return Self{x + other.x, y + other.y, z + other.z}
-        #elif op == "-" #do
+        #elif op == "-":
             return Self{x - other.x, y - other.y, z - other.z}
-        #elif op == "*" #do
+        #elif op == "*":
             return Self{x * other.x, y * other.y, z * other.z}
-        #elif op == "/" #do
+        #elif op == "/":
             return Self{x / other.x, y / other.y, z / other.z}
-        #else #do
+        #else:
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload]
     mtd(op: string) opBinary(value: f32)->Self
     {
-        #if op == "+" #do
+        #if op == "+":
             return Self{x + value, y + value, z + value}
-        #elif op == "-" #do
+        #elif op == "-":
             return Self{x - value, y - value, z - value}
-        #elif op == "*" #do
+        #elif op == "*":
             return Self{x * value, y * value, z * value}
-        #elif op == "/" #do
+        #elif op == "/":
             return Self{x / value, y / value, z / value}
-        #else #do
+        #else:
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) opUnary()->Self
     {
-        #if op == "-" #do
+        #if op == "-":
             return Self{-x, -y, -z}
-        #else #do
+        #else:
             #error "unsupported unary operation [[" ++ op ++ "]]"
     }
 
@@ -253,7 +253,7 @@ impl Vector3
     mtd const toNormalizeSafe()->Self
     {
         var norm = sqrt((x * x) + (y * y) + (z * z))
-        if Math.isZeroEpsilon(norm) do
+        if Math.isZeroEpsilon(norm):
             return Zero
         norm = 1 / norm
         return Self{x * norm, y * norm, z * norm}

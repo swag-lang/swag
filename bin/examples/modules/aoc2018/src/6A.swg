@@ -103,8 +103,8 @@ func day6A() assume
     }
 
     var total = 0
-    visit v in count do
-        if !borders[#index] do
+    visit v in count:
+        if !borders[#index]:
             total = Math.max(v, total)
 
     //Console.print("total: ", total)

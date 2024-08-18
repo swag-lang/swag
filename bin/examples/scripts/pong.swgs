@@ -42,7 +42,7 @@ func resetBall()
     let angle = g_Rng.nextF32(-ConstF32.PiBy4, ConstF32.PiBy4)
     g_Ball.speed.x = 300 * cos(angle)
     g_Ball.speed.y = 300 * sin(angle)
-    if g_Rng.nextBool() do
+    if g_Rng.nextBool():
         g_Ball.speed = -g_Ball.speed
 }
 
@@ -51,13 +51,13 @@ func updatePaddles(wnd: *Wnd)
     let dt = wnd.getApp().getDt()
     let kb = wnd.getApp().getKeyboard()
 
-    if kb.isKeyPressed(.A) do
+    if kb.isKeyPressed(.A):
         g_PaddleLeft.pos.y -= 400 * dt
-    elif kb.isKeyPressed(.Q) do
+    elif kb.isKeyPressed(.Q):
         g_PaddleLeft.pos.y += 400 * dt
-    if kb.isKeyPressed(.P) do
+    if kb.isKeyPressed(.P):
         g_PaddleRight.pos.y -= 400 * dt
-    elif kb.isKeyPressed(.M) do
+    elif kb.isKeyPressed(.M):
         g_PaddleRight.pos.y += 400 * dt
 
     g_PaddleLeft.pos.y  = clamp(g_PaddleLeft.pos.y, g_Rect.y + PaddleHeight, g_Rect.bottom() - PaddleHeight)
@@ -163,7 +163,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Pong (left: A Q right: P M)", hook: &onEvent, init: &test)
 }

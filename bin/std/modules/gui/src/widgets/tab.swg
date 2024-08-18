@@ -188,9 +188,9 @@ impl IWnd for Tab
         v.aniImg.apply(self, colorImg)
         v.aniBorder.apply(self, colorBorder)
 
-        if subRect do
+        if subRect:
             theme.drawSubRect(painter, labelPos, subRect, v.aniImg.cur())
-        if subRectBorder do
+        if subRectBorder:
             theme.drawSubRect(painter, labelPos, subRectBorder, v.aniBorder.cur())
 
         var format: RichStringFormat
@@ -250,10 +250,10 @@ impl IWnd for Tab
             clientRect = getBarRectItems()
             loop idx in firstVisibleIdx until cast(u32) views.count
             {
-                if idx == selectedIdx do
+                if idx == selectedIdx:
                     continue
                 let v = views[idx]
-                if v.pos + v.width > clientRect.right() do
+                if v.pos + v.width > clientRect.right():
                     break
                 paintItem(painter, v, cast(u32) idx)
             }
@@ -265,7 +265,7 @@ impl IWnd for Tab
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if views.isEmpty() do
+        if views.isEmpty():
             return
 
         computeTabLayout()
@@ -322,12 +322,12 @@ internal impl Tab
     mtd showPopup(x, y: f32)
     {
         popup = PopupListCtrl.create(self)
-        visit item in views do
+        visit item in views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         popup.sigSelected = closure|self|(list, idx)
         {
-            if idx != Swag.U32.Max do
+            if idx != Swag.U32.Max:
                 self.select(idx)
             self.hidePopup()
         }
@@ -344,7 +344,7 @@ internal impl Tab
     mtd getBarRectItems()->Math.Rectangle
     {
         var rect = getClientRectPadding()
-        if buttonPopup do
+        if buttonPopup:
             rect.setRight(buttonPopup.position.x - 4)
         return rect
     }
@@ -352,16 +352,16 @@ internal impl Tab
     mtd hitTest(surfacePos: Math.Point)->u32
     {
         var pos = surfaceToLocal(surfacePos)
-        if pos.y >= barHeight do
+        if pos.y >= barHeight:
             return Swag.U32.Max
 
         var rect = getBarRectItems()
         loop idx in firstVisibleIdx until cast(u32) views.count
         {
             let v = views[idx]
-            if v.pos + v.width > rect.right() do
+            if v.pos + v.width > rect.right():
                 break
-            if pos.x >= v.pos and pos.x < v.pos + v.width do
+            if pos.x >= v.pos and pos.x < v.pos + v.width:
                 return acast idx
         }
 
@@ -401,7 +401,7 @@ internal impl Tab
                 v.width = mes.width
 
                 // Icon
-                if v.item.icon.isValid() do
+                if v.item.icon.isValid():
                     v.width += v.item.icon.sizeX + getThemeMetrics().iconText_Margin
 
                 // Margin
@@ -461,7 +461,7 @@ internal impl Tab
             while firstVisibleIdx
             {
                 x -= views[firstVisibleIdx - 1].width
-                if x < rect.x do
+                if x < rect.x:
                     break
                 firstVisibleIdx -= 1
             }
@@ -525,9 +525,9 @@ impl Tab
     {
         if view
         {
-            if views.isEmpty() do
+            if views.isEmpty():
                 view.wndFlags &= ~.Hidden
-            else do
+            else:
                 view.wndFlags |= .Hidden
             view.setParent(self)
         }
@@ -551,13 +551,13 @@ impl Tab
     // Select one tab at the given index
     mtd select(idx: u32)
     {
-        if selectedIdx == idx or selectedIdx >= views.count do
+        if selectedIdx == idx or selectedIdx >= views.count:
             return
 
-        if views[selectedIdx].view do
+        if views[selectedIdx].view:
             views[selectedIdx].view.wndFlags |= .Hidden
         selectedIdx = idx
-        if views[selectedIdx].view do
+        if views[selectedIdx].view:
             views[selectedIdx].view.wndFlags &= ~.Hidden
 
         sigSelChanged.call(self)
@@ -569,7 +569,7 @@ impl Tab
     // Returns the current selected item, or 'null'
     mtd getSelectedItem()->*TabItem
     {
-        if selectedIdx >= views.count do
+        if selectedIdx >= views.count:
             return null
         return views[selectedIdx]
     }

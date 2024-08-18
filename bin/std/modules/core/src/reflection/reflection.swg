@@ -28,7 +28,7 @@ using Swag
 
     func isSimpleNative(t: typeinfo)->bool
     {
-        if !isNative(t) do
+        if !isNative(t):
             return false
 
         let tt = cast(const *TypeInfoNative) t
@@ -37,7 +37,7 @@ using Swag
 
     func isRune(t: typeinfo)->bool
     {
-        if !isNative(t) do
+        if !isNative(t):
             return false
 
         let tt = cast(const *TypeInfoNative) t
@@ -46,7 +46,7 @@ using Swag
 
     func isAny(t: typeinfo)->bool
     {
-        if !isNative(t) do
+        if !isNative(t):
             return false
 
         let tt = cast(const *TypeInfoNative) t
@@ -55,7 +55,7 @@ using Swag
 
     func isBool(t: typeinfo)->bool
     {
-        if !isNative(t) do
+        if !isNative(t):
             return false
 
         let tt = cast(const *TypeInfoNative) t
@@ -64,7 +64,7 @@ using Swag
 
     func isString(t: typeinfo)->bool
     {
-        if !isNative(t) do
+        if !isNative(t):
             return false
 
         let tt = cast(const *TypeInfoNative) t
@@ -91,7 +91,7 @@ using Swag
     func maxSizeOf(v: const [..] typeinfo)->u64
     {
         var res = 0'u32
-        visit p in v do
+        visit p in v:
             res = @max(res, p.sizeof)
         return res
     }
@@ -100,7 +100,7 @@ using Swag
     func orFlags(v: const [..] typeinfo)->Swag.TypeInfoFlags
     {
         var res: Swag.TypeInfoFlags = Zero
-        visit p in v do
+        visit p in v:
             res |= p.flags
         return res
     }
@@ -140,7 +140,7 @@ func crcToType(crc: u32)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashCrcToType.find(crc)
-    if !e do
+    if !e:
         return null
     return e.value
 }
@@ -150,7 +150,7 @@ func nameToType(name: string)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashNameToType.find(name)
-    if !e do
+    if !e:
         return null
     return e.value
 }

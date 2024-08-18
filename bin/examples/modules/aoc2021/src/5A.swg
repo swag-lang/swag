@@ -36,7 +36,7 @@ In this diagram, the top left corner is 0,0 and the bottom right corner is 9,9. 
 
 To avoid the most dangerous areas, you need to determine the number of points where at least two lines overlap. In the above example, this is anywhere in the diagram with a 2 or larger - a total of 5 points.
 
-Consider only horizontal and vertical lines. At how many points do at least two lines overlap?
+Consider only horizontal and vertical lines. At how many points: at least two lines overlap?
 */
 
 using Core
@@ -64,20 +64,20 @@ func day5A()
             var y1 = StrConv.toS32(r.getCapture(4))
         }
 
-        if x0 != x1 and y0 != y1 do
+        if x0 != x1 and y0 != y1:
             continue
 
         Core.orderMinMax(&x0, &x1)
         Core.orderMinMax(&y0, &y1)
 
-        if x0 != x1 do
+        if x0 != x1:
             loop x in x0 to x1
             {
                 let c = #ref (m.buffer + (x + y0 * W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }
-        elif y0 != y1 do
+        elif y0 != y1:
             loop y in y0 to y1
             {
                 let c = #ref (m.buffer + (x0 + y * W))

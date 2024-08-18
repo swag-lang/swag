@@ -3,7 +3,7 @@
 struct(T) Point
     where
     {
-        if T != bool do
+        if T != bool:
             @compilererror("toto", #location)
         return true
     }

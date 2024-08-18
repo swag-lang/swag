@@ -2,7 +2,7 @@
 --- Day 6: Wait For It ---
 The ferry quickly brings you across Island Island. After asking around, you discover that there is indeed normally a large pile of sand somewhere near here, but you don't see anything besides lots of water and the small island where the ferry has docked.
 
-As you try to figure out what to do next, you notice a poster on a wall near the ferry dock. "Boat races! Open to the public! Grand prize is an all-expenses-paid trip to Desert Island!" That must be where the sand comes from! Best of all, the boat races are starting in just a few minutes.
+As you try to figure out what to: next, you notice a poster on a wall near the ferry dock. "Boat races! Open to the public! Grand prize is an all-expenses-paid trip to Desert Island!" That must be where the sand comes from! Best of all, the boat races are starting in just a few minutes.
 
 You manage to sign up as a competitor in the boat races just in time. The organizer explains that it's not really a traditional race - instead, you will get a fixed amount of time during which your boat has to travel as far as it can, and you win if your boat goes the farthest.
 
@@ -39,7 +39,7 @@ In the third race, you could hold the button for at least 11 milliseconds and no
 
 To see how much margin of error you have, determine the number of ways you can beat the record in each race; in this example, if you multiply these values together, you get 288 (4 * 8 * 9).
 
-Determine the number of ways you could beat the record in each race. What do you get if you multiply these numbers together?
+Determine the number of ways you could beat the record in each race. What: you get if you multiply these numbers together?
 */
 
 using Core
@@ -57,9 +57,9 @@ func day6A()
     var times: Array's32
     var dists: Array's32
 
-    visit v in val0 do
+    visit v in val0:
         times.add(assume StrConv.toS32(v))
-    visit v in val1 do
+    visit v in val1:
         dists.add(assume StrConv.toS32(v))
 
     var total: u64 = 1
@@ -69,7 +69,7 @@ func day6A()
         loop i in t
         {
             let travel = (t - i) * i
-            if travel > dists[idx] do
+            if travel > dists[idx]:
                 cpt += 1
         }
 

@@ -15,11 +15,11 @@ impl PaintImage
 {
     internal func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
-        if evt.kind != .Paint do
+        if evt.kind != .Paint:
             return false
 
         let pt = cast(*PaintImage) wnd.surface.userData
-        if !pt.paint do
+        if !pt.paint:
             return false
 
         let painter = &pt.painter
@@ -42,7 +42,7 @@ impl PaintImage
 
     public mtd opDrop()
     {
-        if surface do
+        if surface:
             surface.destroy()
     }
 

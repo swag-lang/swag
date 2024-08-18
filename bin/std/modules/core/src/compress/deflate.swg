@@ -161,18 +161,18 @@ impl Deflate
     {
         var compFlags = 0'u32
         compFlags = NumProbes[Math.min(10'u32, level)]
-        if level <= 3 do
+        if level <= 3:
             compFlags |= GreedyParsing
 
-        if level == .NoCompression do
+        if level == .NoCompression:
             compFlags |= ForceAllRawBlocks
-        elif strategy == .Filtered do
+        elif strategy == .Filtered:
             compFlags |= FilterMatches
-        elif strategy == .HuffmanOnly do
+        elif strategy == .HuffmanOnly:
             compFlags &= ~MaxProbesMask
-        elif strategy == .Fixed do
+        elif strategy == .Fixed:
             compFlags |= ForceAllStaticBlocks
-        elif strategy == .Rle do
+        elif strategy == .Rle:
             compFlags |= RleMatches
 
         return compFlags
@@ -255,7 +255,7 @@ impl Deflate
         var c0            = d.dict[pos + matchLen]
         var c1            = d.dict[pos + matchLen - 1]
 
-        if maxMatchLen <= matchLen do
+        if maxMatchLen <= matchLen:
             return
 
         loop
@@ -266,20 +266,20 @@ impl Deflate
             loop
             {
                 numProbesLeft -= 1
-                if numProbesLeft == 0 do
+                if numProbesLeft == 0:
                     return
 
                 #[Swag.Mixin, Swag.CalleeReturn]
                 func probe()
                 {
                     nextProbePos = d.next[probePos]
-                    if !nextProbePos do
+                    if !nextProbePos:
                         return
                     dist = cast(u16) (laPos - nextProbePos)
-                    if dist > maxDist do
+                    if dist > maxDist:
                         return
                     probePos = nextProbePos & LzDictSizeMask
-                    if (d.dict[probePos + matchLen] == c0) and (d.dict[probePos + matchLen - 1] == c1) do
+                    if (d.dict[probePos + matchLen] == c0) and (d.dict[probePos + matchLen - 1] == c1):
                         break
                 }
 
@@ -288,7 +288,7 @@ impl Deflate
                 probe()
             }
 
-            if !dist do
+            if !dist:
                 break
 
             var p         = s
@@ -299,7 +299,7 @@ impl Deflate
                 let pp = dref p
                 let qq = dref q
                 p, q += 1
-                if pp != qq do
+                if pp != qq:
                     break
                 probeLen += 1
             }
@@ -309,7 +309,7 @@ impl Deflate
                 dref matchDistAddr = dist
                 dref matchLenAddr  = probeLen
                 matchLen           = probeLen
-                if matchLen == maxMatchLen do
+                if matchLen == maxMatchLen:
                     return
                 c0 = d.dict[pos + matchLen]
                 c1 = d.dict[pos + matchLen - 1]
@@ -350,7 +350,7 @@ impl Deflate
         }
 
         var totalPasses = 2
-        while (totalPasses > 1) and (numSyms == hist[(totalPasses - 1) * 256]) do
+        while (totalPasses > 1) and (numSyms == hist[(totalPasses - 1) * 256]):
             totalPasses -= 1
 
         var curSym    = sym0
@@ -384,7 +384,7 @@ impl Deflate
 
     func calculateMinimumRedundancy(symFreq: ^SymFreq, n: u32)
     {
-        if n == 0 do
+        if n == 0:
             return
 
         if n == 1
@@ -424,7 +424,7 @@ impl Deflate
         }
 
         symFreq[n - 2].key = 0
-        for var next = n - 3; cast(s32) next >= 0; next -= 1 do
+        for var next = n - 3; cast(s32) next >= 0; next -= 1:
             symFreq[next].key = cast(u16) (symFreq[symFreq[next].key].key + 1)
 
         var avbl = 1
@@ -455,14 +455,14 @@ impl Deflate
 
     func huffmanEnforceMaxCodeSize(numCodes: ^s32, codeListLen, maxCodeSize: u32)
     {
-        if codeListLen <= 1 do
+        if codeListLen <= 1:
             return
 
-        for var i = maxCodeSize + 1; i <= MaxSupportedHuffCodeSize; i += 1 do
+        for var i = maxCodeSize + 1; i <= MaxSupportedHuffCodeSize; i += 1:
             numCodes[maxCodeSize] += numCodes[i]
 
         var total = 0'u32
-        for var i = cast(s32) maxCodeSize; i > 0; i -= 1 do
+        for var i = cast(s32) maxCodeSize; i > 0; i -= 1:
             total += (cast(u32) numCodes[i] << (maxCodeSize - i))
 
         while total != (1'u32 << maxCodeSize)
@@ -546,7 +546,7 @@ impl Deflate
         {
             var rev_code = 0'u32
             let codeSize = d.huffCodeSizes[tableNum, i]
-            if codeSize == 0 do
+            if codeSize == 0:
                 continue
             var cde = nextCode[codeSize]
             nextCode[codeSize] += 1
@@ -683,7 +683,7 @@ impl Deflate
         var numLitCodes = 286'u32
         while numLitCodes > 257
         {
-            if d.huffCodeSizes[0, numLitCodes - 1] do
+            if d.huffCodeSizes[0, numLitCodes - 1]:
                 break
             numLitCodes -= 1
         }
@@ -691,7 +691,7 @@ impl Deflate
         var numDistCodes = 30'u32
         while numDistCodes > 1
         {
-            if d.huffCodeSizes[1, numDistCodes - 1] do
+            if d.huffCodeSizes[1, numDistCodes - 1]:
                 break
             numDistCodes -= 1
         }
@@ -757,7 +757,7 @@ impl Deflate
         var numBitLengths = 18'u32
         while numBitLengths >= 0
         {
-            if d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[numBitLengths]] do
+            if d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[numBitLengths]]:
                 break
             numBitLengths -= 1
         }
@@ -834,9 +834,9 @@ impl Deflate
 
     mtd compressBlock(static_block: bool)->bool
     {
-        if static_block do
+        if static_block:
             startStaticBlock()
-        else do
+        else:
             startDynamicBlock()
         return compressLzCodes()
     }
@@ -849,9 +849,9 @@ impl Deflate
         let useRawBlock        = ((d.compressFlags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
         var outputBufStart: ^u8
-        if d.result.capacity - d.result.count >= OutBufSize do
+        if d.result.capacity - d.result.count >= OutBufSize:
             outputBufStart = d.result.buffer + d.outBufOfs
-        else do
+        else:
             outputBufStart = &d.outputBuf[0]
 
         d.outputBufAddr    = outputBufStart
@@ -868,7 +868,7 @@ impl Deflate
         let savedBitBuf    = d.bitBuffer
         let savedBitsIn    = d.bitsIn
 
-        if !useRawBlock do
+        if !useRawBlock:
             compBlockSucceeded = compressBlock((d.compressFlags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
         if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - savedOutputBuf + 1) >= d.totalLzBytes))) and
@@ -902,7 +902,7 @@ impl Deflate
             discard compressBlock(true)
         }
 
-        if finish and d.bitsIn do
+        if finish and d.bitsIn:
             putBits(0, 8 - d.bitsIn)
 
         Memory.clear(&d.huffCount[0, 0], cast(u64) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
@@ -959,7 +959,7 @@ impl Deflate
                     let c = dref pSrc
                     pSrc += 1
                     d.dict[dstPos] = c
-                    if dstPos < (MaxMatchLen - 1) do
+                    if dstPos < (MaxMatchLen - 1):
                         d.dict[LzDictSize + dstPos] = c
                     hash                            = ((hash << LzHashShift) ^ c) & (LzHashSize - 1)
                     d.next[insPos & LzDictSizeMask] = d.hash[hash]
@@ -977,7 +977,7 @@ impl Deflate
                     let dstPos = (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
                     srcBufLeft -= 1
                     d.dict[dstPos] = c
-                    if dstPos < (MaxMatchLen - 1) do
+                    if dstPos < (MaxMatchLen - 1):
                         d.dict[LzDictSize + dstPos] = c
                     d.lookaheadSize += 1
                     if (d.lookaheadSize + d.dictSize) >= MinMatchLen
@@ -1007,13 +1007,13 @@ impl Deflate
                     curMatchLen = 0
                     while curMatchLen < d.lookaheadSize
                     {
-                        if d.dict[curPos + curMatchLen] != c do
+                        if d.dict[curPos + curMatchLen] != c:
                             break
                         curMatchLen += 1
                     }
-                    if curMatchLen < MinMatchLen do
+                    if curMatchLen < MinMatchLen:
                         curMatchLen = 0
-                    else do
+                    else:
                         curMatchDist = 1
                 }
             }
@@ -1127,9 +1127,9 @@ public impl Deflate
     // Can be called multiple times
     mtd init(level = CompressionLevel.Default, strategy = CompressionStrategy.Default, flags = CompressionFlags.Default)
     {
-        if !state do
+        if !state:
             state = Memory.new'Compressor()
-        else do
+        else:
             @init(state, 1)
         setup(createCompFlagsFromZipParams(level, strategy))
         initFlags = flags
@@ -1139,7 +1139,7 @@ public impl Deflate
     #[Swag.Overload]
     mtd compress(result: *Array'u8, src: const [..] u8) throw
     {
-        if @countof(src) > Swag.U32.Max do
+        if @countof(src) > Swag.U32.Max:
             throw UnsupportedFormatError{"source buffer too big"}
 
         Debug.assert(state != null, "'init' not called")

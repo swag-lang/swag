@@ -35,7 +35,7 @@ impl IWnd for StackLayoutCtrl
         if layoutKind == .HorzCenter or layoutKind == .HorzCenterVertCenter
         {
             var totalW = 0'f32
-            visit c, i in childs do
+            visit c, i in childs:
                 totalW += c.position.width + c.margin.x + c.margin.z
             totalW += cast(f32) ((childs.count - 1) * spacing)
 
@@ -45,7 +45,7 @@ impl IWnd for StackLayoutCtrl
             visit c in childs
             {
                 var pos = c.position
-                if layoutKind == .HorzCenterVertCenter do
+                if layoutKind == .HorzCenterVertCenter:
                     pos.y = y - (pos.height * 0.5)
                 pos.x = Math.round(x + c.margin.x)
                 c.setPosition(pos)
@@ -55,7 +55,7 @@ impl IWnd for StackLayoutCtrl
         elif layoutKind == .VertCenter
         {
             var totalH = 0'f32
-            visit c, i in childs do
+            visit c, i in childs:
                 totalH += c.position.height + c.margin.y + c.margin.w
             totalH += cast(f32) ((childs.count - 1) * spacing)
 
@@ -77,22 +77,22 @@ impl IWnd for StackLayoutCtrl
                 {
                 case Top, TopAutoSize:
                     c.dockStyle = .Top
-                    if i > 0 do
+                    if i > 0:
                         c.margin.y = Math.max(c.margin.y, spacing)
 
                 case Bottom:
                     c.dockStyle = .Bottom
-                    if i > 0 do
+                    if i > 0:
                         c.margin.w = Math.max(c.margin.w, spacing)
 
                 case Left, LeftAutoSize:
                     c.dockStyle = .Left
-                    if i > 0 do
+                    if i > 0:
                         c.margin.x = Math.max(c.margin.x, spacing)
 
                 case Right:
                     c.dockStyle = .Right
-                    if i > 0 do
+                    if i > 0:
                         c.margin.z = Math.max(c.margin.z, spacing)
                 }
             }

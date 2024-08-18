@@ -10,6 +10,6 @@ internal struct A
 #run
 {
     var st: A
-    if st.y == 0 do
+    if st.y == 0:
         @assert(false)
 }

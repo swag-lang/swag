@@ -70,14 +70,14 @@ private func sort()
 {
     cards.sort(func(a, b)
     {
-        if a.value != b.value do
+        if a.value != b.value:
             return a.value <=> b.value
 
         loop i in a.val
         {
             let it0 = map.find(a.val[i])
             let it1 = map.find(b.val[i])
-            if it0.value != it1.value do
+            if it0.value != it1.value:
                 return it0.value <=> it1.value
         }
 
@@ -144,7 +144,7 @@ func day7A()
     sort()
 
     var total: u64
-    visit c, idx in cards do
+    visit c, idx in cards:
         total += (idx + 1) * c.bid
 
     //Console.print("total: ", total)

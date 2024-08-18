@@ -2,7 +2,7 @@
 --- Day 1: Chronal Calibration ---
 "We've detected some temporal anomalies," one of Santa's Elves at the Temporal Anomaly Research and Detection Instrument Station tells you. She sounded pretty worried when she called you down here. "At 500-year intervals into the past, someone has been changing Santa's history!"
 
-"The good news is that the changes won't propagate to our time stream for another 25 days, and we have a device" - she attaches something to your wrist - "that will let you fix the changes with no such propagation delay. It's configured to send you 500 years further into the past every few days; that was the best we could do on such short notice."
+"The good news is that the changes won't propagate to our time stream for another 25 days, and we have a device" - she attaches something to your wrist - "that will let you fix the changes with no such propagation delay. It's configured to send you 500 years further into the past every few days; that was the best we could: on such short notice."
 
 "The bad news is that we are detecting roughly fifty anomalies throughout time; the device will indicate fixed anomalies with stars. The other bad news is that we only have one device and you're the best person for the job! Good lu--" She taps a button on the device and you suddenly feel like you're falling. To save Christmas, you need to get all fifty stars by December 25th.
 
@@ -34,7 +34,7 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l in lines do
+    visit l in lines:
         total += assume StrConv.toS32(l[1..]) * (l[0] == `-` ? -1 : 1)
     //Console.print("total: ", total)
     @assert(total == 420)

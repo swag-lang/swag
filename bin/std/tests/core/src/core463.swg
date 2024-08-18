@@ -16,7 +16,7 @@ func is_munchausen(number: s32)->bool
     {
         let digit = n % 10
         total += cache[digit]
-        if total > number do
+        if total > number:
             return false
         n = n / 10
     }
@@ -28,7 +28,7 @@ func is_munchausen(number: s32)->bool
 func set_cache()
 {
     cache[0] = 0
-    loop i in 1 to 9 do
+    loop i in 1 to 9:
         cache[i] = cast(s32) Math.pow(cast(f32) i, cast(f32) i)
 }
 
@@ -39,7 +39,7 @@ func set_cache()
     set_cache()
     loop i in MAX
     {
-        if is_munchausen(i) do
+        if is_munchausen(i):
             Console.printf("%\n", i)
     }
 }

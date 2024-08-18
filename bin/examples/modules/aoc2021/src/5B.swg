@@ -20,7 +20,7 @@ Considering all lines from the above example would now produce the following dia
 222111....
 You still need to determine the number of points where at least two lines overlap. In the above example, this is still anywhere in the diagram with a 2 or larger - now a total of 12 points.
 
-Consider all of the lines. At how many points do at least two lines overlap?
+Consider all of the lines. At how many points: at least two lines overlap?
 */
 
 using Core

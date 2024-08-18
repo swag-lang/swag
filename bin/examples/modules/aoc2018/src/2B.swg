@@ -27,17 +27,17 @@ func day2B()
     {
         visit b, j in lines
         {
-            if i == j do
+            if i == j:
                 continue
             var diff    = 0
             var result: String
             loop k in b
             {
-                if b[k] != a[k] do
+                if b[k] != a[k]:
                     diff += 1
-                else do
+                else:
                     result += b[k]
-                if diff > 1 do
+                if diff > 1:
                     break
             }
 

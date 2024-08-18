@@ -26,7 +26,7 @@ impl ArrayPtr
     // Release content
     mtd clear()
     {
-        visit item in dref self do
+        visit item in dref self:
             Memory.delete(item, allocator)
         base.count = 0
     }

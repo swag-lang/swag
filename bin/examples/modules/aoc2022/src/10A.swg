@@ -199,7 +199,7 @@ func day10A() assume
     func toCheck()
     {
         cycle += 1
-        if cycle <= 220 and (cycle - 20) % 40 == 0 do
+        if cycle <= 220 and (cycle - 20) % 40 == 0:
             total += cycle * x
     }
 

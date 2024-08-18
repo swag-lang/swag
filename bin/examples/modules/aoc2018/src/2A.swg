@@ -35,7 +35,7 @@ func day2A()
     visit l in lines
     {
         var count: [26] s32
-        visit(Bytes) c in l do
+        visit(Bytes) c in l:
             count[c - `a`] += 1
         Slice.sort(count[..], bigFirst: true)
         switch

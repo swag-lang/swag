@@ -23,7 +23,7 @@ impl QuickStyle
 
     mtd clear()
     {
-        visit i in forms do
+        visit i in forms:
             deleteOne(i)
         forms.clear()
     }
@@ -97,25 +97,25 @@ impl QuickWnd
 {
     mtd setDefault()
     {
-        if qsArrow.forms.isEmpty() do
+        if qsArrow.forms.isEmpty():
             defaultQuickStyleArrow()
-        if qsShape.forms.isEmpty() do
+        if qsShape.forms.isEmpty():
             defaultQuickStyleShape()
-        if qsImage.forms.isEmpty() do
+        if qsImage.forms.isEmpty():
             defaultQuickStyleImage()
-        if qsStep.forms.isEmpty() do
+        if qsStep.forms.isEmpty():
             defaultQuickStyleStep()
-        if qsLine.forms.isEmpty() do
+        if qsLine.forms.isEmpty():
             defaultQuickStyleLine()
-        if qsPolygon.forms.isEmpty() do
+        if qsPolygon.forms.isEmpty():
             defaultQuickStylePolygon()
-        if qsText.forms.isEmpty() do
+        if qsText.forms.isEmpty():
             defaultQuickStyleText()
-        if qsDraw.forms.isEmpty() do
+        if qsDraw.forms.isEmpty():
             defaultQuickStyleDraw()
-        if qsHighlight.forms.isEmpty() do
+        if qsHighlight.forms.isEmpty():
             defaultQuickStyleHighlight()
-        if qsPixSel.forms.isEmpty() do
+        if qsPixSel.forms.isEmpty():
             defaultQuickStylePixSel()
         updateQuickStyles()
     }
@@ -160,9 +160,9 @@ impl QuickWnd
             form.borderSize = borderSize
             form.startSize  = startSize
             form.endSize    = endSize
-            if startSize != 0 do
+            if startSize != 0:
                 form.beginCap = .ArrowAnchor
-            if endSize != 0 do
+            if endSize != 0:
                 form.endCap = .ArrowAnchor
             form.borderColor = color
             let it = cast(IForm) form
@@ -244,7 +244,7 @@ impl QuickWnd
             form.borderColor = color
             form.backColor   = Argb.Gray
             form.kind        = kind
-            if borderSize == 0 do
+            if borderSize == 0:
                 form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
@@ -454,7 +454,7 @@ impl QuickWnd
 
     mtd updateSelection()
     {
-        if !currentStyle do
+        if !currentStyle:
             return
         var done = false
         let mode = main.getEditMode()
@@ -462,7 +462,7 @@ impl QuickWnd
         var firstVisible = 0's32
         visit c in layout.childs
         {
-            if c.isVisible() do
+            if c.isVisible():
                 break
             firstVisible += 1
         }
@@ -492,7 +492,7 @@ impl QuickWnd
                 btn.isChecked = mode == .Draw and it.isSame(&main.mdlFormDraw)
             }
 
-            if btn.isChecked do
+            if btn.isChecked:
                 done = true
         }
 
@@ -500,7 +500,7 @@ impl QuickWnd
         if curMdl.userData
         {
             curMdl.show(!done)
-            if !done do
+            if !done:
                 curMdl.isChecked = true
         }
 
@@ -509,11 +509,11 @@ impl QuickWnd
 
     mtd resetQuickStyles()
     {
-        if !currentStyle do
+        if !currentStyle:
             return
 
         let res = MessageDlg.confirm(surface, "This will reset the styles to the default values.")
-        if res != MessageDlg.BtnYes do
+        if res != MessageDlg.BtnYes:
             return
 
         currentStyle.clear()
@@ -592,7 +592,7 @@ impl QuickWnd
             btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
             Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
-            if @countof(title) do
+            if @countof(title):
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
         }
 
@@ -626,9 +626,9 @@ impl QuickWnd
             return
         }
 
-        visit c in layout.childs do
+        visit c in layout.childs:
             c.destroy()
-        if !currentStyle do
+        if !currentStyle:
             return
 
         visit it in currentStyle.forms
@@ -651,7 +651,7 @@ impl QuickWnd
 
             btn.sigCheckChanged += closure|self, it|(btn)
             {
-                if !btn.isChecked do
+                if !btn.isChecked:
                     return
 
                 var type = @kindof(it)
@@ -794,7 +794,7 @@ impl QuickWnd
         var canAddModel = true
         if main.editMode == .Highlight
         {
-            if baseForm.subKind != .Highlight do
+            if baseForm.subKind != .Highlight:
                 canAddModel = false
         }
         elif main.editMode == .PixSel

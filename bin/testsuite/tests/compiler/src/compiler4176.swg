@@ -5,9 +5,9 @@
 func toto(v: bool)
 {
     var a, b: s32 = undefined
-    if v do
+    if v:
         a = 0
-    else do
+    else:
         b = 0
     @assert(a == 0)
 }

@@ -105,9 +105,9 @@ impl IWnd for ComboBox
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
 
-            if item.icon.isValid() do
+            if item.icon.isValid():
                 item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, aniText.cur())
-            if maxIconSize do
+            if maxIconSize:
                 itemRect.moveLeft(maxIconSize + metrics.comboBox_IconTextMargin)
 
             theme.setTextColors(&format, aniText.cur())
@@ -131,11 +131,11 @@ impl IWnd for ComboBox
             return
 
         case MousePressed:
-            if evt.button != .Left do
+            if evt.button != .Left:
                 break
-            if popup do
+            if popup:
                 hidePopup()
-            else do
+            else:
                 showPopup()
 
         case MouseEnter:
@@ -161,15 +161,15 @@ internal impl ComboBox
 
         visit item in items
         {
-            if item.isSeparator do
+            if item.isSeparator:
                 popup.addSeparator()
-            else do
+            else:
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
         popup.sigSelected = closure|self|(list, idx)
         {
-            if idx != Swag.U32.Max do
+            if idx != Swag.U32.Max:
                 self.selectItem(idx)
             self.hidePopup()
         }
@@ -180,7 +180,7 @@ internal impl ComboBox
 
     mtd hidePopup()
     {
-        if !popup do
+        if !popup:
             return
         popup.destroy()
         popup = null
@@ -194,9 +194,9 @@ impl ComboBox
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().comboBox_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().comboBox_Width
         let res = Wnd.create'ComboBox(parent, null, pos, id)
 
@@ -233,7 +233,7 @@ impl ComboBox
             .userData1 = #self.userData1
         }
 
-        if item.icon.isValid() do
+        if item.icon.isValid():
             maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
         items.add(item)
         return item
@@ -250,7 +250,7 @@ impl ComboBox
     // Returns the selected item
     mtd getSelectedItem()->*ComboBoxItem
     {
-        if selectedIdx >= items.count do
+        if selectedIdx >= items.count:
             return null
         return items[selectedIdx]
     }
@@ -259,11 +259,11 @@ impl ComboBox
     mtd selectItem(idx: u32)
     {
         var newIdx = selectedIdx
-        if idx >= items.count do
+        if idx >= items.count:
             newIdx = Swag.U32.Max
-        else do
+        else:
             newIdx = idx
-        if newIdx == selectedIdx do
+        if newIdx == selectedIdx:
             return
 
         selectedIdx = newIdx
@@ -281,9 +281,9 @@ impl ComboBox
 
         if editBox
         {
-            if selectedIdx < items.count do
+            if selectedIdx < items.count:
                 editBox.setText(items[selectedIdx].name.raw)
-            else do
+            else:
                 editBox.setText("")
         }
 

@@ -59,11 +59,11 @@ func day7B0()
     func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
-        if !it do
+        if !it:
             return 0
 
         var total: u32
-        visit v in it.value do
+        visit v in it.value:
             total += v.count + (v.count * count(id, v.name))
 
         return total
@@ -99,11 +99,11 @@ func day7B1()
     func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
-        if !it do
+        if !it:
             return 0
 
         var total: u32
-        visit v in it.value do
+        visit v in it.value:
             total += v.count + (v.count * count(id, v.name))
 
         return total

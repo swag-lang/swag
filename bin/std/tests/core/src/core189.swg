@@ -61,8 +61,8 @@ var testDigit: [] rune = [
 //#[Swag.PrintBc]
 #test
 {
-    loop c in 256'u32 do
+    loop c in 256'u32:
         @assert(Latin1.isLetter(cast(u8) c) == Unicode.isLetter(cast(rune) c))
-    visit c in testDigit do
+    visit c in testDigit:
         @assert(Unicode.isDigit(c))
 }

@@ -10,9 +10,9 @@ func addAliens()
             let y = 140 + yc * DIST
 
             var type = &g_RedImg
-            if yc == 0 do
+            if yc == 0:
                 type = &g_RedImg
-            elif yc >= 1 and yc <= 2 do
+            elif yc >= 1 and yc <= 2:
                 type = &g_RedImg
             //g_Aliens.add({x, y, type})
         }

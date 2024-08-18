@@ -7,11 +7,11 @@ impl Duration
 {
     mtd(op: string) opAffectLiteral(v: f32)
     {
-        #if op == "s" #do
+        #if op == "s":
             val = v * 1000
-        #elif op == "ms" #do
+        #elif op == "ms":
             val = v
-        #else #do
+        #else:
             #assert false
     }
 }

@@ -6,7 +6,7 @@ impl Image
     public mtd fillGradient2(color0, color1: Color)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8 do
+        if pf.channels() < 3 or pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]
@@ -20,7 +20,7 @@ impl Image
                 let g       = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
                 let r       = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
                 var a       = 255'u8
-                if PF.bpp() == 32 do
+                if PF.bpp() == 32:
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 setPixelRGBA8'PF(pix, r, g, b, a)
                 pix += bpp8
@@ -51,7 +51,7 @@ impl Image
     public mtd fillGradient4(topLeft, topRight, bottomLeft, bottomRight: Color)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8 do
+        if pf.channels() < 3 or pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]

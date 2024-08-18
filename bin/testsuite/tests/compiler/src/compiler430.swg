@@ -12,7 +12,7 @@
 func len(buffer: const [..] u8)
 {
 	var result = 0'u32
-	loop(buffer) do
+	loop(buffer):
 		result += 1;
 	@assert(result == @countof(buffer));
 }

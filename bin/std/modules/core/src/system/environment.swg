@@ -7,7 +7,7 @@ func getArgs()->const [..] string => g_CmdLineArgs
 // Get a given argument, or null
 func getArg(idx: u32)->string
 {
-    if idx >= @countof(g_CmdLineArgs) do
+    if idx >= @countof(g_CmdLineArgs):
         return null
     return g_CmdLineArgs[idx]
 }

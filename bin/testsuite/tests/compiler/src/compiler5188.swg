@@ -22,7 +22,7 @@ impl A
     {
         //@print(ep, " ", eq, " ", tri, " ", p, "\n")
         @assert(tri == 1)
-        if cpt == 2 do return
+        if cpt == 2: return
         cpt += 1
         var t = tri
         let ot = t

@@ -19,7 +19,7 @@ impl FrameTiming
     mtd update()
     {
         let newTick = nowPrecise()
-        if paused do
+        if paused:
             return
 
         frameCount += 1
@@ -49,7 +49,7 @@ impl FrameTiming
     // Unpause frame timing & count
     mtd unpause()
     {
-        if !paused do
+        if !paused:
             return
         paused   = false
         prevTick = nowPrecise()

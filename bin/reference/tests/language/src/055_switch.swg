@@ -85,7 +85,7 @@ If you want to pass from one case to another like in C/C++, use `fallthrough`.
     switch value
     {
     case 6:
-        if value == 6 do
+        if value == 6:
             break
         @assert(false)
     default:
@@ -94,7 +94,7 @@ If you want to pass from one case to another like in C/C++, use `fallthrough`.
 }
 
 /**
-A `case` statement cannot be empty. Use `break` if you want to do nothing.
+A `case` statement cannot be empty. Use `break` if you want to: nothing.
 */
 #test
 {

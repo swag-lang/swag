@@ -3,7 +3,7 @@ var G = 0
 func toto(x: string)
 {
     //@print(x)
-    if x == "ABC" do
+    if x == "ABC":
         G += 1
 }
 

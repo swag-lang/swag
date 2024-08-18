@@ -56,7 +56,7 @@ If you don't assign a value, then the variable will be initialized with its defa
 }
 
 /**
-But if you really do not want the variable to be initialized, you can assign it with `undefined`. To use with care, of course, but this is sometimes necessary to avoid the initialization cost.
+But if you really: not want the variable to be initialized, you can assign it with `undefined`. To use with care, of course, but this is sometimes necessary to avoid the initialization cost.
 */
 #test
 {

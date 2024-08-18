@@ -66,7 +66,7 @@ public impl IWnd for ScrollWnd
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         computeLayout()
-        if !view do
+        if !view:
             return
         var rect = getClientRectPadding()
         rect.width -= paddingZ
@@ -83,9 +83,9 @@ public impl IWnd for ScrollWnd
         switch evt.kind
         {
         case MouseWheel:
-            if evt.modifiers & .Shift or !showBarV do
+            if evt.modifiers & .Shift or !showBarV:
                 setScrollPos(view.scrollPos.x - (evt.move.y * scrollIncrementH), view.scrollPos.y)
-            else do
+            else:
                 setScrollPos(view.scrollPos.x, view.scrollPos.y - (evt.move.y * scrollIncrementV))
 
         case MouseLeave:
@@ -176,7 +176,7 @@ public impl IWnd for ScrollWnd
             if isGrabbing and evt.button == .Middle
             {
                 releaseMouse()
-                if oldMouseCapture do
+                if oldMouseCapture:
                     oldMouseCapture.captureMouse()
                 hitTest(evt.surfacePos)
                 invalidate()
@@ -185,7 +185,7 @@ public impl IWnd for ScrollWnd
             elif isMoving and evt.button == .Left
             {
                 releaseMouse()
-                if oldMouseCapture do
+                if oldMouseCapture:
                     oldMouseCapture.captureMouse()
                 isPressedV, isPressedH, isMoving = false
                 hitTest(evt.surfacePos)
@@ -207,7 +207,7 @@ public impl IWnd for ScrollWnd
                 discard setScrollPosPrivate(scrollSmoothPos.x, scrollSmoothPos.y)
                 invalidate()
             }
-            else do
+            else:
                 smoothScroll = false
         }
 
@@ -234,12 +234,12 @@ public impl IWnd for ScrollWnd
             var clientRect = getClientRect()
             clientRect.x     = clientRect.right() - paddingZ
             clientRect.width = paddingZ
-            if showBarH do
+            if showBarH:
                 clientRect.height -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
 
             var colBk = colors.scrollBar_HotBk
-            if !isHotBarV do
+            if !isHotBarV:
                 colBk.a = 0
             aniBkBarV.apply(self, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarV.cur())
@@ -250,11 +250,11 @@ public impl IWnd for ScrollWnd
                 clientRect.height = sizeBoxV
 
                 var colorBox: Color = undefined
-                if isHotV and isPressedV do
+                if isHotV and isPressedV:
                     colorBox = colors.scrollBar_PressedBox
-                elif isHotV do
+                elif isHotV:
                     colorBox = colors.scrollBar_HotBox
-                else do
+                else:
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
                 aniBoxV.apply(self, colorBox)
@@ -268,12 +268,12 @@ public impl IWnd for ScrollWnd
             var clientRect = getClientRect()
             clientRect.y      = clientRect.bottom() - paddingW
             clientRect.height = paddingW
-            if showBarV do
+            if showBarV:
                 clientRect.width -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
 
             var colBk = colors.scrollBar_HotBk
-            if !isHotBarH do
+            if !isHotBarH:
                 colBk.a = 0
             aniBkBarH.apply(self, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarH.cur())
@@ -284,11 +284,11 @@ public impl IWnd for ScrollWnd
                 clientRect.width = sizeBoxH
 
                 var colorBox: Color = undefined
-                if isHotH and isPressedH do
+                if isHotH and isPressedH:
                     colorBox = colors.scrollBar_PressedBox
-                elif isHotH do
+                elif isHotH:
                     colorBox = colors.scrollBar_HotBox
-                else do
+                else:
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
                 aniBoxH.apply(self, colorBox)
@@ -383,7 +383,7 @@ impl ScrollWnd
 
     mtd computeLayout()
     {
-        if position.width == 0 or position.height == 0 do
+        if position.width == 0 or position.height == 0:
             return
         var clientRect = getClientRectPadding()
         var sx         = Math.max(scrollSize.x, clientRect.width)
@@ -396,22 +396,22 @@ impl ScrollWnd
         showBarV, showBarH = false
         needH, needV = false
 
-        if sy > clientRect.height do
+        if sy > clientRect.height:
             needV = true
-        if needV or scrollWndFlags.has(.ForceVertical) do
+        if needV or scrollWndFlags.has(.ForceVertical):
             showBarV = true
 
-        if sx > clientRect.width do
+        if sx > clientRect.width:
             needH = true
-        if needH or scrollWndFlags.has(.ForceHorizontal) do
+        if needH or scrollWndFlags.has(.ForceHorizontal):
             showBarH = true
 
         let barSize = scrollWndFlags.has(.SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
 
         paddingZ, paddingW = 0
-        if showBarV do
+        if showBarV:
             paddingZ = barSize
-        if showBarH do
+        if showBarH:
             paddingW = barSize
 
         if showBarV
@@ -429,7 +429,7 @@ impl ScrollWnd
             posBoxV = view.scrollPos.y / sy
             posBoxV *= vh1
 
-            if view.scrollPos.y > scrollSize.y - clientRect.height do
+            if view.scrollPos.y > scrollSize.y - clientRect.height:
                 view.scrollPos.y = Math.max(scrollSize.y - clientRect.height, 0)
         }
 
@@ -448,7 +448,7 @@ impl ScrollWnd
             posBoxH = view.scrollPos.x / sx
             posBoxH *= vh1
 
-            if view.scrollPos.x > scrollSize.x - clientRect.width do
+            if view.scrollPos.x > scrollSize.x - clientRect.width:
                 view.scrollPos.x = Math.max(scrollSize.x - clientRect.width, 0)
         }
 
@@ -484,7 +484,7 @@ public impl ScrollWnd
     internal mtd setScrollPosPrivate(x, y: f32)->Math.Point
     {
         var newSP = getScrollPosPrivate(x, y)
-        if newSP == view.scrollPos do
+        if newSP == view.scrollPos:
             return newSP
         var oldPos = view.scrollPos
         view.scrollPos = newSP
@@ -511,7 +511,7 @@ public impl ScrollWnd
     // Set the scroll size (window virtual size)
     mtd setScrollSize(x, y: f32)
     {
-        if scrollSize.x == x and scrollSize.y == y do
+        if scrollSize.x == x and scrollSize.y == y:
             return
 
         var oldScrollSize = scrollSize

@@ -1,6 +1,6 @@
 /*
 --- Day 7: Amplification Circuit ---
-Based on the navigational maps, you're going to need to send more power to your ship's thrusters to reach Santa in time. To do this, you'll need to configure a series of amplifiers already installed on the ship.
+Based on the navigational maps, you're going to need to send more power to your ship's thrusters to reach Santa in time. To: this, you'll need to configure a series of amplifiers already installed on the ship.
 
 There are five amplifiers connected in series; each one receives an input signal and produces an output signal. They are connected such that the first amplifier's output leads to the second amplifier's input, the second amplifier's output leads to the third amplifier's input, and so on. The first amplifier's input value is 0, and the last amplifier's output leads to your ship's thrusters.
 
@@ -53,9 +53,9 @@ private func run(prg: Array's32, input: const [2] s32)->s32
         let inst = op[ip] % 10
 
         var param0, param1 = 0
-        if inst != 3 do
+        if inst != 3:
             param0 = imm0 ? op[ip + 1] : op[op[ip + 1]]
-        if inst != 3 and inst != 4 do
+        if inst != 3 and inst != 4:
             param1 = imm1 ? op[ip + 2] : op[op[ip + 2]]
 
         switch inst
@@ -95,7 +95,7 @@ func day7A()
     let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
-    visit v in Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8):
         op.add(assume StrConv.toS32(v))
 
     var phase = [0, 1, 2, 3, 4]
@@ -110,7 +110,7 @@ func day7A()
         }
 
         total = Math.max(total, input)
-        if !Slice.nextPermutation(phase[..]) do
+        if !Slice.nextPermutation(phase[..]):
             break
     }
 

@@ -4,7 +4,7 @@
     #scope
     {
         a += 1
-        if a == 2 do
+        if a == 2:
             break
         continue
     }

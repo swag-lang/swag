@@ -25,7 +25,7 @@ impl RecentView
 {
     mtd select(idx: u64, force = false)
     {
-        if selected == idx and !force do
+        if selected == idx and !force:
             return
 
         if idx >= items.count
@@ -37,7 +37,7 @@ impl RecentView
         let view = main.editWnd.editView
 
         // Save current zoom
-        if selected < items.count do
+        if selected < items.count:
             items[selected].zoom = view.zoom
 
         // Select new recent item
@@ -46,12 +46,12 @@ impl RecentView
         let capture = catch Capture.load(item.file)
         if capture
         {
-            if main.getCapture() do
+            if main.getCapture():
                 catch main.getCapture().save()
             view.setCapture(capture)
-            if item.zoom == 0 do
+            if item.zoom == 0:
                 view.zoomToFit(false)
-            else do
+            else:
                 view.setZoom(item.zoom)
             invalidate()
         }
@@ -62,7 +62,7 @@ impl IWnd for RecentView
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if evt.kind == .MouseWheel do
+        if evt.kind == .MouseWheel:
             evt.accepted = false
 
         var pos = surfaceToLocal(evt.surfacePos)
@@ -114,12 +114,12 @@ impl IWnd for RecentView
 
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
 
-        if hot do
+        if hot:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
-        if selected do
+        if selected:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
 
-        if !texture.isValid() do
+        if !texture.isValid():
             return
 
         var txtRect = rect
@@ -174,7 +174,7 @@ impl IWnd for RecentWnd
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
         let capture = main.getCapture()
-        if !capture do
+        if !capture:
             return
 
         capture.computePreview()
@@ -220,7 +220,7 @@ impl RecentWnd
         {
             let capture = catch recent.addRecent(r.fullname, front: false)
             defer(err) Memory.delete(capture)
-            if @err() != null do
+            if @err() != null:
                 continue
 
             if idx == 0
@@ -228,11 +228,11 @@ impl RecentWnd
                 recent.recentView.selected = 0
                 main.editWnd.editView.setCapture(capture)
             }
-            else do
+            else:
                 Memory.delete(capture)
 
             cptRecent += 1
-            if cptRecent > MaxRecent do
+            if cptRecent > MaxRecent:
                 break
         }
 
@@ -241,17 +241,17 @@ impl RecentWnd
 
     mtd updateRecent()
     {
-        if recentView.selected >= recentView.items.count do
+        if recentView.selected >= recentView.items.count:
             return
 
-        if timer do
+        if timer:
             getApp().deleteTimer(timer)
         timer = getApp().addTimer(1's, self)
     }
 
     mtd removeRecent()
     {
-        if recentView.selected >= recentView.items.count do
+        if recentView.selected >= recentView.items.count:
             return
 
         let item = recentView.items[recentView.selected]
@@ -266,7 +266,7 @@ impl RecentWnd
         g_Library.removeFile(item.file)
 
         // Be sure there's no pending save
-        if timer do
+        if timer:
             getApp().deleteTimer(timer)
         timer = null
 
@@ -290,7 +290,7 @@ impl RecentWnd
         if front and recentView.items.count > MaxRecent
         {
             let back = recentView.items.back()
-            if back.preview.isValid() do
+            if back.preview.isValid():
                 getApp().getRenderer().removeTexture(&back.preview)
             recentView.items.deletePtr(back)
             recentView.items.count -= 1
@@ -316,7 +316,7 @@ impl RecentWnd
                     idxSel = 0
                 }
 
-                if sel do
+                if sel:
                     recentView.select(idxSel, true)
                 return
             }
@@ -328,13 +328,13 @@ impl RecentWnd
         if front
         {
             recentView.items.insertAt(0, item)
-            if sel do
+            if sel:
                 recentView.select(0, force: true)
         }
         else
         {
             recentView.items.add(item)
-            if sel do
+            if sel:
                 recentView.select(recentView.items.count - 1, force: true)
         }
 

@@ -13,7 +13,7 @@ const File = """
     visit l in lines
     {
         let parts = Tokenize.split(l, `:`'u8)
-        if parts.count != 2 do
+        if parts.count != 2:
             continue
         let name  = parts[0]
         let value = parts[1]
@@ -23,7 +23,7 @@ const File = """
     return sb.toString()
 }
 
-#if cfg_a != 10 #do
+#if cfg_a != 10:
     #error "toto"
-#else #do
+#else:
     #assert cfg_a == 10

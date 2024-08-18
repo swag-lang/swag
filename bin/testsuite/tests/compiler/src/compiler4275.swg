@@ -6,7 +6,7 @@ var G = 0
 func toto(str: string)
     where(call)
     {
-        if !@isconstexpr(str) do
+        if !@isconstexpr(str):
             return true
         @compilererror("toto", @location(str))
         return true

@@ -66,7 +66,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j in NumElems
             {
-                if toAdd.count == 1 do
+                if toAdd.count == 1:
                     break
                 let idx = Random.shared().nextU64(0, toAdd.count)
                 g_Matrix[i, j]       = toAdd[idx]
@@ -91,7 +91,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             loop j in NumElems
             {
                 let cur = &g_Matrix[i, j]
-                if cur.empty do
+                if cur.empty:
                     continue
                 let rect = tilePos(i, j)
                 if rect.contains(pt)
@@ -104,23 +104,23 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case MousePressed:
-        if g_Moving do
+        if g_Moving:
             break
-        if g_HotX == -1 do
+        if g_HotX == -1:
             break
 
         let i = g_HotX
         let j = g_HotY
 
         let cur = &g_Matrix[i, j]
-        if i and g_Matrix[i - 1, j].empty do
+        if i and g_Matrix[i - 1, j].empty:
             cur.moveX = -1
-        if j and g_Matrix[i, j - 1].empty do
+        if j and g_Matrix[i, j - 1].empty:
             cur.moveY = -1
 
-        if i != NumElems - 1 and g_Matrix[i + 1, j].empty do
+        if i != NumElems - 1 and g_Matrix[i + 1, j].empty:
             cur.moveX = 1
-        if j != NumElems - 1 and g_Matrix[i, j + 1].empty do
+        if j != NumElems - 1 and g_Matrix[i, j + 1].empty:
             cur.moveY = 1
 
         if cur.moveX or cur.moveY
@@ -142,7 +142,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             loop j in NumElems
             {
                 let cur = &g_Matrix[i, j]
-                if cur.empty do
+                if cur.empty:
                     continue
 
                 // Dest position
@@ -210,7 +210,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 800, "Taquin", hook: &onEvent, init: &test)
 }

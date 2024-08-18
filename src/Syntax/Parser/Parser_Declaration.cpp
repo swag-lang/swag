@@ -461,9 +461,9 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
     if (mustHaveDo)
     {
-        if (tokenParse.isNot(TokenId::KwdDo))
+        if (tokenParse.isNot(TokenId::SymColon))
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0425)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0406)};
             err.addNote(parent, forToken, formNte(Nte0113, forToken.cstr()));
             return context->report(err);
         }
@@ -473,7 +473,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
-            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0322)};
+            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0293)};
             return context->report(err);
         }
     }

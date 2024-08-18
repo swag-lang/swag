@@ -114,7 +114,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     try Jobs.setNumWorkers()
 
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, W + UX, H, title: "Noise", canSize: false, hook: &onEvent, init: &test)
 }

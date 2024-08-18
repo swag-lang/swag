@@ -3,7 +3,7 @@
 
 #test
 {
-    visit "5" do
-        if #index == 0 do
+    visit "5":
+        if #index == 0:
             @assert(true)
 }

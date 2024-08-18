@@ -6,7 +6,7 @@ using Swag
 #[ConstExpr]
 func makeConcreteEnum(type: typeinfo)->typeinfo
 {
-    if !isEnum(type) do
+    if !isEnum(type):
         return type
 
     let enumType = cast(const *TypeInfoEnum) type
@@ -18,11 +18,11 @@ func makeConcreteEnum(type: typeinfo)->typeinfo
 #[ConstExpr]
 func getEnumValue(type: typeinfo, name: string)->const *TypeValue
 {
-    if !isEnum(type) do
+    if !isEnum(type):
         return null
 
     let typeEnum = cast(const *TypeInfoEnum) type
-    visit it in typeEnum.values where it.name == name do
+    visit it in typeEnum.values where it.name == name:
         return it
     return null
 }
@@ -33,7 +33,7 @@ func getEnumValue(type: typeinfo, name: string)->const *TypeValue
 func getEnumName(type: typeinfo, valueAddr: const *void, fullname = true)->String
 {
     var result: String
-    if !isEnum(type) do
+    if !isEnum(type):
         return result
     let typeEnum = cast(const *TypeInfoEnum) type
     let isFlags  = hasAttribute(type, EnumFlags)
@@ -94,7 +94,7 @@ func getEnumName(type: typeinfo, valueAddr: const *void, fullname = true)->Strin
         // For a flags enum, just append the name if the bit is set
         if isFlags and (val1 & val2)
         {
-            if !result.isEmpty() do
+            if !result.isEmpty():
                 result += " | "
 
             if fullname

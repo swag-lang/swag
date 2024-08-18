@@ -13,7 +13,7 @@ impl Variant
     #[Swag.ConstExpr]
     func checkValidType(t: const [..] typeinfo, tn: typeinfo)->bool
     {
-        if Slice.contains(t, tn) do
+        if Slice.contains(t, tn):
             return true
         @compilererror(Format.toString("type [[%]] is not part of the variant", tn.fullname), @location(tn))
         return false

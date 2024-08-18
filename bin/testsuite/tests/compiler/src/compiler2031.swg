@@ -6,7 +6,7 @@ func(T) inc(x: *T)
 //#[Swag.PrintBc]
 func(T) map(values: [..] T, cb: func(*T))
 {
-    loop values do
+    loop values:
         cb(&values[#index])
 }
 

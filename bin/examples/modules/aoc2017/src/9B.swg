@@ -2,7 +2,7 @@
 --- Part Two ---
 Now, you're ready to remove the garbage.
 
-To prove you've removed it, you need to count all of the characters within the garbage. The leading and trailing < and > don't count, nor do any canceled characters or the ! doing the canceling.
+To prove you've removed it, you need to count all of the characters within the garbage. The leading and trailing < and > don't count, nor: any canceled characters or the ! doing the canceling.
 
 <>, 0 characters.
 <random characters>, 17 characters.

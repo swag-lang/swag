@@ -6,7 +6,7 @@ The ship has a giant cargo crane capable of moving crates between stacks. To ens
 
 The Elves don't want to interrupt the crane operator during this delicate procedure, but they forgot to ask her which crate will end up where, and they want to be ready to unload them as soon as possible so they can embark.
 
-They do, however, have a drawing of the starting stacks of crates and the rearrangement procedure (your puzzle input). For example:
+They:, however, have a drawing of the starting stacks of crates and the rearrangement procedure (your puzzle input). For example:
 
     [D]
 [N] [C]
@@ -69,7 +69,7 @@ func day5A()
         if moveMode
         {
             let res = r.grepAll(l)
-            if res.count == 0 do
+            if res.count == 0:
                 continue
             var count   = assume StrConv.toU64(res[0])
             let colFrom = assume StrConv.toS32(res[1]) - 1
@@ -93,9 +93,9 @@ func day5A()
             var stack = 0
             for var i = 0; i < l.length; i += 4
             {
-                if stack >= stacks.count do
+                if stack >= stacks.count:
                     stacks.add("")
-                if l[i] == `[` do
+                if l[i] == `[`:
                     stacks[stack].append(l[i + 1])
                 stack += 1
             }
@@ -103,7 +103,7 @@ func day5A()
     }
 
     var total: String
-    visit s in stacks do
+    visit s in stacks:
         total += s[0]
 
     //Console.print("total: ", total)

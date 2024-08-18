@@ -71,7 +71,7 @@ func myOtherFunc()
 
     // This is equivalent to:
     var cpt2 = catch count("filename")
-    if @err() != null do
+    if @err() != null:
         return
 }
 
@@ -94,7 +94,7 @@ func myFunc2() throw
 {
     // If 'count()' raises an error, 'myFunc2' will return with the same error
     var cpt = catch count("filename")
-    if @err() != null do
+    if @err() != null:
         throw @err()
 }
 
@@ -148,7 +148,7 @@ func myFunc4() throw
         var cpt3 = count("other filename")
     }
 
-    // Works also for 'catch' if you do not want to deal with the error message.
+    // Works also for 'catch' if you: not want to deal with the error message.
     // calling '@err()' in that case is not really relevant.
     catch
     {
@@ -156,7 +156,7 @@ func myFunc4() throw
         var cpt5 = count("other filename")
     }
 
-    // Works also for 'trycatch' if you do not want to deal with the error message
+    // Works also for 'trycatch' if you: not want to deal with the error message
     // and you want to return as soon as an error is raised.
     trycatch
     {
@@ -167,7 +167,7 @@ func myFunc4() throw
 
 /**
 # Implicit try
-When a function is marked with `throw`, the `try` for a function call is implicit **if not specified**. That means that most of the time it's not necessary to specify it if you do not want to (if you do not want to be explicit about it).
+When a function is marked with `throw`, the `try` for a function call is implicit **if not specified**. That means that most of the time it's not necessary to specify it if you: not want to (if you: not want to be explicit about it).
 */
 #test
 {
@@ -184,7 +184,7 @@ When a function is marked with `throw`, the `try` for a function call is implici
     func mySubFunc1() throw
     {
         // There's no need to add a 'try' before the call because 'mySubFunc1' is marked with 'throw'.
-        // This is less verbose when you do not want to do something special in case
+        // This is less verbose when you: not want to: something special in case
         // of errors (with 'assume', 'catch' or 'trycatch')
         mySubFunc2() // implicit
         try mySubFunc3() // explicit
@@ -232,7 +232,7 @@ func testDefer(err: bool) throw
     defer(err) g_Defer += 1 // This will be called in case an error is raised, before exiting
     defer(noerr) g_Defer += 2 // This will only be called in case an error is not raised
     defer g_Defer += 3 // This will be called in both cases
-    if err do
+    if err:
         raiseError()
 }
 

@@ -1,5 +1,5 @@
 //#global testerror "Err0658"
 
-#if false #do
+#if false:
 func toto(x: s32) {}
 func toto(x: s8) {}

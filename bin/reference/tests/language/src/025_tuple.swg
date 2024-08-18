@@ -45,7 +45,7 @@ When creating a tuple literal with variables, the tuple fields will take the nam
 }
 
 /**
-Even if two tuples do not have the same field names, they can be assigned to each other if the field types are the same.
+Even if two tuples: not have the same field names, they can be assigned to each other if the field types are the same.
 */
 #test
 {

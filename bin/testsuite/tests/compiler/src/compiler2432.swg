@@ -3,7 +3,7 @@
 func append(buf: *void, fmt: string, values: ...)
     where(call)
     {
-        if !@isconstexpr(fmt) do return true
+        if !@isconstexpr(fmt): return true
         var cpt = @countof(values)
         return true
     }

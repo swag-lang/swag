@@ -90,7 +90,7 @@ internal impl RichEditCtrl
     mtd setDefaultStyles()
     {
         let colors = getThemeColors()
-        loop i in @countof(styles) do
+        loop i in @countof(styles):
             styles[i].colFg = colors.richEdit_Text
         setForm(.RichEditCtrl)
     }
@@ -98,7 +98,7 @@ internal impl RichEditCtrl
     mtd computeScrollY()
     {
         var size = getXExtent()
-        if !recomputeScroll do
+        if !recomputeScroll:
             return
 
         var y           = 0'f32
@@ -129,9 +129,9 @@ internal impl RichEditCtrl
 
     mtd setModified(mdf: bool)
     {
-        if mdf do
+        if mdf:
             sigChanged.call(self)
-        if modified == mdf do
+        if modified == mdf:
             return
         modified = mdf
         sigModified.call(self)
@@ -148,9 +148,9 @@ internal impl RichEditCtrl
     {
         var p: *RichEditLine
 
-        if freeLines.count do
+        if freeLines.count:
             p = freeLines.popBack()
-        else do
+        else:
             p = Memory.new'RichEditLine()
 
         p.resetInternal()
@@ -178,18 +178,18 @@ internal impl RichEditCtrl
 
     mtd getFirstVisibleLine()->u64
     {
-        loop i in lines.count where lines[i].isVisible() do
+        loop i in lines.count where lines[i].isVisible():
             return i
         return 0
     }
 
     mtd getLastVisibleLine()->u64
     {
-        if !lines.count do
+        if !lines.count:
             return 0
         for var i = lines.count - 1; i >= 0; i -= 0
         {
-            if lines[i].isVisible() do
+            if lines[i].isVisible():
                 return i
         }
 
@@ -198,14 +198,14 @@ internal impl RichEditCtrl
 
     mtd getPreviousVisibleLine(lineIndex: u64)->u64
     {
-        if !lineIndex do
+        if !lineIndex:
             return 0
         var i = lineIndex - 1
         loop
         {
-            if lines[i].isVisible() do
+            if lines[i].isVisible():
                 return i
-            if !i do
+            if !i:
                 break
             i -= 1
         }
@@ -216,15 +216,15 @@ internal impl RichEditCtrl
     mtd getNextVisibleLine(lineIndex: u64)->u64
     {
         let count = lines.count
-        if lineIndex == count - 1 do
+        if lineIndex == count - 1:
             return lineIndex
 
         var i = lineIndex + 1
         loop
         {
-            if lines[i].isVisible() do
+            if lines[i].isVisible():
                 return i
-            if i == count - 1 do
+            if i == count - 1:
                 break
             i += 1
         }
@@ -239,9 +239,9 @@ impl RichEditCtrl
     func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*RichEditCtrl
     {
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().editBox_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().editBox_Width
 
         let ed = Wnd.create'RichEditCtrl(parent, "", pos, id)
@@ -254,7 +254,7 @@ impl RichEditCtrl
             .scrollWnd.setAllPaddings(.getThemeMetrics().richEdit_Padding)
             .scrollWnd.sigScrollPosChanged += closure|ed|(scrollWnd, op, np)
             {
-                if op.y != np.y do
+                if op.y != np.y:
                     ed.dirtyFirstLineView = true
             }
 
@@ -294,7 +294,7 @@ impl RichEditCtrl
             style.setFont(parent.getTheme().res.fontDefaultFs)
 
             var mdlBk = bkColorModel
-            if bkColorModel.length == 0 do
+            if bkColorModel.length == 0:
                 mdlBk = String.from("$richEdit_Bk")
 
             frameWnd.style.clearStyleSheetColors()
@@ -313,7 +313,7 @@ impl RichEditCtrl
             style.clearFont()
 
             var mdlBk = bkColorModel
-            if bkColorModel.length == 0 do
+            if bkColorModel.length == 0:
                 mdlBk = String.from("$edit_Bk")
 
             frameWnd.style.clearStyleSheetColors()
@@ -344,28 +344,28 @@ impl RichEditCtrl
     mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)
     {
         var isChar = false
-        if mdf == .Zero and ch >= `0` and ch <= `9` do
+        if mdf == .Zero and ch >= `0` and ch <= `9`:
             isChar = true
 
-        // If there is a corresponding command, do nothing
+        // If there is a corresponding command,: nothing
         if !isChar
         {
             let cmd = getMappingCommand(key, mdf)
-            if cmd != .None do
+            if cmd != .None:
                 return
         }
 
-        if isReadOnly() do
+        if isReadOnly():
             return
 
         var c = ch
-        if c == `\r` do
+        if c == `\r`:
             c = `\n`
 
-        if c == `\n` and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus) do
+        if c == `\n` and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus):
             return
 
-        if lexer and lexer.insertRune(self, c) do
+        if lexer and lexer.insertRune(self, c):
             return
 
         insertRune(c)
@@ -376,7 +376,7 @@ impl RichEditCtrl
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
         let cmd = getMappingCommand(key, mdf)
-        if cmd == .None do
+        if cmd == .None:
             return
         executeCommand(cmd)
         forceCaretVisible = true
@@ -393,7 +393,7 @@ impl RichEditCtrl
     // Lex the full text
     mtd lexAll()
     {
-        if !lexer do
+        if !lexer:
             return
 
         var prev, cur, next: *RichEditLine

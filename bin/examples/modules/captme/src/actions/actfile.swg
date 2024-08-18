@@ -110,17 +110,17 @@ impl IActionUI for ActionFile
         case CmdIdUpdateLinkedImage:
             var txt = Format.toString("This will overwrite the original image.\n")
             txt += Format.toString("File is '%'", capture.linkedImage)
-            if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes do
+            if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes:
                 break
             Cursor.wait()
             var img = capture.toImage()
             catch img.save(capture.linkedImage)
-            if @err() != null do
+            if @err() != null:
                 MessageDlg.error(main.surface, "Failed to update file")
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
-            if res == MessageDlg.BtnYes do
+            if res == MessageDlg.BtnYes:
                 main.recentWnd.removeRecent()
 
         case CmdIdDupCapture:
@@ -160,13 +160,13 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk do
+        if dlg.doModal() != Dialog.BtnOk:
             return
 
         let img = catch Image.load(dlg.getSelectedName())
-        if @err() != null do
+        if @err() != null:
             MessageDlg.error(surface, "Failed to load image")
-        else do
+        else:
             newCapture(img, dlg.getSelectedName())
     }
 
@@ -190,7 +190,7 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk do
+        if dlg.doModal() != Dialog.BtnOk:
             return
 
         Cursor.wait()
@@ -220,7 +220,7 @@ impl MainWnd
         let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
-        if dlg.doModal() != Dialog.BtnOk do
+        if dlg.doModal() != Dialog.BtnOk:
             return
 
         let (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)

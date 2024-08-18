@@ -1,9 +1,9 @@
 //#[Swag.PrintBc]
 func(T) toto()->T
 {
-	#if @typeof(T) == @typeof(string) #do
+	#if @typeof(T) == @typeof(string):
 		return "toto"
-	#if @typeof(T) == @typeof(s64) #do
+	#if @typeof(T) == @typeof(s64):
 		return 666
 }
 

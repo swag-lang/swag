@@ -25,29 +25,29 @@ impl FontFamily
         switch style
         {
         case Regular:
-            if regular do
+            if regular:
                 return regular
 
         case Bold:
-            if bold do
+            if bold:
                 return bold
-            if regular do
+            if regular:
                 return regular
 
         case Italic:
-            if italic do
+            if italic:
                 return italic
-            if regular do
+            if regular:
                 return regular
 
         case BoldItalic:
-            if boldItalic do
+            if boldItalic:
                 return boldItalic
-            if italic do
+            if italic:
                 return italic
-            if bold do
+            if bold:
                 return bold
-            if regular do
+            if regular:
                 return regular
         }
 

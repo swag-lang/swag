@@ -125,10 +125,10 @@ impl IWnd for MainWnd
 
         sf.show()
         sf.bringToTop()
-        while !menu.endModal do
+        while !menu.endModal:
             surface.app.runFrame()
         sf.hide()
-        if menu.endModalResult do
+        if menu.endModalResult:
             postCommandEvent(menu.endModalResult)
         sf.destroy()
     }
@@ -213,11 +213,11 @@ impl MainWnd
         }
 
         var kindOf: typeinfo
-        if editMode == .Favorites do
+        if editMode == .Favorites:
             kindOf = @kindof(mdlFavorite)
-        elif editMode == .Highlight do
+        elif editMode == .Highlight:
             kindOf = @kindof(mdlHighlight)
-        elif editMode == .PixSel do
+        elif editMode == .PixSel:
             kindOf = @kindof(mdlPixSel)
 
         if kindOf
@@ -266,7 +266,7 @@ impl MainWnd
 
     mtd getCapture()->*Capture
     {
-        if !editWnd do
+        if !editWnd:
             return null
         return editWnd.editView.capture
     }
@@ -281,7 +281,7 @@ impl MainWnd
     mtd updateSizeDisplay()
     {
         let capture = getCapture()
-        if !capture or !sizeBtn do
+        if !capture or !sizeBtn:
             return
         sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
         sizeBtn.invalidate()
@@ -496,7 +496,7 @@ impl MainWnd
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-                if canCheck do
+                if canCheck:
                     .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
                 .iconSizeX, .iconSizeY = 48
@@ -533,13 +533,13 @@ impl MainWnd
 
         visit c in topBar.childs
         {
-            if c.type == IconButton do
+            if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
 
         visit c in editToolBar.childs
         {
-            if c.type == IconButton do
+            if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
 

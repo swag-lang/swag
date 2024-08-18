@@ -22,7 +22,7 @@ For example, suppose your expense report contained the following:
 1456
 In this list, the two entries that sum to 2020 are 1721 and 299. Multiplying them together produces 1721 * 299 = 514579, so the correct answer is 514579.
 
-Of course, your expense report is much larger. Find the two entries that sum to 2020; what do you get if you multiply them together?
+Of course, your expense report is much larger. Find the two entries that sum to 2020; what: you get if you multiply them together?
 */
 
 using Core
@@ -33,7 +33,7 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    visit v in lines do
+    visit v in lines:
         arr.add(assume StrConv.toS32(v))
 
     arr.sort()

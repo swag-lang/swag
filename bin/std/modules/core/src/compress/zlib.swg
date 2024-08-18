@@ -34,17 +34,17 @@ impl ZLib
     mtd decompress(buffer: const [..] u8)->Array'u8 throw
     {
         var bs = ByteStream.openRead(buffer)
-        if bs.length() < 6 do
+        if bs.length() < 6:
             throw InvalidFormatError{"invalid format"}
 
         // Compression mtd (8 is "deflate")
         let cmf = bs.readU8()
-        if cmf & 0xF != 8 do
+        if cmf & 0xF != 8:
             throw InvalidFormatError{"invalid compression mtd"}
 
         // Window size
         let cinfo = (cmf >> 4) & 0xF
-        if cinfo > 7 do
+        if cinfo > 7:
             throw UnsupportedFormatError{"unsupported window size"}
         let winSize = 1'u32 << (cinfo + 8)
 
@@ -53,7 +53,7 @@ impl ZLib
 
         // Dict
         let fdict = (flg >> 5) & 1
-        if fdict do
+        if fdict:
             throw UnsupportedFormatError{"unsupported dictionnary"}
 
         // Compression level
@@ -68,7 +68,7 @@ impl ZLib
                       decoder.stream.readBits(8) << 16 |
                       decoder.stream.readBits(8) << 8 |
                       decoder.stream.readBits(8)
-        if adler32 != decoder.adler.adler do
+        if adler32 != decoder.adler.adler:
             throw InvalidFormatError{"invalid checksum"}
 
         return result

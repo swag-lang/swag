@@ -1,7 +1,7 @@
 public func append2430(buf: *void, fmt: string, values: ...)
     where(call)
     {
-        if !@isconstexpr(fmt) do return true
+        if !@isconstexpr(fmt): return true
         return true
     }
 {

@@ -31,7 +31,7 @@ impl LinePathList
     // Remove all internal line paths
     mtd clear()
     {
-        visit p in paths do
+        visit p in paths:
             Memory.delete(p)
         paths.clear()
     }
@@ -63,7 +63,7 @@ impl LinePathList
     #[Swag.Overload]
     mtd offset(value: f32)
     {
-        if Math.isZeroEpsilon(value) do
+        if Math.isZeroEpsilon(value):
             return
 
         visit p in paths
@@ -78,7 +78,7 @@ impl LinePathList
     #[Swag.Overload]
     mtd offset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
     {
-        if Math.isZeroEpsilon(value) do
+        if Math.isZeroEpsilon(value):
             return
 
         var newList: LinePathList

@@ -64,19 +64,19 @@ internal impl FileDlg
 {
     mtd folderUp()
     {
-        if comboPathStr.count > 1 do
+        if comboPathStr.count > 1:
             setCurFolder(comboPathStr[1].toString())
     }
 
     mtd setCurFolder(folder: string)
     {
-        if !@countof(folder) or !Directory.exists(folder) do
+        if !@countof(folder) or !Directory.exists(folder):
             return
 
         curFolder = folder
         Path.normalize(&curFolder)
 
-        if curFolder.back() == `/` do
+        if curFolder.back() == `/`:
             curFolder.removeBack()
 
         fillList()
@@ -140,7 +140,7 @@ internal impl FileDlg
         treeCtrl.sigSelChanged += closure|self|(list)
         {
             var line = list.getSelectedLine()
-            if !line do
+            if !line:
                 return
             var idx = cast(u64) line.userData0
             self.setCurFolder(self.treePathStr[idx].toString())
@@ -184,7 +184,7 @@ internal impl FileDlg
                 }
             }
 
-            if !show do
+            if !show:
                 continue
 
             // Content
@@ -210,7 +210,7 @@ impl FileDlg
             .setSurfaceFlags(add: .Sizeable)
             .minSize = {400, 400}
 
-            if opt.title do
+            if opt.title:
                 .setTitle(opt.title)
             else
             {
@@ -299,7 +299,7 @@ impl FileDlg
 
                 case Enter:
                     let l = list.getFocusLine()
-                    if !l do
+                    if !l:
                         break
                     let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
@@ -317,7 +317,7 @@ impl FileDlg
             .sigLeftDoubleClick += closure|dlg|(list, pt)
             {
                 var l = list.getSelectedLine()
-                if !l do
+                if !l:
                     return
                 var fi = cast(const *FileInfo) l.userData0
                 if fi.isDirectory()
@@ -340,21 +340,21 @@ impl FileDlg
                     let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
-                        if dlg.dlgOptions.mode != .SelectFolder do
+                        if dlg.dlgOptions.mode != .SelectFolder:
                             continue
                     }
                     else
                     {
-                        if dlg.dlgOptions.mode == .SelectFolder do
+                        if dlg.dlgOptions.mode == .SelectFolder:
                             continue
                     }
 
-                    if !txt.isEmpty() do
+                    if !txt.isEmpty():
                         txt += ";"
                     txt += Path.getFileName(fi.fullname)
                 }
 
-                if !txt.isEmpty() do
+                if !txt.isEmpty():
                     dlg.editFile.setText(txt)
             }
 
@@ -362,9 +362,9 @@ impl FileDlg
             {
                 var fi1 = cast(*FileInfo) l1.userData0
                 var fi2 = cast(*FileInfo) l2.userData0
-                if fi1.isDirectory() and !fi2.isDirectory() do
+                if fi1.isDirectory() and !fi2.isDirectory():
                     return -1
-                if !fi1.isDirectory() and fi2.isDirectory() do
+                if !fi1.isDirectory() and fi2.isDirectory():
                     return 1
                 switch col
                 {
@@ -427,10 +427,10 @@ impl FileDlg
         with dlg.comboType = ComboBox.create(viewBottom, {105, 45, viewBottom.position.width - (105 + 15)})
         {
             .anchorStyle = .Width
-            if opt.mode == .SelectFolder do
+            if opt.mode == .SelectFolder:
                 .addItem("Folders")
-            else do
-                visit f, idx in opt.filters do
+            else:
+                visit f, idx in opt.filters:
                     .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
@@ -459,7 +459,7 @@ impl FileDlg
                 .editFile.selectAll()
                 .editFile.setFocus()
             }
-            else do
+            else:
                 .listCtrl.setFocus()
         }
 
@@ -468,14 +468,14 @@ impl FileDlg
         {
             with opt.state
             {
-                if !.position.isEmpty() do
+                if !.position.isEmpty():
                     dlg.surface.setPosition(.position)
-                else do
+                else:
                     dlg.surface.center(from)
 
-                if !.curFolder.isEmpty() do
+                if !.curFolder.isEmpty():
                     dlg.setCurFolder(.curFolder)
-                else do
+                else:
                     dlg.treeCtrl.selectLine(0)
             }
         }
@@ -492,7 +492,7 @@ impl FileDlg
     mtd getSelectedName()->String
     {
         var sel = getSelectedNames()
-        if sel.count == 0 do
+        if sel.count == 0:
             return String.from("")
         return sel.front()
     }
@@ -511,11 +511,11 @@ impl FileDlg
             // Be sure this is a valid file/folder name
             var t1 = String.from(t)
             t1.trim()
-            if t1.isEmpty() do
+            if t1.isEmpty():
                 continue
-            if dlgOptions.mode == .SelectFolder and !Path.isValidPathName(t1.toString()) do
+            if dlgOptions.mode == .SelectFolder and !Path.isValidPathName(t1.toString()):
                 continue
-            if dlgOptions.mode != .SelectFolder and !Path.isValidFileName(t1.toString()) do
+            if dlgOptions.mode != .SelectFolder and !Path.isValidFileName(t1.toString()):
                 continue
 
             // Get the full name
@@ -549,7 +549,7 @@ impl FileDlg
 
         dlg.sigPressedButton = closure|self, dlg|(fdlg, id)
         {
-            if id != Dialog.BtnOk do
+            if id != Dialog.BtnOk:
                 return true
 
             var folderName = dlg.edit.text
@@ -581,7 +581,7 @@ impl FileDlg
             return true
         }
 
-        if dlg.doModal() != Dialog.BtnOk do
+        if dlg.doModal() != Dialog.BtnOk:
             return
 
         var path = Path.combine(curFolder, dlg.edit.text.toString())

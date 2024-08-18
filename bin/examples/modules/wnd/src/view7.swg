@@ -13,7 +13,7 @@ enum EnumFlags
 {
     #[Description("This is the first value of enum flags")]
     Val1
-    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Description("This is something that needs to be done except if it not has: be done, and this is it.")]
     Val2
     #[Description("This is the value 3 of enum flags")]
     Val3
@@ -33,7 +33,7 @@ struct AA
     tt:      string = "static string"
     v4a:     [4] Math.Vector2
 
-    #[Category("Category"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has do be done, and this is it.")]
+    #[Category("Category"), Name("This is a name: <i>italic<i>"), Description("This is <url>something<url> that needs to be done except if it not has: be done, and this is it.")]
     xu8: u8 = 30
 
     #[Unit("ms")]
@@ -57,15 +57,15 @@ struct AA
     pt:       Math.Point{11.5, 22}
     rect:     Math.Rectangle{1, 2, 3, 4}
 
-    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Description("This is something that needs to be done except if it not has: be done, and this is it.")]
     xb: bool = true
     #[Description("This is something that needs to be done.")]
     xb1: bool = true
 
-    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Description("This is something that needs to be done except if it not has: be done, and this is it.")]
     str: String
 
-    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    #[Description("This is something that needs to be done except if it not has: be done, and this is it.")]
     value: Enum = Third
 
     #[Name("Another name")]

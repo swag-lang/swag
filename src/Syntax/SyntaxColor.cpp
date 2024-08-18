@@ -614,7 +614,6 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     case TokenId::KwdOrElse:
                     case TokenId::KwdTo:
                     case TokenId::KwdUntil:
-                    case TokenId::KwdDo:
                     case TokenId::KwdWhere:
                         result += syntaxColorToVTS(SyntaxColor::SyntaxLogic, mode);
                         result += identifier;

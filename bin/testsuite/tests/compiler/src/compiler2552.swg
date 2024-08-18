@@ -3,8 +3,8 @@ struct ErrToto{}
 
 func(T) toto()
 {
-#if false #do
-    #if false #do
+#if false:
+    #if false:
         throw ErrToto{}
 }
 

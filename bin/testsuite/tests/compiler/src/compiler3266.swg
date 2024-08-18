@@ -2,7 +2,7 @@
 func(N: s32) toto(v: f32)->[N]f32
 {
     var result: retval
-    loop i in N do
+    loop i in N:
         result[i] = v*v
     return result
 }

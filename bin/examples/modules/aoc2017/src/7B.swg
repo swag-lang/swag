@@ -4,7 +4,7 @@ The programs explain the situation: they can't get down. Rather, they could get 
 
 For any program holding a disc, each program standing on that disc forms a sub-tower. Each of those sub-towers are supposed to be the same weight, or the disc itself isn't balanced. The weight of a tower is the sum of the weights of the programs in that tower.
 
-In the example above, this means that for ugml's disc to be balanced, gyxo, ebii, and jptl must all have the same weight, and they do: 61.
+In the example above, this means that for ugml's disc to be balanced, gyxo, ebii, and jptl must all have the same weight, and they:: 61.
 
 However, for tknk to be balanced, each of the programs standing on its disc and all programs above it must each match. This means that the following sums must all be the same:
 
@@ -43,16 +43,16 @@ func day7B() assume
     visit l in lines
     {
         let n = r1.grepAll(l)
-        if n.count == 1 do
+        if n.count == 1:
             continue
         let me = set.find(n[0])
-        visit v in n[1..] do
+        visit v in n[1..]:
             me.value.childs.add(v)
     }
 
     func sum(w: Pile)->u64
     {
-        if result do
+        if result:
             return 0
 
         var total: u64

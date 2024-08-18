@@ -7,7 +7,7 @@ using Core
     arr.add("val1", 11)
 
     var total = 0's64
-    visit k, v in arr do
+    visit k, v in arr:
         total += v
 
     @assert(total == 21)

@@ -8,7 +8,7 @@ struct ImageDecoder
 
 public struct DecodeOptions
 {
-    // Decode image informations (width, height...) but do no read pixels
+    // Decode image informations (width, height...) but: no read pixels
     // Used to fast retrieve informations about the image
     decodePixels = true
 }
@@ -48,7 +48,7 @@ impl Image
         let ptrDecoder = Memory.new(decoder.type)
         defer
         {
-            if decoder.type.opDrop do
+            if decoder.type.opDrop:
                 decoder.type.opDrop(ptrDecoder)
             Memory.free(ptrDecoder, cast(u64) decoder.type.sizeof)
         }
@@ -78,7 +78,7 @@ public impl Image
     {
         visit &decoder in decoders
         {
-            if decoder.itf.canDecode(fileName) do
+            if decoder.itf.canDecode(fileName):
                 return true
         }
 
@@ -90,7 +90,7 @@ public impl Image
     func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         let found = getDecoder(fileName)
-        if !found do
+        if !found:
             throw UnsupportedFormatError{"no matching image decoder"}
         return decode(found, bytes, options)
     }
@@ -99,7 +99,7 @@ public impl Image
     func load(fileName: string, options: DecodeOptions = {})->Image throw
     {
         let found = getDecoder(fileName)
-        if !found do
+        if !found:
             throw UnsupportedFormatError{"no matching image decoder"}
         var bytes = File.readAllBytes(fileName)
         return decode(found, bytes.toSlice(), options)

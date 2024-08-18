@@ -12,9 +12,9 @@ impl A
 {
     func(op: string) opBinary(using self, o: B)->A
     {
-        #if op == "+" #do
+        #if op == "+":
             return {v + o.v}
-        #if op == "*" #do
+        #if op == "*":
             return {v * o.v}
     }
 }

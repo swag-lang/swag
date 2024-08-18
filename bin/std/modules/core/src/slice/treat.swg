@@ -5,7 +5,7 @@
 #[Swag.Inline]
 func(T) modify(values: [..] T, cb: closure(*T))
 {
-    loop i in values do
+    loop i in values:
         cb(&values[i])
 }
 
@@ -14,7 +14,7 @@ func(T) modify(values: [..] T, cb: closure(*T))
 func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 {
     var result: retval
-    visit v in values do
+    visit v in values:
         result.add(cb(v))
     return result
 }
@@ -25,7 +25,7 @@ func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
 {
     var result = values[0]
-    loop i in 1 to @countof(values) - 1 do
+    loop i in 1 to @countof(values) - 1:
         result = cb(result, values[i])
     return result
 }
@@ -35,7 +35,7 @@ func(T) min(values: const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
-    if @countof(values) == 1 do
+    if @countof(values) == 1:
         return result
 
     var index = 0'u64
@@ -56,7 +56,7 @@ func(T) max(values: const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
-    if @countof(values) == 1 do
+    if @countof(values) == 1:
         return result
 
     var index = 0'u64
@@ -77,7 +77,7 @@ func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
     visit v in values
     {
-        if !cb(v) do
+        if !cb(v):
             return false
     }
 
@@ -89,7 +89,7 @@ func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
     visit v in values
     {
-        if cb(v) do
+        if cb(v):
             return true
     }
 
@@ -101,7 +101,7 @@ func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
     visit v in values
     {
-        if cb(v) do
+        if cb(v):
             return false
     }
 
@@ -111,7 +111,7 @@ func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
 // Reverse the content of a slice
 func(T) reverse(values: [..] T)
 {
-    if @countof(values) <= 1 do
+    if @countof(values) <= 1:
         return
     var i = 0'u64
     var j = @countof(values) - 1
@@ -132,17 +132,17 @@ func(T) nextPermutation(arr: [..] T)->bool
     let size = cast(s32) @countof(arr)
 
     var i = size - 2
-    while i >= 0 and arr[i] >= arr[i + 1] do
+    while i >= 0 and arr[i] >= arr[i + 1]:
         i -= 1
-    if i < 0 do
+    if i < 0:
         return false
 
     var j = size - 1
-    while arr[j] <= arr[i] do
+    while arr[j] <= arr[i]:
         j -= 1
 
     swap(&arr[i], &arr[j])
-    if i + 1 != size - 1 do
+    if i + 1 != size - 1:
         reverse(arr[i + 1..size - 1])
 
     return true

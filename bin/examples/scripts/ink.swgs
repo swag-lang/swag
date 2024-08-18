@@ -46,7 +46,7 @@ impl Drop
     mtd constructPath()
     {
         lp.start(vertices[0].x, vertices[0].y)
-        visit v in vertices do
+        visit v in vertices:
             lp.lineTo(v.x, v.y)
         lp.close()
     }
@@ -93,7 +93,7 @@ func addInk(x, y, r: f32, col: Color)
         .construct()
     }
 
-    visit other in drops do
+    visit other in drops:
         other.marble(drop)
     drops.add(drop)
 }
@@ -140,7 +140,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
             else
             {
-                visit other in drops do
+                visit other in drops:
                     other.marble(dref drops.back())
             }
         }
@@ -149,7 +149,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             newDrop = true
         }
 
-        visit drop in drops do
+        visit drop in drops:
             drop.show(painter)
 
         wnd.invalidate()
@@ -160,7 +160,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ink", canSize: false, hook: &onEvent, init: &test)
 }

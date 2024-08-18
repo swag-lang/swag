@@ -58,7 +58,7 @@ func day5B()
     {
         if moveMode
         {
-            if !catch r.match(#"move (\d+) from (\d+) to (\d+)"#, l) do
+            if !catch r.match(#"move (\d+) from (\d+) to (\d+)"#, l):
                 continue
             let count   = assume StrConv.toU64(r.getCapture(1))
             let colFrom = assume StrConv.toS32(r.getCapture(2)) - 1
@@ -78,9 +78,9 @@ func day5B()
             var stack = 0
             for var i = 0; i < l.length; i += 4
             {
-                if stack >= stacks.count do
+                if stack >= stacks.count:
                     stacks.add("")
-                if l[i] == `[` do
+                if l[i] == `[`:
                     stacks[stack].append(l[i + 1])
                 stack += 1
             }
@@ -88,7 +88,7 @@ func day5B()
     }
 
     var total: String
-    visit s in stacks do
+    visit s in stacks:
         total += s[0]
 
     //Console.print("total: ", total)

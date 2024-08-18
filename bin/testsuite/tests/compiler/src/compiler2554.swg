@@ -2,7 +2,7 @@
 
 func toto()
 {
-    #if false #do struct AA {}
+    #if false: struct AA {}
     var x: AA
 }
 

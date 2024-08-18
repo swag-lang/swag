@@ -47,7 +47,7 @@ public func hasTypedValue(type: typeinfo)->bool
 // Get whatever value with a given 'type'
 public func getTypedValue(value: *void, type: typeinfo)->bool
 {
-    if !hasTypedValue(type) do
+    if !hasTypedValue(type):
         return false
 
     switch type

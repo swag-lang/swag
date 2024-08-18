@@ -35,7 +35,7 @@ impl TextReader
                 buffer.count                  = stream.read(buffer.buffer, buffer.capacity)
 
                 // BOM
-                if buffer.count >= 3 and buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF do
+                if buffer.count >= 3 and buffer[0] == 0xEF and buffer[1] == 0xBB and buffer[2] == 0xBF:
                     byteSeek = 3
 
                 return
@@ -79,7 +79,7 @@ public impl TextReader
         if byteSeek == buffer.count
         {
             readBuffer()
-            if buffer.count == 0 do
+            if buffer.count == 0:
                 return false
         }
 
@@ -93,13 +93,13 @@ public impl TextReader
             while ptr + 8'u64 <= ptrE
             {
                 let c64 = dref cast(*u64) ptr
-                if Math.hasByte(c64, `\r`) or Math.hasByte(c64, `\n`) do
+                if Math.hasByte(c64, `\r`) or Math.hasByte(c64, `\n`):
                     break
                 ptr += 8
             }
 
             // u8 by u8
-            while ptr != ptrE and dref ptr != `\r` and dref ptr != `\n` do
+            while ptr != ptrE and dref ptr != `\r` and dref ptr != `\n`:
                 ptr += 1
 
             let range = cast(u64) (ptr - ptrB)
@@ -110,7 +110,7 @@ public impl TextReader
             if ptr == ptrE
             {
                 readBuffer()
-                if buffer.count == 0 do
+                if buffer.count == 0:
                     return true
                 continue
             }
@@ -121,9 +121,9 @@ public impl TextReader
             // If we have an '\r', then eat the following '\n' if it exists
             if dref ptr == `\r`
             {
-                if byteSeek == buffer.count do
+                if byteSeek == buffer.count:
                     readBuffer()
-                if buffer.count and buffer[byteSeek] == `\n` do
+                if buffer.count and buffer[byteSeek] == `\n`:
                     byteSeek += 1
             }
 

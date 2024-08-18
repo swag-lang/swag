@@ -18,7 +18,7 @@ var g_App: Application
     let mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
-    if Env.hasArg("swag.test") do
+    if Env.hasArg("swag.test"):
         g_App.maxRunFrame = 100
 
     catch g_App.loadState()

@@ -6,7 +6,7 @@
 #test
 {
     var cpt = 0
-    for var i = 0; i < 10; i += 1; do
+    for var i = 0; i < 10; i += 1;:
         cpt += 1
     @assert(cpt == 10)
 
@@ -43,12 +43,12 @@ Like `loop`, `visit` and `while`, you have access to `#index`, the **current loo
 #test
 {
     var cpt = 0'u64
-    for var i: u32 = 10; i < 15; i += 1; do
+    for var i: u32 = 10; i < 15; i += 1;:
         cpt += #index
     @assert(cpt == 0+1+2+3+4)
 
     var cpt1 = 0'u64
-    for var i = 10; i < 15; i += 1; do
+    for var i = 10; i < 15; i += 1;:
         cpt1 += #index
     @assert(cpt1 == 0+1+2+3+4)
 }

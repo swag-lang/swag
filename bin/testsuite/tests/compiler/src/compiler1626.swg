@@ -16,7 +16,7 @@ impl A
 {
     G = 0
     var x: A'(*u8)
-    loop i in "toto" do
+    loop i in "toto":
         x[i] = null
     @assert(G == 4)
 }

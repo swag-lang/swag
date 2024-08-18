@@ -12,9 +12,9 @@ public impl IImageEncoder for Encoder
 
     mtd impl encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
-        if image.width > Swag.U16.Max do
+        if image.width > Swag.U16.Max:
             throw UnsupportedFormatError{"width is too big"}
-        if image.height > Swag.U16.Max do
+        if image.height > Swag.U16.Max:
             throw UnsupportedFormatError{"height is too big"}
 
         var header: Header

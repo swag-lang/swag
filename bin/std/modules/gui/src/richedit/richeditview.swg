@@ -17,7 +17,7 @@ impl IWnd for RichEditView
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if ed and ed.richEdFlags & .WordWrap do
+        if ed and ed.richEdFlags & .WordWrap:
             ed.recomputeScroll = true
     }
 
@@ -41,7 +41,7 @@ impl IWnd for RichEditView
                 var cp = ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
                 ed.setCursorPos(cp)
-                if !(evt.modifiers & .Shift) do
+                if !(evt.modifiers & .Shift):
                     ed.selBeg = cp
                 selMode = true
                 ed.setRectangularSelection(evt.modifiers & .Alt ? true : false)
@@ -67,7 +67,7 @@ impl IWnd for RichEditView
                 {
                     if ed.hasSelRect
                     {
-                        if cp.charPosInLine >= ed.selBeg.charPosInLine do
+                        if cp.charPosInLine >= ed.selBeg.charPosInLine:
                             ed.setCursorPos(cp)
                         ed.checkSelection()
                     }
@@ -143,7 +143,7 @@ impl IWnd for RichEditView
         var size       = ed.getXExtent()
 
         // Force visible caret
-        if ed.forceCaretVisible do
+        if ed.forceCaretVisible:
             ed.ensureCaretIsVisibleInternal(ed.forceCaretVisibleCenter)
 
         // Start to the first visible line, if known
@@ -159,7 +159,7 @@ impl IWnd for RichEditView
             y = ed.lines[i].drawingRect.y
         }
 
-        if ed.recomputeScroll do
+        if ed.recomputeScroll:
             ed.countVisibleLines = 0
         ed.dirtyFirstLineView = false
 
@@ -175,14 +175,14 @@ impl IWnd for RichEditView
         {
             // Is the line visible ?
             var bvis = true
-            if y + size.y < scrollPos.y or y - scrollPos.y > clientRect.bottom() do
+            if y + size.y < scrollPos.y or y - scrollPos.y > clientRect.bottom():
                 bvis = false
 
             // Store the first visible line index
-            if bvis and ed.firstVisibleLineView == Swag.U64.Max and (ed.lines[i].isVisible() or firstHidden) do
+            if bvis and ed.firstVisibleLineView == Swag.U64.Max and (ed.lines[i].isVisible() or firstHidden):
                 ed.firstVisibleLineView = i
 
-            if ed.recomputeScroll do
+            if ed.recomputeScroll:
                 ed.countVisibleLines += 1
             ed.lastVisibleLineView = i
 
@@ -227,7 +227,7 @@ impl IWnd for RichEditView
             maxx = Math.max(maxx, x)
             y += size.y
             i += 1
-            if !ed.recomputeScroll and y >= scrollPos.y + clientRect.bottom() do
+            if !ed.recomputeScroll and y >= scrollPos.y + clientRect.bottom():
                 break
         }
 
@@ -243,7 +243,7 @@ impl IWnd for RichEditView
                 {
                     var cp = ed.cursorPos
                     cp.lineIndex = caretI
-                    if cp.charPosInLine > ed.lines[cp.lineIndex].length() do
+                    if cp.charPosInLine > ed.lines[cp.lineIndex].length():
                         continue
                     var posCaret = ed.getCaretPos(cp)
                     posCaret.x -= scrollPos.x
@@ -262,9 +262,9 @@ impl IWnd for RichEditView
 
         // Scroll size
         y = cast(f32) (ed.countVisibleLines * size.y)
-        if ed.richEdFlags & .WordWrap do
+        if ed.richEdFlags & .WordWrap:
             maxx = 0
-        elif !ed.recomputeScroll do
+        elif !ed.recomputeScroll:
             maxx = ed.scrollWnd.scrollSize.x
         else
         {
@@ -369,7 +369,7 @@ impl RichEditView
                 cp1.lineIndex     = lineIndex
                 var charPos = ed.getCursorDisplayPos(cp1)
                 charPos.y -= size.y * 0.5
-                if ed.selRectangle.contains(charPos) do
+                if ed.selRectangle.contains(charPos):
                     selected = true
             }
             else
@@ -385,11 +385,11 @@ impl RichEditView
 
             if selected
             {
-                if hasFocus() do
+                if hasFocus():
                     newStyle = ed.stylesSelect[0]
-                elif ed.richEdFlags & .ShowFocusSel do
+                elif ed.richEdFlags & .ShowFocusSel:
                     newStyle = ed.stylesSelect[1]
-                if !newStyle.colFg.a do
+                if !newStyle.colFg.a:
                     newStyle.colFg = ed.styles[dref pStyle].colFg
                 newStyle.underline = ed.styles[dref pStyle].underline
             }
@@ -422,7 +422,7 @@ impl RichEditView
                 x += ed.getTabOffset(cast(s32) x)
 
                 // Background color for tabulations
-                if visible and oldStyle.colBk.a do
+                if visible and oldStyle.colBk.a:
                     bc.painter.fillRect({x1, y, x - x1, size.y}, oldStyle.colBk)
             }
             else

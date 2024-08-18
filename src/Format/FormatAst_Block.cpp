@@ -118,11 +118,11 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
     }
     else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
-        concat->addBlank();
         if (node->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
         {
+            concat->addBlank();
             const auto parse = getTokenParse(node);
-            if(parse && parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+            if (parse && parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
             {
                 concat->addEol();
                 context.indent++;
@@ -140,7 +140,7 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
         }
         else
         {
-            concat->addString("do");
+            concat->addChar(':');
             beautifyAfter(context, node);
             concat->addEol();
             context.indent++;

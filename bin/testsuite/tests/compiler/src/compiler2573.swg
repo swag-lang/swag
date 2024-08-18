@@ -9,7 +9,7 @@ func toto() throw
 func titi() throw
 {
     catch toto()
-    if @err() != null do throw ErrTiti{}
+    if @err() != null: throw ErrTiti{}
 }
 
 #test

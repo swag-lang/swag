@@ -83,7 +83,7 @@ attr Pack(value: u8)
 #[AttrUsage(AttributeUsage.Struct)]
 attr NoCopy()
 
-// When exporting the following struct, do not export its content
+// When exporting the following struct,: not export its content
 #[AttrUsage(AttributeUsage.Struct)]
 attr Opaque()
 

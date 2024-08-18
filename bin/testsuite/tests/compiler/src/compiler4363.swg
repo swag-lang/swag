@@ -3,7 +3,7 @@
 func(T) toto()
     where
     {
-        if T != bool do
+        if T != bool:
             @compilererror("s32 is bad !", @location(T))
         return true
     }

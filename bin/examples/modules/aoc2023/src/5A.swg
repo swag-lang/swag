@@ -84,7 +84,7 @@ Seed number 79 corresponds to soil number 81.
 Seed number 14 corresponds to soil number 14.
 Seed number 55 corresponds to soil number 57.
 Seed number 13 corresponds to soil number 13.
-The gardener and his team want to get started as soon as possible, so they'd like to know the closest location that needs a seed. Using these maps, find the lowest location number that corresponds to any of the initial seeds. To do this, you'll need to convert each seed number through other categories until you can find its corresponding location number. In this example, the corresponding types are:
+The gardener and his team want to get started as soon as possible, so they'd like to know the closest location that needs a seed. Using these maps, find the lowest location number that corresponds to any of the initial seeds. To: this, you'll need to convert each seed number through other categories until you can find its corresponding location number. In this example, the corresponding types are:
 
 Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
 Seed 14, soil 14, fertilizer 53, water 49, light 42, temperature 42, humidity 43, location 43.
@@ -126,7 +126,7 @@ func day5A()
     var mode = Mode.Invalid
     visit l in lines
     {
-        if l.isEmpty() do
+        if l.isEmpty():
             continue
 
         switch l.toString()
@@ -158,7 +158,7 @@ func day5A()
         {
             let tokens = Tokenize.split(l, `:`'u8)
             let values = Tokenize.split(tokens[1], ` `'u8)
-            visit v in values do
+            visit v in values:
                 seeds.add(assume StrConv.toU64(v))
             continue
         }

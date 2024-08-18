@@ -20,7 +20,7 @@ A more complicated compile-time `#assert`.
 #[Swag.ConstExpr]
 func factorial(x: s32)->s32
 {
-    if x == 1 do
+    if x == 1:
         return 1
     return x * factorial(x - 1)
 }

@@ -30,9 +30,9 @@ impl List
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        #if back #do
+        #if back:
             var n = tail
-        #else #do
+        #else:
             var n = head
         #scope Up
         while n
@@ -40,11 +40,11 @@ impl List
             #scope Down
             #macro
             {
-                #if #up ptr #do
+                #if #up ptr:
                     let #alias0 = cast(*T) &#up n.value
-                #elif Reflection.isStruct(T) #do
+                #elif Reflection.isStruct(T):
                     let #alias0 = cast(&T) &#up n.value
-                #else #do
+                #else:
                     let #alias0 = #up n.value
                 let #alias1 = #up n
                 let #alias2 = #index
@@ -52,9 +52,9 @@ impl List
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
-            #if back #do
+            #if back:
                 n = n.prev
-            #else #do
+            #else:
                 n = n.next
         }
     }
@@ -170,9 +170,9 @@ impl List
 
         n.next = node
         n.prev = node.prev
-        if !n.prev do
+        if !n.prev:
             head = n
-        else do
+        else:
             n.prev.next = n
         node.prev = n
         return n
@@ -189,9 +189,9 @@ impl List
 
         n.next = node
         n.prev = node.prev
-        if !n.prev do
+        if !n.prev:
             head = n
-        else do
+        else:
             n.prev.next = n
         node.prev = n
         return n
@@ -209,9 +209,9 @@ impl List
 
         n.prev = node
         n.next = node.next
-        if !n.next do
+        if !n.next:
             tail = n
-        else do
+        else:
             n.next.prev = n
         node.next = n
         return n
@@ -228,9 +228,9 @@ impl List
 
         n.prev = node
         n.next = node.next
-        if !n.next do
+        if !n.next:
             tail = n
-        else do
+        else:
             n.next.prev = n
         node.next = n
         return n

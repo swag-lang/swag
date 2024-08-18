@@ -384,7 +384,7 @@ impl Ghost
         }
 
         // If not at max timeout, increment counter
-        elif timeout != -1 do
+        elif timeout != -1:
             timeout += 1
 
         if ai == .DEAD
@@ -441,9 +441,9 @@ impl Ghost
             setSpeed(50)
 
             // Move towards the center
-            if x < 13.4 do
+            if x < 13.4:
                 dir = .RIGHT
-            elif x > 13.6 do
+            elif x > 13.6:
                 dir = .LEFT
             else
             {
@@ -458,7 +458,7 @@ impl Ghost
             ai  = g_Wave
             setSpeed(100)
         }
-        elif cast(s32) (y * 10.0) % 10 == 5 and isImpassible(getNextTile(dir)) do
+        elif cast(s32) (y * 10.0) % 10 == 5 and isImpassible(getNextTile(dir)):
             dir = .UP
     }
 
@@ -550,7 +550,7 @@ impl Ghost
             // BLUE's target is then twice the change in X and Y from RED's position
             target = {redGhost.getX() + 2 * dx, redGhost.getY() + 2 * dy}
         case YELLOW:
-            if distanceBetween(currentPos, target) <= 8 do
+            if distanceBetween(currentPos, target) <= 8:
                 target = {0, -2}
         }
 
@@ -702,13 +702,13 @@ impl Ghost
      */
     mtd turnCorner()
     {
-        if dir != .DOWN and !isImpassible(getNextTile(.UP)) do
+        if dir != .DOWN and !isImpassible(getNextTile(.UP)):
             dir = .UP
-        elif dir != .LEFT and !isImpassible(getNextTile(.RIGHT)) do
+        elif dir != .LEFT and !isImpassible(getNextTile(.RIGHT)):
             dir = .RIGHT
-        elif dir != .UP and !isImpassible(getNextTile(.DOWN)) do
+        elif dir != .UP and !isImpassible(getNextTile(.DOWN)):
             dir = .DOWN
-        elif dir != .RIGHT and !isImpassible(getNextTile(.LEFT)) do
+        elif dir != .RIGHT and !isImpassible(getNextTile(.LEFT)):
             dir = .LEFT
     }
 
@@ -755,13 +755,13 @@ impl Ghost
         var exits = 0
         if atTileCenter()
         {
-            if !isImpassible(getNextTile(.UP)) do
+            if !isImpassible(getNextTile(.UP)):
                 exits += 1
-            if !isImpassible(getNextTile(.RIGHT)) do
+            if !isImpassible(getNextTile(.RIGHT)):
                 exits += 1
-            if !isImpassible(getNextTile(.DOWN)) do
+            if !isImpassible(getNextTile(.DOWN)):
                 exits += 1
-            if !isImpassible(getNextTile(.LEFT)) do
+            if !isImpassible(getNextTile(.LEFT)):
                 exits += 1
         }
 
@@ -827,25 +827,25 @@ impl Ghost
         // Handle special case movement behaviours
 
         // Behaviour within SPAWN pen
-        if ai == .SPAWN do
+        if ai == .SPAWN:
             aiSpawn()
 // AI to LEAVE SPAWN pen
-        elif ai == .LEAVE do
+        elif ai == .LEAVE:
             aiLeave()
 // Handle PORTAL collision - only teleport if at center of tile
         elif atTileCenter() and getTile(getX(), getY()) == .P
         {
-            if dir == .RIGHT do
+            if dir == .RIGHT:
                 x = 1
-            else do
+            else:
                 x = 26
         }
 // If the a new AI mode has been set, reverse the current direction
-        elif reverse do
+        elif reverse:
             reverseDirection()
 // If no special case exists, direction can only be changed when 2 or more exits exist
         // Ghost is at corner so must turn
-        elif countExits() == 2 and isImpassible(getNextTile(dir)) do
+        elif countExits() == 2 and isImpassible(getNextTile(dir)):
             turnCorner()
 // Ghost is at junction - run targeting AI and update direction
         elif countExits() > 2
@@ -864,7 +864,7 @@ impl Ghost
         }
 
         // Half speed when travelling down PORTAL corridors
-        if getY() == 16 and (getX() < 6 or getX() > 21) and ai != .DEAD do
+        if getY() == 16 and (getX() < 6 or getX() > 21) and ai != .DEAD:
             setSpeed(50)
 
         // Perform smooth movement between tiles in the current direction of movement
@@ -873,19 +873,19 @@ impl Ghost
         {
         case LEFT:
             x -= dPos
-            if ai != .LEAVE do
+            if ai != .LEAVE:
                 y = Math.round(y)
         case RIGHT:
             x += dPos
-            if ai != .LEAVE do
+            if ai != .LEAVE:
                 y = Math.round(y)
         case UP:
             y += dPos
-            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD do
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD:
                 x = Math.round(x)
         case DOWN:
             y -= dPos
-            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD do
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD:
                 x = Math.round(x)
         }
     }
@@ -916,7 +916,7 @@ impl Ghost
 
     mtd draw()
     {
-        // Reset drawScore flag - when eaten, drawEaten() is called during pause, do not draw score again
+        // Reset drawScore flag - when eaten, drawEaten() is called during pause,: not draw score again
         drawScore = false
 
         g_Painter.pushTransform()
@@ -933,9 +933,9 @@ impl Ghost
         if ai == .FRIGHTENED
         {
             // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
-            if timeout >= 480 and texCount % 30 >= 15 do
+            if timeout >= 480 and texCount % 30 >= 15:
                 ghostTex = g_GhostTexF[ghostAlt + 2]
-            else do
+            else:
                 ghostTex = g_GhostTexF[ghostAlt]
         }
         elif ai != .DEAD
@@ -955,7 +955,7 @@ impl Ghost
         }
 
         // Draw ghost sprite with determined texture at current location only if not DEAD
-        if ai != .DEAD do
+        if ai != .DEAD:
             g_Painter.drawTexture(-7, -7, 14, 14, ghostTex)
 
         // Only draw the ghost's eyes if it's not FRIGHTENED
@@ -1040,7 +1040,7 @@ impl Pacman
      */
     mtd eat()->s32
     {
-        if !atTileCenter() do
+        if !atTileCenter():
             return 0
 
         switch getTile(getX(), getY())
@@ -1048,7 +1048,7 @@ impl Pacman
         case o:
             if !g_VoiceChomp or !g_VoiceChomp.isPlaying()
             {
-                if g_VoiceChomp do
+                if g_VoiceChomp:
                     g_VoiceChomp.destroy()
                 g_VoiceChomp = assume Audio.Voice.play(&g_SoundChomp)
             }
@@ -1063,9 +1063,9 @@ impl Pacman
             return 50
 
         case P:
-            if dir == .RIGHT do
+            if dir == .RIGHT:
                 x = 1
-            else do
+            else:
                 x = 26
             return 0
 
@@ -1133,9 +1133,9 @@ impl Pacman
         // Direction can only be changed at the center of a tile
         if atTileCenter()
         {
-            if !isImpassible(getNextTile(tempDir)) do
+            if !isImpassible(getNextTile(tempDir)):
                 dir = tempDir
-            elif isImpassible(getNextTile(dir)) do
+            elif isImpassible(getNextTile(dir)):
                 dir = .NONE
         }
 
@@ -1190,7 +1190,7 @@ impl Pacman
      */
     mtd startChomping()
     {
-        if tempDir == .NONE do
+        if tempDir == .NONE:
             tempDir = saveDir
         ready = true
     }
@@ -1264,11 +1264,11 @@ impl Pacman
 
         // Determine which texture to draw based on tick-incremented counter
         var pacmanTex: Texture
-        if texCount % 20 < 5 do
+        if texCount % 20 < 5:
             pacmanTex = g_Pac0Tex
-        elif texCount % 20 < 10 or texCount % 20 >= 15 do
+        elif texCount % 20 < 10 or texCount % 20 >= 15:
             pacmanTex = g_Pac1Tex
-        else do
+        else:
             pacmanTex = g_Pac2Tex
 
         // Draw Pac-Man sprite with determined texture at determined angle
@@ -1276,7 +1276,7 @@ impl Pacman
 
         // Increment texture counter only if moving
         // If stationary, continue until sprite animation cycle is complete
-        if !(dir == .NONE and texCount % 20 < 5) and ready do
+        if !(dir == .NONE and texCount % 20 < 5) and ready:
             texCount += 1
 
         g_Painter.popTransform()
@@ -1366,7 +1366,7 @@ func drawNumberAsSprite(number: s32)
         translateMapCoords(-1, 0)
     }
 
-    if str.length == 1 do
+    if str.length == 1:
         g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
 
     g_Painter.popTransform()
@@ -1428,7 +1428,7 @@ func drawFruits()
 func drawCharacters()
 {
     g_PacMan.draw()
-    loop i in 4 do
+    loop i in 4:
         g_Ghosts[i].draw()
 }
 
@@ -1463,9 +1463,9 @@ func drawPause(gameover: bool)
 {
     g_Painter.pushTransform()
     translateMapOrigin()
-    if !gameover do
+    if !gameover:
         g_Painter.drawTexture(0, 0, 224, 248, g_PauseTex)
-    else do
+    else:
         g_Painter.drawTexture(0, 0, 224, 248, g_PauseAltTex)
     g_Painter.popTransform()
 }
@@ -1515,13 +1515,13 @@ func display()
 
     case FRUIT:
         drawPlayScreen()
-        loop i in 4 do
+        loop i in 4:
             g_Ghosts[i].draw()
         g_PacMan.drawFruitScore()
 
     case EAT:
         drawPlayScreen()
-        loop i in 4 do
+        loop i in 4:
             g_Ghosts[i].drawEaten()
 
     case PAUSE:
@@ -1585,7 +1585,7 @@ func soundState()
             break
         }
 
-        if g.ai == .FRIGHTENED do
+        if g.ai == .FRIGHTENED:
             soundState = .FRIGHTENED
     }
 
@@ -1602,7 +1602,7 @@ func soundState()
             g_VoiceScared.destroy()
             g_VoiceScared = null
         }
-        if !g_VoiceRetreat do
+        if !g_VoiceRetreat:
             g_VoiceRetreat = assume Audio.Voice.play(&g_SoundRetreat, playFlags: .Loop)
 
     case FRIGHTENED:
@@ -1616,7 +1616,7 @@ func soundState()
             g_VoiceRetreat.destroy()
             g_VoiceRetreat = null
         }
-        if !g_VoiceScared do
+        if !g_VoiceScared:
             g_VoiceScared = assume Audio.Voice.play(&g_SoundScared, playFlags: .Loop)
 
     case SIREN:
@@ -1654,7 +1654,7 @@ func checkCollisions()
 {
     let scoreIncrement = g_PacMan.eat()
     g_Score += scoreIncrement
-    if g_Score > g_HighScore do
+    if g_Score > g_HighScore:
         g_HighScore = g_Score
 
     // If score is increased by 50, a big pill has been eaten - set ghosts to FRIGHTENED
@@ -1663,7 +1663,7 @@ func checkCollisions()
         visit g in g_Ghosts
         {
             g.zeroTimeout()
-            if g.ai == g_Wave or g.ai == .FRIGHTENED do
+            if g.ai == g_Wave or g.ai == .FRIGHTENED:
                 g.setAI(.FRIGHTENED, true)
         }
     }
@@ -1691,10 +1691,10 @@ func checkCollisions()
 // Ghosts exit SPAWN pen when a certain number of pills have been eaten
     // To prevent all piling out at once after a death, tick timers only allow the ghosts to leave after a certain point
     // BLUE leaves after 30 pills are eaten
-    elif g_Ghosts[2].ai == .SPAWN and g_PillsLeft <= 244 - 30 and g_Ticks >= 300 do
+    elif g_Ghosts[2].ai == .SPAWN and g_PillsLeft <= 244 - 30 and g_Ticks >= 300:
         g_Ghosts[2].setAI(.LEAVE, false)
 // YELLOW leaves after 1/3 of the pills are eaten
-    elif g_Ghosts[3].ai == .SPAWN and g_PillsLeft <= 244 * 2 / 3 and g_Ticks >= 420 do
+    elif g_Ghosts[3].ai == .SPAWN and g_PillsLeft <= 244 * 2 / 3 and g_Ticks >= 420:
         g_Ghosts[3].setAI(.LEAVE, false)
 
     // Check for ghost collisions
@@ -1717,7 +1717,7 @@ func checkCollisions()
                 g.setAI(.DEAD, false)
                 g_GhostsEaten += 1
                 g_Score += 200 * cast(s32) Math.pow(2.0, cast(f32) Math.min(g_GhostsEaten, 3))
-                if g_Score > g_HighScore do
+                if g_Score > g_HighScore:
                     g_HighScore = g_Score
                 // Briefly pause the game to show score for eating ghost
                 g_TimeStamp = g_Ticks
@@ -1753,17 +1753,17 @@ func aiWave()
     let playTicks = g_Ticks - 240
     // SCATTER: 7s, or 5s if level 2+
     var wave1: s32
-    if g_Level >= 5 do
+    if g_Level >= 5:
         wave1 = 5 * 60
-    else do
+    else:
         wave1 = 7 * 60
     // CHASE: 20s
     let wave2 = wave1 + 20 * 60
     // SCATTER: 7s, or 5s if level 2+
     var wave3: s32
-    if g_Level >= 5 do
+    if g_Level >= 5:
         wave3 = wave2 + 5 * 60
-    else do
+    else:
         wave3 = wave2 + 7 * 60
     // CHASE: 20s
     let wave4 = wave3 + 20 * 60
@@ -1771,36 +1771,36 @@ func aiWave()
     let wave5 = wave4 + 5 * 60
     // CHASE: 20s, or 17m13s if level 2+, or 17m17s if level 5+
     var wave6: s32
-    if g_Level >= 5 do
+    if g_Level >= 5:
         wave6 = wave5 + 1037 * 60
-    elif g_Level >= 2 do
+    elif g_Level >= 2:
         wave6 = wave5 + 1033 * 60
-    else do
+    else:
         wave6 = wave5 + 20 * 60
     // SCATTER: 5s, or 1/60s (one frame - simply forces direction switch) if level 2+
     var wave7: s32
-    if g_Level >= 2 do
+    if g_Level >= 2:
         wave7 = wave6 + 1
-    else do
+    else:
         wave7 = wave6 + 5 * 60
     // CHASE permanently beyond this point
 
     // Change AI wave based on game ticks (performance-capped approximation of time)
-    if playTicks <= wave1 do
+    if playTicks <= wave1:
         g_Wave = .SCATTER
-    elif playTicks <= wave2 do
+    elif playTicks <= wave2:
         g_Wave = .CHASE
-    elif playTicks <= wave3 do
+    elif playTicks <= wave3:
         g_Wave = .SCATTER
-    elif playTicks <= wave4 do
+    elif playTicks <= wave4:
         g_Wave = .CHASE
-    elif playTicks <= wave5 do
+    elif playTicks <= wave5:
         g_Wave = .SCATTER
-    elif playTicks <= wave6 do
+    elif playTicks <= wave6:
         g_Wave = .CHASE
-    elif playTicks <= wave7 do
+    elif playTicks <= wave7:
         g_Wave = .SCATTER
-    else do
+    else:
         g_Wave = .CHASE
 
     // Update ghost AI to new wave only if they are in CHASE/SCATTER mode
@@ -1808,7 +1808,7 @@ func aiWave()
     visit g in g_Ghosts
     {
         let ai = g.ai
-        if (ai == .SCATTER or ai == .CHASE) and ai != g_Wave do
+        if (ai == .SCATTER or ai == .CHASE) and ai != g_Wave:
             g.setAI(g_Wave, true)
     }
 }
@@ -1888,7 +1888,7 @@ func resetFruit()
         loop y in 31
         {
             // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
-            if getTile(x, y) == .F do
+            if getTile(x, y) == .F:
                 setTile(x, y, .e)
         }
     }
@@ -1908,7 +1908,7 @@ func resetLevel()
     g_Wave        = .SCATTER
     g_GhostsEaten = 0
     g_PacMan.reset()
-    visit g in g_Ghosts do
+    visit g in g_Ghosts:
         g.reset()
     g_Mode         = .STARTLEVEL
     g_FruitSpawned = false
@@ -1951,7 +1951,7 @@ func gameLoop()
     switch g_Mode
     {
     case STARTLEVEL:
-        if !g_VoiceReady do
+        if !g_VoiceReady:
             g_VoiceReady = assume Audio.Voice.play(&g_SoundReady)
         if !g_VoiceReady.isPlaying()
         {
@@ -1973,11 +1973,11 @@ func gameLoop()
             checkCollisions()
             aiWave()
             // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
-            visit g in g_Ghosts do
+            visit g in g_Ghosts:
                 g.move(g_Ghosts[0])
             // If no fruit is currently spawned, enough pills have been eaten,
             // The eaten fruit count doesn't exceed the level and a random quantifier is satisfied, spawn a fruit
-            if !g_FruitSpawned and g_Fruits < g_Level and g_PillsLeft <= 240 - 30 and Random.shared().nextU32() % 1500 == 0 do
+            if !g_FruitSpawned and g_Fruits < g_Level and g_PillsLeft <= 240 - 30 and Random.shared().nextU32() % 1500 == 0:
                 spawnFruit()
         }
 
@@ -2002,7 +2002,7 @@ func gameLoop()
             }
         }
     case FRUIT:
-        if !g_VoiceEatFruit do
+        if !g_VoiceEatFruit:
             g_VoiceEatFruit = assume Audio.Voice.play(&g_SoundEatFruit)
         //if g_Ticks == g_TimeStamp + 90
         if !g_VoiceEatFruit.isPlaying()
@@ -2014,7 +2014,7 @@ func gameLoop()
             g_Mode = .PLAY
         }
     case EAT:
-        if !g_VoiceEatGhost do
+        if !g_VoiceEatGhost:
             g_VoiceEatGhost = assume Audio.Voice.play(&g_SoundEatGhost)
         //if g_Ticks == g_TimeStamp + 90
         if !g_VoiceEatGhost.isPlaying()
@@ -2026,7 +2026,7 @@ func gameLoop()
             g_Mode = .PLAY
         }
     case DEATH:
-        if !g_VoiceDeath do
+        if !g_VoiceDeath:
             g_VoiceDeath = assume Audio.Voice.play(&g_SoundDeath)
         //if g_Ticks > g_TimeStamp + 180
         if !g_VoiceDeath.isPlaying()
@@ -2037,7 +2037,7 @@ func gameLoop()
             if g_Lives == 0
             {
                 g_Mode = .GAMEOVER
-                if g_Score > g_HighScore do
+                if g_Score > g_HighScore:
                     g_HighScore = g_Score
             }
             else
@@ -2051,7 +2051,7 @@ func gameLoop()
     }
 
     // Increment game ticks once the frame is drawn, but only if not paused
-    if g_Mode != .NONE do
+    if g_Mode != .NONE:
         g_Ticks += 1
 }
 
@@ -2096,9 +2096,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             g_PacMan.tempDir = .DOWN
 
         default:
-            if g_Mode == .PAUSE and g_TempMode != .GAMEOVER do
+            if g_Mode == .PAUSE and g_TempMode != .GAMEOVER:
                 g_Mode = g_TempMode
-            elif g_Mode == .GAMEOVER or g_Mode == .PAUSE do
+            elif g_Mode == .GAMEOVER or g_Mode == .PAUSE:
                 restartGame()
         }
     }

@@ -46,7 +46,7 @@ func day4B()
             }
         }
 
-        if ok do
+        if ok:
             total += 1
     }
 

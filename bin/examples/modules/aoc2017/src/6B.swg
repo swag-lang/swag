@@ -38,7 +38,7 @@ func day6B()
         }
 
         var val: String
-        loop i in blocks.count do
+        loop i in blocks.count:
             val += Format.toString("%.", blocks[i])
 
         total += 1

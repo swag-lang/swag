@@ -421,7 +421,7 @@ By type reflection, you can loop/visit all values of an enum.
     enum RGB { R, G, B }
 
     var cpt = 0
-    loop idx in RGB do
+    loop idx in RGB:
         cpt += 1
     @assert(cpt == 3)
 

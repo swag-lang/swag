@@ -4,7 +4,7 @@
 {
     let a = #run {
         var ret = 0's32
-        loop 10 do ret += 66
+        loop 10: ret += 66
         return ret
     }
 

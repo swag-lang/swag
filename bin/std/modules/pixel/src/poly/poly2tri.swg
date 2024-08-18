@@ -113,11 +113,11 @@ impl Result
 
     mtd release()
     {
-        visit t in points do
+        visit t in points:
             Memory.delete(t)
-        visit t in edges do
+        visit t in edges:
             Memory.delete(t)
-        visit t in triangles do
+        visit t in triangles:
             Memory.delete(t)
         points.clear()
         edges.clear()
@@ -151,13 +151,13 @@ impl Edge
         }
 
         q.edges.add(self)
-        if p.border[0] do
+        if p.border[0]:
             p.border[1] = self
-        else do
+        else:
             p.border[0] = self
-        if q.border[0] do
+        if q.border[0]:
             q.border[1] = self
-        else do
+        else:
             q.border[0] = self
     }
 }
@@ -179,11 +179,11 @@ impl Triangle
     #[Swag.Overload]
     mtd markConstrainedEdge(p, q: *Point)
     {
-        if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0]) do
+        if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0]):
             constrainedEdge[2] = true
-        elif (q == points[0] and p == points[2]) or (q == points[2] and p == points[0]) do
+        elif (q == points[0] and p == points[2]) or (q == points[2] and p == points[0]):
             constrainedEdge[1] = true
-        elif (q == points[1] and p == points[2]) or (q == points[2] and p == points[1]) do
+        elif (q == points[1] and p == points[2]) or (q == points[2] and p == points[1]):
             constrainedEdge[0] = true
     }
 
@@ -198,21 +198,21 @@ impl Triangle
         switch p1
         {
         case points[0]:
-            if points[1] == p2 do
+            if points[1] == p2:
                 return 2
-            if points[2] == p2 do
+            if points[2] == p2:
                 return 1
 
         case points[1]:
-            if points[2] == p2 do
+            if points[2] == p2:
                 return 0
-            if points[0] == p2 do
+            if points[0] == p2:
                 return 2
 
         case points[2]:
-            if points[0] == p2 do
+            if points[0] == p2:
                 return 1
-            if points[1] == p2 do
+            if points[1] == p2:
                 return 0
         }
 
@@ -439,13 +439,13 @@ impl Triangle
     #[Swag.Overload]
     mtd markNeighbor(p1, p2: *Point, t: *Triangle)
     {
-        if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2]) do
+        if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2]):
             neighbors[0] = t
-        elif (p1 == points[0] and p2 == points[2]) or (p1 == points[2] and p2 == points[0]) do
+        elif (p1 == points[0] and p2 == points[2]) or (p1 == points[2] and p2 == points[0]):
             neighbors[1] = t
-        elif (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0]) do
+        elif (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0]):
             neighbors[2] = t
-        else do
+        else:
             Debug.assert(false)
     }
 
@@ -503,11 +503,11 @@ impl AdvancingFront
         {
             if point != node.point
             {
-                if point == node.prev.point do
+                if point == node.prev.point:
                     node = node.prev
-                elif point == node.next.point do
+                elif point == node.next.point:
                     node = node.next
-                else do
+                else:
                     Debug.assert(false)
             }
         }
@@ -516,7 +516,7 @@ impl AdvancingFront
             node = node.prev
             while node
             {
-                if point == node.point do
+                if point == node.point:
                     break
                 node = node.prev
             }
@@ -526,13 +526,13 @@ impl AdvancingFront
             node = node.next
             while node
             {
-                if point == node.point do
+                if point == node.point:
                     break
                 node = node.next
             }
         }
 
-        if node do
+        if node:
             searchNode = node
         return node
     }
@@ -622,13 +622,13 @@ impl Tessellate
         deleteNode(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
-        visit p in points do
+        visit p in points:
             deletePoint(p)
-        visit p in edges do
+        visit p in edges:
             deleteEdge(p)
-        visit p in triangles do
+        visit p in triangles:
             deleteTriangle(p)
-        visit p in nodes do
+        visit p in nodes:
             deleteNode(p)
 
         points.clear()
@@ -641,7 +641,7 @@ impl Tessellate
     // Clear cache
     mtd clearCache()
     {
-        visit p in freeNodes do
+        visit p in freeNodes:
             Memory.delete(p)
         freeNodes.clear()
     }
@@ -713,7 +713,7 @@ impl Tessellate
     // Triangulate
     public mtd triangulate()
     {
-        if points.isEmpty() do
+        if points.isEmpty():
             return
 
         initTriangulation()
@@ -733,7 +733,7 @@ impl Tessellate
         {
             let point = points[i]
             let node  = pointEvent(point)
-            visit e in point.edges do
+            visit e in point.edges:
                 addEdgeEvent2(e, node)
         }
     }
@@ -743,7 +743,7 @@ impl Tessellate
         var triangle = t
         Debug.assert(triangle != null, "EdgeEvent - null triangle")
 
-        if isEdgeSideOfTriangle(triangle, ep, eq) do
+        if isEdgeSideOfTriangle(triangle, ep, eq):
             return
 
         let p1 = triangle.pointCCW(point)
@@ -786,9 +786,9 @@ impl Tessellate
 
         if o1 == o2
         {
-            if o1 == .CW do
+            if o1 == .CW:
                 triangle = triangle.neighborCCW(point)
-            else do
+            else:
                 triangle = triangle.neighborCW(point)
             addEdgeEvent(ep, eq, triangle, point)
         }
@@ -860,9 +860,9 @@ impl Tessellate
     func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
     {
         let o2d = orient2d(eq, op, ep)
-        if o2d == .CW do
+        if o2d == .CW:
             return ot.pointCCW(op)
-        if o2d == .CCW do
+        if o2d == .CCW:
             return ot.pointCW(op)
         Debug.assert(false, "[Unsupported] Opposing point on constrained edge")
         return null
@@ -880,7 +880,7 @@ impl Tessellate
         let p2 = flipTriangle.pointCW(eq)
         Debug.assert(p1 != null and p2 != null, "FlipScanEdgeEvent - null on either of points")
 
-        if inScanArea(eq, p1, p2, op) do
+        if inScanArea(eq, p1, p2, op):
             flipEdgeEvent(eq, op, ot, op)
         else
         {
@@ -894,7 +894,7 @@ impl Tessellate
         edgeEvent.constrainedEdge = edge
         edgeEvent.right           = edge.p.x > edge.q.x
 
-        if isEdgeSideOfTriangle(node.triangle, edge.p, edge.q) do
+        if isEdgeSideOfTriangle(node.triangle, edge.p, edge.q):
             return
 
         fillEdgeEvent(edge, node)
@@ -903,9 +903,9 @@ impl Tessellate
 
     mtd fillEdgeEvent(edge: *Edge, node: *Node)
     {
-        if edgeEvent.right do
+        if edgeEvent.right:
             fillRightAboveEdgeEvent(edge, node)
-        else do
+        else:
             fillLeftAboveEdgeEvent(edge, node)
     }
 
@@ -914,9 +914,9 @@ impl Tessellate
         var node = n
         while node.next.point.x < edge.p.x
         {
-            if orient2d(edge.q, node.next.point, edge.p) == .CCW do
+            if orient2d(edge.q, node.next.point, edge.p) == .CCW:
                 fillRightBelowEdgeEvent(edge, node)
-            else do
+            else:
                 node = node.next
         }
     }
@@ -925,7 +925,7 @@ impl Tessellate
     {
         if node.point.x < edge.p.x
         {
-            if orient2d(node.point, node.next.point, node.next.next.point) == .CCW do
+            if orient2d(node.point, node.next.point, node.next.next.point) == .CCW:
                 fillRightConcaveEdgeEvent(edge, node)
             else
             {
@@ -942,7 +942,7 @@ impl Tessellate
         {
             if orient2d(edge.q, node.next.point, edge.p) == .CCW
             {
-                if orient2d(node.point, node.next.point, node.next.next.point) == .CCW do
+                if orient2d(node.point, node.next.point, node.next.next.point) == .CCW:
                     fillRightConcaveEdgeEvent(edge, node)
             }
         }
@@ -956,7 +956,7 @@ impl Tessellate
         }
         else
         {
-            if orient2d(edge.q, node.next.next.point, edge.p) == .CCW do
+            if orient2d(edge.q, node.next.next.point, edge.p) == .CCW:
                 fillRightConvexEdgeEvent(edge, node.next)
         }
     }
@@ -966,9 +966,9 @@ impl Tessellate
         var node = n
         while node.prev.point.x > edge.p.x
         {
-            if orient2d(edge.q, node.prev.point, edge.p) == .CW do
+            if orient2d(edge.q, node.prev.point, edge.p) == .CW:
                 fillLeftBelowEdgeEvent(edge, node)
-            else do
+            else:
                 node = node.prev
         }
     }
@@ -977,7 +977,7 @@ impl Tessellate
     {
         if node.point.x > edge.p.x
         {
-            if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW do
+            if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW:
                 fillLeftConcaveEdgeEvent(edge, node)
             else
             {
@@ -989,11 +989,11 @@ impl Tessellate
 
     mtd fillLeftConvexEdgeEvent(edge: *Edge, node: *Node)
     {
-        if orient2d(node.prev.point, node.prev.prev.point, node.prev.prev.prev.point) == .CW do
+        if orient2d(node.prev.point, node.prev.prev.point, node.prev.prev.prev.point) == .CW:
             fillLeftConcaveEdgeEvent(edge, node.prev)
         else
         {
-            if orient2d(edge.q, node.prev.prev.point, edge.p) == .CW do
+            if orient2d(edge.q, node.prev.prev.point, edge.p) == .CW:
                 fillLeftConvexEdgeEvent(edge, node.prev)
         }
     }
@@ -1005,7 +1005,7 @@ impl Tessellate
         {
             if orient2d(edge.q, node.prev.point, edge.p) == .CW
             {
-                if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW do
+                if orient2d(node.point, node.prev.point, node.prev.prev.point) == .CW:
                     fillLeftConcaveEdgeEvent(edge, node)
             }
         }
@@ -1018,7 +1018,7 @@ impl Tessellate
         {
             triangle.markConstrainedEdge(index)
             let t = triangle.neighbors[index]
-            if t do
+            if t:
                 t.markConstrainedEdge(ep, eq)
             return true
         }
@@ -1031,7 +1031,7 @@ impl Tessellate
         let node = locateNode(point)
         Debug.assert(node and node.point and node.next and node.next.point, "null node")
         let newNode = newFrontTriangle(point, node)
-        if point.x <= node.point.x + Math.ConstF64.Epsilon do
+        if point.x <= node.point.x + Math.ConstF64.Epsilon:
             fill(node)
         fillAdvancingFront(newNode)
         return newNode
@@ -1042,7 +1042,7 @@ impl Tessellate
         var node = n.next
         while node and node.next
         {
-            if largeHoleDontFill(node) do
+            if largeHoleDontFill(node):
                 break
             fill(node)
             node = node.next
@@ -1051,7 +1051,7 @@ impl Tessellate
         node = n.prev
         while node and node.prev
         {
-            if largeHoleDontFill(node) do
+            if largeHoleDontFill(node):
                 break
             fill(node)
             node = node.prev
@@ -1060,28 +1060,28 @@ impl Tessellate
         if n.next and n.next.next
         {
             let angle = basinAngle(n)
-            if angle < Math.ConstF64.ThreePiBy4 do
+            if angle < Math.ConstF64.ThreePiBy4:
                 fillBasin(n)
         }
     }
 
     mtd fillBasin(node: *Node)
     {
-        if orient2d(node.point, node.next.point, node.next.next.point) == .CCW do
+        if orient2d(node.point, node.next.point, node.next.next.point) == .CCW:
             basin.leftNode = node.next.next
-        else do
+        else:
             basin.leftNode = node.next
 
         basin.bottomNode = basin.leftNode
-        while basin.bottomNode.next and basin.bottomNode.point.y >= basin.bottomNode.next.point.y do
+        while basin.bottomNode.next and basin.bottomNode.point.y >= basin.bottomNode.next.point.y:
             basin.bottomNode = basin.bottomNode.next
-        if basin.bottomNode == basin.leftNode do
+        if basin.bottomNode == basin.leftNode:
             return
 
         basin.rightNode = basin.bottomNode
-        while basin.rightNode.next and basin.rightNode.point.y < basin.rightNode.next.point.y do
+        while basin.rightNode.next and basin.rightNode.point.y < basin.rightNode.next.point.y:
             basin.rightNode = basin.rightNode.next
-        if basin.rightNode == basin.bottomNode do
+        if basin.rightNode == basin.bottomNode:
             return
 
         basin.width       = basin.rightNode.point.x - basin.leftNode.point.x
@@ -1093,33 +1093,33 @@ impl Tessellate
     mtd fillBasinReq(n: *Node)
     {
         var node = n
-        if isShallow(node) do
+        if isShallow(node):
             return
 
         fill(node)
 
-        if node.prev == basin.leftNode and node.next == basin.rightNode do
+        if node.prev == basin.leftNode and node.next == basin.rightNode:
             return
 
         if node.prev == basin.leftNode
         {
             let o = orient2d(node.point, node.next.point, node.next.next.point)
-            if o == .CW do
+            if o == .CW:
                 return
             node = node.next
         }
         elif node.next == basin.rightNode
         {
             let o = orient2d(node.point, node.prev.point, node.prev.prev.point)
-            if o == .CCW do
+            if o == .CCW:
                 return
             node = node.prev
         }
         else
         {
-            if node.prev.point.y < node.next.point.y do
+            if node.prev.point.y < node.next.point.y:
                 node = node.prev
-            else do
+            else:
                 node = node.next
         }
 
@@ -1129,9 +1129,9 @@ impl Tessellate
     mtd isShallow(node: *Node)->bool
     {
         var height: f64
-        if basin.leftHighest do
+        if basin.leftHighest:
             height = basin.leftNode.point.y - node.point.y
-        else do
+        else:
             height = basin.rightNode.point.y - node.point.y
         return basin.width > height
     }
@@ -1147,17 +1147,17 @@ impl Tessellate
     {
         let nextNode = node.next
         let prevNode = node.prev
-        if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point) do
+        if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point):
             return false
-        if angleIsNegative(node.point, nextNode.point, prevNode.point) do
+        if angleIsNegative(node.point, nextNode.point, prevNode.point):
             return true
 
         let next2Node = nextNode.next
-        if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point) do
+        if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point):
             return false
 
         let prev2Node = prevNode.prev
-        if prev2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, nextNode.point, prev2Node.point) do
+        if prev2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, nextNode.point, prev2Node.point):
             return false
 
         return true
@@ -1210,7 +1210,7 @@ impl Tessellate
         node.prev.next = node.next
         node.next.prev = node.prev
 
-        if !legalize(triangle) do
+        if !legalize(triangle):
             mapTriangleToNodes(triangle)
     }
 
@@ -1236,7 +1236,7 @@ impl Tessellate
         node.next.prev = newNode
         node.next      = newNode
 
-        if !legalize(triangle) do
+        if !legalize(triangle):
             mapTriangleToNodes(triangle)
 
         return newNode
@@ -1247,9 +1247,9 @@ impl Tessellate
         let detleft  = (pa.x - pc.x) * (pb.y - pc.y)
         let detright = (pa.y - pc.y) * (pb.x - pc.x)
         let val      = detleft - detright
-        if Math.isZeroEpsilon(val) do
+        if Math.isZeroEpsilon(val):
             return Orientation.Collinear
-        if val > 0 do
+        if val > 0:
             return Orientation.CCW
         return Orientation.CW
     }
@@ -1257,11 +1257,11 @@ impl Tessellate
     func inScanArea(pa, pb, pc, pd: *Point)->bool
     {
         let oadb = (pa.x - pb.x) * (pd.y - pb.y) - (pd.x - pb.x) * (pa.y - pb.y)
-        if oadb >= -Math.ConstF64.Epsilon do
+        if oadb >= -Math.ConstF64.Epsilon:
             return false
 
         let oadc = (pa.x - pc.x) * (pd.y - pc.y) - (pd.x - pc.x) * (pa.y - pc.y)
-        if oadc <= Math.ConstF64.Epsilon do
+        if oadc <= Math.ConstF64.Epsilon:
             return false
 
         return true
@@ -1278,7 +1278,7 @@ impl Tessellate
         let bdxady = bdx * ady
         let oabd   = adxbdy - bdxady
 
-        if oabd <= 0 do
+        if oabd <= 0:
             return false
 
         let cdx = pc.x - pd.x
@@ -1288,7 +1288,7 @@ impl Tessellate
         let adxcdy = adx * cdy
         let ocad   = cdxady - adxcdy
 
-        if ocad <= 0 do
+        if ocad <= 0:
             return false
 
         let bdxcdy = bdx * cdy
@@ -1306,7 +1306,7 @@ impl Tessellate
     {
         loop i in 3
         {
-            if t.delaunayEdge[i] do
+            if t.delaunayEdge[i]:
                 continue
 
             let ot = t.neighbors[i]
@@ -1331,11 +1331,11 @@ impl Tessellate
                     rotateTrianglePair(t, p, ot, op)
 
                     var notLegalized = !legalize(t)
-                    if notLegalized do
+                    if notLegalized:
                         mapTriangleToNodes(t)
 
                     notLegalized = !legalize(ot)
-                    if notLegalized do
+                    if notLegalized:
                         mapTriangleToNodes(ot)
 
                     t.delaunayEdge[i]   = false
@@ -1380,13 +1380,13 @@ impl Tessellate
 
         t.clearNeighbors()
         ot.clearNeighbors()
-        if n1 do
+        if n1:
             ot.markNeighbor(n1)
-        if n2 do
+        if n2:
             t.markNeighbor(n2)
-        if n3 do
+        if n3:
             t.markNeighbor(n3)
-        if n4 do
+        if n4:
             ot.markNeighbor(n4)
         t.markNeighbor(ot)
     }
@@ -1398,7 +1398,7 @@ impl Tessellate
             if !t.neighbors[i]
             {
                 let n = front.locatePoint(t.pointCW(t.points[i]))
-                if n do
+                if n:
                     n.triangle = t
             }
         }
@@ -1413,9 +1413,9 @@ impl Tessellate
     {
         var t = front.head.next.triangle
         let p = front.head.next.point
-        while t and !t.getConstrainedEdgeCW(p) do
+        while t and !t.getConstrainedEdgeCW(p):
             t = t.neighborCCW(p)
-        if t do
+        if t:
             meshClean(t)
     }
 
@@ -1429,17 +1429,17 @@ impl Tessellate
         while stack.count
         {
             let t = stack.popBack()
-            if !t or t.interior do
+            if !t or t.interior:
                 continue
 
             t.interior = true
             triIndices.add(t.idx)
 
-            if !t.constrainedEdge[0] do
+            if !t.constrainedEdge[0]:
                 stack.add(t.neighbors[0])
-            if !t.constrainedEdge[1] do
+            if !t.constrainedEdge[1]:
                 stack.add(t.neighbors[1])
-            if !t.constrainedEdge[2] do
+            if !t.constrainedEdge[2]:
                 stack.add(t.neighbors[2])
         }
 
@@ -1450,7 +1450,7 @@ impl Tessellate
             loop e in 3
             {
                 let neighbor = tri.neighbors[e]
-                if neighbor and !neighbor.interior do
+                if neighbor and !neighbor.interior:
                     tri.neighbors[e] = null
             }
         }
@@ -1480,13 +1480,13 @@ impl Tessellate
 
         func cmp(a, b: *Point)->s32
         {
-            if a.y < b.y do
+            if a.y < b.y:
                 return -1
-            if a.y > b.y do
+            if a.y > b.y:
                 return 1
-            if a.x < b.x do
+            if a.x < b.x:
                 return -1
-            if a.x > b.x do
+            if a.x > b.x:
                 return 1
             return 0
         }

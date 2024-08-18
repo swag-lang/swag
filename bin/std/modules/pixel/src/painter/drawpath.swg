@@ -191,7 +191,7 @@ impl Painter
 
     mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
     {
-        if penSize < 3 do
+        if penSize < 3:
             return
 
         #[Swag.Complete]
@@ -229,7 +229,7 @@ impl Painter
         }
 
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
-        if curState.paintParams & .Antialiased do
+        if curState.paintParams & .Antialiased:
             addEdgeAA(prim1, v1, v2)
     }
 
@@ -256,7 +256,7 @@ impl Painter
             point.x = center.x + (Math.cos(angle) * radius)
             point.y = center.y + (Math.sin(angle) * radius)
             let dist = point.distanceToLine(sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
-            if dist < minDist do
+            if dist < minDist:
                 continue
 
             sharedRoundTmp.insertAt(cast(u64) i + 1, {angle, point})
@@ -268,7 +268,7 @@ impl Painter
         {
             let v2    = sharedRoundTmp[i].pos
             let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
-            if curState.paintParams & .Antialiased do
+            if curState.paintParams & .Antialiased:
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
@@ -288,14 +288,14 @@ impl Painter
             angle1 = Math.atan2(d2.y, d2.x)
         }
 
-        if Math.isEqualEpsilon(angle0, angle1) do
+        if Math.isEqualEpsilon(angle0, angle1):
             return
 
         let radius = d1.length()
 
-        if angle1 > angle0 + Math.ConstF32.Pi do
+        if angle1 > angle0 + Math.ConstF32.Pi:
             angle1 -= Math.ConstF32.TwoPi
-        elif angle1 < angle0 - Math.ConstF32.Pi do
+        elif angle1 < angle0 - Math.ConstF32.Pi:
             angle1 += Math.ConstF32.TwoPi
 
         drawRound(p, radius, angle0, angle1, pen)
@@ -306,15 +306,15 @@ impl Painter
         var a = Math.Vector2{d1.x + d2.x, d1.y + d2.y}
         let w = d1.length()
         let l = a.length()
-        if Math.isZeroEpsilon(l) do
+        if Math.isZeroEpsilon(l):
             return
 
         var m2 = (2 * w) / l
         if m2 > pen.joinMiterLimit
         {
-            if justMiter do
+            if justMiter:
                 m2 = pen.joinMiterLimit
-            else do
+            else:
                 return drawJoinBevel(p, d1, d2, pen)
         }
 
@@ -372,11 +372,11 @@ impl Painter
 
     mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Math.Vector2)
     {
-        if beginLine or lastLineInvalid do
+        if beginLine or lastLineInvalid:
             return
 
         // Cap is defined
-        if pen.dashEndCapStyle != DashCapStyle.None do
+        if pen.dashEndCapStyle != DashCapStyle.None:
             drawDashCap(cxt, pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
@@ -394,7 +394,7 @@ impl Painter
         if pos.distance(path.endPoint) < 1
         {
             prev = path.endPoint
-            if path.isClosed do
+            if path.isClosed:
                 beginLine = true
         }
         else
@@ -419,9 +419,9 @@ impl Painter
             normal *= penSize2
         }
 
-        // If this is still invalid, there's nothing we can do
+        // If this is still invalid, there's nothing we can:
         lastLineInvalid = normal.isZeroEpsilon()
-        if lastLineInvalid do
+        if lastLineInvalid:
             return
 
         // First line cap
@@ -433,7 +433,7 @@ impl Painter
         }
 
         // Joints
-        if !beginLine do
+        if !beginLine:
             drawJoin(cxt, prev, normalPrev, normal)
 
         // Draw quad
@@ -462,7 +462,7 @@ impl Painter
         }
 
         // To draw end joint
-        if firstLine do
+        if firstLine:
             normalFirst = normal
 
         normalPrev = normal
@@ -480,7 +480,7 @@ impl Painter
         case Pattern:
             pattern      = pen.pattern.buffer
             patternCount = cast(s32) pen.pattern.count
-            if patternCount == 0 do
+            if patternCount == 0:
                 fallthrough
         case Dot:
             const P = [1.0, 1.0]
@@ -497,7 +497,7 @@ impl Painter
         }
 
         patternTotalLen = 0
-        loop i in patternCount do
+        loop i in patternCount:
             patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
 
@@ -514,7 +514,7 @@ impl Painter
         patternIndex        = 0
         remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
         remainingPatternLen *= pen.size
-        if !path.isClosed do
+        if !path.isClosed:
             remainingPatternLen *= 0.5
     }
 
@@ -591,7 +591,7 @@ impl Painter
 
     mtd drawLineBeginCap(using cxt: *Context)->Math.Vector2
     {
-        if pen.beginCapStyle == .None or penSize < 3 do
+        if pen.beginCapStyle == .None or penSize < 3:
             return Math.Vector2.Zero
 
         var v1 = path.polygon.getPoint(0, cxt.offsetPath)
@@ -605,7 +605,7 @@ impl Painter
 
     mtd drawLineEndCap(using cxt: *Context)->Math.Vector2
     {
-        if pen.endCapStyle == .None or penSize < 3 do
+        if pen.endCapStyle == .None or penSize < 3:
             return Math.Vector2.Zero
 
         var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
@@ -620,7 +620,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawPath(using cxt: *Context)
     {
-        if pen.size < 1 or path.polygon.points.count == 0 do
+        if pen.size < 1 or path.polygon.points.count == 0:
             return
 
         penSize        = pen.size
@@ -691,13 +691,13 @@ public impl Painter
     mtd drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(curState.paintQuality)
-        if Math.isZeroEpsilon(path.polygon.totalLen) do
+        if Math.isZeroEpsilon(path.polygon.totalLen):
             return
 
         var cxt: Context
         cxt.path = path
         cxt.pen  = &pen
-        if pen.dashStyle != .None do
+        if pen.dashStyle != .None:
             preparePattern(&cxt)
 
         var bvMin = path.bvMin
@@ -716,11 +716,11 @@ public impl Painter
     #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
-        if !pathList.paths.count do
+        if !pathList.paths.count:
             return
         if mode == .Separate
         {
-            visit p in pathList.paths do
+            visit p in pathList.paths:
                 drawPath(p, pen)
             return
         }
@@ -741,7 +741,7 @@ public impl Painter
         {
             cxt.path = p
             cxt.pen  = &pen
-            if pen.dashStyle != .None do
+            if pen.dashStyle != .None:
                 preparePattern(&cxt)
             drawPath(&cxt)
         }
@@ -752,7 +752,7 @@ public impl Painter
     #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
-        if !pathList.paths.count do
+        if !pathList.paths.count:
             return
         sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color

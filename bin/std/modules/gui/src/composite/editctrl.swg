@@ -15,7 +15,7 @@ impl IWnd for EditCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !label do
+        if !label:
             return
 
         var rect    = getClientRect()
@@ -28,14 +28,14 @@ impl IWnd for EditCtrl
 
 impl EditCtrl
 {
-    // Create the popup list, but do not display it
+    // Create the popup list, but: not display it
     func create(parent: *Wnd, name: string, text: string, position: Math.Rectangle = {}, id: WndId = null, flags: EditBoxFlags = Zero)->*EditCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = metrics.editBox_Width * 2
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = metrics.editBox_Height
 
         with let ctrl = Wnd.create'EditCtrl(parent, pos, id)

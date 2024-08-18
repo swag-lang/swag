@@ -132,9 +132,9 @@ void initErrors()
     SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed");
     SWAG_ERROR(Wrn0006, "unused %s                       $ the %s [[%s]] is not used");
     SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
-    SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ consider replacing [[else do if]] with a single [[elif]]");
-    SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ consider replacing [[#else #do #if]] with a single [[#elif]]");
-    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing [[do if]] with a [[where]] clause after the [[%s]] expression");
+    SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ consider replacing [[else: if]] with a single [[elif]]");
+    SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ consider replacing [[#else: #if]] with a single [[#elif]]");
+    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing [[: if]] with a [[where]] clause after the [[%s]] expression");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -432,7 +432,8 @@ void initErrors()
     SWAG_ERROR(Err0290, "mismatch scopes                                   $ expected the [[impl]] block to be defined in the same scope as [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0291, "misplaced [[#dependencies]]                       $ cannot use [[#dependencies]] outside of [[module.swg]] or [[.swgs]] files                                                                $ ");
     SWAG_ERROR(Err0292, "misplaced [[#dependencies]]                       $ expected [[#dependencies]] to be placed at the file level                                                                                $ ");
-    SWAG_ERROR(Err0293, "misplaced [[#do]]                                 $ cannot have [[#do]] before [[{]]                                                                                                         $ a block should start with either [[#do]] or [[{]], but not both");
+    SWAG_ERROR(Err0293, "misplaced [[':']]                                 $ cannot have [[':']] before [[{]]                                                                                                         $ a block should start with either [[':']] or [[{]], but not both");
+    SWAG_ERROR(Err0322, nullptr);
     SWAG_ERROR(Err0294, "misplaced [[#global testerror]]                   $ cannot use [[#global testerror]] outside of a test file in the [[./tests]] folder                                                        $ ");
     SWAG_ERROR(Err0295, "misplaced [[#global testwarning]]                 $ cannot use [[#global testwarning]] outside of a test file in the [[./tests]] folder                                                      $ ");
     SWAG_ERROR(Err0296, "misplaced [[#global using]]                       $ cannot use [[#global using]] outside of [[module.swg]] or [[.swgs]] files                                                                $ ");
@@ -461,7 +462,6 @@ void initErrors()
     SWAG_ERROR(Err0319, "misplaced [[const]] qualifier                     $ cannot use the [[const]] qualifier after [[func]], only after [[mtd]]                                                                    $ ");
     SWAG_ERROR(Err0320, "misplaced [[continue]]                            $ cannot use [[continue]] outside of a breakable block such as [[loop]], [[visit]], [[for]], etc.                                          $ ");
     SWAG_ERROR(Err0321, "misplaced [[default]]                             $ cannot use a [[default]] statement in a [[switch]] marked with [[#[Swag.Complete]]]                                                      $ ");
-    SWAG_ERROR(Err0322, "misplaced [[do]]                                  $ cannot have [[do]] before [[{]]                                                                                                          $ a block should start with either [[do]] or [[{]], but not both");
     SWAG_ERROR(Err0323, "misplaced [[fallthrough]]                         $ cannot use [[fallthrough]] in the last [[case]] of a [[switch]]                                                                          $ consider removing it");
     SWAG_ERROR(Err0324, "misplaced [[fallthrough]]                         $ cannot use [[fallthrough]] outside of a [[case]] block                                                                                   $ ");
     SWAG_ERROR(Err0325, "misplaced [[fallthrough]]                         $ cannot use [[fallthrough]] outside of a [[switch]]                                                                                       $ ");
@@ -545,7 +545,8 @@ void initErrors()
     SWAG_ERROR(Err0403, "misplaced variadic parameter                      $ cannot place a variadic parameter anywhere but at the end                                                                                $ ");
     SWAG_ERROR(Err0404, "misplaced variadic parameter                      $ cannot use variadic parameters in an inline function                                                                                     $ ");
     SWAG_ERROR(Err0405, "missing [[#alias]] number                         $ cannot use an [[#alias]] variable name without a trailing number, such as [[#alias0]], [[#alias1]], etc.                                 $ ");
-    SWAG_ERROR(Err0406, "missing [[#do]]                                   $ expected either [[#do]] or [[{]] before $$TKN$$                                                                                          $ ");
+    SWAG_ERROR(Err0406, "missing [[':']]                                   $ expected either [[':']] or [[{]] before $$TKN$$                                                                                          $ ");
+    SWAG_ERROR(Err0425, nullptr);
     SWAG_ERROR(Err0407, "missing [[#foreignlib]] string argument           $ expected a library name after [[#foreignlib]], found $$TKN$$ instead                                                                     $ consider using [[#foreignlib \"path/to/library\"]] to specify the library to import");
     SWAG_ERROR(Err0408, "missing [[#global testerror]] string argument     $ expected the error string to check after [[#global testerror]], found $$TKN$$ instead                                                    $ ");
     SWAG_ERROR(Err0409, "missing [[#global testwarning]] string argument   $ expected the warning string to check after [[#global testwarning]], found $$TKN$$ instead                                                $ ");
@@ -564,7 +565,6 @@ void initErrors()
     SWAG_ERROR(Err0422, "missing [[:]]                                     $ expected [[:]] after the [[loop]] variable name [[%s]]                                                                                   $ consider using the syntax [[loop [variable:] count]]");
     SWAG_ERROR(Err0423, "missing [[case]] expression                       $ expected the [[case]] expression, found [[%s]] instead                                                                                   $ ");
     SWAG_ERROR(Err0424, "missing [[closure]] capture variable              $ expected another capture variable between the [[comma]] ',' and [['|']]                                                                  $ consider adding another variable or removing the trailing comma");
-    SWAG_ERROR(Err0425, "missing [[do]]                                    $ expected either [[do]] or [[{]] before $$TKN$$                                                                                           $ ");
     SWAG_ERROR(Err0426, "missing [[if]] boolean expression                 $ expected a boolean expression after [[if]], found $$TKN$$ instead                                                                        $ ");
     SWAG_ERROR(Err0427, "missing [[impl]]                                  $ expected the function [[%s]] in the interface [[%s]] to have an [[impl]] marker                                                          $ ");
     SWAG_ERROR(Err0428, "missing [[loop]] count                            $ expected the [[loop]] count expression before [[%s]]                                                                                     $ ");
@@ -1016,8 +1016,8 @@ void initErrors()
     SWAG_ERROR(Nte0109, "the %s [[%s]] is marked with [[throw]] and may raise errors you should handle");
     SWAG_ERROR(Nte0110, "the %s [[%s]] is waiting for %s [[%s]] to be resolved");
     SWAG_ERROR(Nte0111, "the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected");
-    SWAG_ERROR(Nte0112, "the [[%s]] block should either start with [[#do]] or be enclosed in [[{}]]");
-    SWAG_ERROR(Nte0113, "the [[%s]] block should either start with [[do]] or be enclosed in [[{}]]");
+    SWAG_ERROR(Nte0112, "the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]");
+    SWAG_ERROR(Nte0113, "the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]");
     SWAG_ERROR(Nte0114, "the [[@gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0115, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
     SWAG_ERROR(Nte0116, "the address of [[%s]] is taken implicitly because it is a mutable UFCS argument");
@@ -1125,7 +1125,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) should not have an explicitly specified type");
     SWAG_ERROR(Nte0220, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
-    SWAG_ERROR(Nte0221, "consider adding [[where <expression>]] after this to replace [[do if]]");
+    SWAG_ERROR(Nte0221, "consider adding [[where <expression>]] after this to replace [[: if]]");
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);

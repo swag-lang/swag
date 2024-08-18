@@ -18,7 +18,7 @@ namespace std
     {
         func free(using self)
         {
-            if !buffer do
+            if !buffer:
                 return
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
@@ -28,7 +28,7 @@ namespace std
 
         func realloc(using self, newSize: u32)
         {
-            if allocator == null do
+            if allocator == null:
                 allocator = @getcontext().allocator
 
             var req: AllocatorRequest

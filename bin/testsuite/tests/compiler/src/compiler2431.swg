@@ -3,17 +3,17 @@
 func append(buf: *void, fmt: string, values: ...)
     where(call)
     {
-        if !@isconstexpr(fmt) do return true
+        if !@isconstexpr(fmt): return true
 
         var cptPercent = 0
         for var i = 0; i < @countof(fmt); i += 1
         {
-            if fmt[i] != `%`'u8 do
+            if fmt[i] != `%`'u8:
                 continue
 
-            if i == @countof(fmt) - 1 or fmt[i + 1] != `%`'u8 do
+            if i == @countof(fmt) - 1 or fmt[i + 1] != `%`'u8:
                 cptPercent += 1
-            else do
+            else:
                 i += 1
         }
 

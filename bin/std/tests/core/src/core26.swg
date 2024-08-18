@@ -7,7 +7,7 @@ func Visit(str: string, user: code)
     {
         let slice = @mkslice(ptr, cast(u64) count)
         let (c, eat) = Core.Utf8.decodeRune(slice)
-        if !eat do
+        if !eat:
             break
         #macro
         {

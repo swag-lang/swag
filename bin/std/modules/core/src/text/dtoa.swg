@@ -72,22 +72,22 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
     case `g`'u8, `G`'u8:
         // trailing fractional zeros in 'e' form will be trimmed.
         var eprec = prec
-        if eprec > digs.nd and digs.nd >= digs.dp do
+        if eprec > digs.nd and digs.nd >= digs.dp:
             eprec = digs.nd
         // %e is used if the exponent from the conversion
         // is less than -4 or greater than or equal to the precision.
         // if precision was the shortest possible, use precision 6 for this decision.
-        if shortest do
+        if shortest:
             eprec = 6
         let exp = digs.dp - 1
         if exp < -4 or exp >= eprec
         {
-            if prec > digs.nd do
+            if prec > digs.nd:
                 prec = digs.nd
             return fmtE(dst, neg, forceSign, digs, prec - 1, cast(u8) (fmt + `e`'u8 - `g`'u8))
         }
 
-        if prec > digs.dp do
+        if prec > digs.dp:
             prec = digs.nd
         return fmtF(dst, neg, forceSign, digs, Math.max(prec - digs.dp, 0))
     }
@@ -96,14 +96,14 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
 func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, fmt: u8)
 {
     // sign
-    if neg do
+    if neg:
         dst.addNative(g_CultureInfo.numberFormat.negativeSign)
-    elif forceSign do
+    elif forceSign:
         dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
     // first digit
     var ch = `0`'u8
-    if d.nd != 0 do
+    if d.nd != 0:
         ch = d.d[0]
     dst.addNative(ch)
 
@@ -129,7 +129,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
     // e±
     dst.addNative(fmt)
     var exp = d.dp - 1
-    if d.nd == 0 do
+    if d.nd == 0:
         exp = 0
     if exp < 0
     {
@@ -162,9 +162,9 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 {
     // sign
-    if neg do
+    if neg:
         dst.addNative(g_CultureInfo.numberFormat.negativeSign)
-    elif forceSign do
+    elif forceSign:
         dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
     // integer, padded with zeros as needed.
@@ -178,7 +178,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
             m += 1
         }
     }
-    else do
+    else:
         dst.addNative(`0`'u8)
 
     // fraction
@@ -189,7 +189,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
         {
             var ch = `0`'u8
             let j  = d.dp + i
-            if 0 <= j and j < d.nd do
+            if 0 <= j and j < d.nd:
                 ch = d.d[j]
             dst.addNative(ch)
         }
@@ -285,17 +285,17 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
         // places. In this case upper is the longest, so we iterate from
         // ui==0 and start li and mi at (possibly) -1.
         let mi = ui - upper.dp + d.dp
-        if mi >= d.nd do
+        if mi >= d.nd:
             break
         let li = ui - upper.dp + lower.dp
         var l  = `0`'u8                       // lower digit
-        if li >= 0 and li < lower.nd do
+        if li >= 0 and li < lower.nd:
             l = lower.d[li]
         var m = `0`'u8 // middle digit
-        if mi >= 0 do
+        if mi >= 0:
             m = d.d[mi]
         var u = `0`'u8 // upper digit
-        if ui < upper.nd do
+        if ui < upper.nd:
             u = upper.d[ui]
 
         // Okay to round down (truncate) if lower has a different digit
@@ -326,8 +326,8 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
         // is inclusive or upper is bigger than the result of rounding up.
         let okup = upperdelta > 0 and (inclusive or upperdelta > 1 or ui + 1 < upper.nd)
 
-        // If it's okay to do either, then round to the nearest one.
-        // If it's okay to do only one, do it.
+        // If it's okay to: either, then round to the nearest one.
+        // If it's okay to: only one,: it.
         switch
         {
         case okdown and okup:
@@ -426,7 +426,7 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
         case `e`'u8, `E`'u8:
             digits += 1
         case `g`'u8, `G`'u8:
-            if prec == 0 do
+            if prec == 0:
                 prec = 1
             digits = prec
         }
@@ -438,7 +438,7 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
             digs.d = tmp
             var f = FloatExt{mant, exp - cast(s64) Swag.F64.MantBits, neg}
             ok = f.fixedDecimal(&digs, digits)
-            if ok do
+            if ok:
                 return formatDigits(buf, shortest, neg, forceSign, digs, prec, fmt)
         }
     }

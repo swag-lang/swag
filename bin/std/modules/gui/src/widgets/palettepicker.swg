@@ -30,9 +30,9 @@ impl IWnd for PalettePicker
         var y = clientRect.y
         visit c, i in pal
         {
-            if hotIdx == i do
+            if hotIdx == i:
                 colorBorder = colors.palPicker_HotBorder
-            else do
+            else:
                 colorBorder = colors.palPicker_Border
 
             var posBox = Math.Rectangle{x, y, boxSize, boxSize}
@@ -40,7 +40,7 @@ impl IWnd for PalettePicker
 
             painter.setParams(.Antialiased)
             posBox.inflate(-2)
-            if c.a != 255 do
+            if c.a != 255:
                 painter.fillRoundRect(posBox, 5, 5, Brush.createHatch(.CheckBoardLarge, colors.colorPicker_BackAlpha))
             painter.fillRoundRect(posBox, 5, 5, c)
             posBox.inflate(1)

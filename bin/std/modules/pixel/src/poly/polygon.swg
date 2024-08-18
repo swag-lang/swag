@@ -35,7 +35,7 @@ impl Polygon
     #[Swag.Overload]
     mtd getPoint(i: u64, offset: f32)->Vector2
     {
-        if Math.isZeroEpsilon(offset) do
+        if Math.isZeroEpsilon(offset):
             return points.buffer[i]
 
         let count = points.count - 1
@@ -113,15 +113,15 @@ impl Polygon
     #[Swag.Overload]
     mtd offset(value: f32)
     {
-        if Math.isZeroEpsilon(value) do
+        if Math.isZeroEpsilon(value):
             return
-        if !points.count do
+        if !points.count:
             return
 
         var copy: Array'Vector2
         copy.reserve(points.count)
 
-        loop i in points.count do
+        loop i in points.count:
             copy.add(getPoint(i, value))
 
         points = #move copy
@@ -130,7 +130,7 @@ impl Polygon
     internal mtd storeClipperResult(res: Clipper.ClipperPath)
     {
         clear()
-        if !res.count do
+        if !res.count:
             return
 
         visit pt in res
@@ -149,9 +149,9 @@ impl Polygon
     #[Swag.Overload]
     internal mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
-        if Math.isZeroEpsilon(value) do
+        if Math.isZeroEpsilon(value):
             return
-        if !points.count do
+        if !points.count:
             return
 
         var joinType = Clipper.JoinType.Square
@@ -170,7 +170,7 @@ impl Polygon
 
         // Register path
         var path: Clipper.ClipperPath
-        visit pt in points do
+        visit pt in points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         off.addPath(path, joinType)
 
@@ -186,7 +186,7 @@ impl Polygon
 
         offset(&res, value, joinStyle, toler)
         clear()
-        if res.count do
+        if res.count:
             storeClipperResult(res[0])
     }
 
@@ -215,7 +215,7 @@ impl Polygon
     #[Swag.Overload]
     internal mtd clean(res: *Clipper.ClipperPaths)
     {
-        if !points.count do
+        if !points.count:
             return
 
         var trf: Clipper.Transform
@@ -224,7 +224,7 @@ impl Polygon
 
         // Register path
         var path: Clipper.ClipperPath
-        visit pt in points do
+        visit pt in points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         trf.addPath(&path, .Subject)
 
@@ -239,7 +239,7 @@ impl Polygon
         var res: Clipper.ClipperPaths
         clean(&res)
         clear()
-        if res.count do
+        if res.count:
             storeClipperResult(res[0])
     }
 
@@ -260,7 +260,7 @@ impl Polygon
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
             np.bvMax = np.polygon.bvMax
-            if !isClockwise do
+            if !isClockwise:
                 break
         }
 
@@ -276,12 +276,12 @@ impl Polygon
         isConvex    = true
         totalLen    = 0
 
-        if !points.count do
+        if !points.count:
             return
 
         let n        = points.count - 1
         let isClosed = points[0].distanceSquared(points.back()) < 0.5 * 0.5
-        if isClosed do
+        if isClosed:
             points.count -= 1
 
         var q = 0
@@ -318,7 +318,7 @@ impl Polygon
             q += 1
         }
 
-        if isClosed do
+        if isClosed:
             points.count += 1
         isClockwise = area >= 0
     }

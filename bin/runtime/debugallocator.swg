@@ -150,7 +150,7 @@ impl DebugAllocator
     mtd opDrop()
     {
         // Free all blocks in quarantine
-        while sizeFree > 0 do
+        while sizeFree > 0:
             DebugAllocator.IAllocator.releaseLast(self)
     }
 
@@ -164,7 +164,7 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if countAlloc == 0 or !detectLeaks do
+        if countAlloc == 0 or !detectLeaks:
             return
 
         var scan = cast(*DebugAllocatorHeader) firstAlloc
@@ -188,9 +188,9 @@ impl DebugAllocator
             @print("leak error: ")
             @print("id [", scan.allocId, "] sizeAlloc [")
             printDisplaySize(scan.userSize)
-            if scan.hint do
+            if scan.hint:
                 @print("] hint [", scan.hint, "]")
-            else do
+            else:
                 @print("]")
             @print("\n")
             @print("\x1b[36m")
@@ -228,7 +228,7 @@ impl DebugAllocator
     // to an allocated block
     mtd assertIsAllocated(addr: *void, callerLoc = #callerlocation)
     {
-        if !addr do
+        if !addr:
             return
         let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - @sizeof(DebugAllocatorHeader))
         checkIsAllocated(ptrHeader, callerLoc)
@@ -257,7 +257,7 @@ impl IAllocator for DebugAllocator
 {
     mtd free(request: *AllocatorRequest)
     {
-        if !request.address do
+        if !request.address:
             return
 
         assertIsAllocated(request.address, request.callerLoc)
@@ -269,11 +269,11 @@ impl IAllocator for DebugAllocator
         @assert(ptrHeader.userSize == request.size)
 
         // Unlink from allocated list
-        if !ptrHeader.prev do
+        if !ptrHeader.prev:
             self.firstAlloc = ptrHeader.next
-        else do
+        else:
             ptrHeader.prev.next = ptrHeader.next
-        if ptrHeader.next do
+        if ptrHeader.next:
             ptrHeader.next.prev = ptrHeader.prev
 
         // Stats
@@ -298,21 +298,21 @@ impl IAllocator for DebugAllocator
         // Link to the start of the free list
         ptrHeader.prev = null
         ptrHeader.next = firstFree
-        if firstFree do
+        if firstFree:
             firstFree.prev = ptrHeader
         firstFree = ptrHeader
-        if !lastFree do
+        if !lastFree:
             lastFree = firstFree
 
         // Purge oldest memory blocks if necessary, until we are in the quarantine
         // budget again
-        while sizeFree > (maxFreeSize << 10) do
+        while sizeFree > (maxFreeSize << 10):
             releaseLast()
     }
 
     mtd releaseLast()
     {
-        if !lastFree do
+        if !lastFree:
             return
 
         let ptrHeader = lastFree
@@ -357,7 +357,7 @@ impl IAllocator for DebugAllocator
         // Special case
         if request.size == 0
         {
-            if request.mode == .Realloc do
+            if request.mode == .Realloc:
                 free(request)
             request.address = null
             return
@@ -378,11 +378,11 @@ impl IAllocator for DebugAllocator
             // become invalid in case of a reallocation
             if prevHeader
             {
-                if !prevHeader.prev do
+                if !prevHeader.prev:
                     self.firstAlloc = prevHeader.next
-                else do
+                else:
                     prevHeader.prev.next = prevHeader.next
-                if prevHeader.next do
+                if prevHeader.next:
                     prevHeader.next.prev = prevHeader.prev
             }
         }
@@ -415,13 +415,13 @@ impl IAllocator for DebugAllocator
         footer.magic = MagicAlloc
 
         // Fill with garbage
-        if request.mode == AllocatorMode.Alloc or !request.address do
+        if request.mode == AllocatorMode.Alloc or !request.address:
             @memset(userAddr, AllocByte, request.size)
-        elif prevSize < request.size do
+        elif prevSize < request.size:
             @memset(userAddr + prevSize, AllocByte, request.size - prevSize)
 
         // Stats
-        if !prevSize do
+        if !prevSize:
             self.countAlloc += 1
         self.sizeAlloc -= prevSize
         self.sizeAlloc += request.size
@@ -442,7 +442,7 @@ impl IAllocator for DebugAllocator
         // Link to list of allocated blocks
         header.prev = null
         header.next = self.firstAlloc
-        if header.next do
+        if header.next:
             header.next.prev = header
         self.firstAlloc = header
     }

@@ -75,9 +75,9 @@ impl String
 
     mtd const opEquals(other: string)->bool
     {
-        if buffer == @dataof(other) do
+        if buffer == @dataof(other):
             return true
-        if length != @countof(other) do
+        if length != @countof(other):
             return false
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
@@ -90,11 +90,11 @@ impl String
     mtd(op: string) opIndexAssign(index: u64, value: u8)
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
-        #if op == "+=" #do
+        #if op == "+=":
             buffer[index] += #over value
-        #elif op == "-=" #do
+        #elif op == "-=":
             buffer[index] -= #over value
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
@@ -107,72 +107,72 @@ impl String
     #[Overload]
     mtd(op: string) opAssign(value: const [..] string)
     {
-        #if op == "+=" #do
-            visit v in value do
+        #if op == "+=":
+            visit v in value:
                 append(v)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     #[Overload]
     mtd(op: string) opAssign(value: const [..] rune)
     {
-        #if op == "+=" #do
-            visit v in value do
+        #if op == "+=":
+            visit v in value:
                 append(v)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     #[Overload]
     mtd(op: string) opAssign(value: const [..] u8)
     {
-        #if op == "+=" #do
-            visit v in value do
+        #if op == "+=":
+            visit v in value:
                 append(v)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     #[Overload]
     mtd(op: string) opAssign(value: string)
     {
-        #if op == "+=" #do
+        #if op == "+=":
             append(value)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     #[Overload]
     mtd(op: string) opAssign(value: rune)
     {
-        #if op == "+=" #do
+        #if op == "+=":
             append(value)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     #[Overload]
     mtd(op: string) opAssign(value: u8)
     {
-        #if op == "+=" #do
+        #if op == "+=":
             append(value)
-        #else #do
+        #else:
             #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd opPostMove()
     {
-        if buffer and capacity <= StringSmallSize do
+        if buffer and capacity <= StringSmallSize:
             buffer = acast &padding[0]
     }
 
     mtd opPostCopy()
     {
-        if !buffer do
+        if !buffer:
             return
 
-        if capacity <= StringSmallSize do
+        if capacity <= StringSmallSize:
             buffer = acast &padding[0]
         else
         {
@@ -186,7 +186,7 @@ impl String
 
     mtd opDrop()
     {
-        if buffer != acast &padding[0] do
+        if buffer != acast &padding[0]:
             Memory.free(buffer, capacity, allocator)
     }
 
@@ -203,9 +203,9 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitRunes(stmt: code)
     {
-        #if ptr #do
+        #if ptr:
             #error "visiting runes by pointer is not supported"
-        #if back #do
+        #if back:
             #error "visiting runes in reverse order is not supported"
         Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
     }
@@ -216,27 +216,27 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitBytes(stmt: code)
     {
-        if !length do
+        if !length:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        #if back #do
+        #if back:
             var scan = buffer + length
-        #else #do
+        #else:
             var scan = buffer - 1
 
         loop length
         {
-            #if back #do
+            #if back:
                 scan -= 1
-            #else #do
+            #else:
                 scan += 1
 
             #macro
             {
-                #if #up ptr #do
+                #if #up ptr:
                     var #alias0 = #up scan
-                #else #do
+                #else:
                     var #alias0 = dref #up scan
                 var #alias1 = #index
                 #mixin #up stmt
@@ -282,7 +282,7 @@ impl String
     // Transform a null string in an empty one
     mtd ensureNotNull()
     {
-        if buffer do
+        if buffer:
             return
         buffer = acast &padding[0]
     }
@@ -291,7 +291,7 @@ impl String
     #[Overload]
     mtd replace(what: rune, by: string)
     {
-        if !length do
+        if !length:
             return
         let byLength = @countof(by)
 
@@ -304,7 +304,7 @@ impl String
             length -= 1
             length += byLength
             idx += byLength
-            if idx == length do
+            if idx == length:
                 break
             idx = Utf8.indexOf(toString(), what, idx)
         }
@@ -317,7 +317,7 @@ impl String
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         let whatLength = @countof(what)
-        if !whatLength or whatLength > length do
+        if !whatLength or whatLength > length:
             return
         let byLength = @countof(by)
 
@@ -330,7 +330,7 @@ impl String
             length -= whatLength
             length += byLength
             idx += byLength
-            if idx == length do
+            if idx == length:
                 break
             idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
@@ -341,7 +341,7 @@ impl String
     // Get the last byte
     mtd back()->u8
     {
-        if !length do
+        if !length:
             return 0
         return buffer[length - 1]
     }
@@ -349,7 +349,7 @@ impl String
     // Remove some bytes at the given index
     mtd remove(byteIndex: u64, byteCount: u64 = 1)
     {
-        if !byteCount do
+        if !byteCount:
             return
         Debug.safetyBoundCheck(byteIndex + byteCount <= length, "index out of range")
         Memory.copyOver(buffer + byteIndex, buffer + byteIndex + byteCount, length - (byteIndex + byteCount))
@@ -360,7 +360,7 @@ impl String
     // Remove some bytes at the end
     mtd removeBack(byteCount: u64 = 1)
     {
-        if !byteCount do
+        if !byteCount:
             return
         Debug.safetyBoundCheck(byteCount <= length, "index out of range")
         length -= byteCount
@@ -398,7 +398,7 @@ impl String
 
         Debug.safetyBoundCheck(byteIndex < length, "index out of range")
         let countof = @countof(value)
-        if !countof do
+        if !countof:
             return
 
         grow(length + countof + 1)
@@ -431,7 +431,7 @@ impl String
         var tmp: [4] u8
         let eat  = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
-        loop i in eat do
+        loop i in eat:
             buffer[length + i] = tmp[i]
         length += eat
         buffer[length] = 0
@@ -442,7 +442,7 @@ impl String
     mtd append(value: string)
     {
         let concatLength = @countof(value)
-        if concatLength == 0 do
+        if concatLength == 0:
             return
 
         let newLength = length + concatLength + 1
@@ -456,7 +456,7 @@ impl String
     func join(values: string...)->String
     {
         var result: String
-        loop values do
+        loop values:
             result += values[#index]
         return result
     }
@@ -468,7 +468,7 @@ impl String
         var result: String
         loop values
         {
-            if separator and #index do
+            if separator and #index:
                 result += separator
             result += values[#index]
         }
@@ -480,7 +480,7 @@ impl String
     #[Inline]
     mtd grow(wantedCapacity: u64)
     {
-        if wantedCapacity <= capacity do
+        if wantedCapacity <= capacity:
             return
         let newCapacity = Math.max(capacity * 2, wantedCapacity)
         reserve(newCapacity)
@@ -490,7 +490,7 @@ impl String
     mtd reserve(newCapacity: u64)
     {
         length = Math.min(length, newCapacity)
-        if allocator == null do
+        if allocator == null:
             allocator = @getcontext().allocator
 
         // Small size, just be sure with have a valid buffer address
@@ -528,7 +528,7 @@ impl String
     // Remove whitespaces at the start of the String
     mtd trimStart()
     {
-        if !length do
+        if !length:
             return
 
         var ptr = buffer
@@ -536,7 +536,7 @@ impl String
         {
             let sl = @mkslice(ptr, length)
             let (c, eat) = Utf8.decodeRune(sl)
-            if !Unicode.isSpace(c) do
+            if !Unicode.isSpace(c):
                 break
             length -= eat
             ptr += eat
@@ -549,14 +549,14 @@ impl String
     // Remove whitespaces at the end of the String
     mtd trimEnd()
     {
-        if !length do
+        if !length:
             return
 
         loop
         {
             let sl = @mkslice(buffer, length)
             let (c, eat) = Utf8.decodeLastRune(sl)
-            if !Unicode.isSpace(c) do
+            if !Unicode.isSpace(c):
                 break
             length -= eat
         }

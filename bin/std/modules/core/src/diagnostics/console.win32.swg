@@ -77,13 +77,13 @@ public func resetColor()
 public func printf(message: string, params: ...)
     where(call)
     {
-        if !@isconstexpr(message) or !@isconstexpr(params) do
+        if !@isconstexpr(message) or !@isconstexpr(params):
             return true
         Format.checkFormat(@nameof(#self), message, params)
         return true
     }
 {
-    if g_SilentMode do
+    if g_SilentMode:
         return
 
     if @countof(params)
@@ -111,12 +111,12 @@ public func prompt()->String
     let h = GetStdHandle(STD_INPUT_HANDLE)
     loop
     {
-        if !ReadFile(h, &buffer[0], BufSize, &dwRead, null) do
+        if !ReadFile(h, &buffer[0], BufSize, &dwRead, null):
             break
         result.append(@mkstring(&buffer[0], dwRead))
-        if dwRead < BufSize do
+        if dwRead < BufSize:
             break
-        if buffer[BufSize - 1] == `\n` do
+        if buffer[BufSize - 1] == `\n`:
             break
     }
 

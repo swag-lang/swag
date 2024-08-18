@@ -50,15 +50,15 @@ func day4A()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v in val0 do
+        visit v in val0:
             v0.add(assume StrConv.toS32(v))
-        visit v in val1 do
+        visit v in val1:
             v1.add(assume StrConv.toS32(v))
 
         var score = 1
         visit v in v1
         {
-            if v0.contains(v) do
+            if v0.contains(v):
                 score <<= 1
         }
 

@@ -27,7 +27,7 @@ func day2B()
     let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's32
-    visit v in Tokenize.split(lines[0], `,`'u8) do
+    visit v in Tokenize.split(lines[0], `,`'u8):
         prg.add(assume StrConv.toS32(v))
 
     var op = prg
@@ -40,18 +40,18 @@ func day2B()
         var ip = 0
         while op[ip] != 99
         {
-            if op[ip] == 1 do
+            if op[ip] == 1:
                 op[op[ip + 3]] = op[op[ip + 1]] + op[op[ip + 2]]
-            else do
+            else:
                 op[op[ip + 3]] = op[op[ip + 1]] * op[op[ip + 2]]
             ip += 4
         }
 
-        if op[0] == 19690720 do
+        if op[0] == 19690720:
             break
 
         x = (x + 1) % 100
-        if x == 0 do
+        if x == 0:
             y += 1
 
         op = prg

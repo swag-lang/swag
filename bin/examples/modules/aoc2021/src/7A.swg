@@ -45,7 +45,7 @@ func day7A()
     let str      = Tokenize.split(lines[0], `,`'u8)
 
     var crabs: Array's32
-    visit v in str do
+    visit v in str:
         crabs.add(assume StrConv.toS32(v))
 
     crabs.sort()
@@ -53,7 +53,7 @@ func day7A()
     // https://en.wikipedia.org/wiki/Geometric_median#Properties
     var total  = 0
     let median = crabs[crabs.count / 2]
-    visit v in crabs do
+    visit v in crabs:
         total += Math.abs(v - median)
 
     //Console.print("total: ", total)

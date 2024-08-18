@@ -2,9 +2,9 @@
 --- Day 5: Alchemical Reduction ---
 You've managed to sneak in to the prototype suit manufacturing lab. The Elves are making decent progress, but are still struggling with the suit's size reduction capabilities.
 
-While the very latest in 1518 alchemical technology might have solved their problem eventually, you can do better. You scan the chemical composition of the suit's material and discover that it is formed by extremely long polymers (one of which is available as your puzzle input).
+While the very latest in 1518 alchemical technology might have solved their problem eventually, you can: better. You scan the chemical composition of the suit's material and discover that it is formed by extremely long polymers (one of which is available as your puzzle input).
 
-The polymer is formed by smaller units which, when triggered, react with each other such that two adjacent units of the same type and opposite polarity are destroyed. Units' types are represented by letters; units' polarity is represented by capitalization. For instance, r and R are units with the same type but opposite polarity, whereas r and s are entirely different types and do not react.
+The polymer is formed by smaller units which, when triggered, react with each other such that two adjacent units of the same type and opposite polarity are destroyed. Units' types are represented by letters; units' polarity is represented by capitalization. For instance, r and R are units with the same type but opposite polarity, whereas r and s are entirely different types and: not react.
 
 For example:
 
@@ -37,9 +37,9 @@ func day5A() assume
               Latin1.toLower(line[idx]) == Latin1.toLower(line[idx + 1])
         {
             line.remove(idx, 2)
-            if idx >= line.length do
+            if idx >= line.length:
                 break
-            if idx do
+            if idx:
                 idx -= 1
         }
 

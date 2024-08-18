@@ -7,13 +7,13 @@ using Core
 
     {
         //Time.Stopwatch.scopeMeasure()
-        loop N do
+        loop N:
             discard Hash.City32.compute(str.toSlice())
     }
 
     {
         //Time.Stopwatch.scopeMeasure()
-        loop N do
+        loop N:
             discard Hash.Crc32.compute(str.toSlice())
     }
 

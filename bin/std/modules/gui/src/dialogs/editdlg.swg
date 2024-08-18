@@ -66,16 +66,16 @@ public impl EditDlg
     // Set the text
     mtd setText(text: string)
     {
-        if edit do
+        if edit:
             edit.setText(text)
-        else do
+        else:
             richEdit.setText(text)
     }
 
     // Get the text
     mtd getText()->String
     {
-        if edit do
+        if edit:
             return edit.text
         return richEdit.getText()
     }
@@ -93,9 +93,9 @@ public impl EditDlg
                 .horzAlignmentText = .Center
             }
 
-            if edit do
+            if edit:
                 edit.margin.y = 0
-            else do
+            else:
                 richEdit.margin.y = 0
             var pos = surface.position
             pos.height += height

@@ -144,8 +144,8 @@ func gcd(a0, b0: s64)->s64
 #[ConstExpr]
 func lcm(a, b: s64)->s64
 {
-    if a > b do
+    if a > b:
         return a / gcd(a, b) * b
-    else do
+    else:
         return b / gcd(a, b) * a
 }

@@ -20,11 +20,11 @@ impl Array
 
 	func validateCount(self, newCount: u32)
 	{
-		if newCount < self.size do
+		if newCount < self.size:
 			return;
 
 		self.size = self.size * 2
-		if self.size < 8 do
+		if self.size < 8:
 			self.size = 8
 
 		let context = @getcontext()
@@ -33,7 +33,7 @@ impl Array
 		request.size = cast(u64) self.size * @sizeof(T)
 		context.allocator.req(&request)
 		let newBuffer = request.address
-		if self.buffer do
+		if self.buffer:
 			@memcpy(newBuffer, self.buffer, cast(u64) self.count * @sizeof(T))
 
 		request.mode = AllocatorMode.Free

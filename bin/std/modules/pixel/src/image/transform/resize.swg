@@ -21,7 +21,7 @@ public impl Image
         Debug.assert(newWidth > 0 or newHeight > 0)
         let nw = newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
         let nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
-        if nw == width and nh == height do
+        if nw == width and nh == height:
             return
         allocWorkingBuffer(nw, nh, pf)
         ResizeTools.doResize(workingBuffer, self, mode)
@@ -69,7 +69,7 @@ namespace ResizeTools
         res.windowSize = windowSize
         res.lineLength = lineLength
         res.row.resize(cast(u64) lineLength)
-        loop i in lineLength do
+        loop i in lineLength:
             res.row[i].weights.resize(cast(u64) windowSize)
         return res
     }
@@ -105,57 +105,57 @@ namespace ResizeTools
             let res = Math.abs(resf)
             return res < 1 ? 1 - res : 0
         case Bicubic:
-            if resf < -2.0 do
+            if resf < -2.0:
                 return 0
-            if resf < -1.0 do
+            if resf < -1.0:
                 return ((2.0 + resf) * (2.0 + resf) * (2.0 + resf) / 6.0)
-            if resf < 0.0 do
+            if resf < 0.0:
                 return ((4.0 + resf * resf * (-6.0 - 3.0 * resf)) / 6.0)
-            if resf < 1.0 do
+            if resf < 1.0:
                 return ((4.0 + resf * resf * (-6.0 + 3.0 * resf)) / 6.0)
-            if resf < 2.0 do
+            if resf < 2.0:
                 return ((2.0 - resf) * (2.0 - resf) * (2.0 - resf) / 6.0)
             return 0
         case Gaussian:
-            if Math.abs(resf) > 3.0 do
+            if Math.abs(resf) > 3.0:
                 return 0
             return Math.exp(-resf * resf * 0.5) / 0.79788456080287
         case Hermite:
-            if resf < -1.0 do
+            if resf < -1.0:
                 return 0
-            if resf < 0.0 do
+            if resf < 0.0:
                 return (-2.0 * resf - 3.0) * resf * resf + 1.0
-            if resf < 1.0 do
+            if resf < 1.0:
                 return (2.0 * resf - 3.0) * resf * resf + 1.0
             return 0
         case Hamming:
-            if resf < -1.0 do
+            if resf < -1.0:
                 return 0.0
-            if resf < 0.0 do
+            if resf < 0.0:
                 return 0.92 * (-2.0 * resf - 3.0) * resf * resf + 1.0
-            if resf < 1.0 do
+            if resf < 1.0:
                 return 0.92 * (2.0 * resf - 3.0) * resf * resf + 1.0
             return 0
         case Catrom:
-            if resf < -2.0 do
+            if resf < -2.0:
                 return 0
-            if resf < -1.0 do
+            if resf < -1.0:
                 return (0.5 * (4.0 + resf * (8.0 + resf * (5.0 + resf))))
-            if resf < 0.0 do
+            if resf < 0.0:
                 return (0.5 * (2.0 + resf * resf * (-5.0 - 3.0 * resf)))
-            if resf < 1.0 do
+            if resf < 1.0:
                 return (0.5 * (2.0 + resf * resf * (-5.0 + 3.0 * resf)))
-            if resf < 2.0 do
+            if resf < 2.0:
                 return (0.5 * (4.0 + resf * (-8.0 + resf * (5.0 - resf))))
             return 0
         case Quadratic:
-            if resf < -1.5 do
+            if resf < -1.5:
                 return 0.0
-            if resf < -0.5 do
+            if resf < -0.5:
                 return (0.5 * (resf + 1.5) * (resf + 1.5))
-            if resf < 0.5 do
+            if resf < 0.5:
                 return (0.75 - resf * resf)
-            if resf < 1.5 do
+            if resf < 1.5:
                 return (0.5 * (resf - 1.5) * (resf - 1.5))
             return 0
         }
@@ -194,9 +194,9 @@ namespace ResizeTools
             // Cut edge points to fit in filter window in case of spill-off
             if right - left + 1 > windowSize
             {
-                if left < (srcSize - 1) / 2 do
+                if left < (srcSize - 1) / 2:
                     left += 1
-                else do
+                else:
                     right -= 1
             }
 
@@ -206,7 +206,7 @@ namespace ResizeTools
             for var src = left; src <= right; src += 1
             {
                 var resf = getFilter(cscale * (src - center), rmode)
-                if resf > 0 do
+                if resf > 0:
                     resf *= cscale
                 else
                 {
@@ -232,7 +232,7 @@ namespace ResizeTools
             // Normalize weight of neighboring points
             if totalWeight != 0
             {
-                loop src in (right - left) + 1 do
+                loop src in (right - left) + 1:
                     res.row[u].weights[src] /= totalWeight
             }
 
@@ -260,7 +260,7 @@ namespace ResizeTools
                 let left  = crow.left
                 let right = crow.right
 
-                #if BPP == 32 #do
+                #if BPP == 32:
                     var da: f64
                 var dr, dg, db: f64
                 var pw  = crow.weights.buffer
@@ -271,7 +271,7 @@ namespace ResizeTools
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
-                    #if BPP == 32 #do
+                    #if BPP == 32:
                         da += f * ptr[3]
                     pw += 1
                     ptr += bpp8
@@ -280,7 +280,7 @@ namespace ResizeTools
                 dstRow[0] = cast(u8) Math.round(db)
                 dstRow[1] = cast(u8) Math.round(dg)
                 dstRow[2] = cast(u8) Math.round(dr)
-                #if BPP == 32 #do
+                #if BPP == 32:
                     dstRow[3] = cast(u8) Math.round(da)
                 dstRow += bpp8
             }
@@ -316,7 +316,7 @@ namespace ResizeTools
                 let left  = crow.left
                 let right = crow.right
 
-                #if BPP == 32 #do
+                #if BPP == 32:
                     var da: f64
                 var dr, dg, db: f64
                 var pw  = crow.weights.buffer
@@ -327,7 +327,7 @@ namespace ResizeTools
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
-                    #if BPP == 32 #do
+                    #if BPP == 32:
                         da += f * ptr[3]
                     pw += 1
                     ptr += cast(u64) w8Src
@@ -336,7 +336,7 @@ namespace ResizeTools
                 dstCol[0] = cast(u8) Math.round(db)
                 dstCol[1] = cast(u8) Math.round(dg)
                 dstCol[2] = cast(u8) Math.round(dr)
-                #if BPP == 32 #do
+                #if BPP == 32:
                     dstCol[3] = cast(u8) Math.round(da)
                 dstCol += cast(u64) w8Dst
             }

@@ -86,7 +86,7 @@ impl IForm for FormText
         let xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
         let yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
-        if evt.kind == .MouseReleased and evt.button == .Left do
+        if evt.kind == .MouseReleased and evt.button == .Left:
             return false
         return true
     }
@@ -180,7 +180,7 @@ impl IForm for FormText
         if !typeFace or isDirtyFont
         {
             isDirtyFont = false
-            if !fontName.length do
+            if !fontName.length:
                 typeFace = null
             else
             {

@@ -76,7 +76,7 @@ impl TimeSpan
 
         Debug.assert(1 <= y and y <= 9999, "overflow")
         let days = daysInMonth(y, m)
-        if d > days do
+        if d > days:
             d = days
         ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
     }
@@ -84,45 +84,45 @@ impl TimeSpan
     // Add or remove the given amount of days to the TimeSpan
     mtd addDays(days: s32)
     {
-        if days > 0 do
+        if days > 0:
             add(cast(u32) days, MillisPerDay)
-        else do
+        else:
             remove(cast(u32) -days, MillisPerDay)
     }
 
     // Add or remove the given amount of hours to the TimeSpan
     mtd addHours(hours: s32)
     {
-        if hours > 0 do
+        if hours > 0:
             add(cast(u32) hours, MillisPerHour)
-        else do
+        else:
             remove(cast(u32) -hours, MillisPerHour)
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
     mtd addMinutes(minutes: s32)
     {
-        if minutes > 0 do
+        if minutes > 0:
             add(cast(u32) minutes, MillisPerMinute)
-        else do
+        else:
             remove(cast(u32) -minutes, MillisPerMinute)
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
     mtd addSeconds(seconds: s32)
     {
-        if seconds > 0 do
+        if seconds > 0:
             add(cast(u32) seconds, MillisPerSecond)
-        else do
+        else:
             remove(cast(u32) -seconds, MillisPerSecond)
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
     mtd addMilliSeconds(milliSeconds: s32)
     {
-        if milliSeconds > 0 do
+        if milliSeconds > 0:
             add(cast(u32) milliSeconds, 1)
-        else do
+        else:
             remove(cast(u32) -milliSeconds, 1)
     }
 

@@ -8,7 +8,7 @@ using test_foreign
     var t = @typeof(tcf_Point)
     visit p in t.methods
     {
-        if p.name != "set" do
+        if p.name != "set":
             continue
 
         var f = p.value

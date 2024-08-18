@@ -62,11 +62,11 @@ using Core
             l.replace("in", "_in")
 
             result += "private const "
-            if r.match(#"(\w+) -> (\w+)"#, l) do
+            if r.match(#"(\w+) -> (\w+)"#, l):
                 result += Format.toString("% = %", r[2], r[1])
-            elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l) do
+            elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l):
                 result += Format.toString("% = % % %", r[4], r[1], map.find(r[2]).value, r[3])
-            elif r.match(#"NOT (\w+) -> (\w+)"#, l) do
+            elif r.match(#"NOT (\w+) -> (\w+)"#, l):
                 result += Format.toString("% = ~%", r[2], r[1])
             result += "\n"
         }

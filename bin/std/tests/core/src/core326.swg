@@ -13,7 +13,7 @@ func gen(type: const *Swag.TypeInfoStruct)->String
 
     visit f in type.fields
     {
-        if #index do
+        if #index:
             result += " and "
         result += f.name
         result += " == "

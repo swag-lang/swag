@@ -1,10 +1,10 @@
 /*
 --- Day 7: The Sum of Its Parts ---
-You find yourself standing on a snow-covered coastline; apparently, you landed a little off course. The region is too hilly to see the North Pole from here, but you do spot some Elves that seem to be trying to unpack something that washed ashore. It's quite cold out, so you decide to risk creating a paradox by asking them for directions.
+You find yourself standing on a snow-covered coastline; apparently, you landed a little off course. The region is too hilly to see the North Pole from here, but you: spot some Elves that seem to be trying to unpack something that washed ashore. It's quite cold out, so you decide to risk creating a paradox by asking them for directions.
 
 "Oh, are you the search party?" Somehow, you can understand whatever Elves from the year 1018 speak; you assume it's Ancient Nordic Elvish. Could the device on your wrist also be a translator? "Those clothes don't look very warm; take this." They hand you a heavy coat.
 
-"We do need to find our way back to the North Pole, but we have higher priorities at the moment. You see, believe it or not, this box contains something that will solve all of Santa's transportation problems - at least, that's what it looks like from the pictures in the instructions." It doesn't seem like they can read whatever language it's in, but you can: "Sleigh kit. Some assembly required."
+"We: need to find our way back to the North Pole, but we have higher priorities at the moment. You see, believe it or not, this box contains something that will solve all of Santa's transportation problems - at least, that's what it looks like from the pictures in the instructions." It doesn't seem like they can read whatever language it's in, but you can: "Sleigh kit. Some assembly required."
 
 "'Sleigh'? What a wonderful name! You must help us assemble this 'sleigh' at once!" They start excitedly pulling more parts out of the box.
 
@@ -55,9 +55,9 @@ func day7A() assume
     var last: u8
     visit k, v in steps
     {
-        if v.next.length == 0 do
+        if v.next.length == 0:
             last = k
-        if v.prev.length == 0 do
+        if v.prev.length == 0:
             first = Math.min(first, k)
     }
 
@@ -65,13 +65,13 @@ func day7A() assume
     loop
     {
         result.append(first)
-        if first == last do
+        if first == last:
             break
 
         first = Swag.U8.Max
         visit k, v in steps
         {
-            if Utf8.contains(result.toSlice(), cast(rune) k) do
+            if Utf8.contains(result.toSlice(), cast(rune) k):
                 continue
 
             var bad = false
@@ -84,7 +84,7 @@ func day7A() assume
                 }
             }
 
-            if !bad and k < first do
+            if !bad and k < first:
                 first = k
         }
     }

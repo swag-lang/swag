@@ -48,7 +48,7 @@ impl Vector2
             x /= other.x
             y /= other.y
         }
-        #else #do
+        #else:
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
@@ -75,46 +75,46 @@ impl Vector2
             x /= value
             y /= value
         }
-        #else #do
+        #else:
             #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(other: Self)->Self
     {
-        #if op == "+" #do
+        #if op == "+":
             return Self{x + other.x, y + other.y}
-        #elif op == "-" #do
+        #elif op == "-":
             return Self{x - other.x, y - other.y}
-        #elif op == "*" #do
+        #elif op == "*":
             return Self{x * other.x, y * other.y}
-        #elif op == "/" #do
+        #elif op == "/":
             return Self{x / other.x, y / other.y}
-        #else #do
+        #else:
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(value: f32)->Self
     {
-        #if op == "+" #do
+        #if op == "+":
             return Self{x + value, y + value}
-        #elif op == "-" #do
+        #elif op == "-":
             return Self{x - value, y - value}
-        #elif op == "*" #do
+        #elif op == "*":
             return Self{x * value, y * value}
-        #elif op == "/" #do
+        #elif op == "/":
             return Self{x / value, y / value}
-        #else #do
+        #else:
             #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     #[Swag.Inline]
     mtd(op: string) const opUnary()->Self
     {
-        #if op == "-" #do
+        #if op == "-":
             return Self{-x, -y}
-        #else #do
+        #else:
             #error "unsupported unary operation [[" ++ op ++ "]]"
     }
 
@@ -257,7 +257,7 @@ impl Vector2
     mtd const toNormalizeSafe()->Self
     {
         var norm = sqrt((x * x) + (y * y))
-        if Math.isZeroEpsilon(norm) do
+        if Math.isZeroEpsilon(norm):
             return Zero
         norm = 1 / norm
         return Self{x * norm, y * norm}
@@ -330,7 +330,7 @@ impl Vector2
     {
         var angle = Math.acos(cosAngle(other))
         let sign  = (x * other.y) - (y * other.x)
-        if sign > 0 do
+        if sign > 0:
             angle = ConstF32.TwoPi - angle
         return angle
     }

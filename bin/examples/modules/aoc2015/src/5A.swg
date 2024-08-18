@@ -35,25 +35,25 @@ func day5A0()
     var total = 0
     visit l in lines
     {
-        if Utf8.indexOf(l, "ab") != Swag.U64.Max do
+        if Utf8.indexOf(l, "ab") != Swag.U64.Max:
             continue
-        if Utf8.indexOf(l, "cd") != Swag.U64.Max do
+        if Utf8.indexOf(l, "cd") != Swag.U64.Max:
             continue
-        if Utf8.indexOf(l, "pq") != Swag.U64.Max do
+        if Utf8.indexOf(l, "pq") != Swag.U64.Max:
             continue
-        if Utf8.indexOf(l, "xy") != Swag.U64.Max do
+        if Utf8.indexOf(l, "xy") != Swag.U64.Max:
             continue
 
         var vowels, dbl = 0
         loop i in l
         {
-            if Utf8.indexOf("aeiou", cast(rune) l[i]) != Swag.U64.Max do
+            if Utf8.indexOf("aeiou", cast(rune) l[i]) != Swag.U64.Max:
                 vowels += 1
-            if i and l[i] == l[i - 1] do
+            if i and l[i] == l[i - 1]:
                 dbl += 1
         }
 
-        if vowels >= 3 and dbl do
+        if vowels >= 3 and dbl:
             total += 1
     }
 
@@ -74,11 +74,11 @@ func day5A1()
     var r2    = assume Parser.RegExp.create(#"([a-z])\1"#)
     visit l in lines
     {
-        if r0.grep(l) do
+        if r0.grep(l):
             continue
-        if r1.grepAll(l).count < 3 do
+        if r1.grepAll(l).count < 3:
             continue
-        if !r2.grep(l) do
+        if !r2.grep(l):
             continue
         total += 1
     }

@@ -31,7 +31,7 @@ impl Array
 
     mtd opPostCopy()
     {
-        if buffer == null do
+        if buffer == null:
             return
 
         let oldBuffer = buffer
@@ -40,7 +40,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            loop count do
+            loop count:
                 buffer[#index] = #nodrop oldBuffer[#index]
         }
         #else
@@ -105,14 +105,14 @@ impl Array
     {
         clear()
         var countof = @countof(arr)
-        if !countof do
+        if !countof:
             return
         var dataof = @dataof(arr)
 
         grow(countof)
         #if Reflection.hasPostCopy(T)
         {
-            loop i in countof do
+            loop i in countof:
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -128,29 +128,29 @@ impl Array
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: code)
     {
-        if !count do
+        if !count:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        #if back #do
+        #if back:
             var scan = buffer + count
-        #else #do
+        #else:
             var scan = buffer - 1
 
         loop count
         {
-            #if back #do
+            #if back:
                 scan -= 1
-            #else #do
+            #else:
                 scan += 1
 
             #macro
             {
-                #if #up ptr #do
+                #if #up ptr:
                     let #alias0 = cast(*T) #up scan
-                #elif Reflection.isStruct(T) #do
+                #elif Reflection.isStruct(T):
                     let #alias0 = cast(&T) #up scan
-                #else #do
+                #else:
                     let #alias0 = #up scan[0]
                 let #alias1 = #index
                 #mixin #up stmt
@@ -178,7 +178,7 @@ impl Array
 
     mtd realloc(newCapacity: u64)
     {
-        if allocator == null do
+        if allocator == null:
             allocator = @getcontext().allocator
 
         if newCapacity == 0
@@ -208,7 +208,7 @@ impl Array
     // Free the array content
     mtd free()
     {
-        if !buffer do
+        if !buffer:
             return
 
         // Need to drop every structs
@@ -262,7 +262,7 @@ impl Array
     // The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead.
     mtd grow(newCount: u64)
     {
-        if newCount <= capacity do
+        if newCount <= capacity:
             return
         let newCapacity = Math.max(capacity * 2, newCount)
         reserve(newCapacity)
@@ -280,7 +280,7 @@ impl Array
             return
         }
 
-        if newCapacity <= capacity do
+        if newCapacity <= capacity:
             return
 
         realloc(newCapacity)
@@ -290,7 +290,7 @@ impl Array
     // This will grow the array if necessary.
     mtd growResize(newCount: u64)
     {
-        if newCount <= count do
+        if newCount <= count:
             return
         grow(newCount)
         resize(newCount)
@@ -300,7 +300,7 @@ impl Array
     // This can be used to reduce or increase the number of valid elements.
     mtd resize(newCount: u64)
     {
-        if newCount == count do
+        if newCount == count:
             return
         if newCount > count
         {
@@ -320,7 +320,7 @@ impl Array
     {
         #if Reflection.hasDrop(T)
         {
-            loop count do
+            loop count:
                 @drop(buffer + #index)
         }
 
@@ -330,7 +330,7 @@ impl Array
     // Fill the array with the given value
     mtd fill(value: T)
     {
-        loop i in count do
+        loop i in count:
             buffer[i] = value
     }
 
@@ -338,7 +338,7 @@ impl Array
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
-        if contains(value) do
+        if contains(value):
             return
         grow(count + 1)
         buffer[count] = #nodrop value
@@ -392,14 +392,14 @@ impl Array
         where Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(value)
         grow(count + 1)
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1 do
+            for var idx = count - 1; idx > index; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
@@ -417,14 +417,14 @@ impl Array
     mtd insertAt(index: u64, value: &&T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(moveref value)
         grow(count + 1)
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1 do
+            for var idx = count - 1; idx > index; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
@@ -443,18 +443,18 @@ impl Array
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
 
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(values)
         grow(count + sliceCount)
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
@@ -464,7 +464,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1 do
+            for var idx = 0; idx < sliceCount; idx += 1:
                 buffer[index + idx] = #nodrop values[idx]
         }
         #else
@@ -480,18 +480,18 @@ impl Array
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
 
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(values)
         grow(count + sliceCount)
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
@@ -501,7 +501,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1 do
+            for var idx = 0; idx < sliceCount; idx += 1:
                 buffer[index + idx] = #nodrop #move values[idx]
         }
         #else
@@ -516,11 +516,11 @@ impl Array
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
 
         // Do not add myself if there's not enough room (because we will reallocate)
-        if count + sliceCount > capacity do
+        if count + sliceCount > capacity:
             Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
 
         grow(count + sliceCount)
@@ -545,7 +545,7 @@ impl Array
     // Swap two elements
     mtd swap(idx0, idx1: u64)
     {
-        if idx0 == idx1 do
+        if idx0 == idx1:
             return
         Debug.safetyBoundCheck(idx0 < count, "index out of range")
         Debug.safetyBoundCheck(idx1 < count, "index out of range")
@@ -556,7 +556,7 @@ impl Array
     #[Overload]
     mtd remove(index, num: u64)
     {
-        if !num do
+        if !num:
             return
         Debug.safetyBoundCheck(index + num <= count, "index out of range")
 
@@ -581,7 +581,7 @@ impl Array
     mtd(V) remove(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max do
+        if idx == Swag.U64.Max:
             return
         removeAt(idx)
     }
@@ -592,9 +592,9 @@ impl Array
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         count -= 1
-        if index == count do
+        if index == count:
             @drop(buffer + count)
-        else do
+        else:
             buffer[index] = #moveraw buffer[count]
     }
 
@@ -602,18 +602,18 @@ impl Array
     // Order is preserved
     mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
-        if !numValues do
+        if !numValues:
             return
         Debug.safetyBoundCheck(index + numValues <= count, "index out of range")
         count -= numValues
 
         #if Reflection.hasDrop(T)
         {
-            loop idx in numValues do
+            loop idx in numValues:
                 @drop(buffer + index + idx)
         }
 
-        if index >= count do
+        if index >= count:
             return
 
         #if Reflection.hasPostMove(T)
@@ -636,7 +636,7 @@ impl Array
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max do
+        if idx == Swag.U64.Max:
             return
         removeAtOrdered(idx)
     }
@@ -724,7 +724,7 @@ impl StrConv.IConvert for Array
         buf.addBytes("[")
         loop i in count
         {
-            if i do
+            if i:
                 buf.addBytes(", ")
             StrConv.convert'T(buf, buffer[i], convFmt, strFormat)
         }

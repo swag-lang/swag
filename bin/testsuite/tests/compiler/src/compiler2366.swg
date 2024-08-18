@@ -4,7 +4,7 @@
     #scope down
     {
         cpt += 1
-        if cpt == 5 do
+        if cpt == 5:
             break
         continue
     }

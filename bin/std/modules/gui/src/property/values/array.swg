@@ -46,14 +46,14 @@ impl Properties
 
         // Update state of all newly added items
         item.numChilds = numAddedChilds
-        loop i in item.numChilds do
+        loop i in item.numChilds:
             updateItemState(self.items[itemIdx + i + 1])
     }
 
     mtd refreshArray(item: *PropertiesItem)
     {
         let arrData = cast(*Array'u8) item.data
-        if arrData.count == cast(u64) item.userData0 do
+        if arrData.count == cast(u64) item.userData0:
             return
         item.userData0 = cast(*void) arrData.count
 

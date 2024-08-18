@@ -82,14 +82,14 @@ impl StaticArray
     {
         clear()
         var countof = @countof(arr)
-        if !countof do
+        if !countof:
             return
         Debug.assert(countof < N, "slice is too big")
         var dataof = @dataof(arr)
 
         #if Reflection.hasPostCopy(T)
         {
-            loop i in countof do
+            loop i in countof:
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -105,28 +105,28 @@ impl StaticArray
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: code)
     {
-        if !count do
+        if !count:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        #if back #do
+        #if back:
             var scan = &buffer[0] + count
-        #else #do
+        #else:
             var scan = &buffer[0] - 1
 
         loop count
         {
-            #if back #do
+            #if back:
                 scan -= 1
-            #else #do
+            #else:
                 scan += 1
             #macro
             {
-                #if #up ptr #do
+                #if #up ptr:
                     let #alias0 = cast(*T) #up scan
-                #elif Reflection.isStruct(T) #do
+                #elif Reflection.isStruct(T):
                     let #alias0 = cast(&T) #up scan
-                #else #do
+                #else:
                     let #alias0 = #up scan[0]
                 let #alias1 = #index
                 #mixin #up stmt
@@ -137,7 +137,7 @@ impl StaticArray
     // Free the array content
     mtd free()
     {
-        if !count do
+        if !count:
             return
 
         // Need to drop every structs
@@ -163,7 +163,7 @@ impl StaticArray
     // Change the number of valid elements in the array
     mtd resize(newCount: u64)
     {
-        if newCount == count do
+        if newCount == count:
             return
         Debug.assert(newCount < N, "size is too big")
         if newCount > count
@@ -183,7 +183,7 @@ impl StaticArray
     {
         #if Reflection.hasDrop(T)
         {
-            loop count do
+            loop count:
                 @drop(&buffer[0] + #index)
         }
 
@@ -194,7 +194,7 @@ impl StaticArray
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
-        if contains(value) do
+        if contains(value):
             return
         Debug.assert(count != N, "the array is full")
         buffer[count] = #nodrop value
@@ -248,14 +248,14 @@ impl StaticArray
         where Reflection.canCopy(T)
     {
         Debug.assert(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(value)
         Debug.assert(count != N, "the array is full")
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1 do
+            for var idx = count - 1; idx > index; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
@@ -273,14 +273,14 @@ impl StaticArray
     mtd insertAt(index: u64, value: &&T)
     {
         Debug.assert(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return emplace(value)
         Debug.assert(count != N, "the array is full")
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1 do
+            for var idx = count - 1; idx > index; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - 1]
         }
         #else
@@ -299,18 +299,18 @@ impl StaticArray
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
 
         Debug.assert(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(values)
         Debug.assert(count + sliceCount <= N, "the array is full")
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
@@ -320,7 +320,7 @@ impl StaticArray
 
         #if Reflection.hasPostCopy(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1 do
+            for var idx = 0; idx < sliceCount; idx += 1:
                 buffer[index + idx] = #nodrop values[idx]
         }
         #else
@@ -336,18 +336,18 @@ impl StaticArray
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
 
         Debug.assert(index <= count, "index out of range")
-        if index == count do
+        if index == count:
             return add(values)
         Debug.assert(count + sliceCount <= N, "the array is full")
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
                 buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
         }
         #else
@@ -357,7 +357,7 @@ impl StaticArray
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1 do
+            for var idx = 0; idx < sliceCount; idx += 1:
                 buffer[index + idx] = #nodrop #move values[idx]
         }
         #else
@@ -372,7 +372,7 @@ impl StaticArray
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount do
+        if !sliceCount:
             return
         Debug.assert(count + sliceCount <= N, "the array is full")
         var oldCount = count
@@ -397,7 +397,7 @@ impl StaticArray
     #[Overload]
     mtd remove(index, num: u64)
     {
-        if !num do
+        if !num:
             return
         Debug.assert(index + num <= count, "index out of range")
 
@@ -422,7 +422,7 @@ impl StaticArray
     mtd(V) remove(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max do
+        if idx == Swag.U64.Max:
             return
         removeAt(idx)
     }
@@ -433,9 +433,9 @@ impl StaticArray
     {
         Debug.assert(index < count, "index out of range")
         count -= 1
-        if index == count do
+        if index == count:
             @drop(&buffer[0] + count)
-        else do
+        else:
             buffer[index] = #moveraw buffer[count]
     }
 
@@ -443,18 +443,18 @@ impl StaticArray
     // Order is preserved
     mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
-        if !numValues do
+        if !numValues:
             return
         Debug.assert(index + numValues <= count, "index out of range")
         count -= numValues
 
         #if Reflection.hasDrop(T)
         {
-            loop idx in numValues do
+            loop idx in numValues:
                 @drop(&buffer[0] + index + idx)
         }
 
-        if index >= count do
+        if index >= count:
             return
 
         #if Reflection.hasPostMove(T)
@@ -477,7 +477,7 @@ impl StaticArray
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max do
+        if idx == Swag.U64.Max:
             return
         removeAtOrdered(idx)
     }

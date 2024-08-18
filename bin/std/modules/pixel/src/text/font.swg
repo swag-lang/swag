@@ -48,7 +48,7 @@ internal var g_HashFont: HashTable'(String, *Font)
 
 #drop
 {
-    visit k, v in g_HashFont do
+    visit k, v in g_HashFont:
         Memory.delete(v)
     g_HashFont.free()
 }
@@ -59,7 +59,7 @@ public impl Font
 
     mtd opDrop()
     {
-        visit k, v in unicodeRef do
+        visit k, v in unicodeRef:
             Memory.delete(v)
     }
 
@@ -72,7 +72,7 @@ public impl Font
     // Release the given font
     func release(font: *Font)
     {
-        if !font do
+        if !font:
             return
         Sync.scopedLock(&lock)
         g_HashFont.remove(font.fullname)
@@ -91,7 +91,7 @@ public impl Font
         Sync.scopedLock(&lock)
 
         let here = g_HashFont.find(str)
-        if here do
+        if here:
             return here.value
 
         let font = Memory.new'Font()
@@ -130,13 +130,13 @@ public impl Font
         // Already there ?
         if c < 128
         {
-            if asciiRef[cast(u32) c].atlasIndex >= 0 do
+            if asciiRef[cast(u32) c].atlasIndex >= 0:
                 return &asciiRef[cast(u32) c]
         }
         else
         {
             let entry = unicodeRef.find(c)
-            if entry do
+            if entry:
                 return entry.value
         }
 
@@ -150,9 +150,9 @@ public impl Font
             if atlas.curX + bmp.width > atlas.width
             {
                 atlas.curX = 0
-                if atlas.nextY + bmp.rows > atlas.height do
+                if atlas.nextY + bmp.rows > atlas.height:
                     atlas = null
-                else do
+                else:
                     atlas.curY = atlas.nextY
             }
             elif atlas.curY + bmp.rows > atlas.height
@@ -191,7 +191,7 @@ public impl Font
 
         // Setup GlyphDesc
         var refr: *GlyphDesc
-        if c < 128 do
+        if c < 128:
             refr = &asciiRef[cast(u32) c]
         else
         {

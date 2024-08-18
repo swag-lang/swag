@@ -19,15 +19,15 @@ impl Duration
     #[ConstExpr, Implicit, Inline]
     mtd(suffix: string) opAffectLiteral(value: s32)
     {
-        #if suffix == "s" #do
+        #if suffix == "s":
             timeInSeconds = value
-        #elif suffix == "ms" #do
+        #elif suffix == "ms":
             timeInSeconds = value / 1000.0
-        #elif suffix == "min" #do
+        #elif suffix == "min":
             timeInSeconds = value * 60.0
-        #elif suffix == "h" #do
+        #elif suffix == "h":
             timeInSeconds = value * 3600.0
-        #else #do
+        #else:
             #error "invalid duration literal suffix '" ++ suffix ++ "'"
     }
 

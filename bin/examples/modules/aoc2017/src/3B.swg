@@ -31,8 +31,8 @@ func day3B()
     func sum(x, y: s32, a: @decltype(arr))->s32
     {
         var s: s32
-        loop dx in -1 to 1 do
-            loop dy in -1 to 1 do
+        loop dx in -1 to 1:
+            loop dy in -1 to 1:
                 s += a.get({x + dx, y + dy}, 0)
         return s
     }

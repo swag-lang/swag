@@ -19,7 +19,7 @@ After another day, its internal timer would reset to 6, and it would create a ne
 After another day, the first lanternfish would have an internal timer of 5, and the second lanternfish would have an internal timer of 7.
 A lanternfish that creates a new fish resets its timer to 6, not 7 (because 0 is included as a valid timer value). The new lanternfish starts with an internal timer of 8 and does not start counting down until the next day.
 
-Realizing what you're trying to do, the submarine automatically produces a list of the ages of several hundred nearby lanternfish (your puzzle input). For example, suppose you were given the following list:
+Realizing what you're trying to:, the submarine automatically produces a list of the ages of several hundred nearby lanternfish (your puzzle input). For example, suppose you were given the following list:
 
 3,4,3,1,2
 This list means that the first fish has an internal timer of 3, the second fish has an internal timer of 4, and so on until the fifth fish, which has an internal timer of 2. Simulating these fish over several days would proceed as follows:
@@ -59,7 +59,7 @@ func day6A()
 
     var values: Array's32
     let str     = Tokenize.split(lines[0], `,`'u8)
-    visit v in str do
+    visit v in str:
         values.add(assume StrConv.toS32(v))
 
     loop day in 80
@@ -71,7 +71,7 @@ func day6A()
                 values[f] = 6
                 values.add(8)
             }
-            else do
+            else:
                 values[f] -= 1
         }
     }

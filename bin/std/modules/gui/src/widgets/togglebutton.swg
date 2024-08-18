@@ -66,7 +66,7 @@ impl IWnd for ToggleButton
         var posBox = clientRect
         posBox.y     = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        if isToggled do
+        if isToggled:
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectMark, aniMark.cur())
     }
@@ -76,7 +76,7 @@ impl IWnd for ToggleButton
         if processMouseEvent(evt)
         {
             isToggled = !isToggled
-            if sigChanged do
+            if sigChanged:
                 sigChanged(self)
             postCommandEvent(id)
         }
@@ -90,9 +90,9 @@ impl ToggleButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().btnToggle_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().btnToggle_Width
         return Wnd.create'ToggleButton(parent, null, pos, id)
     }

@@ -2,9 +2,9 @@
 //#[Swag.PrintBc]
 func fibonacci(num: s32) -> s32
 {
-    if num < 2 do
+    if num < 2:
         return num
-	else do
+	else:
         return fibonacci(num - 1) + fibonacci(num - 2)
 }
 

@@ -173,7 +173,7 @@ impl Encoder
         {
             if Reflection.isTuple(type)
             {
-                if errorIfUnknown do
+                if errorIfUnknown:
                     throw UnsupportedFormatError{"cannot serialize an anonymous struct"}
                 return
             }
@@ -211,7 +211,7 @@ impl Encoder
             let itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.write(cast(IEncoder) self) do
+                if itf.write(cast(IEncoder) self):
                     return
             }
 
@@ -219,15 +219,15 @@ impl Encoder
             let structType = cast(const *TypeInfoStruct) type
             let treated    = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
-            if treated do
+            if treated:
                 return
 
             // Generic structure save
             visit field in structType.fields
             {
-                if Reflection.hasAttribute(field, NoSerialize) do
+                if Reflection.hasAttribute(field, NoSerialize):
                     continue
-                if Reflection.hasAttribute(field.pointedType, NoSerialize) do
+                if Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
                 if !itf or !itf.writeElement(field, cast(const ^u8) data + field.offset, cast(IEncoder) self)
@@ -245,7 +245,7 @@ impl Encoder
             let typeArr = cast(const *TypeInfoArray) type
             let treated = serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer serializer.endSequence()
-            if treated do
+            if treated:
                 return
 
             var bufArr = cast(const ^u8) data
@@ -258,7 +258,7 @@ impl Encoder
             return
         }
 
-        if errorIfUnknown do
+        if errorIfUnknown:
             throw UnsupportedFormatError{Errors.mkString(Format.toString("cannot serialize type [[%]]", type.name))}
     }
 

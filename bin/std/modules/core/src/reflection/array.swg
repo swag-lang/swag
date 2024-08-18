@@ -5,7 +5,7 @@ using Swag
 // Returns true if the type 't' is a 'Core.Array' type
 func isStructArray(t: typeinfo)->bool
 {
-    if !t or !isStruct(t) do
+    if !t or !isStruct(t):
         return false
 
     let tt = cast(const *TypeInfoStruct) t
@@ -16,7 +16,7 @@ func isStructArray(t: typeinfo)->bool
 // If 't' is not a 'Core.Array', returns null
 func getStructArrayType(t: typeinfo)->typeinfo
 {
-    if !isStructArray(t) do
+    if !isStructArray(t):
         return null
 
     let tt = cast(const *TypeInfoStruct) t
@@ -53,7 +53,7 @@ func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if isStruct(valueType) do
+    if isStruct(valueType):
         valueTypeStruct = acast valueType
 
     Debug.assert(index < arr.count)
@@ -65,13 +65,13 @@ func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
         Memory.copy(arr.buffer + (index * sizeValue), arr.buffer + (index + 1) * sizeValue, countMove * sizeValue)
         if valueTypeStruct and Reflection.hasPostMove(valueTypeStruct)
         {
-            loop i in index until arr.count - 1 do
+            loop i in index until arr.count - 1:
                 valueTypeStruct.opPostMove(arr.buffer + (i * sizeValue))
         }
     }
 
     // Drop the last element
-    if valueTypeStruct and Reflection.hasDrop(valueTypeStruct) do
+    if valueTypeStruct and Reflection.hasDrop(valueTypeStruct):
         valueTypeStruct.opDrop(arr.buffer + (arr.count - 1) * sizeValue)
 
     arr.count -= 1
@@ -85,7 +85,7 @@ func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if isStruct(valueType) do
+    if isStruct(valueType):
         valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
@@ -115,7 +115,7 @@ func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
 
     let result = arr.buffer + (arr.count * valueType.sizeof)
     arr.count += 1
-    if valueTypeStruct do
+    if valueTypeStruct:
         valueTypeStruct.opInit(result)
 
     return result

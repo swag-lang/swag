@@ -60,11 +60,11 @@ var notletterTest: [] rune = [
 //#[Swag.PrintBc]
 #test
 {
-    visit c in spaceTest do
+    visit c in spaceTest:
         @assert(Unicode.isSpace(c))
-    visit c in letterTest do
+    visit c in letterTest:
         @assert(Unicode.isLetter(c))
-    visit c in notletterTest do
+    visit c in notletterTest:
         @assert(!Unicode.isLetter(c))
     @assert(Unicode.isLetter(`是`))
     @assert(!Unicode.isLetter(`‼`))

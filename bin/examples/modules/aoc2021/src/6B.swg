@@ -16,7 +16,7 @@ func day6B()
     let str      = Tokenize.split(lines[0], `,`'u8)
 
     var state: [9] u64
-    visit v in str do
+    visit v in str:
         state[assume StrConv.toS32(v)] += 1
 
     var total: u64

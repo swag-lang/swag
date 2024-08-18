@@ -81,7 +81,7 @@ impl IWnd for RadioButton
         posBox.height = metrics.btnCheck_Size
         posBox.y      = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width  = posBox.height
-        if radioButtonFlags.has(.RightAlign) do
+        if radioButtonFlags.has(.RightAlign):
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
@@ -90,15 +90,15 @@ impl IWnd for RadioButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if radioButtonFlags.has(.RightAlign) do
+        if radioButtonFlags.has(.RightAlign):
             format.horzAlignment = .Right
-        else do
+        else:
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags         = .Clip
         format.font          = getFont()
         var labelPos = clientRect
-        if !radioButtonFlags.has(.RightAlign) do
+        if !radioButtonFlags.has(.RightAlign):
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
@@ -122,9 +122,9 @@ impl RadioButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0 do
+        if pos.height == 0:
             pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0 do
+        if pos.width == 0:
             pos.width = parent.getThemeMetrics().btnPush_Width
         return Wnd.create'RadioButton(parent, name, pos, id)
     }
@@ -132,7 +132,7 @@ impl RadioButton
     // Set the checked state
     mtd setChecked(checked: bool)
     {
-        if self.checked == #self.checked do
+        if self.checked == #self.checked:
             return
         self.checked = #self.checked
         invalidate()

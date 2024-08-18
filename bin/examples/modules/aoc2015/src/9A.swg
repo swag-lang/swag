@@ -39,25 +39,25 @@ func day9A()
     visit l in lines
     {
         discard r.match(l)
-        if !town.contains(r[1]) do
+        if !town.contains(r[1]):
             town.add(r[1], town.count)
-        if !town.contains(r[2]) do
+        if !town.contains(r[2]):
             town.add(r[2], town.count)
         dist.add(town.find(r[1]).value << 32 | town.find(r[2]).value, assume StrConv.toU64(r[3]))
         dist.add(town.find(r[1]).value | town.find(r[2]).value << 32, assume StrConv.toU64(r[3]))
     }
 
-    loop i in town.count do
+    loop i in town.count:
         combi.add(i)
 
     var total = Swag.U64.Max
     loop
     {
         var calc = 0'u64
-        loop i in cast(s64) combi.count - 1 do
+        loop i in cast(s64) combi.count - 1:
             calc += dist.find(combi[i] << 32 | combi[i + 1]).value
         total = Math.min(total, calc)
-        if !Slice.nextPermutation(combi.toSlice()) do
+        if !Slice.nextPermutation(combi.toSlice()):
             break
     }
 

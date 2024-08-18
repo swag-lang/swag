@@ -11,7 +11,7 @@ const NoiseMax = 5.0
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
-    if evt.kind != .Paint do
+    if evt.kind != .Paint:
         return false
 
     let paintEvt = cast(*PaintEvent) evt
@@ -33,9 +33,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         let x = r * cos(a)
         let y = r * sin(a)
-        if a == 0 do
+        if a == 0:
             lp.start(x, y)
-        else do
+        else:
             lp.curveTo(x, y)
     }
 
@@ -53,7 +53,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") do
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Blob", hook: &onEvent, init: &test)
 }

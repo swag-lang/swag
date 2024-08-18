@@ -30,15 +30,15 @@ func touch(fullName: string) throw
 // Returns true if the given file exists
 func exists(fullName: string)->bool
 {
-    if fullName == null do
+    if fullName == null:
         return false
     var winPath    = Utf16.toZeroTerminated(fullName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
-    if @err() != null do
+    if @err() != null:
         return false
-    if attributes == 0xFFFFFFFF do
+    if attributes == 0xFFFFFFFF:
         return false
-    if attributes & FILE_ATTRIBUTE_DIRECTORY do
+    if attributes & FILE_ATTRIBUTE_DIRECTORY:
         return false
     return true
 }
@@ -82,11 +82,11 @@ func open(fullName: string, mode: FileMode, access: FileAccess, share: FileShare
 
     // Share mode
     var wShare: DWORD
-    if share & FileShare.Read do
+    if share & FileShare.Read:
         wShare |= FILE_SHARE_READ
-    if share & FileShare.Write do
+    if share & FileShare.Write:
         wShare |= FILE_SHARE_WRITE
-    if share & FileShare.Delete do
+    if share & FileShare.Delete:
         wShare |= FILE_SHARE_DELETE
 
     var winPath = Utf16.toZeroTerminated(fullName)

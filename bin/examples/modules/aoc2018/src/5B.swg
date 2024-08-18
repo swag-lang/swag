@@ -38,7 +38,7 @@ func day5B0() assume
 
         while idx < line.length - 1
         {
-            while Latin1.toLower(line[idx]) == x + `a` do
+            while Latin1.toLower(line[idx]) == x + `a`:
                 line.remove(idx, 1)
             idx += 1
         }
@@ -50,9 +50,9 @@ func day5B0() assume
                   Latin1.toLower(line[idx]) == Latin1.toLower(line[idx + 1])
             {
                 line.remove(idx, 2)
-                if idx >= line.length do
+                if idx >= line.length:
                     break
-                if idx do
+                if idx:
                     idx -= 1
             }
 
@@ -83,9 +83,9 @@ func day5B1() assume
         var result: String
         visit c, i in line
         {
-            if i and result.back() ^ c == 32 do
+            if i and result.back() ^ c == 32:
                 result.removeBack()
-            else do
+            else:
                 result += c
         }
 

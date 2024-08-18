@@ -8,10 +8,10 @@ struct ErrToto{}
 func toto()
 {
     titi()
-#if false #do throw ErrToto{}
+#if false: throw ErrToto{}
 }
 
 func titi()
 {
-#if false #do throw ErrToto{}
+#if false: throw ErrToto{}
 }

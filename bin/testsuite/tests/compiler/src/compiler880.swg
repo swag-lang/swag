@@ -7,7 +7,7 @@ func stepBackward(input: s32) -> s32 {
     return input - 1
 }
 func chooseStepFunction(backward: bool) -> func(s32)->s32 {
-    if(backward) do
+    if(backward):
 		return &stepBackward
 	return &stepForward
 }

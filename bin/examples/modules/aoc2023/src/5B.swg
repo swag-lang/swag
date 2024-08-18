@@ -45,7 +45,7 @@ func day5B()
     var mode = Mode.Invalid
     visit l in lines
     {
-        if l.isEmpty() do
+        if l.isEmpty():
             continue
 
         switch l.toString()
@@ -77,7 +77,7 @@ func day5B()
         {
             let tokens = Tokenize.split(l, `:`'u8)
             let values = Tokenize.split(tokens[1], ` `'u8)
-            visit v in values do
+            visit v in values:
                 seeds.add(assume StrConv.toU64(v))
             continue
         }
@@ -92,7 +92,7 @@ func day5B()
     }
 
     var ranges: Array'{ start, end: u64 }
-    for var x = 0; x < seeds.count; x += 2 do
+    for var x = 0; x < seeds.count; x += 2:
         ranges.add({seeds[x], seeds[x] + seeds[x + 1] - 1})
 
     loop i in 7
@@ -105,12 +105,12 @@ func day5B()
             {
                 visit conv in convert[i]
                 {
-                    if range.start > conv.srcE or range.end < conv.src do
+                    if range.start > conv.srcE or range.end < conv.src:
                         continue
 
-                    if range.start < conv.src do
+                    if range.start < conv.src:
                         ranges.add({range.start, conv.src - 1})
-                    if range.end > conv.srcE do
+                    if range.end > conv.srcE:
                         ranges.add({conv.srcE + 1, range.end})
 
                     let v0 = Math.max(range.start, conv.src)
@@ -127,7 +127,7 @@ func day5B()
     }
 
     var total = Swag.U64.Max
-    visit r in ranges do
+    visit r in ranges:
         total = Math.min(total, r.start)
 
     //Console.print("total: ", total)

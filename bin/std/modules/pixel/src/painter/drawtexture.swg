@@ -7,7 +7,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y, width, height: f32, texture: Texture, color: Color = Argb.White)
     {
-        if width == 0 or height == 0 or color.a == 0 do
+        if width == 0 or height == 0 or color.a == 0:
             return
         sharedSolidBrush.color   = color
         sharedSolidBrush.type    = BrushType.Texture
@@ -25,7 +25,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y: f32, texture: Texture, color: Color = Argb.White)
     {
-        if color.a == 0 do
+        if color.a == 0:
             return
         sharedSolidBrush.color   = color
         sharedSolidBrush.type    = BrushType.Texture
@@ -38,7 +38,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y, width, height: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0 do
+        if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0:
             return
         sharedSolidBrush.color   = color
         sharedSolidBrush.type    = BrushType.Texture
@@ -57,7 +57,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        if srcRect.isEmpty() or color.a == 0 do
+        if srcRect.isEmpty() or color.a == 0:
             return
         sharedSolidBrush.color   = color
         sharedSolidBrush.type    = BrushType.Texture

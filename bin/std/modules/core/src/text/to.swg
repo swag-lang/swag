@@ -5,16 +5,16 @@
 func toDisplaySize(value: u64)->String
 {
     var size = value
-    if size < 1024 do
+    if size < 1024:
         return Format.toString("% bytes", size)
     size /= 1024
-    if size < 1024 do
+    if size < 1024:
         return Format.toString("% Kb", size)
     size /= 1024
-    if size < 1024 do
+    if size < 1024:
         return Format.toString("% Mb", size)
     size /= 1024
-    if size < 1024 do
+    if size < 1024:
         return Format.toString("% Gb", size)
     size /= 1024
     return Format.toString("% Tb", size)

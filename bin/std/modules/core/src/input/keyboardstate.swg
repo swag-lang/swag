@@ -14,7 +14,7 @@ impl KeyboardState
     mtd update()
     {
         updateNative()
-        loop i in @countof(Key) do
+        loop i in @countof(Key):
             pressed[i] = native.isKeyPressed(cast(Key) i)
     }
 

@@ -21,7 +21,7 @@ var toTreatCpt: u32
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if msg.type.kind != TypeInfoKind.Func do return
+    if msg.type.kind != TypeInfoKind.Func: return
 
     let typeF = cast(const *TypeInfoFunc) msg.type
     visit i in typeF.attributes

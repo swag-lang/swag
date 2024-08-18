@@ -103,7 +103,7 @@ func messageLoop()
     {
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
-            if msg.message == WM_QUIT do
+            if msg.message == WM_QUIT:
                 return
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
@@ -111,7 +111,7 @@ func messageLoop()
 
         display()
 
-        if Env.hasArg("swag.test") do
+        if Env.hasArg("swag.test"):
             cpt += 1
     }
 }

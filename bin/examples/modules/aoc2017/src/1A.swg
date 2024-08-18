@@ -31,7 +31,7 @@ func day1A()
     var total = 0
     loop i in text
     {
-        if text[i] == text[(i + 1) % text.length] do
+        if text[i] == text[(i + 1) % text.length]:
             total += text[i] - `0`
     }
 

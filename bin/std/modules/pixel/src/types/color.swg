@@ -221,19 +221,19 @@ impl Color
         func hueToCol(m1, m2, hue: f32)->u8
         {
             var h = hue
-            if h < 0 do
+            if h < 0:
                 h += 1
-            if h > 1 do
+            if h > 1:
                 h -= 1
 
             var v: f32 = undefined
-            if 6 * h < 1 do
+            if 6 * h < 1:
                 v = m1 + (m2 - m1) * h * 6
-            elif 2 * h < 1 do
+            elif 2 * h < 1:
                 v = m2
-            elif 3 * h < 2 do
+            elif 3 * h < 2:
                 v = m1 + (m2 - m1) * ((2.0 / 3.0) - h) * 6
-            else do
+            else:
                 v = m1
 
             return cast(u8) (v * 255)
@@ -276,25 +276,25 @@ impl Color
             return result
         }
 
-        if result.l < 0.5 do
+        if result.l < 0.5:
             result.s = delta / (max + min)
-        else do
+        else:
             result.s = delta / (2 - max - min)
 
         let delr = (((max - rf) / 6) + (delta * 0.5)) / delta
         let delg = (((max - gf) / 6) + (delta * 0.5)) / delta
         let delb = (((max - bf) / 6) + (delta * 0.5)) / delta
 
-        if rf == max do
+        if rf == max:
             result.h = delb - delg
-        elif gf == max do
+        elif gf == max:
             result.h = (1.0 / 3.0) + delr - delb
-        else do
+        else:
             result.h = (2.0 / 3.0) + delg - delr
 
-        if result.h < 0 do
+        if result.h < 0:
             result.h += 1
-        if result.h > 1 do
+        if result.h > 1:
             result.h -= 1
 
         return result
@@ -358,38 +358,38 @@ impl Core.StrConv.IPokeValue for Color
         var ovf: bool
 
         var one = Tokenize.eatSpaces(buf)
-        if @countof(one) == 0 do
+        if @countof(one) == 0:
             throw SyntaxError{}
 
         if buf[0] == `0` and buf[1] | 32 == `x`
         {
             (argb, eat, ovf) = try parseU32(one)
-            if ovf do
+            if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         elif Latin1.isDigit(buf[0])
         {
             (a, eat, ovf) = try parseU8(one)
-            if ovf do
+            if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (r, eat, ovf) = try parseU8(one)
-            if ovf do
+            if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (g, eat, ovf) = try parseU8(one)
-            if ovf do
+            if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (b, eat, ovf) = try parseU8(one)
-            if ovf do
+            if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }

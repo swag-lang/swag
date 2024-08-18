@@ -10,7 +10,7 @@ func swap(x, y: *s32)
 func quick(values: [..] s32, cb: func(s32, s32)->s32)
 {
     let count = @countof(values)
-    if(count == 0) do
+    if(count == 0):
         return
 
     let begin = 0'u64
@@ -33,11 +33,11 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         var high = end
         loop
         {
-            while low < high and cb(buffer[low], buffer[end]) <= 0 do
+            while low < high and cb(buffer[low], buffer[end]) <= 0:
                 low += 1
-            while low < high and cb(buffer[high], buffer[end]) >= 0 do
+            while low < high and cb(buffer[high], buffer[end]) >= 0:
                 high -= 1
-            if low >= high do
+            if low >= high:
                 break
             swap(&buffer[low], &buffer[high])
         }
@@ -86,6 +86,6 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 #test
 {
     var arr: [12] s32
-    loop @countof(arr) do arr[#index] = cast(s32) #index
+    loop @countof(arr): arr[#index] = cast(s32) #index
     quick(arr, func(x, y) => y <=> x)
 }

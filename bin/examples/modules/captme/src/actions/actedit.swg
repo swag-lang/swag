@@ -50,10 +50,10 @@ impl IActionUI for ActionEdit
                 visit it in capture.selection
                 {
                     let itfForm = capture.forms[it]
-                    if @kindof(itfForm) != FormImage do
+                    if @kindof(itfForm) != FormImage:
                         continue
                     let b = cast(*FormImage) @dataof(itfForm)
-                    if b.kind != .Image do
+                    if b.kind != .Image:
                         continue
                     evt.hidden = false
                     if b.image.isValid()

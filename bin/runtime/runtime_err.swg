@@ -4,32 +4,32 @@ using Swag
 
 func __dropErr(err: any)
 {
-    if err == null do
+    if err == null:
         return
     let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
-    if type.opDrop do
+    if type.opDrop:
         type.opDrop(data)
 }
 
 func __setErr(err: any)
 {
     let cxt = @getcontext()
-    if cxt.errorIndex >= MaxErrors do
+    if cxt.errorIndex >= MaxErrors:
         @panic("too many nested error levels!", #location)
 
     __dropErr(cxt.errors[cxt.errorIndex].value)
 
     // We check that the contextual error allocator has been initialized.
     // In case an error is raised at a very very early stage (in #init)
-    if !cxt.errorAllocator.capacity do
+    if !cxt.errorAllocator.capacity:
         cxt.errorAllocator.setCapacity(acast __buildCfg.errorAllocatorCapacity, cxt.allocator)
 
     let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
     let ptr  = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
     @memcpy(ptr, data, cast(u64) type.sizeof)
-    if type.opPostCopy do
+    if type.opPostCopy:
         type.opPostCopy(ptr)
     cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
     cxt.hasError                     = 1
@@ -63,9 +63,9 @@ func __popErr()
 func __catchErr()
 {
     let cxt = @getcontext()
-    if !cxt.hasError do
+    if !cxt.hasError:
         cxt.curError = null
-    else do
+    else:
         cxt.curError = cxt.errors[cxt.errorIndex].value
     cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex - 1].pushUsedAlloc : 0
     cxt.hasError            = 0
@@ -132,7 +132,7 @@ func __failedAssume(loc: SourceCodeLocation)
 func __stackTrace(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
-    if cxt.traceIndex >= MaxTraces do
+    if cxt.traceIndex >= MaxTraces:
         return
     cxt.traces[cxt.traceIndex] = loc
     cxt.traceIndex += 1
@@ -225,7 +225,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     @print("\n")
 
     // During tests just raise an error without a dialog box
-    if contextFlags & .Test do
+    if contextFlags & .Test:
         __exitError()
 
     // Build message
@@ -235,7 +235,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     if message != null
     {
         len = @countof(message)
-        if len > 512 do
+        if len > 512:
             len = 512
         @memcpy(&str[0], @dataof(message), len)
         str[len]     = `\n`

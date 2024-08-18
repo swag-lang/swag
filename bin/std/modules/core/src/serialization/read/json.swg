@@ -48,7 +48,7 @@ public impl JSon
                 line += 1
                 col = 1
             }
-            else do
+            else:
                 col += 1
             c = stream.peekU8()
         }
@@ -63,7 +63,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `[` do
+        if c != `[`:
             throw getError("malformed array, missing opening [[[]]")
         return false
     }
@@ -72,7 +72,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `]` do
+        if c != `]`:
             throw getError("malformed array; missing closing [[]]]")
     }
 
@@ -97,7 +97,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `{` do
+        if c != `{`:
             throw getError("malformed struct, missing opening [[{]]")
     }
 
@@ -105,7 +105,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `}` do
+        if c != `}`:
             throw getError("malformed struct, missing closing [[}]]")
     }
 
@@ -124,7 +124,7 @@ public impl JSon
     {
         zapBlanks()
         var c = stream.readU8()
-        if c != `"` do
+        if c != `"`:
             throw getError("malformed property name, missing opening [[\"]]")
 
         propName.clear()
@@ -135,15 +135,15 @@ public impl JSon
             c = stream.readU8()
         }
 
-        if propName != val.name do
+        if propName != val.name:
             throw getError("invalid property name")
 
-        if c != `"` do
+        if c != `"`:
             throw getError("malformed property name, missing closing [[\"]]")
 
         zapBlanks()
         c = stream.readU8()
-        if c != `:` do
+        if c != `:`:
             throw getError("malformed property, missing [[:]] after name")
 
         return true
@@ -163,7 +163,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.peekU8()
-        if c == `,` do
+        if c == `,`:
             stream.moveSeek()
     }
 
@@ -268,7 +268,7 @@ public impl JSon
             }
 
             c = stream.readU8()
-            if c != `"` do
+            if c != `"`:
                 throw getError("malformed string, missing closing [[\"]]")
 
             return result

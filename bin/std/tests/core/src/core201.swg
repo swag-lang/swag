@@ -51,7 +51,7 @@ var utf8Map: [] Utf8Map = [
         var arr: [4] u8
         let eat  = encodeRune(arr, it.c)
         @assert(eat == @countof(it.str))
-        loop i in eat do
+        loop i in eat:
             @assert(arr[i] == it.str[i])
 
         var res = decodeRune(it.str)

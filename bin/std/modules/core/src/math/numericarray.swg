@@ -19,7 +19,7 @@ impl NumericArray
     {
         loop i in N
         {
-            if buf[i] != other.buf[i] do
+            if buf[i] != other.buf[i]:
                 return false
         }
 
@@ -31,15 +31,15 @@ impl NumericArray
         var result: retval
         loop i in N
         {
-            #if op == "+" #do
+            #if op == "+":
                 result.buf[i] = buf[i] + other.buf[i]
-            #elif op == "-" #do
+            #elif op == "-":
                 result.buf[i] = buf[i] - other.buf[i]
-            #elif op == "*" #do
+            #elif op == "*":
                 result.buf[i] = buf[i] * other.buf[i]
-            #elif op == "/" #do
+            #elif op == "/":
                 result.buf[i] = buf[i] / other.buf[i]
-            #else #do
+            #else:
                 #error "unsupported binary operation [[" ++ op ++ "]]"
         }
         return result
@@ -50,15 +50,15 @@ impl NumericArray
     {
         loop i in N
         {
-            #if op == "+=" #do
+            #if op == "+=":
                 buf[i] += value
-            #elif (op == "-=") #do
+            #elif (op == "-="):
                 buf[i] -= value
-            #elif (op == "*=") #do
+            #elif (op == "*="):
                 buf[i] *= value
-            #elif (op == "/=") #do
+            #elif (op == "/="):
                 buf[i] /= value
-            #else #do
+            #else:
                 #error "unsupported assign operation [[" ++ op ++ "]]"
         }
     }
@@ -68,15 +68,15 @@ impl NumericArray
     {
         loop i in N
         {
-            #if op == "+=" #do
+            #if op == "+=":
                 buf[i] += value.buf[i]
-            #elif (op == "-=") #do
+            #elif (op == "-="):
                 buf[i] -= value.buf[i]
-            #elif (op == "*=") #do
+            #elif (op == "*="):
                 buf[i] *= value.buf[i]
-            #elif (op == "/=") #do
+            #elif (op == "/="):
                 buf[i] /= value.buf[i]
-            #else #do
+            #else:
                 #error "unsupported assign operation [[" ++ op ++ "]]"
         }
     }
@@ -84,7 +84,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: T)
     {
-        loop i in N do
+        loop i in N:
             buf[i] = what
     }
 
@@ -92,7 +92,7 @@ impl NumericArray
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
-        loop i in N do
+        loop i in N:
             buf[i] = what[i]
     }
 
@@ -101,7 +101,7 @@ impl NumericArray
     {
         Debug.assert(@countof(values) == N)
         var result: retval
-        loop N do
+        loop N:
             result.buf[#index] = values[#index]
         return result
     }
@@ -111,7 +111,7 @@ impl NumericArray
     mtd set(values: T...)
     {
         Debug.assert(@countof(values) == N)
-        loop i in N do
+        loop i in N:
             buf[i] = values[i]
     }
 
@@ -119,7 +119,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: T)
     {
-        loop i in N do
+        loop i in N:
             buf[i] = (buf[i] * value1) + value2
     }
 
@@ -127,7 +127,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: Self)
     {
-        loop i in N do
+        loop i in N:
             buf[i] = (buf[i] * value1[i]) + value2.buf[i]
     }
 }

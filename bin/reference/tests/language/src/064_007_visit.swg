@@ -21,13 +21,13 @@ impl MyStruct
     func(ptr: bool, back: bool) opVisit(self, stmt: code)
     {
         // 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.
-        // We do not use it in this example, so we check at compile time that it's not true.
-        #if ptr #do
+        // We: not use it in this example, so we check at compile time that it's not true.
+        #if ptr:
             #error "visiting myStruct by pointer is not supported"
 
         // 'back' is a generic parameter that tells if we want to visit in reverse order.
-        // We do not use it in this example, so we check at compile time that it's not true.
-        #if ptr #do
+        // We: not use it in this example, so we check at compile time that it's not true.
+        #if ptr:
             #error "visiting myStruct in reverse order is not supported"
 
         // Loop on the 3 fields

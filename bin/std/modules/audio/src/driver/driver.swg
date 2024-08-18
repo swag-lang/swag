@@ -35,12 +35,12 @@ private func updateThreadProc(th: Threading.Thread)
     {
         // Wait for an update to be requested
         driver.wakeupUpdate.wait()
-        if th.requestEnd do
+        if th.requestEnd:
             break
 
         // All pending recycles to actual recycle list
         driver.mutexRecycleVoices.lock()
-        visit voice in driver.pendingRecycleVoices do
+        visit voice in driver.pendingRecycleVoices:
             driver.toRecycleVoices.add(voice)
         driver.mutexRecycleVoices.unlock()
         driver.pendingRecycleVoices.clear()
@@ -55,7 +55,7 @@ private func updateThreadProc(th: Threading.Thread)
         visit cmd in copyVoices
         {
             let voice = cmd.voice
-            if th.requestEnd do
+            if th.requestEnd:
                 break
 
             switch cmd.command
@@ -71,7 +71,7 @@ private func updateThreadProc(th: Threading.Thread)
 
                 let idx = voice.idxInList
                 driver.activeVoices.removeAt(idx)
-                if idx != driver.activeVoices.count do
+                if idx != driver.activeVoices.count:
                     driver.activeVoices[idx].idxInList = idx
                 driver.pendingRecycleVoices.add(voice)
 
@@ -84,7 +84,7 @@ private func updateThreadProc(th: Threading.Thread)
                 }
 
                 // If the voice is no more playing, register it for destruction if necessary
-                if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop) do
+                if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop):
                     voice.destroy()
             }
         }
@@ -121,7 +121,7 @@ impl Driver
         mutexVoicesToUpdate.lock()
         visit cmd in voicesToUpdate
         {
-            if cmd.command == .Register do
+            if cmd.command == .Register:
                 toRecycleVoices.add(cmd.voice)
         }
         voicesToUpdate.clear()
@@ -132,7 +132,7 @@ impl Driver
         toRecycleVoices.add(pendingRecycleVoices.toSlice())
         pendingRecycleVoices.clear()
 
-        visit voice in toRecycleVoices do
+        visit voice in toRecycleVoices:
             Memory.delete(voice)
         toRecycleVoices.clear()
 
@@ -146,7 +146,7 @@ impl Driver
 
         // Destroy buses
         ////////////////
-        visit bus in buses do
+        visit bus in buses:
             catch bus.destroy()
         buses.clear()
 
@@ -159,7 +159,7 @@ impl Driver
     {
         mutexVoicesToUpdate.lock()
         defer mutexVoicesToUpdate.unlock()
-        if driverIsClosing do
+        if driverIsClosing:
             return
         voicesToUpdate.add({voice, cmd})
         wakeupUpdate.signal()
@@ -169,10 +169,10 @@ impl Driver
     {
         var back: *Voice
         mutexRecycleVoices.lock()
-        if !toRecycleVoices.isEmpty() do
+        if !toRecycleVoices.isEmpty():
             back = toRecycleVoices.popBack()
         mutexRecycleVoices.unlock()
-        if back do
+        if back:
             back.recycle()
         return back orelse Memory.new'Voice()
     }

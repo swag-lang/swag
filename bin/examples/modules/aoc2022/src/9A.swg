@@ -4,7 +4,7 @@ This rope bridge creaks as you walk along it. You aren't sure how old it is, or 
 
 It seems to support the Elves just fine, though. The bridge spans a gorge which was carved out by the massive river far below you.
 
-You step carefully; as you do, the ropes stretch and twist. You decide to distract yourself by modeling rope physics; maybe you can even figure out where not to step.
+You step carefully; as you:, the ropes stretch and twist. You decide to distract yourself by modeling rope physics; maybe you can even figure out where not to step.
 
 Consider a rope with a knot at each end; these knots mark the head and the tail of the rope. If the head moves far enough away from the tail, the tail is pulled toward the head.
 

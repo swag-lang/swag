@@ -130,7 +130,6 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #code
 #scope
 #up
-#do
 
 #cfg
 #os

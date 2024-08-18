@@ -11,7 +11,7 @@ func swag_runtime_itoa(result: ^u8, value: s64)->*u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue do
+        if !orgValue:
             break
     }
 

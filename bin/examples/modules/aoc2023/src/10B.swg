@@ -151,13 +151,13 @@ func day10B()
 
     // Determin the shape of the start 'S'
     let start = #ref mp(startX, startY)
-    if mp(startX - 1, startY) & .East do
+    if mp(startX - 1, startY) & .East:
         start |= .West
-    if mp(startX + 1, startY) & .West do
+    if mp(startX + 1, startY) & .West:
         start |= .East
-    if mp(startX, startY - 1) & .South do
+    if mp(startX, startY - 1) & .South:
         start |= .North
-    if mp(startX, startY + 1) & .North do
+    if mp(startX, startY + 1) & .North:
         start |= .South
     var visitX = startX
 
@@ -193,14 +193,14 @@ func day10B()
         visit(Bytes) c, col in l
         {
             let one = mp(cast(s64) col, cast(s64) line)
-            if one & .Edge do
+            if one & .Edge:
                 continue
 
             var inside = false
             loop x in col
             {
                 let one1 = mp(cast(s64) x, cast(s64) line)
-                if (one1 & .Edge and one1 & .North) do
+                if (one1 & .Edge and one1 & .North):
                     inside = !inside
             }
 
