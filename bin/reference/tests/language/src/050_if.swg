@@ -58,7 +58,7 @@ The 'if' will implicitly convert the variable to 'true' or 'false', and make the
 {
     // This will declare a variable 'a', and test it against 0.
     // 'a' is then only visible in the 'if' block, and not outside.
-    if var a = 0
+    if let a = 0
     {
         @assert(false)
     }

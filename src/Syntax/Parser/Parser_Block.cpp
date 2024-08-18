@@ -23,7 +23,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     {
         node->addSpecFlag(AstIf::SPEC_FLAG_ASSIGN);
 
-        const auto      newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        const auto      newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
         ParserPushScope scoped(this, newScope);
 
         AstNode* varDecl;

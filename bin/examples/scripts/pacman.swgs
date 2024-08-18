@@ -1688,12 +1688,12 @@ func checkCollisions()
         g_TimeStamp = g_Ticks
         g_PacMan.stopChomping()
     }
-// Ghosts exit SPAWN pen when a certain number of pills have been eaten
+    // Ghosts exit SPAWN pen when a certain number of pills have been eaten
     // To prevent all piling out at once after a death, tick timers only allow the ghosts to leave after a certain point
     // BLUE leaves after 30 pills are eaten
     elif g_Ghosts[2].ai == .SPAWN and g_PillsLeft <= 244 - 30 and g_Ticks >= 300:
         g_Ghosts[2].setAI(.LEAVE, false)
-// YELLOW leaves after 1/3 of the pills are eaten
+    // YELLOW leaves after 1/3 of the pills are eaten
     elif g_Ghosts[3].ai == .SPAWN and g_PillsLeft <= 244 * 2 / 3 and g_Ticks >= 420:
         g_Ghosts[3].setAI(.LEAVE, false)
 
@@ -1710,7 +1710,7 @@ func checkCollisions()
                 g_PacMan.stopChomping()
                 break
             }
-// If ghost is FRIGHTENED, it can be eaten itself
+            // If ghost is FRIGHTENED, it can be eaten itself
             elif g.ai == .FRIGHTENED
             {
                 // Set ghost AI to DEAD, increasing the score and count of ghosts eaten since the last big pill

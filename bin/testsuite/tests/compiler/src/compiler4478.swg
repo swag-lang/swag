@@ -2,7 +2,7 @@ func toto() => 666
 #test
 {
     var g = 0
-    if var x = toto()
+    if let x = toto()
     {
         g = x
     }

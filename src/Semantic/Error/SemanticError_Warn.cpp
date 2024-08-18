@@ -108,10 +108,9 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (scope->is(ScopeKind::Struct))
         return true;
-
     if (scope->isNot(ScopeKind::Inline) && scope->owner != node && !node->isParentOf(scope->owner))
         return true;
-
+    
     const auto& table = scope->symTable;
     ScopedLock  lock(table.mutex);
 

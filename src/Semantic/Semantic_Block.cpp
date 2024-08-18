@@ -50,6 +50,9 @@ bool Semantic::resolveIf(SemanticContext* context)
 
     SWAG_CHECK(SemanticError::warnElseDoIf(context, node));
 
+    if (node->hasSpecFlag(AstIf::SPEC_FLAG_ASSIGN))
+        SWAG_CHECK(SemanticError::warnUnusedVariables(context, node->ifBlock->ownerScope->parentScope));
+
     return true;
 }
 

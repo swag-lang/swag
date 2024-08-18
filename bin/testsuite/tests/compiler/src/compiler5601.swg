@@ -5,7 +5,7 @@ func toto() => 4
 #test
 {
     var g: bool
-    if var x = toto() where x > 2
+    if let x = toto() where x > 2
     {
         g = true
     }

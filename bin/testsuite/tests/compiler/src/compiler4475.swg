@@ -1,7 +1,7 @@
 #test
 {
     var g = false
-    if var x = 1
+    if let x = 1
     {
         g = true
     }
