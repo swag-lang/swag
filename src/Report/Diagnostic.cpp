@@ -1094,11 +1094,24 @@ bool Diagnostic::containsText(const Utf8& txt) const
 {
     if (textMsg.containsNoCase(txt))
         return true;
+
     for (const auto& n : notes)
     {
         if (n->textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
             return true;
     }
+
+    for (const auto& n : remarks)
+    {
+        if (n.containsNoCase(g_CommandLine.verboseErrorsFilter))
+            return true;
+    }
+
+    for (const auto& n : autoRemarks)
+    {
+        if (n.containsNoCase(g_CommandLine.verboseErrorsFilter))
+            return true;
+    }    
 
     return false;
 }
