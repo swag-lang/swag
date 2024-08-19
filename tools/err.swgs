@@ -21,24 +21,25 @@ var files: Array'OneFile
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {
-    visit &f: files
+    visit &f in files
     {
         var idx = 0'u64
         loop
         {
             idx = f.content.indexOf(src, idx, Utf8.ComparisonType.Latin1NoCase)
-            if idx == Swag.U64.Max do
+            if idx == Swag.U64.Max:
                 break
 
-            if Path.getExtension(f.name) == ".swg" do
+            if Path.getExtension(f.name) == ".swg":
                 inSwg += 1
-            elif Path.getFileName(f.name) != "ErrorIds.cpp" and Path.getFileName(f.name) != "ErrorList.h" do
+            elif Path.getFileName(f.name) != "ErrorIds.cpp" and Path.getFileName(f.name) != "ErrorList.h":
                 inCpp += 1
 
             if f.newContent[idx..idx+6] != dst[..6]
             {
                 Console.printf("% => % %\n", f.content[idx..idx+6], dst, f.name)
-                loop i: 7 do f.newContent[idx+i] = dst[i]
+                loop i in 7: 
+                    f.newContent[idx+i] = dst[i]
                 f.changed = true
             }
 
@@ -50,7 +51,7 @@ func replace(dst, src: string, inSwg, inCpp: &s32)
 func addFiles(folder: string, extension: string)
 {
     let srcFiles = assume Directory.enumerateFiles(folder, extension, recurse: true)
-    visit f: srcFiles
+    visit f in srcFiles
     {
         var of: OneFile
         of.name = f.fullname
@@ -70,13 +71,15 @@ func addFiles(folder: string, extension: string)
     var ids: HashTable'(string, s32)
 
     let lines = assume File.readAllLines("../src/report/errorids.cpp")
-    visit l: lines
+    visit l in lines
     {
         l = Latin1.trim(l)
-        if !l.startsWith("SWAG_ERROR(") do continue
+        if !l.startsWith("SWAG_ERROR("): 
+            continue
         let what = l[11..13]
 
-        if what != "Saf" do continue
+        if what != "Err": 
+            continue
 
         ids.findOrAdd(what).value += 1
 
@@ -87,15 +90,16 @@ func addFiles(folder: string, extension: string)
         var inSwg, inCpp: s32
         replace(dst, l[11..17], &inSwg, &inCpp)
 
-        if !inCpp do
+        if !inCpp:
             Console.printf("UNUSED: %\n", dst)
-        if !inSwg and what != "Fat" and what != "Nte" do
+        if !inSwg and what != "Fat" and what != "Nte":
             Console.printf("UNTESTED: %\n", dst)
     }
 
-    visit f: files
+    visit f in files
     {
-        if !f.changed do continue
+        if !f.changed:
+            continue
         assume File.writeAllBytes(f.name, f.newContent)
     }
 }
