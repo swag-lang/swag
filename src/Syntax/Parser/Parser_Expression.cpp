@@ -137,9 +137,9 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             }
 
             *exprNode = arrayNode;
-            if (tokenParse.isNot(TokenId::SymComma))
+            if (tokenParse.is(TokenId::SymRightSquare))
                 break;
-            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0759)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0105)));
         }
 
