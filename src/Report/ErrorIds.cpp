@@ -903,7 +903,7 @@ void initErrors()
     SWAG_ERROR(Err0758, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0759, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0760, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-    SWAG_ERROR(Err0764, nullptr);
+    SWAG_ERROR(Err0764, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
     SWAG_ERROR(Err0765, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1004,7 +1004,7 @@ void initErrors()
     SWAG_ERROR(Nte0092, "missing parameter [[%s]] of type [[%s]]");
     SWAG_ERROR(Nte0093, "occurred during compile-time evaluation");
     SWAG_ERROR(Nte0094, "occurred during the [[where(call)]] check of the call to [[%s]]");
-    SWAG_ERROR(Nte0095, "occurred during the [[where]] check of struct [[%s]]");
+    SWAG_ERROR(Nte0095, "occurred during the [[where]] check of the struct [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the [[where]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0097, "occurred during the generic instantiation of [[%s]]");
     SWAG_ERROR(Nte0098, "occurred during the inline expansion of [[%s]]");

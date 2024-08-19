@@ -11,19 +11,22 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
 {
     AstNode* node;
     AstNode* whereExpr;
+    ErrorID  errID;
 
     if (errorParam.destFuncDecl)
     {
+        errID     = Err0063;
         node      = errorParam.destFuncDecl;
         whereExpr = errorParam.destFuncDecl->whereExpression;
     }
     else
     {
+        errID     = Err0764;
         node      = errorParam.destStructDecl;
         whereExpr = errorParam.destStructDecl->whereExpression;
     }
 
-    const auto msg = formErr(Err0063, whereExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), whereExpr->token.cstr());
+    const auto msg = formErr(errID, whereExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), whereExpr->token.cstr());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
     errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0187, whereExpr->token.cstr())));
