@@ -1129,7 +1129,7 @@ void initErrors()
     SWAG_ERROR(Nte0217, "this type is [[%s]]");
     SWAG_ERROR(Nte0218, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0219, "trying to match the type of the other part of the conditional expression");
-    SWAG_ERROR(Nte0220, "unnamed parameters ([['?']]) cannot have an explicitly specified type");
+    SWAG_ERROR(Nte0220, "unnamed parameters ([['?']]) cannot have an explicit type");
     SWAG_ERROR(Nte0221, nullptr);
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);

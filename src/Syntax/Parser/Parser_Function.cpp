@@ -333,9 +333,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0699)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0220));
-                for (uint32_t i = 1; i < unnamedTokens.size(); i++)
-                    err.addNote(unnamedTokens[i], "");
+                err.addNote(unnamedTokens.back(), toNte(Nte0220));
                 return context->report(err);
             }
 
@@ -391,9 +389,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0366)};
-                err.addNote(unnamedTokens.front(), toNte(Nte0179));
-                for (uint32_t i = 1; i < unnamedTokens.size(); i++)
-                    err.addNote(unnamedTokens[i], "");
+                err.addNote(unnamedTokens.back(), toNte(Nte0179));
                 return context->report(err);
             }
 
