@@ -690,6 +690,13 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     const auto node = castAst<AstStruct>(context->node->parent);
     SWAG_ASSERT(node->is(AstNodeKind::StructDecl) || node->is(AstNodeKind::InterfaceDecl));
 
+    // where
+    if (node->whereExpression && !node->hasAstFlag(AST_GENERIC))
+    {
+        SWAG_CHECK(solveWhereExpr(context, node));
+        YIELD();
+    }
+    
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
@@ -836,10 +843,10 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
         errorParam.destStructDecl = structDecl;
         errorParam.diagError      = &diagError;
         errorParam.diagNote       = &diagNote;
-        errorParam.errorNode      = context->node;
+        errorParam.errorNode      = structDecl;
 
         SemanticError::errorWhereFailed(context, errorParam);
-
+        
         return context->report(*diagError[0], diagNote);
     }
 
@@ -854,13 +861,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
     auto job        = context->baseJob;
 
     SWAG_ASSERT(typeInfo->declNode);
-
-    // where
-    if (node->whereExpression && !typeInfo->isGeneric())
-    {
-        SWAG_CHECK(solveWhereExpr(context, node));
-        YIELD();
-    }
 
     // Structure packing
     if (node->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))

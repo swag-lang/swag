@@ -855,8 +855,8 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->tokenName         = tokenName;
-    newNode->content           = content ? content->clone(cloneContext) : nullptr;
     newNode->whereExpression   = whereExpression ? whereExpression->clone(cloneContext) : nullptr;
+    newNode->content           = content ? content->clone(cloneContext) : nullptr;
     newNode->addAstFlag(AST_FROM_GENERIC);
     newNode->content->removeAstFlag(AST_NO_SEMANTIC);
 
