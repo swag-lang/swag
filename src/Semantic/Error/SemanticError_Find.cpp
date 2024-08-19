@@ -40,7 +40,6 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNa
 
 void SemanticError::findClosestMatchesInList(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
-    uint32_t bestScore = UINT32_MAX;
     result.clear();
 
     // Search first for a case problem
@@ -54,39 +53,29 @@ void SemanticError::findClosestMatchesInList(const Utf8& searchName, const Vecto
             result.push_back(it);
     }
 
-    if(!result.empty())
+    if (!result.empty())
         return;
 
+    std::vector<std::pair<uint32_t, Utf8>> matches;
     for (const auto& word : searchList)
     {
-        const auto score = Utf8::fuzzyCompare(searchName, word);
+        const auto  distance        = Utf8::fuzzyCompare(searchName, word);
+        const auto  maxLength       = max(searchName.count, word.count);
+        const float normalizedScore = static_cast<float>(distance) / static_cast<float>(maxLength);
+        matches.emplace_back(static_cast<uint32_t>(normalizedScore * 100), word);
+    }
 
-        // If number of changes is too big considering the size of the text, cancel
-        if (searchName.count > 1 && score > static_cast<uint32_t>(searchName.count) / 2)
-            continue;
-        // If too much changes, cancel
-        if (score > 2)
-            continue;
+    // Sort matches by the best (lowest) score first
+    std::ranges::sort(matches, [](const auto& a, const auto& b) {
+        return a.first < b.first;
+    });
 
-        if (score < bestScore)
-            result.clear();
-        if (score <= bestScore)
+    // Add matches that meet the similarity threshold
+    for (const auto& match : matches)
+    {
+        if (static_cast<float>(match.first) / 100.0 <= 0.2f)
         {
-            // Be sure it's not already in the best list
-            bool here = false;
-            for (auto& n : result)
-            {
-                if (n == word)
-                {
-                    here = true;
-                    break;
-                }
-            }
-
-            if (!here)
-                result.push_back(word);
-
-            bestScore = score;
+            result.push_back(match.second);
         }
     }
 }
