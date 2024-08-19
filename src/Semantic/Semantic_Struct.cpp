@@ -237,7 +237,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         if (typeInfo->isGeneric())
             continue;
 
-        // We need to be have a bytecode pointer to be able to reference it in the itable
+        // We need to have a bytecode pointer to be able to reference it in the itable
         if (!child->isForeign())
         {
             ScopedLock lk(child->mutex);
@@ -325,7 +325,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         return true;
     }
 
-    // Be sure every functions of the interface has been covered. If it's not the case,
+    // Be sure every function of the interface has been covered. If it's not the case,
     // we generate the missing parts.
     SWAG_CHECK(Ast::generateMissingInterfaceFct(context, mapItIdxToFunc, typeStruct, typeBaseInterface, typeInterface));
     YIELD();
@@ -624,7 +624,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
         return true;
 
     // The generated struct could need the user attributes of the original struct or function where it belongs.
-    // So we must be sure that the original parent has collect its attributes.
+    // So we must be sure that the original parent has collected its attributes.
     if (parent->ownerStructScope)
     {
         const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
