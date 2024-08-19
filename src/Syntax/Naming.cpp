@@ -561,9 +561,9 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
         return form("[[%s]] block", node->token.cstr());
 
     if (node->hasAttribute(ATTRIBUTE_MIXIN))
-        return form("[[%s]] mixin", node->token.cstr());
+        return form("mixin [[%s]]", node->token.cstr());
     if (node->hasAttribute(ATTRIBUTE_MACRO))
-        return form("[[%s]] macro", node->token.cstr());
+        return form("macro [[%s]]", node->token.cstr());
 
-    return form("[[%s]] function", node->token.cstr());
+    return form("function [[%s]]", node->token.cstr());
 }
