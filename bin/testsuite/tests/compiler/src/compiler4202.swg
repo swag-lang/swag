@@ -1,4 +1,4 @@
-#global testerror "Err0567"
+#global testerror "Err0570"
 struct B {}
 
 var G = 0

@@ -1,4 +1,4 @@
-#global testerror "Err0621"
+#global testerror "Err0624"
 struct(X: s32) TOTO
 {
     v: [X] s32

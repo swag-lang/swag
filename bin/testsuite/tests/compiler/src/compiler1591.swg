@@ -1,5 +1,5 @@
 
-#global testerror "Err0167"
+#global testerror "Err0169"
 
 struct B
 {

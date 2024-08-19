@@ -1,4 +1,4 @@
-#global testerror "Err0171"
+#global testerror "Err0173"
 #test
 {
     let a = "\u11"

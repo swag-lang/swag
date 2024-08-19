@@ -1,5 +1,5 @@
-#global testerror "Err0711"
-#global testerror "Err0746"
+#global testerror "Err0714"
+#global testerror "Err0749"
 
 const TOTO = false
 #if TOTO

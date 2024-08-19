@@ -1,4 +1,4 @@
-#global testerror "Err0591"
+#global testerror "Err0594"
 
 //#[Swag.Incomplete]
 enum RGB: const [..] s32

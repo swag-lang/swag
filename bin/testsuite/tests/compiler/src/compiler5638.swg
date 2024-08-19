@@ -1,4 +1,4 @@
-#global testerror "Err0099"
+#global testerror "Err0102"
 
 #[Toto(0, )]
 #test

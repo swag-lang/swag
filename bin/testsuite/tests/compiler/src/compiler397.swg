@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0559";
+#global testerror "Err0562";
 #test
 {
 	var d = [[1], 1, 2];

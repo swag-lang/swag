@@ -1,2 +1,2 @@
-#global testerror "Err0703";
+#global testerror "Err0706";
 #toto error

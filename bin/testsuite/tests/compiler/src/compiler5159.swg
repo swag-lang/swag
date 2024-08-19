@@ -1,4 +1,4 @@
-#global testerror "Err0612"
+#global testerror "Err0615"
 
 struct XY
 {

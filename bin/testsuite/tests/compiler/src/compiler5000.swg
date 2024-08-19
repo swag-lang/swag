@@ -1,4 +1,4 @@
-#global testerror "Err0172"
+#global testerror "Err0174"
 #test
 {
     let a = "toto\U11titi"

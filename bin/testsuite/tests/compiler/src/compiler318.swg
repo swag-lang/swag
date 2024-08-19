@@ -1,2 +1,2 @@
-#global testerror "Err0597";
+#global testerror "Err0600";
 var a: [6.0] s32;

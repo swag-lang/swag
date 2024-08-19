@@ -1,4 +1,4 @@
-#global testerror "Err0139"
+#global testerror "Err0141"
 //var fn = func(x, y: s32) => x + y
 
 var G = 0

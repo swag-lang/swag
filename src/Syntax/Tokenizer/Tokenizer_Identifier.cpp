@@ -31,7 +31,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     if (tokenParse.token.text == '#' || tokenParse.token.text == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0658, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0661, tokenParse.cstr())};
         if (tokenParse.token.text == '#' && SWAG_IS_BLANK(*curBuffer))
             err.addNote(toNte(Nte0053));
         return errorContext->report(err);
@@ -52,7 +52,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         }
 
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0703, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0706, tokenParse.cstr())};
 
         Vector<Utf8> searchList{};
         for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
@@ -73,7 +73,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     if (tokenParse.token.text[0] == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0718, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0721, tokenParse.cstr())};
 
         Vector<Utf8> searchList{};
         for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)

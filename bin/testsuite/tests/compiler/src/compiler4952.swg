@@ -1,4 +1,4 @@
-#global testerror "Err0668"
+#global testerror "Err0671"
 impl A for Toto's32
 {
 }

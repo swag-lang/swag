@@ -1,3 +1,3 @@
-#global testerror "Err0527"
+#global testerror "Err0530"
 //private typealias B = u32
 private public func toto4721(b: s32) {}

@@ -1,4 +1,4 @@
-#global testerror "Err0489"
+#global testerror "Err0492"
 func printf(format: cstring, args: cvarargs)
 {
     printf1(format, args)

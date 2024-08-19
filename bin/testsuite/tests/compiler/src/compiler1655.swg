@@ -1,5 +1,5 @@
 
-#global testerror "Err0218"
+#global testerror "Err0220"
 
 //#[Swag.PrintBc]
 #run

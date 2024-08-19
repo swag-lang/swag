@@ -1,4 +1,4 @@
-#global testerror "Err0485"
+#global testerror "Err0488"
 
 func MK_IMPL()
 {

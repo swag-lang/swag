@@ -1,4 +1,4 @@
-#global testerror "Err0461";
+#global testerror "Err0464";
 
 enum A: bool
 {

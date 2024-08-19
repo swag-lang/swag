@@ -1,4 +1,4 @@
-#global testerror "Err0677";
+#global testerror "Err0680";
 #run
 {
 	Swag.@print();

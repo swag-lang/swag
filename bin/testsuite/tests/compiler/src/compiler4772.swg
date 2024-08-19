@@ -1,4 +1,4 @@
-#global testerror "Err0183"
+#global testerror "Err0185"
 func while()
 {
 }

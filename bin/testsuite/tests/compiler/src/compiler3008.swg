@@ -1,4 +1,4 @@
-#global testerror "Err0341"
+#global testerror "Err0344"
 mtd toto()
 {
 

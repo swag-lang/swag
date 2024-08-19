@@ -1,2 +1,2 @@
-#global testerror "Err0393";
+#global testerror "Err0396";
 0x111__aa

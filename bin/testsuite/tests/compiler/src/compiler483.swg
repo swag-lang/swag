@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0192"
+#global testerror "Err0194"
 #test
 {
 	var res = T()

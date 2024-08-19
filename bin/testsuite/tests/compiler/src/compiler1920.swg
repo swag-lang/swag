@@ -1,4 +1,4 @@
-#global testerror "Err0703"
+#global testerror "Err0706"
 
 struct(T) C1920
 {
