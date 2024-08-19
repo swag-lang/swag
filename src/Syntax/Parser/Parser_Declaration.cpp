@@ -35,15 +35,15 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdNamespace:
         case TokenId::CompilerGlobal:
             break;
-        
+
         case TokenId::SymAttrStart:
             return error(tokenParse, formErr(Err0367, tokenAttr.cstr(), tokenAttr.cstr()));
-        
+
         case TokenId::KwdPublic:
         case TokenId::KwdPrivate:
         case TokenId::KwdInternal:
             return error(tokenParse, formErr(Err0530, tokenParse.cstr(), tokenAttr.cstr()));
-        
+
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0364, tokenAttr.cstr(), tokenParse.cstr())};
@@ -472,7 +472,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         SWAG_CHECK(eatToken());
 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0055)));
-        
+
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
             const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0325)};
@@ -481,6 +481,15 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     }
 
     SWAG_ASSERT(!currentScope->isGlobalOrImpl());
+
+    if (tokenParse.is(TokenId::SymRightCurly) ||
+        tokenParse.is(TokenId::SymRightParen) ||
+        tokenParse.is(TokenId::SymRightSquare))
+    {
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0765)};
+        err.addNote(statement, statement->token, toNte(Nte0064));
+        return context->report(err);
+    }
 
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;

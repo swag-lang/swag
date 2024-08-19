@@ -904,7 +904,7 @@ void initErrors()
     SWAG_ERROR(Err0759, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0760, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0764, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
-    SWAG_ERROR(Err0765, nullptr);
+    SWAG_ERROR(Err0765, "unexpected embedded instruction                   $ expected an embedded instruction, found $$TKN$$ instead                                                                                  $ ");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1129,7 +1129,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0219, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0220, "unnamed parameters ([['?']]) cannot have an explicit type");
-    SWAG_ERROR(Nte0064, nullptr);
+    SWAG_ERROR(Nte0064, "this is the start of the block");
     SWAG_ERROR(Nte0221, nullptr);
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
