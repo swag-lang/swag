@@ -534,7 +534,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         SWAG_CHECK(doDeRef(parent, &exprNode));
     }
 
-    // Moveref modifier
+    // moveref modifier
     else if (tokenParse.is(TokenId::KwdMoveRef))
     {
         SWAG_VERIFY(exprFlags.has(EXPR_FLAG_IN_CALL), error(tokenParse, toErr(Err0343)));
@@ -1375,15 +1375,15 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         case TokenId::CompilerUp:
         case TokenId::CompilerSelf:
         {
-            AstNode* exprNode     = nullptr;
-            AstNode* multi        = nullptr;
-            bool     prePrendWith = withNode != nullptr;
+            AstNode* exprNode    = nullptr;
+            AstNode* multi       = nullptr;
+            bool     prependWith = withNode != nullptr;
             while (true)
             {
                 if (tokenParse.is(TokenId::SymDot))
                 {
                     SWAG_VERIFY(withNode, error(tokenParse, toErr(Err0407)));
-                    prePrendWith = true;
+                    prependWith = true;
                     eatToken();
                 }
 
@@ -1392,9 +1392,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                     Ast::removeFromParent(exprNode);
 
                 // Prepend the 'with' identifier
-                if (withNode && prePrendWith)
+                if (withNode && prependWith)
                 {
-                    prePrendWith = false;
+                    prependWith = false;
                     SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
                     for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
                     {
