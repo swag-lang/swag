@@ -896,7 +896,7 @@ void initErrors()
     SWAG_ERROR(Err0755, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0756, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0757, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-    SWAG_ERROR(Err0108, nullptr);
+    SWAG_ERROR(Err0108, "invalid variable name                             $ cannot use [[self]] as a variable name                                                                                                   $ ");
     SWAG_ERROR(Err0758, nullptr);
     SWAG_ERROR(Err0759, nullptr);
     SWAG_ERROR(Err0760, nullptr);

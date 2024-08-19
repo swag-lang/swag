@@ -23,6 +23,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
             return error(identifier->callParameters, formErr(Err0180, identifier->token.cstr(), "a variable name"));
     }
 
+    if (node->token.text == g_LangSpec->name_self)
+        return error(node->token, toErr(Err0108));
+
     if (node->token.text[0] != '#')
         return true;
 
