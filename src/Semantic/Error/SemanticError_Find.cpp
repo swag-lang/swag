@@ -56,7 +56,7 @@ void SemanticError::findClosestMatchesInList(const Utf8& searchName, const Vecto
     if (!result.empty())
         return;
 
-    std::vector<std::pair<uint32_t, Utf8>> matches;
+    Vector<std::pair<uint32_t, Utf8>> matches;
     for (const auto& word : searchList)
     {
         const auto  distance        = Utf8::fuzzyCompare(searchName, word);
