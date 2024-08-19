@@ -1,4 +1,4 @@
-#global testerror "Err0507";
+#global testerror "Err0515";
 
 #[Swag.Overload]
 func main (){}

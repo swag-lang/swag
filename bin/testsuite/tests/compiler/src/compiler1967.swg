@@ -1,5 +1,5 @@
 
-#global testerror "Err0533"
+#global testerror "Err0541"
 
 struct __x
 {

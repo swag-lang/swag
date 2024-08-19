@@ -1,4 +1,4 @@
-#global testerror "Err0717"
+#global testerror "Err0724"
 impl swag
 {
 }

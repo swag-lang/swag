@@ -1,4 +1,4 @@
-#global testerror "Err0750"
+#global testerror "Err0757"
 
 func myFunc(val: s32, x: func(s32)->s32)
 {

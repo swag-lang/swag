@@ -11,7 +11,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)
+bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result)
 {
     const auto callParams = Ast::newFuncCallGenParams(this, parent);
     *result               = callParams;
@@ -89,7 +89,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             break;
         if (tokenParse.is(TokenId::SymRightParen))
             break;
-        SWAG_CHECK(eatToken(TokenId::SymComma, "to define another argument or ')' to end the list"));
+        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0103)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0104)));
     }
 
     if (multi)
@@ -113,13 +114,13 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
         SWAG_CHECK(eatToken());
         while (tokenParse.isNot(TokenId::SymVertical))
         {
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0644)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0652)));
             callParams->aliasNames.push_back(tokenParse.token);
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymVertical))
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma, "to declare another alias variable name"));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse, toErr(Err0095)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse, toErr(Err0096)));
         }
 
         SWAG_CHECK(eatToken());
@@ -141,7 +142,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             if (tokenParse.is(TokenId::SymColon))
             {
                 if (paramExpression->isNot(AstNodeKind::IdentifierRef) || paramExpression->childCount() != 1)
-                    return context->report({paramExpression, toErr(Err0646)});
+                    return context->report({paramExpression, toErr(Err0654)});
                 param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->firstChild());
                 param->allocateExtension(ExtensionKind::Owner);
                 param->extOwner()->nodesToFree.push_back(paramExpression);
@@ -158,23 +159,26 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
                 break;
 
             if (forAttrUse && tokenParse.is(TokenId::SymRightSquare))
-                return error(tokenParse, toErr(Err0421));
+                return error(tokenParse, toErr(Err0430));
 
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0040); });
-                if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-                    SWAG_CHECK(eatToken(TokenId::SymComma, "in the [[struct]] initialization arguments"));
+                if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT) || closeToken == TokenId::SymRightCurly)
+                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0107)));
                 else if (forAttrUse)
-                    SWAG_CHECK(eatToken(TokenId::SymComma, "in the attribute arguments"));
+                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0097)));
                 else
-                    SWAG_CHECK(eatToken(TokenId::SymComma, "in the function call arguments"));
+                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0098)));
             }
 
             // Accept ending comma in struct initialization
             if (closeToken == TokenId::SymRightCurly && tokenParse.is(closeToken))
                 break;
 
-            SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0096)));
+            if (forAttrUse)
+                SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0099)));
+            else
+                SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0100)));
         }
     }
 
@@ -200,14 +204,14 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
 
         if (tokenParse.isNot(TokenId::Identifier) || tokenParse.token.isNot(g_LangSpec->name_self))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0318)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0328)};
             return context->report(err);
         }
 
         paramNode->token.text = g_LangSpec->name_self;
     }
 
-    SWAG_VERIFY(paramNode->ownerStructScope, error(tokenParse, toErr(Err0340)));
+    SWAG_VERIFY(paramNode->ownerStructScope, error(tokenParse, toErr(Err0349)));
     SWAG_CHECK(eatToken());
 
     // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
@@ -222,7 +226,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
     }
     else
     {
-        SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse, toErr(Err0340)));
+        SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse, toErr(Err0349)));
         const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
         typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
         typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
@@ -234,13 +238,13 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
 
     if (tokenParse.is(TokenId::SymEqual))
     {
-        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0379));
+        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0388));
         return context->report(err);
     }
 
     if (tokenParse.is(TokenId::SymColon))
     {
-        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0687));
+        const Diagnostic err(paramNode, tokenParse.token, toErr(Err0695));
         return context->report(err);
     }
 
@@ -259,7 +263,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     const auto paramNode = Ast::newVarDecl("", this, parent, AstNodeKind::FuncDeclParam);
 
     if (tokenParse.is(TokenId::SymDotDotDot) || tokenParse.is(TokenId::NativeType))
-        return context->report({sourceFile, tokenParse.token, formErr(Err0461, tokenParse.cstr())});
+        return context->report({sourceFile, tokenParse.token, formErr(Err0469, tokenParse.cstr())});
 
     // Using variable
     if (tokenParse.is(TokenId::KwdUsing))
@@ -280,7 +284,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     }
 
     if (tokenParse.isNot(TokenId::KwdConst))
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0675)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0683)));
     paramNode->token.text = tokenParse.token.text;
 
     // 'self'
@@ -312,8 +316,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                     unnamedTokens.push_back(tokenParse.token);
                 }
 
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, formErr(Err0100, tokenParse.cstr())));
-                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0675)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, formErr(Err0110, tokenParse.cstr())));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0683)));
                 SWAG_CHECK(eatToken());
                 otherVariables.push_back(otherVarNode);
                 paramNode->multiNames.push_back(otherVarNode->token.text);
@@ -328,7 +332,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (unnamedTokens.size() == parent->childCount())
             {
-                Diagnostic err{sourceFile, tokenParse, toErr(Err0688)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0696)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0219));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
@@ -386,7 +390,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (unnamedTokens.size() == parent->childCount())
             {
-                Diagnostic err{sourceFile, tokenParse, toErr(Err0354)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0363)};
                 err.addNote(unnamedTokens.front(), toNte(Nte0177));
                 for (uint32_t i = 1; i < unnamedTokens.size(); i++)
                     err.addNote(unnamedTokens[i], "");
@@ -411,7 +415,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (!acceptMissingType)
             {
-                Diagnostic err{sourceFile, tokenParse, toErr(Err0462)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0470)};
                 if (otherVariables.empty())
                     err.addNote(paramNode, toNte(Nte0205));
                 else
@@ -455,7 +459,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
 bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, formErr(Err0444, parent->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, formErr(Err0452, parent->token.cstr())));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = tokenParse.token.startLocation;
@@ -509,19 +513,16 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             {
                 SWAG_ASSERT(hasMissingType);
                 if (oneParamDone && !*hasMissingType && missingTypes)
-                    return error(allParams->lastChild(), toErr(Err0457));
+                    return error(allParams->lastChild(), toErr(Err0465));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
 
             if (tokenParse.is(TokenId::SymRightParen))
                 break;
 
-            oneParamDone    = true;
-            auto tokenComma = tokenParse;
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another parameter or ')' to end the list"));
-
-            if (tokenParse.is(TokenId::SymRightParen))
-                return context->report({allParams, tokenComma.token, toErr(Err0100)});
+            oneParamDone = true;
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0109)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0110)));
         }
     }
 
@@ -537,7 +538,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     SWAG_ASSERT(tokenParse.is(TokenId::SymLeftParen));
     const auto startLoc = tokenParse.token.startLocation;
     eatToken();
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0448)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0456)));
 
     while (tokenParse.isNot(TokenId::SymRightParen))
     {
@@ -556,7 +557,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0178)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0188)));
 
         auto oneParam = Ast::newVarDecl(tokenParse.token.text, this, allParams, AstNodeKind::FuncDeclParam);
         oneParam->addAstFlag(AST_GENERIC);
@@ -571,7 +572,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         {
             if (isType)
             {
-                Diagnostic err{sourceFile, tokenParse, toErr(Err0179)};
+                Diagnostic err{sourceFile, tokenParse, toErr(Err0189)};
                 err.addNote(Diagnostic::note(oneParam, formNte(Nte0007, oneParam->token.cstr())));
                 err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0041)));
                 return context->report(err);
@@ -580,7 +581,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             isConstant = true;
 
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0615)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0623)));
             SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
         }
 
@@ -613,12 +614,12 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             oneParam->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT);
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
-            return error(tokenParse, toErr(Err0438));
+            return error(tokenParse, toErr(Err0446));
 
         if (tokenParse.isNot(TokenId::SymComma))
             break;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0100)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0110)));
     }
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
@@ -641,11 +642,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
         if (!funcNode->ownerStructScope)
-            return error(tokenParse, toErr(Err0332));
+            return error(tokenParse, toErr(Err0341));
         if (funcNode->ownerStructScope->is(ScopeKind::Enum))
-            return error(tokenParse, toErr(Err0334));
+            return error(tokenParse, toErr(Err0343));
         if (funcNode->ownerStructScope->isNot(ScopeKind::Struct))
-            return error(tokenParse, toErr(Err0332));
+            return error(tokenParse, toErr(Err0341));
     }
 
     if (typeFuncId == TokenId::Invalid)
@@ -737,7 +738,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         // const
         if (tokenParse.is(TokenId::KwdConst))
         {
-            SWAG_VERIFY(isMethod, error(tokenParse, toErr(Err0319)));
+            SWAG_VERIFY(isMethod, error(tokenParse, toErr(Err0329)));
             isConstMethod = true;
             SWAG_CHECK(eatToken());
         }
@@ -752,9 +753,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
         isIntrinsic = tokenParse.token.text[0] == '@';
         if (isIntrinsic)
-            SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse, formErr(Err0172, tokenParse.cstr())));
+            SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse, formErr(Err0182, tokenParse.cstr())));
         else
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0173)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0183)));
 
         funcNode->tokenName = tokenParse.token;
         funcNode->inheritTokenName(tokenParse.token);
@@ -823,8 +824,8 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         ParserPushScope scoped(this, newScope);
         ParserPushFct   scopedFct(this, funcNode);
         auto            startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0419)));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(funcNode, toErr(Err0414)));
+        SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0428)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(funcNode, toErr(Err0422)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     }
@@ -833,7 +834,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
             note = toNte(Nte0065);
-        return error(tokenParse, formErr(Err0676, funcNode->getDisplayNameC()), note.cstr());
+        return error(tokenParse, formErr(Err0684, funcNode->getDisplayNameC()), note.cstr());
     }
 
     // Return type
@@ -848,7 +849,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
             ParserPushScope scoped(this, newScope);
             ParserPushFct   scopedFct(this, funcNode);
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdRetVal), error(tokenParse, toErr(Err0339)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdRetVal), error(tokenParse, toErr(Err0348)));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
         }
@@ -895,7 +896,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     // If we have now a semicolon, then this is an empty function, like a forward decl in c++
     if (tokenParse.is(TokenId::SymSemiColon))
     {
-        SWAG_VERIFY(!funcForCompiler, error(tokenParse, formErr(Err0061, funcNode->getDisplayNameC())));
+        SWAG_VERIFY(!funcForCompiler, error(tokenParse, formErr(Err0062, funcNode->getDisplayNameC())));
         SWAG_CHECK(eatSemiCol("function declaration"));
         return true;
     }
@@ -914,7 +915,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         if (tokenParse.is(TokenId::SymEqualGreater))
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdReturn), error(tokenParse, formErr(Err0336)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdReturn), error(tokenParse, formErr(Err0345)));
 
             if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
             {
@@ -1044,7 +1045,7 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
     {
         if (flags.has(FUNC_DECL_INTERFACE))
         {
-            const Diagnostic err{sourceFile, tokenParse, formErr(Err0059, node->token.cstr())};
+            const Diagnostic err{sourceFile, tokenParse, formErr(Err0060, node->token.cstr())};
             return context->report(err);
         }
 
@@ -1053,18 +1054,18 @@ bool Parser::doFuncDeclBody(AstNode* node, AstNode** result, FuncDeclFlags flags
             const auto nextToken = getNextToken();
             if (nextToken.is(TokenId::NativeType))
             {
-                const Diagnostic err{sourceFile, tokenParse, toErr(Err0680)};
+                const Diagnostic err{sourceFile, tokenParse, toErr(Err0688)};
                 return context->report(err);
             }
         }
 
         if (tokenParse.is(TokenId::NativeType))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0679)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0687)};
             return context->report(err);
         }
 
-        const Diagnostic err{sourceFile, tokenParse, toErr(Err0060)};
+        const Diagnostic err{sourceFile, tokenParse, toErr(Err0061)};
         return context->report(err);
     }
 
@@ -1126,14 +1127,14 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
                 break;
 
             SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse, toErr(Err0424)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse, toErr(Err0433)));
         }
 
         capture->token.endLocation = tokenParse.token.endLocation;
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse, toErr(Err0420)));
+    SWAG_VERIFY(tokenParse.is(TokenId::SymLeftParen), error(tokenParse, toErr(Err0429)));
     typeInfo->addFlag(TYPEINFO_CLOSURE);
     return true;
 }
@@ -1294,7 +1295,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     const auto lambdaDecl = castAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     lambdaDecl->addSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION);
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
-        return error(lambdaDecl, toErr(Err0375));
+        return error(lambdaDecl, toErr(Err0384));
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)

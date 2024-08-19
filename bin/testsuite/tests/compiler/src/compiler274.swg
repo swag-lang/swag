@@ -1,5 +1,5 @@
 
-#global testerror "Err0648";
+#global testerror "Err0656";
 
 attr toto(v: string) -> func;
 

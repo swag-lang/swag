@@ -1,4 +1,4 @@
-#global testerror "Err0668"
+#global testerror "Err0676"
 
 sum(nums: f64...) {
     @assert(@countof(nums) == 3)

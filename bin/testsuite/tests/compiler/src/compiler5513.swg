@@ -1,4 +1,4 @@
-#global testerror "Err0553"
+#global testerror "Err0561"
 
 func toto()
 {

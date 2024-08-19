@@ -1,4 +1,4 @@
-#global testerror "Err0668"
+#global testerror "Err0676"
 func1 hello(name) {
     return "hello" + name
 }

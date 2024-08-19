@@ -1,7 +1,7 @@
 
 ;
 
-#global testerror "Err0125";
+#global testerror "Err0135";
 #test
 {
 	const a = 1;

@@ -75,7 +75,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             if (!hasEnum.empty())
             {
-                Diagnostic err{identifierRef, formErr(Err0698, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
+                Diagnostic err{identifierRef, formErr(Err0706, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
                 const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
@@ -85,7 +85,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifierRef, formErr(Err0704, identifier->token.cstr())};
+            Diagnostic err{identifierRef, formErr(Err0712, identifier->token.cstr())};
 
             // Call to a function ?
             if (testedOver.size() == 1)
@@ -585,13 +585,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0308)};
+                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0317)};
                     return context->report(err);
                 }
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0109, scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0119, scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 
@@ -662,6 +662,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0308)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0317)}));
     return true;
 }

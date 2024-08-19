@@ -1,7 +1,7 @@
 
 #global testpass syntax;
 
-#global testerror "Err0648";
+#global testerror "Err0656";
 attr toto() -> ;
 
 #global testpass syntax;

@@ -36,7 +36,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        const Diagnostic err{sourceFile, tokenParse, formErr(Err0058, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg)};
+        const Diagnostic err{sourceFile, tokenParse, formErr(Err0059, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg)};
         return context->report(err);
     }
 
@@ -69,9 +69,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (msg[0] == 0)
         msg = "$$$";
     if (tokenParse.is(TokenId::EndOfFile))
-        errMsg = formErr(Err0417, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+        errMsg = formErr(Err0425, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     else
-        errMsg = formErr(Err0418, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+        errMsg = formErr(Err0426, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     errMsg.replace(" $$$", "");
 
     Diagnostic err{sourceFile, tokenParse, errMsg};
@@ -92,7 +92,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         if (parent->is(AstNodeKind::Statement) || parent->is(AstNodeKind::StatementNoScope))
             parent = parent->getParent(1);
 
-        if(!isGeneratedName(parent->token.text))
+        if (!isGeneratedName(parent->token.text))
         {
             if (Tokenizer::isCompiler(parent->token.id) ||
                 Tokenizer::isKeyword(parent->token.id))
@@ -130,13 +130,13 @@ bool Parser::eatSemiCol(const char* msg)
             if (tokenParse.is(TokenId::SymSlash))
             {
                 tokenParse.token.startLocation = st.token.startLocation;
-                return error(tokenParse, formErr(Err0276, msg));
+                return error(tokenParse, formErr(Err0286, msg));
             }
 
             tokenParse = st;
         }
 
-        return error(tokenParse, formErr(Err0441, msg));
+        return error(tokenParse, formErr(Err0449, msg));
     }
 
     if (tokenParse.is(TokenId::SymSemiColon))

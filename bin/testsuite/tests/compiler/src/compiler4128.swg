@@ -1,4 +1,4 @@
-#global testerror "Err0710"
+#global testerror "Err0717"
 #global #if @compiler().getBuilfCfg().byteCodeOptimizeLevel > 0
 
 #[Swag.Safety("math", false)]

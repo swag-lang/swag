@@ -1,3 +1,3 @@
-#global testerror "Err0512"
+#global testerror "Err0520"
 #global export
 #global export

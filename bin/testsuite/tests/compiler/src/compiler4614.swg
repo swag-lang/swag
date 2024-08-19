@@ -1,2 +1,2 @@
-#global testerror "Err0228"
+#global testerror "Err0238"
 const X = 6's

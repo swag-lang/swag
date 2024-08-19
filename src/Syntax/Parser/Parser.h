@@ -1,5 +1,6 @@
 #pragma once
 #include "Report/ErrorContext.h"
+#include "Report/ErrorIds.h"
 #include "Semantic/Scope.h"
 #include "Syntax/AstNode.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
@@ -126,7 +127,7 @@ struct Parser
 
     bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion);
     bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
-    bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
+    bool doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
     bool doIntrinsicTag(AstNode* parent, AstNode** result);

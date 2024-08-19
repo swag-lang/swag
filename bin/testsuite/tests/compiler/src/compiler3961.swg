@@ -1,4 +1,4 @@
-#global testerror "Err0093"
+#global testerror "Err0094"
 var G: s32 = 0
 
 func toto()->const &s32

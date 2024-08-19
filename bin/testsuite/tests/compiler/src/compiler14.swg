@@ -1,3 +1,3 @@
 
-#global testerror "Err0233";
+#global testerror "Err0243";
 0xFFFFFFFF'vfffv

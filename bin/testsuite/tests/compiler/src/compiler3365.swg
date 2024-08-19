@@ -1,4 +1,4 @@
-#global testerror "Err0090"
+#global testerror "Err0091"
 var G: s32
 
 #[Swag.NoCopy]

@@ -1,4 +1,4 @@
-#global testerror "Err0723"
+#global testerror "Err0730"
 #test
 {
     #if @safety("toto")

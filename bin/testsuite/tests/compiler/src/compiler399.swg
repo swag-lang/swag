@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0093";
+#global testerror "Err0094";
 #test
 {
 	const a = 1;

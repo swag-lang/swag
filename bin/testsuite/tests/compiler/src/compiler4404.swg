@@ -1,4 +1,4 @@
-#global testerror "Err0708"
+#global testerror "Err0716"
 struct A { z: s32; }
 
 //#[Swag.PrintBc]

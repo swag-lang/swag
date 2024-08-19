@@ -1,4 +1,4 @@
-#global testerror "Err0510"
+#global testerror "Err0518"
 struct ST
 {
     x: ST

@@ -1,4 +1,4 @@
-#global testerror "Err0486"
+#global testerror "Err0494"
 struct(S, T = s32) Point
 {
 }

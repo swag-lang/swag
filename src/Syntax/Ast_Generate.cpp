@@ -130,7 +130,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 
             if (!defaultExportNode)
             {
-                Diagnostic err{node, node->getTokenName(), formErr(Err0455, typeBaseInterface->name.cstr(), typeStruct->getDisplayNameC())};
+                Diagnostic err{node, node->getTokenName(), formErr(Err0463, typeBaseInterface->name.cstr(), typeStruct->getDisplayNameC())};
                 err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.cstr()));
                 return context->report(err);
             }
