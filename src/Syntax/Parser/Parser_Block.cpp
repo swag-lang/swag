@@ -148,9 +148,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
                 caseNode->expressions.push_back(expression);
-                if (tokenParse.isNot(TokenId::SymComma))
+                if (tokenParse.is(TokenId::SymColon))
                     break;
-                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0761)));
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0095)));
             }
         }

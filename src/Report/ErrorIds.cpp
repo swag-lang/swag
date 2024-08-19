@@ -235,6 +235,7 @@ void initErrors()
     SWAG_ERROR(Err0093, "immutable assignment                              $ cannot assign to the global variable [[%s]] at compile time because it is initialized to 0                                               $ ");
     SWAG_ERROR(Err0094, "immutable assignment                              $ cannot assign to the left expression because it is immutable                                                                             $ ");
     SWAG_ERROR(Err0095, "incomplete [[case]] list                          $ expected another expression after [[,]] and before $$TKN$$                                                                               $ consider adding a case expression or removing the trailing [[,]]");
+    SWAG_ERROR(Err0761, "incomplete [[case]] list                          $ expected [[,]] to define another case value or [[':']] to end the list, found $$TKN$$ instead                                            $ ");
     SWAG_ERROR(Err0096, "incomplete alias list                             $ expected another variable name after [[,]] and before $$TKN$$                                                                            $ consider adding an alias variable name or removing the trailing [[,]]");
     SWAG_ERROR(Err0097, "incomplete arguments list                         $ expected [[,]] to define another call argument or [[')']] to end the list, found $$TKN$$ instead                                         $ ");
     SWAG_ERROR(Err0098, "incomplete arguments list                         $ expected another call argument after [[,]] and before $$TKN$$                                                                            $ consider adding an additional argument or removing the trailing [[,]]");
@@ -900,7 +901,6 @@ void initErrors()
     SWAG_ERROR(Err0758, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0759, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0760, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-    SWAG_ERROR(Err0761, nullptr);
     SWAG_ERROR(Err0762, nullptr);
     SWAG_ERROR(Err0763, nullptr);
     SWAG_ERROR(Err0764, nullptr);
