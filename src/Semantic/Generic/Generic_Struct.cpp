@@ -155,12 +155,13 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->removeAstFlag(AST_NO_SEMANTIC);
     Ast::addChildBack(sourceNode->parent, structNode);
 
-    newType->scope              = structNode->scope;
-    newType->declNode           = structNode;
-    newType->replaceTypes       = cloneContext.replaceTypes;
-    newType->replaceValues      = cloneContext.replaceValues;
-    structNode->typeInfo        = newType;
-    structNode->originalGeneric = sourceNode;
+    newType->scope               = structNode->scope;
+    newType->declNode            = structNode;
+    newType->replaceTypes        = cloneContext.replaceTypes;
+    newType->replaceValues       = cloneContext.replaceValues;
+    structNode->typeInfo         = newType;
+    structNode->originalGeneric  = sourceNode;
+    structNode->instantiatedFrom = node;
 
     // Replace generic values in the struct generic parameters
     SWAG_CHECK(replaceGenericParameters(match, newType->genericParameters, structNode->genericParameters->children, genericParameters, false, true));

@@ -1003,6 +1003,7 @@ struct AstStruct : AstNode
     AstNode*      content;
     Scope*        scope;
     AstNode*      originalGeneric;
+    AstNode*      instantiatedFrom;
     AstNode*      originalParent;
     AstNode*      whereExpression;
     uint32_t      packing = sizeof(uint64_t);
@@ -1166,7 +1167,7 @@ struct AstCast : AstNode
 struct AstOp : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_OVERFLOW = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_PROM       = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_PROM     = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_FMA      = 0x0004;
 
     AstNode* clone(CloneContext& context);

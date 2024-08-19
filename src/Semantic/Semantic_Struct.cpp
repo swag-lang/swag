@@ -843,7 +843,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
         errorParam.destStructDecl = structDecl;
         errorParam.diagError      = &diagError;
         errorParam.diagNote       = &diagNote;
-        errorParam.errorNode      = structDecl;
+        errorParam.errorNode      = structDecl->instantiatedFrom;
 
         SemanticError::errorWhereFailed(context, errorParam);
         
