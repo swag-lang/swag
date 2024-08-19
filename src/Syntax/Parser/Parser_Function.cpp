@@ -119,7 +119,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymVertical))
                 break;
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to declare another alias variable name"));
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0762)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymVertical), error(tokenParse, toErr(Err0096)));
         }
 
