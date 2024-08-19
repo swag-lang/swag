@@ -50,8 +50,8 @@ void ThreadManager::addJobNoLock(Job* job)
         return;
     }
 
-    // This should not happen... but this can happen
-    // A thread is added, but should not run because a dependency is still running
+    // This cannot happen... but this can happen
+    // A thread is added, but cannot run because a dependency is still running
     // So, yes, this is a hack...
     if (job->waitOnJobs != 0 && !job->hasFlag(JOB_ACCEPT_PENDING_COUNT))
         return;

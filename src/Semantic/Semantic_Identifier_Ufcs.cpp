@@ -127,7 +127,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic err{subNode, subNode->token, formErr(Err0201, idRefSymbolName->name.cstr(), Naming::aKindName(idRefSymbolName->kind).cstr())};
-                err.addNote(node->token, toNte(Nte0174));
+                err.addNote(node->token, toNte(Nte0176));
                 return context->report(err);
             }
         }

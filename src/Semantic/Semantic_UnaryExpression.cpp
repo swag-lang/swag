@@ -36,7 +36,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         case NativeTypeKind::Any:
         {
             Diagnostic err{node, node->token, formErr(Err0213, typeInfo->getDisplayNameC())};
-            err.addNote(child, toNte(Nte0034));
+            err.addNote(child, toNte(Nte0036));
             return context->report(err);
         }
 
@@ -170,7 +170,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, const AstNode* chi
         case NativeTypeKind::Any:
         {
             Diagnostic err{node, node->token, formErr(Err0627, typeInfo->getDisplayNameC())};
-            err.addNote(child, toNte(Nte0034));
+            err.addNote(child, toNte(Nte0036));
             return context->report(err);
         }
 

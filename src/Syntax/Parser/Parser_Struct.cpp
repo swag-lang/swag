@@ -45,7 +45,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         if (scopeKind == ScopeKind::Enum)
         {
             Diagnostic err{implNode, tokenParse.token, toErr(Err0338)};
-            err.addNote(kindLoc.token, toNte(Nte0176));
+            err.addNote(kindLoc.token, toNte(Nte0178));
             return context->report(err);
         }
 
@@ -81,9 +81,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         Diagnostic err{implNode, formErr(Err0298, Naming::aKindName(scopeKind).cstr(), implNode->token.cstr(), Naming::aKindName(newScope->kind).cstr())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
-            err.addNote(formNte(Nte0071, implNode->token.cstr()));
+            err.addNote(formNte(Nte0072, implNode->token.cstr()));
         else if (newScope->is(ScopeKind::Struct))
-            err.addNote(formNte(Nte0070, implNode->token.cstr()));
+            err.addNote(formNte(Nte0071, implNode->token.cstr()));
         return context->report(err);
     }
 
@@ -259,13 +259,13 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode, formErr(Err0298, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Struct).cstr())};
                 err.addNote(Diagnostic::hereIs(structNode));
-                err.addNote(formNte(Nte0070, implNode->token.cstr()));
+                err.addNote(formNte(Nte0071, implNode->token.cstr()));
                 return context->report(err);
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
             Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0522, "symbol", "struct", structNode->token.cstr(), asA.cstr())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0195));
+            err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0196));
             return context->report(err);
         }
 

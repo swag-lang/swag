@@ -50,7 +50,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 // This could happen because of optimization passes.
                 //
                 // When generating backend, R0 will have the same value in both push, which
-                // should not be the case.
+                // cannot be the case.
                 //
                 // So we never move an instruction INSIDE a PushParam block
 

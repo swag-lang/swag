@@ -280,24 +280,24 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     if (depNode)
     {
-        msg = formNte(Nte0110, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), Naming::kindName(depNode).cstr(), depNode->token.cstr());
+        msg = formNte(Nte0111, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), Naming::kindName(depNode).cstr(), depNode->token.cstr());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = formNte(Nte0144, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
+        msg  = formNte(Nte0145, Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        msg = formNte(Nte0025, prevJob->waitingType->getDisplayNameC());
+        msg = formNte(Nte0026, prevJob->waitingType->getDisplayNameC());
     }
     else if (prevJob->waitingType)
     {
-        msg = formNte(Nte0025, prevJob->waitingType->getDisplayNameC());
+        msg = formNte(Nte0026, prevJob->waitingType->getDisplayNameC());
     }
     else
     {
-        msg  = formNte(Nte0024, Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
+        msg  = formNte(Nte0025, Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -400,7 +400,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
-                    auto       msg    = formNte(Nte0110, Naming::kindName(front).cstr(), front->token.cstr(), Naming::kindName(back).cstr(), back->token.cstr());
+                    auto       msg    = formNte(Nte0111, Naming::kindName(front).cstr(), front->token.cstr(), Naming::kindName(back).cstr(), back->token.cstr());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);

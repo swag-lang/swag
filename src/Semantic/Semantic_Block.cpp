@@ -23,7 +23,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
 
     {
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0220); }, true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0012); }, true);
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
     }
 
@@ -288,7 +288,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         Diagnostic err{node, node->token, toErr(Err0370)};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        err.addNote(attr, formNte(Nte0181, "attribute"));
+        err.addNote(attr, formNte(Nte0183, "attribute"));
         return context->report(err);
     }
 
@@ -335,7 +335,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     if (idx != -1)
                     {
                         Diagnostic err{expr, formErr(Err0538, expr->computedValue()->text.cstr())};
-                        err.addNote(valDef[idx], toNte(Nte0195));
+                        err.addNote(valDef[idx], toNte(Nte0196));
                         return context->report(err);
                     }
 
@@ -351,7 +351,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        const auto note = Diagnostic::note(valDef[idx], toNte(Nte0195));
+                        const auto note = Diagnostic::note(valDef[idx], toNte(Nte0196));
                         if (expr->isConstantGenTypeInfo())
                             return context->report({expr, formErr(Err0537, expr->token.cstr())}, note);
                         if (expr->typeInfo->isEnum())
@@ -379,7 +379,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         if (back->expressions.empty())
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-            const auto note = Diagnostic::note(attr, formNte(Nte0181, "attribute"));
+            const auto note = Diagnostic::note(attr, formNte(Nte0183, "attribute"));
             return context->report({back, back->token, toErr(Err0334)}, note);
         }
 
@@ -400,7 +400,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!valText.contains(one->value->text))
                         {
                             Diagnostic err{node, node->token, formErr(Err0440, typeEnum->name.cstr(), one->name.cstr())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
+                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0135));
                             return context->report(err);
                         }
                     }
@@ -414,7 +414,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic err{node, node->token, formErr(Err0440, typeEnum->name.cstr(), one->name.cstr())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0134));
+                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0135));
                             return context->report(err);
                         }
                     }
@@ -487,7 +487,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0148, typeInfo->getDisplayNameC(), "the switch expression"); });
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0150, typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -539,7 +539,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0021); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0022); }, true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
             }

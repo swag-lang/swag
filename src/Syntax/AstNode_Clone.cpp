@@ -65,7 +65,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (typeInfo != from->typeInfo)
         addAstFlag(AST_FROM_GENERIC);
 
-    // This should not be copied. It will be recomputed if necessary.
+    // This cannot be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and auto cast, as inline functions are evaluated
     // as functions, and also each time they are inline.
     if (context.cloneFlags.has(CLONE_RAW))

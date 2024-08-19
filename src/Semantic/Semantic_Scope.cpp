@@ -48,14 +48,14 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             Utf8 msg;
             if (first)
-                msg = formNte(Nte0152, t.second->getDisplayNameC());
+                msg = formNte(Nte0154, t.second->getDisplayNameC());
             else
-                msg = formNte(Nte0151, t.second->getDisplayNameC());
+                msg = formNte(Nte0153, t.second->getDisplayNameC());
             err.addNote(t.first, msg);
             first = false;
         }
 
-        err.addNote(toNte(Nte0066));
+        err.addNote(toNte(Nte0067));
         return context->report(err);
     }
 
@@ -168,7 +168,7 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
     if (addAlternative)
     {
         // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-        // relevant and we should not use it
+        // relevant and we cannot use it
         if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->extension)
         {
             collectAlternativeScopes(startScope->owner, scopeHierarchy);

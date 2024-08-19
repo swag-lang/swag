@@ -28,9 +28,9 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
 
     err.addNote(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-        err.addNote(formNte(Nte0107, Naming::kindName(overload).cstr(), context->node->ownerFct->getDisplayName().cstr()));
+        err.addNote(formNte(Nte0106, Naming::kindName(overload).cstr(), context->node->ownerFct->getDisplayName().cstr()));
     if (overload->fromInlineParam)
-        err.addNote(overload->fromInlineParam, formNte(Nte0200, overload->symbol->name.cstr()));
+        err.addNote(overload->fromInlineParam, formNte(Nte0201, overload->symbol->name.cstr()));
 
     return context->report(err);
 }

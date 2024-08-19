@@ -177,8 +177,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         if (nakedName == "node")
             nakedName.clear();
         Diagnostic err{oneAttribute, formErr(Err0380, oneAttribute->token.cstr())};
-        err.addNote(formNte(Nte0088, specificMsg));
-        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0023, nakedName.cstr()));
+        err.addNote(formNte(Nte0087, specificMsg));
+        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0024, nakedName.cstr()));
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }

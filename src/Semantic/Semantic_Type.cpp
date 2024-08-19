@@ -153,11 +153,11 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
-                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0060));
+                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0061));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0028));
+                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0029));
                 else
-                    err.addNote(toNte(Nte0073));
+                    err.addNote(toNte(Nte0074));
             }
         }
 
@@ -169,7 +169,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
     if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(formNte(Nte0089, symbolName->name.cstr(), symbolName->name.cstr()));
+        err.addNote(formNte(Nte0088, symbolName->name.cstr(), symbolName->name.cstr()));
 
     return context->report(err);
 }

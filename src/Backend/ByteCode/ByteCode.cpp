@@ -64,7 +64,7 @@ Utf8 ByteCode::getCallNameFromDecl()
 
 Utf8 ByteCode::getCallName()
 {
-    // If this is an intrinsic that can be called by the compiler itself, it should not
+    // If this is an intrinsic that can be called by the compiler itself, it cannot
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
     if (node && node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_RUNTIME) && !node->ownerStructScope)

@@ -19,7 +19,7 @@ namespace
         const auto err = new Diagnostic{errorParam.failedParam, msg};
         errorParam.addError(err);
 
-        const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[errorParam.badParamIdx - 2], toNte(Nte0164));
+        const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[errorParam.badParamIdx - 2], toNte(Nte0166));
         errorParam.addNote(note);
     }
 
@@ -41,7 +41,7 @@ namespace
             errorParam.addNote(Diagnostic::note(msg));
 
             if (typeInfo->declNode->hasExtraPointer(ExtraPointerKind::ExportNode))
-                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode), toNte(Nte0202)));
+                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode), toNte(Nte0203)));
             else if (errorParam.oneTry->overload)
                 errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
         }
@@ -73,7 +73,7 @@ namespace
 
         const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < errorParam.oneTry->callParameters->childCount());
-        const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[other], toNte(Nte0190));
+        const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[other], toNte(Nte0192));
         errorParam.addNote(note);
     }
 
@@ -108,9 +108,9 @@ namespace
 
             const auto destParam = errorParam.destParameters->children[si];
             if (destParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED) || Parser::isGeneratedName(destParam->token.text))
-                err->remarks.push_back(formNte(Nte0090, Naming::niceParameterRank(si + 1).cstr(), destParam->typeInfo->getDisplayNameC()));
+                err->remarks.push_back(formNte(Nte0089, Naming::niceParameterRank(si + 1).cstr(), destParam->typeInfo->getDisplayNameC()));
             else
-                err->remarks.push_back(formNte(Nte0092, destParam->token.cstr(), destParam->typeInfo->getDisplayNameC()));
+                err->remarks.push_back(formNte(Nte0091, destParam->token.cstr(), destParam->typeInfo->getDisplayNameC()));
 
             if (note && !destParam->isGeneratedSelf())
                 note->addNote(destParam, "missing");
@@ -151,7 +151,7 @@ namespace
             for (uint32_t si = genericParameters->childCount(); si < errorParam.destGenericParameters->childCount(); si++)
             {
                 const auto destParam = errorParam.destGenericParameters->children[si];
-                err->remarks.push_back(formNte(Nte0091, destParam->token.cstr()));
+                err->remarks.push_back(formNte(Nte0090, destParam->token.cstr()));
             }
         }
     }
@@ -254,7 +254,7 @@ namespace
         if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < errorParam.destFuncDecl->genericParameters->childCount())
         {
             const auto reqParam = errorParam.destFuncDecl->genericParameters->children[bi.badSignatureParameterIdx];
-            const auto note     = Diagnostic::note(reqParam, formNte(Nte0191, reqParam->token.cstr(), Naming::kindName(overload).cstr()));
+            const auto note     = Diagnostic::note(reqParam, formNte(Nte0193, reqParam->token.cstr(), Naming::kindName(overload).cstr()));
             errorParam.addNote(note);
         }
         else
@@ -326,13 +326,13 @@ namespace
         {
             const auto callOver = callParamNode->resolvedSymbolOverload();
             if (callOver && callOver->hasFlag(OVERLOAD_IS_LET))
-                errorParam.addNote(Diagnostic::note(callOver->node, callOver->node->token, toNte(Nte0012)));
+                errorParam.addNote(Diagnostic::note(callOver->node, callOver->node->token, toNte(Nte0013)));
         }
 
         // Generic comes from
         if (bi.genMatchFromNode)
         {
-            const auto msg  = formNte(Nte0193, bi.genMatchFromNode->typeInfo->getDisplayNameC());
+            const auto msg  = formNte(Nte0149, bi.genMatchFromNode->typeInfo->getDisplayNameC());
             const auto note = Diagnostic::note(bi.genMatchFromNode, msg);
             errorParam.addNote(note, false);
         }
@@ -383,7 +383,7 @@ namespace
                 if (bi.castErrorToType && bi.castErrorFromType && !bi.castErrorToType->isGeneric())
                 {
                     if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                        errorParam.addNote(Diagnostic::note(callParamNode, formNte(Nte0032, bi.castErrorToType->getDisplayNameC())));
+                        errorParam.addNote(Diagnostic::note(callParamNode, formNte(Nte0034, bi.castErrorToType->getDisplayNameC())));
                 }
             }
         }
@@ -400,12 +400,12 @@ namespace
         }
         else if (destParamNode->hasAstFlag(AST_GENERATED) || Parser::isGeneratedName(destParamNode->token.cstr()))
         {
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, toNte(Nte0183));
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, toNte(Nte0185));
             errorParam.addNote(note);
         }
         else
         {
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, formNte(Nte0182, destParamNode->token.cstr()));
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, formNte(Nte0184, destParamNode->token.cstr()));
             errorParam.addNote(note);
         }
     }
@@ -506,7 +506,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             {
                 if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
                 {
-                    errorParam.explicitCastMsg = formNte(Nte0035, bi.badSignatureRequestedType->name.cstr());
+                    errorParam.explicitCastMsg = formNte(Nte0037, bi.badSignatureRequestedType->name.cstr());
                     break;
                 }
             }

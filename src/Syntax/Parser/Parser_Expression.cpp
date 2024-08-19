@@ -1718,16 +1718,16 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             Diagnostic err{sourceFile, tokenParse, toErr(Err0678)};
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
-                err.addNote(formNte(Nte0080, id->token.cstr(), tokenParse.cstr()));
+                err.addNote(formNte(Nte0081, id->token.cstr(), tokenParse.cstr()));
             else if (nextToken.is(TokenId::SymSemiColon) || nextToken.flags.has(TOKEN_PARSE_EOL_BEFORE))
-                err.addNote(formNte(Nte0068, tokenParse.cstr(), id->token.cstr()));
+                err.addNote(formNte(Nte0069, tokenParse.cstr(), id->token.cstr()));
             else
-                err.addNote(leftNode, toNte(Nte0208));
+                err.addNote(leftNode, toNte(Nte0209));
             return context->report(err);
         }
     }
 
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return toNte(Nte0210); });
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return toNte(Nte0211); });
 
     Utf8 afterMsg = "left expression";
     if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))

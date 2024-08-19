@@ -89,7 +89,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0148, Naming::aKindName(defaultVal).cstr())}));
 
             {
-                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0114); });
+                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0115); });
                 SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
             }
 
@@ -102,7 +102,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
                 if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
                 {
                     Diagnostic err{typeNode, formErr(Err0565, typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.cstr())};
-                    err.addNote(formNte(Nte0119, tag->cmdLine.cstr()));
+                    err.addNote(formNte(Nte0120, tag->cmdLine.cstr()));
                     return context->report(err);
                 }
 

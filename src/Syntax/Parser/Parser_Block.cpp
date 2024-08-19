@@ -176,9 +176,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             // Instructions
             ParserPushBreakable scopedBreakable(this, switchNode);
             if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0030));
+                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0032));
             if (tokenParse.is(TokenId::SymRightCurly))
-                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0029));
+                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0031));
             while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
         }

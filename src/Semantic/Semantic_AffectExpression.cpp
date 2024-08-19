@@ -27,7 +27,7 @@ bool Semantic::resolveMove(SemanticContext* context)
         {
             Diagnostic err{right, formErr(Err0210, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                err.addNote(toNte(Nte0087));
+                err.addNote(toNte(Nte0086));
             return context->report(err);
         }
     }
@@ -57,7 +57,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     {
         Diagnostic err{mpl, toErr(Err0560)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
-        err.addNote(toNte(Nte0016));
+        err.addNote(toNte(Nte0017));
         return context->report(err);
     }
 
@@ -123,7 +123,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (child->hasAstFlag(AST_FUNC_CALL | AST_FUNC_INLINE_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = formNte(Nte0124, left->typeInfo->getDisplayNameC());
+                hint = formNte(Nte0125, left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -153,9 +153,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
             SWAG_ASSERT(left->resolvedSymbolOverload());
             if (left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0199));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0200));
             else if (!left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0199), Diagnostic::isType(left->typeInfo));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0200), Diagnostic::isType(left->typeInfo));
         }
     }
 
@@ -166,7 +166,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             Diagnostic err{node, node->token, formErr(Err0092, left->resolvedSymbolName()->name.cstr())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
-            err.addNote(toNte(Nte0087));
+            err.addNote(toNte(Nte0086));
             return context->report(err);
         }
 
@@ -189,7 +189,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
         Diagnostic err{node, node->token, toErr(Err0094)};
-        err.addNote(left, toNte(Nte0012));
+        err.addNote(left, toNte(Nte0013));
         err.addNote(Diagnostic::hereIs(left->resolvedSymbolOverload()->node));
         return context->report(err);
     }
@@ -208,7 +208,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         Diagnostic err{node, node->token, toErr(Err0094)};
         if (hint.empty())
-            hint = toNte(Nte0173);
+            hint = toNte(Nte0175);
         err.addNote(left, hint);
         return context->report(err);
     }
@@ -370,7 +370,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                             Diagnostic err{right, formErr(Err0237, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                            err.addNote(node, node->token, formNte(Nte0155, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                            err.addNote(node, node->token, formNte(Nte0157, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                             return context->report(err);
                         }
 
@@ -497,7 +497,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 {
                     Diagnostic err{node, node->token, toErr(Err0220)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                    err.addNote(toNte(Nte0105));
+                    err.addNote(toNte(Nte0104));
                     return context->report(err);
                 }
 

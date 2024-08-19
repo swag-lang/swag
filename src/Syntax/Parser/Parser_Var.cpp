@@ -363,18 +363,18 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
-                err.addNote(toNte(Nte0082));
+                err.addNote(toNte(Nte0083));
 
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0186), "constant", leftNode->token.cstr())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0186), "variable", leftNode->token.cstr())));
             }
             else
             {
-                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0181), "declaration")));
+                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0183), "declaration")));
             }
 
             return context->report(err);
@@ -398,8 +398,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 if (typeExpr->identifier)
                 {
                     Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.cstr())};
-                    err.addNote(formNte(Nte0044, typeExpr->identifier->token.cstr(), typeExpr->identifier->token.cstr()));
-                    err.addNote(toNte(Nte0037));
+                    err.addNote(formNte(Nte0045, typeExpr->identifier->token.cstr(), typeExpr->identifier->token.cstr()));
+                    err.addNote(toNte(Nte0039));
                     return context->report(err);
                 }
             }
