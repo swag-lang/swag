@@ -1,6 +1,5 @@
-/*
-#test
+/*#test
 {
-    @print(#self)
+    @print(@nameof(#self))
 }
 */

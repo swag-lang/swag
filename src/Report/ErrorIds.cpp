@@ -152,7 +152,7 @@ void initErrors()
     SWAG_ERROR(Err0010, "ambiguous resolution                              $ cannot resolve the generic %s [[%s]] because it is ambiguous                                                                             $ ");
     SWAG_ERROR(Err0011, "ambiguous syntax                                  $ cannot determine if this is an initialization of [[%s]] or the start of a new block                                                      $ ");
     SWAG_ERROR(Err0012, "ambiguous syntax                                  $ cannot resolve ambiguous declaration within lambda parameters                                                                            $ ");
-    SWAG_ERROR(Err0013, "bytecode stack overflow                           $ cannot have a stack bigger than the limit [[%s]] given by [[--stack-size]]                                                               $ ");
+    SWAG_ERROR(Err0013, "bytecode stack overflow                           $ cannot exceed the stack size limit of [[%s]] set by [[--stack-size]]                                                               $ ");
     SWAG_ERROR(Err0014, "capture size overflow                             $ cannot capture the total requested size of [[%u]] bytes because it exceeds the maximum authorized size of [[%u]]                         $ ");
     SWAG_ERROR(Err0015, "compile-time assertion failed                     $ cannot proceed because the [[#assert]] expression was evaluated to false                                                                 $ ");
     SWAG_ERROR(Err0016, "compile-time evaluation failed                    $ cannot transform the function return slice (a slice of type [[%s]]) to a compile-time value                                              $ ");
@@ -988,8 +988,8 @@ void initErrors()
     SWAG_ERROR(Nte0081, "did you mean [[%s]]?");
     SWAG_ERROR(Nte0082, "did you mean to assign a value with the symbol [['=']] instead?");
     SWAG_ERROR(Nte0083, "evaluation failed during compile-time");
-    SWAG_ERROR(Nte0084, "execute [[Swag]] with [[--callstack]] to obtain more contextual details");
-    SWAG_ERROR(Nte0085, "execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
+    SWAG_ERROR(Nte0084, "run [[Swag]] with [[--callstack]] for additional context and details");
+    SWAG_ERROR(Nte0085, "run [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0086, "function names starting with [[op]] and an uppercase letter are reserved for struct functions");
     SWAG_ERROR(Nte0087, "function parameters are immutable and cannot be modified");
     SWAG_ERROR(Nte0088, "it can only be applied to %s");
