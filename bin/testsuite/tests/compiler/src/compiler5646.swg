@@ -1,6 +1,5 @@
 #global testerror "Err0758"
-
 #test
 {
-    var (toto[512], titi) = u16
+    var (a a) = {1, 2}
 }

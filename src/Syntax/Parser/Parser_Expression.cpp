@@ -1361,9 +1361,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             {
                 SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymQuestion), error(tokenParse, toErr(Err0692)));
                 SWAG_CHECK(doIdentifierRef(multi, &dummyResult, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
-                if (tokenParse.isNot(TokenId::SymComma))
+                if (tokenParse.is(TokenId::SymRightParen))
                     break;
-                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(eatTokenError(TokenId::SymComma, toErr(Err0758)));
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0111)));
             }
 

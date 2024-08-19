@@ -250,6 +250,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "incomplete parameters list                        $ expected [[,]] to define another parameter or [[')']] to end the list, found $$TKN$$ instead                                             $ ");
     SWAG_ERROR(Err0110, "incomplete parameters list                        $ expected another parameter after the [[,]] and before $$TKN$$                                                                            $ consider adding an additional parameter or removing the trailing [[,]]");
     SWAG_ERROR(Err0111, "incomplete tuple unpacking                        $ expected another variable name after the [[,]] and before $$TKN$$                                                                        $ consider adding an additional variable name or removing the trailing [[,]]");
+    SWAG_ERROR(Err0758, "incomplete tuple unpacking                        $ expected [[,]] to define another variable name or [[')']] to end the list, found $$TKN$$ instead                                         $ ");
     SWAG_ERROR(Err0112, "incomplete variables list                         $ expected another variable name after the [[,]] and before $$TKN$$                                                                        $ consider adding an additional variable name or removing the trailing [[,]]");
     SWAG_ERROR(Err0113, "infinite [[while]]                                $ cannot create a [[while]] infinite loop with the condition always [[true]]                                                               $ consider using a loop without argument [[loop { ... }]] if you intentionally want to create an infinite loop");
     SWAG_ERROR(Err0114, "invalid [[#alias]] number                         $ cannot use [[%s]] at the end of an [[#alias]] variable name                                                                              $ an [[#alias]] variable name should end with a number, such as [[#alias0]], [[#alias1]], etc.");
@@ -897,7 +898,6 @@ void initErrors()
     SWAG_ERROR(Err0756, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0757, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0108, "invalid variable name                             $ cannot use [[self]] as a variable name                                                                                                   $ ");
-    SWAG_ERROR(Err0758, nullptr);
     SWAG_ERROR(Err0759, nullptr);
     SWAG_ERROR(Err0760, nullptr);
 
