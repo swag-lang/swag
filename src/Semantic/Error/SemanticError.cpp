@@ -133,14 +133,14 @@ void ErrorParam::addError(const Diagnostic* note) const
     diagError->push_back(note);
 }
 
-void ErrorParam::addNote(Diagnostic* note) const
+void ErrorParam::addNote(Diagnostic* note, bool addGeneric) const
 {
     if (!note)
         return;
 
     diagNote->push_back(note);
 
-    if (bi)
+    if (bi && addGeneric)
     {
         auto remarks = Generic::computeGenericParametersReplacement(bi->genericReplaceTypes, bi->genericReplaceValues);
         if (!remarks.empty())

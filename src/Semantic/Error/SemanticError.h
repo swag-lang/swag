@@ -59,7 +59,7 @@ struct ErrorParam
     Utf8               explicitCastMsg;
 
     void addError(const Diagnostic* note) const;
-    void addNote(Diagnostic* note) const;
+    void addNote(Diagnostic* note, bool addGeneric = true) const;
 };
 
 namespace SemanticError

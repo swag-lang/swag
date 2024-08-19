@@ -111,11 +111,11 @@ namespace
                 err->remarks.push_back(formNte(Nte0090, Naming::niceParameterRank(si + 1).cstr(), destParam->typeInfo->getDisplayNameC()));
             else
                 err->remarks.push_back(formNte(Nte0092, destParam->token.cstr(), destParam->typeInfo->getDisplayNameC()));
-            
+
             if (note && !destParam->isGeneratedSelf())
                 note->addNote(destParam, "missing");
 
-            if(err->remarks.size() > 3)
+            if (err->remarks.size() > 3)
             {
                 err->remarks.push_back("...");
                 break;
@@ -334,7 +334,7 @@ namespace
         {
             const auto msg  = formNte(Nte0193, bi.genMatchFromNode->typeInfo->getDisplayNameC());
             const auto note = Diagnostic::note(bi.genMatchFromNode, msg);
-            errorParam.addNote(note);
+            errorParam.addNote(note, false);
         }
 
         // A more specific cast message ?

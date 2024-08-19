@@ -1102,7 +1102,7 @@ void initErrors()
     SWAG_ERROR(Nte0190, "this is the first usage");
     SWAG_ERROR(Nte0191, "this is the generic parameter [[%s]] of the %s");
     SWAG_ERROR(Nte0192, "this is the literal suffix [[%s]]");
-    SWAG_ERROR(Nte0193, "this is the origin of the instantiation type [[%s]]");
+    SWAG_ERROR(Nte0193, "the type [[%s]] was inferred here during instantiation");
     SWAG_ERROR(Nte0194, "this is the other [[#import]]");
     SWAG_ERROR(Nte0195, "this is the other definition");
     SWAG_ERROR(Nte0196, "this is the other return statement");

@@ -201,7 +201,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         else
         {
             context.genericParametersCallTypes[i].typeInfoGeneric = genType;
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
+            context.genericReplaceTypes[genTypeName]              = context.genericParametersCallTypes[i];
             if (context.genericParametersCallValues[i])
                 context.genericReplaceTypes[genTypeName].hasValue = true;
             context.genericReplaceValues[genName] = context.genericParametersCallValues[i];
@@ -371,7 +371,20 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
             continue;
         if (Parser::isGeneratedName(p.first))
             continue;
-        if(p.second.hasValue)
+        if (p.second.hasValue)
+            continue;
+
+        // Take only simple words
+        bool valid = true;
+        for (const auto& c : p.first)
+        {
+            if(!SWAG_IS_AL_NUM(c))
+            {
+                valid = false;
+                break;
+            }
+        }
+        if (!valid)
             continue;
 
         Utf8 rem = "with ";

@@ -1,4 +1,5 @@
 #global testerror "Err0594"
+
 struct(T) Array
 {
 	buffer: *T
