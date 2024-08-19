@@ -75,14 +75,12 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-            SWAG_VERIFY(tokenParse.is(TokenId::SymRightSquare) || tokenParse.is(TokenId::SymComma), error(tokenParse, toErr(Err0103)));
-
-            if (tokenParse.isNot(TokenId::SymRightSquare))
-            {
-                SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0447)));
-                SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0658)));
-            }
+            if (tokenParse.is(TokenId::SymRightSquare))
+                break;
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0103)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0763)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0447)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0658)));
         }
 
         FormatAst::inheritFormatAfter(this, attrBlockNode, &tokenParse);
