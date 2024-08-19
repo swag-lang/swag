@@ -23,6 +23,7 @@ struct GenericReplaceType
     TypeInfo* typeInfoGeneric = nullptr;
     TypeInfo* typeInfoReplace = nullptr;
     AstNode*  fromNode        = nullptr;
+    bool      hasValue        = false;
 };
 
 namespace Generic

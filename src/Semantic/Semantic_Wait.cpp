@@ -272,8 +272,9 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
     for (const auto& val : match.genericReplaceTypes | std::views::values)
     {
         const auto typeInfo = val.typeInfoReplace;
+        if (!typeInfo)
+            continue;
         const auto declNode = typeInfo->declNode;
-
         if (!declNode)
             continue;
 

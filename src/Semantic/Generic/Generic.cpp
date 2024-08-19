@@ -201,8 +201,10 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         else
         {
             context.genericParametersCallTypes[i].typeInfoGeneric = genType;
-            context.genericReplaceTypes[genTypeName]              = context.genericParametersCallTypes[i];
-            context.genericReplaceValues[genName]                 = context.genericParametersCallValues[i];
+            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
+            if (context.genericParametersCallValues[i])
+                context.genericReplaceTypes[genTypeName].hasValue = true;
+            context.genericReplaceValues[genName] = context.genericParametersCallValues[i];
 
             // We have a new type replacement, so we must be sure that every other types registered in the
             // context.genericReplaceTypes are up-to-date too.
@@ -368,6 +370,8 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
         if (p.first == p.second.typeInfoReplace->getDisplayName()) // Can occur in case of constants (like string for example)
             continue;
         if (Parser::isGeneratedName(p.first))
+            continue;
+        if(p.second.hasValue)
             continue;
 
         Utf8 rem = "with ";
