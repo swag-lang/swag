@@ -446,7 +446,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0055), toNte(Nte0064)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0055)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
@@ -471,6 +471,8 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         const auto tokenDo = tokenParse;
         SWAG_CHECK(eatToken());
 
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0055)));
+        
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
             const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0325)};

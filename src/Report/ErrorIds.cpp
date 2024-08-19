@@ -194,7 +194,7 @@ void initErrors()
     SWAG_ERROR(Err0052, "empty expression                                  $ cannot have an empty expression [[()]]                                                                                                   $ ");
     SWAG_ERROR(Err0053, "empty float exponent                              $ cannot have an empty float exponent                                                                                                      $ ");
     SWAG_ERROR(Err0054, "empty hexadecimal number                          $ cannot have an empty hexadecimal literal                                                                                                 $ hexadecimal literals require at least one digit ([[0-9]], [[A-F]], [[a-f]])");
-    SWAG_ERROR(Err0055, "empty statement [[;]]                             $ cannot use a [[;]] alone to mark an empty statement                                                                                      $ ");
+    SWAG_ERROR(Err0055, "empty statement [[;]]                             $ cannot use a [[;]] alone to mark an empty statement                                                                                      $ consider using [[{}]] for an intentional empty statement");
     SWAG_ERROR(Err0056, "escaping defer throw                              $ cannot have an error escape a [[defer]] or [[defer(err)]] block                                                                          $ ");
     SWAG_ERROR(Err0057, "escaping stack frame                              $ cannot reference the %s [[%s]] because it is in a different stack frame                                                                  $ ");
     SWAG_ERROR(Err0058, "exception!                                        $ cannot proceed because of an execution exception                                                                                         $ ");
@@ -973,7 +973,6 @@ void initErrors()
     SWAG_ERROR(Nte0061, "consider using [[mtd]] instead of [[func]] to implicitly include [[using self]] as the first parameter");
     SWAG_ERROR(Nte0062, "consider using [[typealias]] to create an alias for %s");
     SWAG_ERROR(Nte0063, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or constant");
-    SWAG_ERROR(Nte0064, "consider using [[{}]] for an intentional empty statement");
     SWAG_ERROR(Nte0065, "consider using square brackets [[%s[%s]]] to access an element by index");
     SWAG_ERROR(Nte0066, "consider using the [[@args()]] intrinsic to retrieve the program arguments");
     SWAG_ERROR(Nte0067, "consider using the full name of the enum value");
@@ -1130,6 +1129,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0219, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0220, "unnamed parameters ([['?']]) cannot have an explicit type");
+    SWAG_ERROR(Nte0064, nullptr);
     SWAG_ERROR(Nte0221, nullptr);
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
