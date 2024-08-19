@@ -579,12 +579,12 @@ void initErrors()
     SWAG_ERROR(Err0438, "missing [[visit]] expression                      $ expected the element to visit before [[%s]]                                                                                              $ ");
     SWAG_ERROR(Err0439, "missing [[visit]] variable                        $ expected another [[visit]] variable name between the [[comma]] ',' and the [[colon]] ':'                                                 $ the first [[visit]] variable is the [[value]], the second one is the [[index]]");
     SWAG_ERROR(Err0440, "missing [[while]] boolean expression              $ expected a boolean expression before [[%s]]                                                                                              $ ");
-    SWAG_ERROR(Err0441, "missing affectation                               $ expected an affectation or some arguments after the %s, found $$TKN$$ instead                                                                              $ ");
-    SWAG_ERROR(Err0442, "missing arguments                                 $ expected the %s [[%s]] to have arguments between [[()]]                                                                                         $ ");
+    SWAG_ERROR(Err0441, "missing affectation                               $ expected an affectation or some arguments after the %s, found $$TKN$$ instead                                                            $ ");
+    SWAG_ERROR(Err0442, "missing arguments                                 $ expected the %s [[%s]] to have arguments between [[()]]                                                                                  $ ");
     SWAG_ERROR(Err0443, "missing attribute                                 $ cannot declare an [[opVisit]] function without the [[#[Swag.Macro]]] attribute                                                           $ ");
     SWAG_ERROR(Err0444, "missing attribute name                            $ expected an attribute name before [[(]]                                                                                                  $ ");
     SWAG_ERROR(Err0445, "missing catch error                               $ cannot handle the errors of [[%s]] because [[try]], [[catch]], or [[assume]] is missing                                                  $ ");
-    SWAG_ERROR(Err0446, "missing constant type                             $ expected the type with [[:]] or an assignment, found $$TKN$$ instead                                                                     $ ");
+    SWAG_ERROR(Err0446, "missing constant type                             $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
     SWAG_ERROR(Err0447, "missing default value                             $ cannot use the %s because a preceding parameter has a default value and one is needed here                                               $ ");
     SWAG_ERROR(Err0448, "missing dereference index                         $ cannot dereference the array [[%s]] of type [[%s]] without an index                                                                      $ consider adding the index between brackets");
     SWAG_ERROR(Err0449, "missing end of line                               $ expected a line break or a [[;]] to close the %s, found $$TKN$$ instead                                                                  $ consider adding a line break or separating the previous statement with a [[;]]");
@@ -608,7 +608,7 @@ void initErrors()
     SWAG_ERROR(Err0467, "missing namespace name                            $ expected the namespace name before [[;]]                                                                                                 $ ");
     SWAG_ERROR(Err0468, "missing namespace name                            $ expected the namespace name before the start of the body [['{']]                                                                         $ ");
     SWAG_ERROR(Err0469, "missing parameter name                            $ expected the parameter name and [[:]] before [[%s]]                                                                                      $ ");
-    SWAG_ERROR(Err0470, "missing parameter type                            $ expected the type with [[:]] or an assignment, found $$TKN$$ instead                                                                     $ ");
+    SWAG_ERROR(Err0470, "missing parameter type                            $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
     SWAG_ERROR(Err0471, "missing parameters                                $ cannot have a special function [[%s]] without parameters                                                                                 $ ");
     SWAG_ERROR(Err0472, "missing return type                               $ cannot have a [[public]] function without an explicitly defined return type                                                              $ ");
     SWAG_ERROR(Err0473, "missing return type                               $ cannot have a special function [[%s]] without a return type                                                                              $ ");
@@ -623,7 +623,7 @@ void initErrors()
     SWAG_ERROR(Err0482, "missing test error                                $ expected at least one error, but none was raised                                                                                         $ ");
     SWAG_ERROR(Err0483, "missing test warning                              $ expected at least one warning, but none was raised                                                                                       $ ");
     SWAG_ERROR(Err0484, "missing type                                      $ expected a type after [[#type]], found $$TKN$$ instead                                                                                   $ ");
-    SWAG_ERROR(Err0485, "missing variable type                             $ expected the type with [[:]] or an assignment, found $$TKN$$ instead                                                                     $ ");
+    SWAG_ERROR(Err0485, "missing variable type                             $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
     SWAG_ERROR(Err0486, "misused UFCS                                      $ cannot use the %s [[%s]] as the first argument of [[%s]]                                                                                 $ ");
     SWAG_ERROR(Err0487, "misused UFCS                                      $ cannot use the hidden [[with]] variable [[%s]] as the first argument of [[%s]]                                                           $ ");
     SWAG_ERROR(Err0488, "non-contiguous [[#alias]]                         $ unexpected non-contiguous [[#alias]] in function [[%s]]                                                                                  $ the alias [[#alias%u]] is missing");
@@ -986,7 +986,7 @@ void initErrors()
     SWAG_ERROR(Nte0079, "did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?");
     SWAG_ERROR(Nte0080, "did you forget a [['.']] between [[%s]] and [[%s]]?");
     SWAG_ERROR(Nte0081, "did you mean [[%s]]?");
-    SWAG_ERROR(Nte0082, "did you mean to use the symbol [['=']] to assign a value instead?");
+    SWAG_ERROR(Nte0082, "did you mean to assign a value with the symbol [['=']] instead?");
     SWAG_ERROR(Nte0083, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0084, "execute [[Swag]] with [[--callstack]] to obtain more contextual details");
     SWAG_ERROR(Nte0085, "execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
