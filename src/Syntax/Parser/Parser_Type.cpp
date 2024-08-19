@@ -545,9 +545,9 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
                 return error(tokenParse, toErr(Err0503));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-            if (tokenParse.isNot(TokenId::SymComma))
+            if (tokenParse.is(TokenId::SymRightSquare))
                 break;
-            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0760)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0101)));
         }
 
