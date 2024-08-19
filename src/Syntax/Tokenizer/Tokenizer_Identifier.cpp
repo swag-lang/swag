@@ -63,7 +63,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         }
 
         Vector<Utf8> result;
-        SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
+        SemanticError::findClosestMatchesInList(tokenParse.token.text, searchList, result);
         if (!result.empty())
             err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
 
@@ -84,7 +84,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         }
 
         Vector<Utf8> result;
-        SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
+        SemanticError::findClosestMatchesInList(tokenParse.token.text, searchList, result);
         if (!result.empty())
             err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
 

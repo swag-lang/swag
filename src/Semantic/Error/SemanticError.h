@@ -65,7 +65,7 @@ struct ErrorParam
 namespace SemanticError
 {
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best);
-    void findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
+    void findClosestMatchesInList(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
     void findClosestMatches(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor);
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<CollectedScope>& scopeHierarchy, IdentifierSearchFor searchFor);
 

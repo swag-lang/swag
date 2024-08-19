@@ -338,7 +338,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         searchList.push_back(g_LangSpec->name_opIndexAffect);
         searchList.push_back(g_LangSpec->name_opVisit);
 
-        SemanticError::findClosestMatches(node->tokenName.text, searchList, best);
+        SemanticError::findClosestMatchesInList(node->tokenName.text, searchList, best);
         const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
         Diagnostic err{node, node->getTokenName(), formErr(Err0542, name.cstr())};

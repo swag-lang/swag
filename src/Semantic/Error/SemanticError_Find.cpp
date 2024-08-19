@@ -38,16 +38,28 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNa
     return findClosestMatchesMsg(searchName, best);
 }
 
-void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
+void SemanticError::findClosestMatchesInList(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
     result.clear();
 
-    const auto searchName1 = searchName;
-    for (const auto& i : searchList)
+    // Search first for a case problem
+    auto word1 = searchName;
+    word1.makeUpper();
+    for (const auto& it : searchList)
     {
-        const auto& searchName2 = i;
-        const auto  score       = Utf8::fuzzyCompare(searchName1, searchName2);
+        auto word = it;
+        word.makeUpper();
+        if (word == word1)
+            result.push_back(it);
+    }
+
+    if(!result.empty())
+        return;
+
+    for (const auto& word : searchList)
+    {
+        const auto score = Utf8::fuzzyCompare(searchName, word);
 
         // If number of changes is too big considering the size of the text, cancel
         if (searchName.count > 1 && score > static_cast<uint32_t>(searchName.count) / 2)
@@ -64,7 +76,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
             bool here = false;
             for (auto& n : result)
             {
-                if (n == i)
+                if (n == word)
                 {
                     here = true;
                     break;
@@ -72,9 +84,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
             }
 
             if (!here)
-            {
-                result.push_back(i);
-            }
+                result.push_back(word);
 
             bestScore = score;
         }
@@ -94,7 +104,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
                 continue;
             if (one.symbolName->cptOverloadsInit == 0)
                 continue;
-            if(searchName == one.symbolName->name)
+            if (searchName == one.symbolName->name)
                 continue;
 
             if (searchFor == IdentifierSearchFor::Whatever)
@@ -182,5 +192,5 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
         }
     }
 
-    findClosestMatches(searchName, searchList, best);
+    findClosestMatchesInList(searchName, searchList, best);
 }
