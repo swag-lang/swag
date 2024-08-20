@@ -120,8 +120,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         if Env.hasArg("swag.test")
         {
             leftPressed = true
-            mousePos.x = 100
-            mousePos.y = 100
+            mousePos.x  = 100
+            mousePos.y  = 100
         }
 
         if leftPressed and mousePos.y > 0
