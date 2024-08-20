@@ -3,7 +3,6 @@ using Swag, Core, Core.Errors
 
 private
 {
-
     const InBufSize       = 4096
     const MaxHeight       = 8192
     const MaxWidth        = 8192
