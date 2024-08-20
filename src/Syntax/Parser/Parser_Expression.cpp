@@ -1289,6 +1289,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::SymRightSquare))
         return error(tokenParse, toErr(Err0049));
 
+    TokenParse lastToken;
     while (tokenParse.isNot(TokenId::SymRightSquare))
     {
         AstNode* subExpr = nullptr;
@@ -1301,8 +1302,10 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 
         if (tokenParse.is(TokenId::SymRightSquare))
             break;
+        FormatAst::inheritFormatBefore(this, subExpr, &lastToken);
         FormatAst::inheritFormatAfter(this, subExpr, &tokenParse);
         SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0108)));
+        lastToken = tokenParse;
     }
 
     node->token.endLocation = tokenParse.token.endLocation;
