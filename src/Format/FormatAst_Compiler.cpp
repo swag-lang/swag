@@ -33,7 +33,6 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
     else if ((ifNode->ifBlock->firstChild()->is(AstNodeKind::Statement) && !ifNode->ifBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY)) ||
              ifNode->ifBlock->firstChild()->isNot(AstNodeKind::Statement))
     {
-        concat->addBlank();
         concat->addChar(':');
         concat->addEol();
         context.indent++;
@@ -70,7 +69,6 @@ bool FormatAst::outputCompilerIf(FormatContext& context, const Utf8& name, AstNo
         if ((ifNode->elseBlock->firstChild()->is(AstNodeKind::Statement) && !ifNode->elseBlock->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY)) ||
             ifNode->elseBlock->firstChild()->isNot(AstNodeKind::Statement))
         {
-            concat->addBlank();
             concat->addChar(':');
             concat->addEol();
             context.indent++;
