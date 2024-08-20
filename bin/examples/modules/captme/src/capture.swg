@@ -349,14 +349,17 @@ impl Capture
         var ht  = ht2
 
         let rt = render.getRenderTarget(wt2, ht2)
-        painter.bindRenderTarget(rt, true)
-        painter.setAntialiased()
-        painter.setColorMaskFull()
-        painter.clear(Argb.Zero)
-        painter.setColorMaskColor()
-        painter.setBlendingMode(.Alpha)
-        f.paint(app, painter, zoom, quickMode)
-        painter.unbindRenderTarget()
+        with painter
+        {
+            .bindRenderTarget(rt, true)
+            .setAntialiased()
+            .setColorMaskFull()
+            .clear(Argb.Zero)
+            .setColorMaskColor()
+            .setBlendingMode(.Alpha)
+            f.paint(app, painter, zoom, quickMode)
+            .unbindRenderTarget()
+        }
 
         const Margin = 8
 
@@ -371,56 +374,72 @@ impl Capture
 
             // Draw the image with a margin around
             var srcRect = Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
-            painter.bindRenderTarget(rt1)
-            painter.setShader(&render.shaderSimple)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMaskFull()
-            painter.clear(Argb.Zero)
             var dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
-            painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
-            painter.unbindRenderTarget()
+            with painter
+            {
+                .bindRenderTarget(rt1)
+                .setShader(&render.shaderSimple)
+                .setBlendingMode(.Copy)
+                .setColorMaskFull()
+                .clear(Argb.Zero)
+                .drawTexture(dstRect, srcRect, rt.colorBuffer)
+                .unbindRenderTarget()
+            }
 
             let blurRadius = quickMode ? 4.0 : 8.0
 
             // Blur first pass
-            painter.bindRenderTarget(rt2)
-            painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 0's32)
-            painter.setShaderParam(render.shaderBlur.radius, blurRadius)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMaskFull()
-            painter.clear(Argb.Zero)
-            dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
-            painter.setShader()
-            painter.unbindRenderTarget()
+            with painter
+            {
+                .bindRenderTarget(rt2)
+                .setShader(&render.shaderBlur)
+                .setShaderParam(render.shaderBlur.axis, 0's32)
+                .setShaderParam(render.shaderBlur.radius, blurRadius)
+                .setBlendingMode(.Copy)
+                .setColorMaskFull()
+                .clear(Argb.Zero)
+                .drawTexture(Math.Rectangle{0, 0, wt, ht}, Math.Rectangle{0, 0, wt, ht}, rt1.colorBuffer)
+                .setShader()
+                .unbindRenderTarget()
+            }
 
             // Blur second pass
-            painter.bindRenderTarget(rt1)
-            painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 1's32)
-            painter.setShaderParam(render.shaderBlur.radius, blurRadius)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMaskFull()
-            dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
+            with painter
+            {
+                .bindRenderTarget(rt1)
+                .setShader(&render.shaderBlur)
+                .setShaderParam(render.shaderBlur.axis, 1's32)
+                .setShaderParam(render.shaderBlur.radius, blurRadius)
+                .setBlendingMode(.Copy)
+                .setColorMaskFull()
+                .drawTexture(Math.Rectangle{0, 0, wt, ht}, Math.Rectangle{0, 0, wt, ht}, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
+            }
 
             // Add the real image at the right place just after
-            var imgRect = dstRect
-            imgRect.offset(cast(f32) Margin)
-            imgRect.width  = base.paintPos.width
-            imgRect.height = base.paintPos.height
-            imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
-            painter.setShader(&render.shaderSimple)
-            painter.setBlendingMode(.Alpha)
-            painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
-            painter.unbindRenderTarget()
+            with var imgRect = Math.Rectangle{0, 0, wt, ht}
+            {
+                .offset(cast(f32) Margin)
+                .width  = base.paintPos.width
+                .height = base.paintPos.height
+                .offset(-base.shadowOffset.x, -base.shadowOffset.y)
+            }
+
+            with painter
+            {
+                .setShader(&render.shaderSimple)
+                .setBlendingMode(.Alpha)
+                .drawTexture(imgRect, srcRect, rt.colorBuffer)
+                .unbindRenderTarget()
+            }
         }
 
         // Paint resulting image
-        painter.pushClippingRect(rect)
-        painter.setShader()
-        painter.setAntialiased(false)
+        with painter
+        {
+            .pushClippingRect(rect)
+            .setShader()
+            .setAntialiased(false)
+        }
 
         var colForm: Color
         if quickMode and base.subKind == .Highlight:
@@ -433,39 +452,51 @@ impl Capture
         var dstRect = Math.Rectangle{0, 0, wt, ht}
         if base.paintShadow
         {
-            var paintShadowRect = dstRect
-            paintShadowRect.x = base.paintPos.x - Margin
-            paintShadowRect.y = base.paintPos.y - Margin
-            paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
-            painter.setColorMaskColor()
-            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+            with var paintShadowRect = dstRect
+            {
+                .x = base.paintPos.x - Margin
+                .y = base.paintPos.y - Margin
+                .offset(base.shadowOffset.x, base.shadowOffset.y)
+            }
 
-            painter.setBlendingMode(.Max)
-            painter.setColorMaskAlpha()
-            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+            with painter
+            {
+                .setColorMaskColor()
+                .drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+                .setBlendingMode(.Max)
+                .setColorMaskAlpha()
+                .drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+            }
         }
         else
         {
-            var paintRect = dstRect
-            paintRect.x = base.paintPos.x
-            paintRect.y = base.paintPos.y
-            painter.setColorMaskColor()
-            painter.setInterpolationMode(.Pixel)
-            painter.drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
+            with var paintRect = dstRect
+            {
+                .x = base.paintPos.x
+                .y = base.paintPos.y
+            }
 
-            painter.setBlendingMode(.Max)
-            painter.setColorMaskAlpha()
-            painter.drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
-            painter.setInterpolationMode(.Linear)
+            with painter
+            {
+                .setColorMaskColor()
+                .setInterpolationMode(.Pixel)
+                .drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
+                .setBlendingMode(.Max)
+                .setColorMaskAlpha()
+                .drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
+                .setInterpolationMode(.Linear)
+            }
         }
 
-        painter.setColorMaskColor()
-        painter.setBlendingMode(.Alpha)
-        painter.popClippingRect()
-
-        painter.releaseRenderTarget(rt)
-        painter.releaseRenderTarget(rt1)
-        painter.releaseRenderTarget(rt2)
+        with painter
+        {
+            .setColorMaskColor()
+            .setBlendingMode(.Alpha)
+            .popClippingRect()
+            .releaseRenderTarget(rt)
+            .releaseRenderTarget(rt1)
+            .releaseRenderTarget(rt2)
+        }
 
         if snapMode:
             base.paintPos = savePaintPos
@@ -493,11 +524,14 @@ impl Capture
                 serialBackTexture += 1
             }
 
-            var backRect: Math.Rectangle
-            backRect.x      = (backImagePos.x * z) + x
-            backRect.y      = (backImagePos.y * z) + y
-            backRect.width  = backImg.width * z
-            backRect.height = backImg.height * z
+            with var backRect: Math.Rectangle
+            {
+                .x      = (backImagePos.x * z) + x
+                .y      = (backImagePos.y * z) + y
+                .width  = backImg.width * z
+                .height = backImg.height * z
+            }
+
             painter.drawTexture(backRect, backTexture)
         }
     }
@@ -1179,64 +1213,8 @@ impl Capture
         if main.editMode == .Selection:
             return
 
-        let f    = forms[selection.back()]
-        let t    = @kindof(f)
-        let form = cast(*BaseForm) @dataof(f)
-
-        if main.editMode == .Favorites
-        {
-            #[Swag.Complete]
-            switch t
-            {
-            case FormShape:
-                main.mdlFavorite = main.mdlFormShape
-            case FormImage:
-                main.mdlFavorite = main.mdlFormImage
-            case FormStep:
-                main.mdlFavorite = main.mdlFormStep
-            case FormArrow:
-                main.mdlFavorite = main.mdlFormArrow
-            case FormLine:
-                main.mdlFavorite = main.mdlFormLine
-            case FormPolygon:
-                main.mdlFavorite = main.mdlFormPolygon
-            case FormText:
-                main.mdlFavorite = main.mdlFormText
-            case FormDraw:
-                main.mdlFavorite = main.mdlFormDraw
-            }
-        }
-        elif form.subKind == .Highlight
-        {
-            main.editMode = .Highlight
-        }
-        elif form.subKind == .PixSel
-        {
-            main.editMode = .PixSel
-        }
-        else
-        {
-            #[Swag.Complete]
-            switch t
-            {
-            case FormShape:
-                main.editMode = .Shape
-            case FormImage:
-                main.editMode = .Image
-            case FormStep:
-                main.editMode = .Step
-            case FormArrow:
-                main.editMode = .Arrow
-            case FormLine:
-                main.editMode = .Line
-            case FormPolygon:
-                main.editMode = .Polygon
-            case FormText:
-                main.editMode = .Text
-            case FormDraw:
-                main.editMode = .Draw
-            }
-        }
+        let f = forms[selection.back()]
+        main.updateEditMode(f)
     }
 
     mtd updateModelFromSelection()

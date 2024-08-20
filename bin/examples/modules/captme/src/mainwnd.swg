@@ -201,6 +201,67 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
+    mtd updateEditMode(f: IForm)
+    {
+        let t    = @kindof(f)
+        let form = cast(*BaseForm) @dataof(f)
+
+        if editMode == .Favorites
+        {
+            #[Swag.Complete]
+            switch t
+            {
+            case FormShape:
+                mdlFavorite = mdlFormShape
+            case FormImage:
+                mdlFavorite = mdlFormImage
+            case FormStep:
+                mdlFavorite = mdlFormStep
+            case FormArrow:
+                mdlFavorite = mdlFormArrow
+            case FormLine:
+                mdlFavorite = mdlFormLine
+            case FormPolygon:
+                mdlFavorite = mdlFormPolygon
+            case FormText:
+                mdlFavorite = mdlFormText
+            case FormDraw:
+                mdlFavorite = mdlFormDraw
+            }
+        }
+        elif form.subKind == .Highlight
+        {
+            editMode = .Highlight
+        }
+        elif form.subKind == .PixSel
+        {
+            editMode = .PixSel
+        }
+        else
+        {
+            #[Swag.Complete]
+            switch t
+            {
+            case FormShape:
+                editMode = .Shape
+            case FormImage:
+                editMode = .Image
+            case FormStep:
+                editMode = .Step
+            case FormArrow:
+                editMode = .Arrow
+            case FormLine:
+                editMode = .Line
+            case FormPolygon:
+                editMode = .Polygon
+            case FormText:
+                editMode = .Text
+            case FormDraw:
+                editMode = .Draw
+            }
+        }        
+    }
+
     mtd getEditMode()->EditMode
     {
         if editMode == .Selection
