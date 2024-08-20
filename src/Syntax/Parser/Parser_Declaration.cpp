@@ -391,13 +391,21 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
-    *result         = node;
-    node->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
+    AstNode* node;
+    {
+        ParserPushFreezeFormat ff(this);
+        node    = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
+        *result = node;
+        FormatAst::inheritFormatBefore(this, node, &tokenParse);
+        node->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
+    }
+
+    SWAG_CHECK(eatFormat(node));
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
+    SWAG_CHECK(eatFormat(node));
 
     if (isGlobal)
     {

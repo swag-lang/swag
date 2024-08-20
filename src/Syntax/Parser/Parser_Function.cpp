@@ -834,9 +834,14 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     }
 
     // Return type
-    auto typeNode         = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode);
-    funcNode->returnType  = typeNode;
-    typeNode->semanticFct = Semantic::resolveFuncDeclType;
+    AstNode* typeNode;
+    {
+        ParserPushFreezeFormat ff(this);
+        typeNode              = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode);
+        funcNode->returnType  = typeNode;
+        typeNode->semanticFct = Semantic::resolveFuncDeclType;
+    }
+
     if (!funcForCompiler)
     {
         if (tokenParse.is(TokenId::SymMinusGreat))
