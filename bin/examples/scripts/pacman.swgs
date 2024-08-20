@@ -451,7 +451,7 @@ impl Ghost
                 dir = .UP // Then set direction to move out of the SPAWN
             }
         }
-// Once out of the SPAWN, act as a normal ghost
+        // Once out of the SPAWN, act as a normal ghost
         elif y >= 19
         {
             dir = .LEFT
@@ -829,10 +829,10 @@ impl Ghost
         // Behaviour within SPAWN pen
         if ai == .SPAWN:
             aiSpawn()
-// AI to LEAVE SPAWN pen
+        // AI to LEAVE SPAWN pen
         elif ai == .LEAVE:
             aiLeave()
-// Handle PORTAL collision - only teleport if at center of tile
+        // Handle PORTAL collision - only teleport if at center of tile
         elif atTileCenter() and getTile(getX(), getY()) == .P
         {
             if dir == .RIGHT:
@@ -840,14 +840,14 @@ impl Ghost
             else:
                 x = 26
         }
-// If the a new AI mode has been set, reverse the current direction
+        // If the a new AI mode has been set, reverse the current direction
         elif reverse:
             reverseDirection()
-// If no special case exists, direction can only be changed when 2 or more exits exist
+        // If no special case exists, direction can only be changed when 2 or more exits exist
         // Ghost is at corner so must turn
         elif countExits() == 2 and isImpassible(getNextTile(dir)):
             turnCorner()
-// Ghost is at junction - run targeting AI and update direction
+        // Ghost is at junction - run targeting AI and update direction
         elif countExits() > 2
         {
             switch ai
@@ -1667,7 +1667,7 @@ func checkCollisions()
                 g.setAI(.FRIGHTENED, true)
         }
     }
-// If score is increased by more than 100, a fruit has been eaten, pause game briefly to show score
+    // If score is increased by more than 100, a fruit has been eaten, pause game briefly to show score
     elif scoreIncrement >= 100
     {
         g_TimeStamp = g_Ticks
@@ -1994,7 +1994,7 @@ func gameLoop()
                 resetMap()
                 resetLevel()
             }
-// If there are still pills remaining, Pac-Man has died
+            // If there are still pills remaining, Pac-Man has died
             else
             {
                 g_TimeStamp = g_Ticks

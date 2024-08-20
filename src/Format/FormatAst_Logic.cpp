@@ -38,14 +38,14 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
     {
         if (ifNode->elseBlock->is(AstNodeKind::If))
         {
-            beautifyBefore(context, ifNode->elseBlock);
             concat->addIndent(context.indent);
+            beautifyBefore(context, ifNode->elseBlock);
             SWAG_CHECK(outputIf(context, "elif", ifNode->elseBlock));
         }
         else
         {
-            beautifyBefore(context, ifNode->elseBlock);
             concat->addIndent(context.indent);
+            beautifyBefore(context, ifNode->elseBlock);
             concat->addString("else");
             SWAG_CHECK(outputDoStatement(context, ifNode->elseBlock));
         }
