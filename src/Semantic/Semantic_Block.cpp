@@ -319,9 +319,10 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, toErr(Err0048)}));
 
     // Collect constant expressions, to avoid double definitions
-    VectorNative<AstNode*> valDef;
-    VectorNative<uint64_t> val64;
-    Vector<Utf8>           valText;
+    VectorNative<AstSwitchCase*> valCase;
+    VectorNative<AstNode*>       valExpression;
+    VectorNative<uint64_t>       val64;
+    Vector<Utf8>                 valText;
     for (const auto switchCase : node->cases)
     {
         for (auto expr : switchCase->expressions)
@@ -334,13 +335,19 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        Diagnostic err{expr, formErr(Err0538, expr->computedValue()->text.cstr())};
-                        err.addNote(valDef[idx], toNte(Nte0196));
-                        return context->report(err);
+                        if (switchCase == valCase[idx] || (!switchCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE) && !valCase[idx]->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE)))
+                        {
+                            Diagnostic err{expr, formErr(Err0538, expr->computedValue()->text.cstr())};
+                            err.addNote(valExpression[idx], toNte(Nte0196));
+                            return context->report(err);
+                        }
+
+                        continue;
                     }
 
                     valText.push_back(expr->computedValue()->text);
-                    valDef.push_back(expr);
+                    valCase.push_back(switchCase);
+                    valExpression.push_back(expr);
                 }
                 else
                 {
@@ -351,18 +358,24 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        const auto note = Diagnostic::note(valDef[idx], toNte(Nte0196));
-                        if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, formErr(Err0537, expr->token.cstr())}, note);
-                        if (expr->typeInfo->isEnum())
-                            return context->report({expr, formErr(Err0537, expr->token.cstr())}, note);
-                        if (typeExpr->isNativeInteger())
-                            return context->report({expr, formErr(Err0535, expr->computedValue()->reg.u64)}, note);
-                        return context->report({expr, formErr(Err0536, expr->computedValue()->reg.f64)}, note);
+                        if (switchCase == valCase[idx] || (!switchCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE) && !valCase[idx]->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE)))
+                        {
+                            const auto note = Diagnostic::note(valExpression[idx], toNte(Nte0196));
+                            if (expr->isConstantGenTypeInfo())
+                                return context->report({expr, formErr(Err0537, expr->token.cstr())}, note);
+                            if (expr->typeInfo->isEnum())
+                                return context->report({expr, formErr(Err0537, expr->token.cstr())}, note);
+                            if (typeExpr->isNativeInteger())
+                                return context->report({expr, formErr(Err0535, expr->computedValue()->reg.u64)}, note);
+                            return context->report({expr, formErr(Err0536, expr->computedValue()->reg.f64)}, note);
+                        }
+                        
+                        continue;
                     }
 
                     val64.push_back(expr->computedValue()->reg.u64);
-                    valDef.push_back(expr);
+                    valCase.push_back(switchCase);
+                    valExpression.push_back(expr);
                 }
             }
             else if (node->hasAttribute(ATTRIBUTE_COMPLETE))

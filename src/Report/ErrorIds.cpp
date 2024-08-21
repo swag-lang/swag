@@ -504,6 +504,7 @@ void initErrors()
     SWAG_ERROR(Err0359, "misplaced [[var]]                                 $ cannot use [[var]] in struct variable declarations                                                                                       $ a struct variable should be declared as [[fieldName: Type]] without [[var]]");
     SWAG_ERROR(Err0360, "misplaced [[where(call)]]                         $ cannot use a [[where(call)]] constraint for structs; it is only valid for functions                                                      $ consider using a single [[where]] instead");
     SWAG_ERROR(Err0361, "misplaced [[where]]                               $ cannot use a [[where]] constraint on [[%s]]                                                                                              $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
+    SWAG_ERROR(Err0766, "misplaced [[where]]                               $ cannot use a [[where]] clause in a [[switch]] without an expression                                                                      $ ");
     SWAG_ERROR(Err0362, "misplaced access specifier                        $ cannot make a global variable [[public]]                                                                                                 $ ");
     SWAG_ERROR(Err0363, "misplaced access specifier                        $ cannot use the [[%s]] access specifier outside of the global scope                                                                       $ ");
     SWAG_ERROR(Err0364, "misplaced access specifier                        $ unexpected [[%s]] before [[%s]]                                                                                                          $ ");
@@ -676,9 +677,9 @@ void initErrors()
     SWAG_ERROR(Err0532, "redefined enum value                              $ cannot redefine the enum value [[%s]] because it already exists with the same underlying value                                           $ ");
     SWAG_ERROR(Err0533, "redefined field name                              $ cannot redefine the field name [[%s]] because it already exists                                                                          $ ");
     SWAG_ERROR(Err0534, "redefined generic symbol                          $ cannot redefine the generic symbol [[%s]] because it already exists                                                                      $ ");
-    SWAG_ERROR(Err0535, "redefined switch value                            $ cannot use the [[switch]] value [[%d]] because it already exists in another [[case]]                                                     $ ");
-    SWAG_ERROR(Err0536, "redefined switch value                            $ cannot use the [[switch]] value [[%f]] because it already exists in another [[case]]                                                     $ ");
-    SWAG_ERROR(Err0537, "redefined switch value                            $ cannot use the [[switch]] value [[%s]] because it already exists in another [[case]]                                                     $ ");
+    SWAG_ERROR(Err0535, "redefined switch value                            $ cannot use the [[switch]] value [[%d]] because it already exists                                                                         $ ");
+    SWAG_ERROR(Err0536, "redefined switch value                            $ cannot use the [[switch]] value [[%f]] because it already exists                                                                         $ ");
+    SWAG_ERROR(Err0537, "redefined switch value                            $ cannot use the [[switch]] value [[%s]] because it already exists                                                                         $ ");
     SWAG_ERROR(Err0538, "redefined switch value                            $ cannot use the [[switch]] value [[\"%s\"]] because it already exists in another [[case]]                                                 $ ");
     SWAG_ERROR(Err0539, "redefined symbol                                  $ cannot redefine the %s [[%s]] because it already exists                                                                                  $ ");
     SWAG_ERROR(Err0540, "redundant access specifier                        $ cannot use the [[%s]] access specifier because of [[#global export]]                                                                     $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
@@ -905,6 +906,10 @@ void initErrors()
     SWAG_ERROR(Err0760, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0764, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
     SWAG_ERROR(Err0765, "unexpected embedded instruction                   $ expected an embedded instruction, found $$TKN$$ instead                                                                                  $ ");
+    SWAG_ERROR(Err0767, nullptr);
+    SWAG_ERROR(Err0768, nullptr);
+    SWAG_ERROR(Err0769, nullptr);
+    SWAG_ERROR(Err0770, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

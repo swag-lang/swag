@@ -164,6 +164,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         // where clause
         if (tokenParse.is(TokenId::KwdWhere))
         {
+            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0766)));
+            
             SWAG_CHECK(doWhereIf(statement, &dummyResult));
             const auto      nodeIf = castAst<AstIf>(statement->firstChild()->firstChild(), AstNodeKind::If);
             ParserPushScope scoped1(this, nodeIf->ownerScope);
