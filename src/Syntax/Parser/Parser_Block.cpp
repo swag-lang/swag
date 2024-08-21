@@ -259,7 +259,8 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
 bool Parser::doWhere(AstNode* node, AstNode** result)
 {
-    const auto      newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
+    const auto newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
+
     ParserPushScope scoped(this, newScope);
     AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
     statement->allocateExtension(ExtensionKind::Semantic);
@@ -268,7 +269,11 @@ bool Parser::doWhere(AstNode* node, AstNode** result)
     statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_WHERE);
     *result         = statement;
     newScope->owner = statement;
-    SWAG_CHECK(doIf(statement, &dummyResult));
+
+    const auto nodeIf   = Ast::newNode<AstIf>(AstNodeKind::If, this, statement);
+    nodeIf->semanticFct = Semantic::resolveIf;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doExpression(nodeIf, EXPR_FLAG_NONE, &nodeIf->boolExpression));
     return true;
 }
 
@@ -337,9 +342,10 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::KwdWhere))
     {
-        auto savedToken = tokenParse;
         SWAG_CHECK(doWhere(node, &node->block));
-        FormatAst::inheritFormatBefore(this, node->block, &savedToken);
+        const auto      nodeIf = castAst<AstIf>(node->block->firstChild(), AstNodeKind::If);
+        ParserPushScope scoped(this, node->block->ownerScope);
+        SWAG_CHECK(doScopedStatement(nodeIf, nodeIf->token, &nodeIf->ifBlock));
     }
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
@@ -441,9 +447,10 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::KwdWhere))
     {
-        auto savedToken = tokenParse;
         SWAG_CHECK(doWhere(node, &node->block));
-        FormatAst::inheritFormatBefore(this, node->block, &savedToken);
+        const auto      nodeIf = castAst<AstIf>(node->block->firstChild(), AstNodeKind::If);
+        ParserPushScope scoped1(this, node->block->ownerScope);
+        SWAG_CHECK(doScopedStatement(nodeIf, nodeIf->token, &nodeIf->ifBlock));
     }
     else
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));

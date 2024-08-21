@@ -770,11 +770,11 @@ struct AstIf : AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*            boolExpression;
-    AstCompilerIfBlock* ifBlock;
-    AstCompilerIfBlock* elseBlock;
-    uint32_t            seekJumpExpression;
-    uint32_t            seekJumpAfterIf;
+    AstNode* boolExpression;
+    AstNode* ifBlock;
+    AstNode* elseBlock;
+    uint32_t seekJumpExpression;
+    uint32_t seekJumpAfterIf;
 };
 
 struct AstBreakContinue : AstNode

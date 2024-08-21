@@ -677,14 +677,14 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
     AstCompilerIfBlock* validatedNode;
     if (node->boolExpression->computedValue()->reg.b)
     {
-        validatedNode = node->ifBlock;
+        validatedNode = castAst<AstCompilerIfBlock>(node->ifBlock, AstNodeKind::CompilerIfBlock);
         if (node->elseBlock)
-            disableCompilerIfBlock(context, node->elseBlock);
+            disableCompilerIfBlock(context, castAst<AstCompilerIfBlock>(node->elseBlock, AstNodeKind::CompilerIfBlock));
     }
     else
     {
-        validatedNode = node->elseBlock;
-        disableCompilerIfBlock(context, node->ifBlock);
+        validatedNode = castAst<AstCompilerIfBlock>(node->elseBlock, AstNodeKind::CompilerIfBlock);
+        disableCompilerIfBlock(context, castAst<AstCompilerIfBlock>(node->ifBlock, AstNodeKind::CompilerIfBlock));
     }
 
     // We can know solve function sub declarations in that block
