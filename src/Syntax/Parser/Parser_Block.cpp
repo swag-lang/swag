@@ -160,28 +160,26 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         else
             SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
 
+        if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
+            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0032));
+        if (tokenParse.is(TokenId::SymRightCurly))
+            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0031));
+
         // Content
-        {
-            const auto      newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
-            ParserPushScope scoped(this, newScope);
+        const auto          newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
+        ParserPushScope     scoped(this, newScope);
+        ParserPushBreakable scopedBreakable(this, switchNode);
 
-            const auto statement = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
-            statement->allocateExtension(ExtensionKind::Semantic);
-            statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
-            statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-            statement->ownerCase                        = caseNode;
-            caseNode->block                             = statement;
-            newScope->owner                             = statement;
+        const auto statement = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
+        statement->allocateExtension(ExtensionKind::Semantic);
+        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+        statement->ownerCase                        = caseNode;
+        caseNode->block                             = statement;
+        newScope->owner                             = statement;
 
-            // Instructions
-            ParserPushBreakable scopedBreakable(this, switchNode);
-            if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0032));
-            if (tokenParse.is(TokenId::SymRightCurly))
-                return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0031));
-            while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
-                SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
-        }
+        while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
+            SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     }
 
     // Add the default case as the last one
