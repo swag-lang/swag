@@ -21,19 +21,11 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
             concat->addString("var");
         concat->addBlank();
         SWAG_CHECK(outputVarContent(context, varNode));
-
-        if (ifNode->boolExpression->is(AstNodeKind::BinaryOp) && ifNode->boolExpression->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_WHERE_AND))
-        {
-            concat->addBlank();
-            concat->addString(ifNode->boolExpression->token.text);
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, ifNode->boolExpression->lastChild()));
-        }
     }
-    else
-        SWAG_CHECK(outputNode(context, ifNode->boolExpression));
-
+    
+    SWAG_CHECK(outputNode(context, ifNode->boolExpression));
     SWAG_CHECK(outputDoStatement(context, ifNode->ifBlock));
+    
     if (ifNode->elseBlock)
     {
         if (ifNode->elseBlock->is(AstNodeKind::If))

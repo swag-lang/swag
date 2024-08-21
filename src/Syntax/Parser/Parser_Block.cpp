@@ -39,21 +39,13 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         // 'where' clause
         if (tokenParse.is(TokenId::KwdWhere))
         {
-            const auto binaryNode = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, node);
-            binaryNode->addSpecFlag(AstBinaryOpNode::SPEC_FLAG_WHERE_AND);
-            binaryNode->semanticFct = Semantic::resolveBoolExpression;
-            binaryNode->token       = tokenParse.token;
-            binaryNode->token.id    = TokenId::KwdAnd;
-
-            Ast::removeFromParent(node->boolExpression);
-            Ast::addChildBack(binaryNode, node->boolExpression);
-            node->boolExpression = binaryNode;
-
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(binaryNode, EXPR_FLAG_NONE, &dummyResult));
+            SWAG_CHECK(doWhere(node, &node->ifBlock));
+            const auto      nodeIf = castAst<AstIf>(node->ifBlock->firstChild(), AstNodeKind::If);
+            ParserPushScope scoped1(this, node->ifBlock->ownerScope);
+            SWAG_CHECK(doScopedStatement(nodeIf, nodeIf->token, &nodeIf->ifBlock));
         }
-
-        SWAG_CHECK(doScopedStatement(node, node->token, &node->ifBlock));
+        else
+            SWAG_CHECK(doScopedStatement(node, node->token, &node->ifBlock));
     }
 
     // If with a simple expression
