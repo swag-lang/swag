@@ -674,23 +674,24 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
     YIELD();
 
     node->boolExpression->addAstFlag(AST_NO_BYTECODE);
-    AstCompilerIfBlock* validatedNode;
+    AstNode* validatedNode;
     if (node->boolExpression->computedValue()->reg.b)
     {
-        validatedNode = castAst<AstCompilerIfBlock>(node->ifBlock, AstNodeKind::CompilerIfBlock);
+        validatedNode = node->ifBlock;
         if (node->elseBlock)
             disableCompilerIfBlock(context, castAst<AstCompilerIfBlock>(node->elseBlock, AstNodeKind::CompilerIfBlock));
     }
     else
     {
-        validatedNode = castAst<AstCompilerIfBlock>(node->elseBlock, AstNodeKind::CompilerIfBlock);
+        validatedNode = node->elseBlock;
         disableCompilerIfBlock(context, castAst<AstCompilerIfBlock>(node->ifBlock, AstNodeKind::CompilerIfBlock));
     }
 
-    // We can know solve function sub declarations in that block
+    // We can now solve function sub declarations in that block
     if (validatedNode)
     {
-        for (const auto n : validatedNode->subDecl)
+        const auto ifBlock = castAst<AstCompilerIfBlock>(validatedNode, AstNodeKind::CompilerIfBlock);
+        for (const auto n : ifBlock->subDecl)
             launchResolveSubDecl(context, n);
     }
 

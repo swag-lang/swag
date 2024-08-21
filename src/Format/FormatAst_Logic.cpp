@@ -208,13 +208,15 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 
         auto block = c->block;
 
-        if (c->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE))
+        if (block->firstChild() &&
+            block->firstChild()->is(AstNodeKind::Statement) &&
+            block->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
         {
             concat->addChar(' ');
             concat->addString("where");
             concat->addChar(' ');
 
-            const AstIf* ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
+            const AstIf* ifNode = castAst<AstIf>(block->firstChild()->firstChild(), AstNodeKind::If);
             SWAG_CHECK(outputNode(context, ifNode->boolExpression));
             block = ifNode->ifBlock;
         }

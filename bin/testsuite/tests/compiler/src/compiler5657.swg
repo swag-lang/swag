@@ -9,6 +9,7 @@
     case 0 where a == 0:
         break
     case 1 where a == 1:
+        b = 2
         b = 1
         break
     }
