@@ -22,7 +22,7 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         concat->addBlank();
         SWAG_CHECK(outputVarContent(context, varNode));
 
-        if(ifNode->boolExpression->is(AstNodeKind::BinaryOp) && ifNode->boolExpression->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_WHERE_AND))
+        if (ifNode->boolExpression->is(AstNodeKind::BinaryOp) && ifNode->boolExpression->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_WHERE_AND))
         {
             concat->addBlank();
             concat->addString(ifNode->boolExpression->token.text);
@@ -214,11 +214,25 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             }
         }
 
+        auto block = c->block;
+
+        if (c->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE))
+        {
+            concat->addChar(' ');
+            concat->addString("where");
+            concat->addChar(' ');
+
+            const AstIf* ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
+            SWAG_CHECK(outputNode(context, ifNode->boolExpression));
+            block = ifNode->ifBlock;
+        }
+
         concat->addChar(':');
+
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, c->block));
+        SWAG_CHECK(outputNode(context, block));
         concat->addEol();
         context.indent--;
     }

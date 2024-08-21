@@ -141,36 +141,27 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (!isDefault)
         {
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, formErr(Err0435, tokenParse.cstr())));
-            while (tokenParse.isNot(TokenId::SymColon))
+            while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdWhere))
             {
                 AstNode* expression;
                 SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
                 if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
                 caseNode->expressions.push_back(expression);
-                if (tokenParse.is(TokenId::SymColon))
+                if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0761)));
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0095)));
             }
         }
 
-        if (isDefault)
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
-        else
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
-
-        if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0032));
-        if (tokenParse.is(TokenId::SymRightCurly))
-            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0031));
-
         // Content
         const auto          newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
         ParserPushScope     scoped(this, newScope);
         ParserPushBreakable scopedBreakable(this, switchNode);
 
-        const auto statement = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
+        const auto statement  = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
+        AstNode*   parentStmt = statement;
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
         statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
@@ -178,8 +169,39 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         caseNode->block                             = statement;
         newScope->owner                             = statement;
 
+        // where clause
+        if (tokenParse.is(TokenId::KwdWhere))
+        {
+            caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE);
+
+            SWAG_CHECK(eatToken());
+            const auto nodeIf   = Ast::newNode<AstIf>(AstNodeKind::If, this, statement);
+            nodeIf->semanticFct = Semantic::resolveIf;
+            SWAG_CHECK(doExpression(nodeIf, EXPR_FLAG_NONE, &nodeIf->boolExpression));
+
+            const auto scopeIf = Ast::newScope(nodeIf, "", ScopeKind::Statement, currentScope);
+            const auto stmtIf  = Ast::newNode<AstCompilerIfBlock>(AstNodeKind::Statement, this, nodeIf);
+            statement->allocateExtension(ExtensionKind::Semantic);
+            statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+            statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+            nodeIf->ifBlock                             = stmtIf;
+            scopeIf->owner                              = stmtIf;
+            parentStmt                                  = stmtIf;
+        }
+
+        if (!isDefault)
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
+        else
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
+
+        // Not empty
+        if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
+            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0032));
+        if (tokenParse.is(TokenId::SymRightCurly))
+            return error(prevToken, isDefault ? toErr(Err0046) : toErr(Err0045), toNte(Nte0031));
+
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
-            SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
+            SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));
     }
 
     // Add the default case as the last one

@@ -30,6 +30,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::SwitchCaseBlock:
+        case AstNodeKind::CompilerIfBlock:
         case AstNodeKind::StatementNoScope:
         case AstNodeKind::File:
             SWAG_CHECK(outputChildrenEol(context, node));
