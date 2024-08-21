@@ -270,7 +270,7 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
     if (block &&
         expression &&
         block->is(AstNodeKind::Statement) &&
-        !block->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE) &&
+        !block->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE) &&
         !block->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
         block->childCount() == 1 &&
         block->firstChild()->is(AstNodeKind::If))

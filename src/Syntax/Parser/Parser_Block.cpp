@@ -169,6 +169,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             ParserPushScope scoped1(this, nodeIf->ownerScope);
             nodeIf->ifBlock = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, nodeIf);
             nodeIf->ifBlock->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
+            caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE);
             parentStmt = nodeIf->ifBlock;
         }
 
@@ -249,7 +250,7 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
     statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_WHERE);
+    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_IS_WHERE);
     *result         = statement;
     newScope->owner = statement;
 

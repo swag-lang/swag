@@ -877,6 +877,7 @@ struct AstSwitchCase : AstNode
     static constexpr SpecFlags SPEC_FLAG_IS_DEFAULT = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_IS_FALSE   = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_IS_TRUE    = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_HAS_WHERE  = 0x0008;
 
     AstNode* clone(CloneContext& context);
 
@@ -1239,7 +1240,7 @@ struct AstStatement : AstNode
     static constexpr SpecFlags SPEC_FLAG_CURLY           = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_MULTI_AFFECT    = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_TUPLE_UNPACKING = 0x0008;
-    static constexpr SpecFlags SPEC_FLAG_WHERE           = 0x0010;
+    static constexpr SpecFlags SPEC_FLAG_IS_WHERE        = 0x0010;
 
     ~        AstStatement();
     AstNode* clone(CloneContext& context);

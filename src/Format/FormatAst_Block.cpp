@@ -118,7 +118,7 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
     }
     else if (node->is(AstNodeKind::Statement) && !node->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY))
     {
-        if (node->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
+        if (node->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE))
         {
             concat->addBlank();
             const auto parse = getTokenParse(node);

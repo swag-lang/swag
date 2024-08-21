@@ -210,7 +210,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 
         if (block->firstChild() &&
             block->firstChild()->is(AstNodeKind::Statement) &&
-            block->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_WHERE))
+            block->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE))
         {
             concat->addChar(' ');
             concat->addString("where");
