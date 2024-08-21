@@ -53,26 +53,26 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
             SWAG_CHECK(doExpression(binaryNode, EXPR_FLAG_NONE, &dummyResult));
         }
 
-        SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->ifBlock));
     }
 
     // If with a simple expression
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->ifBlock));
     }
 
     if (tokenParse.is(TokenId::KwdElse))
     {
         auto tokenElse = tokenParse;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doScopedStatement(node, tokenElse.token, reinterpret_cast<AstNode**>(&node->elseBlock)));
+        SWAG_CHECK(doScopedStatement(node, tokenElse.token, &node->elseBlock));
         FormatAst::inheritFormatBefore(this, node->elseBlock, &tokenElse);
     }
     else if (tokenParse.is(TokenId::KwdElif))
     {
-        SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
+        SWAG_CHECK(doIf(node, &node->elseBlock));
     }
 
     return true;
