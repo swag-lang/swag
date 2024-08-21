@@ -106,15 +106,11 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[switch]] body"));
 
-    AstSwitchCase* defaultCase = nullptr;
-    bool           hasDefault  = false;
+    Vector<AstSwitchCase*> defaultCase;
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
     {
         SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0650)));
         const bool isDefault = tokenParse.is(TokenId::KwdDefault);
-        SWAG_VERIFY(!isDefault || !hasDefault, error(tokenParse, toErr(Err0529)));
-        if (isDefault)
-            hasDefault = true;
 
         // One case
         auto caseNode         = Ast::newNode<AstSwitchCase>(AstNodeKind::SwitchCase, this, isDefault ? nullptr : switchNode);
@@ -123,15 +119,18 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         caseNode->semanticFct = Semantic::resolveCase;
         const auto prevToken  = tokenParse.token;
         SWAG_CHECK(eatToken());
-        if (isDefault)
-            defaultCase = caseNode;
-        else
-            switchNode->cases.push_back(caseNode);
-        caseNode->caseIndex = switchNode->cases.size() - 1;
 
-        // Case expressions
-        if (!isDefault)
+        if (isDefault)
         {
+            SWAG_VERIFY(defaultCase.empty(), error(caseNode->token, toErr(Err0529)));
+            defaultCase.push_back(caseNode);
+            caseNode->caseIndex = switchNode->cases.size() - 1;
+        }
+        else
+        {
+            switchNode->cases.push_back(caseNode);
+            caseNode->caseIndex = switchNode->cases.size() - 1;
+
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, formErr(Err0435, tokenParse.cstr())));
             while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdWhere))
             {
@@ -165,7 +164,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (tokenParse.is(TokenId::KwdWhere))
         {
             SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0766)));
-            
+
             SWAG_CHECK(doWhereIf(statement, &dummyResult));
             const auto      nodeIf = castAst<AstIf>(statement->firstChild()->firstChild(), AstNodeKind::If);
             ParserPushScope scoped1(this, nodeIf->ownerScope);
@@ -191,10 +190,13 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     }
 
     // Add the default case as the last one
-    if (defaultCase)
+    if (!defaultCase.empty())
     {
-        Ast::addChildBack(switchNode, defaultCase);
-        switchNode->cases.push_back(defaultCase);
+        for (const auto c : defaultCase)
+        {
+            Ast::addChildBack(switchNode, c);
+            switchNode->cases.push_back(c);
+        }
     }
 
     SWAG_CHECK(eatFormat(switchNode));
