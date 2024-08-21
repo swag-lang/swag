@@ -825,9 +825,20 @@ bool ByteCodeGen::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
-    const auto node      = context->node;
-    const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
-    const auto caseNode  = blockNode->ownerCase;
+    const auto          node = context->node;
+    AstSwitchCaseBlock* blockNode;
+
+    AstNode* whereClause = nullptr;
+    if (node->is(AstNodeKind::SwitchCaseBlock))
+        blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
+    else
+    {
+        const auto ifNode = castAst<AstIf>(node->parent, AstNodeKind::If);
+        whereClause       = ifNode->boolExpression;
+        blockNode         = castAst<AstSwitchCaseBlock>(node->getParent(3), AstNodeKind::SwitchCaseBlock);
+    }
+
+    const auto caseNode = blockNode->ownerCase;
 
     if (caseNode->ownerSwitch->expression)
         caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
@@ -841,39 +852,56 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         {
             for (const auto expr : caseNode->expressions)
             {
-                RegisterList r0;
-                if (expr->is(AstNodeKind::Range))
+                // If the where clause if already known to be false, then no need to treat that case
+                if (!whereClause || !whereClause->hasComputedValue() || whereClause->computedValue()->reg.b)
                 {
-                    const auto rangeNode = castAst<AstRange>(expr, AstNodeKind::Range);
-                    SWAG_CHECK(emitSwitchCaseRange(context, caseNode, rangeNode, r0));
-                    YIELD();
-                }
-                else if (caseNode->hasSpecialFuncCall())
-                {
-                    SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual, r0));
-                    YIELD();
-                }
-                else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
-                {
-                    r0              = reserveRegisterRC(context);
-                    const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
-                    inst->b.u64     = 1;
-                }
-                else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE))
-                {
-                    r0 = reserveRegisterRC(context);
-                    EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                }
-                else
-                {
-                    r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
-                }
+                    RegisterList r0;
+                    if (expr->is(AstNodeKind::Range))
+                    {
+                        const auto rangeNode = castAst<AstRange>(expr, AstNodeKind::Range);
+                        SWAG_CHECK(emitSwitchCaseRange(context, caseNode, rangeNode, r0));
+                        YIELD();
+                    }
+                    else if (caseNode->hasSpecialFuncCall())
+                    {
+                        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual, r0));
+                        YIELD();
+                    }
+                    else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
+                    {
+                        r0              = reserveRegisterRC(context);
+                        const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
+                        inst->b.u64     = 1;
+                    }
+                    else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE))
+                    {
+                        r0 = reserveRegisterRC(context);
+                        EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
+                    }
+                    else
+                    {
+                        r0 = reserveRegisterRC(context);
+                        SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
+                    }
 
-                allJumps.push_back(context->bc->numInstructions);
-                const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
-                inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-                freeRegisterRC(context, r0);
+                    if (whereClause && !whereClause->hasComputedValue())
+                    {
+                        auto inst   = EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r0);
+                        inst->b.u64 = 1;
+                        freeRegisterRC(context, r0);
+
+                        allJumps.push_back(context->bc->numInstructions);
+                        inst        = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
+                        inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                    }
+                    else
+                    {
+                        allJumps.push_back(context->bc->numInstructions);
+                        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
+                        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                        freeRegisterRC(context, r0);
+                    }
+                }
             }
         }
 
@@ -909,6 +937,8 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         context->popLocation();
     }
 
+    if(whereClause)
+        freeRegisterRC(context, whereClause->resultRegisterRc);
     return true;
 }
 

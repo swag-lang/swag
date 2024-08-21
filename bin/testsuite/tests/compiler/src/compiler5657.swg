@@ -2,7 +2,7 @@
 #test
 {
     let a = 1
-    var b = 0
+    var b = 1
 
     switch a
     {

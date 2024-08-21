@@ -369,7 +369,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                                 return context->report({expr, formErr(Err0535, expr->computedValue()->reg.u64)}, note);
                             return context->report({expr, formErr(Err0536, expr->computedValue()->reg.f64)}, note);
                         }
-                        
+
                         continue;
                     }
 
@@ -449,8 +449,8 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
 bool Semantic::resolveCase(SemanticContext* context)
 {
-    const auto node = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
-    for (const auto oneExpression : node->expressions)
+    const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    for (const auto oneExpression : caseNode->expressions)
     {
         oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
@@ -458,23 +458,23 @@ bool Semantic::resolveCase(SemanticContext* context)
         if (oneExpression->is(AstNodeKind::Range))
         {
             auto rangeNode = castAst<AstRange>(oneExpression, AstNodeKind::Range);
-            if (node->ownerSwitch->expression)
+            if (caseNode->ownerSwitch->expression)
             {
-                const auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                const auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->typeInfo);
                 if (typeInfo->isStruct())
                 {
-                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, caseNode->ownerSwitch->expression, rangeNode->expressionLow));
                     YIELD();
-                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, caseNode->ownerSwitch->expression, rangeNode->expressionUp));
                     YIELD();
                 }
                 else
                 {
-                    SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
+                    SWAG_CHECK(TypeManager::promote32(context, caseNode->ownerSwitch->expression));
                     SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
                     SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, caseNode->ownerSwitch->expression, rangeNode->expressionLow, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, caseNode->ownerSwitch->expression, rangeNode->expressionUp, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
                 }
             }
             else
@@ -490,31 +490,31 @@ bool Semantic::resolveCase(SemanticContext* context)
             YIELD();
 
             // switch with an expression : compare case with the switch expression
-            if (node->ownerSwitch->expression)
+            if (caseNode->ownerSwitch->expression)
             {
-                auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->typeInfo);
                 if (typeInfo->isStruct())
                 {
-                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, caseNode->ownerSwitch->expression, oneExpression));
                     YIELD();
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0150, typeInfo->getDisplayNameC(), "the switch expression"); });
-                    const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
+                    PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0150, typeInfo->getDisplayNameC(), "the switch expression"); });
+                    const auto     typeSwitch = TypeManager::concretePtrRefType(caseNode->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, caseNode->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
 
                 // If the switch expression is constant, and the expression is constant too, then we can do the
                 // compare right now
-                if (node->ownerSwitch->expression->hasFlagComputedValue() && oneExpression->hasFlagComputedValue())
+                if (caseNode->ownerSwitch->expression->hasFlagComputedValue() && oneExpression->hasFlagComputedValue())
                 {
-                    SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
-                    if (node->computedValue()->reg.b)
-                        node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
+                    SWAG_CHECK(resolveCompOpEqual(context, caseNode->ownerSwitch->expression, oneExpression));
+                    if (caseNode->computedValue()->reg.b)
+                        caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
                     else
-                        node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
-                    node->releaseComputedValue();
+                        caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
+                    caseNode->releaseComputedValue();
                 }
             }
 
@@ -526,14 +526,23 @@ bool Semantic::resolveCase(SemanticContext* context)
         }
     }
 
-    if (node->ownerSwitch->expression)
-        node->typeInfo = node->ownerSwitch->expression->typeInfo;
+    if (caseNode->ownerSwitch->expression)
+        caseNode->typeInfo = caseNode->ownerSwitch->expression->typeInfo;
 
-    if (!node->expressions.empty())
-        node->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
-    node->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
-    node->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
+    if (!caseNode->expressions.empty())
+        caseNode->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
 
+    if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE))
+    {
+        const auto ifNode = castAst<AstIf>(caseNode->block->firstChild()->firstChild(), AstNodeKind::If);
+        ifNode->setPassThrough();
+        ifNode->boolExpression->setBcNotifyAfter(nullptr, ByteCodeGen::emitIfAfterExpr);
+        ifNode->ifBlock->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
+    }
+    else
+        caseNode->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
+
+    caseNode->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;
 }
 
