@@ -140,11 +140,21 @@
 </ul>
 <li><a href="#_012_string_swg">String</a></li>
 <ul>
-<li><a href="#_012_string_swg_Character_literals">Character literals</a></li>
-<li><a href="#_012_string_swg_Escape_sequences">Escape sequences</a></li>
-<li><a href="#_012_string_swg_Raw_strings">Raw strings</a></li>
-<li><a href="#_012_string_swg_Multiline_strings">Multiline strings</a></li>
-<li><a href="#_012_string_swg_@stringof_and_@nameof">@stringof and @nameof</a></li>
+<li><a href="#_012_string_swg_UTF-8_Encoding">UTF-8 Encoding</a></li>
+<li><a href="#_012_string_swg_String_Comparison">String Comparison</a></li>
+<li><a href="#_012_string_swg_Rune_Type">Rune Type</a></li>
+<li><a href="#_012_string_swg_String_Indexing">String Indexing</a></li>
+<li><a href="#_012_string_swg_String_Concatenation">String Concatenation</a></li>
+<li><a href="#_012_string_swg_Null_Strings">Null Strings</a></li>
+<li><a href="#_012_string_swg_Character_Literals">Character Literals</a></li>
+<li><a href="#_012_string_swg_Default_Type_of_Character_Literals">Default Type of Character Literals</a></li>
+<li><a href="#_012_string_swg_Specifying_Character_Literal_Types">Specifying Character Literal Types</a></li>
+<li><a href="#_012_string_swg_Escape_Sequences">Escape Sequences</a></li>
+<li><a href="#_012_string_swg_ASCII_and_Unicode_Escape_Sequences">ASCII and Unicode Escape Sequences</a></li>
+<li><a href="#_012_string_swg_Raw_Strings">Raw Strings</a></li>
+<li><a href="#_012_string_swg_Multiline_Raw_Strings">Multiline Raw Strings</a></li>
+<li><a href="#_012_string_swg_Multiline_Strings">Multiline Strings</a></li>
+<li><a href="#_012_string_swg_@stringof_and_@nameof_Intrinsics">@stringof and @nameof Intrinsics</a></li>
 </ul>
 <li><a href="#_013_variables_swg">Variables</a></li>
 <ul>
@@ -1196,7 +1206,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
 }</span></div>
 
-<h2 id="_012_string_swg">String</h2><p>In Swag, strings are encoded in UTF-8, allowing them to support a wide range of characters from different languages and symbol sets. </p>
+<h2 id="_012_string_swg">String</h2><h3 id="_012_string_swg_UTF-8_Encoding">UTF-8 Encoding </h3>
+<p>In Swag, strings are encoded in UTF-8, allowing them to support a wide range of characters from different languages and symbol sets. </p>
+<h3 id="_012_string_swg_String_Comparison">String Comparison </h3>
 <p>Strings can be compared directly for equality. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1206,6 +1218,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> b = <span class="SStr">"these are some Cyrillic characters: ӜИ"</span>
     <span class="SCmp">#assert</span> b == <span class="SStr">"these are some Cyrillic characters: ӜИ"</span>
 }</span></div>
+<h3 id="_012_string_swg_Rune_Type">Rune Type </h3>
 <p>A <span class="code-inline">rune</span> in Swag represents a Unicode code point and is stored as a 32-bit value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1216,6 +1229,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> You cannot index a string to directly retrieve a <span class="code-inline">rune</span>, except in ASCII strings. This is because Swag does not include the runtime cost of UTF-8 encoding/decoding in its string operations. However, the <span class="code-inline">Std.Core</span> module provides utilities to handle UTF-8 strings effectively. </p>
 </div>
+<h3 id="_012_string_swg_String_Indexing">String Indexing </h3>
 <p>When you index a string, you retrieve a byte rather than a <span class="code-inline">rune</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1231,6 +1245,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> c = <span class="SStr">"是X是"</span>
     <span class="SCmp">#assert</span> c[<span class="SNum">1</span>] != <span class="SStr">`X`</span> <span class="SCmt">// False because byte 1 is not the character 'X'</span>
 }</span></div>
+<h3 id="_012_string_swg_String_Concatenation">String Concatenation </h3>
 <p>You can concatenate strings and other values at compile time using the <span class="code-inline">++</span> operator. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1244,6 +1259,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> d = <span class="SStr">"there are "</span> ++ <span class="SNum">4</span> ++ <span class="SStr">" apples in "</span> ++ (<span class="SNum">2</span> * <span class="SNum">2</span>) ++ <span class="SStr">" baskets"</span>
     <span class="SItr">@assert</span>(d == <span class="SStr">"there are 4 apples in 4 baskets"</span>)
 }</span></div>
+<h3 id="_012_string_swg_Null_Strings">Null Strings </h3>
 <p>A string can be <span class="code-inline">null</span> if it has not been defined. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1254,13 +1270,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a = <span class="SKwd">null</span>
     <span class="SItr">@assert</span>(a == <span class="SKwd">null</span>)  <span class="SCmt">// 'a' is null again.</span>
 }</span></div>
-<h3 id="_012_string_swg_Character_literals">Character literals </h3>
+<h3 id="_012_string_swg_Character_Literals">Character Literals </h3>
 <p>A <i>character</i> is represented using backticks. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> char0 = <span class="SStr">`a`</span>
     <span class="SKwd">let</span> char1 = <span class="SStr">`我`</span>
 }</span></div>
+<h3 id="_012_string_swg_Default_Type_of_Character_Literals">Default Type of Character Literals </h3>
 <p>By default, a character literal is a 32-bit integer that can be assigned to any integer type or to a <span class="code-inline">rune</span>, as long as the value fits within the target type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1279,7 +1296,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">let</span> d: <span class="STpe">s64</span> = <span class="SStr">`我`</span>
     }
 }</span></div>
-<p>However, you can specify the underlying type of a character literal by using a type suffix. </p>
+<h3 id="_012_string_swg_Specifying_Character_Literal_Types">Specifying Character Literal Types </h3>
+<p>You can specify the underlying type of a character literal by using a type suffix. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a = <span class="SStr">`0`</span>'<span class="STpe">u8</span>
@@ -1302,7 +1320,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(e == <span class="SNum">52</span>)              <span class="SCmt">// ASCII value of '4' is 52.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(e) == <span class="STpe">rune</span>)
 }</span></div>
-<h3 id="_012_string_swg_Escape_sequences">Escape sequences </h3>
+<h3 id="_012_string_swg_Escape_Sequences">Escape Sequences </h3>
 <p>Strings and character literals can contain <i>escape sequences</i> to represent special characters. </p>
 <p>An escape sequence begins with a backslash <span class="code-inline">`.</code> </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1320,6 +1338,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> k = <span class="SStr">"this is ASCII code 0x60:   \`"</span>     <span class="SCmt">// backtick</span>
     <span class="SKwd">const</span> l = <span class="SStr">"this is ASCII code 0x5C:   \\"</span>     <span class="SCmt">// backslash</span>
 }</span></div>
+<h3 id="_012_string_swg_ASCII_and_Unicode_Escape_Sequences">ASCII and Unicode Escape Sequences </h3>
 <p>Escape sequences can also specify ASCII or Unicode values. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1337,7 +1356,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmp">#assert</span> e == <span class="SStr">`⽆`</span>
     }
 }</span></div>
-<h3 id="_012_string_swg_Raw_strings">Raw strings </h3>
+<h3 id="_012_string_swg_Raw_Strings">Raw Strings </h3>
 <p>A <i>raw string</i> does not process escape sequences or special characters within it. </p>
 <p>A raw string starts and ends with the <span class="code-inline">#</span> character. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1353,6 +1372,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> b = <span class="SStr">#"\hello \world"#</span>     <span class="SCmt">// As a raw string, no escaping needed</span>
     <span class="SCmp">#assert</span> a == b                  <span class="SCmt">// Both strings are identical.</span>
 }</span></div>
+<h3 id="_012_string_swg_Multiline_Raw_Strings">Multiline Raw Strings </h3>
 <p>A raw string can span multiple lines because the line feed is part of the string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1368,7 +1388,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// a</span>
     <span class="SCmt">// string</span>
 }</span></div>
-<h3 id="_012_string_swg_Multiline_strings">Multiline strings </h3>
+<h3 id="_012_string_swg_Multiline_Strings">Multiline Strings </h3>
 <p>A multiline string starts and ends with <span class="code-inline">"""</span>. Unlike raw strings, multiline strings still process escape sequences. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1396,7 +1416,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// a</span>
     <span class="SCmt">// string</span>
 }</span></div>
-<h3 id="_012_string_swg_@stringof_and_@nameof">@stringof and @nameof </h3>
+<h3 id="_012_string_swg_@stringof_and_@nameof_Intrinsics">@stringof and @nameof Intrinsics </h3>
 <p>The <span class="code-inline">@stringof</span> intrinsic returns the string representation of a constant expression at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {

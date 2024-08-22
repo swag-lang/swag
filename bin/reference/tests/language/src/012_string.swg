@@ -1,8 +1,10 @@
 /**
+# UTF-8 Encoding
 In Swag, strings are encoded in UTF-8, allowing them to support a wide range of characters from different languages and symbol sets.
 */
 
 /**
+# String Comparison
 Strings can be compared directly for equality.
 */
 #test
@@ -15,6 +17,7 @@ Strings can be compared directly for equality.
 }
 
 /**
+# Rune Type
 A `rune` in Swag represents a Unicode code point and is stored as a 32-bit value.
 */
 #test
@@ -29,6 +32,7 @@ A `rune` in Swag represents a Unicode code point and is stored as a 32-bit value
 */
 
 /**
+# String Indexing
 When you index a string, you retrieve a byte rather than a `rune`.
 */
 #test
@@ -47,6 +51,7 @@ When you index a string, you retrieve a byte rather than a `rune`.
 }
 
 /**
+# String Concatenation
 You can concatenate strings and other values at compile time using the `++` operator.
 */
 #test
@@ -63,6 +68,7 @@ You can concatenate strings and other values at compile time using the `++` oper
 }
 
 /**
+# Null Strings
 A string can be `null` if it has not been defined.
 */
 #test
@@ -76,7 +82,7 @@ A string can be `null` if it has not been defined.
 }
 
 /**
-# Character literals
+# Character Literals
 A *character* is represented using backticks.
 */
 #test
@@ -86,6 +92,7 @@ A *character* is represented using backticks.
 }
 
 /**
+# Default Type of Character Literals
 By default, a character literal is a 32-bit integer that can be assigned to any integer type or to a `rune`, as long as the value fits within the target type.
 */
 #test
@@ -107,7 +114,8 @@ By default, a character literal is a 32-bit integer that can be assigned to any 
 }
 
 /**
-However, you can specify the underlying type of a character literal by using a type suffix.
+# Specifying Character Literal Types
+You can specify the underlying type of a character literal by using a type suffix.
 */
 #test
 {
@@ -133,7 +141,7 @@ However, you can specify the underlying type of a character literal by using a t
 }
 
 /**
-# Escape sequences
+# Escape Sequences
 Strings and character literals can contain *escape sequences* to represent special characters.
 */
 
@@ -157,6 +165,7 @@ An escape sequence begins with a backslash `\`.
 }
 
 /**
+# ASCII and Unicode Escape Sequences
 Escape sequences can also specify ASCII or Unicode values.
 */
 #test
@@ -177,7 +186,7 @@ Escape sequences can also specify ASCII or Unicode values.
 }
 
 /**
-# Raw strings
+# Raw Strings
 A *raw string* does not process escape sequences or special characters within it.
 */
 
@@ -202,6 +211,7 @@ These two strings are equivalent:
 }
 
 /**
+# Multiline Raw Strings
 A raw string can span multiple lines because the line feed is part of the string.
 */
 #test
@@ -223,7 +233,7 @@ In a multi-line raw string, all leading spaces before the closing `"#` are remov
 }
 
 /**
-# Multiline strings
+# Multiline Strings
 A multiline string starts and ends with `"""`. Unlike raw strings, multiline strings still process escape sequences.
 */
 #test
@@ -257,7 +267,7 @@ In a multiline or raw string, if you end a line with `\`, the following 'end of 
 }
 
 /**
-# @stringof and @nameof
+# @stringof and @nameof Intrinsics
 The `@stringof` intrinsic returns the string representation of a constant expression at compile time.
 */
 #test
