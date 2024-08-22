@@ -16,6 +16,7 @@ struct Point3
 }
 
 /**
+# Interface Declaration
 Here we declare an interface 'IReset', with two functions `set` and `reset`.
 */
 interface IReset
@@ -28,8 +29,9 @@ interface IReset
 }
 
 /**
+# Implementing an Interface
 You can implement an interface for any given struct with `impl` and `for`.
-For example here, we implement interface `IReset` for struct `Point2`.
+For example, here we implement interface `IReset` for struct `Point2`.
 */
 
 impl IReset for Point2
@@ -41,18 +43,19 @@ impl IReset for Point2
         y = val + 1
     }
 
-    // Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.
+    // Don't forget that 'mtd' is just syntactic sugar. 'func' still works.
     func impl reset(self)
     {
         self.x, self.y = 0
     }
 
-    // Note that you can also declare 'normal' functions or methods in an 'impl block'.
+    // Note that you can also declare 'normal' functions or methods in an 'impl' block.
     mtd myOtherMethod() {}
 }
 
 /**
-And we implement interface `IReset` also for struct `Point3`.
+# Implementing the Interface for Another Struct
+Similarly, we implement the `IReset` interface for struct `Point3`.
 */
 impl IReset for Point3
 {
@@ -70,14 +73,15 @@ impl IReset for Point3
 }
 
 /**
-We can then use these interfaces on either `Vector2` or `Vector3`.
+# Using the Interface
+We can then use these interfaces on either `Point2` or `Point3`.
 */
 #test
 {
     var pt2: Point2
     var pt3: Point3
 
-    // To get the interface associated to a given struct, use the 'cast' operator.
+    // To get the interface associated with a given struct, use the 'cast' operator.
     // If the compiler does not find the corresponding implementation, it will raise an error.
     var itf = cast(IReset) pt2
     itf.set(10)
@@ -94,7 +98,8 @@ We can then use these interfaces on either `Vector2` or `Vector3`.
 }
 
 /**
-You can also access, with a normal call, all functions declared in an interface implementation block for a given struct.
+# Accessing Interface Methods Directly
+You can also access all functions declared in an interface implementation block for a given struct with a normal call.
 They are located in a dedicated scope.
 */
 #test
@@ -110,7 +115,8 @@ They are located in a dedicated scope.
 }
 
 /**
-An interface is a real type, with a size equivalent to 2 pointers. A pointer to the *object* and a pointer to the *virtual table*.
+# Interface as a Type
+An interface is a real type, with a size equivalent to 2 pointers: a pointer to the *object* and a pointer to the *virtual table*.
 */
 #test
 {
@@ -134,12 +140,13 @@ An interface is a real type, with a size equivalent to 2 pointers. A pointer to 
 }
 
 /**
-# Default implementation
-When you declare an interface, you can define a default implementation for each function. In that case, if a struct does not redefine the function, then the default implementation will be called instead.
+# Default Implementation in Interfaces
+When you declare an interface, you can define a default implementation for each function. 
+If a struct does not redefine the function, then the default implementation will be called instead.
 */
 
 /**
-Just declare a body in the interface function to have a default implementation.
+Just declare a body in the interface function to provide a default implementation.
 */
 interface ITest
 {
@@ -147,7 +154,8 @@ interface ITest
 }
 
 /**
-Here we define a specific version of 'isImplemented' for 'Point2', and no specific implementation for 'Point3'.
+# Overriding Default Implementation
+Here we define a specific version of 'isImplemented' for `Point2`, and no specific implementation for `Point3`.
 */
 impl ITest for Point2
 {
@@ -156,21 +164,23 @@ impl ITest for Point2
 
 impl ITest for Point3
 {
+    // No override, so the default implementation will be used.
 }
 
 /**
-So for 'Point3', 'isImplemented()' will return 'false' because this is the default implementation.
+# Testing Default Implementation Behavior
+For `Point3`, `isImplemented()` will return `false` because this is the default implementation.
 */
 #test
 {
     var v2: Point2
     var v3: Point3
 
-    // 'isImplemented' has been redefined, and will return 'true' for Point2
+    // 'isImplemented' has been redefined, and will return 'true' for Point2.
     let i2 = cast(ITest) v2
     @assert(i2.isImplemented())
 
-    // 'isImplemented' is not redefined, it will return false for Point3
+    // 'isImplemented' is not redefined, it will return false for Point3.
     let i3 = cast(ITest) v3
     @assert(!i3.isImplemented())
 }

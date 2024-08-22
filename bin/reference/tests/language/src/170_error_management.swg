@@ -1,15 +1,15 @@
 /**
 In a few words, a function marked with 'throw' can return an error by calling 'throw' followed by the error value. An error value is a struct. If an error has been raised, a caller can either stop its execution and return that same error with 'try', or it can 'catch' the error and deal with it with a dedicated intrinsic '@err()'.
 
-So `throw Error{}` is equivalent to a return, and every rules when leaving a function are the same (call of 'defer', variables drop and so on).
+So `throw Error{}` is equivalent to a return, and every rule when leaving a function is the same (call of 'defer', variables drop, and so on).
 
-> These are **not** exceptions ! You should consider 'throw' as a special 'return', with a specific value.
+> These are **not** exceptions! You should consider 'throw' as a special 'return', with a specific value.
 
 # throw
 A function capable of returning an error must be annotated with 'throw'. This allows the function to raise an error with the same `throw` keyword, passing an error value in the form of a struct.
 */
 
-// Defines one error.
+// Defines a custom error type by extending the default runtime base error.
 struct MyError
 {
     // The default runtime base error contains some default fields, like a 'message'
@@ -20,7 +20,7 @@ struct MyError
 Note that when a function returns because of an error, the real return value will always be equal to the **default value** depending on the type.
 */
 
-// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of its signature.
+// The function 'count()' can raise an error, so we annotate it with 'throw' at the end of its signature.
 func count(name: string)->u64 throw
 {
     if name == null
@@ -41,18 +41,18 @@ It can `catch` it, and test (or not) its value with the `@err()` intrinsic. In t
 */
 func myFunc()
 {
-    // Dismiss the eventual error with 'catch' and continue execution
+    // Dismiss the potential error with 'catch' and continue execution.
     let cpt = catch count("fileName")
 
     // We can test it with '@err()', which returns the 'throw' corresponding value as long as
-    // another error is not raised. Consider this is a good idea to test it right
+    // another error is not raised. Consider it a good idea to test it right
     // after the 'catch'.
     if @err() != null
     {
-        // '@err()' returns an 'any', so you can test the type of the error directly with its name
+        // '@err()' returns an 'any', so you can test the type of the error directly with its name.
         @assert(@err() == MyError)
 
-        // The function 'count()' should have return the default value, so 0
+        // The function 'count()' should have returned the default value, so 0.
         @assert(cpt == 0)
 
         @print("an error was raised")
@@ -83,7 +83,7 @@ Here, the caller of `myFunc1` will also have to deal with the error.
 */
 func myFunc1() throw
 {
-    // If 'count()' raises an error, 'myFunc1' will return with the same error
+    // If 'count()' raises an error, 'myFunc1' will return with the same error.
     var cpt = try count("filename")
 }
 
@@ -92,7 +92,7 @@ This is equivalent to:
 */
 func myFunc2() throw
 {
-    // If 'count()' raises an error, 'myFunc2' will return with the same error
+    // If 'count()' raises an error, 'myFunc2' will return with the same error.
     var cpt = catch count("filename")
     if @err() != null:
         throw @err()
@@ -102,22 +102,20 @@ func myFunc2() throw
 # assume
 The caller can also panic if an error is raised, with `assume`.
 
-> This can be disabled in release builds (in that case the behaviour is undefined).
-
+> This can be disabled in release builds (in that case the behavior is undefined).
 */
 func myFunc3()
 {
-    // Here the program will stop with a panic message if 'count()' throws an error
+    // Here the program will stop with a panic message if 'count()' throws an error.
     var cpt = assume count("filename")
 }
 
 /**
-> If an error is never catched, then Swag will panic at runtime, as the top level caller always have an 'assume'.
+> If an error is never caught, then Swag will panic at runtime, as the top-level caller always has an 'assume'.
 
 ## Implicit assume
-You can annotate the whole function with 'assume' (instead of 'throw'). This is equivalent of one big block around the function body.
+You can annotate the whole function with 'assume' (instead of 'throw'). This is equivalent to one big block around the function body.
 */
-
 func myFunc3A() assume
 {
     // Here the program will stop with a panic message if 'count()' throws an error, but no
@@ -135,7 +133,7 @@ You can use a block instead of one single statement (this does not create a scop
 func myFunc4() throw
 {
     // This is not really necessary, see below, but this is just to show 'try' with a block
-    // instead of one single call
+    // instead of one single call.
     try
     {
         var cpt0 = count("filename")
@@ -148,15 +146,15 @@ func myFunc4() throw
         var cpt3 = count("other filename")
     }
 
-    // Works also for 'catch' if you: not want to deal with the error message.
-    // calling '@err()' in that case is not really relevant.
+    // Works also for 'catch' if you do not want to deal with the error message.
+    // Calling '@err()' in that case is not really relevant.
     catch
     {
         var cpt4 = count("filename")
         var cpt5 = count("other filename")
     }
 
-    // Works also for 'trycatch' if you: not want to deal with the error message
+    // Works also for 'trycatch' if you do not want to deal with the error message
     // and you want to return as soon as an error is raised.
     trycatch
     {
@@ -167,7 +165,7 @@ func myFunc4() throw
 
 /**
 # Implicit try
-When a function is marked with `throw`, the `try` for a function call is implicit **if not specified**. That means that most of the time it's not necessary to specify it if you: not want to (if you: not want to be explicit about it).
+When a function is marked with `throw`, the `try` for a function call is implicit **if not specified**. That means that most of the time it's not necessary to specify it if you do not want to be explicit about it.
 */
 #test
 {
@@ -184,8 +182,8 @@ When a function is marked with `throw`, the `try` for a function call is implici
     func mySubFunc1() throw
     {
         // There's no need to add a 'try' before the call because 'mySubFunc1' is marked with 'throw'.
-        // This is less verbose when you: not want to: something special in case
-        // of errors (with 'assume', 'catch' or 'trycatch')
+        // This is less verbose when you do not want to do something special in case
+        // of errors (with 'assume', 'catch', or 'trycatch').
         mySubFunc2() // implicit
         try mySubFunc3() // explicit
     }
@@ -196,7 +194,7 @@ When a function is marked with `throw`, the `try` for a function call is implici
 
 /**
 # The error struct
-We have seen that the error value is a struct. This means that you can add some specific error parameters, like the line and column numbers in the case of a syntax error for example.
+We have seen that the error value is a struct. This means that you can add some specific error parameters, like the line and column numbers in the case of a syntax error, for example.
 */
 
 struct SyntaxError
@@ -206,8 +204,7 @@ struct SyntaxError
 }
 
 /**
-But be aware that a reference to an external value (like a 'string', an 'any' etc.) must remain valid all the time. The runtime will drop complexe types when needed, so you could store complex things in the heap, or in a dedicated allocator in the current context.
-
+But be aware that a reference to an external value (like a 'string', an 'any', etc.) must remain valid all the time. The runtime will drop complex types when needed, so you should store complex things in the heap or in a dedicated allocator in the current context.
 */
 
 /**
@@ -218,7 +215,7 @@ But `defer` can have a specific mode (`err` or `noerr`) to control if it should 
 
 | `defer(err)`   | will be called for each 'throw', so only when an error is raised
 | `defer(noerr)` | will be called only when the function returns in a normal way
-| `defer`       | will always be called whatever the reason is (normal way or error)
+| `defer`        | will always be called whatever the reason is (normal way or error)
 */
 var g_Defer = 0
 
@@ -229,9 +226,9 @@ func raiseError() throw
 
 func testDefer(err: bool) throw
 {
-    defer(err) g_Defer += 1 // This will be called in case an error is raised, before exiting
-    defer(noerr) g_Defer += 2 // This will only be called in case an error is not raised
-    defer g_Defer += 3 // This will be called in both cases
+    defer(err) g_Defer += 1 // This will be called in case an error is raised, before exiting.
+    defer(noerr) g_Defer += 2 // This will only be called in case an error is not raised.
+    defer g_Defer += 3 // This will be called in both cases.
     if err:
         raiseError()
 }
@@ -240,9 +237,9 @@ func testDefer(err: bool) throw
 {
     g_Defer = 0
     catch testDefer(true)
-    @assert(g_Defer == 4) // Will call only defer(err) and the normal defer
+    @assert(g_Defer == 4) // Will call only defer(err) and the normal defer.
 
     g_Defer = 0
     catch testDefer(false)
-    @assert(g_Defer == 5) // Will call only defer(noerr) and the normal defer
+    @assert(g_Defer == 5) // Will call only defer(noerr) and the normal defer.
 }

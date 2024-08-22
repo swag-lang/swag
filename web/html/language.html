@@ -136,6 +136,7 @@
 <li><a href="#_010_000_fundamentals_swg__010_006_operators_swg">Operators</a></li>
 <li><a href="#_010_000_fundamentals_swg__010_007_cast_swg">Cast</a></li>
 <li><a href="#_010_000_fundamentals_swg__010_008_alias_swg">Alias</a></li>
+<li><a href="#_010_000_fundamentals_swg__010_009_namespace_swg">Namespace</a></li>
 </ul>
 <li><a href="#_020_000_data_structures_swg">Data structures</a></li>
 <ul>
@@ -170,9 +171,8 @@
 <li><a href="#_060_000_structs_swg__060_007_visit_swg">Visit</a></li>
 <li><a href="#_060_000_structs_swg__060_008_offset_swg">Offset</a></li>
 <li><a href="#_060_000_structs_swg__060_009_packing_swg">Packing</a></li>
+<li><a href="#_060_000_structs_swg__060_010_interface_swg">Interface</a></li>
 </ul>
-<li><a href="#_075_interface_swg">Interface</a></li>
-<li><a href="#_076_namespace_swg">Namespace</a></li>
 <li><a href="#_100_000_functions_swg">Functions</a></li>
 <ul>
 <li><a href="#_100_000_functions_swg__100_001_declaration_swg">Declaration</a></li>
@@ -217,7 +217,7 @@
 <li><a href="#_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_001_constexpr_swg">Constexpr</a></li>
 <li><a href="#_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_002_run_swg">Run</a></li>
 <li><a href="#_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_003_special_functions_swg">Special functions</a></li>
-<li><a href="#_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg"> compiler instructions</a></li>
+<li><a href="#_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">Compiler instructions</a></li>
 </ul>
 <li><a href="#_180_000_advanced_swg__200_001_code_inspection_swg">Code inspection</a></li>
 <li><a href="#_180_000_advanced_swg__210_001_type_reflection_swg">Type reflection</a></li>
@@ -1703,6 +1703,49 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     short += <span class="SNum">2</span>  <span class="SCmt">// 'short' is an alias for 'myLongVariableName'.</span>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>) <span class="SCmt">// The original variable reflects the changes made through the alias.</span>
 }</span></div>
+
+<h3 id="_010_000_fundamentals_swg__010_009_namespace_swg">Namespace</h3><h4 id="_010_000_fundamentals_swg__010_009_namespace_swg">Namespaces in Swag </h4>
+<p>Namespaces in Swag allow you to create a global scope for symbols, helping organize your code and avoid naming conflicts. A namespace groups functions, variables, and other declarations under a specific name, making them accessible only through that name unless otherwise specified. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Define a simple namespace 'A'</span>
+<span class="SKwd">namespace</span> <span class="SCst">A</span>
+{
+    <span class="SCmt">// This function is inside the namespace 'A'.</span>
+    <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">1</span>
+}</span></div>
+<h4 id="_010_000_fundamentals_swg__010_009_namespace_swg">Nested Namespaces </h4>
+<p>You can nest namespaces to create hierarchical structures. In this example, <span class="code-inline">C</span> is a namespace inside <span class="code-inline">B</span>, which is itself inside <span class="code-inline">A</span>. This allows for even more granular organization of symbols. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Define a nested namespace 'A.B.C'</span>
+<span class="SKwd">namespace</span> <span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>
+{
+    <span class="SCmt">// This function is inside the nested namespace 'A.B.C'.</span>
+    <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">2</span>
+}
+
+<span class="SFct">#test</span>
+{
+    <span class="SCmt">// Accessing functions using their full namespace paths.</span>
+    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SFct">a</span>() == <span class="SNum">1</span>)          <span class="SCmt">// Calls 'a' from namespace 'A'</span>
+    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>.<span class="SFct">a</span>() == <span class="SNum">2</span>)      <span class="SCmt">// Calls 'a' from nested namespace 'A.B.C'</span>
+}</span></div>
+<h4 id="_010_000_fundamentals_swg__010_009_namespace_swg">Using <span class="code-inline">using</span> with Namespaces </h4>
+<p>The <span class="code-inline">using</span> keyword can be applied to namespaces, allowing you to access symbols without needing to fully qualify them in the current file. This can make code more concise and easier to read by removing the need for repeated namespace references. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SKwd">namespace</span> <span class="SCst">Private</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">FileSymbol</span> = <span class="SNum">0</span>         <span class="SCmt">// A constant defined inside the 'Private' namespace</span>
+}
+
+<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">Private</span>.<span class="SCst">FileSymbol</span>     <span class="SCmt">// Accessing 'FileSymbol' using the full namespace</span>
+<span class="SKwd">const</span> <span class="SCst">C</span> = <span class="SCst">FileSymbol</span>             <span class="SCmt">// Direct access to 'FileSymbol' thanks to 'using'</span></span></div>
+<h4 id="_010_000_fundamentals_swg__010_009_namespace_swg">Private Scopes with <span class="code-inline">private</span> </h4>
+<p>You can also create a private scope using <span class="code-inline">private</span> instead of a named namespace. In this case, the compiler generates a unique name for the scope, effectively making all enclosed symbols private to the file. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">private</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">OtherSymbol</span> = <span class="SNum">0</span>        <span class="SCmt">// A constant defined in an unnamed private scope</span>
+}
+
+<span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span>            <span class="SCmt">// Direct access to 'OtherSymbol' since it is private to the file</span></span></div>
+<h4 id="_010_000_fundamentals_swg__010_009_namespace_swg">Exporting Symbols </h4>
+<p>By default, all symbols from a Swag source file are exported to other files within the same module. However, using <span class="code-inline">private</span> or namespaces helps protect against name conflicts, especially in larger projects where multiple files may define similar or identical symbols. </p>
 
 <h2 id="_020_000_data_structures_swg">Data structures</h2>
 <h3 id="_020_000_data_structures_swg__020_001_array_swg">Array</h3><h4 id="_020_000_data_structures_swg__020_001_array_swg">Static Arrays in Swag </h4>
@@ -4813,7 +4856,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
 
-<h2 id="_075_interface_swg">Interface</h2><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
+<h3 id="_060_000_structs_swg__060_010_interface_swg">Interface</h3><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
 <p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. You can then <i>implement</i> an interface for a given struct without changing the struct definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
@@ -4824,6 +4867,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     x, y, z: <span class="STpe">f32</span>
 }</span></div>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Interface Declaration </h4>
 <p>Here we declare an interface <span class="code-inline">IReset</span>, with two functions <span class="code-inline">set</span> and <span class="code-inline">reset</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">IReset</span>
 {
@@ -4833,7 +4877,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span>
     <span class="SKwd">mtd</span> <span class="SFct">reset</span>();
 }</span></div>
-<p>You can implement an interface for any given struct with <span class="code-inline">impl</span> and <span class="code-inline">for</span>. For example here, we implement interface <span class="code-inline">IReset</span> for struct <span class="code-inline">Point2</span>. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Implementing an Interface </h4>
+<p>You can implement an interface for any given struct with <span class="code-inline">impl</span> and <span class="code-inline">for</span>. For example, here we implement interface <span class="code-inline">IReset</span> for struct <span class="code-inline">Point2</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">IReset</span> <span class="SLgc">for</span> <span class="SCst">Point2</span>
 {
     <span class="SCmt">// You must add 'impl' to indicate that you want to implement a function of the interface.</span>
@@ -4843,16 +4888,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         y = val + <span class="SNum">1</span>
     }
 
-    <span class="SCmt">// Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.</span>
+    <span class="SCmt">// Don't forget that 'mtd' is just syntactic sugar. 'func' still works.</span>
     <span class="SKwd">func</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>(<span class="STpe">self</span>)
     {
         <span class="STpe">self</span>.x, <span class="STpe">self</span>.y = <span class="SNum">0</span>
     }
 
-    <span class="SCmt">// Note that you can also declare 'normal' functions or methods in an 'impl block'.</span>
+    <span class="SCmt">// Note that you can also declare 'normal' functions or methods in an 'impl' block.</span>
     <span class="SKwd">mtd</span> <span class="SFct">myOtherMethod</span>() {}
 }</span></div>
-<p>And we implement interface <span class="code-inline">IReset</span> also for struct <span class="code-inline">Point3</span>. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Implementing the Interface for Another Struct </h4>
+<p>Similarly, we implement the <span class="code-inline">IReset</span> interface for struct <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">IReset</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
 {
     <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">set</span>(val: <span class="STpe">f32</span>)
@@ -4867,13 +4913,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x, y, z = <span class="SNum">0</span>
     }
 }</span></div>
-<p>We can then use these interfaces on either <span class="code-inline">Vector2</span> or <span class="code-inline">Vector3</span>. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Using the Interface </h4>
+<p>We can then use these interfaces on either <span class="code-inline">Point2</span> or <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>
     <span class="SKwd">var</span> pt3: <span class="SCst">Point3</span>
 
-    <span class="SCmt">// To get the interface associated to a given struct, use the 'cast' operator.</span>
+    <span class="SCmt">// To get the interface associated with a given struct, use the 'cast' operator.</span>
     <span class="SCmt">// If the compiler does not find the corresponding implementation, it will raise an error.</span>
     <span class="SKwd">var</span> itf = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt2
     itf.<span class="SFct">set</span>(<span class="SNum">10</span>)
@@ -4888,7 +4935,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     itf.<span class="SFct">reset</span>()
     <span class="SItr">@assert</span>(pt3.x == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.y == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.z == <span class="SNum">0</span>)
 }</span></div>
-<p>You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. They are located in a dedicated scope. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Accessing Interface Methods Directly </h4>
+<p>You can also access all functions declared in an interface implementation block for a given struct with a normal call. They are located in a dedicated scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>
@@ -4900,7 +4948,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     pt3.<span class="SCst">IReset</span>.<span class="SFct">set</span>(<span class="SNum">10</span>)
     pt3.<span class="SCst">IReset</span>.<span class="SFct">reset</span>()
 }</span></div>
-<p>An interface is a real type, with a size equivalent to 2 pointers. A pointer to the <i>object</i> and a pointer to the <i>virtual table</i>. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Interface as a Type </h4>
+<p>An interface is a real type, with a size equivalent to 2 pointers: a pointer to the <i>object</i> and a pointer to the <i>virtual table</i>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>
@@ -4921,13 +4970,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     itf = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt3
     <span class="SItr">@assert</span>(<span class="SItr">@dataof</span>(itf) == &pt3)
 }</span></div>
-<h3 id="_075_interface_swg">Default implementation </h3>
-<p>When you declare an interface, you can define a default implementation for each function. In that case, if a struct does not redefine the function, then the default implementation will be called instead. </p>
-<p>Just declare a body in the interface function to have a default implementation. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Default Implementation in Interfaces </h4>
+<p>When you declare an interface, you can define a default implementation for each function.  If a struct does not redefine the function, then the default implementation will be called instead. </p>
+<p>Just declare a body in the interface function to provide a default implementation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">ITest</span>
 {
     <span class="SKwd">mtd</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
 }</span></div>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Overriding Default Implementation </h4>
 <p>Here we define a specific version of <span class="code-inline">isImplemented</span> for <span class="code-inline">Point2</span>, and no specific implementation for <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point2</span>
 {
@@ -4936,64 +4986,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
 {
+    <span class="SCmt">// No override, so the default implementation will be used.</span>
 }</span></div>
-<p>So for <span class="code-inline">Point3</span>, <span class="code-inline">isImplemented()</span> will return <span class="code-inline">false</span> because this is the default implementation. </p>
+<h4 id="_060_000_structs_swg__060_010_interface_swg">Testing Default Implementation Behavior </h4>
+<p>For <span class="code-inline">Point3</span>, <span class="code-inline">isImplemented()</span> will return <span class="code-inline">false</span> because this is the default implementation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> v2: <span class="SCst">Point2</span>
     <span class="SKwd">var</span> v3: <span class="SCst">Point3</span>
 
-    <span class="SCmt">// 'isImplemented' has been redefined, and will return 'true' for Point2</span>
+    <span class="SCmt">// 'isImplemented' has been redefined, and will return 'true' for Point2.</span>
     <span class="SKwd">let</span> i2 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v2
     <span class="SItr">@assert</span>(i2.<span class="SFct">isImplemented</span>())
 
-    <span class="SCmt">// 'isImplemented' is not redefined, it will return false for Point3</span>
+    <span class="SCmt">// 'isImplemented' is not redefined, it will return false for Point3.</span>
     <span class="SKwd">let</span> i3 = <span class="SKwd">cast</span>(<span class="SCst">ITest</span>) v3
     <span class="SItr">@assert</span>(!i3.<span class="SFct">isImplemented</span>())
 }</span></div>
-
-<h2 id="_076_namespace_swg">Namespace</h2><h3 id="_076_namespace_swg">Namespaces in Swag </h3>
-<p>Namespaces in Swag allow you to create a global scope for symbols, helping organize your code and avoid naming conflicts. A namespace groups functions, variables, and other declarations under a specific name, making them accessible only through that name unless otherwise specified. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Define a simple namespace 'A'</span>
-<span class="SKwd">namespace</span> <span class="SCst">A</span>
-{
-    <span class="SCmt">// This function is inside the namespace 'A'.</span>
-    <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">1</span>
-}</span></div>
-<h3 id="_076_namespace_swg">Nested Namespaces </h3>
-<p>You can nest namespaces to create hierarchical structures. In this example, <span class="code-inline">C</span> is a namespace inside <span class="code-inline">B</span>, which is itself inside <span class="code-inline">A</span>. This allows for even more granular organization of symbols. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Define a nested namespace 'A.B.C'</span>
-<span class="SKwd">namespace</span> <span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>
-{
-    <span class="SCmt">// This function is inside the nested namespace 'A.B.C'.</span>
-    <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">2</span>
-}
-
-<span class="SFct">#test</span>
-{
-    <span class="SCmt">// Accessing functions using their full namespace paths.</span>
-    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SFct">a</span>() == <span class="SNum">1</span>)          <span class="SCmt">// Calls 'a' from namespace 'A'</span>
-    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>.<span class="SFct">a</span>() == <span class="SNum">2</span>)      <span class="SCmt">// Calls 'a' from nested namespace 'A.B.C'</span>
-}</span></div>
-<h3 id="_076_namespace_swg">Using <span class="code-inline">using</span> with Namespaces </h3>
-<p>The <span class="code-inline">using</span> keyword can be applied to namespaces, allowing you to access symbols without needing to fully qualify them in the current file. This can make code more concise and easier to read by removing the need for repeated namespace references. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SKwd">namespace</span> <span class="SCst">Private</span>
-{
-    <span class="SKwd">const</span> <span class="SCst">FileSymbol</span> = <span class="SNum">0</span>         <span class="SCmt">// A constant defined inside the 'Private' namespace</span>
-}
-
-<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">Private</span>.<span class="SCst">FileSymbol</span>     <span class="SCmt">// Accessing 'FileSymbol' using the full namespace</span>
-<span class="SKwd">const</span> <span class="SCst">C</span> = <span class="SCst">FileSymbol</span>             <span class="SCmt">// Direct access to 'FileSymbol' thanks to 'using'</span></span></div>
-<h3 id="_076_namespace_swg">Private Scopes with <span class="code-inline">private</span> </h3>
-<p>You can also create a private scope using <span class="code-inline">private</span> instead of a named namespace. In this case, the compiler generates a unique name for the scope, effectively making all enclosed symbols private to the file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">private</span>
-{
-    <span class="SKwd">const</span> <span class="SCst">OtherSymbol</span> = <span class="SNum">0</span>        <span class="SCmt">// A constant defined in an unnamed private scope</span>
-}
-
-<span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span>            <span class="SCmt">// Direct access to 'OtherSymbol' since it is private to the file</span></span></div>
-<h3 id="_076_namespace_swg">Exporting Symbols </h3>
-<p>By default, all symbols from a Swag source file are exported to other files within the same module. However, using <span class="code-inline">private</span> or namespaces helps protect against name conflicts, especially in larger projects where multiple files may define similar or identical symbols. </p>
 
 <h2 id="_100_000_functions_swg">Functions</h2>
 <h3 id="_100_000_functions_swg__100_001_declaration_swg">Declaration</h3><h4 id="_100_000_functions_swg__100_001_declaration_swg">Introduction to Function Declarations </h4>
@@ -7118,20 +7127,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="_170_error_management_swg">Error management</h2><p>In a few words, a function marked with <span class="code-inline">throw</span> can return an error by calling <span class="code-inline">throw</span> followed by the error value. An error value is a struct. If an error has been raised, a caller can either stop its execution and return that same error with <span class="code-inline">try</span>, or it can <span class="code-inline">catch</span> the error and deal with it with a dedicated intrinsic <span class="code-inline">@err()</span>. </p>
-<p>So <span class="code-inline">throw Error{}</span> is equivalent to a return, and every rules when leaving a function are the same (call of <span class="code-inline">defer</span>, variables drop and so on). </p>
+<p>So <span class="code-inline">throw Error{}</span> is equivalent to a return, and every rule when leaving a function is the same (call of <span class="code-inline">defer</span>, variables drop, and so on). </p>
 <div class="blockquote blockquote-default">
-<p> These are <b>not</b> exceptions ! You should consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
+<p> These are <b>not</b> exceptions! You should consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
 </div>
 <h3 id="_170_error_management_swg">throw </h3>
 <p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This allows the function to raise an error with the same <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Defines one error.</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Defines a custom error type by extending the default runtime base error.</span>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
     <span class="SCmt">// The default runtime base error contains some default fields, like a 'message'</span>
     <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
 }</span></div>
 <p>Note that when a function returns because of an error, the real return value will always be equal to the <b>default value</b> depending on the type. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of its signature.</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw' at the end of its signature.</span>
 <span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
@@ -7148,18 +7157,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. In that case, the error is dismissed, and the execution will continue at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
-    <span class="SCmt">// Dismiss the eventual error with 'catch' and continue execution</span>
+    <span class="SCmt">// Dismiss the potential error with 'catch' and continue execution.</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
     <span class="SCmt">// We can test it with '@err()', which returns the 'throw' corresponding value as long as</span>
-    <span class="SCmt">// another error is not raised. Consider this is a good idea to test it right</span>
+    <span class="SCmt">// another error is not raised. Consider it a good idea to test it right</span>
     <span class="SCmt">// after the 'catch'.</span>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
-        <span class="SCmt">// '@err()' returns an 'any', so you can test the type of the error directly with its name</span>
+        <span class="SCmt">// '@err()' returns an 'any', so you can test the type of the error directly with its name.</span>
         <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
 
-        <span class="SCmt">// The function 'count()' should have return the default value, so 0</span>
+        <span class="SCmt">// The function 'count()' should have returned the default value, so 0.</span>
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
 
         <span class="SItr">@print</span>(<span class="SStr">"an error was raised"</span>)
@@ -7183,13 +7192,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Here, the caller of <span class="code-inline">myFunc1</span> will also have to deal with the error. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc1</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// If 'count()' raises an error, 'myFunc1' will return with the same error</span>
+    <span class="SCmt">// If 'count()' raises an error, 'myFunc1' will return with the same error.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">try</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
 }</span></div>
 <p>This is equivalent to: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// If 'count()' raises an error, 'myFunc2' will return with the same error</span>
+    <span class="SCmt">// If 'count()' raises an error, 'myFunc2' will return with the same error.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>:
         <span class="SKwd">throw</span> <span class="SItr">@err</span>()
@@ -7197,18 +7206,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h3 id="_170_error_management_swg">assume </h3>
 <p>The caller can also panic if an error is raised, with <span class="code-inline">assume</span>. </p>
 <div class="blockquote blockquote-default">
-<p> This can be disabled in release builds (in that case the behaviour is undefined). </p>
+<p> This can be disabled in release builds (in that case the behavior is undefined). </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>()
 {
-    <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error</span>
+    <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
 }</span></div>
 <div class="blockquote blockquote-default">
-<p> If an error is never catched, then Swag will panic at runtime, as the top level caller always have an <span class="code-inline">assume</span>. </p>
+<p> If an error is never caught, then Swag will panic at runtime, as the top-level caller always has an <span class="code-inline">assume</span>. </p>
 </div>
 <h4 id="_170_error_management_swg">Implicit assume </h4>
-<p>You can annotate the whole function with <span class="code-inline">assume</span> (instead of <span class="code-inline">throw</span>). This is equivalent of one big block around the function body. </p>
+<p>You can annotate the whole function with <span class="code-inline">assume</span> (instead of <span class="code-inline">throw</span>). This is equivalent to one big block around the function body. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3A</span>() <span class="SKwd">assume</span>
 {
     <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error, but no</span>
@@ -7223,7 +7232,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>
 {
     <span class="SCmt">// This is not really necessary, see below, but this is just to show 'try' with a block</span>
-    <span class="SCmt">// instead of one single call</span>
+    <span class="SCmt">// instead of one single call.</span>
     <span class="SKwd">try</span>
     {
         <span class="SKwd">var</span> cpt0 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
@@ -7236,15 +7245,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">var</span> cpt3 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Works also for 'catch' if you: not want to deal with the error message.</span>
-    <span class="SCmt">// calling '@err()' in that case is not really relevant.</span>
+    <span class="SCmt">// Works also for 'catch' if you do not want to deal with the error message.</span>
+    <span class="SCmt">// Calling '@err()' in that case is not really relevant.</span>
     <span class="SKwd">catch</span>
     {
         <span class="SKwd">var</span> cpt4 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt5 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Works also for 'trycatch' if you: not want to deal with the error message</span>
+    <span class="SCmt">// Works also for 'trycatch' if you do not want to deal with the error message</span>
     <span class="SCmt">// and you want to return as soon as an error is raised.</span>
     <span class="SKwd">trycatch</span>
     {
@@ -7253,7 +7262,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h3 id="_170_error_management_swg">Implicit try </h3>
-<p>When a function is marked with <span class="code-inline">throw</span>, the <span class="code-inline">try</span> for a function call is implicit <b>if not specified</b>. That means that most of the time it's not necessary to specify it if you: not want to (if you: not want to be explicit about it). </p>
+<p>When a function is marked with <span class="code-inline">throw</span>, the <span class="code-inline">try</span> for a function call is implicit <b>if not specified</b>. That means that most of the time it's not necessary to specify it if you do not want to be explicit about it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">mySubFunc2</span>() <span class="SKwd">throw</span>
@@ -7269,8 +7278,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">mySubFunc1</span>() <span class="SKwd">throw</span>
     {
         <span class="SCmt">// There's no need to add a 'try' before the call because 'mySubFunc1' is marked with 'throw'.</span>
-        <span class="SCmt">// This is less verbose when you: not want to: something special in case</span>
-        <span class="SCmt">// of errors (with 'assume', 'catch' or 'trycatch')</span>
+        <span class="SCmt">// This is less verbose when you do not want to do something special in case</span>
+        <span class="SCmt">// of errors (with 'assume', 'catch', or 'trycatch').</span>
         <span class="SFct">mySubFunc2</span>() <span class="SCmt">// implicit</span>
         <span class="SKwd">try</span> <span class="SFct">mySubFunc3</span>() <span class="SCmt">// explicit</span>
     }
@@ -7279,20 +7288,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
 }</span></div>
 <h3 id="_170_error_management_swg">The error struct </h3>
-<p>We have seen that the error value is a struct. This means that you can add some specific error parameters, like the line and column numbers in the case of a syntax error for example. </p>
+<p>We have seen that the error value is a struct. This means that you can add some specific error parameters, like the line and column numbers in the case of a syntax error, for example. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SyntaxError</span>
 {
     <span class="SKwd">using</span> base:     <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
     line, col:      <span class="STpe">u32</span>
 }</span></div>
-<p>But be aware that a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span> etc.) must remain valid all the time. The runtime will drop complexe types when needed, so you could store complex things in the heap, or in a dedicated allocator in the current context. </p>
+<p>But be aware that a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span>, etc.) must remain valid all the time. The runtime will drop complex types when needed, so you should store complex things in the heap or in a dedicated allocator in the current context. </p>
 <h3 id="_170_error_management_swg">defer </h3>
 <p>Throwing an error is equivalent to returning from the function. So a <span class="code-inline">defer</span> expression works also in that case. </p>
 <p>But <span class="code-inline">defer</span> can have a specific mode (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to control if it should be executed depending on the error status. </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">defer(err)</span>   </td><td> will be called for each <span class="code-inline">throw</span>, so only when an error is raised</td></tr>
 <tr><td> <span class="code-inline">defer(noerr)</span> </td><td> will be called only when the function returns in a normal way</td></tr>
-<tr><td> <span class="code-inline">defer</span>       </td><td> will always be called whatever the reason is (normal way or error)</td></tr>
+<tr><td> <span class="code-inline">defer</span>        </td><td> will always be called whatever the reason is (normal way or error)</td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>
 
@@ -7303,9 +7312,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
-    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span> <span class="SCmt">// This will be called in case an error is raised, before exiting</span>
-    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span> <span class="SCmt">// This will only be called in case an error is not raised</span>
-    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span> <span class="SCmt">// This will be called in both cases</span>
+    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span> <span class="SCmt">// This will be called in case an error is raised, before exiting.</span>
+    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span> <span class="SCmt">// This will only be called in case an error is not raised.</span>
+    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span> <span class="SCmt">// This will be called in both cases.</span>
     <span class="SLgc">if</span> err:
         <span class="SFct">raiseError</span>()
 }
@@ -7314,11 +7323,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>) <span class="SCmt">// Will call only defer(err) and the normal defer</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>) <span class="SCmt">// Will call only defer(err) and the normal defer.</span>
 
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer(noerr) and the normal defer</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer(noerr) and the normal defer.</span>
 }</span></div>
 
 <h2 id="_175_safety_swg">Safety</h2><h3 id="_175_safety_swg">Safety Checks in Swag </h3>
@@ -7491,8 +7500,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
 <p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation. </p>
 
-<h2 id="_180_000_advanced_swg">Advanced</h2><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
-
+<h2 id="_180_000_advanced_swg">Advanced</h2>
 <h3 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg">Compile-time evaluation</h3><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
 
 <h4 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_001_constexpr_swg">Constexpr</h4><h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_001_constexpr_swg">Compile-Time Function Evaluation with <span class="code-inline">#[Swag.ConstExpr]</span> </h5>
@@ -7751,14 +7759,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
 }</span></div>
 
-<h4 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg"> compiler instructions</h4><h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg">#assert </h5>
+<h4 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">Compiler instructions</h4><h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">#assert </h5>
 <p><span class="code-inline">#assert</span> is a static assert (at compile time). </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span></span></div>
 <p><span class="code-inline">@defined(SYMBOL)</span> returns true, at compile time, if the given symbol exists in the current context. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>)
 <span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)
 <span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span></span></div>
-<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg">#if/#else </h5>
+<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">#if/#else </h5>
 <p>A static <span class="code-inline">#if/#elif/#else</span>, with an expression that can be evaluated at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">DEBUG</span>   = <span class="SNum">1</span>
 <span class="SKwd">const</span> <span class="SCst">RELEASE</span> = <span class="SNum">0</span>
@@ -7771,14 +7779,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#else</span>
 {
 }</span></div>
-<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg">#error/#warning </h5>
+<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">#error/#warning </h5>
 <p><span class="code-inline">#error</span> to raise a compile-time error, and <span class="code-inline">#warning</span> to raise a compile-time warning. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#if</span> <span class="SKwd">false</span>
 {
     <span class="SCmp">#error</span> <span class="SStr">"this is an error"</span>
     <span class="SCmp">#warning</span> <span class="SStr">"this is a warning"</span>
 }</span></div>
-<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg">#global </h5>
+<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">#global </h5>
 <p>A bunch of <span class="code-inline">#global</span> can be put <b>at the top</b> of a source file. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Skip the content of the file (but must be a valid swag file)</span>
 <span class="SCmp">#global</span> skip
@@ -7800,7 +7808,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmt">// It's like putting everything in public, except that the file will</span>
 <span class="SCmt">// be copied in its totality in the public folder</span>
 <span class="SCmp">#global</span> export</span></div>
-<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004__compiler_instructions_swg">#foreignlib </h5>
+<h5 id="_180_000_advanced_swg__190_001_000_compile-time_evaluation_swg__190_001_004_compiler_instructions_swg">#foreignlib </h5>
 <p>Link with a given external library. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></div>
 
