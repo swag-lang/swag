@@ -1,20 +1,23 @@
 /**
-By default, you must always use the returned value of a function, otherwise the compiler will generate an error.
+# Return Value Usage
+In Swag, you must always use the returned value of a function by default. If you call a function and do not use its return value, the compiler will generate an error. This strict enforcement helps catch potential bugs where a return value is unintentionally ignored.
 */
 
 #test
 {
     func sum(x, y: s32) => x + y
 
-    // This would generated an error, because the return value of 'sum' is not used
+    // Uncommenting the following line would generate a compiler error,
+    // because the return value of 'sum' is not used.
     // sum(2, 3)
 
-    // To force the return value to be ignored, you can use 'discard' at the call site
-    discard sum(2, 3)
+    // To explicitly discard the return value when you don't need it, use 'discard' at the call site.
+    discard sum(2, 3) // The return value of 'sum' is intentionally ignored here.
 }
 
 /**
-If a function authorizes the caller to not use its return value, because it's not that important, it can be marked with `Swag.Discardable`.
+# `Swag.Discardable` Attribute
+If the function authorizes the caller to ignore its return value, the function can be marked with `Swag.Discardable`. This is useful for functions where the return value is optional and not critical to the operation.
 */
 
 #test
@@ -22,6 +25,6 @@ If a function authorizes the caller to not use its return value, because it's no
     #[Swag.Discardable]
     func mul(x, y: s32)->s32 => x * y
 
-    // This is fine to ignore the return value of 'mul' (even if strange)
-    mul(2, 4)
+    // It's allowed to ignore the return value of 'mul' without using 'discard'.
+    mul(2, 4) // No error, even though the return value is not used.
 }

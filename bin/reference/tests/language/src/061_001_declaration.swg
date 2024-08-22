@@ -1,6 +1,7 @@
 /**
-This is a basic 'struct' declaration.
-Note that 'var' is not required for declaring fields within the struct.
+# Basic Struct Declaration
+
+This is a basic `struct` declaration in Swag. Note that `var` is not required for declaring fields within the struct.
 */
 #test
 {
@@ -19,8 +20,9 @@ Note that 'var' is not required for declaring fields within the struct.
 }
 
 /**
-Fields within a struct can be separated by either ';' or ','.
-The trailing separator is optional.
+# Field Separators
+
+Fields within a struct can be separated by either `;` or `,`. The trailing separator is optional.
 */
 #test
 {
@@ -29,6 +31,8 @@ The trailing separator is optional.
 }
 
 /**
+# Anonymous Structs
+
 A struct can be anonymous when declared as a variable type.
 */
 #test
@@ -57,6 +61,8 @@ A struct can be anonymous when declared as a variable type.
 }
 
 /**
+# Default Field Values
+
 Struct fields can be initialized with default values.
 */
 #test
@@ -73,6 +79,8 @@ Struct fields can be initialized with default values.
 }
 
 /**
+# Struct Initialization
+
 Struct variables can be initialized in different ways.
 */
 #test
@@ -105,6 +113,8 @@ Struct variables can be initialized in different ways.
 }
 
 /**
+# Const Structs
+
 A struct can be assigned to a constant, as long as it can be evaluated at compile-time.
 */
 #test
@@ -121,8 +131,9 @@ A struct can be assigned to a constant, as long as it can be evaluated at compil
 }
 
 /**
-A function can take a struct as an argument.
-No copy is made; this is equivalent to a const reference in C++.
+# Structs as Function Arguments
+
+A function can take a struct as an argument. No copy is made; this is equivalent to a const reference in C++.
 */
 
 struct Struct3

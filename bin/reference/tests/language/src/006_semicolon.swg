@@ -1,6 +1,6 @@
-#global skipfmt
-
 /**
+# Statement Termination in Swag
+
 In Swag, unlike in C/C++, there's no requirement to end statements with a semicolon (`;`). Typically, the end of a line (`end of line`) is sufficient to terminate a statement, resulting in cleaner and more concise syntax.
 */
 
@@ -19,8 +19,11 @@ In Swag, unlike in C/C++, there's no requirement to end statements with a semico
 }
 
 /**
+# Optional Semicolons
+
 Although semicolons are optional, you can still use them when preferred or when they enhance readability in certain situations.
 */
+
 #test
 {
     // Note that type inference is used here, so the types of x and y are not explicitly specified.
@@ -31,8 +34,11 @@ Although semicolons are optional, you can still use them when preferred or when 
 }
 
 /**
+# Multiple Statements on a Single Line
+
 Semicolons can be particularly useful when writing multiple statements on the same line. This can make the code more compact, though it should be used sparingly to maintain readability.
 */
+
 #test
 {
     // Two statements on the same line, separated by a semicolon.

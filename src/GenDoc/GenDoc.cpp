@@ -1087,8 +1087,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             // Update toc
             if (docKind == BuildCfgDocKind::Examples)
             {
-                uint32_t myTitleLevel = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
-                addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
+                //uint32_t myTitleLevel = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
+                //addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
             }
 
             uint32_t level = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);

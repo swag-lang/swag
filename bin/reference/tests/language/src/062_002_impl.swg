@@ -1,5 +1,7 @@
 /**
-Like for an enum, `impl` is used to declare functions and constants within the scope of a struct.
+# Struct Methods and Constants
+
+Like enums, structs in Swag can have methods and constants defined within them using the `impl` block. This allows you to encapsulate functionality related to the struct within the struct itself.
 */
 
 #[Swag.ExportType("methods")] // This attribute exports the methods for type reflection
@@ -29,6 +31,8 @@ To access the constant and the function, use the `MyStruct` namespace.
 }
 
 /**
+# Multiple `impl` Blocks
+
 You can have multiple `impl` blocks for a struct. The difference between an `impl` block and a namespace is that `self` and `Self` are defined within an `impl` block. They refer to the corresponding type.
 */
 
@@ -43,6 +47,8 @@ impl MyStruct
 }
 
 /**
+# Method Syntax Sugar
+
 If you declare your function with `mtd` (method) instead of `func`, the first parameter is implicitly `using self`.
 If you declare your function with `mtd const` (method const) instead of `func`, the first parameter is implicitly `const using self`.
 This is **syntactic sugar** to avoid explicitly writing `using self`.
@@ -65,6 +71,8 @@ impl MyStruct
 }
 
 /**
+# Method Reflection
+
 All functions in an `impl` block can be accessed via reflection, provided the struct is declared with `#[Swag.ExportType("methods")]` (by default, methods are not exported).
 */
 #test

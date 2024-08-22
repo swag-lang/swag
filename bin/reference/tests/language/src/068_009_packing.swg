@@ -1,9 +1,7 @@
 /**
-You can control the layout of struct fields with the attributes `#[Swag.Pack]` and `#[Swag.Align]`. These attributes allow you to specify how tightly packed or aligned your data should be in memory.
-*/
+# Default Struct Packing
 
-/**
-The default struct packing in Swag is similar to C, where each field is aligned based on the size of its type. This is equivalent to `#[Swag.Pack(0)]`, meaning no additional packing is applied.
+By default, Swag aligns struct fields similarly to C, where each field is aligned based on its type's size. This default behavior is equivalent to `#[Swag.Pack(0)]`, meaning no additional packing is applied.
 */
 #test
 {
@@ -21,6 +19,8 @@ The default struct packing in Swag is similar to C, where each field is aligned 
 }
 
 /**
+# Reducing Packing
+
 You can reduce the packing of fields using `#[Swag.Pack]`, which determines the alignment of each field to the specified value.
 */
 #test
@@ -57,6 +57,8 @@ You can reduce the packing of fields using `#[Swag.Pack]`, which determines the 
 }
 
 /**
+# Struct Size and Alignment
+
 The total struct size is always a multiple of the largest alignment of its fields.
 */
 #test
@@ -71,6 +73,8 @@ The total struct size is always a multiple of the largest alignment of its field
 }
 
 /**
+# Enforcing Alignment with `Swag.Align`
+
 You can enforce struct alignment with `#[Swag.Align]`.
 */
 #test
@@ -97,6 +101,8 @@ You can enforce struct alignment with `#[Swag.Align]`.
 }
 
 /**
+# Field-Specific Alignment
+
 You can also set alignment for individual fields.
 */
 #test

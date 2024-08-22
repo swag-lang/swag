@@ -1,9 +1,11 @@
 /**
-# Type alias
+# Type Alias
+A `typealias` is used to create a shortcut to another type, allowing you to refer to that type with a new, possibly more descriptive name.
 */
 
 /**
-`typealias` is used to make a shortcut to another type.
+# Basic Type Alias
+`typealias` is used to make a shortcut to another type. This allows you to use the alias in place of the original type, simplifying code or improving readability.
 */
 #test
 {
@@ -11,11 +13,11 @@
     @assert(RGB.R == 0)
 
     typealias Color = RGB // 'Color' is now equivalent to 'RGB'
-    @assert(Color.G == 1)
+    @assert(Color.G == 1) // You can use 'Color' wherever 'RGB' is expected.
 }
 
 /**
-You can then use the new name in place of the original type. This does not create a new type.
+You can then use the new name in place of the original type. This does not create a new type but rather an alias for the existing type.
 */
 #test
 {
@@ -29,37 +31,45 @@ You can then use the new name in place of the original type. This does not creat
 }
 
 /**
-But to create a new type, a `typealias` can also be marked with the `Swag.Strict` attribute. In that case, all implicit casts won't be done. Explicit cast are still possible.
+# Strict Type Alias
+To create a new type that enforces type safety, a `typealias` can be marked with the `Swag.Strict` attribute. This prevents implicit casting to or from the aliased type, making it a distinct type, but explicit casts are still possible.
 */
 #test
 {
     #[Swag.Strict]
     typealias MyType = s32
     #assert @typeof(MyType) != s32
-    var x: MyType = cast(MyType) 0
+
+    let x: MyType = cast(MyType) 0 // Explicit cast is required.
+    let y: s32 = cast(s32) x       // Casting back to 's32' also requires an explicit cast.
 }
 
 /**
-# Name alias
+# Name Alias
+A `namealias` is used to create a shortcut or an alternative name for functions, variables, or namespaces, simplifying code and making it easier to manage long names.
 */
 
 /**
-You can alias a function name with `namealias`
+# Function Name Alias
+You can alias a function name with `namealias`, allowing you to call a function with a shorter or more convenient name.
 */
 #test
 {
     func thisIsABigFunctionName(x: s32) => x * x
+
     namealias myFunc = thisIsABigFunctionName
-    @assert(myFunc(4) == 16)
+    @assert(myFunc(4) == 16) // 'myFunc' is now an alias for 'thisIsABigFunctionName'.
 }
 
 /**
-You can also alias variables and namespaces
+# Variable and Namespace Alias
+You can also alias variables and namespaces, providing a shorter name that can be used throughout the code.
 */
 #test
 {
     var myLongVariableName: s32 = 0
     namealias short = myLongVariableName
-    short += 2
-    @assert(myLongVariableName == 2)
+
+    short += 2  // 'short' is an alias for 'myLongVariableName'.
+    @assert(myLongVariableName == 2) // The original variable reflects the changes made through the alias.
 }
