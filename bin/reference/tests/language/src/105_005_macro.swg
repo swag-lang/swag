@@ -1,6 +1,8 @@
 /**
+# Introduction to Swag Macros
 A macro in Swag is declared similarly to a function, but with the attribute `#[Swag.Macro]`.
 */
+
 #test
 {
     #[Swag.Macro]
@@ -8,6 +10,7 @@ A macro in Swag is declared similarly to a function, but with the attribute `#[S
 }
 
 /**
+# Macro Scope
 Unlike a mixin, a macro has its own scope. This means that variables declared within the macro do not conflict with variables in the function where the macro is used.
 */
 #test
@@ -24,7 +27,8 @@ Unlike a mixin, a macro has its own scope. This means that variables declared wi
 }
 
 /**
-However, you can force an identifier to be resolved **outside** the macro's scope using the `#up` keyword.
+# Resolving Identifiers Outside the Macro Scope
+You can force an identifier to be resolved **outside** the macro's scope using the `#up` keyword.
 */
 #test
 {
@@ -41,6 +45,7 @@ However, you can force an identifier to be resolved **outside** the macro's scop
 }
 
 /**
+# Macros with Code Parameters
 Like mixins, macros can accept `code` parameters, allowing the insertion of code blocks within the macro.
 */
 #test
@@ -67,6 +72,7 @@ Like mixins, macros can accept `code` parameters, allowing the insertion of code
 }
 
 /**
+# Forcing Code into the Caller’s Scope with `#macro`
 You can use `#macro` within a macro to force the following code to be inserted in the caller's scope. This means no `#up` is necessary to reference variables from the caller.
 */
 #test
@@ -95,6 +101,7 @@ You can use `#macro` within a macro to force the following code to be inserted i
 }
 
 /**
+# Performance Considerations with Macros
 Macros allow you to extend the language without using function pointers, avoiding the cost of lambda calls.
 */
 #test
@@ -131,6 +138,7 @@ Macros allow you to extend the language without using function pointers, avoidin
 }
 
 /**
+# Handling Breaks in User Code with Macros
 You can use `break` within user code to exit from a nested loop. This can be handled by macros using scoped loop control.
 */
 #test
@@ -164,6 +172,7 @@ You can use `break` within user code to exit from a nested loop. This can be han
 }
 
 /**
+# Using Aliases in Macros
 In a macro, you can use special variables named `#alias<num>`, similar to mixins. These allow you to define and reference variables with specific names.
 */
 #test

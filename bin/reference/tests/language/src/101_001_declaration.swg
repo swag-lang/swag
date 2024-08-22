@@ -1,10 +1,12 @@
 /**
+# Introduction to Function Declarations
 A function declaration typically begins with the `func` keyword followed by the function name.
 */
 #[Swag.Overload]
 func toto() {}
 
 /**
+# Returning Values from Functions
 If the function needs to return a value, use `->` followed by the return type.
 */
 func toto1() -> s32
@@ -13,17 +15,20 @@ func toto1() -> s32
 }
 
 /**
+# Inferring Return Types
 For simple expressions, the return type can be inferred by using `=>` instead of `->`.
 In this example, the return type is inferred as `s32`.
 */
 func sum(x, y: s32) => x + y
 
 /**
+# Shorter Syntax for Functions Without Return Values
 For functions that do not return a value, a shorter syntax can be used.
 */
 func print(val: string) = @print(val)
 
 /**
+# Defining Parameters in Functions
 Parameters are defined after the function name, within parentheses.
 In this example, we declare two parameters, `x` and `y` of type `s32`, and an additional parameter of type `f32`.
 */
@@ -33,6 +38,7 @@ func sum1(x, y: s32, unused: f32) -> s32
 }
 
 /**
+# Using Default Parameter Values
 Parameters can have default values.
 */
 func sum2(x, y: s32, unused: f32 = 666) -> s32
@@ -41,6 +47,7 @@ func sum2(x, y: s32, unused: f32 = 666) -> s32
 }
 
 /**
+# Inferred Parameter Types
 If a parameter has a default value, its type can be inferred.
 Here, `x` and `y` are inferred to be of type `f32` because `0.0` is a 32-bit floating-point literal.
 */
@@ -50,7 +57,12 @@ func sum3(x, y = 0.0)
     #assert @typeof(y) == f32
 }
 
+/**
+# Overloading Functions
+Functions can be overloaded to handle different parameter types or counts.
+*/
 enum Values { A, B }
+
 #[Swag.Overload]
 func toto(x: s32, y = Values.A)
 {
@@ -58,7 +70,8 @@ func toto(x: s32, y = Values.A)
 }
 
 /**
-Functions can be nested inside other functions.
+# Nested Functions
+Functions can be nested inside other functions, providing a way to organize code within a specific scope.
 */
 #test
 {
@@ -71,6 +84,7 @@ Functions can be nested inside other functions.
 }
 
 /**
+# Named Parameters and Parameter Order
 You can name parameters and call functions without respecting the parameter order.
 */
 #test
@@ -93,9 +107,11 @@ You can name parameters and call functions without respecting the parameter orde
 
 /**
 # Multiple Return Values
+Functions in Swag can return multiple values, often using an anonymous struct or tuple.
 */
 
 /**
+## Returning Multiple Values with Anonymous Structs
 An **anonymous struct** can be used to return multiple values from a function.
 */
 #test
@@ -119,7 +135,9 @@ An **anonymous struct** can be used to return multiple values from a function.
 }
 
 /**
+## Using `retval` to Structure Return Statements
 You can also use the `retval` type, which is an alias for the function's return type, to structure your return statements.
+This allows for more flexibility in complex return scenarios.
 */
 #test
 {

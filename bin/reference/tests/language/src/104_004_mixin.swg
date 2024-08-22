@@ -1,6 +1,10 @@
 /**
-A mixin in Swag is declared similarly to a function, but with the attribute `#[Swag.Mixin]`.
+# Introduction to Swag Mixins
+A mixin in Swag is declared similarly to a function but with the attribute `#[Swag.Mixin]`. 
+Mixins allow injecting code into the caller's scope, manipulating variables or executing code as if it were part of that scope.
+This documentation provides an overview of Swag Mixins with various examples.
 */
+
 #test
 {
     #[Swag.Mixin]
@@ -8,7 +12,8 @@ A mixin in Swag is declared similarly to a function, but with the attribute `#[S
 }
 
 /**
-A mixin function is injected directly into the caller's scope, allowing it to manipulate variables or execute code as if it were part of that scope.
+# Basic Example of a Mixin
+A mixin function can directly modify variables in the caller's scope. Below is an example where a mixin increments a variable `a` by 1 each time it is called.
 */
 #test
 {
@@ -25,7 +30,9 @@ A mixin function is injected directly into the caller's scope, allowing it to ma
 }
 
 /**
+# Mixins with Parameters
 Mixins behave like functions, so you can define parameters, assign default values, and even return values.
+This example shows a mixin with an `increment` parameter that defaults to 1.
 */
 #test
 {
@@ -42,7 +49,9 @@ Mixins behave like functions, so you can define parameters, assign default value
 }
 
 /**
-A mixin can accept a special parameter of type `code`, which represents a Swag code block defined at the call site.
+# Mixins with Code Blocks
+A mixin can accept a special parameter of type `code`, which represents a Swag code block defined at the call site. 
+The mixin can execute this code block multiple times using the `#mixin` keyword.
 */
 #test
 {
@@ -62,7 +71,9 @@ A mixin can accept a special parameter of type `code`, which represents a Swag c
 }
 
 /**
+# Mixing Code Blocks in Separate Statements
 When the last parameter of a mixin is of type `code`, the code can be declared in a separate statement after the mixin call.
+This provides a more natural syntax for passing code blocks.
 */
 #test
 {
@@ -88,7 +99,9 @@ When the last parameter of a mixin is of type `code`, the code can be declared i
 }
 
 /**
-You can use the special name `#alias` to create a named alias for an identifier, which allows flexible variable manipulation.
+# Creating Aliases with Mixins
+You can use the special name `#alias` to create a named alias for an identifier. 
+This allows flexible manipulation of variables through mixins.
 */
 #test
 {
@@ -121,7 +134,9 @@ You can use the special name `#alias` to create a named alias for an identifier,
 }
 
 /**
-Mixins can declare special variables named `#mix?`. These variables receive a unique name each time the mixin is invoked, allowing the mixin to be used multiple times in the same scope without naming conflicts.
+# Unique Variable Names with `#mix?`
+Mixins can declare special variables named `#mix?`. 
+These variables receive a unique name each time the mixin is invoked, preventing naming conflicts and allowing multiple mixin invocations in the same scope.
 */
 #test
 {

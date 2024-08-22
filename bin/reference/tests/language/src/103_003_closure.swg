@@ -1,10 +1,10 @@
 /**
-Swag supports a limited implementation of the `closure` concept.
-
-Currently, only a specific amount of capture (up to 48 bytes) is allowed, ensuring there are no hidden allocations. Additionally, you can only capture 'simple' variables—no structs with custom behaviors like `opDrop`, `opPostCopy`, or `opPostMove`.
+# Introduction to Closures in Swag
+Swag supports a limited implementation of the `closure` concept. A closure allows you to capture variables from its surrounding scope. Currently, Swag allows capturing up to 48 bytes, ensuring no hidden allocations. However, only simple variables (without custom behaviors like `opDrop`, `opPostCopy`, or `opPostMove`) can be captured.
 */
 
 /**
+# Declaring a Closure
 A closure is declared similarly to a lambda, with the captured variables specified between `|...|` before the function parameters.
 */
 #test
@@ -25,7 +25,8 @@ A closure is declared similarly to a lambda, with the captured variables specifi
 }
 
 /**
-Variables can also be captured by reference using `&` (by default, they are captured by value).
+# Capturing Variables by Reference
+Variables can also be captured by reference using `&`. By default, variables are captured by value.
 */
 #test
 {
@@ -48,7 +49,8 @@ Variables can also be captured by reference using `&` (by default, they are capt
 }
 
 /**
-A closure variable can also hold a standard lambda (without capture).
+# Assigning Lambdas to Closure Variables
+A closure variable can also hold a standard lambda (without capture). This provides flexibility in assigning different types of functions to the same variable.
 */
 #test
 {
@@ -62,6 +64,7 @@ A closure variable can also hold a standard lambda (without capture).
 }
 
 /**
+# Capturing Complex Types
 You can capture arrays, structs, slices, etc., as long as they fit within the maximum capture size and the struct is a Plain Old Data (POD) type.
 */
 #test
@@ -88,7 +91,8 @@ You can capture arrays, structs, slices, etc., as long as they fit within the ma
 }
 
 /**
-Captured variables are mutable and part of the closure, allowing you to modify them.
+# Modifying Captured Variables
+Captured variables are mutable and part of the closure, allowing you to modify them. This enables the creation of stateful functions.
 */
 #test
 {
