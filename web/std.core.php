@@ -2046,15 +2046,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Append a slice to the end of this instance. </td>
 </tr>
 <tr>
@@ -2122,15 +2122,15 @@
 <td>Ensure that at least <span class="code-inline">newCount</span> elements are present and initizalized in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
 <td>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </td>
 </tr>
 <tr>
@@ -2154,11 +2154,11 @@
 <td>Returns a reference to a value given 2 coordinates and a width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
 <td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
 </tr>
 <tr>
@@ -2186,11 +2186,11 @@
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Sort array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
 <td>Sort array. </td>
 </tr>
 <tr>
@@ -2202,11 +2202,11 @@
 <td>Swap two elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a slice. </td>
 </tr>
 </table>
@@ -2217,11 +2217,11 @@
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2237,11 +2237,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2276,7 +2276,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2289,11 +2289,11 @@
 </table>
 </p>
 <p>Add a copy of one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Move one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Append a slice to the end of this instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, values: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2306,7 +2306,7 @@
 </table>
 </p>
 <p>Add a copy of one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2319,7 +2319,7 @@
 </table>
 </p>
 <p>Returns a copy of the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2332,7 +2332,7 @@
 </table>
 </p>
 <p>Returns the address of the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2345,7 +2345,7 @@
 </table>
 </p>
 <p>Set the number of elements to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2358,7 +2358,7 @@
 </table>
 </p>
 <p>Returns true if the given <span class="code-inline">value</span> is in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2397,7 +2397,7 @@
 </table>
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not initialize them. Returns the address of the first element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2410,7 +2410,7 @@
 </table>
 </p>
 <p>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2423,7 +2423,7 @@
 </table>
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns the address of the first element </p>
 <p>
 <table class="api-item">
@@ -2437,7 +2437,7 @@
 </table>
 </p>
 <p>Fill the array with the given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2450,7 +2450,7 @@
 </table>
 </p>
 <p>Free the array content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2463,7 +2463,7 @@
 </table>
 </p>
 <p>Returns a copy of the first element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2476,7 +2476,7 @@
 </table>
 </p>
 <p>Returns the address of the first element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2489,7 +2489,7 @@
 </table>
 </p>
 <p>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
 <p>The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead. </p>
 <p>
 <table class="api-item">
@@ -2503,7 +2503,7 @@
 </table>
 </p>
 <p>Ensure that at least <span class="code-inline">newCount</span> elements are present and initizalized in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">growResize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">growResize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
 <p>This will grow the array if necessary. </p>
 <p>
 <table class="api-item">
@@ -2517,11 +2517,11 @@
 </table>
 </p>
 <p>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2534,7 +2534,7 @@
 </table>
 </p>
 <p>Returns true if the array is empty. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2547,7 +2547,7 @@
 </table>
 </p>
 <p>Initializes an Array that contains values copied from the specified array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, arr: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2559,8 +2559,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2572,7 +2572,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2584,7 +2584,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2596,7 +2596,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2608,8 +2608,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
+<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2621,7 +2621,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2633,7 +2633,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2645,7 +2645,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2657,7 +2657,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2671,7 +2671,7 @@
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>Visiting by address and in reverse order is supported. </p>
 <p>
 <table class="api-item">
@@ -2685,7 +2685,7 @@
 </table>
 </p>
 <p>Returns a copy of the last element, and remove it from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2697,7 +2697,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2710,7 +2710,7 @@
 </table>
 </p>
 <p>Returns a reference to a value given coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>This is to use the array as an array with 2 dimensions. </p>
 <p>
 <table class="api-item">
@@ -2724,7 +2724,7 @@
 </table>
 </p>
 <p>Returns a reference to a value given 2 coordinates and a width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>This is to use the array as an array with 2 dimensions. </p>
 <p>
 <table class="api-item">
@@ -2738,9 +2738,9 @@
 </table>
 </p>
 <p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
 <p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2753,7 +2753,7 @@
 </table>
 </p>
 <p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>Order is <b>not preserved</b> </p>
 <p>
 <table class="api-item">
@@ -2767,7 +2767,7 @@
 </table>
 </p>
 <p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>Order is preserved </p>
 <p>
 <table class="api-item">
@@ -2781,7 +2781,7 @@
 </table>
 </p>
 <p>Remove the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2794,7 +2794,7 @@
 </table>
 </p>
 <p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2807,7 +2807,7 @@
 </table>
 </p>
 <p>Reserve room for <span class="code-inline">newCapacity</span> elements without changing the array count. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>The number of valid elements does not change. </p>
 <p>
 <table class="api-item">
@@ -2821,7 +2821,7 @@
 </table>
 </p>
 <p>Change the number of valid elements in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
 <p>This can be used to reduce or increase the number of valid elements. </p>
 <p>
 <table class="api-item">
@@ -2835,8 +2835,8 @@
 </table>
 </p>
 <p>Sort array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cb: <span class="SKwd">closure</span>(<span class="SKwd">self</span>.<span class="SCst">T</span>, <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
+<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">closure</span>(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2849,7 +2849,7 @@
 </table>
 </p>
 <p>Sort array in reverse order (from biggest to lowest value). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2862,7 +2862,7 @@
 </table>
 </p>
 <p>Swap two elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swap</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx0, idx1: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swap</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, idx0, idx1: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2875,8 +2875,8 @@
 </table>
 </p>
 <p>Returns a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
+<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2938,7 +2938,7 @@
 </table>
 </p>
 <p>Allocate a new pointer, and add it to the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addNewPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addNewPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2951,7 +2951,7 @@
 </table>
 </p>
 <p>Release content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2964,7 +2964,7 @@
 </table>
 </p>
 <p>Delete one pointer allocated here. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deletePtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, item: *<span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deletePtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, item: *<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2977,7 +2977,7 @@
 </table>
 </p>
 <p>Allocate a new pointer by using the contextual allocator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2989,7 +2989,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3001,7 +3001,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3416,11 +3416,11 @@
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Inverts all the bit values, so that elements set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and elements set to <span class="code-inline">false</span> are changed to <span class="code-inline">true</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td>Inverts the value of the bit at a specific position. </td>
 </tr>
 <tr>
@@ -3428,11 +3428,11 @@
 <td>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td>Reserve the given amount of bits. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">bool</span>)</span></td>
 <td>Reserve the given amount of bits and set an initial value to all bits. </td>
 </tr>
 <tr>
@@ -3495,7 +3495,7 @@
 </table>
 </p>
 <p>Performs the bitwise AND operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
 <p>The current <span class="code-inline">BitArray</span> will be modified to store the result of the bitwise AND operation. </p>
 <p>
 <table class="api-item">
@@ -3509,7 +3509,7 @@
 </table>
 </p>
 <p>Gets the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3522,9 +3522,9 @@
 </table>
 </p>
 <p>Inverts the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>Inverts all the bit values, so that elements set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and elements set to <span class="code-inline">false</span> are changed to <span class="code-inline">true</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3537,7 +3537,7 @@
 </table>
 </p>
 <p>Initializes a <span class="code-inline">BitArray</span> that contains bit values copied from the specified array of booleans. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3549,7 +3549,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3561,7 +3561,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3574,7 +3574,7 @@
 </table>
 </p>
 <p>Compares two arrays, and returns <span class="code-inline">true</span> if they are equal. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3587,7 +3587,7 @@
 </table>
 </p>
 <p>Gets the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3600,7 +3600,7 @@
 </table>
 </p>
 <p>Sets the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3612,7 +3612,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3626,7 +3626,7 @@
 </p>
 <p>Visit all the booleans. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3639,7 +3639,7 @@
 </table>
 </p>
 <p>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
 <p>The current BitArray will be modified to store the result of the bitwise OR operation. </p>
 <p>
 <table class="api-item">
@@ -3653,10 +3653,10 @@
 </table>
 </p>
 <p>Reserve the given amount of bits. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, maxBits: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>)</span></div>
 <p>The bits will <b>not</b> be initialized. </p>
 <p>Reserve the given amount of bits and set an initial value to all bits. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3669,7 +3669,7 @@
 </table>
 </p>
 <p>Sets the bit at a specific position to the specified value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3682,7 +3682,7 @@
 </table>
 </p>
 <p>Sets all bits to the specified value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3695,7 +3695,7 @@
 </table>
 </p>
 <p>Performs the bitwise XOR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
 <p>The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
 <p>
 <table class="api-item">
@@ -3809,7 +3809,7 @@
 </table>
 </p>
 <p>Returns the seek value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3822,7 +3822,7 @@
 </table>
 </p>
 <p>Returns true if end has been reached. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEof</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEof</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3835,7 +3835,7 @@
 </table>
 </p>
 <p>Returns length of associated slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3848,7 +3848,7 @@
 </table>
 </p>
 <p>Seek to the next byte. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offset: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3887,7 +3887,7 @@
 </table>
 </p>
 <p>Read one byte and seek. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3900,7 +3900,7 @@
 </table>
 </p>
 <p>Read the given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dest: *<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: *<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3913,7 +3913,7 @@
 </table>
 </p>
 <p>Get the buffer of datas to read. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readData</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3926,7 +3926,7 @@
 </table>
 </p>
 <p>Read a <span class="code-inline">native</span> type value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">T</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">T</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3939,7 +3939,7 @@
 </table>
 </p>
 <p>Read one byte and seek. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3952,7 +3952,7 @@
 </table>
 </p>
 <p>Returns a slice of the remaing bytes to read. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3965,7 +3965,7 @@
 </table>
 </p>
 <p>Returns a string of the remaing bytes to read. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3978,7 +3978,7 @@
 </table>
 </p>
 <p>Seek to the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offset: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3991,7 +3991,7 @@
 </table>
 </p>
 <p>Write the given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4004,7 +4004,7 @@
 </table>
 </p>
 <p>Write a <span class="code-inline">native</span> type value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4339,7 +4339,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">consumeBits</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">consumeBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4351,7 +4351,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4363,7 +4363,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">discardToNextByte</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">discardToNextByte</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4375,7 +4375,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4387,7 +4387,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4399,7 +4399,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32Be</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32Be</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4411,7 +4411,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBits</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4423,7 +4423,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBitsNoRefill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4435,7 +4435,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4447,7 +4447,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBits</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4459,7 +4459,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBitsNoRefill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4471,7 +4471,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4483,7 +4483,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">revert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">revert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4495,7 +4495,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4507,7 +4507,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4640,7 +4640,7 @@
 </table>
 </p>
 <p>Compress the source buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4653,7 +4653,7 @@
 </table>
 </p>
 <p>Initialize the compressor Can be called multiple times. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>, strategy = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span>.<span class="SCst">Default</span>, flags = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span>.<span class="SCst">Default</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>, strategy = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span>.<span class="SCst">Default</span>, flags = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span>.<span class="SCst">Default</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4665,7 +4665,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4696,7 +4696,7 @@
 </table>
 </p>
 <p>Decompress the associated stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4731,7 +4731,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4744,7 +4744,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4905,7 +4905,7 @@
 </table>
 </p>
 <p>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4918,7 +4918,7 @@
 </table>
 </p>
 <p>Append one byte to the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4931,7 +4931,7 @@
 </table>
 </p>
 <p>Append the content of a struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4944,7 +4944,7 @@
 </table>
 </p>
 <p>Clear the content without freing the buffers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4957,7 +4957,7 @@
 </table>
 </p>
 <p>Returns the number of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4983,7 +4983,7 @@
 </table>
 </p>
 <p>Returns the current <span class="code-inline">seek</span> in the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4996,7 +4996,7 @@
 </table>
 </p>
 <p>Be sure that there is enough room to store at least <span class="code-inline">numBytes</span> bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numBytes: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, numBytes: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5009,7 +5009,7 @@
 </table>
 </p>
 <p>linearize all buckets in one single big bucket. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLinear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLinear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5022,7 +5022,7 @@
 </table>
 </p>
 <p>Seek current write pointer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5035,7 +5035,7 @@
 </table>
 </p>
 <p>Move the content of the buffer to the String if possible. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead. </p>
 <p>
 <table class="api-item">
@@ -5048,7 +5048,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5060,7 +5060,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5074,7 +5074,7 @@
 </p>
 <p>Visit all valid buckets. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5087,7 +5087,7 @@
 </table>
 </p>
 <p>Release all allocated buffers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5100,7 +5100,7 @@
 </table>
 </p>
 <p>Associate an allocator with the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
 <p>The allocator can only be changed if the buffer has no pending buckets. </p>
 <p>
 <table class="api-item">
@@ -5114,7 +5114,7 @@
 </table>
 </p>
 <p>Set the granularity of datas when allocated new buckets. Minimum size is 4. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5127,7 +5127,7 @@
 </table>
 </p>
 <p>Set the end <span class="code-inline">seek</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEndSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEndSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5140,7 +5140,7 @@
 </table>
 </p>
 <p>Share <span class="code-inline">data</span> with the firstBucket. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFirstBucket</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFirstBucket</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5153,7 +5153,7 @@
 </table>
 </p>
 <p>Set the current <span class="code-inline">seek</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5166,7 +5166,7 @@
 </table>
 </p>
 <p>Convert to a slice <i>only</i> if the buffer is linear, or return null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
 <p>See <a href="#Core_ConcatBuffer_makeLinear">ConcatBuffer.makeLinear</a> </p>
 <p>
 <table class="api-item">
@@ -5180,7 +5180,7 @@
 </table>
 </p>
 <p>Convert the buffer to a String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>A copy will be made, so the buffer is still valid after the call. See <a href="#Core_ConcatBuffer_moveToString">ConcatBuffer.moveToString</a> </p>
 <p>
 <table class="api-item">
@@ -6051,7 +6051,7 @@
 </table>
 </p>
 <p>Wait for the process to be done. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitForExit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitForExit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6840,7 +6840,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDirectory</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDirectory</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7011,7 +7011,7 @@
 </table>
 </p>
 <p>Close the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7024,7 +7024,7 @@
 </table>
 </p>
 <p>Returns the current seek position of the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7037,7 +7037,7 @@
 </table>
 </p>
 <p>Returns the given file stream length on disk. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7050,7 +7050,7 @@
 </table>
 </p>
 <p>Returns true if the stream is valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpen</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpen</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7062,7 +7062,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7075,7 +7075,7 @@
 </table>
 </p>
 <p>Read from the given file stream, and returns the number of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7088,7 +7088,7 @@
 </table>
 </p>
 <p>Read from the given file stream, and returns <span class="code-inline">true</span> if all bytes have been read. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: *<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: *<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7101,7 +7101,7 @@
 </table>
 </p>
 <p>Set the current seek position of the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, origin: <span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, origin: <span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7114,7 +7114,7 @@
 </table>
 </p>
 <p>Skip <span class="code-inline">bytes</span> from current position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">skipPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bytes: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">skipPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7127,7 +7127,7 @@
 </table>
 </p>
 <p>Write to the given file stream, and returns the number of written bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7271,7 +7271,7 @@
 </table>
 </p>
 <p>Close the reader. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7284,7 +7284,7 @@
 </table>
 </p>
 <p>Open the reader. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7297,7 +7297,7 @@
 </table>
 </p>
 <p>Read one line of text. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: &<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: &<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns false if the end of the stream has been reached. </p>
 <p>
 <table class="api-item">
@@ -7311,7 +7311,7 @@
 </table>
 </p>
 <p>Read from the current position to the end, and returns the corresponding utf8 string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readToEnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readToEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7333,11 +7333,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Array</span>'(<span class="STpe">string</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Array</span>'(<span class="STpe">string</span>))</span></td>
 <td>Parse a list of lines. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Parse a list of lines. </td>
 </tr>
 <tr>
@@ -7361,8 +7361,8 @@
 </table>
 </p>
 <p>Parse a list of lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lines: <span class="SCst"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span>
+<span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SCst"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7375,7 +7375,7 @@
 </table>
 </p>
 <p>Read and parse a file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseFile</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7388,7 +7388,7 @@
 </table>
 </p>
 <p>Register a new structure to be parsed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerFolder</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, folder: *<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerFolder</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, folder: *<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8004,7 +8004,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8017,7 +8017,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8076,7 +8076,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8089,7 +8089,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8148,7 +8148,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8161,7 +8161,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8261,7 +8261,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, digest: <span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, digest: <span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8274,7 +8274,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8300,7 +8300,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8378,7 +8378,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: <span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: <span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8391,7 +8391,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8404,7 +8404,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8509,11 +8509,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, &&<span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">K</span>)</span></td>
 <td>Add a new element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
 <td>Add a new element. </td>
 </tr>
 <tr>
@@ -8587,7 +8587,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8600,8 +8600,8 @@
 </table>
 </p>
 <p>Add a new element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)
-<span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: &&<span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)
+<span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: &&<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8614,7 +8614,7 @@
 </table>
 </p>
 <p>Remove all elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8627,7 +8627,7 @@
 </table>
 </p>
 <p>Returns true if the table contains the given element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8640,7 +8640,7 @@
 </table>
 </p>
 <p>Add a new element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8653,7 +8653,7 @@
 </table>
 </p>
 <p>Free the hashset content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8665,7 +8665,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8677,7 +8677,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8701,7 +8701,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8713,7 +8713,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8725,7 +8725,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8737,7 +8737,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8750,7 +8750,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8763,7 +8763,7 @@
 </table>
 </p>
 <p>Remove the given element if it exists. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8776,7 +8776,7 @@
 </table>
 </p>
 <p>Reserve <span class="code-inline">newCapacity</span> elements in the set. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8864,11 +8864,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">K</span>, &&<span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, &&<span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
 <td>Add a new key value pair. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">K</span>, <span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, <span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
 <td>Add a new key value pair. </td>
 </tr>
 <tr>
@@ -8935,11 +8935,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8966,7 +8966,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8979,10 +8979,10 @@
 </table>
 </p>
 <p>Add a new key value pair. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, value: <span class="SKwd">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: <span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
 <p>Add a new key value pair. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: &&<span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
 <p>
 <table class="api-item">
@@ -8996,7 +8996,7 @@
 </table>
 </p>
 <p>Remove all elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9009,7 +9009,7 @@
 </table>
 </p>
 <p>Returns true if the table contains the given key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9022,7 +9022,7 @@
 </table>
 </p>
 <p>Use with care !. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="SKwd">self</span>.<span class="SCst">K</span>, value: &<span class="SKwd">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>, value: &<span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9035,7 +9035,7 @@
 </table>
 </p>
 <p>Find the given key, and returns the corresponding entry. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>Returns null if the key is not there. </p>
 <p>
 <table class="api-item">
@@ -9049,7 +9049,7 @@
 </table>
 </p>
 <p>Get the entry if it exists, or creates a new one with a default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9062,7 +9062,7 @@
 </table>
 </p>
 <p>Free the hashtable content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9075,7 +9075,7 @@
 </table>
 </p>
 <p>Find the given key, and returns the corresponding value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, val: <span class="SKwd">self</span>.<span class="SCst">V</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
 <p>If the key does not exist, then it will return <span class="code-inline">val</span> instead </p>
 <p>
 <table class="api-item">
@@ -9088,7 +9088,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9100,7 +9100,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9124,9 +9124,9 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
 {
-    k: <span class="SKwd">self</span>.<span class="SCst">K</span>, v: <span class="SKwd">self</span>.<span class="SCst">V</span>
+    k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
 }
 )</span></div>
 <p>
@@ -9140,7 +9140,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9152,7 +9152,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9164,8 +9164,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span>
+<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9177,7 +9177,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>, val: <span class="SKwd">self</span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9189,7 +9189,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9203,7 +9203,7 @@
 </p>
 <p>alias0 is the key, and alias1 is the value. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9216,7 +9216,7 @@
 </table>
 </p>
 <p>Remove the given key if it exists. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SKwd">self</span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9229,7 +9229,7 @@
 </table>
 </p>
 <p>Reserve <span class="code-inline">newCapacity</span> elements in the table. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9420,7 +9420,7 @@
 <td>Returns true if the corresponding <span class="code-inline">padIndex</span> is connected. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_setVibration">setVibration</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_setVibration">setVibration</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set the vibration motor speeds. </td>
 </tr>
 <tr>
@@ -9444,7 +9444,7 @@
 </table>
 </p>
 <p>Reset the previous and current state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9457,7 +9457,7 @@
 </table>
 </p>
 <p>Get the analog position of the given button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9470,7 +9470,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9483,7 +9483,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9496,7 +9496,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button is pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9509,7 +9509,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button is released (not pressed). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9537,7 +9537,7 @@
 <p>Set the left and right vibration of the given <span class="code-inline">padIndex</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(padIndex: <span class="STpe">u32</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <p>Set the vibration motor speeds. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9550,7 +9550,7 @@
 </table>
 </p>
 <p>Update the GamePad current state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9712,7 +9712,7 @@
 </table>
 </p>
 <p>Reset state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9725,7 +9725,7 @@
 </table>
 </p>
 <p>Compute the current state of the given pad index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, padIndex: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, padIndex: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10597,7 +10597,7 @@
 <td>Determines whether given key has just been released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">Key</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">Key</span>)</span></td>
 <td>Determines whether given key is currently being pressed. </td>
 </tr>
 <tr>
@@ -10637,7 +10637,7 @@
 </table>
 </p>
 <p>Reset the keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10650,7 +10650,7 @@
 </table>
 </p>
 <p>Returns the currently pressed key modifiers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPressedModifiers</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPressedModifiers</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10663,7 +10663,7 @@
 </table>
 </p>
 <p>Determines whether given key has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10676,7 +10676,7 @@
 </table>
 </p>
 <p>Determines whether given key has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10689,7 +10689,7 @@
 </table>
 </p>
 <p>Determines whether given key is currently being pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns true if the given key is pressed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
@@ -10704,7 +10704,7 @@
 </table>
 </p>
 <p>Determines whether given key is currently being released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10717,7 +10717,7 @@
 </table>
 </p>
 <p>Try to transform the given key to the corresponding rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyToRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">rune</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyToRune</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">rune</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10742,7 +10742,7 @@
 </table>
 </p>
 <p>Compute current state of the keyboard (all keys). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10802,7 +10802,7 @@
 </table>
 </p>
 <p>Reset keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10815,7 +10815,7 @@
 </table>
 </p>
 <p>Compute current keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10899,7 +10899,7 @@
 <td>Determines whether the specified mouse button has just been released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">MouseButton</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">MouseButton</span>)</span></td>
 <td>Determines whether the specified mouse button is pressed. </td>
 </tr>
 <tr>
@@ -10927,7 +10927,7 @@
 </table>
 </p>
 <p>Reset the mouse state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10940,7 +10940,7 @@
 </table>
 </p>
 <p>Returns the move between the current position and the previous one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10953,7 +10953,7 @@
 </table>
 </p>
 <p>Returns the mouse position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10966,7 +10966,7 @@
 </table>
 </p>
 <p>Returns the previous mouse position, before the last update. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10978,7 +10978,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonDoubleClick</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonDoubleClick</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10991,7 +10991,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11004,7 +11004,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11019,7 +11019,7 @@
 <p>Determins if one given mouse button is pressed or not. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Determines whether the specified mouse button is pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11032,7 +11032,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button is released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11045,7 +11045,7 @@
 </table>
 </p>
 <p>Compute the current state of the mouse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11136,7 +11136,7 @@
 </table>
 </p>
 <p>Reset the state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11149,7 +11149,7 @@
 </table>
 </p>
 <p>Compute the actual state of the mouse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11967,19 +11967,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="SKwd">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="SKwd">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td>Add a new element on front. </td>
 </tr>
 <tr>
@@ -11987,19 +11987,19 @@
 <td>Clear all elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SCst">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 </table>
@@ -12026,8 +12026,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12040,8 +12040,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12054,7 +12054,7 @@
 </table>
 </p>
 <p>Clear all elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12067,8 +12067,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12081,8 +12081,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12094,7 +12094,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12108,7 +12108,7 @@
 </p>
 <p>Visit every elements of the list. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> is the value</li>
 <li><span class="code-inline">#alias1</span> is the node</li>
@@ -12234,7 +12234,7 @@
 </table>
 </p>
 <p>Register a new writer interface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addWriter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, writer: <span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addWriter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, writer: <span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12247,7 +12247,7 @@
 </table>
 </p>
 <p>Remove all writers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearWriters</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearWriters</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12273,7 +12273,7 @@
 </table>
 </p>
 <p>Get the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFlags</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12286,7 +12286,7 @@
 </table>
 </p>
 <p>Get the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPrefix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPrefix</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12299,7 +12299,7 @@
 </table>
 </p>
 <p>Main print function. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, text: <span class="STpe">string</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12312,7 +12312,7 @@
 </table>
 </p>
 <p>Set the logger flags. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, flags: <span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFlags</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, flags: <span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12325,7 +12325,7 @@
 </table>
 </p>
 <p>Set the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPrefix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, prefix: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPrefix</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, prefix: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13105,7 +13105,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, valueRad: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, valueRad: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13117,7 +13117,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13129,7 +13129,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDegrees</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDegrees</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13298,7 +13298,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13310,7 +13310,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13347,7 +13347,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13384,7 +13384,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13411,11 +13411,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
 <td>Multiply & Add. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
 <td>Multiply & add. </td>
 </tr>
 <tr>
@@ -13426,19 +13426,19 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13478,9 +13478,9 @@
 </table>
 </p>
 <p>Multiply & add. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1, value2: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Multiply & Add. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1, value2: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">Self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13492,8 +13492,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: <span class="SKwd">self</span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="STpe">self</span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13505,8 +13505,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">Self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13518,7 +13518,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13530,7 +13530,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13542,7 +13542,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13555,7 +13555,7 @@
 </table>
 </p>
 <p>Set all values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, values: <span class="SKwd">self</span>.<span class="SCst">T</span>...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="STpe">self</span>.<span class="SCst">T</span>...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13603,11 +13603,11 @@
 <td>Check for zero with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset this Point by a given value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset this Point by a given value. </td>
 </tr>
 <tr>
@@ -13626,19 +13626,19 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13658,7 +13658,7 @@
 </table>
 </p>
 <p>Perform a Math.ceil operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13671,7 +13671,7 @@
 </table>
 </p>
 <p>Set Point to (0, 0). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13684,7 +13684,7 @@
 </table>
 </p>
 <p>Check if two points are equal with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13697,7 +13697,7 @@
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the Point is null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13710,7 +13710,7 @@
 </table>
 </p>
 <p>Check for zero with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13723,8 +13723,8 @@
 </table>
 </p>
 <p>Offset this Point by a given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)
-<span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)
+<span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13736,7 +13736,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13748,8 +13748,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13761,8 +13761,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13774,7 +13774,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13787,7 +13787,7 @@
 </table>
 </p>
 <p>Perform a Math.round operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13800,7 +13800,7 @@
 </table>
 </p>
 <p>Perform a Math.trunc operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13862,15 +13862,15 @@
 <td>Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Determines if the specfied rectangle is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
@@ -13882,15 +13882,15 @@
 <td>Horizontal center coordinate (x + width / 2). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Inflates the rectangle by the given <span class="code-inline">value</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Inflates the rectangle by the given amount in <span class="code-inline">x</span> and <span class="code-inline">y</span> directions. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Intersect this rectangle with another one. </td>
 </tr>
 <tr>
@@ -13938,15 +13938,15 @@
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Offset the rectangle position by a given value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset the rectangle position by a given value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset the rectangle position by a x and y values. </td>
 </tr>
 <tr>
@@ -13958,11 +13958,11 @@
 <td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Multiply the width and height of the rectangle by a given <span class="code-inline">value</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Multiply the width by <span class="code-inline">x</span> and the height by <span class="code-inline">y</span>. </td>
 </tr>
 <tr>
@@ -14009,7 +14009,7 @@
 </table>
 </p>
 <p>Add a padding (offset to each side). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, padding: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, padding: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14022,7 +14022,7 @@
 </table>
 </p>
 <p>Bottom coordinate (y + height). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottom</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottom</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14035,7 +14035,7 @@
 </table>
 </p>
 <p>Perform a Math.ceil operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14048,7 +14048,7 @@
 </table>
 </p>
 <p>Central point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14061,7 +14061,7 @@
 </table>
 </p>
 <p>Set rectangle to (0, 0, 0, 0). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14074,7 +14074,7 @@
 </table>
 </p>
 <p>Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constrainIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constrainIn</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14087,10 +14087,10 @@
 </table>
 </p>
 <p>Determines if the specfied point is contained within the rectangular region. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Determines if the specfied rectangle is contained within the rectangular region. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14116,7 +14116,7 @@
 </table>
 </p>
 <p>Horizontal center coordinate (x + width / 2). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14129,9 +14129,9 @@
 </table>
 </p>
 <p>Inflates the rectangle by the given <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Inflates the rectangle by the given amount in <span class="code-inline">x</span> and <span class="code-inline">y</span> directions. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14144,7 +14144,7 @@
 </table>
 </p>
 <p>Intersect this rectangle with another one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a, b: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
 <p>If there is no intersection, Zero is returned. </p>
@@ -14160,7 +14160,7 @@
 </table>
 </p>
 <p>Determines if this rectangle intersets with <span class="code-inline">rect</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14173,7 +14173,7 @@
 </table>
 </p>
 <p>Returns true if this instance has a surface of zero (width or height are null). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14186,7 +14186,7 @@
 </table>
 </p>
 <p>Returns true if this instance has a surface of zero (width and height are null). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14199,7 +14199,7 @@
 </table>
 </p>
 <p>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNormalized</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14212,7 +14212,7 @@
 </table>
 </p>
 <p>Returns true if this instance is null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14225,7 +14225,7 @@
 </table>
 </p>
 <p>Returns true if this instance is null with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14238,7 +14238,7 @@
 </table>
 </p>
 <p>Move the left coordinate, reducing the width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveBottom</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14251,7 +14251,7 @@
 </table>
 </p>
 <p>Move the left coordinate, reducing the width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveLeft</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14264,7 +14264,7 @@
 </table>
 </p>
 <p>Move the left coordinate, reducing the width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14277,7 +14277,7 @@
 </table>
 </p>
 <p>Move the left coordinate, reducing the width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14290,11 +14290,11 @@
 </table>
 </p>
 <p>Offset the rectangle position by a given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
 <p>Offset the rectangle position by a x and y values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offsetX, offsetY: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetX, offsetY: <span class="STpe">f32</span>)</span></div>
 <p>Offset the rectangle position by a given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offset: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14306,7 +14306,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14319,7 +14319,7 @@
 </table>
 </p>
 <p>Right coordinate (x + width). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">right</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">right</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14332,7 +14332,7 @@
 </table>
 </p>
 <p>Perform a Math.round operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14345,9 +14345,9 @@
 </table>
 </p>
 <p>Multiply the width and height of the rectangle by a given <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Multiply the width by <span class="code-inline">x</span> and the height by <span class="code-inline">y</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14360,7 +14360,7 @@
 </table>
 </p>
 <p>Initialize the rectangle with two position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, topLeft, bottomRight: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, topLeft, bottomRight: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14373,7 +14373,7 @@
 </table>
 </p>
 <p>Bottom coordinate (y + height). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBottom</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14386,7 +14386,7 @@
 </table>
 </p>
 <p>Right coordinate (x + width). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14399,7 +14399,7 @@
 </table>
 </p>
 <p>Creates a rectangle that represents the union. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14412,7 +14412,7 @@
 </table>
 </p>
 <p>Perform a Math.trunc operation on all the coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14425,7 +14425,7 @@
 </table>
 </p>
 <p>Vertical center coordinate (y + height / 2). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14558,7 +14558,7 @@
 </table>
 </p>
 <p>Multiply two matricies. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, matrix2: <span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, matrix2: <span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14571,7 +14571,7 @@
 </table>
 </p>
 <p>Set transform to identity. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14671,7 +14671,7 @@
 </table>
 </p>
 <p>Drop the variant content (if necessary). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14684,7 +14684,7 @@
 </table>
 </p>
 <p>Get the variant value of the given type Will assert if the current type does not match. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">TN</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">TN</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14696,7 +14696,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">TN</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14708,7 +14708,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14720,7 +14720,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14732,7 +14732,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14744,7 +14744,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14756,7 +14756,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14769,7 +14769,7 @@
 </table>
 </p>
 <p>Set the variant value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">TN</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">TN</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14816,11 +14816,11 @@
 <td>Returns the cosine angle with another vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td>Returns the Z signed length of the perpendicular vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Returns the perpendicular vector in the 2D plane. </td>
 </tr>
 <tr>
@@ -14951,19 +14951,19 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14983,7 +14983,7 @@
 </table>
 </p>
 <p>Returns the angle with another vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14996,7 +14996,7 @@
 </table>
 </p>
 <p>Returns the angle with another vector in the range [0, 2Pi]. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15009,7 +15009,7 @@
 </table>
 </p>
 <p>Math.ceil. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15022,7 +15022,7 @@
 </table>
 </p>
 <p>Set the vector to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15035,7 +15035,7 @@
 </table>
 </p>
 <p>Returns the cosine angle with another vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15048,10 +15048,10 @@
 </table>
 </p>
 <p>Returns the perpendicular vector in the 2D plane. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p><span class="code-inline">axis</span> will give the sign of the result </p>
 <p>Returns the Z signed length of the perpendicular vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15064,7 +15064,7 @@
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15077,7 +15077,7 @@
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15090,7 +15090,7 @@
 </table>
 </p>
 <p>Returns the distance of the point to the given line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15103,7 +15103,7 @@
 </table>
 </p>
 <p>Returns the distance of the point to the given segment. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15116,7 +15116,7 @@
 </table>
 </p>
 <p>Returns the dot product between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15129,7 +15129,7 @@
 </table>
 </p>
 <p>Math.floor. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15142,7 +15142,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15155,7 +15155,7 @@
 </table>
 </p>
 <p>Returns true if the point <span class="code-inline">pt</span> is inside an ellipse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15168,7 +15168,7 @@
 </table>
 </p>
 <p>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15181,7 +15181,7 @@
 </table>
 </p>
 <p>Returns true if this vector is null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15194,7 +15194,7 @@
 </table>
 </p>
 <p>Returns true if this vector is null with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15207,7 +15207,7 @@
 </table>
 </p>
 <p>Return sthe length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15220,7 +15220,7 @@
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15304,7 +15304,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Negate the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15317,7 +15317,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Normalize this vector (set its length to 1). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15330,7 +15330,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15342,7 +15342,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15354,8 +15354,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15367,8 +15367,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15380,7 +15380,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15406,7 +15406,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Rotate the vector by a given angle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15419,7 +15419,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Math.round. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15445,7 +15445,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15458,7 +15458,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15471,7 +15471,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15484,7 +15484,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns this vector normalized. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15497,7 +15497,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns this vector normalized even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15616,19 +15616,19 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -15648,7 +15648,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15661,7 +15661,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15674,7 +15674,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15687,7 +15687,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the dot product between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15700,7 +15700,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15713,7 +15713,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns true if this vector is null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15726,7 +15726,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns true if this vector is null with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15739,7 +15739,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Return sthe length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15752,7 +15752,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15804,7 +15804,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Negate the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15817,7 +15817,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Normalize this vector (set its length to 1). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15830,7 +15830,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15842,7 +15842,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15854,8 +15854,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15867,8 +15867,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15880,7 +15880,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15893,7 +15893,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x, y, z: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, z: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15906,7 +15906,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15919,7 +15919,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15932,7 +15932,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns this vector normalized. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15945,7 +15945,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns this vector normalized even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16013,7 +16013,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Set the vector to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16038,7 +16038,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16050,7 +16050,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17371,7 +17371,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Get a noise result. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17383,7 +17383,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17395,7 +17395,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17407,7 +17407,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17420,7 +17420,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Update internal values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>Should be called each time an internal parameter has been changed. </p>
 <p>
 <table class="api-item">
@@ -17433,7 +17433,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17445,7 +17445,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17457,7 +17457,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17609,7 +17609,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td>Returns all the captured strings, in order. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
@@ -17617,7 +17617,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
@@ -17625,11 +17625,11 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Returns true if <span class="code-inline">str</span> matches the regexp. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>)</span></td>
 <td>Compile and match the expression. </td>
 </tr>
 <tr>
@@ -17660,7 +17660,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Clear content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17673,7 +17673,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Compile the expression. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, expr: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compile</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, expr: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17699,7 +17699,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the parsed string associated with a given captured group. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rank: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCapture</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, rank: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17712,7 +17712,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns all the captured strings, in order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17726,7 +17726,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </p>
 <p>Find the first occurence in the string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grep</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">grep</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">grep</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17740,7 +17740,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </p>
 <p>Find all the occurences in the string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grepAll</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">grepAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">grepAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17753,9 +17753,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Compile and match the expression. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, expr, str: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, expr, str: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>Returns true if <span class="code-inline">str</span> matches the regexp. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Should have been compiled before. </p>
 <p>
 <table class="api-item">
@@ -17768,7 +17768,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17781,7 +17781,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>You can get a capture group value by using the derefence syntax. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>Returns <span class="code-inline">null</span> if the capture group does not exist </p>
 <p>
 <table class="api-item">
@@ -17795,7 +17795,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Try to match the start of the string, and returns the matched value or null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">partialMatch</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">partialMatch</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18182,7 +18182,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18194,7 +18194,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18225,11 +18225,11 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -18244,7 +18244,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18256,8 +18256,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u32</span>)
-<span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1, value2: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)
+<span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18288,11 +18288,11 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -18307,7 +18307,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18319,8 +18319,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seed: <span class="STpe">u64</span>)
-<span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seed: <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u64</span>)
+<span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18352,51 +18352,51 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <td>Returns a random bool. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
 <td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a signed 32 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
 <td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a signed 64 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
 <td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns an unsigned 32 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns an unsigned 64 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
@@ -18428,7 +18428,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns a random bool. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextBool</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18441,9 +18441,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18456,9 +18456,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18471,9 +18471,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns a signed 32 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18486,9 +18486,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns a signed 64 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18501,9 +18501,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns an unsigned 32 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18516,9 +18516,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns an unsigned 64 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min, max: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18531,7 +18531,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Seed the rng with the current time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18544,7 +18544,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Seed random generator with a 32 bits value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seed: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18557,7 +18557,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Seed random generator with a 64 bits value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seed: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18570,7 +18570,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Randomly change the order of a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">shuffle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, slice: [..] <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">shuffle</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: [..] <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19610,7 +19610,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19622,7 +19622,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19634,7 +19634,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19646,7 +19646,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19658,7 +19658,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19670,7 +19670,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19682,7 +19682,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19694,7 +19694,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: *<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: *<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19706,7 +19706,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBool</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19718,7 +19718,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBufferU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, count: <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBufferU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, count: <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19730,7 +19730,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19742,7 +19742,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19754,7 +19754,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS16</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19766,7 +19766,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19778,7 +19778,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19790,7 +19790,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19802,7 +19802,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19814,7 +19814,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU16</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19826,7 +19826,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19838,7 +19838,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19850,7 +19850,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19862,7 +19862,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19875,7 +19875,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Finish reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19888,7 +19888,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Read a full struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TR</span>) <span class="SFct">readAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">TR</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TR</span>) <span class="SFct">readAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">TR</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19900,7 +19900,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTypeValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTypeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19912,7 +19912,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19925,7 +19925,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Start reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20025,7 +20025,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20037,7 +20037,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20050,7 +20050,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20062,7 +20062,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20074,7 +20074,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20086,7 +20086,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20099,7 +20099,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20111,7 +20111,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20123,7 +20123,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBool</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20135,7 +20135,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBufferU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBufferU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20147,7 +20147,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20159,7 +20159,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20171,7 +20171,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS16</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">s16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s16</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20183,7 +20183,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20195,7 +20195,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">s64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20207,7 +20207,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">s8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20219,7 +20219,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20231,7 +20231,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU16</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u16</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20243,7 +20243,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20255,7 +20255,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20267,7 +20267,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU8</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20280,7 +20280,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20293,7 +20293,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20306,7 +20306,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a full struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></div>
 <p>Will call <a href="#Core_Serialization_Encoder_start">Encoder.start</a>, <a href="#Core_Serialization_Encoder_writeValue">Encoder.writeValue</a> and <a href="#Core_Serialization_Encoder_end">Encoder.end</a> </p>
 <p>
 <table class="api-item">
@@ -20320,7 +20320,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a given Swag.TypeValue. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeTypeValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeTypeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20333,7 +20333,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a given value with a given type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20800,7 +20800,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20812,7 +20812,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20824,7 +20824,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20836,7 +20836,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20848,7 +20848,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20860,7 +20860,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20872,7 +20872,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20884,7 +20884,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20896,7 +20896,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20908,7 +20908,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20920,7 +20920,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20932,7 +20932,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20944,7 +20944,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20956,7 +20956,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20968,7 +20968,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20980,7 +20980,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20992,7 +20992,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21004,7 +21004,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21016,7 +21016,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21170,7 +21170,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21182,7 +21182,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21194,7 +21194,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21206,7 +21206,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: *<span class="STpe">u8</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: *<span class="STpe">u8</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21218,7 +21218,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21230,7 +21230,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21242,7 +21242,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21254,7 +21254,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21266,7 +21266,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21278,7 +21278,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21290,7 +21290,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21302,7 +21302,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21314,7 +21314,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21326,7 +21326,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21338,7 +21338,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21350,7 +21350,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21362,7 +21362,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21556,7 +21556,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21568,7 +21568,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21580,7 +21580,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21592,7 +21592,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21604,7 +21604,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, structType: <span class="STpe">typeinfo</span>, structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21616,7 +21616,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21628,7 +21628,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21640,7 +21640,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21652,7 +21652,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21664,7 +21664,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21676,7 +21676,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21688,7 +21688,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21700,7 +21700,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21712,7 +21712,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21724,7 +21724,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21736,7 +21736,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readEndTag</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readEndTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21748,7 +21748,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21760,7 +21760,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readStartTag</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readStartTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21772,7 +21772,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTag</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21784,7 +21784,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21796,7 +21796,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21808,7 +21808,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21885,11 +21885,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, *<span class="SCst">MT</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, *<span class="SCst">MT</span>)</span></td>
 <td>Serialize one value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, *<span class="SCst">MT</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, *<span class="SCst">MT</span>)</span></td>
 <td>Serialize one value. </td>
 </tr>
 <tr>
@@ -21913,7 +21913,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start a new section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind = <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>.<span class="SCst">Unordered</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind = <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>.<span class="SCst">Unordered</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21926,7 +21926,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End encoding/decoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21939,7 +21939,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End the previous section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21951,7 +21951,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReading</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReading</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21963,7 +21963,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isWriting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isWriting</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21976,9 +21976,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Serialize one value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, crc32: <span class="STpe">u32</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, name: <span class="STpe">string</span>, crc32: <span class="STpe">u32</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span>
 <span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span></span></div>
+<span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, name: <span class="STpe">string</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21991,7 +21991,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start decoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22004,7 +22004,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start encoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22177,7 +22177,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22189,7 +22189,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22201,7 +22201,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22213,7 +22213,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: <span class="SKwd">const</span> *<span class="STpe">void</span>, _countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: <span class="SKwd">const</span> *<span class="STpe">void</span>, _countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22225,7 +22225,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22237,7 +22237,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22249,7 +22249,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22261,7 +22261,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22273,7 +22273,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22285,7 +22285,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22297,7 +22297,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22309,7 +22309,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22321,7 +22321,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22333,7 +22333,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22345,7 +22345,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeIndent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeIndent</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22357,7 +22357,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">NT</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">NT</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22483,7 +22483,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22495,7 +22495,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22507,7 +22507,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22519,7 +22519,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22531,7 +22531,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22543,7 +22543,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22555,7 +22555,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22567,7 +22567,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22579,7 +22579,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22591,7 +22591,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22603,7 +22603,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22615,7 +22615,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22627,7 +22627,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22639,7 +22639,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22651,7 +22651,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">NT</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">NT</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23124,15 +23124,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Append a slice to the end of this instance. </td>
 </tr>
 <tr>
@@ -23180,15 +23180,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Move a value at the given index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
 <td>Insert a value at the given index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Insert some values at the given index. </td>
 </tr>
 <tr>
@@ -23200,11 +23200,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
 <td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
 </tr>
 <tr>
@@ -23228,11 +23228,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Sort array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
 <td>Sort array. </td>
 </tr>
 <tr>
@@ -23251,11 +23251,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -23271,11 +23271,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -23307,11 +23307,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add a copy of one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Move one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Append a slice to the end of this instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, values: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23324,7 +23324,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add a copy of one element at the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23337,7 +23337,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a copy of the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23350,7 +23350,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the address of the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23363,7 +23363,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set the number of elements to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23376,7 +23376,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given <span class="code-inline">value</span> is in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23389,7 +23389,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Does not initialize them. Returns the address of the first element </p>
 <p>
 <table class="api-item">
@@ -23403,7 +23403,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Move some values at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -23417,7 +23417,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns the address of the first element </p>
 <p>
 <table class="api-item">
@@ -23431,7 +23431,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Free the array content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23444,7 +23444,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a copy of the first element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23457,7 +23457,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the address of the first element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23470,13 +23470,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Insert a value at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
 <p>Move a value at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
 <p>Insert some values at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -23490,7 +23490,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the array is empty. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23503,7 +23503,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initializes an Array that contains values copied from the specified array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, arr: <span class="SKwd">const</span> [..] <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23515,8 +23515,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23528,7 +23528,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23540,7 +23540,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23552,7 +23552,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23564,8 +23564,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
+<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23577,7 +23577,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23589,7 +23589,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SKwd">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23601,7 +23601,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23615,7 +23615,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="api-item">
@@ -23629,7 +23629,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a copy of the last element, and remove it from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23642,9 +23642,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
 <p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23657,7 +23657,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>Order is not preserved </p>
 <p>
 <table class="api-item">
@@ -23671,7 +23671,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>Order is preserved </p>
 <p>
 <table class="api-item">
@@ -23685,7 +23685,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23698,7 +23698,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23711,7 +23711,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Change the number of valid elements in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23724,8 +23724,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Sort array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cb: <span class="SKwd">closure</span>(<span class="SKwd">self</span>.<span class="SCst">T</span>, <span class="SKwd">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
+<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">closure</span>(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23738,7 +23738,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Sort array in reverse order (from biggest to lowest value). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23751,7 +23751,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24034,7 +24034,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>Format is <span class="code-inline">[+][fmt][precision]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
@@ -24105,7 +24105,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
@@ -24271,7 +24271,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendAny</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">any</span>, strFormat: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendAny</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">any</span>, strFormat: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24284,7 +24284,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a end of line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendEOL</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendEOL</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24297,7 +24297,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a formatted string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fmt: <span class="STpe">string</span>, values: ...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fmt: <span class="STpe">string</span>, values: ...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24310,7 +24310,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendRune</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24323,7 +24323,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24336,7 +24336,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Clear the content of the builder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24349,7 +24349,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the number of characters. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24362,7 +24362,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return the content as a string by eating the content of the string builder (if possible). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24375,7 +24375,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set sizes of buckets of the string builder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24388,7 +24388,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return the content as a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24401,7 +24401,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Force a ending 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminated</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24925,15 +24925,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
 <td>Append a rune to the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Append a string to the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
 <td>Append a byte to the String. </td>
 </tr>
 <tr>
@@ -24949,19 +24949,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Set the length of the String to 0. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
 <td>Returns true if the string contains <span class="code-inline">what</span>. </td>
 </tr>
 <tr>
@@ -24977,19 +24977,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Ensure the String is big enough to store a given amount of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="STpe">u64</span>, <span class="SCst">ComparisonType</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">u64</span>, <span class="SCst">ComparisonType</span>)</span></td>
 <td>Find <span class="code-inline">what</span>, and returns the byte index of it. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">string</span>)</span></td>
 <td>Insert a substring at the given position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
 <td>Insert an ascii byte at the given position. </td>
 </tr>
 <tr>
@@ -25029,11 +25029,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Remove some bytes at the end. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">rune</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>, <span class="STpe">string</span>)</span></td>
 <td>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="SCst">ComparisonType</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="SCst">ComparisonType</span>)</span></td>
 <td>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </td>
 </tr>
 <tr>
@@ -25045,7 +25045,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Return true if the string starts with <span class="code-inline">str</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toLower">toLower</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toLower">toLower</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
@@ -25057,11 +25057,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Convert string to a 32 bits character array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
@@ -25069,7 +25069,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns a string type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toUpper">toUpper</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toUpper">toUpper</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
 <td>Returns a new String in upper case. </td>
 </tr>
 <tr>
@@ -25096,39 +25096,39 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -25199,7 +25199,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25212,11 +25212,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a byte to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>Append a rune to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)</span></div>
 <p>Append a string to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25229,7 +25229,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a formatted string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, format: <span class="STpe">string</span>, values: ...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, format: <span class="STpe">string</span>, values: ...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25242,7 +25242,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Get the last byte. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25255,7 +25255,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set the length of the String to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25268,10 +25268,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the string contains <span class="code-inline">what</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25284,7 +25284,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Transform a null string in an empty one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureNotNull</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureNotNull</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25310,7 +25310,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Ensure the String is big enough to store a given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wantedCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, wantedCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25323,8 +25323,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25337,9 +25337,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Insert an ascii byte at the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>Insert a substring at the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25352,7 +25352,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String has zero length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25365,7 +25365,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String is null (undefined). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25378,7 +25378,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String is null or empty. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNullOrEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNullOrEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25417,7 +25417,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert the string inplace to lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLower</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLower</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25430,7 +25430,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert the string inplace to upper case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeUpper</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeUpper</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25442,7 +25442,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25454,12 +25454,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">string</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">string</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">rune</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">string</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25471,9 +25471,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">cstring</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">cstring</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25485,7 +25485,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25497,7 +25497,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25509,7 +25509,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25521,7 +25521,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25533,7 +25533,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25546,7 +25546,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the byte at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25558,7 +25558,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25570,7 +25570,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25582,7 +25582,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25594,7 +25594,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25606,7 +25606,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25620,7 +25620,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Default visit, by bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25634,7 +25634,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String utf8 bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the byte or the pointer to the byte</li>
 <li><span class="code-inline">#alias1</span> will contain the byte index</li>
@@ -25652,7 +25652,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25665,7 +25665,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove some bytes at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, byteIndex: <span class="STpe">u64</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25678,7 +25678,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove some bytes at the end. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25691,8 +25691,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: <span class="STpe">rune</span>, by: <span class="STpe">string</span>)
-<span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what, by: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>, by: <span class="STpe">string</span>)
+<span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what, by: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25705,7 +25705,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reserve room for at least <span class="code-inline">newCapacity</span> bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25718,7 +25718,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return true if the string starts with <span class="code-inline">str</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25731,7 +25731,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a new String in lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLower</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLower</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>
 <span class="SKwd">func</span> <span class="SFct">toLower</span>(str: <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -25745,7 +25745,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert string to a 32 bits character array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25758,8 +25758,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a slice type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="STpe">u8</span>
+<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25772,7 +25772,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a string type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25785,7 +25785,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a new String in upper case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>Returns a new String in lower case. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(str: <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
@@ -25800,7 +25800,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes all leading and trailing white-space characters from the current String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trim</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trim</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25813,7 +25813,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove whitespaces at the end of the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimEnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25826,7 +25826,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove whitespaces at the start of the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimStart</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimStart</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25943,7 +25943,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, manual, initState = <span class="SKwd">false</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, manual, initState = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25956,7 +25956,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the event is valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25968,7 +25968,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25981,7 +25981,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Destroy an existing event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25994,7 +25994,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reset the event state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26007,7 +26007,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Signal the event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26020,7 +26020,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Wait for the event to be signaled. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26066,7 +26066,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26079,7 +26079,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLock</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26092,7 +26092,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26157,7 +26157,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26170,7 +26170,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockExclusive</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26183,7 +26183,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockShared</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26196,7 +26196,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockExclusive</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26209,7 +26209,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockShared</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26221,7 +26221,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26234,7 +26234,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockExclusive</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26247,7 +26247,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockShared</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26440,7 +26440,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize a thread in pause state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lambda: <span class="SKwd">closure</span>(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lambda: <span class="SKwd">closure</span>(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26453,7 +26453,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the thread has finished. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDone</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDone</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26466,7 +26466,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the thread is valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26478,7 +26478,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26491,7 +26491,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Force the thread to safely exist User code needs to check for <span class="code-inline">requestEnd</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeForceEnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeForceEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26504,7 +26504,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set the thread priority. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPriority</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, priority: <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPriority</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, priority: <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26530,7 +26530,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Resume the given thread, if it was paused. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26543,7 +26543,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Wait for the given thread to be done, and close it After that call, isValid() will return false. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26800,7 +26800,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Used when printing a date with <a href="#Core_Format_toString">Core.Format.toString</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">a</span> </td><td> <span class="code-inline">DateTimeFormat.DateTime</span></td></tr>
 <tr><td> <span class="code-inline">b</span> </td><td> <span class="code-inline">DateTimeFormat.DateTimeMs</span></td></tr>
@@ -26827,7 +26827,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26839,7 +26839,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26851,7 +26851,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26863,7 +26863,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26875,7 +26875,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26888,7 +26888,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the day of week of the current date. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26914,7 +26914,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if this is a valid datatime. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26952,7 +26952,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26964,7 +26964,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26990,7 +26990,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize the structure with the current local date and time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27003,7 +27003,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert to string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27163,7 +27163,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, valueMs: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, valueMs: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27175,7 +27175,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27188,7 +27188,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the value in milliseconds. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27259,7 +27259,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Pause frame timing & count. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27272,7 +27272,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Unpause frame timing & count. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unpause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unpause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27285,7 +27285,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Update frame timers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27366,7 +27366,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Gets the total elapsed time in microseconds, after a call to <span class="code-inline">stop</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicroseconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicroseconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27379,7 +27379,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Gets the current elapsed time in milliseconds since the start. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicrosecondsNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicrosecondsNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27392,7 +27392,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Gets the total elapsed time in milliseconds, after a call to <span class="code-inline">stop</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMilliseconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMilliseconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27405,7 +27405,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Gets the current elapsed time in milliseconds since the start. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMillisecondsNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMillisecondsNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27418,7 +27418,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Stops time interval measurement and resets the elapsed time to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27431,7 +27431,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27458,7 +27458,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Starts, or resumes, measuring elapsed time for an interval. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27471,7 +27471,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Stops measuring elapsed time for an interval. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27577,7 +27577,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of days to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addDays</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, days: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addDays</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, days: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27590,7 +27590,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of hours to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHours</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hours: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHours</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hours: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27603,7 +27603,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMilliSeconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, milliSeconds: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMilliSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, milliSeconds: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27616,7 +27616,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMinutes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, minutes: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMinutes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minutes: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27629,7 +27629,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of months to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMonths</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, months: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMonths</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, months: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27642,7 +27642,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, seconds: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seconds: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27655,7 +27655,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Add or remove the given amount of years to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addYears</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, years: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addYears</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, years: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27693,7 +27693,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27706,7 +27706,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize the TimeSpan with the current date and time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27719,7 +27719,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Converts a TimeSpan to a DateTime. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDateTime</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDateTime</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27731,7 +27731,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalDays</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalDays</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27743,7 +27743,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalHours</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalHours</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27755,7 +27755,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMilliSeconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMilliSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27767,7 +27767,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMinutes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMinutes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27779,7 +27779,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalSeconds</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27848,7 +27848,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize timer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, elapsedTimeMs: <span class="STpe">u32</span>, lambda: <span class="SKwd">func</span>(<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>), periodic = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, elapsedTimeMs: <span class="STpe">u32</span>, lambda: <span class="SKwd">func</span>(<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>), periodic = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27861,7 +27861,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Release the timer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28198,11 +28198,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Get a version 4 UUID (random). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
 <td>Convert uuid to a string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="SKwd">self</span>, [..] <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="STpe">self</span>, [..] <span class="STpe">u8</span>)</span></td>
 <td>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </td>
 </tr>
 </table>
@@ -28224,7 +28224,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28236,7 +28236,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28249,7 +28249,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Clear id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28274,7 +28274,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28287,9 +28287,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
 <p>Convert uuid to a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29359,7 +29359,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 22-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

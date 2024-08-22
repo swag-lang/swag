@@ -216,10 +216,11 @@
 <li><a href="#_054_while_swg">While</a></li>
 <li><a href="#_055_switch_swg">Switch</a></li>
 <ul>
-<li><a href="#_055_switch_swg_The_Swag_Complete_attribute">The Swag.Complete attribute</a></li>
-<li><a href="#_055_switch_swg_On_specific_types">On specific types</a></li>
-<li><a href="#_055_switch_swg_On_ranges">On ranges</a></li>
-<li><a href="#_055_switch_swg_Without_an_expression">Without an expression</a></li>
+<li><a href="#_055_switch_swg_The_`Swag_Complete`_Attribute">The `Swag.Complete` Attribute</a></li>
+<li><a href="#_055_switch_swg_Specific_Types">Specific Types</a></li>
+<li><a href="#_055_switch_swg_Using_Ranges">Using Ranges</a></li>
+<li><a href="#_055_switch_swg_The_`where`_clause">The `where` clause</a></li>
+<li><a href="#_055_switch_swg_Switch_Without_an_Expression">Switch Without an Expression</a></li>
 </ul>
 <li><a href="#_056_break_swg">Break</a></li>
 <li><a href="#_060_struct_swg">Struct</a></li>
@@ -2662,8 +2663,8 @@ in
 <p>Note the <span class="code-inline">impl enum</span> syntax. We'll see later that <span class="code-inline">impl</span> is also used for structs. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SKwd">enum</span> <span class="SCst">RGB</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="SKwd">self</span>)       =&gt; <span class="SKwd">self</span> == <span class="SCst">R</span>
-    <span class="SKwd">func</span> <span class="SFct">isRedOrBlue</span>(<span class="SKwd">self</span>) =&gt; <span class="SKwd">self</span> == <span class="SCst">R</span> <span class="SLgc">or</span> <span class="SKwd">self</span> == <span class="SCst">B</span>
+    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="STpe">self</span>)       =&gt; <span class="STpe">self</span> == <span class="SCst">R</span>
+    <span class="SKwd">func</span> <span class="SFct">isRedOrBlue</span>(<span class="STpe">self</span>) =&gt; <span class="STpe">self</span> == <span class="SCst">R</span> <span class="SLgc">or</span> <span class="STpe">self</span> == <span class="SCst">B</span>
 }
 
 <span class="SFct">#test</span>
@@ -3198,114 +3199,145 @@ in
 }</span></div>
 
 <h2 id="_055_switch_swg">Switch</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
-<p><span class="code-inline">switch</span> works like in C/C++, except that no <span class="code-inline">break</span> is necessary (except if the <span class="code-inline">case</span> is empty). That means that there's no automatic <span class="code-inline">fallthrough</span> from one case to another. </p>
+<p>The <span class="code-inline">switch</span> statement in this language is similar to the one in C/C++, with a notable difference: there's no need for an explicit <span class="code-inline">break</span> statement at the end of each <span class="code-inline">case</span> block unless the <span class="code-inline">case</span> is empty. This prevents unintentional <span class="code-inline">fallthrough</span> behavior, where execution would continue from one <span class="code-inline">case</span> to the next without stopping. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
+
+    <span class="SCmt">// The switch statement here checks the value of 'value'.</span>
+    <span class="SCmt">// Depending on the value, it executes the corresponding case.</span>
     <span class="SLgc">switch</span> value
     {
-    <span class="SLgc">case</span> <span class="SNum">0</span>:  <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SNum">5</span>:  <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SNum">6</span>:  <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-    <span class="SLgc">default</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">0</span>:  
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is 0, this assertion fails (test fails).</span>
+    <span class="SLgc">case</span> <span class="SNum">5</span>:  
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is 5, this assertion fails (test fails).</span>
+    <span class="SLgc">case</span> <span class="SNum">6</span>:  
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is 6, this assertion passes (test succeeds).</span>
+    <span class="SLgc">default</span>: 
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value doesn't match any case, this fails (test fails).</span>
     }
 
     <span class="SKwd">let</span> ch = <span class="SStr">`A`</span>'<span class="STpe">rune</span>
+
+    <span class="SCmt">// This switch checks the value of 'ch'.</span>
     <span class="SLgc">switch</span> ch
     {
-    <span class="SLgc">case</span> <span class="SStr">`B`</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SStr">`A`</span>: <span class="SLgc">break</span>
+    <span class="SLgc">case</span> <span class="SStr">`B`</span>:
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If ch is 'B', this fails.</span>
+    <span class="SLgc">case</span> <span class="SStr">`A`</span>: 
+        <span class="SLgc">break</span>           <span class="SCmt">// Exits the switch when 'ch' is 'A'.</span>
     }
 }</span></div>
-<p>You can put multiple values on the same <span class="code-inline">case</span>. </p>
+<p>You can assign multiple values to a single <span class="code-inline">case</span> statement, making it convenient to handle several potential matches with the same block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
+
+    <span class="SCmt">// Here, case 2, 4, and 6 all trigger the same action.</span>
     <span class="SLgc">switch</span> value
     {
-    <span class="SLgc">case</span> <span class="SNum">2</span>, <span class="SNum">4</span>, <span class="SNum">6</span>:   <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-    <span class="SLgc">default</span>:        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">2</span>, <span class="SNum">4</span>, <span class="SNum">6</span>:   
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is 2, 4, or 6, this assertion passes.</span>
+    <span class="SLgc">default</span>:        
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is anything else, this fails.</span>
     }
 
+    <span class="SCmt">// The same concept, but with each value listed on its own line for clarity.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">2</span>,
          <span class="SNum">4</span>,
          <span class="SNum">6</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Matches any of these values.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no case matches.</span>
     }
 }</span></div>
-<p><span class="code-inline">switch</span> works with every types that accept the <span class="code-inline">==</span> operator. So you can use it on strings for example. </p>
+<p>The <span class="code-inline">switch</span> statement can be used with any type that supports the <span class="code-inline">==</span> operator. This includes not only numeric types but also strings, making it versatile for various comparisons. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SStr">"myString"</span>
+
+    <span class="SCmt">// Switch works with strings, too.</span>
     <span class="SLgc">switch</span> value
     {
-    <span class="SLgc">case</span> <span class="SStr">"myString"</span>:    <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-    <span class="SLgc">case</span> <span class="SStr">"otherString"</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">default</span>:            <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SStr">"myString"</span>:    
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is "myString", this passes.</span>
+    <span class="SLgc">case</span> <span class="SStr">"otherString"</span>: 
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is "otherString", this fails.</span>
+    <span class="SLgc">default</span>:            
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value doesn't match any case, this fails.</span>
     }
 }</span></div>
-<p>If you want to pass from one case to another like in C/C++, use <span class="code-inline">fallthrough</span>. </p>
+<p>If you need behavior similar to C/C++ where one <span class="code-inline">case</span> can intentionally "fall through" to the next, you can use the <span class="code-inline">fallthrough</span> keyword. This explicitly tells the compiler to continue execution in the next <span class="code-inline">case</span> block. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
+
+    <span class="SCmt">// Demonstrates fallthrough: execution will continue from case 6 to case 7.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">6</span>:
-        <span class="SLgc">fallthrough</span>
+        <span class="SLgc">fallthrough</span>     <span class="SCmt">// Fall through to the next case, even though value is still 6.</span>
     <span class="SLgc">case</span> <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(value == <span class="SNum">6</span>)
+        <span class="SItr">@assert</span>(value == <span class="SNum">6</span>) <span class="SCmt">// This assertion checks that value is 6, even in case 7.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Default case runs if no other cases match; true assertion keeps the test passing.</span>
     }
 }</span></div>
-<p><span class="code-inline">break</span> can be used to exit the current <span class="code-inline">case</span> statement. </p>
+<p>The <span class="code-inline">break</span> statement can be used to exit a <span class="code-inline">case</span> block early. This is useful if you only want to execute part of a <span class="code-inline">case</span> and then skip the rest of it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
+
+    <span class="SCmt">// This switch demonstrates the use of break to exit early.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">6</span>:
         <span class="SLgc">if</span> value == <span class="SNum">6</span>:
-            <span class="SLgc">break</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+            <span class="SLgc">break</span>       <span class="SCmt">// Exits the switch here if the condition is met.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This will never be reached if value is 6.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This fails if value doesn't match any case.</span>
     }
 }</span></div>
-<p>A <span class="code-inline">case</span> statement cannot be empty. Use <span class="code-inline">break</span> if you want to: nothing. </p>
+<p>A <span class="code-inline">case</span> cannot be left empty. If you need a <span class="code-inline">case</span> to do nothing, use the <span class="code-inline">break</span> statement explicitly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
+
+    <span class="SCmt">// This switch demonstrates handling cases where no action is needed.</span>
     <span class="SLgc">switch</span> value
     {
-    <span class="SLgc">case</span> <span class="SNum">5</span>:     <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SNum">6</span>:     <span class="SLgc">break</span>
-    <span class="SLgc">default</span>:    <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">5</span>:     
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This fails if value is 5.</span>
+    <span class="SLgc">case</span> <span class="SNum">6</span>:     
+        <span class="SLgc">break</span>           <span class="SCmt">// No action taken; exits the switch cleanly.</span>
+    <span class="SLgc">default</span>:    
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if value doesn't match any case.</span>
     }
 }</span></div>
-<p>A <span class="code-inline">case</span> expression doesn't need to be constant. </p>
+<p>A <span class="code-inline">case</span> expression doesn't need to be a constant. You can use variables or even expressions that evaluate at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> test = <span class="SNum">2</span>
     <span class="SKwd">let</span> a = <span class="SNum">0</span>
     <span class="SKwd">let</span> b = <span class="SNum">1</span>
 
+    <span class="SCmt">// This switch demonstrates the flexibility of using variables and expressions.</span>
     <span class="SLgc">switch</span> test
     {
-    <span class="SLgc">case</span> a:     <span class="SCmt">// Test with a variable</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> b:     <span class="SCmt">// Test with a variable</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> b + <span class="SNum">1</span>: <span class="SCmt">// Test with an expression</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+    <span class="SLgc">case</span> a:     <span class="SCmt">// Here, 'a' is a variable, not a constant.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if test is equal to a (which is 0).</span>
+    <span class="SLgc">case</span> b:     <span class="SCmt">// 'b' is another variable.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if test is equal to b (which is 1).</span>
+    <span class="SLgc">case</span> b + <span class="SNum">1</span>: <span class="SCmt">// This case uses an expression.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if test equals 2 (b + 1).</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_The_Swag_Complete_attribute">The Swag.Complete attribute </h3>
-<p><span class="code-inline">switch</span> can be marked with <span class="code-inline">Swag.Complete</span> to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler. </p>
+<h3 id="_055_switch_swg_The_`Swag_Complete`_Attribute">The <span class="code-inline">Swag.Complete</span> Attribute </h3>
+<p>The <span class="code-inline">Swag.Complete</span> attribute ensures that all possible cases in an enum are handled in the <span class="code-inline">switch</span> statement. If any enum value is not covered by a <span class="code-inline">case</span>, the compiler will raise an error, ensuring exhaustive handling of all enum variants. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }
@@ -3314,66 +3346,132 @@ in
     <span class="SAtr">#[Swag.Complete]</span>
     <span class="SLgc">switch</span> color
     {
-    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>:     <span class="SLgc">break</span>
-    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>:   <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Blue</span>:    <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>:     
+        <span class="SLgc">break</span>           <span class="SCmt">// Handle the Red case.</span>
+    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>:   
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if color is Green.</span>
+    <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Blue</span>:    
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if color is Blue.</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_On_specific_types">On specific types </h3>
-<p>When used on a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, the switch is done on the underlying variable type. This is in fact equivalent of calling the <span class="code-inline">@kindof</span> intrinsic. </p>
+<h3 id="_055_switch_swg_Specific_Types">Specific Types </h3>
+<p>When switching on a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, the <span class="code-inline">switch</span> statement matches based on the underlying type of the variable. This behavior is similar to calling the <span class="code-inline">@kindof</span> intrinsic, which retrieves the type of the variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
 
-    <span class="SLgc">switch</span> x    <span class="SCmt">// implicit call of @kindof(x)</span>
+    <span class="SCmt">// This switch is based on the type of 'x'.</span>
+    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly performs @kindof(x) to determine the type of 'x'.</span>
     {
-    <span class="SLgc">case</span> <span class="STpe">string</span>: <span class="SLgc">break</span>
-    <span class="SLgc">default</span>:     <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="STpe">string</span>: 
+        <span class="SLgc">break</span>           <span class="SCmt">// Matches if 'x' is a string.</span>
+    <span class="SLgc">default</span>:     
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if 'x' is not a string.</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_On_ranges">On ranges </h3>
-<p>A <span class="code-inline">switch</span> can also be used with a (constant) <b>range of values</b>. </p>
+<h3 id="_055_switch_swg_Using_Ranges">Using Ranges </h3>
+<p>A <span class="code-inline">switch</span> statement can match against a <b>range of values</b>. This is particularly useful for handling multiple values that fall within a specific range without having to list each one individually. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> success = <span class="SKwd">false</span>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
+
+    <span class="SCmt">// This switch uses ranges to match a group of values.</span>
     <span class="SLgc">switch</span> x
     {
-    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>:  <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">to</span> <span class="SNum">15</span>: success = <span class="SKwd">true</span>
+    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>:  
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if x is between 0 and 5, inclusive.</span>
+    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">to</span> <span class="SNum">15</span>: 
+        success = <span class="SKwd">true</span>  <span class="SCmt">// Succeeds if x is between 6 and 15, inclusive.</span>
     }
 
-    <span class="SItr">@assert</span>(success)
+    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Ensures that the correct case was matched.</span>
 }</span></div>
-<p>If they overlap, the first valid range will be used. </p>
+<p>If ranges overlap, the first valid range that matches will be used, and subsequent ranges are ignored. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> success = <span class="SKwd">false</span>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
+
+    <span class="SCmt">// Demonstrates overlapping ranges and their precedence.</span>
     <span class="SLgc">switch</span> x
     {
-    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">10</span>:    success = <span class="SKwd">true</span>
-    <span class="SLgc">case</span> <span class="SNum">5</span> <span class="SLgc">until</span> <span class="SNum">15</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">10</span>:    
+        success = <span class="SKwd">true</span>  <span class="SCmt">// This case is matched first, and the subsequent case is ignored.</span>
+    <span class="SLgc">case</span> <span class="SNum">5</span> <span class="SLgc">until</span> <span class="SNum">15</span>: 
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This is not reached because the first case matches.</span>
     }
 
-    <span class="SItr">@assert</span>(success)
+    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Confirms that the first range was correctly applied.</span>
 }</span></div>
-<h3 id="_055_switch_swg_Without_an_expression">Without an expression </h3>
-<p>If the switch expression is omitted, then it will behave like a serie of <span class="code-inline">if/else</span>, resolved in order. </p>
+<h3 id="_055_switch_swg_The_`where`_clause">The <span class="code-inline">where</span> clause </h3>
+<p>You can add a <span class="code-inline">where</span> clause to a <span class="code-inline">case</span> in a <span class="code-inline">switch</span> statement. The <span class="code-inline">where</span> clause allows you to add an additional condition that must be satisfied for that <span class="code-inline">case</span> to execute. This provides a finer level of control within your <span class="code-inline">switch</span> statements, enabling more complex decision-making based on multiple variables. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> x = <span class="SNum">6</span>
+    <span class="SKwd">let</span> y = <span class="SNum">10</span>
+
+    <span class="SCmt">// In this switch, each case not only checks the value of 'x',</span>
+    <span class="SCmt">// but also applies an additional condition using 'where'.</span>
+    <span class="SLgc">switch</span> x
+    {
+    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">9</span>:    
+        <span class="SCmt">// This case checks if 'x' is 6 and 'y' is 9.</span>
+        <span class="SCmt">// 'y' is 10 here, so this case is skipped.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>:   
+        <span class="SCmt">// This case checks if 'x' is 6 and 'y' is 10.</span>
+        <span class="SCmt">// Both conditions are true, so this case is executed.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)    <span class="SCmt">// This assertion will pass.</span>
+    <span class="SLgc">default</span>:
+        <span class="SCmt">// This case is a fallback if no other cases match.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed since the second case matches.</span>
+    }
+}</span></div>
+<p>The <span class="code-inline">where</span> clause can also be applied to a <span class="code-inline">default</span> case, providing additional filtering even when no specific <span class="code-inline">case</span> matches. This is particularly useful when you want the <span class="code-inline">default</span> behavior to occur only under certain conditions. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> x = <span class="SNum">7</span>
+    <span class="SKwd">let</span> y = <span class="SNum">10</span>
+
+    <span class="SCmt">// This switch demonstrates how different 'where' clauses can lead to different outcomes.</span>
+    <span class="SLgc">switch</span> x
+    {
+    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>: 
+        <span class="SCmt">// Checks if 'x' is 6 and 'y' is 10.</span>
+        <span class="SCmt">// 'x' is 7 here, so this case is skipped.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+    <span class="SLgc">case</span> <span class="SNum">7</span> <span class="SLgc">where</span> y == <span class="SNum">9</span>:  
+        <span class="SCmt">// Checks if 'x' is 7 and 'y' is 9.</span>
+        <span class="SCmt">// 'y' is 10 here, so this case is also skipped.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+    <span class="SLgc">default</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>: 
+        <span class="SCmt">// This default case includes a 'where' clause.</span>
+        <span class="SCmt">// If 'x' didn't match any previous case and 'y' is 10, this case is executed.</span>
+        <span class="SLgc">break</span>            <span class="SCmt">// This will execute since 'y' is 10.</span>
+    <span class="SLgc">default</span>:
+        <span class="SCmt">// A general fallback default case.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed since the previous default matched.</span>
+    }
+}</span></div>
+<h3 id="_055_switch_swg_Switch_Without_an_Expression">Switch Without an Expression </h3>
+<p>If no expression is provided in the <span class="code-inline">switch</span> statement, it behaves like a series of <span class="code-inline">if/else</span> statements. Each <span class="code-inline">case</span> is evaluated in order, and the first one that evaluates to <span class="code-inline">true</span> is executed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
     <span class="SKwd">let</span> value1 = <span class="SStr">"true"</span>
 
+    <span class="SCmt">// Demonstrates a switch statement without an expression.</span>
+    <span class="SCmt">// This works like an if-else chain.</span>
     <span class="SLgc">switch</span>
     {
     <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value == <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-        <span class="SLgc">fallthrough</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if value is 6 or 7.</span>
+        <span class="SLgc">fallthrough</span>     <span class="SCmt">// Continues to the next case regardless.</span>
     <span class="SLgc">case</span> value1 == <span class="SStr">"true"</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if value1 is "true".</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no previous case was matched.</span>
     }
 }</span></div>
 
@@ -3645,8 +3743,8 @@ in
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SCmt">// 'self' is an alias for 'var self: Self'</span>
-    <span class="SKwd">func</span> <span class="SFct">returnX</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) =&gt; x
-    <span class="SKwd">func</span> <span class="SFct">returnY</span>(<span class="SKwd">self</span>)       =&gt; <span class="SKwd">self</span>.y
+    <span class="SKwd">func</span> <span class="SFct">returnX</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) =&gt; x
+    <span class="SKwd">func</span> <span class="SFct">returnY</span>(<span class="STpe">self</span>)       =&gt; <span class="STpe">self</span>.y
 
     <span class="SCmt">// 'Self' is the corresponding type, in that case 'MyStruct'</span>
     <span class="SKwd">func</span> <span class="SFct">returnZ</span>(me: <span class="STpe">Self</span>) =&gt; me.z
@@ -3655,7 +3753,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SKwd">mtd</span> <span class="SFct">methodReturnX</span>()          =&gt; x
-    <span class="SKwd">func</span> <span class="SFct">funcReturnX</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) =&gt; x
+    <span class="SKwd">func</span> <span class="SFct">funcReturnX</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) =&gt; x
 }
 
 <span class="SFct">#test</span>
@@ -3716,114 +3814,114 @@ in
 {
     <span class="SCmt">// Called each time a variable needs to be dropped</span>
     <span class="SCmt">// This is the destructor in C++</span>
-    <span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
 
     <span class="SCmt">// Called after a raw copy operation from one value to another</span>
-    <span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
 
     <span class="SCmt">// Called after a move semantic operation from one value to another. We'll see that later.</span>
-    <span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
 
     <span class="SCmt">// Get value by slice [low..up]</span>
     <span class="SCmt">// Must return a string or a slice</span>
-    <span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, low, up: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span> { <span class="SLgc">return</span> <span class="SStr">"true"</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, low, up: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span> { <span class="SLgc">return</span> <span class="SStr">"true"</span>; }
 
     <span class="SCmt">// Get value by index</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
 
     <span class="SCmt">// Called by @countof</span>
     <span class="SCmt">// Use in a 'loop' block for example</span>
-    <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
     <span class="SCmt">// Called by @dataof</span>
-    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
 
     <span class="SCmt">// Called for explicit/implicit casting between struct value and return type</span>
     <span class="SCmt">// Can be overloaded by a different return type</span>
     <span class="SCmt">// Example: var x = cast(OneType) v</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">OneType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">OneType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">AnotherType</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">AnotherType</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called to compare the struct value with something else</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Returns true if they are equal, otherwise returns false</span>
     <span class="SCmt">// Called by '==', '!='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
 
     <span class="SCmt">// Called to compare the struct value with something else</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Returns -1, 0 or 1</span>
     <span class="SCmt">// Called by '&lt;', '&gt;', '&lt;=', '&gt;=', '&lt;=&gt;'</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Affect struct with another value</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Called by '='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect struct with a literal value with a specified suffix</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect struct with another value at a given index</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Called by '[] ='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Binary operator. 'op' generic argument contains the operator string</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+', '-', '*', '/', '%', '|', '&', '^', '&lt;&lt;', '&gt;&gt;'</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Unary operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function</span>
     <span class="SCmt">// Called by '!', '-', '~'</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Affect operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Called by a 'visit' block</span>
     <span class="SCmt">// Can have multiple versions, by adding a name after 'opVisit'</span>
     <span class="SCmt">// This is the way to go for iterators</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
     }
 }</span></div>
 
@@ -4062,7 +4160,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
     {
         <span class="SCmt">// 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.</span>
         <span class="SCmt">// We: not use it in this example, so we check at compile time that it's not true.</span>
@@ -4089,11 +4187,11 @@ in
                 <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x <span class="SCmt">// Same for function parameter 'self'</span>
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x <span class="SCmt">// Same for function parameter 'self'</span>
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z
                 }
 
                 <span class="SCmt">// #alias1 will be the index</span>
@@ -4149,11 +4247,11 @@ in
                 <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.z
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.y
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="SKwd">self</span>.x
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x
                 }
 
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
@@ -4368,7 +4466,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">IReset</span>
 {
     <span class="SCmt">// The first parameter must be 'self'</span>
-    <span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">self</span>, val: <span class="STpe">f32</span>);
+    <span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">self</span>, val: <span class="STpe">f32</span>);
 
     <span class="SCmt">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span>
     <span class="SKwd">mtd</span> <span class="SFct">reset</span>();
@@ -4384,9 +4482,9 @@ in
     }
 
     <span class="SCmt">// Don't forget that 'mtd' is just syntaxic sugar. 'func' still works.</span>
-    <span class="SKwd">func</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>(<span class="SKwd">self</span>)
+    <span class="SKwd">func</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>(<span class="STpe">self</span>)
     {
-        <span class="SKwd">self</span>.x, <span class="SKwd">self</span>.y = <span class="SNum">0</span>
+        <span class="STpe">self</span>.x, <span class="STpe">self</span>.y = <span class="SNum">0</span>
     }
 
     <span class="SCmt">// Not that you can also declare 'normal' functions or methods in an 'impl block'.</span>
@@ -7630,7 +7728,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation_md__231_003_Pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 22-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

@@ -3255,7 +3255,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3267,7 +3267,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3279,7 +3279,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseLast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseLast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3291,7 +3291,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3304,7 +3304,7 @@
 </table>
 </p>
 <p>This function will assert if the given user address is not conform to an allocated block. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, addr: *<span class="STpe">void</span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3317,7 +3317,7 @@
 </table>
 </p>
 <p>Check all allocated blocks. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkAllMemory</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkAllMemory</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3329,7 +3329,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3341,7 +3341,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3365,7 +3365,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3390,7 +3390,7 @@
 </table>
 </p>
 <p>Output to the console the list of all allocated blocks (leaks). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printLeaks</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printLeaks</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3403,7 +3403,7 @@
 </table>
 </p>
 <p>Setup the allocator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4301,7 +4301,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4313,7 +4313,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4325,7 +4325,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4379,7 +4379,7 @@
 </table>
 </p>
 <p>Allocate a block. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u64</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>)-&gt;*<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>)-&gt;*<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4392,7 +4392,7 @@
 </table>
 </p>
 <p>Free a block, if possible. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, addr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4405,7 +4405,7 @@
 </table>
 </p>
 <p>Release all memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freeAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freeAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4418,7 +4418,7 @@
 </table>
 </p>
 <p>Release the allocated block. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4431,7 +4431,7 @@
 </table>
 </p>
 <p>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must be called at an early stage. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4520,7 +4520,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, request: *<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5417,7 +5417,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 18-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 22-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
