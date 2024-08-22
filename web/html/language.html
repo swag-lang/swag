@@ -132,10 +132,24 @@
 <li><a href="#_007_global_declaration_order_swg">Global declaration order</a></li>
 <li><a href="#_010_basic_types_swg">Basic types</a></li>
 <ul>
+<li><a href="#_010_basic_types_swg_Signed_Integers">Signed Integers</a></li>
+<li><a href="#_010_basic_types_swg_Unsigned_Integers">Unsigned Integers</a></li>
+<li><a href="#_010_basic_types_swg_Floating-Point_Types">Floating-Point Types</a></li>
+<li><a href="#_010_basic_types_swg_Boolean_Type">Boolean Type</a></li>
+<li><a href="#_010_basic_types_swg_String_Type">String Type</a></li>
+<li><a href="#_010_basic_types_swg_Rune_Type">Rune Type</a></li>
 <li><a href="#_010_basic_types_swg_Type_Reflection">Type Reflection</a></li>
+<li><a href="#_010_basic_types_swg_Type_Creation_with_@decltype">Type Creation with @decltype</a></li>
+<li><a href="#_010_basic_types_swg_Types_as_Values">Types as Values</a></li>
 </ul>
 <li><a href="#_011_number_literals_swg">Number literals</a></li>
 <ul>
+<li><a href="#_011_number_literals_swg_Number_Representations">Number Representations</a></li>
+<li><a href="#_011_number_literals_swg_Digit_Separators">Digit Separators</a></li>
+<li><a href="#_011_number_literals_swg_Default_Integer_Types">Default Integer Types</a></li>
+<li><a href="#_011_number_literals_swg_Booleans">Booleans</a></li>
+<li><a href="#_011_number_literals_swg_Floating_Point_Values">Floating Point Values</a></li>
+<li><a href="#_011_number_literals_swg_Default_Floating_Point_Type">Default Floating Point Type</a></li>
 <li><a href="#_011_number_literals_swg_Suffix">Suffix</a></li>
 </ul>
 <li><a href="#_012_string_swg">String</a></li>
@@ -158,9 +172,28 @@
 </ul>
 <li><a href="#_013_variables_swg">Variables</a></li>
 <ul>
-<li><a href="#_013_variables_swg_Special_variables">Special variables</a></li>
+<li><a href="#_013_variables_swg_Variable_Declaration">Variable Declaration</a></li>
+<li><a href="#_013_variables_swg_Multiple_Variable_Declarations">Multiple Variable Declarations</a></li>
+<li><a href="#_013_variables_swg_Default_Initialization">Default Initialization</a></li>
+<li><a href="#_013_variables_swg_Uninitialized_Variables">Uninitialized Variables</a></li>
+<li><a href="#_013_variables_swg_Type_Inference">Type Inference</a></li>
+<li><a href="#_013_variables_swg_Special_Variables">Special Variables</a></li>
+<ul>
+<li><a href="#_013_variables_swg_Special_Variables_Thread-Local_Storage">Thread-Local Storage</a></li>
+<li><a href="#_013_variables_swg_Special_Variables_Global_Variables">Global Variables</a></li>
+<li><a href="#_013_variables_swg_Special_Variables_Compile-Time_Variables">Compile-Time Variables</a></li>
+</ul>
 </ul>
 <li><a href="#_014_const_swg">Const</a></li>
+<ul>
+<li><a href="#_014_const_swg_Constants_with_`const`">Constants with `const`</a></li>
+<li><a href="#_014_const_swg_Constants_with_Complex_Types">Constants with Complex Types</a></li>
+<ul>
+<li><a href="#_014_const_swg_Constants_with_Complex_Types_Static_Arrays">Static Arrays</a></li>
+<li><a href="#_014_const_swg_Constants_with_Complex_Types_Multidimensional_Arrays">Multidimensional Arrays</a></li>
+</ul>
+<li><a href="#_014_const_swg_Key_Difference_Between_`let`_and_`const`">Key Difference Between `let` and `const`</a></li>
+</ul>
 <li><a href="#_015_operators_swg">Operators</a></li>
 <ul>
 <li><a href="#_015_operators_swg_Arithmetic_operators">Arithmetic operators</a></li>
@@ -998,7 +1031,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">functionDeclaredLater</span>() {}</span></div>
 <p>Note that the order of declarations is not only irrelevant within the same file but also across multiple files. For example, you can call a function in one file and define it in another. The global order of declarations does not matter! </p>
 
-<h2 id="_010_basic_types_swg">Basic types</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
+<h2 id="_010_basic_types_swg">Basic types</h2><h3 id="_010_basic_types_swg_Signed_Integers">Signed Integers </h3>
 <p>Swag provides various signed integer types: <span class="code-inline">s8</span>, <span class="code-inline">s16</span>, <span class="code-inline">s32</span>, and <span class="code-inline">s64</span>. These types represent signed integers with different bit widths. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1007,19 +1040,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> c: <span class="STpe">s32</span> = -<span class="SNum">3</span>     <span class="SCmt">// 32-bit signed integer</span>
     <span class="SKwd">let</span> d: <span class="STpe">s64</span> = -<span class="SNum">4</span>     <span class="SCmt">// 64-bit signed integer</span>
 
-    <span class="SCmt">// The '@assert' intrinsic checks that the following conditions hold true.</span>
-    <span class="SCmt">// If any of these conditions is false, an error will be raised at runtime.</span>
     <span class="SItr">@assert</span>(a == -<span class="SNum">1</span>)    <span class="SCmt">// Verifies that 'a' holds the value -1.</span>
     <span class="SItr">@assert</span>(b == -<span class="SNum">2</span>)    <span class="SCmt">// Verifies that 'b' holds the value -2.</span>
     <span class="SItr">@assert</span>(c == -<span class="SNum">3</span>)    <span class="SCmt">// Verifies that 'c' holds the value -3.</span>
     <span class="SItr">@assert</span>(d == -<span class="SNum">4</span>)    <span class="SCmt">// Verifies that 'd' holds the value -4.</span>
 
-    <span class="SCmt">// The '@sizeof' intrinsic returns the size of a variable in bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>) <span class="SCmt">// 'a' is an s8, so its size is 1 byte.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">2</span>) <span class="SCmt">// 'b' is an s16, so its size is 2 bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(c) == <span class="SNum">4</span>) <span class="SCmt">// 'c' is an s32, so its size is 4 bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(d) == <span class="SNum">8</span>) <span class="SCmt">// 'd' is an s64, so its size is 8 bytes.</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_Unsigned_Integers">Unsigned Integers </h3>
 <p>Swag also supports various unsigned integer types: <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span>, and <span class="code-inline">u64</span>. These types represent unsigned integers with different bit widths. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1038,6 +1069,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(c) == <span class="SNum">4</span>) <span class="SCmt">// 'c' is a u32, so its size is 4 bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(d) == <span class="SNum">8</span>) <span class="SCmt">// 'd' is a u64, so its size is 8 bytes.</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_Floating-Point_Types">Floating-Point Types </h3>
 <p>Swag supports floating-point types <span class="code-inline">f32</span> and <span class="code-inline">f64</span>. These types represent single-precision and double-precision floating-point numbers, respectively. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1050,6 +1082,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">4</span>) <span class="SCmt">// 'a' is an f32, so its size is 4 bytes.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">8</span>) <span class="SCmt">// 'b' is an f64, so its size is 8 bytes.</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_Boolean_Type">Boolean Type </h3>
 <p>The boolean type <span class="code-inline">bool</span> is used to represent true or false values. In Swag, a boolean is stored as a 1-byte value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1062,6 +1095,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>) <span class="SCmt">// The size of a boolean is 1 byte.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">1</span>) <span class="SCmt">// The size of a boolean is 1 byte.</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_String_Type">String Type </h3>
 <p>The <span class="code-inline">string</span> type represents text. In Swag, strings are <b>UTF-8</b> encoded and are stored as two 64-bit values (one for the pointer to the data and one for the length in bytes). Note that a string literal also ends with a null byte, similar to C strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1070,6 +1104,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SStr">"string 是"</span>)   <span class="SCmt">// Verifies that 'a' holds the correct string.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>)) <span class="SCmt">// A string is stored as two 64-bit values (pointer and length).</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_Rune_Type">Rune Type </h3>
 <p>The <span class="code-inline">rune</span> type in Swag represents a 32-bit Unicode code point. It is used to store individual Unicode characters. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1080,37 +1115,34 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h3 id="_010_basic_types_swg_Type_Reflection">Type Reflection </h3>
 <p>Swag supports <b>type reflection</b> both at <b>compile time</b> and at <b>runtime</b>. This powerful feature allows the inspection and manipulation of types dynamically. More details on this will be provided later. </p>
+<h3 id="_010_basic_types_swg_Type_Creation_with_@decltype">Type Creation with @decltype </h3>
 <p>You can use <span class="code-inline">@decltype</span> to create a type based on an expression. This is useful for cases where you want to infer or mirror the type of a variable dynamically. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a  = <span class="SNum">0</span>                  <span class="SCmt">// The type of 'a' is inferred to be 's32'.</span>
     <span class="SKwd">let</span> b: <span class="SItr">@decltype</span>(a) = <span class="SNum">1</span>     <span class="SCmt">// 'b' is declared with the same type as 'a' (which is 's32').</span>
 
-    <span class="SCmt">// '@typeof' is used to check the type of a variable.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(b)) <span class="SCmt">// Verifies that 'a' and 'b' have the same type.</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(a) == <span class="STpe">s32</span>)        <span class="SCmt">// Verifies that the type of 'a' is 's32'.</span>
 
-    <span class="SCmt">// Since the types of 'a' and 'b' are known at compile time, we can use '#assert' for compile-time validation.</span>
-    <span class="SCmt">// '#assert' checks the condition during compilation and does not generate runtime code.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(b)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(b)  <span class="SCmt">// Compile-time validation using '#assert'.</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">s32</span>
 }</span></div>
+<h3 id="_010_basic_types_swg_Types_as_Values">Types as Values </h3>
 <p>Types in Swag are also treated as values, both at compile time and at runtime. This allows types to be manipulated, compared, and inspected just like any other value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SItr">@typeof</span>(<span class="STpe">s32</span>) <span class="SCmt">// 'x' is now a variable that holds a type (in this case, 's32').</span>
     <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)    <span class="SCmt">// Verifies that 'x' is equal to the type 's32'.</span>
 
-    <span class="SCmt">// Types in Swag are predefined structs with fields that can be inspected.</span>
-    <span class="SCmt">// For example, you can retrieve the name of the type.</span>
     <span class="SItr">@assert</span>(x.name == <span class="SStr">"s32"</span>) <span class="SCmt">// Retrieves and verifies the name of the type 's32'.</span>
 
-    <span class="SCmt">// '@typeof' is often unnecessary when there is no ambiguity in the expression.</span>
     <span class="SKwd">let</span> y = <span class="STpe">bool</span>
     <span class="SItr">@assert</span>(y == <span class="STpe">bool</span>)       <span class="SCmt">// Verifies that 'y' holds the type 'bool'.</span>
 }</span></div>
 
-<h2 id="_011_number_literals_swg">Number literals</h2><p>In Swag, integers can be written in <i>decimal</i>, <i>hexadecimal</i>, or <i>binary</i> forms. These different representations allow you to express numbers in the format that best suits your needs. </p>
+<h2 id="_011_number_literals_swg">Number literals</h2><h3 id="_011_number_literals_swg_Number_Representations">Number Representations </h3>
+<p>In Swag, integers can be written in <i>decimal</i>, <i>hexadecimal</i>, or <i>binary</i> forms. These different representations allow you to express numbers in the format that best suits your needs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a: <span class="STpe">u32</span> = <span class="SNum">123456</span>         <span class="SCmt">// Decimal format</span>
@@ -1121,6 +1153,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(b == <span class="SNum">65535</span>)           <span class="SCmt">// Verifies that 'b' holds the correct hexadecimal value</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">15</span>)              <span class="SCmt">// Verifies that 'c' holds the correct binary value</span>
 }</span></div>
+<h3 id="_011_number_literals_swg_Digit_Separators">Digit Separators </h3>
 <p>You can separate digits within numeric literals using the <span class="code-inline">_</span> character for better readability, especially with large numbers. This does not affect the value of the number. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1132,6 +1165,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(b == <span class="SNum">65535</span>)            <span class="SCmt">// Verifies that 'b' holds the correct value</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">15</span>)               <span class="SCmt">// Verifies that 'c' holds the correct value</span>
 }</span></div>
+<h3 id="_011_number_literals_swg_Default_Integer_Types">Default Integer Types </h3>
 <p>The default type of a hexadecimal or binary number in Swag is <span class="code-inline">u32</span> if it fits within 32 bits. If the value exceeds 32 bits, the type is automatically inferred as <span class="code-inline">u64</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1150,6 +1184,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> d = <span class="SNum">0b00000001_00000001_00000001_00000001_00000001</span>  <span class="SCmt">// Binary value that exceeds 32 bits</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">u64</span>      <span class="SCmt">// Verifies that 'd' is of type 'u64'</span>
 }</span></div>
+<h3 id="_011_number_literals_swg_Booleans">Booleans </h3>
 <p>A boolean in Swag can be either <span class="code-inline">true</span> or <span class="code-inline">false</span>. Since constants are known at compile time, we can use <span class="code-inline">#assert</span> to check their values directly during compilation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1160,6 +1195,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> b == <span class="SKwd">false</span>             <span class="SCmt">// Compile-time check that 'b' is false</span>
     <span class="SCmp">#assert</span> c == <span class="SKwd">false</span>             <span class="SCmt">// Compile-time check that 'c' is false</span>
 }</span></div>
+<h3 id="_011_number_literals_swg_Floating_Point_Values">Floating Point Values </h3>
 <p>Floating point values in Swag follow the standard C/C++ notation for floating-point literals. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1179,7 +1215,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> e = -<span class="SNum">1E-1</span>
     <span class="SItr">@assert</span>(e == -<span class="SNum">0.1</span>)             <span class="SCmt">// Verifies that 'e' holds the value -0.1</span>
 }</span></div>
-<p>By default, floating point literals in Swag are of type <span class="code-inline">f32</span>, unlike in C/C++, where they default to <span class="code-inline">double</span> (<span class="code-inline">f64</span>).  </p>
+<h3 id="_011_number_literals_swg_Default_Floating_Point_Type">Default Floating Point Type </h3>
+<p>By default, floating point literals in Swag are of type <span class="code-inline">f32</span>, unlike in C/C++, where they default to <span class="code-inline">double</span> (<span class="code-inline">f64</span>). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a = <span class="SNum">1.5</span>
@@ -1431,7 +1468,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@nameof</span>(<span class="SCst">X</span>) == <span class="SStr">"X"</span>
 }</span></div>
 
-<h2 id="_013_variables_swg">Variables</h2><p>To declare a variable in Swag, you use the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and then the type. </p>
+<h2 id="_013_variables_swg">Variables</h2><h3 id="_013_variables_swg_Variable_Declaration">Variable Declaration </h3>
+<p>To declare a variable in Swag, you use the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and then the type. </p>
 <p>- <span class="code-inline">let</span> is used for a variable that cannot be changed after its initial assignment. It's immutable. - <span class="code-inline">var</span> is used for a variable that can be changed after its initial assignment. It's mutable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1448,6 +1486,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     c += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">43</span>)  <span class="SCmt">// Verifies that 'c' has been correctly incremented.</span>
 }</span></div>
+<h3 id="_013_variables_swg_Multiple_Variable_Declarations">Multiple Variable Declarations </h3>
 <p>We can also declare multiple variables on the same line. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1462,6 +1501,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)
     <span class="SItr">@assert</span>(b == <span class="SNum">1.5</span>)
 }</span></div>
+<h3 id="_013_variables_swg_Default_Initialization">Default Initialization </h3>
 <p>If you don't assign an initial value, the variable will be automatically initialized with its default value. Therefore, a variable in Swag is <b>always</b> initialized. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1474,12 +1514,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> c: <span class="STpe">f64</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">0</span>)  <span class="SCmt">// The default value for a floating-point number is 0.</span>
 }</span></div>
+<h3 id="_013_variables_swg_Uninitialized_Variables">Uninitialized Variables </h3>
 <p>However, if you want a variable to remain uninitialized (and avoid the cost of initialization), you can assign it <span class="code-inline">undefined</span>. This should be used with caution as it leaves the variable in an undefined state. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a: <span class="STpe">bool</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'a' is left uninitialized.</span>
     <span class="SKwd">var</span> b: <span class="STpe">string</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'b' is left uninitialized.</span>
 }</span></div>
+<h3 id="_013_variables_swg_Type_Inference">Type Inference </h3>
 <p>As we have seen, the type in a declaration is optional if it can be deduced from the assigned value. This feature is known as <b>type inference</b>. </p>
 <p>Here are some examples of <b>type inference</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1511,10 +1553,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f32</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">string</span>
 }</span></div>
-<h3 id="_013_variables_swg_Special_variables">Special variables </h3>
+<h3 id="_013_variables_swg_Special_Variables">Special Variables </h3>
+<p>Swag provides special keywords and attributes to manage variable storage and behavior beyond the typical scope. </p>
+<h4 id="_013_variables_swg_Special_Variables_Thread-Local_Storage">Thread-Local Storage </h4>
 <p>A global variable can be tagged with <span class="code-inline">#[Swag.Tls]</span> to store it in thread-local storage, meaning each thread will have its own copy of the variable. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
 <span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G' is a global variable with thread-local storage.</span></span></div>
+<h4 id="_013_variables_swg_Special_Variables_Global_Variables">Global Variables </h4>
 <p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global, similar to the <span class="code-inline">static</span> keyword in C/C++. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1531,6 +1576,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">2</span>)  <span class="SCmt">// Second call increments G1 to 2.</span>
     <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)  <span class="SCmt">// Third call increments G1 to 3.</span>
 }</span></div>
+<h4 id="_013_variables_swg_Special_Variables_Compile-Time_Variables">Compile-Time Variables </h4>
 <p>A global variable can also be marked with <span class="code-inline">#[Swag.Compiler]</span>. Such variables are only accessible during compile-time and are not included in the runtime code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
 <span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G2' is a compile-time only variable.</span>
@@ -1540,7 +1586,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">G2</span> += <span class="SNum">5</span>  <span class="SCmt">// This increment happens at compile-time.</span>
 }</span></div>
 
-<h2 id="_014_const_swg">Const</h2><p>If you use <span class="code-inline">const</span> instead of <span class="code-inline">var</span> or <span class="code-inline">let</span>, the value must be <b>known by the compiler</b> at compile time. This means that the value of a <span class="code-inline">const</span> is evaluated during compilation, and there's no runtime memory footprint for simple types like integers or strings. The compiler simply replaces the use of these constants with their values wherever they are used in the code. </p>
+<h2 id="_014_const_swg">Const</h2><h3 id="_014_const_swg_Constants_with_`const`">Constants with <span class="code-inline">const</span> </h3>
+<p>If you use <span class="code-inline">const</span> instead of <span class="code-inline">var</span> or <span class="code-inline">let</span>, the value must be <b>known by the compiler</b> at compile time. This means that the value of a <span class="code-inline">const</span> is evaluated during compilation, and there's no runtime memory footprint for simple types like integers or strings. The compiler simply replaces the use of these constants with their values wherever they are used in the code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// These are constants, not variables. Once declared, they cannot be modified.</span>
@@ -1550,7 +1597,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> b: <span class="STpe">string</span> = <span class="SStr">"string"</span>  <span class="SCmt">// 'b' is a constant string known at compile time.</span>
     <span class="SCmp">#assert</span> b == <span class="SStr">"string"</span>
 }</span></div>
+<h3 id="_014_const_swg_Constants_with_Complex_Types">Constants with Complex Types </h3>
 <p>Constants in Swag can also have more complex types, such as arrays or structures. In such cases, there is a memory footprint because these constants are stored in the data segment of the program. This also means that you can take the address of these constants at runtime. </p>
+<h4 id="_014_const_swg_Constants_with_Complex_Types_Static_Arrays">Static Arrays </h4>
 <p>This is our first static array. It contains 3 elements, and the type of the elements is <span class="code-inline">s32</span> (signed 32-bit integer). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1565,15 +1614,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> a[<span class="SNum">1</span>] == <span class="SNum">1</span>
     <span class="SCmp">#assert</span> a[<span class="SNum">2</span>] == <span class="SNum">2</span>
 }</span></div>
+<h4 id="_014_const_swg_Constants_with_Complex_Types_Multidimensional_Arrays">Multidimensional Arrays </h4>
 <p>Here is an example of a multidimensional array declared as a constant. We will cover arrays in more detail later. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">M4x4</span>: [<span class="SNum">4</span>, <span class="SNum">4</span>] <span class="STpe">f32</span> = [
-    [<span class="SNum">1</span>, <span class="SNum">0</span>, <span class="SNum">0</span>, <span class="SNum">0</span>],  <span class="SCmt">// First row</span>
+    <span class="SKwd">const</span> <span class="SCst">M4x4</span>: [<span class="SNum">4</span>, <span class="SNum">4</span>] <span class="STpe">f32</span> = [    [<span class="SNum">1</span>, <span class="SNum">0</span>, <span class="SNum">0</span>, <span class="SNum">0</span>],  <span class="SCmt">// First row</span>
     [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">0</span>, <span class="SNum">0</span>],  <span class="SCmt">// Second row</span>
     [<span class="SNum">0</span>, <span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">0</span>],  <span class="SCmt">// Third row</span>
     [<span class="SNum">0</span>, <span class="SNum">0</span>, <span class="SNum">0</span>, <span class="SNum">1</span>]]  <span class="SCmt">// Fourth row</span>
 }</span></div>
+<h3 id="_014_const_swg_Key_Difference_Between_`let`_and_`const`">Key Difference Between <span class="code-inline">let</span> and <span class="code-inline">const</span> </h3>
 <p>The key difference between <span class="code-inline">let</span> and <span class="code-inline">const</span> is that the value of a <span class="code-inline">const</span> must be known at compile time, whereas the value of a <span class="code-inline">let</span> can be determined dynamically at runtime. However, both <span class="code-inline">let</span> and <span class="code-inline">const</span> require that the variable or constant is assigned exactly once and cannot be reassigned. </p>
 
 <h2 id="_015_operators_swg">Operators</h2><p>These are all the Swag operators that can be used to manipulate variables and values. </p>

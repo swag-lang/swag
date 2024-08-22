@@ -1,4 +1,5 @@
 /**
+# Constants with `const`
 If you use `const` instead of `var` or `let`, the value must be **known by the compiler** at compile time. This means that the value of a `const` is evaluated during compilation, and there's no runtime memory footprint for simple types like integers or strings. The compiler simply replaces the use of these constants with their values wherever they are used in the code.
 */
 
@@ -13,10 +14,12 @@ If you use `const` instead of `var` or `let`, the value must be **known by the c
 }
 
 /**
+# Constants with Complex Types
 Constants in Swag can also have more complex types, such as arrays or structures. In such cases, there is a memory footprint because these constants are stored in the data segment of the program. This also means that you can take the address of these constants at runtime.
 */
 
 /**
+## Static Arrays
 This is our first static array. It contains 3 elements, and the type of the elements is `s32` (signed 32-bit integer).
 */
 #test
@@ -34,17 +37,18 @@ This is our first static array. It contains 3 elements, and the type of the elem
 }
 
 /**
+## Multidimensional Arrays
 Here is an example of a multidimensional array declared as a constant. We will cover arrays in more detail later.
 */
 #test
 {
-    const M4x4: [4, 4] f32 = [
-    [1, 0, 0, 0],  // First row
+    const M4x4: [4, 4] f32 = [    [1, 0, 0, 0],  // First row
     [0, 1, 0, 0],  // Second row
     [0, 0, 1, 0],  // Third row
     [0, 0, 0, 1]]  // Fourth row
 }
 
 /**
+# Key Difference Between `let` and `const`
 The key difference between `let` and `const` is that the value of a `const` must be known at compile time, whereas the value of a `let` can be determined dynamically at runtime. However, both `let` and `const` require that the variable or constant is assigned exactly once and cannot be reassigned.
 */

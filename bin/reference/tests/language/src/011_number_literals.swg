@@ -1,4 +1,5 @@
 /**
+# Number Representations
 In Swag, integers can be written in *decimal*, *hexadecimal*, or *binary* forms. These different representations allow you to express numbers in the format that best suits your needs.
 */
 #test
@@ -13,6 +14,7 @@ In Swag, integers can be written in *decimal*, *hexadecimal*, or *binary* forms.
 }
 
 /**
+# Digit Separators
 You can separate digits within numeric literals using the `_` character for better readability, especially with large numbers. This does not affect the value of the number.
 */
 #test
@@ -27,6 +29,7 @@ You can separate digits within numeric literals using the `_` character for bett
 }
 
 /**
+# Default Integer Types
 The default type of a hexadecimal or binary number in Swag is `u32` if it fits within 32 bits. If the value exceeds 32 bits, the type is automatically inferred as `u64`.
 */
 #test
@@ -48,6 +51,7 @@ The default type of a hexadecimal or binary number in Swag is `u32` if it fits w
 }
 
 /**
+# Booleans
 A boolean in Swag can be either `true` or `false`. Since constants are known at compile time, we can use `#assert` to check their values directly during compilation.
 */
 #test
@@ -61,6 +65,7 @@ A boolean in Swag can be either `true` or `false`. Since constants are known at 
 }
 
 /**
+# Floating Point Values
 Floating point values in Swag follow the standard C/C++ notation for floating-point literals.
 */
 #test
@@ -83,7 +88,8 @@ Floating point values in Swag follow the standard C/C++ notation for floating-po
 }
 
 /**
-By default, floating point literals in Swag are of type `f32`, unlike in C/C++, where they default to `double` (`f64`). 
+# Default Floating Point Type
+By default, floating point literals in Swag are of type `f32`, unlike in C/C++, where they default to `double` (`f64`).
 */
 #test
 {

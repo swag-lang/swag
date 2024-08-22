@@ -1,4 +1,5 @@
 /**
+# Variable Declaration
 To declare a variable in Swag, you use the `let` or `var` keyword, followed by a `:` and then the type.
 
 - `let` is used for a variable that cannot be changed after its initial assignment. It's immutable.
@@ -21,6 +22,7 @@ To declare a variable in Swag, you use the `let` or `var` keyword, followed by a
 }
 
 /**
+# Multiple Variable Declarations
 We can also declare multiple variables on the same line.
 */
 #test
@@ -41,6 +43,7 @@ Alternatively, you can declare variables of different types on the same line.
 }
 
 /**
+# Default Initialization
 If you don't assign an initial value, the variable will be automatically initialized with its default value. Therefore, a variable in Swag is **always** initialized.
 */
 #test
@@ -56,6 +59,7 @@ If you don't assign an initial value, the variable will be automatically initial
 }
 
 /**
+# Uninitialized Variables
 However, if you want a variable to remain uninitialized (and avoid the cost of initialization), you can assign it `undefined`. This should be used with caution as it leaves the variable in an undefined state.
 */
 #test
@@ -65,6 +69,7 @@ However, if you want a variable to remain uninitialized (and avoid the cost of i
 }
 
 /**
+# Type Inference
 As we have seen, the type in a declaration is optional if it can be deduced from the assigned value. This feature is known as **type inference**.
 */
 
@@ -105,13 +110,17 @@ Type inference also works when declaring multiple variables.
 }
 
 /**
-# Special variables
+# Special Variables
+Swag provides special keywords and attributes to manage variable storage and behavior beyond the typical scope.
+
+## Thread-Local Storage
 A global variable can be tagged with `#[Swag.Tls]` to store it in thread-local storage, meaning each thread will have its own copy of the variable.
 */
 #[Swag.Tls]
 var G = 0  // 'G' is a global variable with thread-local storage.
 
  /**
+## Global Variables
 A local variable can be tagged with `#[Swag.Global]` to make it global, similar to the `static` keyword in C/C++.
 */
 #test
@@ -131,6 +140,7 @@ A local variable can be tagged with `#[Swag.Global]` to make it global, similar 
 }
 
 /**
+## Compile-Time Variables
 A global variable can also be marked with `#[Swag.Compiler]`. Such variables are only accessible during compile-time and are not included in the runtime code.
 */
 #[Swag.Compiler]

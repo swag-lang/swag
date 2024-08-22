@@ -1,6 +1,5 @@
-#global skipfmt
-
 /**
+# Signed Integers
 Swag provides various signed integer types: `s8`, `s16`, `s32`, and `s64`. These types represent signed integers with different bit widths.
 */
 #test
@@ -10,14 +9,11 @@ Swag provides various signed integer types: `s8`, `s16`, `s32`, and `s64`. These
     let c: s32 = -3     // 32-bit signed integer
     let d: s64 = -4     // 64-bit signed integer
 
-    // The '@assert' intrinsic checks that the following conditions hold true.
-    // If any of these conditions is false, an error will be raised at runtime.
     @assert(a == -1)    // Verifies that 'a' holds the value -1.
     @assert(b == -2)    // Verifies that 'b' holds the value -2.
     @assert(c == -3)    // Verifies that 'c' holds the value -3.
     @assert(d == -4)    // Verifies that 'd' holds the value -4.
 
-    // The '@sizeof' intrinsic returns the size of a variable in bytes.
     @assert(@sizeof(a) == 1) // 'a' is an s8, so its size is 1 byte.
     @assert(@sizeof(b) == 2) // 'b' is an s16, so its size is 2 bytes.
     @assert(@sizeof(c) == 4) // 'c' is an s32, so its size is 4 bytes.
@@ -25,6 +21,7 @@ Swag provides various signed integer types: `s8`, `s16`, `s32`, and `s64`. These
 }
 
 /**
+# Unsigned Integers
 Swag also supports various unsigned integer types: `u8`, `u16`, `u32`, and `u64`. These types represent unsigned integers with different bit widths.
 */
 #test
@@ -46,6 +43,7 @@ Swag also supports various unsigned integer types: `u8`, `u16`, `u32`, and `u64`
 }
 
 /**
+# Floating-Point Types
 Swag supports floating-point types `f32` and `f64`. These types represent single-precision and double-precision floating-point numbers, respectively.
 */
 #test
@@ -61,6 +59,7 @@ Swag supports floating-point types `f32` and `f64`. These types represent single
 }
 
 /**
+# Boolean Type
 The boolean type `bool` is used to represent true or false values. In Swag, a boolean is stored as a 1-byte value.
 */
 #test
@@ -76,6 +75,7 @@ The boolean type `bool` is used to represent true or false values. In Swag, a bo
 }
 
 /**
+# String Type
 The `string` type represents text. In Swag, strings are **UTF-8** encoded and are stored as two 64-bit values (one for the pointer to the data and one for the length in bytes). Note that a string literal also ends with a null byte, similar to C strings.
 */
 #test
@@ -87,6 +87,7 @@ The `string` type represents text. In Swag, strings are **UTF-8** encoded and ar
 }
 
 /**
+# Rune Type
 The `rune` type in Swag represents a 32-bit Unicode code point. It is used to store individual Unicode characters.
 */
 #test
@@ -103,6 +104,7 @@ Swag supports **type reflection** both at **compile time** and at **runtime**. T
 */
 
 /**
+# Type Creation with @decltype
 You can use `@decltype` to create a type based on an expression. This is useful for cases where you want to infer or mirror the type of a variable dynamically.
 */
 #test
@@ -110,17 +112,15 @@ You can use `@decltype` to create a type based on an expression. This is useful 
     let a  = 0                  // The type of 'a' is inferred to be 's32'.
     let b: @decltype(a) = 1     // 'b' is declared with the same type as 'a' (which is 's32').
 
-    // '@typeof' is used to check the type of a variable.
     @assert(@typeof(a) == @typeof(b)) // Verifies that 'a' and 'b' have the same type.
     @assert(@typeof(a) == s32)        // Verifies that the type of 'a' is 's32'.
 
-    // Since the types of 'a' and 'b' are known at compile time, we can use '#assert' for compile-time validation.
-    // '#assert' checks the condition during compilation and does not generate runtime code.
-    #assert @typeof(a) == @typeof(b)
+    #assert @typeof(a) == @typeof(b)  // Compile-time validation using '#assert'.
     #assert @typeof(a) == s32
 }
 
 /**
+# Types as Values
 Types in Swag are also treated as values, both at compile time and at runtime. This allows types to be manipulated, compared, and inspected just like any other value.
 */
 #test
@@ -128,11 +128,8 @@ Types in Swag are also treated as values, both at compile time and at runtime. T
     let x = @typeof(s32) // 'x' is now a variable that holds a type (in this case, 's32').
     @assert(x == s32)    // Verifies that 'x' is equal to the type 's32'.
 
-    // Types in Swag are predefined structs with fields that can be inspected.
-    // For example, you can retrieve the name of the type.
     @assert(x.name == "s32") // Retrieves and verifies the name of the type 's32'.
 
-    // '@typeof' is often unnecessary when there is no ambiguity in the expression.
     let y = bool
     @assert(y == bool)       // Verifies that 'y' holds the type 'bool'.
 }

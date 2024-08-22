@@ -1,4 +1,5 @@
 /**
+# `defer` Statement
 `defer` is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left.
 */
 #test
@@ -10,6 +11,7 @@
 }
 
 /**
+# Defer in a Block
 `defer` can also be used within a block.
 */
 #test
@@ -26,7 +28,8 @@
 }
 
 /**
-`defer` expressions are called when leaving the corresponding scope, even with `return`, `break`, `continue` etc., and even inside a `loop/while/for` etc.
+# Defer with Control Flow
+`defer` expressions are called when leaving the corresponding scope, even with `return`, `break`, `continue`, etc., and even inside a `loop/while/for`, etc.
 */
 #test
 {
@@ -35,25 +38,27 @@
     {
         defer G += 1
         if G == 2:
-            break // will be called here, before breaking the loop
-        // will be called here also
+            break // defer expression will be called here, before breaking the loop
+        // defer expression will be called here as well
     }
 
     @assert(G == 3)
 }
 
 /**
-`defer` are executed in reverse order of their declaration.
+# Defer Execution Order
+`defer` statements are executed in reverse order of their declaration.
 */
 #test
 {
     var x = 1
     defer @assert(x == 2) // Will be executed second
-    defer x *= 2 // Will be executed first
+    defer x *= 2          // Will be executed first
 }
 
 /**
-It's typically used to unregister/destroy a resource, by putting the release code just after the creation one.
+# Typical Usage of `defer`
+`defer` is typically used to unregister/destroy a resource, by placing the release code immediately after the creation code.
 */
 #test
 {
