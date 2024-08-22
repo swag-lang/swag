@@ -286,12 +286,13 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
     }
     else if (node->is(AstNodeKind::SwitchCase))
     {
-        const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+        return true;
+        /*const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
         block               = caseNode->block;
         if (!caseNode->expressions.empty())
             expression = caseNode->expressions.back();
         if (block->childCount() != 1 || block->firstChild()->isNot(AstNodeKind::If))
-            return true;
+            return true;*/
     }
 
     Diagnostic err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
