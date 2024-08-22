@@ -107,6 +107,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[switch]] body"));
 
     Vector<AstSwitchCase*> defaultCase;
+    uint32_t               cptDefaultNoWhere = 0;
+
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
     {
         SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0650)));
@@ -122,7 +124,6 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         if (isDefault)
         {
-            SWAG_VERIFY(defaultCase.empty(), error(caseNode->token, toErr(Err0529)));
             defaultCase.push_back(caseNode);
             caseNode->caseIndex = switchNode->cases.size() - 1;
         }
@@ -172,6 +173,11 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             nodeIf->ifBlock->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
             caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE);
             parentStmt = nodeIf->ifBlock;
+        }
+        else if (isDefault)
+        {
+            SWAG_VERIFY(cptDefaultNoWhere == 0, error(caseNode->token, toErr(Err0529)));
+            cptDefaultNoWhere++;
         }
 
         if (!isDefault)

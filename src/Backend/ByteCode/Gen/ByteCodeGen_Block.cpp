@@ -937,7 +937,26 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         context->popLocation();
     }
 
-    if(whereClause)
+    // default with a "where"
+    else if (whereClause)
+    {
+        allJumps.push_back(context->bc->numInstructions);
+        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
+        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+
+        // Jump to the next case, except for the default, which is the last
+        blockNode->seekJumpNextCase = context->bc->numInstructions;
+        EMIT_INST0(context, ByteCodeOp::Jump);
+
+        // Now this is the beginning of the block, so we can resolve all Jump
+        for (const auto jumpIdx : allJumps)
+        {
+            ByteCodeInstruction* jump = context->bc->out + jumpIdx;
+            jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
+        }        
+    }
+
+    if (whereClause)
         freeRegisterRC(context, whereClause->resultRegisterRc);
     return true;
 }
@@ -951,9 +970,12 @@ bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
     // For the default case, do nothing, fallback to the end of the switch
-    if (blockNode->ownerCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT))
+    if(!blockNode->seekJumpNextCase)
+    {
+        SWAG_ASSERT(blockNode->ownerCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT));
         return true;
-
+    }
+    
     // Jump to exit the switch
     context->setNoLocation();
     auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
