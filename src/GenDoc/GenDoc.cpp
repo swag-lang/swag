@@ -59,6 +59,8 @@ void GenDoc::outputStyles()
     .right h1   { margin-top: 50px; margin-bottom: 50px; }
     .right h2   { margin-top: 35px; }
 
+    .right ol li { margin-bottom: 10px; }
+
     .strikethrough-text { text-decoration: line-through; }
     .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
     .swag-watermark a   { text-decoration: none; color: inherit; }
@@ -479,8 +481,13 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& l
                     break;
 
                 case UserBlockKind::OrderedList:
-                    if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
+                    if(line.empty())
+                    {
+                    }
+                    else if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
+                    {
                         mustEnd = true;
+                    }
                     else
                     {
                         line.remove(0, 2); // <digit><dot>
