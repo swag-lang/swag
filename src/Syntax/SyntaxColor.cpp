@@ -601,6 +601,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     case TokenId::KwdSwitch:
                     case TokenId::KwdDefer:
                     case TokenId::KwdLoop:
+                    case TokenId::KwdIn:
                     case TokenId::KwdVisit:
                     case TokenId::KwdBreak:
                     case TokenId::KwdFallThrough:
