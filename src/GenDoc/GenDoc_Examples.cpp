@@ -104,7 +104,8 @@ bool GenDoc::generateExamples()
         while (title.length() > 4 && SWAG_IS_DIGIT(title[0]) && SWAG_IS_DIGIT(title[1]) && SWAG_IS_DIGIT(title[2]) && title[3] == '_')
         {
             title.remove(0, 4);
-            titleLevel++;
+            if(title[0] != '0' || title[1] != '0' || title[2] != '0')
+                titleLevel++;
         }
 
         title.buffer[0] = static_cast<char>(toupper(title.buffer[0]));
