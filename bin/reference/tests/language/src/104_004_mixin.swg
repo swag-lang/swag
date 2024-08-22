@@ -1,5 +1,5 @@
 /**
-A mixin is declared like a function, with the attribute `#[Swag.Mixin]`.
+A mixin in Swag is declared similarly to a function, but with the attribute `#[Swag.Mixin]`.
 */
 #test
 {
@@ -8,7 +8,7 @@ A mixin is declared like a function, with the attribute `#[Swag.Mixin]`.
 }
 
 /**
-A mixin function is inserted in the scope of the caller.
+A mixin function is injected directly into the caller's scope, allowing it to manipulate variables or execute code as if it were part of that scope.
 */
 #test
 {
@@ -19,13 +19,13 @@ A mixin function is inserted in the scope of the caller.
     }
 
     var a = 0
-    myMixin() // Equivalent to 'a += 1'
-    myMixin() // Equivalent to 'a += 1'
-    @assert(a == 2)
+    myMixin() // Equivalent to writing 'a += 1' directly in the scope
+    myMixin() // Again, equivalent to 'a += 1'
+    @assert(a == 2)  // Verifies that 'a' has been incremented twice
 }
 
 /**
-This behaves like a function, so you can add parameters, some default values, you can return something...
+Mixins behave like functions, so you can define parameters, assign default values, and even return values.
 */
 #test
 {
@@ -36,34 +36,33 @@ This behaves like a function, so you can add parameters, some default values, yo
     }
 
     var a = 0
-    myMixin() // Equivalent to 'a += 1'
-    myMixin(2) // Equivalent to 'a += 2'
-    @assert(a == 3)
+    myMixin()    // Equivalent to 'a += 1', using the default value
+    myMixin(2)   // Equivalent to 'a += 2', using the passed parameter
+    @assert(a == 3)  // Verifies that 'a' has been incremented by 1 and 2
 }
 
 /**
-A mixin accepts a special parameter of type `code`. This represents a Swag **piece of code** defined at the caller site.
+A mixin can accept a special parameter of type `code`, which represents a Swag code block defined at the call site.
 */
 #test
 {
     #[Swag.Mixin]
     func doItTwice(what: code)
     {
-        // You can then insert the code with '#mixin'.
-        // So here, we insert it two times
+        // The mixin can insert the passed code block multiple times using '#mixin'.
         #mixin what
         #mixin what
     }
 
     var a = 0
 
-    // You can use '#code' to specify some code when calling the mixin function.
+    // Use '#code' to define a code block that will be executed twice by the mixin.
     doItTwice(#code { a += 1; })
-    @assert(a == 2)
+    @assert(a == 2)  // Verifies that 'a' was incremented twice
 }
 
 /**
-When the last parameter of a mixin is of type `code`, the caller can declare that code in a statement just after the call.
+When the last parameter of a mixin is of type `code`, the code can be declared in a separate statement after the mixin call.
 */
 #test
 {
@@ -76,34 +75,33 @@ When the last parameter of a mixin is of type `code`, the caller can declare tha
 
     var a = 0
 
-    // This form of passing a code to the mixing...
+    // Pass a code block using the `#code` syntax.
     doItTwice(4, #code { a += value; })
 
-    // ...is equivalent to this other form, which is more simple and natural.
-    // You can also notice that 'value' is a parameter from the mixin itself
+    // Alternatively, you can pass the code block directly in a more natural syntax.
     doItTwice(2)
     {
         a += value
     }
 
-    @assert(a == 12)
+    @assert(a == 12)  // Verifies that 'a' was incremented as expected
 }
 
 /**
-You can use the special name `#alias` to create a named alias for an identifier.
+You can use the special name `#alias` to create a named alias for an identifier, which allows flexible variable manipulation.
 */
 #test
 {
     #[Swag.Mixin]
     func inc10()
     {
-        #alias0 += 10
+        #alias0 += 10  // Increment the aliased variable by 10
     }
 
     var a, b = 0
-    inc10(|a|) // Passing alias name 'a'
-    inc10(|b|) // Passing alias name 'b'
-    @assert(a == b and b == 10)
+    inc10(|a|)  // Use 'a' as the alias
+    inc10(|b|)  // Use 'b' as the alias
+    @assert(a == b and b == 10)  // Verifies that both 'a' and 'b' were incremented by 10
 }
 
 #test
@@ -111,19 +109,19 @@ You can use the special name `#alias` to create a named alias for an identifier.
     #[Swag.Mixin]
     func setVar(value: s32)
     {
-        let #alias0 = value
+        let #alias0 = value  // Set the aliased variable to 'value'
     }
 
-    setVar(|a| 10) // Passing alias name 'a'
-    setVar(|b| 20) // Passing alias name 'b'
-    @assert(a == 10)
-    @assert(b == 20)
-    setVar(30) // No typealias, so name is #alias0
-    @assert(#alias0 == 30)
+    setVar(|a| 10)  // Set 'a' to 10
+    setVar(|b| 20)  // Set 'b' to 20
+    @assert(a == 10)  // Verifies that 'a' was set to 10
+    @assert(b == 20)  // Verifies that 'b' was set to 20
+    setVar(30)  // No alias provided, so default alias '#alias0' is used
+    @assert(#alias0 == 30)  // Verifies that '#alias0' was set to 30
 }
 
 /**
-You can declare special variables named `#mixin?`. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope.
+Mixins can declare special variables named `#mix?`. These variables receive a unique name each time the mixin is invoked, allowing the mixin to be used multiple times in the same scope without naming conflicts.
 */
 #test
 {
@@ -132,13 +130,13 @@ You can declare special variables named `#mixin?`. Those variables will have a u
     #[Swag.Mixin]
     func toScope()
     {
-        var #mix0: s32 = 1
-        total += #mix0
+        var #mix0: s32 = 1  // Declare a unique variable named '#mix0'
+        total += #mix0       // Add the value of '#mix0' to 'total'
     }
 
-    toScope()
-    toScope()
-    toScope()
+    toScope()  // First invocation of the mixin
+    toScope()  // Second invocation
+    toScope()  // Third invocation
 
-    @assert(total == 3)
+    @assert(total == 3)  // Verifies that 'total' is the sum of all mixin invocations
 }

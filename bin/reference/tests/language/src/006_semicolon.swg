@@ -1,41 +1,41 @@
 #global skipfmt
 
 /**
-In Swag, unlike in C/C++, there is no need to end a statement with a semicolon (`;`). In most cases, the end of a line (`end of line`) is sufficient to terminate a statement. This makes the syntax cleaner and more concise.
+In Swag, unlike in C/C++, there's no requirement to end statements with a semicolon (`;`). Typically, the end of a line (`end of line`) is sufficient to terminate a statement, resulting in cleaner and more concise syntax.
 */
 
 #test
 {
-    // Declare two variables x and y of type s32 (signed 32-bit integer) and initialize them both to 1.
+    // Declare two variables, x and y, of type s32 (signed 32-bit integer) and initialize them both to 1.
     var x, y: s32 = 1
 
-    // Increment x and y by 1.
+    // Increment both x and y by 1.
     x += 1
     y += 1
 
-    // The '@assert' intrinsic is used to verify that the values of x and y are correct.
-    @assert(x == 2)     // Verify that x is equal to 2, and raise an error if not.
-    @assert(y == x)     // Verify that y is equal to x (which should be 2).
+    // Use the '@assert' intrinsic to verify the correctness of the values of x and y.
+    @assert(x == 2)     // Ensure that x equals 2, raising an error if it does not.
+    @assert(y == x)     // Ensure that y equals x (which should be 2).
 }
 
 /**
-While semicolons are not mandatory, you can still use them if you prefer or if it improves readability in specific scenarios.
+Although semicolons are optional, you can still use them when preferred or when they enhance readability in certain situations.
 */
 #test
 {
-    // Notice that the type of x and y is not explicitly specified here due to type inference.
-    var x, y = 0;  // The variables are initialized to 0, with the type inferred automatically.
+    // Note that type inference is used here, so the types of x and y are not explicitly specified.
+    var x, y = 0;  // Both variables are initialized to 0, with their types inferred automatically.
 
-    // The following line uses a short syntax to apply the same operation to both variables.
+    // The short syntax below applies the same operation to both variables.
     x, y += 1;     // Both x and y are incremented by 1.
 }
 
 /**
-Semicolons can be useful when you want to write multiple statements on the same line. This can make your code more compact, but should be used sparingly for the sake of readability.
+Semicolons can be particularly useful when writing multiple statements on the same line. This can make the code more compact, though it should be used sparingly to maintain readability.
 */
 #test
 {
-    // Two instructions on the same line, separated by a semicolon.
+    // Two statements on the same line, separated by a semicolon.
     var x = 0; var y = 0
 
     // Increment both x and y on the same line.

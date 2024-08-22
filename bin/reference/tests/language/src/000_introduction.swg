@@ -1,16 +1,16 @@
 /**
-The `swag-lang/swag/bin/reference/language` module provides an introductory overview of the basic syntax and usage of the Swag programming language, independent of the [Swag standard modules](std.php) (`Std`). This documentation has been auto-generated directly from the source code of the module.
+The `swag-lang/swag/bin/reference/language` module offers a foundational introduction to the syntax and usage of the Swag programming language, separate from the [Swag standard modules](std.php) (`Std`). This documentation is auto-generated from the module's source code.
 
-For more advanced features like dynamic arrays, dynamic strings, or hash maps, please refer to the [Std.Core](std.core.php) module documentation, as these will not be covered in the upcoming examples. This guide will focus solely on the foundational elements of the Swag language.
+For more advanced features, such as dynamic arrays, dynamic strings, or hash maps, please consult the [Std.Core](std.core.php) module documentation, as these topics are beyond the scope of the examples covered here. This guide focuses exclusively on the core elements of the Swag language.
 
-As `reference/language` is implemented as a test module, it can be executed with the following commands:
+Since `reference/language` is implemented as a test module, you can run it using the following commands:
 ```
 swag test --workspace:c:/swag-lang/swag/bin/reference
 swag test -w:c:/swag-lang/swag/bin/reference
 ```
-These commands will execute all test modules within the specified workspace (including this one). If you are running Swag directly from the workspace directory, the `--workspace` parameter (or its shorthand `-w`) can be omitted.
+These commands will execute all test modules within the specified workspace, including this one. If you are running Swag from the workspace directory, the `--workspace` flag (or shorthand `-w`) can be omitted.
 
-Additionally, if you wish to compile and execute a specific module within the workspace, you can do so by specifying the module with the `--module` (`-m`) parameter:
+To compile and execute a specific module within the workspace, use the `--module` (or `-m`) flag:
 ```
 swag test -w:c:/swag-lang/swag/bin/reference -m:test_language
 ```

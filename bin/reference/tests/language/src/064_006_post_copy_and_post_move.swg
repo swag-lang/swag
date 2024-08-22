@@ -1,5 +1,5 @@
 /**
-Swag accepts copy and move semantics for structures. In this examples, we use a `Vector3` to illustrate, even if of course that kind of struct does not need a move semantic, as there's no heap involved.
+Swag supports both copy and move semantics for structures. In this example, we'll demonstrate these concepts using a `Vector3` struct. Although a `Vector3` struct typically wouldn't require move semantics (since it doesn't involve heap allocation), this example serves to illustrate how these features work in Swag.
 */
 
 struct Vector3
@@ -9,103 +9,97 @@ struct Vector3
 
 impl Vector3
 {
-    // This is used for 'copy semantic'.
+    // This method is invoked after a copy operation.
+    // It represents the "copy semantics" and is useful for custom behavior after copying.
     mtd opPostCopy()
     {
-        x, y, z += 1
+        x, y, z += 1  // Increment all fields by 1 to indicate a copy has occurred.
     }
 
-    // This is used for 'move semantic'.
+    // This method is invoked after a move operation.
+    // It represents the "move semantics" and is useful for custom behavior after moving.
     mtd opPostMove()
     {
-        x, y, z += 2
+        x, y, z += 2  // Increment all fields by 2 to indicate a move has occurred.
     }
 
-    // Just imagine that we have something to drop. Like a memory allocated buffer.
+    // This method is invoked when an object is about to be destroyed.
+    // Even though `Vector3` doesn't manage resources, this is where you would clean up resources like heap-allocated memory.
     mtd opDrop() {}
 }
 
 #test
 {
-    var a = Vector3{}
-    var b = Vector3{100, 200, 300}
+    var a = Vector3{}           // Default initialization
+    var b = Vector3{100, 200, 300}  // Custom initialization
 
-    // "copy semantic". The default behaviour.
-    // 1. This will call 'opDrop' on 'a' if the function exists because 'a' could already be assigned.
-    // 2. This will raw copy 'b' to 'a'.
-    // 3. This will call 'opPostCopy' on 'a' if it exists.
+    // Copy Semantics (default behavior)
+    // 1. Calls 'opDrop' on 'a' (if it exists), because 'a' might already hold a value.
+    // 2. Copies 'b' to 'a'.
+    // 3. Calls 'opPostCopy' on 'a' (if it exists).
     a = b
-    @assert(a.x == 101) // +1 because of the call to opPostCopy
+    @assert(a.x == 101)  // +1 because of 'opPostCopy'
     @assert(a.y == 201)
     @assert(a.z == 301)
 
-    // "move semantic" by adding the modifier 'move' just after '='.
-    // 1. This will call 'opDrop' on 'a' if it exists
-    // 2. This will raw copy 'b' to 'a'
-    // 3. This will call 'opPostMove' on 'a' if it exists
-    // 4. This will reinitialize 'b' to the default values if 'opDrop' exists
+    // Move Semantics
+    // The `#move` modifier triggers move semantics:
+    // 1. Calls 'opDrop' on 'a' (if it exists).
+    // 2. Moves 'b' to 'a'.
+    // 3. Calls 'opPostMove' on 'a' (if it exists).
+    // 4. Reinitializes 'b' to default values (if 'opDrop' exists).
     a = #move b
-    @assert(a.x == 102) // +2 because of the call to opPostMove
+    @assert(a.x == 102)  // +2 because of 'opPostMove'
     @assert(a.y == 202)
     @assert(a.z == 302)
 
-    // 'Vector3' contains an 'opDrop' special function, so 'b' will be reinitialized to
-    // the default values after the 'move'. Default values are 666.
+    // After the move, 'b' is reinitialized to default values (666) because 'opDrop' exists.
     @assert(b.x == 666)
 
-    // If you know what you're doing, you can avoid the first call to 'opDrop' with '= #nodrop'
-    // Do it when you know the state of 'a' and: not want an extra unnecessary call
-    // (for example if 'a' is in an undetermined state).
+    // You can bypass the first 'opDrop' call with the `#nodrop` modifier.
+    // Use this when you know 'a' is in an undefined state and doesn't require cleanup.
+    a = #nodrop b         // Copy 'b' to 'a' without dropping 'a' first.
+    a = #nodrop #move b   // Move 'b' to 'a' without dropping 'a' first.
 
-    a = #nodrop b // Copy b to a without dropping 'a' first
-    a = #nodrop #move b // Move b to a without dropping 'a' first
-
-    // For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. 
-    // Of course,: this at your own risk, if you know that 'b' will never by dropped by the 
-    // compiler or if you reinitialize its state yourself.
-
-    // instead of 'move'
-    a = #moveraw b
-    a = #nodrop #moveraw b
+    // For move semantics, you can avoid the reinitialization of 'b' using `#moveraw`.
+    // This is risky and should only be used if you're certain 'b' won't be dropped or if you plan to reinitialize it manually.
+    a = #moveraw b        // Move 'b' to 'a' without resetting 'b'.
+    a = #nodrop #moveraw b // Move 'b' to 'a' without dropping 'a' first and without resetting 'b'.
 }
 
 /**
-# Move semantic
-`&&` can be used instead of `&` in a function parameter to declare a **move semantic** intention.
+# Move Semantics in Functions
+You can indicate a move semantic intention in function parameters by using `&&` instead of `&`.
 */
 
 #test
 {
-    // This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this 
-    // version will take the owership on 'from'.
+    // This version of 'assign' takes ownership of 'from' by moving its contents into 'assignTo'.
+    // The 'moveref' tells the compiler that this version takes ownership of 'from'.
     #[Swag.Overload]
     func assign(assignTo: &Vector3, from: &&Vector3)
     {
-        assignTo = #move from
+        assignTo = #move from  // Move 'from' to 'assignTo'.
     }
 
-    // This is the normal 'copy' version. In this version, 'from' will not be changed, that's 
-    // why it's constant (not a ref).
+    // This version of 'assign' performs a copy instead of a move.
+    // 'from' remains unchanged, so it's passed by value.
     #[Swag.Overload]
     func assign(assignTo: &Vector3, from: Vector3)
     {
-        assignTo = from
+        assignTo = from  // Copy 'from' to 'assignTo'.
     }
 
-    var a  = Vector3{1, 2, 3}
-    var b: Vector3
+    var a = Vector3{1, 2, 3}  // Initialize 'a'.
+    var b: Vector3            // Declare 'b'.
 
-    // Call the 'copy' version of 'assign'.
+    // Call the copy version of 'assign'.
     assign(&b, a)
-    // As this will call 'opPostCopy', we have +1 on each field.
-    @assert(b.x == 2 and b.y == 3 and b.z == 4)
-    // 'a' remains unchanged
-    @assert(a.x == 1 and a.y == 2 and a.z == 3)
+    @assert(b.x == 2 and b.y == 3 and b.z == 4)  // +1 on each field due to 'opPostCopy'.
+    @assert(a.x == 1 and a.y == 2 and a.z == 3)  // 'a' remains unchanged.
 
-    // Now we tell the compiler to use the 'moveref' version of 'assign'.
+    // Call the move version of 'assign' using 'moveref'.
     assign(&b, moveref &a)
-    // As 'opPostMove' has been called, we have +2 on each field.
-    @assert(b.x == 3 and b.y == 4 and b.z == 5)
-    // And as this is a move, then 'a' is now reinitialized to its default values.
-    @assert(a.x == 666 and a.y == 666 and a.z == 666)
+    @assert(b.x == 3 and b.y == 4 and b.z == 5)  // +2 on each field due to 'opPostMove'.
+    @assert(a.x == 666 and a.y == 666 and a.z == 666)  // 'a' is reset to default values after the move.
 }

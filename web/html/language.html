@@ -241,7 +241,7 @@
 <li><a href="#_060_struct_swg__064_005_count_swg">Count</a></li>
 <li><a href="#_060_struct_swg__064_006_post_copy_and_post_move_swg">Post copy and post move</a></li>
 <ul>
-<li><a href="#_060_struct_swg__064_006_post_copy_and_post_move_swg_Move_semantic">Move semantic</a></li>
+<li><a href="#_060_struct_swg__064_006_post_copy_and_post_move_swg_Move_Semantics_in_Functions">Move Semantics in Functions</a></li>
 </ul>
 <li><a href="#_060_struct_swg__064_007_visit_swg">Visit</a></li>
 <li><a href="#_060_struct_swg__067_008_offset_swg">Offset</a></li>
@@ -256,11 +256,11 @@
 <ul>
 <li><a href="#_100_function_swg__101_001_declaration_swg">Declaration</a></li>
 <ul>
-<li><a href="#_100_function_swg__101_001_declaration_swg_Multiple_return_values">Multiple return values</a></li>
+<li><a href="#_100_function_swg__101_001_declaration_swg_Multiple_Return_Values">Multiple Return Values</a></li>
 </ul>
 <li><a href="#_100_function_swg__102_002_lambda_swg">Lambda</a></li>
 <ul>
-<li><a href="#_100_function_swg__102_002_lambda_swg_Anonymous_functions">Anonymous functions</a></li>
+<li><a href="#_100_function_swg__102_002_lambda_swg_Anonymous_Functions">Anonymous Functions</a></li>
 </ul>
 <li><a href="#_100_function_swg__103_003_closure_swg">Closure</a></li>
 <li><a href="#_100_function_swg__104_004_mixin_swg">Mixin</a></li>
@@ -411,13 +411,13 @@
 <div class="right-page">
 <h1>Swag Language Reference</h1>
 
-<h2 id="_000_introduction_swg">Introduction</h2><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module provides an introductory overview of the basic syntax and usage of the Swag programming language, independent of the <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). This documentation has been auto-generated directly from the source code of the module. </p>
-<p>For more advanced features like dynamic arrays, dynamic strings, or hash maps, please refer to the <a href="std.core.php">Std.Core</a> module documentation, as these will not be covered in the upcoming examples. This guide will focus solely on the foundational elements of the Swag language. </p>
-<p>As <span class="code-inline">reference/language</span> is implemented as a test module, it can be executed with the following commands: </p>
+<h2 id="_000_introduction_swg">Introduction</h2><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module offers a foundational introduction to the syntax and usage of the Swag programming language, separate from the <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). This documentation is auto-generated from the module's source code. </p>
+<p>For more advanced features, such as dynamic arrays, dynamic strings, or hash maps, please consult the <a href="std.core.php">Std.Core</a> module documentation, as these topics are beyond the scope of the examples covered here. This guide focuses exclusively on the core elements of the Swag language. </p>
+<p>Since <span class="code-inline">reference/language</span> is implemented as a test module, you can run it using the following commands: </p>
 <div class="code-block"><span class="SCde">swag test --workspace:c:/swag-lang/swag/bin/reference
 swag test -w:c:/swag-lang/swag/bin/reference</span></div>
-<p>These commands will execute all test modules within the specified workspace (including this one). If you are running Swag directly from the workspace directory, the <span class="code-inline">--workspace</span> parameter (or its shorthand <span class="code-inline">-w</span>) can be omitted. </p>
-<p>Additionally, if you wish to compile and execute a specific module within the workspace, you can do so by specifying the module with the <span class="code-inline">--module</span> (<span class="code-inline">-m</span>) parameter: </p>
+<p>These commands will execute all test modules within the specified workspace, including this one. If you are running Swag from the workspace directory, the <span class="code-inline">--workspace</span> flag (or shorthand <span class="code-inline">-w</span>) can be omitted. </p>
+<p>To compile and execute a specific module within the workspace, use the <span class="code-inline">--module</span> (or <span class="code-inline">-m</span>) flag: </p>
 <div class="code-block"><span class="SCde">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</span></div>
 
 <h2 id="_001_hello_mad_world_swg">Hello mad world</h2><p>Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
@@ -505,42 +505,43 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at runtime !"</span>)
 }</span></div>
 
-<h2 id="_002_source_code_organization_swg">Source code organization</h2><p>All source files in Swag have the <span class="code-inline">.swg</span> extension, except if you write a simple script with the <span class="code-inline">.swgs</span> extension. They must be encoded in <b>UTF8</b>. </p>
-<p>In Swag you cannot compile a single file (with the exception of <span class="code-inline">.swgs</span> script files). The source code is organized in a <b>workspace</b> which contains one or multiple <b>modules</b>. </p>
-<p>For example, <span class="code-inline">Std</span> is a workspace that contains all the Swag standard modules. </p>
-<p>A module is a <span class="code-inline">dll</span> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use). </p>
-<p>Typically, the entire workspace is compiled. </p>
+<h2 id="_002_source_code_organization_swg">Source code organization</h2><p>In Swag, all source files use the <span class="code-inline">.swg</span> extension, except for simple scripts, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b>. </p>
+<p>Swag does not support compiling individual source files (with the exception of <span class="code-inline">.swgs</span> script files). Instead, source code is organized within a <b>workspace</b> that contains one or more <b>modules</b>. </p>
+<p>For instance, <span class="code-inline">Std</span> is a workspace that includes all the Swag standard modules. </p>
+<p>A module can be either a <span class="code-inline">dll</span> (on Windows) or an executable, and a workspace may encompass multiple modules. Therefore, a workspace typically contains both the modules you develop (such as your main executable) and all your dependencies (including any external modules you use). </p>
+<p>In most cases, the entire workspace is compiled together. </p>
 
 <h2 id="_003_comments_swg">Comments</h2><ul>
 <li>Swag supports both single-line and multi-line comments.</li>
 </ul>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Single-line comment example</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Example of a single-line comment</span>
 
 <span class="SCmt">/*
-    Multi-line comment example,
-    which can span multiple lines.
+    Example of a multi-line comment
+    that spans several lines.
 */</span>
 
-<span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>                 <span class="SCmt">// A constant with the value '0' assigned to it</span>
-<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCmt">/* false */</span> <span class="SKwd">true</span>  <span class="SCmt">// This constant is set to 'true', with an inline comment showing an alternative value</span></span></div>
+<span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>                 <span class="SCmt">// A constant assigned the value '0'</span>
+<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCmt">/* false */</span> <span class="SKwd">true</span>  <span class="SCmt">// A constant assigned the value 'true', with an inline comment indicating an alternative value</span></span></div>
 <ul>
 <li>Swag also supports nested comments within multi-line comments.</li>
 </ul>
 <div class="code-block"><span class="SCmt">/*
-    */ Nested multi-line comment example */
+    */ Example of a nested multi-line comment */
 */</span></div>
 
-<h2 id="_004_identifiers_swg">Identifiers</h2><p>User identifiers (like variables, constants, function names...) must start with an underscore or an ascii letter. Those identifiers can then contain underscores, ascii letters and digit numbers. </p>
+<h2 id="_004_identifiers_swg">Identifiers</h2><p>User-defined identifiers (such as variables, constants, and function names) must begin with either an underscore or an ASCII letter. These identifiers can then include underscores, ASCII letters, and digits. </p>
+<p>Examples: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> thisIsAValidIdentifier0   = <span class="SNum">0</span>
 <span class="SKwd">const</span> this_is_also_valid        = <span class="SNum">0</span>
 <span class="SKwd">const</span> this_1_is_2_also__3_valid = <span class="SNum">0</span></span></div>
-<p>But your identifiers cannot start with two underscores. This is reserved by the compiler. </p>
+<p>However, identifiers cannot start with two underscores, as this prefix is reserved by the compiler. </p>
 <div class="code-block"><span class="SCmt">// const __this_is_invalid = 0</span></div>
-<p>Note that some identifiers may start with <span class="code-inline">#</span>. This indicates a <b>compiler special keyword</b>. </p>
+<p>Additionally, some identifiers may begin with <span class="code-inline">#</span>, indicating a <b>compiler special keyword</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span>
 <span class="SFct">#run</span>
 <span class="SFct">#main</span></span></div>
-<p>Some identifiers can also start with <span class="code-inline">@</span>. This indicates an <b>intrinsic</b> function which can be compile time only or also available at runtime (this depends on the intrinsic). </p>
+<p>Identifiers that start with <span class="code-inline">@</span> represent intrinsic functions. These functions may be available only at compile time or at both compile time and runtime, depending on the specific intrinsic. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@min</span>()
 <span class="SItr">@max</span>()
 <span class="SItr">@sqrt</span>()
@@ -572,7 +573,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SLgc">until</span>
 <span class="SInv">do</span>
 <span class="SLgc">where</span>
-in
+<span class="SLgc">in</span>
 
 <span class="SKwd">true</span>
 <span class="SKwd">false</span>
@@ -805,33 +806,33 @@ in
 <span class="SKwd">#constref</span></span></div>
 
 <h2 id="_006_semicolon_swg">Semicolon</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
-<p>In Swag, unlike in C/C++, there is no need to end a statement with a semicolon (<span class="code-inline">;</span>). In most cases, the end of a line (<span class="code-inline">end of line</span>) is sufficient to terminate a statement. This makes the syntax cleaner and more concise. </p>
+<p>In Swag, unlike in C/C++, there's no requirement to end statements with a semicolon (<span class="code-inline">;</span>). Typically, the end of a line (<span class="code-inline">end of line</span>) is sufficient to terminate a statement, resulting in cleaner and more concise syntax. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Declare two variables x and y of type s32 (signed 32-bit integer) and initialize them both to 1.</span>
+    <span class="SCmt">// Declare two variables, x and y, of type s32 (signed 32-bit integer) and initialize them both to 1.</span>
     <span class="SKwd">var</span> x, y: <span class="STpe">s32</span> = <span class="SNum">1</span>
 
-    <span class="SCmt">// Increment x and y by 1.</span>
+    <span class="SCmt">// Increment both x and y by 1.</span>
     x += <span class="SNum">1</span>
     y += <span class="SNum">1</span>
 
-    <span class="SCmt">// The '@assert' intrinsic is used to verify that the values of x and y are correct.</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">2</span>)     <span class="SCmt">// Verify that x is equal to 2, and raise an error if not.</span>
-    <span class="SItr">@assert</span>(y == x)     <span class="SCmt">// Verify that y is equal to x (which should be 2).</span>
+    <span class="SCmt">// Use the '@assert' intrinsic to verify the correctness of the values of x and y.</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">2</span>)     <span class="SCmt">// Ensure that x equals 2, raising an error if it does not.</span>
+    <span class="SItr">@assert</span>(y == x)     <span class="SCmt">// Ensure that y equals x (which should be 2).</span>
 }</span></div>
-<p>While semicolons are not mandatory, you can still use them if you prefer or if it improves readability in specific scenarios. </p>
+<p>Although semicolons are optional, you can still use them when preferred or when they enhance readability in certain situations. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Notice that the type of x and y is not explicitly specified here due to type inference.</span>
-    <span class="SKwd">var</span> x, y = <span class="SNum">0</span>;  <span class="SCmt">// The variables are initialized to 0, with the type inferred automatically.</span>
+    <span class="SCmt">// Note that type inference is used here, so the types of x and y are not explicitly specified.</span>
+    <span class="SKwd">var</span> x, y = <span class="SNum">0</span>;  <span class="SCmt">// Both variables are initialized to 0, with their types inferred automatically.</span>
 
-    <span class="SCmt">// The following line uses a short syntax to apply the same operation to both variables.</span>
+    <span class="SCmt">// The short syntax below applies the same operation to both variables.</span>
     x, y += <span class="SNum">1</span>;     <span class="SCmt">// Both x and y are incremented by 1.</span>
 }</span></div>
-<p>Semicolons can be useful when you want to write multiple statements on the same line. This can make your code more compact, but should be used sparingly for the sake of readability. </p>
+<p>Semicolons can be particularly useful when writing multiple statements on the same line. This can make the code more compact, though it should be used sparingly to maintain readability. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Two instructions on the same line, separated by a semicolon.</span>
+    <span class="SCmt">// Two statements on the same line, separated by a semicolon.</span>
     <span class="SKwd">var</span> x = <span class="SNum">0</span>; <span class="SKwd">var</span> y = <span class="SNum">0</span>
 
     <span class="SCmt">// Increment both x and y on the same line.</span>
@@ -2721,7 +2722,7 @@ in
 
     <span class="SCmt">// Counting Enum Values</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> idx in <span class="SCst">RGB</span>:                      <span class="SCmt">// Iterate over all enum values using 'loop'</span>
+    <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SCst">RGB</span>:                      <span class="SCmt">// Iterate over all enum values using 'loop'</span>
         cpt += <span class="SNum">1</span>                          <span class="SCmt">// Increment counter for each value</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)                     <span class="SCmt">// Assert that the enum has exactly 3 values</span>
 
@@ -2736,7 +2737,7 @@ in
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
 
     <span class="SCmt">// Performing Actions Based on Enum Values</span>
-    <span class="SLgc">visit</span> val in <span class="SCst">RGB</span>                      <span class="SCmt">// Use 'visit' to iterate over each value in the enum</span>
+    <span class="SLgc">visit</span> val <span class="SLgc">in</span> <span class="SCst">RGB</span>                      <span class="SCmt">// Use 'visit' to iterate over each value in the enum</span>
     {
         <span class="SLgc">switch</span> val                        <span class="SCmt">// A switch statement to perform actions based on the enum value</span>
         {
@@ -2947,7 +2948,7 @@ in
     <span class="SKwd">var</span> cpt  = <span class="SNum">0</span>
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>
 
-    <span class="SLgc">loop</span> i in <span class="SNum">5</span>                     <span class="SCmt">// index is named 'i'</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                     <span class="SCmt">// index is named 'i'</span>
     {
         cpt += i
         cpt1 += <span class="SItr">#index</span>              <span class="SCmt">// #index is still available, even when named</span>
@@ -3003,7 +3004,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x in <span class="SNum">10</span>
+    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
             <span class="SLgc">break</span>
@@ -3016,7 +3017,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x in <span class="SNum">10</span>
+    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
             <span class="SLgc">continue</span>              <span class="SCmt">// Skip iteration when x is 5</span>
@@ -3032,7 +3033,7 @@ in
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
     <span class="SKwd">var</span> sum   = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i in -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>              <span class="SCmt">// loop from -1 to 1, inclusive</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>              <span class="SCmt">// loop from -1 to 1, inclusive</span>
     {
         count += <span class="SNum">1</span>
         sum += i
@@ -3046,7 +3047,7 @@ in
 {
     <span class="SCmt">// Loop from 1 to 2, excluding 3</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i in <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>
     {
         cpt += i
     }
@@ -3089,7 +3090,7 @@ in
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
     <span class="SCmt">// The loop will only visit 'even' indexes from 0 to 9.</span>
-    <span class="SLgc">loop</span> i in <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         result += i
     }
@@ -3103,7 +3104,7 @@ in
     <span class="SKwd">var</span> sumOfEvens = <span class="SNum">0</span>
 
     <span class="SCmt">// This loop sums up only the even numbers in the array.</span>
-    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         sumOfEvens += arr[i]
     }
@@ -3117,7 +3118,7 @@ in
     <span class="SKwd">var</span> filteredSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Sum only even numbers greater than 15.</span>
-    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
     {
         filteredSum += arr[i]
     }
@@ -3130,7 +3131,7 @@ in
     <span class="SKwd">var</span> sumOfPositiveEvens = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the range from -5 to 5, but only include positive even numbers.</span>
-    <span class="SLgc">loop</span> i in -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         sumOfPositiveEvens += i
     }
@@ -3144,7 +3145,7 @@ in
     <span class="SKwd">var</span> reversedSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop through the array in reverse, summing only the even values.</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">loop</span> <span class="SKwd">#back</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         reversedSum += arr[i]
     }
@@ -3158,7 +3159,7 @@ in
     <span class="SKwd">var</span> complexSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Sum elements that are either even or greater than 40.</span>
-    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
     {
         complexSum += arr[i]
     }
@@ -3172,7 +3173,7 @@ in
 {
     <span class="SCmt">// Here we visit every byte of the string.</span>
     <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'.</span>
-    <span class="SLgc">visit</span> value in <span class="SStr">"ABC"</span>
+    <span class="SLgc">visit</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
         <span class="SKwd">let</span> a = <span class="SItr">#index</span>
@@ -3190,7 +3191,7 @@ in
 <p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. This allows for more readable code, especially when working with nested loops or complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">visit</span> value, index in <span class="SStr">"ABC"</span>
+    <span class="SLgc">visit</span> value, index <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SKwd">let</span> a = index
         <span class="SLgc">switch</span> a
@@ -3227,7 +3228,7 @@ in
 {
     <span class="SCmt">// Here we visit every byte of the string in reverse order.</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> <span class="SKwd">#back</span> value in <span class="SStr">"ABC"</span>
+    <span class="SLgc">visit</span> <span class="SKwd">#back</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
         <span class="SLgc">switch</span> cpt
@@ -3252,7 +3253,7 @@ in
     <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it in array:
+    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:
         result += it
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)
@@ -3263,7 +3264,7 @@ in
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it in array:
+    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:
         result += it
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
@@ -3274,7 +3275,7 @@ in
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> &it in array
+    <span class="SLgc">visit</span> &it <span class="SLgc">in</span> array
     {
         result += <span class="SKwd">dref</span> it
         <span class="SKwd">dref</span> it = <span class="SNum">555</span>
@@ -3295,21 +3296,21 @@ in
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
     <span class="SCmt">// Just process even values.</span>
-    <span class="SLgc">visit</span> value in array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
+    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
         result += value
 
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
 
     <span class="SCmt">// Equivalent using an if statement inside the visit loop:</span>
     result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> value in array:
+    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array:
         <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
             result += value  
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>) 
 
     <span class="SCmt">// Equivalent using continue to skip odd values:</span>
     result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> value in array
+    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array
     {
         <span class="SLgc">if</span> (value & <span class="SNum">1</span>) != <span class="SNum">0</span>:
             <span class="SLgc">continue</span>
@@ -3968,7 +3969,7 @@ in
 
     <span class="SCmt">// The 'typeinfo' of a struct contains a 'methods' field, which is a slice of methods</span>
     <span class="SKwd">let</span> t = <span class="SCst">MyStruct</span>
-    <span class="SLgc">visit</span> p in t.methods
+    <span class="SLgc">visit</span> p <span class="SLgc">in</span> t.methods
     {
         <span class="SCmt">// When visiting 'methods', the 'value' field contains the function pointer,</span>
         <span class="SCmt">// which can be cast to the correct type</span>
@@ -4242,7 +4243,7 @@ in
     <span class="SItr">@assert</span>(cpt == <span class="SNum">4</span>)  <span class="SCmt">// Ensure the loop ran 4 times, as specified by 'opCount'</span>
 }</span></div>
 
-<h3 id="_060_struct_swg__064_006_post_copy_and_post_move_swg">Post copy and post move</h3><p>Swag accepts copy and move semantics for structures. In this examples, we use a <span class="code-inline">Vector3</span> to illustrate, even if of course that kind of struct does not need a move semantic, as there's no heap involved. </p>
+<h3 id="_060_struct_swg__064_006_post_copy_and_post_move_swg">Post copy and post move</h3><p>Swag supports both copy and move semantics for structures. In this example, we'll demonstrate these concepts using a <span class="code-inline">Vector3</span> struct. Although a <span class="code-inline">Vector3</span> struct typically wouldn't require move semantics (since it doesn't involve heap allocation), this example serves to illustrate how these features work in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Vector3</span>
 {
     x, y, z: <span class="STpe">s32</span> = <span class="SNum">666</span>
@@ -4250,101 +4251,95 @@ in
 
 <span class="SKwd">impl</span> <span class="SCst">Vector3</span>
 {
-    <span class="SCmt">// This is used for 'copy semantic'.</span>
+    <span class="SCmt">// This method is invoked after a copy operation.</span>
+    <span class="SCmt">// It represents the "copy semantics" and is useful for custom behavior after copying.</span>
     <span class="SKwd">mtd</span> <span class="SFct">opPostCopy</span>()
     {
-        x, y, z += <span class="SNum">1</span>
+        x, y, z += <span class="SNum">1</span>  <span class="SCmt">// Increment all fields by 1 to indicate a copy has occurred.</span>
     }
 
-    <span class="SCmt">// This is used for 'move semantic'.</span>
+    <span class="SCmt">// This method is invoked after a move operation.</span>
+    <span class="SCmt">// It represents the "move semantics" and is useful for custom behavior after moving.</span>
     <span class="SKwd">mtd</span> <span class="SFct">opPostMove</span>()
     {
-        x, y, z += <span class="SNum">2</span>
+        x, y, z += <span class="SNum">2</span>  <span class="SCmt">// Increment all fields by 2 to indicate a move has occurred.</span>
     }
 
-    <span class="SCmt">// Just imagine that we have something to drop. Like a memory allocated buffer.</span>
+    <span class="SCmt">// This method is invoked when an object is about to be destroyed.</span>
+    <span class="SCmt">// Even though `Vector3` doesn't manage resources, this is where you would clean up resources like heap-allocated memory.</span>
     <span class="SKwd">mtd</span> <span class="SFct">opDrop</span>() {}
 }
 
 <span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a = <span class="SCst">Vector3</span>{}
-    <span class="SKwd">var</span> b = <span class="SCst">Vector3</span>{<span class="SNum">100</span>, <span class="SNum">200</span>, <span class="SNum">300</span>}
+    <span class="SKwd">var</span> a = <span class="SCst">Vector3</span>{}           <span class="SCmt">// Default initialization</span>
+    <span class="SKwd">var</span> b = <span class="SCst">Vector3</span>{<span class="SNum">100</span>, <span class="SNum">200</span>, <span class="SNum">300</span>}  <span class="SCmt">// Custom initialization</span>
 
-    <span class="SCmt">// "copy semantic". The default behaviour.</span>
-    <span class="SCmt">// 1. This will call 'opDrop' on 'a' if the function exists because 'a' could already be assigned.</span>
-    <span class="SCmt">// 2. This will raw copy 'b' to 'a'.</span>
-    <span class="SCmt">// 3. This will call 'opPostCopy' on 'a' if it exists.</span>
+    <span class="SCmt">// Copy Semantics (default behavior)</span>
+    <span class="SCmt">// 1. Calls 'opDrop' on 'a' (if it exists), because 'a' might already hold a value.</span>
+    <span class="SCmt">// 2. Copies 'b' to 'a'.</span>
+    <span class="SCmt">// 3. Calls 'opPostCopy' on 'a' (if it exists).</span>
     a = b
-    <span class="SItr">@assert</span>(a.x == <span class="SNum">101</span>) <span class="SCmt">// +1 because of the call to opPostCopy</span>
+    <span class="SItr">@assert</span>(a.x == <span class="SNum">101</span>)  <span class="SCmt">// +1 because of 'opPostCopy'</span>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">201</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">301</span>)
 
-    <span class="SCmt">// "move semantic" by adding the modifier 'move' just after '='.</span>
-    <span class="SCmt">// 1. This will call 'opDrop' on 'a' if it exists</span>
-    <span class="SCmt">// 2. This will raw copy 'b' to 'a'</span>
-    <span class="SCmt">// 3. This will call 'opPostMove' on 'a' if it exists</span>
-    <span class="SCmt">// 4. This will reinitialize 'b' to the default values if 'opDrop' exists</span>
+    <span class="SCmt">// Move Semantics</span>
+    <span class="SCmt">// The `#move` modifier triggers move semantics:</span>
+    <span class="SCmt">// 1. Calls 'opDrop' on 'a' (if it exists).</span>
+    <span class="SCmt">// 2. Moves 'b' to 'a'.</span>
+    <span class="SCmt">// 3. Calls 'opPostMove' on 'a' (if it exists).</span>
+    <span class="SCmt">// 4. Reinitializes 'b' to default values (if 'opDrop' exists).</span>
     a = <span class="SKwd">#move</span> b
-    <span class="SItr">@assert</span>(a.x == <span class="SNum">102</span>) <span class="SCmt">// +2 because of the call to opPostMove</span>
+    <span class="SItr">@assert</span>(a.x == <span class="SNum">102</span>)  <span class="SCmt">// +2 because of 'opPostMove'</span>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">202</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">302</span>)
 
-    <span class="SCmt">// 'Vector3' contains an 'opDrop' special function, so 'b' will be reinitialized to</span>
-    <span class="SCmt">// the default values after the 'move'. Default values are 666.</span>
+    <span class="SCmt">// After the move, 'b' is reinitialized to default values (666) because 'opDrop' exists.</span>
     <span class="SItr">@assert</span>(b.x == <span class="SNum">666</span>)
 
-    <span class="SCmt">// If you know what you're doing, you can avoid the first call to 'opDrop' with '= #nodrop'</span>
-    <span class="SCmt">// Do it when you know the state of 'a' and: not want an extra unnecessary call</span>
-    <span class="SCmt">// (for example if 'a' is in an undetermined state).</span>
+    <span class="SCmt">// You can bypass the first 'opDrop' call with the `#nodrop` modifier.</span>
+    <span class="SCmt">// Use this when you know 'a' is in an undefined state and doesn't require cleanup.</span>
+    a = <span class="SKwd">#nodrop</span> b         <span class="SCmt">// Copy 'b' to 'a' without dropping 'a' first.</span>
+    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#move</span> b   <span class="SCmt">// Move 'b' to 'a' without dropping 'a' first.</span>
 
-    a = <span class="SKwd">#nodrop</span> b <span class="SCmt">// Copy b to a without dropping 'a' first</span>
-    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#move</span> b <span class="SCmt">// Move b to a without dropping 'a' first</span>
-
-    <span class="SCmt">// For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. </span>
-    <span class="SCmt">// Of course,: this at your own risk, if you know that 'b' will never by dropped by the </span>
-    <span class="SCmt">// compiler or if you reinitialize its state yourself.</span>
-
-    <span class="SCmt">// instead of 'move'</span>
-    a = <span class="SKwd">#moveraw</span> b
-    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#moveraw</span> b
+    <span class="SCmt">// For move semantics, you can avoid the reinitialization of 'b' using `#moveraw`.</span>
+    <span class="SCmt">// This is risky and should only be used if you're certain 'b' won't be dropped or if you plan to reinitialize it manually.</span>
+    a = <span class="SKwd">#moveraw</span> b        <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
+    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#moveraw</span> b <span class="SCmt">// Move 'b' to 'a' without dropping 'a' first and without resetting 'b'.</span>
 }</span></div>
-<h4 id="_060_struct_swg__064_006_post_copy_and_post_move_swg_Move_semantic">Move semantic </h4>
-<p><span class="code-inline">&&</span> can be used instead of <span class="code-inline">&</span> in a function parameter to declare a <b>move semantic</b> intention. </p>
+<h4 id="_060_struct_swg__064_006_post_copy_and_post_move_swg_Move_Semantics_in_Functions">Move Semantics in Functions </h4>
+<p>You can indicate a move semantic intention in function parameters by using <span class="code-inline">&&</span> instead of <span class="code-inline">&</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this </span>
-    <span class="SCmt">// version will take the owership on 'from'.</span>
+    <span class="SCmt">// This version of 'assign' takes ownership of 'from' by moving its contents into 'assignTo'.</span>
+    <span class="SCmt">// The 'moveref' tells the compiler that this version takes ownership of 'from'.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: &&<span class="SCst">Vector3</span>)
     {
-        assignTo = <span class="SKwd">#move</span> from
+        assignTo = <span class="SKwd">#move</span> from  <span class="SCmt">// Move 'from' to 'assignTo'.</span>
     }
 
-    <span class="SCmt">// This is the normal 'copy' version. In this version, 'from' will not be changed, that's </span>
-    <span class="SCmt">// why it's constant (not a ref).</span>
+    <span class="SCmt">// This version of 'assign' performs a copy instead of a move.</span>
+    <span class="SCmt">// 'from' remains unchanged, so it's passed by value.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
     {
-        assignTo = from
+        assignTo = from  <span class="SCmt">// Copy 'from' to 'assignTo'.</span>
     }
 
-    <span class="SKwd">var</span> a  = <span class="SCst">Vector3</span>{<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}
-    <span class="SKwd">var</span> b: <span class="SCst">Vector3</span>
+    <span class="SKwd">var</span> a = <span class="SCst">Vector3</span>{<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}  <span class="SCmt">// Initialize 'a'.</span>
+    <span class="SKwd">var</span> b: <span class="SCst">Vector3</span>            <span class="SCmt">// Declare 'b'.</span>
 
-    <span class="SCmt">// Call the 'copy' version of 'assign'.</span>
+    <span class="SCmt">// Call the copy version of 'assign'.</span>
     <span class="SFct">assign</span>(&b, a)
-    <span class="SCmt">// As this will call 'opPostCopy', we have +1 on each field.</span>
-    <span class="SItr">@assert</span>(b.x == <span class="SNum">2</span> <span class="SLgc">and</span> b.y == <span class="SNum">3</span> <span class="SLgc">and</span> b.z == <span class="SNum">4</span>)
-    <span class="SCmt">// 'a' remains unchanged</span>
-    <span class="SItr">@assert</span>(a.x == <span class="SNum">1</span> <span class="SLgc">and</span> a.y == <span class="SNum">2</span> <span class="SLgc">and</span> a.z == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(b.x == <span class="SNum">2</span> <span class="SLgc">and</span> b.y == <span class="SNum">3</span> <span class="SLgc">and</span> b.z == <span class="SNum">4</span>)  <span class="SCmt">// +1 on each field due to 'opPostCopy'.</span>
+    <span class="SItr">@assert</span>(a.x == <span class="SNum">1</span> <span class="SLgc">and</span> a.y == <span class="SNum">2</span> <span class="SLgc">and</span> a.z == <span class="SNum">3</span>)  <span class="SCmt">// 'a' remains unchanged.</span>
 
-    <span class="SCmt">// Now we tell the compiler to use the 'moveref' version of 'assign'.</span>
+    <span class="SCmt">// Call the move version of 'assign' using 'moveref'.</span>
     <span class="SFct">assign</span>(&b, <span class="SKwd">moveref</span> &a)
-    <span class="SCmt">// As 'opPostMove' has been called, we have +2 on each field.</span>
-    <span class="SItr">@assert</span>(b.x == <span class="SNum">3</span> <span class="SLgc">and</span> b.y == <span class="SNum">4</span> <span class="SLgc">and</span> b.z == <span class="SNum">5</span>)
-    <span class="SCmt">// And as this is a move, then 'a' is now reinitialized to its default values.</span>
-    <span class="SItr">@assert</span>(a.x == <span class="SNum">666</span> <span class="SLgc">and</span> a.y == <span class="SNum">666</span> <span class="SLgc">and</span> a.z == <span class="SNum">666</span>)
+    <span class="SItr">@assert</span>(b.x == <span class="SNum">3</span> <span class="SLgc">and</span> b.y == <span class="SNum">4</span> <span class="SLgc">and</span> b.z == <span class="SNum">5</span>)  <span class="SCmt">// +2 on each field due to 'opPostMove'.</span>
+    <span class="SItr">@assert</span>(a.x == <span class="SNum">666</span> <span class="SLgc">and</span> a.y == <span class="SNum">666</span> <span class="SLgc">and</span> a.z == <span class="SNum">666</span>)  <span class="SCmt">// 'a' is reset to default values after the move.</span>
 }</span></div>
 
 <h3 id="_060_struct_swg__064_007_visit_swg">Visit</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
@@ -4353,68 +4348,63 @@ in
     y:     <span class="STpe">s32</span> = <span class="SNum">20</span>
     z:     <span class="STpe">s32</span> = <span class="SNum">30</span>
 }</span></div>
-<p>You can visit a struct variable if a macro <span class="code-inline">opVisit</span> has been defined. This is the equivalent of an <b>iterator</b>. </p>
-<p><span class="code-inline">opVisit</span> is a macro, so it should be marked with the <span class="code-inline">#[Swag.Macro]</span> attribute. <span class="code-inline">opVisit</span> is also a generic function which takes two compile time generic parameters of type <span class="code-inline">bool</span>. </p>
+<p><span class="code-inline">opVisit</span> is a versatile macro used for iteration over elements in a struct, but it is not limited to fields. It can be used to visit any kind of data the struct holds, such as elements of a dynamic array, internal buffers, or complex object graphs. </p>
+<p>The <span class="code-inline">#[Swag.Macro]</span> attribute is mandatory for <span class="code-inline">opVisit</span>. It is also a generic function with two compile-time boolean parameters: </p>
 <ul>
-<li>if <span class="code-inline">ptr</span> is <span class="code-inline">true</span>, indicates that we should visit by address</li>
-<li>if <span class="code-inline">back</span> is <span class="code-inline">true</span>, indicates that we want to visit in reverse order (from back to front)</li>
+<li><span class="code-inline">ptr</span>: If <span class="code-inline">true</span>, visit elements by pointer (address).</li>
+<li><span class="code-inline">back</span>: If <span class="code-inline">true</span>, visit elements in reverse order (last to first).</li>
 </ul>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.</span>
-        <span class="SCmt">// We: not use it in this example, so we check at compile time that it's not true.</span>
+        <span class="SCmt">// `ptr` and `back` provide flexibility for visiting by reference or in reverse order.</span>
         <span class="SCmp">#if</span> ptr:
-            <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct by pointer is not supported"</span>
+            <span class="SCmp">#error</span> <span class="SStr">"visiting by pointer is not supported in this example"</span>
 
-        <span class="SCmt">// 'back' is a generic parameter that tells if we want to visit in reverse order.</span>
-        <span class="SCmt">// We: not use it in this example, so we check at compile time that it's not true.</span>
-        <span class="SCmp">#if</span> ptr:
-            <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct in reverse order is not supported"</span>
+        <span class="SCmp">#if</span> back:
+            <span class="SCmp">#error</span> <span class="SStr">"reverse visiting is not supported in this example"</span>
 
-        <span class="SCmt">// Loop on the 3 fields</span>
-        <span class="SLgc">loop</span> idx in <span class="SNum">3</span>
+        <span class="SCmt">// Example of visiting the fields of `MyStruct`. This is just one way to use `opVisit`.</span>
+        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
         {
-            <span class="SCmt">// The '#macro' keyword forces its body to be in the scope of the caller</span>
+            <span class="SCmt">// `#macro` ensures the code is injected into the caller's scope.</span>
             <span class="SCmp">#macro</span>
             {
-                <span class="SCmt">// #alias0 will be the value</span>
+                <span class="SCmt">// `#alias0` is used for the current value being visited.</span>
                 <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
 
-                <span class="SCmt">// As this code is in the caller scope, we need to add a '#up' before 'idx' to</span>
-                <span class="SCmt">// reference the variable of this function (and not a potential variable in</span>
-                <span class="SCmt">// the caller scope)</span>
+                <span class="SCmt">// Access the correct field based on the current `idx`.</span>
                 <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x <span class="SCmt">// Same for function parameter 'self'</span>
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
                     <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
                     <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z
                 }
 
-                <span class="SCmt">// #alias1 will be the index</span>
+                <span class="SCmt">// `#alias1` holds the current index of the iteration.</span>
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
 
-                <span class="SCmt">// include user code</span>
+                <span class="SCmt">// Insert the user-defined logic from the calling scope.</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
             }
         }
     }
 }</span></div>
-<p>So now that the <span class="code-inline">opVisit</span> has been defined, we can <span class="code-inline">visit</span> a variable of type <span class="code-inline">MyStruct</span>. </p>
+<p>This is just one way to use <span class="code-inline">opVisit</span>, visiting the struct's fields. You can apply the same concept to visit more complex data, like elements in a dynamic array or other internal structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
-    <span class="SKwd">var</span> cpt      = <span class="SNum">0</span>
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// Visiting each field in declaration order</span>
-    <span class="SCmt">// 'v' is an alias for #alias0 (value)</span>
-    <span class="SCmt">// 'i' is an alias for #alias1 (index)</span>
-    <span class="SLgc">visit</span> v, i in myStruct
+    <span class="SCmt">// Visit each field of `MyStruct` in declaration order.</span>
+    <span class="SCmt">// `v` corresponds to the value (i.e., #alias0).</span>
+    <span class="SCmt">// `i` corresponds to the index (i.e., #alias1).</span>
+    <span class="SLgc">visit</span> v, i <span class="SLgc">in</span> myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4431,17 +4421,15 @@ in
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
-<p>You can have variants of <span class="code-inline">opVisit</span> by specifying an <b>additional name</b> after <span class="code-inline">opVisit</span>. </p>
+<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data. For example, if your struct contains dynamic arrays or buffers, you can iterate over those elements using the same macro structure. </p>
+<p>Here, we'll demonstrate a variant that visits the fields in reverse order. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// Visit fields in reverse order (z, y then x).</span>
-        <span class="SCmt">// Note that visiting in reverse order should be implemented in the normal 'opVisit'</span>
-        <span class="SCmt">// function by checking the 'back' generic parameter. But this is just to make the</span>
-        <span class="SCmt">// point of special dedicated visit versions.</span>
-        <span class="SLgc">loop</span> idx in <span class="SNum">3</span>
+        <span class="SCmt">// In this version, we visit the fields in reverse order.</span>
+        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
         {
             <span class="SCmp">#macro</span>
             {
@@ -4461,15 +4449,15 @@ in
             }
         }
     }
-}
-
-<span class="SFct">#test</span>
+}</span></div>
+<p>The <span class="code-inline">opVisitReverse</span> variant allows us to visit the struct in reverse order. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
-    <span class="SKwd">var</span> cpt      = <span class="SNum">0</span>
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// To call a variant, add the extra name after ':'.</span>
-    <span class="SLgc">visit</span>(<span class="SCst">Reverse</span>) v, i in myStruct
+    <span class="SCmt">// Call the variant `opVisitReverse` to iterate over the fields in reverse order.</span>
+    <span class="SLgc">visit</span>(<span class="SCst">Reverse</span>) v, i <span class="SLgc">in</span> myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4486,73 +4474,118 @@ in
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
+<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to visit elements in dynamic arrays, buffers, or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data structure the struct holds. </p>
+<p>For instance, if you had a struct with a slice: </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
+{
+    buffer: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]
+}</span></div>
+<p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than the struct's fields. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    {
+        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
+        {
+            <span class="SCmp">#macro</span>
+            {
+                <span class="SCmt">// #alias0 represents the value of the current buffer element.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.buffer[<span class="SCmp">#up</span> idx]
 
-<h3 id="_060_struct_swg__067_008_offset_swg">Offset</h3><p>You can force the layout of a field with the <span class="code-inline">Swag.Offset</span> attribute. </p>
+                <span class="SCmt">// #alias1 represents the current index.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+
+                <span class="SCmt">// Insert the user-provided logic from the caller.</span>
+                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
+            }
+        }
+    }
+}
+
+<span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arrStruct = <span class="SCst">SliceStruct</span>{}
+    <span class="SKwd">var</span> sum = <span class="SNum">0</span>
+
+    <span class="SCmt">// Visit each element in the dynamic array buffer.</span>
+    <span class="SLgc">visit</span> v, i <span class="SLgc">in</span> arrStruct
+    {
+        sum += v
+    }
+
+    <span class="SItr">@assert</span>(sum == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span> + <span class="SNum">5</span>)
+}</span></div>
+
+<h3 id="_060_struct_swg__067_008_offset_swg">Offset</h3><p>You can force the layout of a field within a struct using the <span class="code-inline">Swag.Offset</span> attribute. This allows you to manually specify the memory offset of a field, potentially causing fields to overlap or share memory space. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
     {
         x: <span class="STpe">s32</span>
 
-        <span class="SCmt">// 'y' is located at the same offset as 'x', so they share the same space</span>
+        <span class="SCmt">// 'y' is located at the same offset as 'x', meaning they share the same memory space.</span>
+        <span class="SCmt">// This effectively creates an overlay, where changes to one field affect the other.</span>
         <span class="SAtr">#[Swag.Offset("x")]</span>
         y: <span class="STpe">s32</span>
     }
 
-    <span class="SCmt">// There are 2 fields in the struct but stored in only one s32, so the total size is 4 bytes.</span>
+    <span class="SCmt">// Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">4</span>
 
     <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}
     v.x = <span class="SNum">666</span>
 
-    <span class="SCmt">// As 'y' and 'x' are sharing the same space, affecting to 'x' also affects to 'y'.</span>
+    <span class="SCmt">// Since 'x' and 'y' share the same memory space, modifying 'x' also modifies 'y'.</span>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
 }</span></div>
-<p>An example to reference a field by index. </p>
+<p>Another example of using <span class="code-inline">Swag.Offset</span>, this time to reference a group of fields by index. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
     {
         x, y, z: <span class="STpe">f32</span>
 
+        <span class="SCmt">// Here, 'idx' is an array that references the same memory locations as 'x', 'y', and 'z'.</span>
+        <span class="SCmt">// This allows you to access 'x', 'y', and 'z' via indexed access through 'idx'.</span>
         <span class="SAtr">#[Swag.Offset("x")]</span>
         idx: [<span class="SNum">3</span>] <span class="STpe">f32</span>
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
     v.x = <span class="SNum">10</span>; v.y = <span class="SNum">20</span>; v.z = <span class="SNum">30</span>
+
+    <span class="SCmt">// Each index in 'idx' directly references 'x', 'y', and 'z'.</span>
     <span class="SItr">@assert</span>(v.idx[<span class="SNum">0</span>] == v.x)
     <span class="SItr">@assert</span>(v.idx[<span class="SNum">1</span>] == v.y)
     <span class="SItr">@assert</span>(v.idx[<span class="SNum">2</span>] == v.z)
 }</span></div>
 
-<h3 id="_060_struct_swg__068_009_packing_swg">Packing</h3><p>You can also control the struct layout with two attributes: <span class="code-inline">#[Swag.Pack]</span> and <span class="code-inline">#[Swag.Align]</span>. </p>
-<p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <span class="code-inline">#[Swag.Pack(0)]</span>. </p>
+<h3 id="_060_struct_swg__068_009_packing_swg">Packing</h3><p>You can control the layout of struct fields with the attributes <span class="code-inline">#[Swag.Pack]</span> and <span class="code-inline">#[Swag.Align]</span>. These attributes allow you to specify how tightly packed or aligned your data should be in memory. </p>
+<p>The default struct packing in Swag is similar to C, where each field is aligned based on the size of its type. This is equivalent to <span class="code-inline">#[Swag.Pack(0)]</span>, meaning no additional packing is applied. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
     {
-        x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: aligned to 1 byte</span>
-        y:     <span class="STpe">s32</span>      <span class="SCmt">// offset 4: s32 is aligned to 4 bytes (so here there's 3 bytes of padding before)</span>
-        z:     <span class="STpe">s64</span>      <span class="SCmt">// offset 8: aligned to 8 bytes</span>
+        x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: aligned to 1 byte (no padding needed)</span>
+        y:     <span class="STpe">s32</span>      <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
+        z:     <span class="STpe">s64</span>      <span class="SCmt">// offset 8: aligned to 8 bytes (no padding needed)</span>
     }
 
-    <span class="SCmt">// '@offsetof' can be used to retrieve the offset of a field</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.y) == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.z) == <span class="SNum">8</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">16</span>
 }</span></div>
-<p>You can <i>reduce</i> the packing of the fields with <span class="code-inline">#[Swag.Pack]</span>. </p>
+<p>You can reduce the packing of fields using <span class="code-inline">#[Swag.Pack]</span>, which determines the alignment of each field to the specified value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Pack(1)]</span>
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
     {
-        x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: 1 byte</span>
+        x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: 1 byte (no padding)</span>
         y:     <span class="STpe">s32</span>      <span class="SCmt">// offset 1: 4 bytes (no padding)</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">5</span>
@@ -4561,9 +4594,8 @@ in
     <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
     {
         x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: 1 byte</span>
-        y:     <span class="STpe">s32</span>      <span class="SCmt">// offset 2: 4 bytes (1 byte of padding before)</span>
+        y:     <span class="STpe">s32</span>      <span class="SCmt">// offset 2: 4 bytes (1 byte of padding before y)</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">2</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">6</span>
@@ -4572,26 +4604,24 @@ in
     <span class="SKwd">struct</span> <span class="SCst">MyStruct3</span>
     {
         x:     <span class="STpe">bool</span>     <span class="SCmt">// offset 0: 1 byte</span>
-        y:     <span class="STpe">s64</span>      <span class="SCmt">// offset 4: 8 bytes (3 bytes of padding before)</span>
+        y:     <span class="STpe">s64</span>      <span class="SCmt">// offset 4: 8 bytes (3 bytes of padding before y)</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct3</span>) == <span class="SNum">12</span>
 }</span></div>
-<p>The total struct size is always a multiple of the biggest alignment of the fields. </p>
+<p>The total struct size is always a multiple of the largest alignment of its fields. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
     {
         x:     <span class="STpe">s32</span>      <span class="SCmt">// 4 bytes</span>
         y:     <span class="STpe">bool</span>     <span class="SCmt">// 1 byte</span>
-        <span class="SCmt">// 3 bytes of padding because of 'x', to aligned on 's32'</span>
+        <span class="SCmt">// 3 bytes of padding to align with s32 size</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
 }</span></div>
-<p>You can force the struct alignment with <span class="code-inline">#[Swag.Align]</span>. </p>
+<p>You can enforce struct alignment with <span class="code-inline">#[Swag.Align]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
@@ -4599,7 +4629,6 @@ in
         x:     <span class="STpe">bool</span>     <span class="SCmt">// 1 byte</span>
         y:     <span class="STpe">bool</span>     <span class="SCmt">// 1 byte</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">2</span>
@@ -4609,23 +4638,21 @@ in
     {
         x:     <span class="STpe">bool</span>     <span class="SCmt">// 1 byte</span>
         y:     <span class="STpe">bool</span>     <span class="SCmt">// 1 byte</span>
-        <span class="SCmt">// 6 bytes of padding to be a multiple of '8'</span>
+        <span class="SCmt">// 6 bytes of padding to align struct size to 8</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
     <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">1</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
-<p>You can also force each field to be aligned on a specific value. </p>
+<p>You can also set alignment for individual fields. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
     {
         x: <span class="STpe">bool</span> <span class="SCmt">// offset 0: 1 byte</span>
         <span class="SAtr">#[Swag.Align(8)]</span>
-        y: <span class="STpe">bool</span> <span class="SCmt">// offset 8: aligned to 8 (7 bytes of padding before)</span>
+        y: <span class="STpe">bool</span> <span class="SCmt">// offset 8: aligned to 8 bytes (7 bytes of padding before y)</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">9</span>
 
     <span class="SAtr">#[Swag.Align(8)]</span>
@@ -4633,27 +4660,31 @@ in
     {
         x: <span class="STpe">bool</span> <span class="SCmt">// offset 0: 1 byte</span>
         <span class="SAtr">#[Swag.Align(4)]</span>
-        y: <span class="STpe">bool</span> <span class="SCmt">// offset 4: aligned to 4 (3 bytes of padding before)</span>
-        <span class="SCmt">// 3 bytes of padding to be a multiple of 8</span>
+        y: <span class="STpe">bool</span> <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
+        <span class="SCmt">// 3 bytes of padding to align struct size to 8</span>
     }
-
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
 
-<h2 id="_070_union_swg">Union</h2><p>An union is just a struct where all fields are located at offset 0. </p>
+<h2 id="_070_union_swg">Union</h2><p>An <span class="code-inline">union</span> is a special type of struct where all fields share the same memory location, meaning they all start at offset 0. This allows multiple fields to occupy the same space in memory. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// Define a union with three fields: x, y, and z, all of type f32.</span>
     <span class="SKwd">union</span> <span class="SCst">MyUnion</span>
     {
         x, y, z: <span class="STpe">f32</span>
     }
 
+    <span class="SCmt">// Initialize the union, setting the value of x to 666.</span>
     <span class="SKwd">var</span> v = <span class="SCst">MyUnion</span>{x: <span class="SNum">666</span>}
+
+    <span class="SCmt">// Since all fields share the same memory, setting x also sets y and z.</span>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
     <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>)
 }</span></div>
+<p>In this example, the union type allows you to define multiple fields (x, y, z), but since they all occupy the same memory location, modifying one field will affect the others. This is useful when you need to store different types of data in the same memory space but at different times. Here, <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> are all of type <span class="code-inline">f32</span>, so changing one affects the others since they overlap in memory. </p>
 
-<h2 id="_075_interface_swg">Interface</h2><p>Interfaces are <b>virtual tables</b> (a list of function pointers) that can be associated to a struct. </p>
+<h2 id="_075_interface_swg">Interface</h2><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
 <p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. You can then <i>implement</i> an interface for a given struct without changing the struct definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
@@ -4689,7 +4720,7 @@ in
         <span class="STpe">self</span>.x, <span class="STpe">self</span>.y = <span class="SNum">0</span>
     }
 
-    <span class="SCmt">// Not that you can also declare 'normal' functions or methods in an 'impl block'.</span>
+    <span class="SCmt">// Note that you can also declare 'normal' functions or methods in an 'impl block'.</span>
     <span class="SKwd">mtd</span> <span class="SFct">myOtherMethod</span>() {}
 }</span></div>
 <p>And we implement interface <span class="code-inline">IReset</span> also for struct <span class="code-inline">Point3</span>. </p>
@@ -4726,7 +4757,7 @@ in
     <span class="SItr">@assert</span>(pt3.y == <span class="SNum">10</span> + <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt3.z == <span class="SNum">10</span> + <span class="SNum">2</span>)
     itf.<span class="SFct">reset</span>()
-    <span class="SItr">@assert</span>(pt3.x == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.y == <span class="SNum">0</span>)
+    <span class="SItr">@assert</span>(pt3.x == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.y == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.z == <span class="SNum">0</span>)
 }</span></div>
 <p>You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. They are located in a dedicated scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -4746,6 +4777,7 @@ in
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>
     <span class="SKwd">var</span> pt3: <span class="SCst">Point3</span>
     <span class="SKwd">var</span> itf  = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt2
+
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(itf) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>)
 
     <span class="SCmt">// You can retrieve the concrete type associated with an interface instance with '@kindof'.</span>
@@ -4792,29 +4824,29 @@ in
 }</span></div>
 
 <h2 id="_100_function_swg">Function</h2>
-<h3 id="_100_function_swg__101_001_declaration_swg">Declaration</h3><p>A function declaration usually starts with the <span class="code-inline">func</span> keyword followed by the function name. </p>
+<h3 id="_100_function_swg__101_001_declaration_swg">Declaration</h3><p>A function declaration typically begins with the <span class="code-inline">func</span> keyword followed by the function name. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overload]</span>
 <span class="SKwd">func</span> <span class="SFct">toto</span>() {}</span></div>
-<p>If the function needs to return a value, you must add <span class="code-inline">-&gt;</span> followed by the type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toto1</span>()-&gt;<span class="STpe">s32</span>
+<p>If the function needs to return a value, use <span class="code-inline">-&gt;</span> followed by the return type. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toto1</span>() -&gt; <span class="STpe">s32</span>
 {
     <span class="SLgc">return</span> <span class="SNum">0</span>
 }</span></div>
-<p>The return type can be deduced in case of a simple expression, by using <span class="code-inline">=&gt;</span> instead of <span class="code-inline">-&gt;</span>. Here the return type will be deduced to be <span class="code-inline">s32</span>. </p>
+<p>For simple expressions, the return type can be inferred by using <span class="code-inline">=&gt;</span> instead of <span class="code-inline">-&gt;</span>. In this example, the return type is inferred as <span class="code-inline">s32</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum</span>(x, y: <span class="STpe">s32</span>) =&gt; x + y</span></div>
-<p>A short version exists, in case of a function returning nothing. </p>
+<p>For functions that do not return a value, a shorter syntax can be used. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(val: <span class="STpe">string</span>) = <span class="SItr">@print</span>(val)</span></div>
-<p>Parameters are specified after the function name, between parenthesis. Here we declare two parameters <span class="code-inline">x</span> and <span class="code-inline">y</span> of type <span class="code-inline">s32</span>, and one last parameter of type <span class="code-inline">f32</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum1</span>(x, y: <span class="STpe">s32</span>, unused: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span>
+<p>Parameters are defined after the function name, within parentheses. In this example, we declare two parameters, <span class="code-inline">x</span> and <span class="code-inline">y</span> of type <span class="code-inline">s32</span>, and an additional parameter of type <span class="code-inline">f32</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum1</span>(x, y: <span class="STpe">s32</span>, unused: <span class="STpe">f32</span>) -&gt; <span class="STpe">s32</span>
 {
     <span class="SLgc">return</span> x + y
 }</span></div>
 <p>Parameters can have default values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum2</span>(x, y: <span class="STpe">s32</span>, unused: <span class="STpe">f32</span> = <span class="SNum">666</span>)-&gt;<span class="STpe">s32</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum2</span>(x, y: <span class="STpe">s32</span>, unused: <span class="STpe">f32</span> = <span class="SNum">666</span>) -&gt; <span class="STpe">s32</span>
 {
     <span class="SLgc">return</span> x + y
 }</span></div>
-<p>The type of the parameters can be deduced if you specify a default value. Here <span class="code-inline">x</span> and <span class="code-inline">y</span> have the type <span class="code-inline">f32</span> because <span class="code-inline">0.0</span> is a 32 bits floating point literal. </p>
+<p>If a parameter has a default value, its type can be inferred. Here, <span class="code-inline">x</span> and <span class="code-inline">y</span> are inferred to be of type <span class="code-inline">f32</span> because <span class="code-inline">0.0</span> is a 32-bit floating-point literal. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum3</span>(x, y = <span class="SNum">0.0</span>)
 {
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">f32</span>
@@ -4830,14 +4862,14 @@ in
 <p>Functions can be nested inside other functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// This are not closure but just functions in a sub scope.</span>
+    <span class="SCmt">// These are not closures but functions within a sub-scope.</span>
     <span class="SKwd">func</span> <span class="SFct">sub</span>(x, y: <span class="STpe">s32</span>) =&gt; x - y
 
-    <span class="SCmt">// Simple call.</span>
+    <span class="SCmt">// Simple function call.</span>
     <span class="SKwd">let</span> x = <span class="SFct">sub</span>(<span class="SNum">5</span>, <span class="SNum">2</span>)
     <span class="SItr">@assert</span>(x == <span class="SNum">3</span>)
 }</span></div>
-<p>You can name parameters, and don't have to respect parameters order in that case. </p>
+<p>You can name parameters and call functions without respecting the parameter order. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">sub</span>(x, y: <span class="STpe">s32</span>) =&gt; x - y
@@ -4855,11 +4887,11 @@ in
         <span class="SItr">@assert</span>(<span class="SFct">returnMe</span>(y: <span class="SNum">10</span>) == <span class="SNum">20</span>)
     }
 }</span></div>
-<h4 id="_100_function_swg__101_001_declaration_swg_Multiple_return_values">Multiple return values </h4>
-<p>An <b>anonymous struct</b> can be used to return multiple values in a function. </p>
+<h4 id="_100_function_swg__101_001_declaration_swg_Multiple_Return_Values">Multiple Return Values </h4>
+<p>An <b>anonymous struct</b> can be used to return multiple values from a function. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">myFunction</span>()-&gt;{ x, y: <span class="STpe">f32</span> }
+    <span class="SKwd">func</span> <span class="SFct">myFunction</span>() -&gt; { x, y: <span class="STpe">f32</span> }
     {
         <span class="SLgc">return</span> {<span class="SNum">1.0</span>, <span class="SNum">2.0</span>}
     }
@@ -4875,100 +4907,99 @@ in
     <span class="SKwd">let</span> (z, w) = <span class="SFct">myFunction</span>()
     <span class="SItr">@assert</span>(z == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(w == <span class="SNum">2.0</span>)
-}
-
-<span class="SFct">#test</span>
+}</span></div>
+<p>You can also use the <span class="code-inline">retval</span> type, which is an alias for the function's return type, to structure your return statements. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">returns2</span>()-&gt;{ x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
+    <span class="SKwd">func</span> <span class="SFct">returns2</span>() -&gt; { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
     {
-        <span class="SCmt">// You can return a tuple literal as long as the types match</span>
+        <span class="SCmt">// You can return a tuple literal as long as the types match.</span>
         <span class="SLgc">if</span> <span class="SKwd">false</span>:
             <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}
 
-        <span class="SCmt">// Or use the specifal type 'retval' which is an typealias to the</span>
-        <span class="SCmt">// function return type (but not only, we'll see later)</span>
+        <span class="SCmt">// Alternatively, use the special type 'retval' as a type alias to the function's return type.</span>
         <span class="SKwd">using</span> <span class="SKwd">var</span> result: <span class="SKwd">retval</span>
         x = <span class="SNum">1</span>
         y = <span class="SNum">2</span>
         <span class="SLgc">return</span> result
     }
 
-    <span class="SCmt">// You can access the struct fields with the names or with 'item?'</span>
+    <span class="SCmt">// You can access the struct fields by name or using 'item?'.</span>
     <span class="SKwd">var</span> result = <span class="SFct">returns2</span>()
     <span class="SItr">@assert</span>(result.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(result.item0 == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(result.y == <span class="SNum">2</span>)
     <span class="SItr">@assert</span>(result.item1 == <span class="SNum">2</span>)
 
-    <span class="SCmt">// You can deconstruct the returned struct</span>
+    <span class="SCmt">// You can also deconstruct the returned struct.</span>
     <span class="SKwd">let</span> (x, y) = <span class="SFct">returns2</span>()
     <span class="SItr">@assert</span>(x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(y == <span class="SNum">2</span>)
 }</span></div>
 
-<h3 id="_100_function_swg__102_002_lambda_swg">Lambda</h3><p>A lambda is just a <b>pointer to a function</b>. </p>
+<h3 id="_100_function_swg__102_002_lambda_swg">Lambda</h3><p>A lambda in Swag is essentially a <b>pointer to a function</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">myFunction0</span>() {}
     <span class="SKwd">func</span> <span class="SFct">myFunction1</span>(x: <span class="STpe">s32</span>) =&gt; x * x
 
-    <span class="SCmt">// 'ptr0' is declared as a pointer to a function that takes no parameter, and returns nothing</span>
+    <span class="SCmt">// 'ptr0' is a pointer to a function that takes no parameters and returns nothing.</span>
     <span class="SKwd">let</span> ptr0: <span class="SKwd">func</span>() = &myFunction0
     <span class="SFct">ptr0</span>()
 
-    <span class="SCmt">// Here type of 'ptr1' is deduced from 'myFunction1'</span>
+    <span class="SCmt">// The type of 'ptr1' is inferred from 'myFunction1'.</span>
     <span class="SKwd">let</span> ptr1 = &myFunction1
     <span class="SItr">@assert</span>(<span class="SFct">myFunction1</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)
     <span class="SItr">@assert</span>(<span class="SFct">ptr1</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)
 }</span></div>
-<p>A lambda can be null. </p>
+<p>A lambda can also be null. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> lambda: <span class="SKwd">func</span>()-&gt;<span class="STpe">bool</span>
+    <span class="SKwd">var</span> lambda: <span class="SKwd">func</span>() -&gt; <span class="STpe">bool</span>
     <span class="SItr">@assert</span>(lambda == <span class="SKwd">null</span>)
 }</span></div>
-<p>You can use a lambda as a function parameter type. </p>
+<p>Lambdas can be used as function parameter types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
+    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
+    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>) -&gt; <span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
 
     <span class="SKwd">func</span> <span class="SFct">square</span>(x: <span class="STpe">s32</span>) =&gt; x * x
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, &square) == <span class="SNum">16</span>)
 }</span></div>
-<h4 id="_100_function_swg__102_002_lambda_swg_Anonymous_functions">Anonymous functions </h4>
-<p>You can also create <i>anonymous functions</i> (aka functions as literals). </p>
+<h4 id="_100_function_swg__102_002_lambda_swg_Anonymous_Functions">Anonymous Functions </h4>
+<p>You can also create <i>anonymous functions</i> (also known as function literals). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> cb = <span class="SKwd">func</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span> =&gt; x * x
+    <span class="SKwd">var</span> cb = <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> =&gt; x * x
     <span class="SItr">@assert</span>(<span class="SFct">cb</span>(<span class="SNum">4</span>) == <span class="SNum">16</span>)
-    cb = <span class="SKwd">func</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span> =&gt; x * x * x
+    cb = <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> =&gt; x * x * x
     <span class="SItr">@assert</span>(<span class="SFct">cb</span>(<span class="SNum">4</span>) == <span class="SNum">64</span>)
 }</span></div>
-<p>Anonymous functions can be passed as parameters to another function. </p>
+<p>Anonymous functions can be passed directly as parameters to other functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
+    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
+    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>) -&gt; <span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
 
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) =&gt; x * x) == <span class="SNum">16</span>)
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) =&gt; x + x) == <span class="SNum">8</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> x - x; }) == <span class="SNum">0</span>)
+    <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> { <span class="SLgc">return</span> x - x; }) == <span class="SNum">0</span>)
 }</span></div>
-<p>The types of the parameters can be deduced. </p>
+<p>Parameter types in anonymous functions can be inferred. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
+    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
+    <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>) -&gt; <span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
 
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x) =&gt; x * x) == <span class="SNum">16</span>)
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x) =&gt; x + x) == <span class="SNum">8</span>)
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x) { <span class="SLgc">return</span> x - x; }) == <span class="SNum">0</span>)
 }</span></div>
-<p>When you affect a lambda to a variable, the type of parameters and the return type can also be omitted, as they will be deduced from the variable type. </p>
+<p>When assigning a lambda to a variable, the types of parameters and the return type can also be omitted, as they will be inferred from the variable's type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> fct: <span class="SKwd">func</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>)-&gt;<span class="STpe">bool</span>
+    <span class="SKwd">var</span> fct: <span class="SKwd">func</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>) -&gt; <span class="STpe">bool</span>
 
     fct = <span class="SKwd">func</span>(x, y) =&gt; x == y
     <span class="SItr">@assert</span>(<span class="SFct">fct</span>(<span class="SNum">10</span>, <span class="SNum">10</span>))
@@ -4976,7 +5007,7 @@ in
     fct = <span class="SKwd">func</span>(x, y) { <span class="SLgc">return</span> x != y; }
     <span class="SItr">@assert</span>(<span class="SFct">fct</span>(<span class="SNum">20</span>, <span class="SNum">120</span>))
 }</span></div>
-<p>Lambdas can have default parameters values. </p>
+<p>Lambdas can have default parameter values. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -5001,95 +5032,112 @@ in
     }
 }</span></div>
 
-<h3 id="_100_function_swg__103_003_closure_swg">Closure</h3><p>Swag supports a limited set of the <span class="code-inline">closure</span> concept. </p>
-<p>Only a given amount of bytes of capture are possible (for now 48 bytes). That way there's never an hidden allocation. Another limitation is that you can only capture <span class="code-inline">simple</span> variables (no struct with <span class="code-inline">opDrop</span>, <span class="code-inline">opPostCopy</span>, <span class="code-inline">opPostMove</span> for example). </p>
-<p>A closure is declared like a lambda, with the captured variables between <span class="code-inline">|...|</span> before the function parameters. </p>
+<h3 id="_100_function_swg__103_003_closure_swg">Closure</h3><p>Swag supports a limited implementation of the <span class="code-inline">closure</span> concept. </p>
+<p>Currently, only a specific amount of capture (up to 48 bytes) is allowed, ensuring there are no hidden allocations. Additionally, you can only capture <span class="code-inline">simple</span> variables—no structs with custom behaviors like <span class="code-inline">opDrop</span>, <span class="code-inline">opPostCopy</span>, or <span class="code-inline">opPostMove</span>. </p>
+<p>A closure is declared similarly to a lambda, with the captured variables specified between <span class="code-inline">|...|</span> before the function parameters. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a = <span class="SNum">125</span>
     <span class="SKwd">let</span> b = <span class="SNum">521</span>
 
-    <span class="SCmt">// Capture 'a' and 'b'</span>
+    <span class="SCmt">// Capture 'a' and 'b' by value, meaning copies of these variables are captured.</span>
     <span class="SKwd">let</span> fct: <span class="SKwd">closure</span>() = <span class="SKwd">closure</span>|a, b|()
     {
+        <span class="SCmt">// Inside the closure, the captured values 'a' and 'b' are accessible.</span>
         <span class="SItr">@assert</span>(a == <span class="SNum">125</span>)
         <span class="SItr">@assert</span>(b == <span class="SNum">521</span>)
     }
 
+    <span class="SCmt">// Invoke the closure.</span>
     <span class="SFct">fct</span>()
 }</span></div>
-<p>You can also capture by reference with <span class="code-inline">&</span> (otherwise it's a copy). </p>
+<p>Variables can also be captured by reference using <span class="code-inline">&</span> (by default, they are captured by value). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">125</span>
 
-    <span class="SCmt">// Capture 'a' by pointer</span>
+    <span class="SCmt">// Capture 'a' by reference, meaning changes to 'a' inside the closure will affect 'a' outside the closure as well.</span>
     <span class="SKwd">let</span> fct: <span class="SKwd">closure</span>() = <span class="SKwd">closure</span>|&a|()
     {
-        <span class="SCmt">// We can change the value of the local variable 'a'</span>
+        <span class="SCmt">// Modify the captured variable 'a' by incrementing it.</span>
         a += <span class="SNum">1</span>
     }
 
+    <span class="SCmt">// Invoke the closure, which increments 'a' by 1.</span>
     <span class="SFct">fct</span>()
-    <span class="SItr">@assert</span>(a == <span class="SNum">126</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">126</span>)  <span class="SCmt">// Check that 'a' has been incremented to 126.</span>
+
+    <span class="SCmt">// Invoke the closure again, further incrementing 'a'.</span>
     <span class="SFct">fct</span>()
-    <span class="SItr">@assert</span>(a == <span class="SNum">127</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">127</span>)  <span class="SCmt">// Check that 'a' has been incremented to 127.</span>
 }</span></div>
-<p>You can assign a normal lambda (no capture) to a closure variable. </p>
+<p>A closure variable can also hold a standard lambda (without capture). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 
+    <span class="SCmt">// Assign a simple lambda that adds two integers to the closure variable 'fct'.</span>
     fct = <span class="SKwd">func</span>(x, y) =&gt; x + y
+
+    <span class="SCmt">// Test the lambda by passing values 1 and 2, expecting the result to be 3.</span>
     <span class="SItr">@assert</span>(<span class="SFct">fct</span>(<span class="SNum">1</span>, <span class="SNum">2</span>) == <span class="SNum">3</span>)
 }</span></div>
-<p>You can capture arrays, structs, slices etc... as long as it fits in the maximum storage of <span class="code-inline">n</span> bytes (and as long as the struct is a pod). </p>
+<p>You can capture arrays, structs, slices, etc., as long as they fit within the maximum capture size and the struct is a Plain Old Data (POD) type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]
+    <span class="SKwd">var</span> x = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]  <span class="SCmt">// An array of integers.</span>
 
-    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 
-    <span class="SCmt">// Capture the array 'x' by making a copy</span>
+    <span class="SCmt">// Capture the array 'x' by value (a copy of the array is made).</span>
     fct = <span class="SKwd">closure</span>|x|(toAdd)
     {
         <span class="SKwd">var</span> res = <span class="SNum">0</span>
-        <span class="SLgc">visit</span> v in x:
+        <span class="SCmt">// Iterate over the captured array 'x' and sum its elements.</span>
+        <span class="SLgc">visit</span> v <span class="SLgc">in</span> x:
             res += v
+        <span class="SCmt">// Add the 'toAdd' parameter to the sum.</span>
         res += toAdd
         <span class="SLgc">return</span> res
     }
 
+    <span class="SCmt">// Invoke the closure with the value 4, expecting the result to be the sum of 1+2+3+4.</span>
     <span class="SKwd">let</span> result = <span class="SFct">fct</span>(<span class="SNum">4</span>)
     <span class="SItr">@assert</span>(result == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
 }</span></div>
-<p>Captured variables are mutable, and part of the closure. So you can modify them. </p>
+<p>Captured variables are mutable and part of the closure, allowing you to modify them. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">getInc</span>()-&gt;<span class="SKwd">closure</span>()-&gt;<span class="STpe">s32</span>
+    <span class="SCmt">// A function that returns a closure, which increments a captured variable 'x' each time it's called.</span>
+    <span class="SKwd">func</span> <span class="SFct">getInc</span>() -&gt; <span class="SKwd">closure</span>() -&gt; <span class="STpe">s32</span>
     {
-        <span class="SKwd">let</span> x = <span class="SNum">10</span>
+        <span class="SKwd">let</span> x = <span class="SNum">10</span>  <span class="SCmt">// Initialize 'x' with 10.</span>
 
-        <span class="SLgc">return</span> <span class="SKwd">closure</span>|x|()-&gt;<span class="STpe">s32</span>
+        <span class="SCmt">// Return a closure that captures 'x' by value.</span>
+        <span class="SLgc">return</span> <span class="SKwd">closure</span>|x|() -&gt; <span class="STpe">s32</span>
         {
+            <span class="SCmt">// Increment the captured 'x' and return its new value.</span>
             x += <span class="SNum">1</span>
             <span class="SLgc">return</span> x
         }
     }
 
+    <span class="SCmt">// Obtain the closure returned by 'getInc'.</span>
     <span class="SKwd">let</span> fct = <span class="SFct">getInc</span>()
-    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">11</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">12</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">13</span>)
+
+    <span class="SCmt">// Invoke the closure multiple times, verifying that 'x' increments correctly.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">11</span>)  <span class="SCmt">// First call, 'x' becomes 11.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">12</span>)  <span class="SCmt">// Second call, 'x' becomes 12.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">13</span>)  <span class="SCmt">// Third call, 'x' becomes 13.</span>
 }</span></div>
 
-<h3 id="_100_function_swg__104_004_mixin_swg">Mixin</h3><p>A mixin is declared like a function, with the attribute <span class="code-inline">#[Swag.Mixin]</span>. </p>
+<h3 id="_100_function_swg__104_004_mixin_swg">Mixin</h3><p>A mixin in Swag is declared similarly to a function, but with the attribute <span class="code-inline">#[Swag.Mixin]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">myMixin</span>() {}
 }</span></div>
-<p>A mixin function is inserted in the scope of the caller. </p>
+<p>A mixin function is injected directly into the caller's scope, allowing it to manipulate variables or execute code as if it were part of that scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5099,11 +5147,11 @@ in
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMixin</span>() <span class="SCmt">// Equivalent to 'a += 1'</span>
-    <span class="SFct">myMixin</span>() <span class="SCmt">// Equivalent to 'a += 1'</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
+    <span class="SFct">myMixin</span>() <span class="SCmt">// Equivalent to writing 'a += 1' directly in the scope</span>
+    <span class="SFct">myMixin</span>() <span class="SCmt">// Again, equivalent to 'a += 1'</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)  <span class="SCmt">// Verifies that 'a' has been incremented twice</span>
 }</span></div>
-<p>This behaves like a function, so you can add parameters, some default values, you can return something... </p>
+<p>Mixins behave like functions, so you can define parameters, assign default values, and even return values. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5113,29 +5161,28 @@ in
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMixin</span>() <span class="SCmt">// Equivalent to 'a += 1'</span>
-    <span class="SFct">myMixin</span>(<span class="SNum">2</span>) <span class="SCmt">// Equivalent to 'a += 2'</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)
+    <span class="SFct">myMixin</span>()    <span class="SCmt">// Equivalent to 'a += 1', using the default value</span>
+    <span class="SFct">myMixin</span>(<span class="SNum">2</span>)   <span class="SCmt">// Equivalent to 'a += 2', using the passed parameter</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)  <span class="SCmt">// Verifies that 'a' has been incremented by 1 and 2</span>
 }</span></div>
-<p>A mixin accepts a special parameter of type <span class="code-inline">code</span>. This represents a Swag <b>piece of code</b> defined at the caller site. </p>
+<p>A mixin can accept a special parameter of type <span class="code-inline">code</span>, which represents a Swag code block defined at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// You can then insert the code with '#mixin'.</span>
-        <span class="SCmt">// So here, we insert it two times</span>
+        <span class="SCmt">// The mixin can insert the passed code block multiple times using '#mixin'.</span>
         <span class="SCmp">#mixin</span> what
         <span class="SCmp">#mixin</span> what
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
-    <span class="SCmt">// You can use '#code' to specify some code when calling the mixin function.</span>
+    <span class="SCmt">// Use '#code' to define a code block that will be executed twice by the mixin.</span>
     <span class="SFct">doItTwice</span>(<span class="SCmp">#code</span> { a += <span class="SNum">1</span>; })
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)  <span class="SCmt">// Verifies that 'a' was incremented twice</span>
 }</span></div>
-<p>When the last parameter of a mixin is of type <span class="code-inline">code</span>, the caller can declare that code in a statement just after the call. </p>
+<p>When the last parameter of a mixin is of type <span class="code-inline">code</span>, the code can be declared in a separate statement after the mixin call. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5147,31 +5194,30 @@ in
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
-    <span class="SCmt">// This form of passing a code to the mixing...</span>
+    <span class="SCmt">// Pass a code block using the `#code` syntax.</span>
     <span class="SFct">doItTwice</span>(<span class="SNum">4</span>, <span class="SCmp">#code</span> { a += value; })
 
-    <span class="SCmt">// ...is equivalent to this other form, which is more simple and natural.</span>
-    <span class="SCmt">// You can also notice that 'value' is a parameter from the mixin itself</span>
+    <span class="SCmt">// Alternatively, you can pass the code block directly in a more natural syntax.</span>
     <span class="SFct">doItTwice</span>(<span class="SNum">2</span>)
     {
         a += value
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)  <span class="SCmt">// Verifies that 'a' was incremented as expected</span>
 }</span></div>
-<p>You can use the special name <span class="code-inline">#alias</span> to create a named alias for an identifier. </p>
+<p>You can use the special name <span class="code-inline">#alias</span> to create a named alias for an identifier, which allows flexible variable manipulation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">inc10</span>()
     {
-        <span class="SItr">#alias0</span> += <span class="SNum">10</span>
+        <span class="SItr">#alias0</span> += <span class="SNum">10</span>  <span class="SCmt">// Increment the aliased variable by 10</span>
     }
 
     <span class="SKwd">var</span> a, b = <span class="SNum">0</span>
-    <span class="SFct">inc10</span>(|a|) <span class="SCmt">// Passing alias name 'a'</span>
-    <span class="SFct">inc10</span>(|b|) <span class="SCmt">// Passing alias name 'b'</span>
-    <span class="SItr">@assert</span>(a == b <span class="SLgc">and</span> b == <span class="SNum">10</span>)
+    <span class="SFct">inc10</span>(|a|)  <span class="SCmt">// Use 'a' as the alias</span>
+    <span class="SFct">inc10</span>(|b|)  <span class="SCmt">// Use 'b' as the alias</span>
+    <span class="SItr">@assert</span>(a == b <span class="SLgc">and</span> b == <span class="SNum">10</span>)  <span class="SCmt">// Verifies that both 'a' and 'b' were incremented by 10</span>
 }
 
 <span class="SFct">#test</span>
@@ -5179,17 +5225,17 @@ in
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">setVar</span>(value: <span class="STpe">s32</span>)
     {
-        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = value
+        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = value  <span class="SCmt">// Set the aliased variable to 'value'</span>
     }
 
-    <span class="SFct">setVar</span>(|a| <span class="SNum">10</span>) <span class="SCmt">// Passing alias name 'a'</span>
-    <span class="SFct">setVar</span>(|b| <span class="SNum">20</span>) <span class="SCmt">// Passing alias name 'b'</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)
-    <span class="SItr">@assert</span>(b == <span class="SNum">20</span>)
-    <span class="SFct">setVar</span>(<span class="SNum">30</span>) <span class="SCmt">// No typealias, so name is #alias0</span>
-    <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">30</span>)
+    <span class="SFct">setVar</span>(|a| <span class="SNum">10</span>)  <span class="SCmt">// Set 'a' to 10</span>
+    <span class="SFct">setVar</span>(|b| <span class="SNum">20</span>)  <span class="SCmt">// Set 'b' to 20</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)  <span class="SCmt">// Verifies that 'a' was set to 10</span>
+    <span class="SItr">@assert</span>(b == <span class="SNum">20</span>)  <span class="SCmt">// Verifies that 'b' was set to 20</span>
+    <span class="SFct">setVar</span>(<span class="SNum">30</span>)  <span class="SCmt">// No alias provided, so default alias '#alias0' is used</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">30</span>)  <span class="SCmt">// Verifies that '#alias0' was set to 30</span>
 }</span></div>
-<p>You can declare special variables named <span class="code-inline">#mixin?</span>. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope. </p>
+<p>Mixins can declare special variables named <span class="code-inline">#mix?</span>. These variables receive a unique name each time the mixin is invoked, allowing the mixin to be used multiple times in the same scope without naming conflicts. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> total: <span class="STpe">s32</span>
@@ -5197,86 +5243,86 @@ in
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">toScope</span>()
     {
-        <span class="SKwd">var</span> <span class="SItr">#mix0</span>: <span class="STpe">s32</span> = <span class="SNum">1</span>
-        total += <span class="SItr">#mix0</span>
+        <span class="SKwd">var</span> <span class="SItr">#mix0</span>: <span class="STpe">s32</span> = <span class="SNum">1</span>  <span class="SCmt">// Declare a unique variable named '#mix0'</span>
+        total += <span class="SItr">#mix0</span>       <span class="SCmt">// Add the value of '#mix0' to 'total'</span>
     }
 
-    <span class="SFct">toScope</span>()
-    <span class="SFct">toScope</span>()
-    <span class="SFct">toScope</span>()
+    <span class="SFct">toScope</span>()  <span class="SCmt">// First invocation of the mixin</span>
+    <span class="SFct">toScope</span>()  <span class="SCmt">// Second invocation</span>
+    <span class="SFct">toScope</span>()  <span class="SCmt">// Third invocation</span>
 
-    <span class="SItr">@assert</span>(total == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(total == <span class="SNum">3</span>)  <span class="SCmt">// Verifies that 'total' is the sum of all mixin invocations</span>
 }</span></div>
 
-<h3 id="_100_function_swg__105_005_macro_swg">Macro</h3><p>A macro, like a mixin, is declared like a function, but with the attribute <span class="code-inline">Swag.Macro</span>. </p>
+<h3 id="_100_function_swg__105_005_macro_swg">Macro</h3><p>A macro in Swag is declared similarly to a function, but with the attribute <span class="code-inline">#[Swag.Macro]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>() {}
 }</span></div>
-<p>Unlike a mixin, a macro has its own scope, and cannot conflict with the function it is inserted inside. </p>
+<p>Unlike a mixin, a macro has its own scope. This means that variables declared within the macro do not conflict with variables in the function where the macro is used. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SKwd">var</span> a = <span class="SNum">666</span> <span class="SCmt">// 'a' is declared in the scope of 'myMacro'</span>
+        <span class="SKwd">var</span> a = <span class="SNum">666</span> <span class="SCmt">// 'a' is local to the macro's scope</span>
     }
 
     <span class="SKwd">let</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMacro</span>() <span class="SCmt">// no conflict with the 'a' declared above</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">0</span>)
+    <span class="SFct">myMacro</span>() <span class="SCmt">// No conflict with the 'a' declared in the outer scope</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">0</span>) <span class="SCmt">// 'a' remains unchanged</span>
 }</span></div>
-<p>But you can force an identifier to be found <b>outside</b> of the scope of the macro with <span class="code-inline">#up</span>. </p>
+<p>However, you can force an identifier to be resolved <b>outside</b> the macro's scope using the <span class="code-inline">#up</span> keyword. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SCmp">#up</span> a += <span class="SNum">1</span> <span class="SCmt">// Add '#up' before the identifier to reference the 'a' of the caller</span>
+        <span class="SCmp">#up</span> a += <span class="SNum">1</span> <span class="SCmt">// References the 'a' from the outer scope</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMacro</span>() <span class="SCmt">// This will change the 'a' above</span>
-    <span class="SFct">myMacro</span>() <span class="SCmt">// This will change the 'a' above</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
+    <span class="SFct">myMacro</span>() <span class="SCmt">// Increment the outer 'a' by 1</span>
+    <span class="SFct">myMacro</span>() <span class="SCmt">// Increment the outer 'a' by 1 again</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>) <span class="SCmt">// Verify that 'a' has been incremented twice</span>
 }</span></div>
-<p>Like a mixin, macro accepts <span class="code-inline">code</span> parameters. </p>
+<p>Like mixins, macros can accept <span class="code-inline">code</span> parameters, allowing the insertion of code blocks within the macro. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
     {
-        <span class="SCmp">#mixin</span> what
+        <span class="SCmp">#mixin</span> what <span class="SCmt">// Insert the provided code block</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
     <span class="SFct">myMacro</span>(<span class="SCmp">#code</span>
     {
-        <span class="SCmp">#up</span> a += <span class="SNum">1</span>
+        <span class="SCmp">#up</span> a += <span class="SNum">1</span> <span class="SCmt">// Increment 'a' within the code block</span>
     })
 
     <span class="SFct">myMacro</span>()
     {
-        <span class="SCmp">#up</span> a += <span class="SNum">1</span>
+        <span class="SCmp">#up</span> a += <span class="SNum">1</span> <span class="SCmt">// Another way to pass the code block directly</span>
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>) <span class="SCmt">// Verify that 'a' has been incremented twice</span>
 }</span></div>
-<p>You can use <span class="code-inline">#macro</span> inside a macro to force the code after to be in the same scope of the caller. That is, no <span class="code-inline">#up</span> is necessary to reference variables of the caller. </p>
+<p>You can use <span class="code-inline">#macro</span> within a macro to force the following code to be inserted in the caller's scope. This means no <span class="code-inline">#up</span> is necessary to reference variables from the caller. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// No conflict, in its own scope</span>
+        <span class="SCmt">// Declare 'a' in the macro's own scope</span>
         <span class="SKwd">var</span> a = <span class="SNum">666</span>
 
-        <span class="SCmt">// Isolate the caller code, to avoid conflicts with the macro internals</span>
+        <span class="SCmt">// Use '#macro' to ensure the following code operates in the caller's scope</span>
         <span class="SCmp">#macro</span>
         {
-            <span class="SCmt">// In the scope of the caller</span>
+            <span class="SCmt">// The code block here references the caller's 'a'</span>
             <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what
         }
     }
@@ -5284,12 +5330,12 @@ in
     <span class="SKwd">var</span> a = <span class="SNum">1</span>
     <span class="SFct">myMacro</span>()
     {
-        a += <span class="SNum">2</span> <span class="SCmt">// will reference the 'a' above because this code has been inserted inside '#macro'</span>
+        a += <span class="SNum">2</span> <span class="SCmt">// This 'a' references the caller's 'a' due to '#macro'</span>
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">3</span>) <span class="SCmt">// Verify that the caller's 'a' was incremented</span>
 }</span></div>
-<p>You can extend the language with macros, without using pointers to functions (no lambda call cost). </p>
+<p>Macros allow you to extend the language without using function pointers, avoiding the cost of lambda calls. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
@@ -5300,6 +5346,7 @@ in
         {
             <span class="SCmp">#macro</span>
             {
+                <span class="SCmt">// 'index' references 'a' from the caller's scope</span>
                 <span class="SKwd">var</span> index = <span class="SCmp">#up</span> a
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what
             }
@@ -5311,30 +5358,30 @@ in
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
     <span class="SFct">repeat</span>(<span class="SNum">5</span>)
     {
-        a += index
+        a += index <span class="SCmt">// Sum 'index' values, where 'index' is from the macro's loop</span>
     }
-    <span class="SItr">@assert</span>(a == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Verify the sum after the first repeat</span>
+
     <span class="SFct">repeat</span>(<span class="SNum">3</span>)
     {
-        a += index
+        a += index <span class="SCmt">// Continue summing with a new loop</span>
     }
-    <span class="SItr">@assert</span>(a == <span class="SNum">10</span> + <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">10</span> + <span class="SNum">3</span>) <span class="SCmt">// Verify the final sum after both repeats</span>
 }</span></div>
-<p>When you need <span class="code-inline">break</span> in the user code to break outside of a multi loop. </p>
+<p>You can use <span class="code-inline">break</span> within user code to exit from a nested loop. This can be handled by macros using scoped loop control. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
     {
-        <span class="SCmp">#scope</span> <span class="SCst">Up</span>
+        <span class="SCmp">#scope</span> <span class="SCst">Up</span> <span class="SCmt">// Define a scope for breaking out of nested loops</span>
         <span class="SLgc">loop</span> count
         {
             <span class="SLgc">loop</span> count
             {
                 <span class="SCmp">#macro</span>
                 {
-                    <span class="SCmt">// 'break' in the user code will be replaced by 'break Up'</span>
-                    <span class="SCmt">// So it will break outside the outer loop</span>
+                    <span class="SCmt">// Handle 'break' in user code to break out of the outer loop</span>
                     <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Up</span>; }
                 }
             }
@@ -5346,40 +5393,39 @@ in
     {
         a += <span class="SNum">1</span>
         <span class="SLgc">if</span> a == <span class="SNum">10</span>:
-            <span class="SLgc">break</span>
+            <span class="SLgc">break</span> <span class="SCmt">// This 'break' exits the outermost loop due to the macro handling</span>
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)
+    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>) <span class="SCmt">// Verify that the loop was exited correctly after 'a' reached 10</span>
 }</span></div>
-<p>In a macro, you can use special variables named <span class="code-inline">#alias&lt;num&gt;</span>. Note that this is also valid for mixins. </p>
+<p>In a macro, you can use special variables named <span class="code-inline">#alias&lt;num&gt;</span>, similar to mixins. These allow you to define and reference variables with specific names. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span>)
     {
-        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v
-        <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span>
-        <span class="SCmp">#mixin</span> stmt
+        <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v <span class="SCmt">// Assign 'v' to '#alias0'</span>
+        <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span> <span class="SCmt">// Assign 'v * 2' to '#alias1'</span>
+        <span class="SCmp">#mixin</span> stmt <span class="SCmt">// Insert the provided code block</span>
     }
 
     <span class="SFct">call</span>(<span class="SNum">20</span>)
     {
-        <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">20</span>)
-        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>)
+        <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">20</span>) <span class="SCmt">// Verify '#alias0' equals 20</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>) <span class="SCmt">// Verify '#alias1' equals 40</span>
     }
 
-    <span class="SCmt">// The caller can then name those special variables</span>
-    <span class="SCmt">// Use |name0, name1, ...| before the function call parameters</span>
+    <span class="SCmt">// The caller can rename these special variables by using the alias syntax</span>
     <span class="SFct">call</span>(|x| <span class="SNum">20</span>)
     {
-        <span class="SItr">@assert</span>(x == <span class="SNum">20</span>) <span class="SCmt">// x is #alias0</span>
-        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>) <span class="SCmt">// #alias1 is not renamed</span>
+        <span class="SItr">@assert</span>(x == <span class="SNum">20</span>) <span class="SCmt">// 'x' is used as an alias for '#alias0'</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#alias1</span> == <span class="SNum">40</span>) <span class="SCmt">// '#alias1' is still referenced as is</span>
     }
 
     <span class="SFct">call</span>(|x, y| <span class="SNum">20</span>)
     {
-        <span class="SItr">@assert</span>(x == <span class="SNum">20</span>) <span class="SCmt">// x is #alias0</span>
-        <span class="SItr">@assert</span>(y == <span class="SNum">40</span>) <span class="SCmt">// y is #alias1</span>
+        <span class="SItr">@assert</span>(x == <span class="SNum">20</span>) <span class="SCmt">// 'x' replaces '#alias0'</span>
+        <span class="SItr">@assert</span>(y == <span class="SNum">40</span>) <span class="SCmt">// 'y' replaces '#alias1'</span>
     }
 }</span></div>
 
@@ -5455,7 +5501,7 @@ in
     {
         <span class="SCmt">// Note that variadic parameters can be visited, as this is a slice</span>
         <span class="SKwd">var</span> total = <span class="SNum">0</span>
-        <span class="SLgc">visit</span> v in params:
+        <span class="SLgc">visit</span> v <span class="SLgc">in</span> params:
             total += v
         <span class="SLgc">return</span> total
     }
@@ -5580,7 +5626,7 @@ in
     {
         <span class="SCmt">// To avoid the clear of the array, we use = undefined</span>
         <span class="SKwd">var</span> result: <span class="SKwd">retval</span> = <span class="SKwd">undefined</span>
-        <span class="SLgc">loop</span> i in <span class="SNum">255</span>:
+        <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">255</span>:
             result[i] = i
         <span class="SLgc">return</span> result
     }
@@ -6059,7 +6105,7 @@ in
         <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it in x:
+        <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
             total += it
         <span class="SLgc">return</span> total
     }
@@ -6109,7 +6155,7 @@ in
         }
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it in x:
+        <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
             total += it
         <span class="SLgc">return</span> total
     }
@@ -7164,7 +7210,7 @@ in
 <span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
-    <span class="SLgc">visit</span> v in values:
+    <span class="SLgc">visit</span> v <span class="SLgc">in</span> values:
         result += v
     <span class="SLgc">return</span> result
 }
@@ -7181,7 +7227,7 @@ in
 <div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SKwd">var</span> value = <span class="SNum">1</span>'<span class="STpe">f32</span>
-    <span class="SLgc">loop</span> i in <span class="SItr">@countof</span>(<span class="SCst">G</span>)
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="SCst">G</span>)
     {
         <span class="SCst">G</span>[i] = value
         value *= <span class="SNum">2</span>
@@ -7217,7 +7263,7 @@ in
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
     {
         <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
-        <span class="SLgc">loop</span> i in arr:
+        <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr:
             arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
         <span class="SLgc">return</span> arr
     }
@@ -7503,7 +7549,7 @@ in
 
         <span class="SCmt">// Then we visit all the fields, assuming the type is a struct (or this will not compile).</span>
         <span class="SCmt">// For each original field, we create one with the same name, but with a `bool` type.</span>
-        <span class="SLgc">visit</span> f in typeof.fields
+        <span class="SLgc">visit</span> f <span class="SLgc">in</span> typeof.fields
             str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
 
         <span class="SCmt">// Then we return the constructed source code.</span>
@@ -7573,7 +7619,7 @@ in
     builderInit.<span class="SFct">appendString</span>(<span class="SStr">"public func glInitExtensions()\n{\n"</span>);
 
     <span class="SCmt">// Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.</span>
-    <span class="SLgc">visit</span> e in g_Functions
+    <span class="SLgc">visit</span> e <span class="SLgc">in</span> g_Functions
     {
         <span class="SKwd">let</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">TypeInfoFunc</span>) e.type
 
@@ -7582,7 +7628,7 @@ in
 
         <span class="SCmt">// Make a wrapper function</span>
         builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"public func %("</span>, e.name)
-        <span class="SLgc">visit</span> p, i in typeFunc.parameters
+        <span class="SLgc">visit</span> p, i <span class="SLgc">in</span> typeFunc.parameters
         {
             <span class="SLgc">if</span> i != <span class="SNum">0</span> builderVars.<span class="SFct">appendString</span>(<span class="SStr">", "</span>)
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"p%: %"</span>, i, p.pointedType.name)
@@ -7593,7 +7639,7 @@ in
         <span class="SLgc">else</span>
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">")-&gt;%\n{\n"</span>, typeFunc.returnType.name)
         builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"\treturn ext_%("</span>, e.name)
-        <span class="SLgc">visit</span> p, i in typeFunc.parameters
+        <span class="SLgc">visit</span> p, i <span class="SLgc">in</span> typeFunc.parameters
         {
             <span class="SLgc">if</span> i != <span class="SNum">0</span> builderVars.<span class="SFct">appendString</span>(<span class="SStr">", "</span>)
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"p%"</span>, i)

@@ -338,7 +338,7 @@
     <span class="SCmt">// Draw pipes.</span>
     <span class="SCmt">// 'visit' loop on all the pipes stored in the dynamic array, and returns each value</span>
     <span class="SCmt">// as a pointer/reference.</span>
-    <span class="SLgc">visit</span> pipe in g_Pipes
+    <span class="SLgc">visit</span> pipe <span class="SLgc">in</span> g_Pipes
     {
         painter.<span class="SFct">drawTexture</span>(pipe.rectUp, g_PipeTextureU)
         painter.<span class="SFct">drawTexture</span>(pipe.rectDown, g_PipeTextureD)
@@ -429,7 +429,7 @@
     <span class="SCmt">// Move each pipe, and test collisions against the bird</span>
     <span class="SLgc">if</span> g_Start
     {
-        <span class="SLgc">visit</span> &pipe in g_Pipes
+        <span class="SLgc">visit</span> &pipe <span class="SLgc">in</span> g_Pipes
         {
             pipe.rectUp.x -= <span class="SCst">SpeedHorz</span> * g_Dt
             pipe.rectDown.x -= <span class="SCst">SpeedHorz</span> * g_Dt

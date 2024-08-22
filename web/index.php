@@ -166,7 +166,7 @@
     {
         <span class="SKwd">var</span> str = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
         <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
-        <span class="SLgc">visit</span> f in typeof.fields
+        <span class="SLgc">visit</span> f <span class="SLgc">in</span> typeof.fields
             str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
         <span class="SLgc">return</span> str.<span class="SFct">toString</span>()
     }
@@ -177,7 +177,7 @@
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
         {
             <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
-            <span class="SLgc">loop</span> i in arr
+            <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr
                 arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
             <span class="SLgc">return</span> arr
         }

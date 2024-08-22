@@ -1,5 +1,5 @@
 /**
-Interfaces are **virtual tables** (a list of function pointers) that can be associated to a struct.
+Interfaces in Swag are **virtual tables** (a list of function pointers) that can be associated with a struct.
 
 Unlike C++, the virtual table is not embedded within the struct. It is a **separate** object.
 You can then *implement* an interface for a given struct without changing the struct definition.
@@ -47,7 +47,7 @@ impl IReset for Point2
         self.x, self.y = 0
     }
 
-    // Not that you can also declare 'normal' functions or methods in an 'impl block'.
+    // Note that you can also declare 'normal' functions or methods in an 'impl block'.
     mtd myOtherMethod() {}
 }
 
@@ -90,7 +90,7 @@ We can then use these interfaces on either `Vector2` or `Vector3`.
     @assert(pt3.y == 10 + 1)
     @assert(pt3.z == 10 + 2)
     itf.reset()
-    @assert(pt3.x == 0 and pt3.y == 0)
+    @assert(pt3.x == 0 and pt3.y == 0 and pt3.z == 0)
 }
 
 /**
@@ -117,6 +117,7 @@ An interface is a real type, with a size equivalent to 2 pointers. A pointer to 
     var pt2: Point2
     var pt3: Point3
     var itf  = cast(IReset) pt2
+
     #assert @sizeof(itf) == 2 * @sizeof(*void)
 
     // You can retrieve the concrete type associated with an interface instance with '@kindof'.
@@ -136,7 +137,6 @@ An interface is a real type, with a size equivalent to 2 pointers. A pointer to 
 # Default implementation
 When you declare an interface, you can define a default implementation for each function. In that case, if a struct does not redefine the function, then the default implementation will be called instead.
 */
-
 
 /**
 Just declare a body in the interface function to have a default implementation.

@@ -1,13 +1,11 @@
 /**
-All source files in Swag have the `.swg` extension, except if you write a simple script with the `.swgs` extension.
-They must be encoded in **UTF8**.
+In Swag, all source files use the `.swg` extension, except for simple scripts, which use the `.swgs` extension. All files must be encoded in **UTF-8**.
 
-In Swag you cannot compile a single file (with the exception of `.swgs` script files). The source code is organized in a **workspace** which contains one or multiple **modules**.
+Swag does not support compiling individual source files (with the exception of `.swgs` script files). Instead, source code is organized within a **workspace** that contains one or more **modules**.
 
-For example, `Std` is a workspace that contains all the Swag standard modules.
+For instance, `Std` is a workspace that includes all the Swag standard modules.
 
-A module is a `dll` (under windows) or an executable, and a workspace can include many of them.
-So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).
+A module can be either a `dll` (on Windows) or an executable, and a workspace may encompass multiple modules. Therefore, a workspace typically contains both the modules you develop (such as your main executable) and all your dependencies (including any external modules you use).
 
-Typically, the entire workspace is compiled.
+In most cases, the entire workspace is compiled together.
 */

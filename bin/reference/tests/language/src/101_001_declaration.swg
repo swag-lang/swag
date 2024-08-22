@@ -1,33 +1,33 @@
 /**
-A function declaration usually starts with the `func` keyword followed by the function name.
+A function declaration typically begins with the `func` keyword followed by the function name.
 */
 #[Swag.Overload]
 func toto() {}
 
 /**
-If the function needs to return a value, you must add `->` followed by the type.
+If the function needs to return a value, use `->` followed by the return type.
 */
-func toto1()->s32
+func toto1() -> s32
 {
     return 0
 }
 
 /**
-The return type can be deduced in case of a simple expression, by using `=>` instead of `->`.
-Here the return type will be deduced to be `s32`.
+For simple expressions, the return type can be inferred by using `=>` instead of `->`.
+In this example, the return type is inferred as `s32`.
 */
 func sum(x, y: s32) => x + y
 
 /**
-A short version exists, in case of a function returning nothing.
+For functions that do not return a value, a shorter syntax can be used.
 */
 func print(val: string) = @print(val)
 
 /**
-Parameters are specified after the function name, between parenthesis.
-Here we declare two parameters `x` and `y` of type `s32`, and one last parameter of type `f32`.
+Parameters are defined after the function name, within parentheses.
+In this example, we declare two parameters, `x` and `y` of type `s32`, and an additional parameter of type `f32`.
 */
-func sum1(x, y: s32, unused: f32)->s32
+func sum1(x, y: s32, unused: f32) -> s32
 {
     return x + y
 }
@@ -35,14 +35,14 @@ func sum1(x, y: s32, unused: f32)->s32
 /**
 Parameters can have default values.
 */
-func sum2(x, y: s32, unused: f32 = 666)->s32
+func sum2(x, y: s32, unused: f32 = 666) -> s32
 {
     return x + y
 }
 
 /**
-The type of the parameters can be deduced if you specify a default value.
-Here `x` and `y` have the type `f32` because `0.0` is a 32 bits floating point literal.
+If a parameter has a default value, its type can be inferred.
+Here, `x` and `y` are inferred to be of type `f32` because `0.0` is a 32-bit floating-point literal.
 */
 func sum3(x, y = 0.0)
 {
@@ -62,16 +62,16 @@ Functions can be nested inside other functions.
 */
 #test
 {
-    // This are not closure but just functions in a sub scope.
+    // These are not closures but functions within a sub-scope.
     func sub(x, y: s32) => x - y
 
-    // Simple call.
+    // Simple function call.
     let x = sub(5, 2)
     @assert(x == 3)
 }
 
 /**
-You can name parameters, and don't have to respect parameters order in that case.
+You can name parameters and call functions without respecting the parameter order.
 */
 #test
 {
@@ -92,15 +92,15 @@ You can name parameters, and don't have to respect parameters order in that case
 }
 
 /**
-# Multiple return values
+# Multiple Return Values
 */
 
 /**
-An **anonymous struct** can be used to return multiple values in a function.
+An **anonymous struct** can be used to return multiple values from a function.
 */
 #test
 {
-    func myFunction()->{ x, y: f32 }
+    func myFunction() -> { x, y: f32 }
     {
         return {1.0, 2.0}
     }
@@ -118,30 +118,32 @@ An **anonymous struct** can be used to return multiple values in a function.
     @assert(w == 2.0)
 }
 
+/**
+You can also use the `retval` type, which is an alias for the function's return type, to structure your return statements.
+*/
 #test
 {
-    func returns2()->{ x: s32, y: s32 }
+    func returns2() -> { x: s32, y: s32 }
     {
-        // You can return a tuple literal as long as the types match
+        // You can return a tuple literal as long as the types match.
         if false:
             return {1, 2}
 
-        // Or use the specifal type 'retval' which is an typealias to the
-        // function return type (but not only, we'll see later)
+        // Alternatively, use the special type 'retval' as a type alias to the function's return type.
         using var result: retval
         x = 1
         y = 2
         return result
     }
 
-    // You can access the struct fields with the names or with 'item?'
+    // You can access the struct fields by name or using 'item?'.
     var result = returns2()
     @assert(result.x == 1)
     @assert(result.item0 == 1)
     @assert(result.y == 2)
     @assert(result.item1 == 2)
 
-    // You can deconstruct the returned struct
+    // You can also deconstruct the returned struct.
     let (x, y) = returns2()
     @assert(x == 1)
     @assert(y == 2)
