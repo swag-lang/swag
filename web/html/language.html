@@ -179,9 +179,6 @@
 </ul>
 <li><a href="#_020_array_swg">Array</a></li>
 <li><a href="#_021_slice_swg">Slice</a></li>
-<ul>
-<li><a href="#_021_slice_swg_The_slicing_operator">The slicing operator</a></li>
-</ul>
 <li><a href="#_022_pointers_swg">Pointers</a></li>
 <ul>
 <li><a href="#_022_pointers_swg_Single_value_pointers">Single value pointers</a></li>
@@ -201,6 +198,11 @@
 <li><a href="#_030_enum_swg_Nested_enums">Nested enums</a></li>
 <li><a href="#_030_enum_swg_Specific_attributes">Specific attributes</a></li>
 <li><a href="#_030_enum_swg_Enum_type_inference">Enum type inference</a></li>
+<li><a href="#_030_enum_swg_Visiting_Enum_Values">Visiting Enum Values</a></li>
+<ul>
+<li><a href="#_030_enum_swg_Visiting_Enum_Values_Loop">Loop</a></li>
+<li><a href="#_030_enum_swg_Visiting_Enum_Values_Visit">Visit</a></li>
+</ul>
 </ul>
 <li><a href="#_031_impl_swg">Impl</a></li>
 <li><a href="#_035_namespace_swg">Namespace</a></li>
@@ -1781,165 +1783,162 @@ in
     <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
 }</span></div>
 
-<h2 id="_020_array_swg">Array</h2><p>Remember that dynamic arrays are part of the <span class="code-inline">Std.Core</span> module. Here we are only talking about native static arrays. </p>
-<p>A static array is declared with <span class="code-inline">[N]</span> followed by the type, where <span class="code-inline">N</span> is the dimension. </p>
+<h2 id="_020_array_swg">Array</h2><p>Remember that dynamic arrays are part of the <span class="code-inline">Std.Core</span> module. Here we are only discussing native static arrays, which are arrays with fixed size determined at compile time. </p>
+<p>A static array is declared using the syntax <span class="code-inline">[N]</span> followed by the type, where <span class="code-inline">N</span> represents the number of elements in the array (the dimension). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span> <span class="SCmt">// Static array of two s32</span>
-    array[<span class="SNum">0</span>] = <span class="SNum">1</span>
-    array[<span class="SNum">1</span>] = <span class="SNum">2</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a static array of two 32-bit signed integers (s32)</span>
+    array[<span class="SNum">0</span>] = <span class="SNum">1</span>  <span class="SCmt">// Assign the first element</span>
+    array[<span class="SNum">1</span>] = <span class="SNum">2</span>  <span class="SCmt">// Assign the second element</span>
 }</span></div>
-<p>You can get the number of elements of an array with <span class="code-inline">@countof</span>, and the size in bytes with <span class="code-inline">@sizeof</span>. </p>
+<p>You can determine the number of elements in an array using the <span class="code-inline">@countof</span> intrinsic and the size of the array in bytes using <span class="code-inline">@sizeof</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(<span class="STpe">s32</span>)
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a static array of two s32 elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>  <span class="SCmt">// Verify the array contains 2 elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the size in bytes (2 elements * size of s32)</span>
 }</span></div>
-<p>You can get the address of the array with <span class="code-inline">@dataof</span>. </p>
+<p>To obtain the address of an array, you can use the <span class="code-inline">@dataof</span> intrinsic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>
-    <span class="SKwd">var</span> ptr0   = <span class="SItr">@dataof</span>(array)
-    ptr0[<span class="SNum">0</span>] = <span class="SNum">1</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a static array of two s32 elements</span>
+    <span class="SKwd">var</span> ptr0   = <span class="SItr">@dataof</span>(array)  <span class="SCmt">// Get the address of the array</span>
+    ptr0[<span class="SNum">0</span>] = <span class="SNum">1</span>  <span class="SCmt">// Access the first element through the pointer</span>
 
-    <span class="SCmt">// This is equivalent of taking the address of the first element</span>
+    <span class="SCmt">// You can also take the address of the first element directly</span>
     <span class="SKwd">var</span> ptr1 = &array[<span class="SNum">0</span>]
-    ptr1[<span class="SNum">1</span>] = <span class="SNum">2</span>
+    ptr1[<span class="SNum">1</span>] = <span class="SNum">2</span>  <span class="SCmt">// Access the second element through the pointer</span>
 
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
 }</span></div>
-<p>An <b>array literal</b> has the form <span class="code-inline">[A, B, ...]</span>. </p>
+<p>An <b>array literal</b> is a list of elements enclosed in square brackets <span class="code-inline">[A, B, ...]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>] <span class="SCmt">// An array of four s32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">s32</span>
+    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]  <span class="SCmt">// Declare and initialize an array of four s32 elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>  <span class="SCmt">// Verify the array contains 4 elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">s32</span>  <span class="SCmt">// Verify the array's type</span>
 }</span></div>
-<p>The size of the array can be deduced from the initialisation expression. </p>
+<p>The size of the array can be deduced from the initialization expression, meaning you don't have to specify the dimension if it can be inferred. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here the dimension is not specified, but as the array is initialized with 2 elements, it can </span>
-    <span class="SCmt">// be deduced.</span>
+    <span class="SCmt">// The dimension is deduced from the initialization with 2 elements</span>
     <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>
 
-    <span class="SCmt">// Here both dimensions and types are deduced thanks to the initialization expression.</span>
+    <span class="SCmt">// Both dimensions and types are deduced from the initialization expression</span>
     <span class="SKwd">var</span> array1 = [<span class="SStr">"10"</span>, <span class="SStr">"20"</span>, <span class="SStr">"30"</span>]
     <span class="SItr">@assert</span>(array1[<span class="SNum">0</span>] == <span class="SStr">"10"</span>)
     <span class="SItr">@assert</span>(array1[<span class="SNum">1</span>] == <span class="SStr">"20"</span>)
     <span class="SItr">@assert</span>(array1[<span class="SNum">2</span>] == <span class="SStr">"30"</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array1) == <span class="SNum">3</span>
 }</span></div>
-<p>Like every other types, an array is initialized by default to 0 </p>
+<p>Like other types in Swag, an array is initialized by default with zero values (0 for integers, null for strings, false for booleans, etc.). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">0</span>)
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a static array of two s32 elements</span>
+    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">0</span>)  <span class="SCmt">// Default initialization to 0</span>
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">0</span>)
 }</span></div>
-<p>But for speed, you can force the array to be not initialized with <span class="code-inline">undefined</span>. </p>
+<p>For performance reasons, you can prevent an array from being initialized by using <span class="code-inline">undefined</span>. This is useful when you know the array will be fully initialized manually and you want to avoid the cost of default initialization. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">100</span>] <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">100</span>] <span class="STpe">s32</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// Declare a large array without initializing it</span>
 }</span></div>
-<p>A static array (with compile time values) can be stored as a constant. </p>
+<p>A static array with compile-time values can be stored as a constant, meaning it cannot be modified after its declaration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> array = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
-    <span class="SCmp">#assert</span> array[<span class="SNum">0</span>] == <span class="SNum">1</span> <span class="SCmt">// Dereference is done at compile time</span>
+    <span class="SKwd">const</span> array = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]  <span class="SCmt">// Declare a constant array</span>
+    <span class="SCmp">#assert</span> array[<span class="SNum">0</span>] == <span class="SNum">1</span>  <span class="SCmt">// Dereference is done at compile time</span>
     <span class="SCmp">#assert</span> array[<span class="SNum">3</span>] == <span class="SNum">4</span>
 }</span></div>
-<p>If the type of the array is not specified, the type of the <b>first</b> literal value will be used for all other members. </p>
+<p>If the type of the array is not explicitly specified, the type of the <b>first</b> literal value will be used for all other elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>'<span class="STpe">f64</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>] <span class="SCmt">// Every values are forced to be 'f64'</span>
-
+    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>'<span class="STpe">f64</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]  <span class="SCmt">// All values are deduced to be 'f64'</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">f64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">f64</span>  <span class="SCmt">// Verify that all elements are of type f64</span>
     <span class="SItr">@assert</span>(arr[<span class="SNum">3</span>] == <span class="SNum">4.0</span>)
 }</span></div>
-<p>Of course an array can have multiple dimensions. </p>
-<p>Syntax is <span class="code-inline">[X, Y, Z...]</span> where <span class="code-inline">X</span>, <span class="code-inline">Y</span> and <span class="code-inline">Z</span> are dimensions. </p>
+<p>Swag supports multi-dimensional arrays, allowing you to declare arrays with multiple dimensions. </p>
+<p>The syntax for multi-dimensional arrays is <span class="code-inline">[X, Y, Z...]</span>, where <span class="code-inline">X</span>, <span class="code-inline">Y</span>, and <span class="code-inline">Z</span> are the dimensions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> <span class="SCmt">// Declare a 2x2 array</span>
-    array[<span class="SNum">0</span>, <span class="SNum">0</span>] = <span class="SNum">1</span> <span class="SCmt">// To access it, the same syntax is used</span>
-    array[<span class="SNum">0</span>, <span class="SNum">1</span>] = <span class="SNum">2</span>
-    array[<span class="SNum">1</span>, <span class="SNum">0</span>] = <span class="SNum">3</span>
-    array[<span class="SNum">1</span>, <span class="SNum">1</span>] = <span class="SNum">4</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a 2x2 array of s32</span>
+    array[<span class="SNum">0</span>, <span class="SNum">0</span>] = <span class="SNum">1</span>  <span class="SCmt">// Access and assign the first element</span>
+    array[<span class="SNum">0</span>, <span class="SNum">1</span>] = <span class="SNum">2</span>  <span class="SCmt">// Access and assign the second element</span>
+    array[<span class="SNum">1</span>, <span class="SNum">0</span>] = <span class="SNum">3</span>  <span class="SCmt">// Access and assign the third element</span>
+    array[<span class="SNum">1</span>, <span class="SNum">1</span>] = <span class="SNum">4</span>  <span class="SCmt">// Access and assign the fourth element</span>
 }</span></div>
-<p>But the C/C++ syntax is also accepted. You will then declare an array of array instead of an array with multiple dimensions, which in fact is the same... </p>
+<p>Swag also accepts the C/C++ syntax for declaring arrays, where you declare an array of arrays. In essence, this approach is equivalent to declaring a multi-dimensional array in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] [<span class="SNum">2</span>] <span class="STpe">s32</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] [<span class="SNum">2</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare a 2x2 array of s32 using C/C++ syntax</span>
     array[<span class="SNum">0</span>, <span class="SNum">0</span>] = <span class="SNum">1</span>
     array[<span class="SNum">0</span>, <span class="SNum">1</span>] = <span class="SNum">2</span>
     array[<span class="SNum">1</span>, <span class="SNum">0</span>] = <span class="SNum">3</span>
     array[<span class="SNum">1</span>, <span class="SNum">1</span>] = <span class="SNum">4</span>
 }</span></div>
-<p>The sizes can be deduced from the initialization expression too. </p>
+<p>The sizes of arrays, including multi-dimensional arrays, can be deduced from the initialization expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array  = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
-    <span class="SKwd">var</span> array1 = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]
+    <span class="SKwd">var</span> array  = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]  <span class="SCmt">// Size deduced to be 4</span>
+    <span class="SKwd">var</span> array1 = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]  <span class="SCmt">// 2x2 array, size deduced from initialization</span>
 
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array1) == <span class="SNum">2</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">4</span>  <span class="SCmt">// Verify size is 4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array1) == <span class="SNum">2</span>  <span class="SCmt">// Verify outer array has 2 elements</span>
 }</span></div>
-<p>You can initialize a whole array variable (but <b>not a constant</b>) with one single value. Only basic types are accepted (integers, float, string, bool, rune). </p>
+<p>Swag allows you to initialize an entire array with a single value. This is only available for variables, not constants, and only basic types (integers, floats, strings, bools, runes) are supported. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// The whole array is initialized with 'true'</span>
+    <span class="SCmt">// Initialize the entire 2x2 boolean array with 'true'</span>
     <span class="SKwd">var</span> arr: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">bool</span> = <span class="SKwd">true</span>
     <span class="SItr">@assert</span>(arr[<span class="SNum">0</span>, <span class="SNum">0</span>] == <span class="SKwd">true</span>)
     <span class="SItr">@assert</span>(arr[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SKwd">true</span>)
 
-    <span class="SCmt">// The whole array is initialized with 'string'</span>
+    <span class="SCmt">// Initialize the entire 5x10 string array with "string"</span>
     <span class="SKwd">var</span> arr1: [<span class="SNum">5</span>, <span class="SNum">10</span>] <span class="STpe">string</span> = <span class="SStr">"string"</span>
     <span class="SItr">@assert</span>(arr1[<span class="SNum">0</span>, <span class="SNum">0</span>] == <span class="SStr">"string"</span>)
     <span class="SItr">@assert</span>(arr1[<span class="SNum">4</span>, <span class="SNum">9</span>] == <span class="SStr">"string"</span>)
 }</span></div>
 
-<h2 id="_021_slice_swg">Slice</h2><p>A slice is a pointer on a buffer of datas, and a <span class="code-inline">u64</span> to count the number of elements. Unlike a static array, its value can be changed at runtime. </p>
-<p>It is declared with <span class="code-inline">[..]</span>. </p>
+<h2 id="_021_slice_swg">Slice</h2><p>A slice in Swag is a flexible view over a contiguous block of memory. Unlike static arrays, slices can be resized or point to different segments of memory at runtime. A slice consists of a pointer to the data buffer and a <span class="code-inline">u64</span> value that stores the number of elements in the slice. </p>
+<p>This makes slices a powerful tool for working with subsets of data without copying it, allowing efficient manipulation of large datasets. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: [..] <span class="STpe">bool</span> <span class="SCmt">// Slice of bool</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(a) == <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>) + <span class="SItr">@sizeof</span>(<span class="STpe">u64</span>)
+    <span class="SKwd">var</span> a: [..] <span class="STpe">bool</span> <span class="SCmt">// Declare a slice of boolean values</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(a) == <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>) + <span class="SItr">@sizeof</span>(<span class="STpe">u64</span>)  <span class="SCmt">// Verify that the size of the slice includes the pointer and the element count</span>
 }</span></div>
-<p>You can initialize a slice like an array. </p>
+<p>Slices can be initialized similarly to arrays. You can assign an array literal to a slice, and the slice will point to the elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: <span class="SKwd">const</span> [..] <span class="STpe">u32</span> = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]
-    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(a) == <span class="SNum">5</span>)
+    <span class="SKwd">var</span> a: <span class="SKwd">const</span> [..] <span class="STpe">u32</span> = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]  <span class="SCmt">// Initialize a slice with an array literal</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(a) == <span class="SNum">5</span>)  <span class="SCmt">// The slice contains 5 elements</span>
     <span class="SItr">@assert</span>(a[<span class="SNum">0</span>] == <span class="SNum">10</span>)
     <span class="SItr">@assert</span>(a[<span class="SNum">4</span>] == <span class="SNum">50</span>)
 
-    <span class="SCmt">// But as this is a slice and not a static array, you can change the value at runtime.</span>
-    <span class="SCmt">// So now 'a' is a slice of two s32 values.</span>
-    a = [<span class="SNum">1</span>, <span class="SNum">2</span>]
+    <span class="SCmt">// Slices are dynamic, so you can change the elements at runtime.</span>
+    a = [<span class="SNum">1</span>, <span class="SNum">2</span>]  <span class="SCmt">// Reassign the slice to a different array</span>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(a) == <span class="SNum">2</span>)
     <span class="SItr">@assert</span>(a[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(a[<span class="SNum">1</span>] == <span class="SNum">2</span>)
 }</span></div>
-<p>At runtime, <span class="code-inline">@dataof</span> will return the address of the values, <span class="code-inline">@countof</span> the number of elements. </p>
+<p>At runtime, you can use <span class="code-inline">@dataof</span> to retrieve the address of the data buffer and <span class="code-inline">@countof</span> to get the number of elements in the slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a:    <span class="SKwd">const</span> [..] <span class="STpe">u32</span> = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]
-    <span class="SKwd">let</span> count = <span class="SItr">@countof</span>(a)
-    <span class="SKwd">let</span> addr  = <span class="SItr">@dataof</span>(a)
+    <span class="SKwd">var</span> a: <span class="SKwd">const</span> [..] <span class="STpe">u32</span> = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]  <span class="SCmt">// Initialize a slice with an array literal</span>
+    <span class="SKwd">let</span> count = <span class="SItr">@countof</span>(a)  <span class="SCmt">// Get the number of elements in the slice</span>
+    <span class="SKwd">let</span> addr  = <span class="SItr">@dataof</span>(a)   <span class="SCmt">// Get the address of the slice's data buffer</span>
     <span class="SItr">@assert</span>(count == <span class="SNum">5</span>)
     <span class="SItr">@assert</span>(addr[<span class="SNum">0</span>] == <span class="SNum">10</span>)
     <span class="SItr">@assert</span>(addr[<span class="SNum">4</span>] == <span class="SNum">50</span>)
 
-    a = [<span class="SNum">1</span>, <span class="SNum">2</span>]
+    a = [<span class="SNum">1</span>, <span class="SNum">2</span>]  <span class="SCmt">// Reassign the slice to a different array</span>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(a) == <span class="SNum">2</span>)
 }</span></div>
-<p>You can create a slice with your own <span class="code-inline">pointer</span> and <span class="code-inline">count</span> using <span class="code-inline">@mkslice</span>. </p>
+<p>You can create a slice with your own pointer and count using <span class="code-inline">@mkslice</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">4</span>] <span class="STpe">u32</span> = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]
@@ -1963,8 +1962,7 @@ in
     <span class="SItr">@assert</span>(strSlice[<span class="SNum">0</span>] == <span class="SStr">`s`</span>)
     <span class="SItr">@assert</span>(strSlice[<span class="SNum">1</span>] == <span class="SStr">`t`</span>)
 }</span></div>
-<h3 id="_021_slice_swg_The_slicing_operator">The slicing operator </h3>
-<p>Instead of <span class="code-inline">@mkslice</span>, you can slice something with the <span class="code-inline">..</span> operator. For example you can slice a string. </p>
+<p>Instead of <span class="code-inline">@mkslice</span>, you can slice something with the <span class="code-inline">..</span> operator. For example, you can slice a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> str = <span class="SStr">"string"</span>
@@ -1974,7 +1972,7 @@ in
 
     <span class="SItr">@assert</span>(slice == <span class="SStr">"tri"</span>)
 }</span></div>
-<p>The upper limit is <b>included</b> by default. If you want to exclude it, use <span class="code-inline">..&lt;</span> insteand of <span class="code-inline">..</span>. </p>
+<p>The upper limit is <b>included</b> by default. If you want to exclude it, use <span class="code-inline">..&lt;</span> instead of <span class="code-inline">..</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> str   = <span class="SStr">"string"</span>
@@ -2035,115 +2033,116 @@ in
 }</span></div>
 
 <h2 id="_022_pointers_swg">Pointers</h2><h3 id="_022_pointers_swg_Single_value_pointers">Single value pointers </h3>
-<p>A pointer to a <b>single element</b> is declared with <span class="code-inline">*</span>. </p>
+<p>A pointer to a <b>single element</b> is declared with <span class="code-inline">*</span>. This allows you to create a pointer that can hold the address of one specific instance of a data type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>      <span class="SCmt">// This is a pointer to one single 'u8'</span>
-    <span class="SKwd">var</span> ptr2: **<span class="STpe">u8</span>     <span class="SCmt">// This is a pointer to one other pointer to one single 'u8'</span>
+    <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>      <span class="SCmt">// This is a pointer to a single 'u8' value</span>
+    <span class="SKwd">var</span> ptr2: **<span class="STpe">u8</span>     <span class="SCmt">// This is a pointer to another pointer, which in turn points to a single 'u8' value</span>
 }</span></div>
-<p>A pointer can be <span class="code-inline">null</span> (i know some of you will collapse here). </p>
+<p>A pointer can be <span class="code-inline">null</span>, meaning it does not point to any valid memory location. In Swag, like in many other languages, a null pointer is often used to indicate that the pointer is not yet initialized or intentionally points to "nothing". </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>
-    <span class="SItr">@assert</span>(ptr1 == <span class="SKwd">null</span>)
+    <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>  <span class="SCmt">// Declaring a pointer to 'u8' without initialization</span>
+    <span class="SItr">@assert</span>(ptr1 == <span class="SKwd">null</span>)  <span class="SCmt">// By default, the pointer is null, indicating it doesn't point to any valid memory location</span>
 }</span></div>
-<p>You can take the address of something with <span class="code-inline">&</span>. </p>
+<p>You can take the address of a variable using the <span class="code-inline">&</span> operator. This operator allows you to obtain the memory address of a variable, which can then be stored in a pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = <span class="SNum">1</span>
-    <span class="SKwd">let</span> ptr = &arr     <span class="SCmt">// Take the address of the variable 'arr'</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == *<span class="STpe">s32</span>)
+    <span class="SKwd">let</span> ptr = &arr  <span class="SCmt">// Take the address of the variable 'arr'</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == *<span class="STpe">s32</span>)  <span class="SCmt">// The type of 'ptr' is a pointer to 's32'</span>
 }</span></div>
-<p>You can get the pointed value with <span class="code-inline">dref</span>. </p>
+<p>You can get the value that a pointer is pointing to by using the <span class="code-inline">dref</span> intrinsic. Dereferencing a pointer means accessing the data stored at the memory location that the pointer holds. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = <span class="SNum">42</span>
-    <span class="SKwd">let</span> ptr = &arr
-    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">42</span>)
+    <span class="SKwd">let</span> ptr = &arr  <span class="SCmt">// Take the address of 'arr'</span>
+    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">42</span>)  <span class="SCmt">// Dereference the pointer to access the value of 'arr'</span>
 }</span></div>
-<p>Pointers can be <span class="code-inline">const</span>. </p>
+<p>Pointers can be <span class="code-inline">const</span>, meaning that the pointer itself cannot change what it points to, though the data being pointed to may still be mutable. This is useful when you want to ensure that a pointer always refers to the same memory location. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> str  = <span class="SStr">"string"</span>
-    <span class="SKwd">let</span> ptr: <span class="SKwd">const</span> *<span class="STpe">u8</span> = <span class="SItr">@dataof</span>(str)
-    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SStr">`s`</span>)
+    <span class="SKwd">let</span> ptr: <span class="SKwd">const</span> *<span class="STpe">u8</span> = <span class="SItr">@dataof</span>(str)  <span class="SCmt">// A const pointer to a 'u8' value</span>
+    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SStr">`s`</span>)  <span class="SCmt">// Dereferencing the pointer to get the first character of the string</span>
 }</span></div>
-<p>You can be weird, but is this necessary ? </p>
+<p>You can be more specific with pointers by combining <span class="code-inline">const</span> in different ways, but consider if it's necessary for your use case. For example, you can have pointers that are themselves constant, pointers to constant data, or both. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> ptr:  *<span class="SKwd">const</span> *<span class="STpe">u8</span>           <span class="SCmt">// Normal pointer to a const pointer</span>
-    <span class="SKwd">var</span> ptr1: <span class="SKwd">const</span> *<span class="SKwd">const</span> *<span class="STpe">u8</span>     <span class="SCmt">// Const pointer to a const pointer</span>
-    <span class="SKwd">var</span> ptr2: <span class="SKwd">const</span> **<span class="STpe">u8</span>           <span class="SCmt">// Const pointer to a normal pointer</span>
+    <span class="SKwd">var</span> ptr:  *<span class="SKwd">const</span> *<span class="STpe">u8</span>           <span class="SCmt">// A normal pointer to a const pointer to 'u8'</span>
+    <span class="SKwd">var</span> ptr1: <span class="SKwd">const</span> *<span class="SKwd">const</span> *<span class="STpe">u8</span>     <span class="SCmt">// A const pointer to a const pointer to 'u8'</span>
+    <span class="SKwd">var</span> ptr2: <span class="SKwd">const</span> **<span class="STpe">u8</span>           <span class="SCmt">// A const pointer to a normal pointer to 'u8'</span>
 }</span></div>
 <h3 id="_022_pointers_swg_Multiple_values_pointers">Multiple values pointers </h3>
-<p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. </p>
+<p>If you want to enable <b>pointer arithmetic</b> and make a pointer to <b>multiple values</b> (essentially treating the pointer as pointing to an array or a memory block), declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. This is useful when you need to iterate over a sequence of elements in memory. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// `ptr` is a pointer to a memory block of `u8`.</span>
-    <span class="SKwd">var</span> ptr: ^<span class="STpe">u8</span>
+    <span class="SKwd">var</span> ptr: ^<span class="STpe">u8</span>  <span class="SCmt">// Declaring a pointer to a memory block of 'u8' values</span>
 
-    <span class="SCmt">// Pointer arithmetic is now possible</span>
-    ptr = ptr - <span class="SNum">1</span>
+    <span class="SCmt">// Pointer arithmetic allows you to move the pointer to different elements in the memory block</span>
+    ptr = ptr - <span class="SNum">1</span>  <span class="SCmt">// Move the pointer back by one 'u8'</span>
 }</span></div>
-<p>Taking the address of an array element enables pointer arithmetic. </p>
+<p>Taking the address of an array element allows for pointer arithmetic. When you take the address of an element in an array, the resulting pointer is treated as pointing to multiple elements, enabling arithmetic operations like incrementing or decrementing the pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x:  [<span class="SNum">4</span>] <span class="STpe">s32</span>
-    <span class="SKwd">var</span> ptr = &x[<span class="SNum">1</span>]
-    ptr = ptr - <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>
-}</span></div>
-<p>As pointer arithmetic is enabled, you can dereference that kind of pointer by index. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
-    <span class="SKwd">let</span> ptr = &arr[<span class="SNum">0</span>]
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>)
+    <span class="SKwd">var</span> x: [<span class="SNum">4</span>] <span class="STpe">s32</span>  <span class="SCmt">// Declare an array of 4 s32 elements</span>
+    <span class="SKwd">var</span> ptr = &x[<span class="SNum">1</span>]  <span class="SCmt">// Take the address of the second element</span>
 
-    <span class="SCmt">// The type of 'ptr' is ^s32, so it can be dereferenced by index</span>
-    <span class="SKwd">let</span> value1 = ptr[<span class="SNum">0</span>]
+    <span class="SCmt">// Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values</span>
+    ptr = ptr - <span class="SNum">1</span>  <span class="SCmt">// Move the pointer back to the first element</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>  <span class="SCmt">// The type of ptr is now a pointer to multiple 's32' values</span>
+}</span></div>
+<p>As pointer arithmetic is enabled, you can dereference that kind of pointer by using an index. This allows you to access elements in an array-like manner, even though you're working with a pointer. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]  <span class="SCmt">// Declare and initialize an array of s32 elements</span>
+    <span class="SKwd">let</span> ptr = &arr[<span class="SNum">0</span>]  <span class="SCmt">// Take the address of the first element</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>)  <span class="SCmt">// The pointer type allows pointer arithmetic</span>
+
+    <span class="SCmt">// Dereferencing by index to access the elements</span>
+    <span class="SKwd">let</span> value1 = ptr[<span class="SNum">0</span>]  <span class="SCmt">// Access the first element</span>
     <span class="SItr">@assert</span>(value1 == <span class="SNum">1</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value1) == <span class="STpe">s32</span>
 
-    <span class="SKwd">let</span> value2 = ptr[<span class="SNum">1</span>]
+    <span class="SKwd">let</span> value2 = ptr[<span class="SNum">1</span>]  <span class="SCmt">// Access the second element</span>
     <span class="SItr">@assert</span>(value2 == <span class="SNum">2</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value2) == <span class="STpe">s32</span>
 
-    <span class="SCmt">// But 'dref' still works for the first element</span>
-    <span class="SKwd">let</span> value = <span class="SKwd">dref</span> ptr
+    <span class="SCmt">// You can still use 'dref' for the first element, which is equivalent to ptr[0]</span>
+    <span class="SKwd">let</span> value = <span class="SKwd">dref</span> ptr  <span class="SCmt">// Dereference the pointer to access the first element</span>
     <span class="SItr">@assert</span>(value == <span class="SNum">1</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value) == <span class="STpe">s32</span>
 }</span></div>
 
-<h2 id="_023_references_swg">References</h2><p>Swag has also <b>references</b>, which are pointers that behave like values. </p>
+<h2 id="_023_references_swg">References</h2><p>Swag also supports <b>references</b>, which are pointers that behave like values. References in Swag provide a convenient way to work with memory addresses while abstracting away the need for explicit pointer syntax, making them easier and safer to use in many cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">42</span>
 
     <span class="SCmt">// Use '&' to declare a reference.</span>
     <span class="SCmt">// Here we declare a reference to the variable 'x'.</span>
-    <span class="SCmt">// Note that unlike C++, you have to take the address of 'x' to convert it to a reference.</span>
+    <span class="SCmt">// Unlike C++, you must take the address of 'x' to convert it into a reference.</span>
     <span class="SKwd">let</span> myRef: <span class="SKwd">const</span> &<span class="STpe">s32</span> = &x
 
-    <span class="SCmt">// This is a pointer that behaves like a value, so no explicit dereferencing is necessary.</span>
-    <span class="SCmt">// You can see this as a kind of an alias.</span>
+    <span class="SCmt">// References behave like values, so no explicit dereferencing is needed.</span>
+    <span class="SCmt">// You can think of this as an alias for 'x'.</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">42</span>)
 }</span></div>
-<p>When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself. </p>
+<p>When an assignment is made to a reference outside of its initialization, the operation changes the value of the variable being referenced, not the reference itself. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x      = <span class="SNum">42</span>
-    <span class="SKwd">var</span> myRef: &<span class="STpe">s32</span> = &x     <span class="SCmt">// Note here that the reference is no more 'const'</span>
+    <span class="SKwd">var</span> x = <span class="SNum">42</span>
+    <span class="SKwd">var</span> myRef: &<span class="STpe">s32</span> = &x  <span class="SCmt">// The reference is mutable because it's not declared 'const'</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">42</span>)
 
-    <span class="SCmt">// Here we will change the pointed value 'x'</span>
+    <span class="SCmt">// This changes the value of 'x' through the reference.</span>
     myRef = <span class="SNum">66</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">66</span>)
 
-    <span class="SCmt">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span>
+    <span class="SCmt">// Since 'myRef' is an alias for 'x', 'x' is also updated.</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">66</span>)
 }</span></div>
-<p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. You must then use <span class="code-inline">ref</span> modifier in the affectation. </p>
+<p>However, unlike in C++, you can change the reference itself (reassign it) rather than the value it points to. To reassign the reference, use the <span class="code-inline">ref</span> modifier in the assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>
@@ -2152,16 +2151,16 @@ in
     <span class="SKwd">var</span> myRef: &<span class="STpe">s32</span> = &x
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1</span>)
 
-    <span class="SCmt">// Here we force 'myRef' to point to 'y' and not to 'x' anymore.</span>
-    <span class="SCmt">// We: *NOT* change the value of 'x'.</span>
+    <span class="SCmt">// Here, we reassign 'myRef' to point to 'y' instead of 'x'.</span>
+    <span class="SCmt">// The value of 'x' remains unchanged.</span>
     myRef = <span class="SKwd">#ref</span> &y
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)
 }</span></div>
-<p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <span class="code-inline">const</span>. In that case, taking the address is not necessary </p>
+<p>Most of the time, you need to take the address of a variable to create a reference to it. The only exception is when passing a reference to a function parameter, and the reference is declared as <span class="code-inline">const</span>. In such cases, taking the address explicitly is not necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// We can pass a literal because the parameter 'x' of 'toto' is a const reference, </span>
-    <span class="SCmt">// and not just a reference.</span>
+    <span class="SCmt">// We can pass a literal directly because 'x' in the function 'toto' is a const reference.</span>
+    <span class="SCmt">// No need to take the address manually.</span>
     <span class="SFct">toto</span>(<span class="SNum">4</span>)
 }
 
@@ -2169,12 +2168,12 @@ in
 {
     <span class="SItr">@assert</span>(x == <span class="SNum">4</span>)
 
-    <span class="SCmt">// Under the hood, you will get a const address to an 's32'</span>
+    <span class="SCmt">// Internally, the reference is still an address to an 's32'.</span>
     <span class="SKwd">let</span> ptr = &x
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">4</span>)
 }</span></div>
-<p>This is usefull for structs for examples, as you can directly pass a literal to a function. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Our first little struct !</span>
+<p>This approach is particularly useful for structs, as it allows passing literals directly to functions. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Our first simple struct!</span>
 <span class="SKwd">struct</span> <span class="SCst">MyStruct</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
 
 <span class="SFct">#test</span>
@@ -2186,11 +2185,11 @@ in
 
 <span class="SKwd">func</span> <span class="SFct">titi0</span>(param: <span class="SKwd">const</span> &{ x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> })
 {
-    <span class="SCmt">// We'll see later about tuples and naming of fields.</span>
+    <span class="SCmt">// We'll discuss tuples and field naming later, but for now, we can access tuple items by position.</span>
     <span class="SItr">@assert</span>(param.item0 == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(param.item1 == <span class="SNum">2</span>)
 }</span></div>
-<p>Note that declaring a tuple type or a struct type is equivalent to a constant reference. </p>
+<p>Note that declaring a tuple type or a struct type as a parameter is equivalent to passing a constant reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">titi1</span>(param: { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> })
 {
     <span class="SItr">@assert</span>(param.x == <span class="SNum">3</span>)
@@ -2203,185 +2202,184 @@ in
     <span class="SItr">@assert</span>(param.y == <span class="SNum">6</span>)
 }</span></div>
 
-<h2 id="_024_any_swg">Any</h2><p><span class="code-inline">any</span> is a specific type that can store every other types. </p>
+<h2 id="_024_any_swg">Any</h2><p><span class="code-inline">any</span> is a specific type in Swag that can store values of any other type. </p>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamic typed <b>reference</b> to an existing value. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamically typed <b>reference</b> to an existing value. This means that <span class="code-inline">any</span> does not store a copy of the value, but rather a reference to the actual value, along with its type information. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: <span class="STpe">any</span>
+    <span class="SKwd">var</span> a: <span class="STpe">any</span>    <span class="SCmt">// Declare a variable of type 'any'</span>
 
-    <span class="SCmt">// Store a 's32' literal value</span>
+    <span class="SCmt">// Store an 's32' literal value in the 'any'</span>
     a = <span class="SNum">6</span>
 
-    <span class="SCmt">// In order to reference the value inside the 'any', you need to cast to the wanted type.</span>
+    <span class="SCmt">// To access the value stored inside 'any', you need to cast it to the desired type.</span>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">s32</span>) a == <span class="SNum">6</span>)
 
-    <span class="SCmt">// Then now we store a string instead of the 's32' value</span>
+    <span class="SCmt">// Now store a string instead of the 's32' value</span>
     a = <span class="SStr">"string"</span>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) a == <span class="SStr">"string"</span>)
 
-    <span class="SCmt">// Then we store a bool instead</span>
+    <span class="SCmt">// Now store a bool instead</span>
     a = <span class="SKwd">true</span>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">bool</span>) a == <span class="SKwd">true</span>)
 }</span></div>
-<p><span class="code-inline">any</span> is in fact a pointer to the value, and a <span class="code-inline">typeinfo</span>. <span class="code-inline">@dataof</span> can be used to retrieve the pointer to the value. </p>
+<p><span class="code-inline">any</span> is effectively a pointer to the value it references, along with a <span class="code-inline">typeinfo</span> that describes the type of the value. You can use <span class="code-inline">@dataof</span> to retrieve the pointer to the actual value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> a:  <span class="STpe">any</span> = <span class="SNum">6</span>
-    <span class="SKwd">let</span> ptr = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="STpe">s32</span>) <span class="SItr">@dataof</span>(a)
-    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">6</span>)
+    <span class="SKwd">let</span> a: <span class="STpe">any</span> = <span class="SNum">6</span>                         <span class="SCmt">// Store an s32 value in 'a'</span>
+    <span class="SKwd">let</span> ptr = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="STpe">s32</span>) <span class="SItr">@dataof</span>(a)  <span class="SCmt">// Retrieve the pointer to the stored value</span>
+    <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">6</span>)                 <span class="SCmt">// Dereference the pointer to get the value</span>
 }</span></div>
-<p><span class="code-inline">@typeof</span> will give you the type <span class="code-inline">any</span>, but <span class="code-inline">@kindof</span> will give you the real underlying type. In that case, <span class="code-inline">@kindof</span> is evaluted at runtime. </p>
+<p>When you use <span class="code-inline">@typeof</span> on an <span class="code-inline">any</span>, it will return the type <span class="code-inline">any</span> itself, as <span class="code-inline">any</span> is the type of the reference. However, <span class="code-inline">@kindof</span> gives you the actual underlying type of the value stored in <span class="code-inline">any</span>. Note that <span class="code-inline">@kindof</span> is evaluated at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: <span class="STpe">any</span> = <span class="SStr">"string"</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">string</span>)
+    <span class="SKwd">var</span> a: <span class="STpe">any</span> = <span class="SStr">"string"</span>              <span class="SCmt">// Store a string in 'a'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>          <span class="SCmt">// The type of 'a' is 'any'</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">string</span>)      <span class="SCmt">// The underlying type of the value is 'string'</span>
 
-    a = <span class="SKwd">true</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">bool</span>)
+    a = <span class="SKwd">true</span>                           <span class="SCmt">// Change the stored value to a bool</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">bool</span>)        <span class="SCmt">// Now the underlying type is 'bool'</span>
 }</span></div>
-<p>You can either get the value or a const reference to the value. </p>
+<p>You can retrieve the value stored in an <span class="code-inline">any</span> either directly or as a constant reference. This flexibility allows you to work with the value in whatever way best suits your needs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> a: <span class="STpe">any</span> = <span class="SNum">42</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">s32</span>)
+    <span class="SKwd">let</span> a: <span class="STpe">any</span> = <span class="SNum">42</span>                    <span class="SCmt">// Store an s32 value in 'a'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>          <span class="SCmt">// The type of 'a' is 'any'</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">s32</span>)         <span class="SCmt">// The underlying type is 's32'</span>
 
-    <span class="SKwd">let</span> b = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) a <span class="SCmt">// Get the value itself</span>
+    <span class="SKwd">let</span> b = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) a                <span class="SCmt">// Get the value itself</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">42</span>)
-    <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> &<span class="STpe">s32</span>) a <span class="SCmt">// This is fine too</span>
+    <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> &<span class="STpe">s32</span>) a         <span class="SCmt">// Get a constant reference to the value</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">42</span>)
 }</span></div>
-<p>You can declare an array with multiple types, with <span class="code-inline">any</span>. </p>
+<p>You can also create arrays that contain multiple types using <span class="code-inline">any</span>. This allows for a heterogeneous collection where each element can be of a different type. This is useful in cases where you need to store and manipulate data of various types in a single structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [] <span class="STpe">any</span> = [<span class="SKwd">true</span>, <span class="SNum">2</span>, <span class="SNum">3.0</span>, <span class="SStr">"4"</span>]
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">0</span>]) == <span class="STpe">bool</span>)
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">1</span>]) == <span class="STpe">s32</span>)
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">2</span>]) == <span class="STpe">f32</span>)
-    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">3</span>]) == <span class="STpe">string</span>)
+    <span class="SKwd">var</span> array: [] <span class="STpe">any</span> = [<span class="SKwd">true</span>, <span class="SNum">2</span>, <span class="SNum">3.0</span>, <span class="SStr">"4"</span>]  <span class="SCmt">// An array containing different types</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">0</span>]) == <span class="STpe">bool</span>)       <span class="SCmt">// The first element is a bool</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">1</span>]) == <span class="STpe">s32</span>)        <span class="SCmt">// The second element is an s32</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">2</span>]) == <span class="STpe">f32</span>)        <span class="SCmt">// The third element is an f32</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">3</span>]) == <span class="STpe">string</span>)     <span class="SCmt">// The fourth element is a string</span>
 
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">bool</span>) array[<span class="SNum">0</span>] == <span class="SKwd">true</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">s32</span>) array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">f32</span>) array[<span class="SNum">2</span>] == <span class="SNum">3.0</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) array[<span class="SNum">3</span>] == <span class="SStr">"4"</span>)
 }</span></div>
-<p>An <span class="code-inline">any</span> value can be set to null, and tested against null. </p>
+<p>An <span class="code-inline">any</span> value can be set to null and tested against null, just like pointers or other nullable types. This feature allows you to handle cases where a value may or may not be set, providing flexibility in managing optional values. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x: <span class="STpe">any</span>
-    <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
+    <span class="SKwd">var</span> x: <span class="STpe">any</span>                          <span class="SCmt">// Declare an 'any' type variable</span>
+    <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)                  <span class="SCmt">// Initially, 'x' is null</span>
 
-    x = <span class="SNum">6</span>
-    <span class="SItr">@assert</span>(x != <span class="SKwd">null</span>)
+    x = <span class="SNum">6</span>                               <span class="SCmt">// Store an s32 value in 'x'</span>
+    <span class="SItr">@assert</span>(x != <span class="SKwd">null</span>)                  <span class="SCmt">// Now 'x' holds a value</span>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">s32</span>) x == <span class="SNum">6</span>)
 
-    x = <span class="SStr">"string"</span>
+    x = <span class="SStr">"string"</span>                        <span class="SCmt">// Change the stored value to a string</span>
     <span class="SItr">@assert</span>(x != <span class="SKwd">null</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) x == <span class="SStr">"string"</span>)
 
-    x = <span class="SKwd">null</span>
+    x = <span class="SKwd">null</span>                            <span class="SCmt">// Set 'x' back to null</span>
     <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
 }</span></div>
-<p>An <span class="code-inline">any</span> value can be tested against a type with <span class="code-inline">==</span> and <span class="code-inline">!=</span>. This will call <span class="code-inline">@kindof</span> to get the underlying type. </p>
+<p>An <span class="code-inline">any</span> value can be tested against a type using <span class="code-inline">==</span> and <span class="code-inline">!=</span>. This effectively calls <span class="code-inline">@kindof</span> to retrieve the underlying type for comparison. This capability is useful when you need to ensure that the value inside <span class="code-inline">any</span> is of a specific type before performing operations on it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x: <span class="STpe">any</span>
-    <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
-    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)
+    <span class="SKwd">var</span> x: <span class="STpe">any</span>                          <span class="SCmt">// Declare an 'any' type variable</span>
+    <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)                  <span class="SCmt">// 'x' is null</span>
+    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)                   <span class="SCmt">// 'x' does not contain an s32</span>
 
-    x = <span class="SNum">6</span>
-    <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)
-    <span class="SItr">@assert</span>(x != <span class="STpe">bool</span>)
+    x = <span class="SNum">6</span>                               <span class="SCmt">// Store an s32 value in 'x'</span>
+    <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)                   <span class="SCmt">// Now 'x' contains an s32</span>
+    <span class="SItr">@assert</span>(x != <span class="STpe">bool</span>)                  <span class="SCmt">// But it does not contain a bool</span>
 
-    x = <span class="SStr">"string"</span>
-    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)
-    <span class="SItr">@assert</span>(x == <span class="STpe">string</span>)
+    x = <span class="SStr">"string"</span>                        <span class="SCmt">// Change the stored value to a string</span>
+    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)                   <span class="SCmt">// Now 'x' contains a string, not an s32</span>
+    <span class="SItr">@assert</span>(x == <span class="STpe">string</span>)                <span class="SCmt">// Confirm it holds a string</span>
 
-    <span class="SKwd">struct</span> <span class="SCst">A</span> {}
+    <span class="SKwd">struct</span> <span class="SCst">A</span> {}                         <span class="SCmt">// Define a simple struct</span>
 
-    x = <span class="SCst">A</span>{}
-    <span class="SItr">@assert</span>(x == <span class="SCst">A</span>)
+    x = <span class="SCst">A</span>{}                             <span class="SCmt">// Store an instance of A in 'x'</span>
+    <span class="SItr">@assert</span>(x == <span class="SCst">A</span>)                     <span class="SCmt">// 'x' is of type A</span>
 }</span></div>
 
-<h2 id="_025_tuple_swg">Tuple</h2><p>A tuple is an anonymous structure, aka a struct literal. Syntax is <span class="code-inline">{}</span>. </p>
+<h2 id="_025_tuple_swg">Tuple</h2><p>A tuple in Swag is an anonymous structure, also known as a struct literal. The syntax for creating a tuple is simply <span class="code-inline">{}</span>, enclosing the elements you want to include. Tuples are useful for grouping different types of data together without the need to formally define a structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> tuple1 = {<span class="SNum">2</span>, <span class="SNum">2</span>}
-    <span class="SKwd">let</span> tuple2 = {<span class="SStr">"string"</span>, <span class="SNum">2</span>, <span class="SKwd">true</span>}
+    <span class="SKwd">let</span> tuple1 = {<span class="SNum">2</span>, <span class="SNum">2</span>}                    <span class="SCmt">// A tuple with two integer elements</span>
+    <span class="SKwd">let</span> tuple2 = {<span class="SStr">"string"</span>, <span class="SNum">2</span>, <span class="SKwd">true</span>}       <span class="SCmt">// A tuple with a string, an integer, and a boolean</span>
 }</span></div>
-<p>Tuple values have default names to access them, in the form of <span class="code-inline">itemX</span> where <span class="code-inline">X</span> is the field rank. </p>
+<p>By default, tuple values are accessed using automatically assigned field names in the form of <span class="code-inline">itemX</span>, where <span class="code-inline">X</span> is the index of the field starting from 0. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> tuple = {<span class="SStr">"string"</span>, <span class="SNum">2</span>, <span class="SKwd">true</span>}
-    <span class="SItr">@assert</span>(tuple.item0 == <span class="SStr">"string"</span>)
-    <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(tuple.item2 == <span class="SKwd">true</span>)
+    <span class="SKwd">let</span> tuple = {<span class="SStr">"string"</span>, <span class="SNum">2</span>, <span class="SKwd">true</span>}        <span class="SCmt">// A tuple with three elements</span>
+    <span class="SItr">@assert</span>(tuple.item0 == <span class="SStr">"string"</span>)       <span class="SCmt">// Access the first element</span>
+    <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2</span>)              <span class="SCmt">// Access the second element</span>
+    <span class="SItr">@assert</span>(tuple.item2 == <span class="SKwd">true</span>)           <span class="SCmt">// Access the third element</span>
 }</span></div>
-<p>But you can specify your own names. </p>
+<p>You can also specify your own names for the tuple fields, which allows for more descriptive access to the tuple's elements. When you define field names, the default <span class="code-inline">itemX</span> names are still available. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> tuple = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
-    <span class="SItr">@assert</span>(tuple.x == <span class="SNum">1.0</span>)
-    <span class="SItr">@assert</span>(tuple.item0 == <span class="SNum">1.0</span>)
-    <span class="SItr">@assert</span>(tuple.y == <span class="SNum">2.0</span>)
-    <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2.0</span>)
+    <span class="SKwd">let</span> tuple = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}           <span class="SCmt">// A tuple with named fields 'x' and 'y'</span>
+    <span class="SItr">@assert</span>(tuple.x == <span class="SNum">1.0</span>)                <span class="SCmt">// Access using the custom field name 'x'</span>
+    <span class="SItr">@assert</span>(tuple.item0 == <span class="SNum">1.0</span>)            <span class="SCmt">// Access using the default 'item0'</span>
+    <span class="SItr">@assert</span>(tuple.y == <span class="SNum">2.0</span>)                <span class="SCmt">// Access using the custom field name 'y'</span>
+    <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2.0</span>)            <span class="SCmt">// Access using the default 'item1'</span>
 }</span></div>
-<p>When creating a tuple literal with variables, the tuple fields will take the name of the variables (except if specified). </p>
+<p>When creating a tuple literal with variables, the tuple fields will automatically take the names of the variables, unless you specify different names explicitly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SNum">555</span>
     <span class="SKwd">let</span> y = <span class="SNum">666</span>
-    <span class="SKwd">let</span> t = {x, y}
-    <span class="SItr">@assert</span>(t.x == <span class="SNum">555</span>)
-    <span class="SItr">@assert</span>(t.item0 == t.x)
-    <span class="SItr">@assert</span>(t.y == <span class="SNum">666</span>)
-    <span class="SItr">@assert</span>(t.item1 == t.y)
+    <span class="SKwd">let</span> t = {x, y}                         <span class="SCmt">// Tuple fields automatically named 'x' and 'y'</span>
+    <span class="SItr">@assert</span>(t.x == <span class="SNum">555</span>)                    <span class="SCmt">// Access using the variable name 'x'</span>
+    <span class="SItr">@assert</span>(t.item0 == t.x)                <span class="SCmt">// 'item0' corresponds to 'x'</span>
+    <span class="SItr">@assert</span>(t.y == <span class="SNum">666</span>)                    <span class="SCmt">// Access using the variable name 'y'</span>
+    <span class="SItr">@assert</span>(t.item1 == t.y)                <span class="SCmt">// 'item1' corresponds to 'y'</span>
 }</span></div>
-<p>Even if two tuples: not have the same field names, they can be assigned to each other if the field types are the same. </p>
+<p>Even if two tuples do not have the same field names, they can still be assigned to each other as long as the field types are compatible. This flexibility allows for easy data transfer between different tuple structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x: { a: <span class="STpe">s32</span>, b: <span class="STpe">s32</span> }
-    <span class="SKwd">var</span> y: { c: <span class="STpe">s32</span>, d: <span class="STpe">s32</span> }
+    <span class="SKwd">var</span> x: { a: <span class="STpe">s32</span>, b: <span class="STpe">s32</span> }              <span class="SCmt">// A tuple with fields 'a' and 'b'</span>
+    <span class="SKwd">var</span> y: { c: <span class="STpe">s32</span>, d: <span class="STpe">s32</span> }              <span class="SCmt">// Another tuple with fields 'c' and 'd'</span>
 
-    y = {<span class="SNum">1</span>, <span class="SNum">2</span>}
-    x = y
-    <span class="SItr">@assert</span>(x.a == <span class="SNum">1</span>)
-    <span class="SItr">@assert</span>(x.b == <span class="SNum">2</span>)
+    y = {<span class="SNum">1</span>, <span class="SNum">2</span>}                             <span class="SCmt">// Initialize 'y' with values</span>
+    x = y                                  <span class="SCmt">// Assign 'y' to 'x', field names do not need to match</span>
+    <span class="SItr">@assert</span>(x.a == <span class="SNum">1</span>)                      <span class="SCmt">// 'x.a' takes the value of 'y.c'</span>
+    <span class="SItr">@assert</span>(x.b == <span class="SNum">2</span>)                      <span class="SCmt">// 'x.b' takes the value of 'y.d'</span>
 
-    <span class="SCmt">// But note that 'x' and 'y' to not have the same type</span>
+    <span class="SCmt">// Even though 'x' and 'y' have different field names, their types are not considered identical.</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) != <span class="SItr">@typeof</span>(y)
 }</span></div>
 <h3 id="_025_tuple_swg_Tuple_unpacking">Tuple unpacking </h3>
-<p>You can unpack a tuple field by field. </p>
+<p>Tuples can be unpacked, meaning their fields can be extracted into individual variables. This feature is particularly useful for splitting a tuple's data into separate variables for further processing. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
+    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'</span>
 
-    <span class="SCmt">// 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.</span>
+    <span class="SCmt">// Unpack the tuple: 'value0' gets the value of 'x', and 'value1' gets the value of 'y'</span>
     <span class="SKwd">let</span> (value0, value1) = tuple1
     <span class="SItr">@assert</span>(value0 == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(value1 == <span class="SNum">2.0</span>)
 
-    <span class="SKwd">var</span> tuple2 = {<span class="SStr">"name"</span>, <span class="SKwd">true</span>}
-    <span class="SKwd">let</span> (name, value) = tuple2
+    <span class="SKwd">var</span> tuple2 = {<span class="SStr">"name"</span>, <span class="SKwd">true</span>}            <span class="SCmt">// A tuple with a string and a boolean</span>
+    <span class="SKwd">let</span> (name, value) = tuple2             <span class="SCmt">// Unpack into 'name' and 'value'</span>
     <span class="SItr">@assert</span>(name == <span class="SStr">"name"</span>)
     <span class="SItr">@assert</span>(value == <span class="SKwd">true</span>)
 }</span></div>
-<p>You can ignore a tuple field by naming the variable <span class="code-inline">?</span>. </p>
+<p>You can ignore certain fields when unpacking a tuple by using the <span class="code-inline">?</span> placeholder. This is useful when you only need specific elements of a tuple and want to disregard the rest. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
-    <span class="SKwd">let</span> (x, ?) = tuple1
+    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'</span>
+    <span class="SKwd">let</span> (x, ?) = tuple1                    <span class="SCmt">// Unpack 'x' and ignore the second field</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">1.0</span>)
-    <span class="SKwd">let</span> (?, y) = tuple1
+    <span class="SKwd">let</span> (?, y) = tuple1                    <span class="SCmt">// Ignore the first field and unpack 'y'</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">2.0</span>)
 }</span></div>
 
-<h2 id="_030_enum_swg">Enum</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
-<p>Enums values, unlike C/C++, can end with <span class="code-inline">;</span> or <span class="code-inline">,</span> or an <span class="code-inline">eol</span>. </p>
+<h2 id="_030_enum_swg">Enum</h2><p>Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with <span class="code-inline">;</span>, <span class="code-inline">,</span>, or an end of line (eol). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values0</span>
@@ -2407,18 +2405,18 @@ in
     <span class="SKwd">enum</span> <span class="SCst">Values4</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
     <span class="SKwd">enum</span> <span class="SCst">Values5</span> { <span class="SCst">A</span>; <span class="SCst">B</span> }
 }</span></div>
-<p>By default, an enum is of type <span class="code-inline">s32</span>. </p>
+<p>By default, an enum in Swag is of type <span class="code-inline">s32</span>, meaning the underlying storage for each value is a 32-bit signed integer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>, <span class="SCst">B</span> }
     <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(<span class="SCst">Values</span>)
 
     <span class="SCmt">// 'type' here is a 'typeinfo' dedicated to the enum type.</span>
-    <span class="SCmt">// In that case, 'type.rawType' is the enum underlying type.</span>
+    <span class="SCmt">// In that case, 'type.rawType' represents the enum's underlying type.</span>
     <span class="SItr">@assert</span>(type.rawType == <span class="STpe">s32</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
 }</span></div>
-<p><span class="code-inline">@kindof</span> will return the underlying type of the enum. </p>
+<p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
@@ -2426,10 +2424,10 @@ in
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) != <span class="SCst">RGB</span>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) == <span class="STpe">s32</span>
 }</span></div>
-<p>You can specify your own type after the enum name. </p>
+<p>You can specify a custom underlying type for an enum by appending it after the enum name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">enum</span> <span class="SCst">Values1</span>: <span class="STpe">s64</span> <span class="SCmt">// Forced to be 's64' instead of 's32'</span>
+    <span class="SKwd">enum</span> <span class="SCst">Values1</span>: <span class="STpe">s64</span> <span class="SCmt">// Force the underlying type to be 's64' instead of 's32'</span>
     {
         <span class="SCst">A</span>
         <span class="SCst">B</span>
@@ -2439,7 +2437,7 @@ in
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">Values1</span>) == <span class="STpe">s64</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values1</span>.<span class="SCst">A</span>) == <span class="SCst">Values1</span>
 }</span></div>
-<p>Enum values, if not specified, start at 0 and are increased by 1 at each new value. </p>
+<p>Enum values, if not explicitly specified, start at 0 and increase by 1 for each subsequent value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="STpe">s64</span>
@@ -2453,7 +2451,7 @@ in
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">1</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">2</span>
 }</span></div>
-<p>You can specify your own values. </p>
+<p>You can specify custom values for each enum element. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="STpe">s64</span>
@@ -2467,21 +2465,21 @@ in
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">20</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">30</span>
 }</span></div>
-<p>If you omit one value, it will be assigned to the previous value + 1. </p>
+<p>If you omit a value after assigning a specific one, it will be assigned the previous value plus 1. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="STpe">u32</span>
     {
         <span class="SCst">A</span> = <span class="SNum">10</span>
-        <span class="SCst">B</span> <span class="SCmt">// 11</span>
-        <span class="SCst">C</span> <span class="SCmt">// 12</span>
+        <span class="SCst">B</span> <span class="SCmt">// Will be 11</span>
+        <span class="SCst">C</span> <span class="SCmt">// Will be 12</span>
     }
 
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">A</span> == <span class="SNum">10</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">11</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">12</span>
 }</span></div>
-<p>For non integer types, you <b>must</b> specify the values as they cannot be deduced. </p>
+<p>For non-integer types, you <b>must</b> specify the values explicitly, as they cannot be deduced automatically. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value1</span>: <span class="STpe">string</span>
@@ -2499,14 +2497,14 @@ in
     {
         <span class="SCst">A</span> = <span class="SNum">1.0</span>
         <span class="SCst">B</span> = <span class="SNum">3.14</span>
-        <span class="SCst">C</span> = <span class="SNum">6</span>
+        <span class="SCst">C</span> = <span class="SNum">6.0</span>
     }
 
     <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">A</span> == <span class="SNum">1.0</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">B</span> == <span class="SNum">3.14</span>
-    <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">C</span> == <span class="SNum">6</span>
+    <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">C</span> == <span class="SNum">6.0</span>
 }</span></div>
-<p><span class="code-inline">@countof</span> returns the number of values of an enum. </p>
+<p><span class="code-inline">@countof</span> can be used to return the number of values defined in an enum. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="STpe">string</span>
@@ -2519,7 +2517,7 @@ in
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(<span class="SCst">Value</span>) == <span class="SNum">3</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(<span class="SCst">Value</span>) == <span class="SNum">3</span>
 }</span></div>
-<p>You can use the keyword <span class="code-inline">using</span> for an enum. </p>
+<p>You can use the <span class="code-inline">using</span> keyword to make enum values accessible without needing to specify the enum name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>
@@ -2531,25 +2529,24 @@ in
 
     <span class="SKwd">using</span> <span class="SCst">Value</span>
 
-    <span class="SCmt">// No need to say 'Value.A' thanks to the 'using' above</span>
+    <span class="SCmt">// No need to prefix with 'Value.'</span>
     <span class="SItr">@assert</span>(<span class="SCst">A</span> == <span class="SNum">0</span>)
     <span class="SItr">@assert</span>(<span class="SCst">B</span> == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(<span class="SCst">C</span> == <span class="SNum">2</span>)
 
-    <span class="SCmt">// But the normal form is still possible</span>
+    <span class="SCmt">// The normal form is still possible</span>
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">A</span> == <span class="SNum">0</span>)
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">2</span>)
 }</span></div>
 <h3 id="_030_enum_swg_Enum_as_flags">Enum as flags </h3>
-<p>An enum can be a set of flags if you declare it with the <span class="code-inline">#[Swag.EnumFlags]</span> attribute. Its type should be <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span> or <span class="code-inline">u64</span>. </p>
-<p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
+<p>Enums can be used as flags if declared with the <span class="code-inline">#[Swag.EnumFlags]</span> attribute. For this, the enum's underlying type should be <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span>, or <span class="code-inline">u64</span>. By default, enums declared as flags start at 1 (not 0), and each value is typically a power of 2. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.EnumFlags]</span>
     <span class="SKwd">enum</span> <span class="SCst">MyFlags</span>: <span class="STpe">u8</span>
     {
-        <span class="SCst">A</span>   <span class="SCmt">// First value is 1 and *not* 0</span>
+        <span class="SCst">A</span>   <span class="SCmt">// First value is 1</span>
         <span class="SCst">B</span>   <span class="SCmt">// Value is 2</span>
         <span class="SCst">C</span>   <span class="SCmt">// Value is 4</span>
         <span class="SCst">D</span>   <span class="SCmt">// Value is 8</span>
@@ -2566,7 +2563,7 @@ in
     <span class="SItr">@assert</span>(value & <span class="SCst">MyFlags</span>.<span class="SCst">C</span> == <span class="SCst">MyFlags</span>.<span class="SCst">C</span>)
 }</span></div>
 <h3 id="_030_enum_swg_Enum_of_arrays">Enum of arrays </h3>
-<p>You can have an enum of const static arrays. </p>
+<p>You can define an enum where each value is associated with a const static array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="SKwd">const</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
@@ -2581,7 +2578,7 @@ in
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span>[<span class="SNum">1</span>] == <span class="SNum">20</span>
 }</span></div>
 <h3 id="_030_enum_swg_Enum_of_slices">Enum of slices </h3>
-<p>You can have an enum of const slices. </p>
+<p>Similarly, you can define an enum where each value is associated with a const slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Value</span>: <span class="SKwd">const</span> [..] <span class="STpe">s32</span>
@@ -2601,7 +2598,7 @@ in
     <span class="SItr">@assert</span>(y[<span class="SNum">1</span>] == <span class="SNum">20</span>)
 }</span></div>
 <h3 id="_030_enum_swg_Nested_enums">Nested enums </h3>
-<p>An enum can be nested inside another enum with <span class="code-inline">using</span>. Both enums must of course have the same underlying type. </p>
+<p>Enums can be nested within other enums using the <span class="code-inline">using</span> keyword. Both enums must share the same underlying type. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">enum</span> <span class="SCst">BasicErrors</span>
 {
     <span class="SCst">FailedToLoad</span>
@@ -2614,9 +2611,9 @@ in
     <span class="SKwd">using</span> <span class="SCst">BasicErrors</span>
     <span class="SCst">NotFound</span> = <span class="SNum">100</span>
 }</span></div>
-<p>To access a value inside the nested enum, use the enum name (a scope has been created). </p>
+<p>To access a value inside a nested enum, use the enum name (a scope is created). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">MyError0</span> = <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToSave</span></span></div>
-<p>An <b>automatic cast</b> will be done if you try to convert a nested enum to an owner enum. For example, a value of type <span class="code-inline">BasicErrors</span> can be converted to a parameter of type <span class="code-inline">MyErrors</span> because <span class="code-inline">MyErrors</span> contains <span class="code-inline">BasicErrors</span>. </p>
+<p>An <b>automatic cast</b> occurs when converting a nested enum to its parent enum. For example, a value of type <span class="code-inline">BasicErrors</span> can be passed to a parameter of type <span class="code-inline">MyErrors</span> because <span class="code-inline">MyErrors</span> includes <span class="code-inline">BasicErrors</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">E0</span>: <span class="SCst">MyErrors</span>    = <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToLoad</span>
@@ -2632,7 +2629,7 @@ in
     <span class="SFct">toto</span>(<span class="SCst">E1</span>) <span class="SCmt">// Automatic cast from 'BasicErrors' to 'MyErrors'</span>
 }</span></div>
 <h3 id="_030_enum_swg_Specific_attributes">Specific attributes </h3>
-<p>You can use <span class="code-inline">#[Swag.EnumIndex]</span> if an enum value can be used as a dereference index. This will avoid the necessity of an explicit cast. The underlying enum type must be integer. </p>
+<p>You can use <span class="code-inline">#[Swag.EnumIndex]</span> to enable an enum value to be used directly as an index without needing to cast it. The underlying enum type must be an integer type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.EnumIndex]</span>
@@ -2641,7 +2638,7 @@ in
     <span class="SKwd">const</span> <span class="SCst">Array</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SKwd">const</span> <span class="SCst">Valu</span> = <span class="SCst">Array</span>[<span class="SCst">MyIndex</span>.<span class="SCst">First</span>]   <span class="SCmt">// No need to cast 'MyIndex.First'</span>
 }</span></div>
-<p>You can use <span class="code-inline">#[Swag.NoDuplicate]</span> to avoid duplicated values inside an enum. If the compiler finds a value defined more than once, it will raise an error. </p>
+<p>You can use <span class="code-inline">#[Swag.NoDuplicate]</span> to prevent duplicated values inside an enum. If the compiler detects a value defined more than once, it will raise an error. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.NoDuplicate]</span>
@@ -2652,52 +2649,53 @@ in
     }
 }</span></div>
 <h3 id="_030_enum_swg_Enum_type_inference">Enum type inference </h3>
-<p>The type of the enum is not necessary in the assignement expression when declaring a variable. </p>
+<p>Enums in Swag allow type inference, so you can often omit the enum type when assigning a value. </p>
+<p>The enum type is not necessary in the assignment expression when declaring a variable, as it can be deduced. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
 
-    <span class="SCmt">// The normal form</span>
+    <span class="SCmt">// The explicit form</span>
     <span class="SKwd">let</span> x: <span class="SCst">Values</span> = <span class="SCst">Values</span>.<span class="SCst">A</span>
 
-    <span class="SCmt">// But in fact 'Values' is not necessary because it can be deduced</span>
+    <span class="SCmt">// The inferred form</span>
     <span class="SKwd">let</span> y: <span class="SCst">Values</span> = <span class="SCst">A</span>
 
     <span class="SItr">@assert</span>(x == y)
 }</span></div>
-<p>The enum type is not necessary in a <span class="code-inline">case</span> expression of a <span class="code-inline">switch</span> block (it is deduced from the switch expression). </p>
+<p>The enum type is not necessary in a <span class="code-inline">case</span> expression of a <span class="code-inline">switch</span> block, as it is inferred from the switch expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
     <span class="SKwd">let</span> x = <span class="SCst">Values</span>.<span class="SCst">A</span>
 
-    <span class="SCmt">// The 'normal' form</span>
+    <span class="SCmt">// The explicit form</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SCst">Values</span>.<span class="SCst">A</span>: <span class="SLgc">break</span>
     <span class="SLgc">case</span> <span class="SCst">Values</span>.<span class="SCst">B</span>: <span class="SLgc">break</span>
     }
 
-    <span class="SCmt">// The 'simplified' form</span>
+    <span class="SCmt">// The simplified form</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SCst">A</span>: <span class="SLgc">break</span>
     <span class="SLgc">case</span> <span class="SCst">B</span>: <span class="SLgc">break</span>
     }
 }</span></div>
-<p>In an expression, and if the enum name can be deduced, you can omit it and use the <span class="code-inline">.Value</span> syntax. </p>
+<p>In expressions where the enum type can be deduced, you can omit the enum name and use the <span class="code-inline">.Value</span> syntax. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>, <span class="SCst">B</span> }
 
-    <span class="SCmt">// The normal form</span>
+    <span class="SCmt">// The explicit form</span>
     <span class="SKwd">let</span> x = <span class="SCst">Values</span>.<span class="SCst">A</span>
 
-    <span class="SCmt">// The simplified form, because 'Values' can be deduced from type of x</span>
+    <span class="SCmt">// The simplified form, since 'Values' can be inferred from 'x'</span>
     <span class="SItr">@assert</span>(x == .<span class="SCst">A</span>)
     <span class="SItr">@assert</span>(x != .<span class="SCst">B</span>)
 }</span></div>
-<p>Works also for flags. </p>
+<p>This also works for enums used as flags. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.EnumFlags]</span>
@@ -2706,125 +2704,163 @@ in
     <span class="SKwd">let</span> x = <span class="SCst">Values</span>.<span class="SCst">A</span> | <span class="SCst">Values</span>.<span class="SCst">B</span>
     <span class="SItr">@assert</span>((x & .<span class="SCst">A</span>) <span class="SLgc">and</span> (x & .<span class="SCst">B</span>))
 }</span></div>
-<p>Works also (most of the time), for functions. </p>
+<p>In most cases, the simplified <span class="code-inline">.Value</span> syntax also works when passing enum values to functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
     <span class="SKwd">func</span> <span class="SFct">toto</span>(v1, v2: <span class="SCst">Values</span>) {}
     <span class="SFct">toto</span>(.<span class="SCst">A</span>, .<span class="SCst">B</span>)
 }</span></div>
-<p>By type reflection, you can loop/visit all values of an enum. </p>
+<h3 id="_030_enum_swg_Visiting_Enum_Values">Visiting Enum Values </h3>
+<p>Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum. </p>
+<p>The two primary mechanisms for iterating over enum values are the <span class="code-inline">loop</span> construct and the <span class="code-inline">visit</span> statement. </p>
+<h4 id="_030_enum_swg_Visiting_Enum_Values_Loop">Loop </h4>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
+    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
 
+    <span class="SCmt">// Counting Enum Values</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> idx in <span class="SCst">RGB</span>:
-        cpt += <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
+    <span class="SLgc">loop</span> idx in <span class="SCst">RGB</span>:                      <span class="SCmt">// Iterate over all enum values using 'loop'</span>
+        cpt += <span class="SNum">1</span>                          <span class="SCmt">// Increment counter for each value</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)                     <span class="SCmt">// Assert that the enum has exactly 3 values</span>
 
-    <span class="SLgc">visit</span> val in <span class="SCst">RGB</span>
+    <span class="SCmt">// Note that '@countof(RGB)' will give you the exact same result</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SItr">@countof</span>(<span class="SCst">RGB</span>))
+}</span></div>
+<p>The <span class="code-inline">loop idx in RGB:</span> statement is a powerful construct that allows you to iterate over all values in the <span class="code-inline">RGB</span> enum. During each iteration, <span class="code-inline">idx</span> holds the current enum value, which can be used within the loop body. In the example above, the loop simply counts the number of values in the enum, asserting that the total is 3. </p>
+<p>This method is useful when you need to apply the same operation to each enum value, such as populating a list, checking conditions, or performing calculations. </p>
+<h4 id="_030_enum_swg_Visiting_Enum_Values_Visit">Visit </h4>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
+
+    <span class="SCmt">// Performing Actions Based on Enum Values</span>
+    <span class="SLgc">visit</span> val in <span class="SCst">RGB</span>                      <span class="SCmt">// Use 'visit' to iterate over each value in the enum</span>
     {
-        <span class="SLgc">switch</span> val
+        <span class="SLgc">switch</span> val                        <span class="SCmt">// A switch statement to perform actions based on the enum value</span>
         {
-        <span class="SLgc">case</span> <span class="SCst">R</span>:     <span class="SLgc">break</span>
-        <span class="SLgc">case</span> <span class="SCst">G</span>:     <span class="SLgc">break</span>
-        <span class="SLgc">case</span> <span class="SCst">B</span>:     <span class="SLgc">break</span>
-        <span class="SLgc">default</span>:    <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SLgc">case</span> <span class="SCst">R</span>:                           <span class="SCmt">// Case for the value 'R'</span>
+            <span class="SCmt">// Perform action for 'R'</span>
+            <span class="SLgc">break</span>
+        <span class="SLgc">case</span> <span class="SCst">G</span>:                           <span class="SCmt">// Case for the value 'G'</span>
+            <span class="SCmt">// Perform action for 'G'</span>
+            <span class="SLgc">break</span>
+        <span class="SLgc">case</span> <span class="SCst">B</span>:                           <span class="SCmt">// Case for the value 'B'</span>
+            <span class="SCmt">// Perform action for 'B'</span>
+            <span class="SLgc">break</span>
+        <span class="SLgc">default</span>:                          
+            <span class="SCmt">// This should never be reached as we are covering all enum cases</span>
+            <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
         }
     }
 }</span></div>
+<p>The <span class="code-inline">visit val in RGB</span> statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the <span class="code-inline">val</span> variable, which can then be used in a <span class="code-inline">switch</span> statement (or other logic) to perform specific actions based on the value. </p>
+<p>In the provided example, the <span class="code-inline">switch</span> statement checks the value of <span class="code-inline">val</span> and executes different blocks of code depending on whether <span class="code-inline">val</span> is <span class="code-inline">R</span>, <span class="code-inline">G</span>, or <span class="code-inline">B</span>. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same. </p>
 
-<h2 id="_031_impl_swg">Impl</h2><p><span class="code-inline">impl</span> can be used to declare some stuff in the scope of an enum. The keyword <span class="code-inline">self</span> represents the enum value. </p>
+<h2 id="_031_impl_swg">Impl</h2><p>The <span class="code-inline">impl</span> keyword in Swag allows you to define methods and functions within the scope of an enum. This feature enhances the functionality of enums by enabling you to associate behaviors directly with the enum values. The keyword <span class="code-inline">self</span> is used within these methods to refer to the current enum value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">enum</span> <span class="SCst">RGB</span>
 {
     <span class="SCst">R</span>
     <span class="SCst">G</span>
     <span class="SCst">B</span>
 }</span></div>
-<p>Note the <span class="code-inline">impl enum</span> syntax. We'll see later that <span class="code-inline">impl</span> is also used for structs. </p>
+<p>In the example below, we use the <span class="code-inline">impl enum</span> syntax to define methods for the <span class="code-inline">RGB</span> enum. The <span class="code-inline">impl</span> keyword is used to declare that the following block contains methods associated with the <span class="code-inline">RGB</span> enum. We will explore <span class="code-inline">impl</span> further when we look at structs, but the concept is similar. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SKwd">enum</span> <span class="SCst">RGB</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="STpe">self</span>)       =&gt; <span class="STpe">self</span> == <span class="SCst">R</span>
+    <span class="SCmt">// This method checks if the enum value is `R`.</span>
+    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="STpe">self</span>) =&gt; <span class="STpe">self</span> == <span class="SCst">R</span>
+
+    <span class="SCmt">// This method checks if the enum value is either `R` or `B`.</span>
     <span class="SKwd">func</span> <span class="SFct">isRedOrBlue</span>(<span class="STpe">self</span>) =&gt; <span class="STpe">self</span> == <span class="SCst">R</span> <span class="SLgc">or</span> <span class="STpe">self</span> == <span class="SCst">B</span>
 }
 
 <span class="SFct">#test</span>
 {
+    <span class="SCmt">// Test the methods defined in the `impl` block.</span>
+
+    <span class="SCmt">// Check if `RGB.R` is red</span>
     <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRed</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span>))
+
+    <span class="SCmt">// Check if `RGB.B` is red or blue</span>
     <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRedOrBlue</span>(<span class="SCst">RGB</span>.<span class="SCst">B</span>))
 
+    <span class="SCmt">// The `using` keyword allows us to omit the enum type when calling methods</span>
     <span class="SKwd">using</span> <span class="SCst">RGB</span>
     <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">R</span>))
     <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">B</span>))
 
-    <span class="SCmt">// A first look at 'ufcs' (uniform function call syntax)</span>
+    <span class="SCmt">// A first look at Uniform Function Call Syntax (UFCS)</span>
+    <span class="SCmt">// UFCS allows calling methods directly on enum values, improving readability</span>
     <span class="SItr">@assert</span>(<span class="SCst">R</span>.<span class="SFct">isRedOrBlue</span>())
     <span class="SItr">@assert</span>(!<span class="SCst">RGB</span>.<span class="SCst">G</span>.<span class="SFct">isRedOrBlue</span>())
 }</span></div>
 
-<h2 id="_035_namespace_swg">Namespace</h2><p>You can create a global scope with a namespace. All symbols inside the namespace will be in the corresponding global scope. </p>
+<h2 id="_035_namespace_swg">Namespace</h2><p>Namespaces in Swag allow you to create a global scope for symbols, helping organize your code and avoid naming conflicts. A namespace groups functions, variables, and other declarations under a specific name, making them accessible only through that name unless otherwise specified. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">namespace</span> <span class="SCst">A</span>
 {
+    <span class="SCmt">// This function is inside the namespace 'A'.</span>
     <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">1</span>
 }</span></div>
-<p>You can also specify more than one name. Here <span class="code-inline">C</span> will be a namespace inside <span class="code-inline">B</span> which is itself inside <span class="code-inline">A</span>. </p>
+<p>You can nest namespaces to create hierarchical structures. In this example, <span class="code-inline">C</span> is a namespace inside <span class="code-inline">B</span>, which is itself inside <span class="code-inline">A</span>. This allows for even more granular organization of symbols. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">namespace</span> <span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>
 {
+    <span class="SCmt">// This function is inside the nested namespace 'A.B.C'.</span>
     <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">2</span>
 }
 
 <span class="SFct">#test</span>
 {
-    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SFct">a</span>() == <span class="SNum">1</span>)
-    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>.<span class="SFct">a</span>() == <span class="SNum">2</span>)
+    <span class="SCmt">// Accessing functions using their full namespace paths.</span>
+    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SFct">a</span>() == <span class="SNum">1</span>)          <span class="SCmt">// Calls 'a' from namespace 'A'</span>
+    <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>.<span class="SFct">a</span>() == <span class="SNum">2</span>)      <span class="SCmt">// Calls 'a' from nested namespace 'A.B.C'</span>
 }</span></div>
-<p>You can also put <span class="code-inline">using</span> in front of the namespace to be able to access the content without scoping in the <b>current</b> file. </p>
+<p>The <span class="code-inline">using</span> keyword can be applied to namespaces, allowing you to access symbols without needing to fully qualify them in the current file. This can make code more concise and easier to read by removing the need for repeated namespace references. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SKwd">namespace</span> <span class="SCst">Private</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">FileSymbol</span> = <span class="SNum">0</span>
+    <span class="SKwd">const</span> <span class="SCst">FileSymbol</span> = <span class="SNum">0</span>         <span class="SCmt">// A constant defined inside the 'Private' namespace</span>
 }
 
-<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">Private</span>.<span class="SCst">FileSymbol</span>
-<span class="SKwd">const</span> <span class="SCst">C</span> = <span class="SCst">FileSymbol</span>             <span class="SCmt">// No need to specify 'Private' because of the 'using'</span></span></div>
-<p>This is equivalent to <span class="code-inline">private</span>, but you don't have to specify a name, the compiler will generate it for you. </p>
+<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">Private</span>.<span class="SCst">FileSymbol</span>     <span class="SCmt">// Accessing 'FileSymbol' using the full namespace</span>
+<span class="SKwd">const</span> <span class="SCst">C</span> = <span class="SCst">FileSymbol</span>             <span class="SCmt">// Direct access to 'FileSymbol' thanks to 'using'</span></span></div>
+<p>You can also create a private scope using <span class="code-inline">private</span> instead of a named namespace. In this case, the compiler generates a unique name for the scope, effectively making all enclosed symbols private to the file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">private</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">OtherSymbol</span> = <span class="SNum">0</span>
+    <span class="SKwd">const</span> <span class="SCst">OtherSymbol</span> = <span class="SNum">0</span>        <span class="SCmt">// A constant defined in an unnamed private scope</span>
 }
 
-<span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span></span></div>
-<p>All symbols from a Swag source file are exported to other files of the same module. So using <span class="code-inline">private</span> can protect from name conflicts. </p>
+<span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span>            <span class="SCmt">// Direct access to 'OtherSymbol' since it is private to the file</span></span></div>
+<p>By default, all symbols from a Swag source file are exported to other files within the same module. However, using <span class="code-inline">private</span> or namespaces helps protect against name conflicts, especially in larger projects where multiple files may define similar or identical symbols. </p>
 
 <h2 id="_050_if_swg">If</h2><p>A basic test with an <span class="code-inline">if</span>. </p>
-<p>Curlies are optional, but in that case you need to use a colon <span class="code-inline">:</span>. The same rule will apply for <span class="code-inline">while</span>, <span class="code-inline">for</span>, <span class="code-inline">loop</span> and so on. </p>
-<p>Note also that unlike C/C++, the expression doesn't need to be enclosed with <span class="code-inline">()</span>. </p>
+<p>In Swag, curly braces are optional for control structures like <span class="code-inline">if</span>, but if you omit them, you must use a colon <span class="code-inline">:</span>. This rule also applies to other control structures such as <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">loop</span>. </p>
+<p>Unlike C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
-    <span class="SLgc">if</span> a == <span class="SNum">1</span>:
+    <span class="SLgc">if</span> a == <span class="SNum">1</span>:                    <span class="SCmt">// No curly braces, so use ':'</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute because the condition is false</span>
+
+    <span class="SLgc">if</span> (a == <span class="SNum">1</span>):                  <span class="SCmt">// Parentheses can still be used if desired</span>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
-    <span class="SLgc">if</span> (a == <span class="SNum">1</span>):
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-
-    <span class="SLgc">if</span> a == <span class="SNum">0</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span>                     <span class="SCmt">// Curly braces can be used, no colon needed</span>
     {
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute because the condition is true</span>
     }
 
-    <span class="SCmt">// 'else' is of course also a thing.</span>
-    <span class="SCmt">// ':' is mandatory if the statement is not in a curly block.</span>
+    <span class="SCmt">// 'else' can be used as in most languages.</span>
+    <span class="SCmt">// If there are no curly braces, the colon ':' is mandatory.</span>
     <span class="SLgc">if</span> a == <span class="SNum">0</span>:
-        a += <span class="SNum">1</span>
+        a += <span class="SNum">1</span>                    <span class="SCmt">// This will execute, making 'a' equal to 1</span>
     <span class="SLgc">else</span>:
         a += <span class="SNum">2</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
 
-    <span class="SCmt">// 'elif' is equivalent to 'else: if'</span>
+    <span class="SCmt">// 'elif' is used for else-if chains, similar to 'else if'.</span>
     <span class="SLgc">if</span> a == <span class="SNum">1</span>:
-        a += <span class="SNum">1</span>
+        a += <span class="SNum">1</span>                    <span class="SCmt">// This will execute, making 'a' equal to 2</span>
     <span class="SLgc">else</span>:
         <span class="SLgc">if</span> a == <span class="SNum">2</span>:
             <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
@@ -2833,61 +2869,64 @@ in
         <span class="SLgc">elif</span> a == <span class="SNum">4</span>:
             <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
-    <span class="SCmt">// Boolean expression with 'and' and 'or'</span>
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span>:
+    <span class="SCmt">// Logical expressions with 'and' and 'or' work as expected</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span>:         <span class="SCmt">// This condition is false</span>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>:
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>:          <span class="SCmt">// This condition is true (a is 1)</span>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
 <h3 id="_050_if_swg_Variable_declaration">Variable declaration </h3>
-<p>In an <span class="code-inline">if</span> expression, you can at the same time declare and test one variable. <span class="code-inline">var</span>, <span class="code-inline">let</span> or <span class="code-inline">const</span> is mandatory in that case. </p>
-<p>The <span class="code-inline">if</span> will implicitly convert the variable to <span class="code-inline">true</span> or <span class="code-inline">false</span>, and make the test on that. So the <span class="code-inline">if</span> will pass only if the declared variable is not <span class="code-inline">0</span>. </p>
+<p>In an <span class="code-inline">if</span> expression, you can simultaneously declare and test a variable. The use of <span class="code-inline">var</span>, <span class="code-inline">let</span>, or <span class="code-inline">const</span> is mandatory in this context. </p>
+<p>The <span class="code-inline">if</span> statement will implicitly convert the declared variable to a boolean, evaluating it as <span class="code-inline">true</span> if it is non-zero. This means the <span class="code-inline">if</span> block will execute only if the declared variable is not zero. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// This will declare a variable 'a', and test it against 0.</span>
-    <span class="SCmt">// 'a' is then only visible in the 'if' block, and not outside.</span>
+    <span class="SCmt">// Declare and test 'a' in the same expression.</span>
+    <span class="SCmt">// Since 'a' is 0, the if block will not execute.</span>
+    <span class="SCmt">// 'a' is only visible within this 'if' block.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">0</span>
     {
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 
-    <span class="SCmt">// So you can redeclare 'a' (this time as a constant).</span>
+    <span class="SCmt">// You can redeclare 'a' as a constant in another block.</span>
+    <span class="SCmt">// Since 'a' is 1, the if block will execute.</span>
     <span class="SLgc">if</span> <span class="SKwd">const</span> a = <span class="SNum">1</span>:
         <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
     <span class="SLgc">else</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
+    <span class="SCmt">// Another example with 'let'</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">1</span>:
         <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
     <span class="SLgc">else</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 }</span></div>
-<p>You can also specify an additional test with a <span class="code-inline">where</span> clause, after the declaration. </p>
+<p>You can also add an additional condition to the <span class="code-inline">if</span> statement with a <span class="code-inline">where</span> clause. This clause is evaluated only if the initial test passes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>
     <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="STpe">string</span>   =&gt; <span class="SKwd">null</span>
 
-    <span class="SCmt">// The 'where' clause will be executed only if the first boolean test has passed.</span>
-    <span class="SCmt">// In that case, the test will be done only if 'str' is not 0.</span>
+    <span class="SCmt">// The 'where' clause is checked only if 'str' is not 0.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
     <span class="SLgc">else</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
-    <span class="SCmt">// Here, the 'where' clause is not executed because the first boolean test fails.</span>
+    <span class="SCmt">// In this case, the initial test fails because 'str' is null,</span>
+    <span class="SCmt">// so the 'where' clause is not evaluated.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retNothing</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     <span class="SLgc">else</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
 
-<h2 id="_051_loop_swg">Loop</h2><p><span class="code-inline">loop</span> are used to iterate a given amount of time. </p>
-<p>The loop expression value is evaluated <b>once</b>, and must be a <b>positive value</b>. </p>
+<h2 id="_051_loop_swg">Loop</h2><p><span class="code-inline">loop</span> is used to iterate a given number of times. It's a versatile construct in Swag, allowing for various iteration patterns. </p>
+<p>The loop expression is evaluated <b>once</b> and must be a <b>positive value</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>: <span class="SCmt">// Loops 10 times</span>
+    <span class="SLgc">loop</span> <span class="SNum">10</span>:                        <span class="SCmt">// Loops 10 times</span>
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></div>
@@ -2902,34 +2941,34 @@ in
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
 }</span></div>
-<p>But you can name that index if you want. </p>
+<p>You can name the loop index if you want. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt  = <span class="SNum">0</span>
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>
 
-    <span class="SLgc">loop</span> i in <span class="SNum">5</span> <span class="SCmt">// index is named 'i'</span>
+    <span class="SLgc">loop</span> i in <span class="SNum">5</span>                     <span class="SCmt">// index is named 'i'</span>
     {
         cpt += i
-        cpt1 += <span class="SItr">#index</span> <span class="SCmt">// #index is always available, even when named</span>
+        cpt1 += <span class="SItr">#index</span>              <span class="SCmt">// #index is still available, even when named</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
     <span class="SItr">@assert</span>(cpt1 == cpt)
 }</span></div>
-<p><span class="code-inline">loop</span> can be used on every types that accept the <span class="code-inline">@countof</span> intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct. </p>
+<p><span class="code-inline">loop</span> can be used on any type that supports the <span class="code-inline">@countof</span> intrinsic, such as slices, arrays, and strings. We'll explore using it with structs later. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> arr: <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
+    <span class="SLgc">loop</span> arr:                       <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
         cpt += arr[<span class="SItr">#index</span>]
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
 }</span></div>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the Std.Core module. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> On a string, it will loop over each byte, <b>not</b> runes (if a rune is encoded in more than one byte). To iterate over runes, use the Std.Core module. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2940,12 +2979,12 @@ in
     <span class="SCmt">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
-<p>You can loop in reverse order by adding the modifier <span class="code-inline">back</span> just after the <span class="code-inline">loop</span>. </p>
+<p>You can loop in reverse order by adding the <span class="code-inline">back</span> modifier after the <span class="code-inline">loop</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// Index will be 2, 1 and then 0.</span>
+    <span class="SCmt">// Index will be 2, 1, then 0.</span>
     <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span>:
@@ -2960,7 +2999,7 @@ in
 }</span></div>
 <h3 id="_051_loop_swg_break,_continue">break, continue </h3>
 <p><span class="code-inline">break</span> and <span class="code-inline">continue</span> can be used inside a loop. </p>
-<p>You can exit a loop with <span class="code-inline">break</span>. </p>
+<p>Exit a loop early with <span class="code-inline">break</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -2973,27 +3012,27 @@ in
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)
 }</span></div>
-<p>You can force to return to the loop evaluation with <span class="code-inline">continue</span>. </p>
+<p>Use <span class="code-inline">continue</span> to skip the remainder of the loop body and return to the loop evaluation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">loop</span> x in <span class="SNum">10</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
-            <span class="SLgc">continue</span> <span class="SCmt">// Do not count 5</span>
+            <span class="SLgc">continue</span>              <span class="SCmt">// Skip iteration when x is 5</span>
         cpt += <span class="SNum">1</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)
 }</span></div>
 <h3 id="_051_loop_swg_Ranges">Ranges </h3>
-<p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
-<p>You can add <span class="code-inline">to</span> to loop from a given value <i>to</i> a given value. Note that the range should always have a first value lower or equal to the upper bound. </p>
+<p><span class="code-inline">loop</span> can also iterate over a <b>range</b> of signed values. </p>
+<p>Use <span class="code-inline">to</span> to loop from a given value <i>to</i> another value. The first value must be lower than or equal to the upper bound. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
     <span class="SKwd">var</span> sum   = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i in -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span> <span class="SCmt">// loop from -1 to 1, all included</span>
+    <span class="SLgc">loop</span> i in -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>              <span class="SCmt">// loop from -1 to 1, inclusive</span>
     {
         count += <span class="SNum">1</span>
         sum += i
@@ -3002,10 +3041,10 @@ in
     <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>)
     <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)
 }</span></div>
-<p>You can exclude the last value with by using <span class="code-inline">until</span> instead of <span class="code-inline">to</span>. </p>
+<p>Exclude the last value with <span class="code-inline">until</span> instead of <span class="code-inline">to</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Will loop from 1 to 2 and **not** 1 to 3</span>
+    <span class="SCmt">// Loop from 1 to 2, excluding 3</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">loop</span> i in <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>
     {
@@ -3014,7 +3053,7 @@ in
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span> + <span class="SNum">2</span>)
 }</span></div>
-<p>With a range, you can also loop in reverse order if you add the <span class="code-inline">back</span> modifier. </p>
+<p>With a range, you can also loop in reverse order by adding the <span class="code-inline">back</span> modifier. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Loop from 5 to 0</span>
@@ -3027,41 +3066,112 @@ in
     {
     }
 
-    <span class="SCmt">// Loop from 1 to -2 because we exclude the upper limit.</span>
+    <span class="SCmt">// Loop from 1 to -2, excluding the upper limit.</span>
     <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>
     {
     }
 }</span></div>
 <h3 id="_051_loop_swg_Infinite_loop">Infinite loop </h3>
-<p>A loop without an expression but with a block is infinite. This is equivalent to <span class="code-inline">while true {}</span>. </p>
+<p>A loop without an expression but with a block is infinite, equivalent to <span class="code-inline">while true {}</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">loop</span>
     {
-        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>: <span class="SCmt">// #index is still valid in that case (but cannot be renamed)</span>
+        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:            <span class="SCmt">// #index is still valid, but cannot be renamed</span>
             <span class="SLgc">break</span>
     }
 }</span></div>
 <h3 id="_051_loop_swg_where">where </h3>
-<p>You can add a <span class="code-inline">where</span> instruction after the <span class="code-inline">loop</span>, to apply a filter on the indexes you want to visit. </p>
+<p>The <span class="code-inline">where</span> clause allows you to filter loop iterations based on a condition. When using <span class="code-inline">where</span>, the loop will only execute for indexes or values that satisfy the condition specified in the <span class="code-inline">where</span> clause. This provides a convenient way to add additional logic to your loops, ensuring that only certain iterations are executed. </p>
+<p>The <span class="code-inline">where</span> clause can be added directly after the <span class="code-inline">loop</span> statement. This clause applies a condition to the loop's index or value, and only those that meet the condition will be processed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
-    <span class="SCmt">// Will only visit 'even' indexes.</span>
+    <span class="SCmt">// The loop will only visit 'even' indexes from 0 to 9.</span>
     <span class="SLgc">loop</span> i in <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         result += i
     }
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>)  <span class="SCmt">// Result is the sum of even numbers within the range</span>
 }</span></div>
-
-<h2 id="_052_visit_swg">Visit</h2><p><span class="code-inline">visit</span> is used to visit all the elements of a collection. </p>
+<p>When looping over arrays, the <span class="code-inline">where</span> clause can filter elements based on their value or index. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here we visit every bytes of the string.</span>
-    <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'</span>
+    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">21</span>, <span class="SNum">30</span>, <span class="SNum">41</span>, <span class="SNum">50</span>]
+    <span class="SKwd">var</span> sumOfEvens = <span class="SNum">0</span>
+
+    <span class="SCmt">// This loop sums up only the even numbers in the array.</span>
+    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    {
+        sumOfEvens += arr[i]
+    }
+
+    <span class="SItr">@assert</span>(sumOfEvens == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">50</span>)  <span class="SCmt">// Only the even numbers (10, 30, 50) are summed</span>
+}</span></div>
+<p>You can use the <span class="code-inline">where</span> clause to create complex filtering conditions. For example, you can combine multiple logical expressions to refine which elements the loop should process. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">15</span>, <span class="SNum">20</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">35</span>]
+    <span class="SKwd">var</span> filteredSum = <span class="SNum">0</span>
+
+    <span class="SCmt">// Sum only even numbers greater than 15.</span>
+    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
+    {
+        filteredSum += arr[i]
+    }
+
+    <span class="SItr">@assert</span>(filteredSum == <span class="SNum">20</span> + <span class="SNum">30</span>)  <span class="SCmt">// Only 20 and 30 meet the condition</span>
+}</span></div>
+<p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, allowing for precise control over which range values are included in the loop. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> sumOfPositiveEvens = <span class="SNum">0</span>
+
+    <span class="SCmt">// Loop over the range from -5 to 5, but only include positive even numbers.</span>
+    <span class="SLgc">loop</span> i in -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    {
+        sumOfPositiveEvens += i
+    }
+
+    <span class="SItr">@assert</span>(sumOfPositiveEvens == <span class="SNum">2</span> + <span class="SNum">4</span>)  <span class="SCmt">// Only positive even numbers (2, 4) are summed</span>
+}</span></div>
+<p>You can combine the <span class="code-inline">back</span> modifier with the <span class="code-inline">where</span> clause to filter values while iterating in reverse. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]
+    <span class="SKwd">var</span> reversedSum = <span class="SNum">0</span>
+
+    <span class="SCmt">// Loop through the array in reverse, summing only the even values.</span>
+    <span class="SLgc">loop</span> <span class="SKwd">#back</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    {
+        reversedSum += arr[i]
+    }
+
+    <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>)  <span class="SCmt">// Sums all even values in reverse order</span>
+}</span></div>
+<p>The <span class="code-inline">where</span> clause supports complex logical expressions, enabling intricate filtering criteria directly within the loop. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">45</span>, <span class="SNum">50</span>, <span class="SNum">65</span>]
+    <span class="SKwd">var</span> complexSum = <span class="SNum">0</span>
+
+    <span class="SCmt">// Sum elements that are either even or greater than 40.</span>
+    <span class="SLgc">loop</span> i in arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
+    {
+        complexSum += arr[i]
+    }
+
+    <span class="SItr">@assert</span>(complexSum == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">45</span> + <span class="SNum">50</span> + <span class="SNum">65</span>)  <span class="SCmt">// Values matching the complex condition are summed</span>
+}</span></div>
+<p>The <span class="code-inline">where</span> clause is a powerful feature in Swag that enhances the flexibility of loops by allowing you to add conditional logic directly within the loop construct. This allows for cleaner, more readable code by avoiding the need for additional <span class="code-inline">if</span> statements inside the loop body. </p>
+
+<h2 id="_052_visit_swg">Visit</h2><p><span class="code-inline">visit</span> is used to iterate over all elements of a collection. It provides a simple and efficient way to process each item in the collection, whether it's an array, slice, or string. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Here we visit every byte of the string.</span>
+    <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'.</span>
     <span class="SLgc">visit</span> value in <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
@@ -3077,7 +3187,7 @@ in
         }
     }
 }</span></div>
-<p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. </p>
+<p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. This allows for more readable code, especially when working with nested loops or complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">visit</span> value, index in <span class="SStr">"ABC"</span>
@@ -3094,12 +3204,12 @@ in
         }
     }
 }</span></div>
-<p>Both names are optional. In that case, you can use <span class="code-inline">#alias0</span> and <span class="code-inline">#alias1</span>. <span class="code-inline">#alias0</span> for the value, and <span class="code-inline">#alias1</span> for the index. </p>
+<p>Both names are optional. If you don't specify names for the value and index, you can use the default aliases <span class="code-inline">#alias0</span> for the value and <span class="code-inline">#alias1</span> for the index. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">visit</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SKwd">let</span> a = <span class="SItr">#alias1</span> <span class="SCmt">// This is the index</span>
+        <span class="SKwd">let</span> a = <span class="SItr">#alias1</span> <span class="SCmt">// This is the index.</span>
         <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)
         <span class="SLgc">switch</span> a
         {
@@ -3112,11 +3222,10 @@ in
         }
     }
 }</span></div>
-<p>You can visit in reverse order by adding the <span class="code-inline">back</span> modifier. </p>
+<p>You can visit elements in reverse order by adding the <span class="code-inline">back</span> modifier. This is useful when you need to process a collection from end to start. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here we visit every bytes of the string.</span>
-    <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'</span>
+    <span class="SCmt">// Here we visit every byte of the string in reverse order.</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">visit</span> <span class="SKwd">#back</span> value in <span class="SStr">"ABC"</span>
     {
@@ -3137,7 +3246,7 @@ in
         cpt += <span class="SNum">1</span>
     }
 }</span></div>
-<p>You can visit arrays or slices. </p>
+<p>You can visit arrays or slices, which allows you to easily process each element. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]
@@ -3148,7 +3257,7 @@ in
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)
 }</span></div>
-<p>Works also for multi dimensional arrays. </p>
+<p><span class="code-inline">visit</span> also works for multi-dimensional arrays, making it easy to process complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]
@@ -3159,7 +3268,7 @@ in
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
 }</span></div>
-<p>You can visit with a pointer to the value, and not the value itself, by adding <span class="code-inline">&</span> before the value name. </p>
+<p>You can visit elements using a pointer to the value by adding <span class="code-inline">&</span> before the value name. This allows you to modify the elements in place. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]
@@ -3179,26 +3288,26 @@ in
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)
 }</span></div>
 <h3 id="_052_visit_swg_where">where </h3>
-<p>You can add a <span class="code-inline">where</span> instruction after the <span class="code-inline">visit</span>, to apply a filter on the elements you want to visit. </p>
+<p>You can add a <span class="code-inline">where</span> clause after the <span class="code-inline">visit</span> to filter the elements you want to process. This is useful for applying conditions directly within the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
-    <span class="SCmt">// Just get even values</span>
+    <span class="SCmt">// Just process even values.</span>
     <span class="SLgc">visit</span> value in array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
         result += value
 
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
 
-    <span class="SCmt">// This is equivalent of:</span>
+    <span class="SCmt">// Equivalent using an if statement inside the visit loop:</span>
     result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> value in array: 
+    <span class="SLgc">visit</span> value in array:
         <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
             result += value  
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>) 
 
-    <span class="SCmt">// This is equivalent of:  </span>
+    <span class="SCmt">// Equivalent using continue to skip odd values:</span>
     result = <span class="SNum">0</span>
     <span class="SLgc">visit</span> value in array
     {

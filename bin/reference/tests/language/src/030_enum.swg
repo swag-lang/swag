@@ -1,7 +1,5 @@
-#global skipfmt
-
 /**
-Enums values, unlike C/C++, can end with `;` or `,` or an `eol`.
+Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with `;`, `,`, or an end of line (eol).
 */
 #test
 {
@@ -30,7 +28,7 @@ Enums values, unlike C/C++, can end with `;` or `,` or an `eol`.
 }
 
 /**
-By default, an enum is of type `s32`.
+By default, an enum in Swag is of type `s32`, meaning the underlying storage for each value is a 32-bit signed integer.
 */
 #test
 {
@@ -38,13 +36,13 @@ By default, an enum is of type `s32`.
     let type = @typeof(Values)
 
     // 'type' here is a 'typeinfo' dedicated to the enum type.
-    // In that case, 'type.rawType' is the enum underlying type.
+    // In that case, 'type.rawType' represents the enum's underlying type.
     @assert(type.rawType == s32)
     #assert @typeof(Values) == Values
 }
 
 /**
-`@kindof` will return the underlying type of the enum.
+`@kindof` can be used to return the underlying type of the enum at runtime.
 */
 #test
 {
@@ -55,11 +53,11 @@ By default, an enum is of type `s32`.
 }
 
 /**
-You can specify your own type after the enum name.
+You can specify a custom underlying type for an enum by appending it after the enum name.
 */
 #test
 {
-    enum Values1: s64 // Forced to be 's64' instead of 's32'
+    enum Values1: s64 // Force the underlying type to be 's64' instead of 's32'
     {
         A
         B
@@ -71,7 +69,7 @@ You can specify your own type after the enum name.
 }
 
 /**
-Enum values, if not specified, start at 0 and are increased by 1 at each new value.
+Enum values, if not explicitly specified, start at 0 and increase by 1 for each subsequent value.
 */
 #test
 {
@@ -88,7 +86,7 @@ Enum values, if not specified, start at 0 and are increased by 1 at each new val
 }
 
 /**
-You can specify your own values.
+You can specify custom values for each enum element.
 */
 #test
 {
@@ -105,15 +103,15 @@ You can specify your own values.
 }
 
 /**
-If you omit one value, it will be assigned to the previous value + 1.
+If you omit a value after assigning a specific one, it will be assigned the previous value plus 1.
 */
 #test
 {
     enum Value: u32
     {
         A = 10
-        B // 11
-        C // 12
+        B // Will be 11
+        C // Will be 12
     }
 
     #assert Value.A == 10
@@ -122,7 +120,7 @@ If you omit one value, it will be assigned to the previous value + 1.
 }
 
 /**
-For non integer types, you **must** specify the values as they cannot be deduced.
+For non-integer types, you **must** specify the values explicitly, as they cannot be deduced automatically.
 */
 #test
 {
@@ -141,16 +139,16 @@ For non integer types, you **must** specify the values as they cannot be deduced
     {
         A = 1.0
         B = 3.14
-        C = 6
+        C = 6.0
     }
 
     #assert Value2.A == 1.0
     #assert Value2.B == 3.14
-    #assert Value2.C == 6
+    #assert Value2.C == 6.0
 }
 
 /**
-`@countof` returns the number of values of an enum.
+`@countof` can be used to return the number of values defined in an enum.
 */
 #test
 {
@@ -166,7 +164,7 @@ For non integer types, you **must** specify the values as they cannot be deduced
 }
 
 /**
-You can use the keyword `using` for an enum.
+You can use the `using` keyword to make enum values accessible without needing to specify the enum name.
 */
 #test
 {
@@ -179,30 +177,27 @@ You can use the keyword `using` for an enum.
 
     using Value
 
-    // No need to say 'Value.A' thanks to the 'using' above
+    // No need to prefix with 'Value.'
     @assert(A == 0)
     @assert(B == 1)
     @assert(C == 2)
 
-    // But the normal form is still possible
+    // The normal form is still possible
     @assert(Value.A == 0)
     @assert(Value.B == 1)
     @assert(Value.C == 2)
 }
 
-
 /**
 # Enum as flags
-An enum can be a set of flags if you declare it with the `#[Swag.EnumFlags]` attribute. Its type should be `u8`, `u16`, `u32` or `u64`.
-
-That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.
+Enums can be used as flags if declared with the `#[Swag.EnumFlags]` attribute. For this, the enum's underlying type should be `u8`, `u16`, `u32`, or `u64`. By default, enums declared as flags start at 1 (not 0), and each value is typically a power of 2.
 */
 #test
 {
     #[Swag.EnumFlags]
     enum MyFlags: u8
     {
-        A   // First value is 1 and *not* 0
+        A   // First value is 1
         B   // Value is 2
         C   // Value is 4
         D   // Value is 8
@@ -221,7 +216,7 @@ That kind of enum starts by default at 1, and not 0, and each value should be a 
 
 /**
 # Enum of arrays
-You can have an enum of const static arrays.
+You can define an enum where each value is associated with a const static array.
 */
 #test
 {
@@ -239,7 +234,7 @@ You can have an enum of const static arrays.
 
 /**
 # Enum of slices
-You can have an enum of const slices.
+Similarly, you can define an enum where each value is associated with a const slice.
 */
 #test
 {
@@ -262,10 +257,7 @@ You can have an enum of const slices.
 
 /**
 # Nested enums
-*/
-
-/**
-An enum can be nested inside another enum with 'using'. Both enums must of course have the same underlying type.
+Enums can be nested within other enums using the `using` keyword. Both enums must share the same underlying type.
 */
 enum BasicErrors
 {
@@ -281,13 +273,12 @@ enum MyErrors
 }
 
 /**
-To access a value inside the nested enum, use the enum name (a scope has been created).
+To access a value inside a nested enum, use the enum name (a scope is created).
 */
 const MyError0 = MyErrors.BasicErrors.FailedToSave
 
 /**
-An **automatic cast** will be done if you try to convert a nested enum to an owner enum.
-For example, a value of type 'BasicErrors' can be converted to a parameter of type 'MyErrors' because 'MyErrors' contains 'BasicErrors'.
+An **automatic cast** occurs when converting a nested enum to its parent enum. For example, a value of type `BasicErrors` can be passed to a parameter of type `MyErrors` because `MyErrors` includes `BasicErrors`.
 */
 #test
 {
@@ -306,9 +297,8 @@ For example, a value of type 'BasicErrors' can be converted to a parameter of ty
 
 /**
 # Specific attributes
-You can use `#[Swag.EnumIndex]` if an enum value can be used as a dereference index. This will avoid the necessity of an explicit cast. The underlying enum type must be integer.
+You can use `#[Swag.EnumIndex]` to enable an enum value to be used directly as an index without needing to cast it. The underlying enum type must be an integer type.
 */
-
 #test
 {
     #[Swag.EnumIndex]
@@ -319,9 +309,8 @@ You can use `#[Swag.EnumIndex]` if an enum value can be used as a dereference in
 }
 
 /**
-You can use `#[Swag.NoDuplicate]` to avoid duplicated values inside an enum. If the compiler finds a value defined more than once, it will raise an error.
+You can use `#[Swag.NoDuplicate]` to prevent duplicated values inside an enum. If the compiler detects a value defined more than once, it will raise an error.
 */
-
 #test
 {
     #[Swag.NoDuplicate]
@@ -334,40 +323,41 @@ You can use `#[Swag.NoDuplicate]` to avoid duplicated values inside an enum. If 
 
 /**
 # Enum type inference
+Enums in Swag allow type inference, so you can often omit the enum type when assigning a value.
 */
 
 /**
-The type of the enum is not necessary in the assignement expression when declaring a variable.
+The enum type is not necessary in the assignment expression when declaring a variable, as it can be deduced.
 */
 #test
 {
     enum Values { A; B; }
 
-    // The normal form
+    // The explicit form
     let x: Values = Values.A
 
-    // But in fact 'Values' is not necessary because it can be deduced
+    // The inferred form
     let y: Values = A
 
     @assert(x == y)
 }
 
 /**
-The enum type is not necessary in a `case` expression of a `switch` block (it is deduced from the switch expression).
+The enum type is not necessary in a `case` expression of a `switch` block, as it is inferred from the switch expression.
 */
 #test
 {
     enum Values { A; B; }
     let x = Values.A
 
-    // The 'normal' form
+    // The explicit form
     switch x
     {
     case Values.A: break
     case Values.B: break
     }
 
-    // The 'simplified' form
+    // The simplified form
     switch x
     {
     case A: break
@@ -376,22 +366,22 @@ The enum type is not necessary in a `case` expression of a `switch` block (it is
 }
 
 /**
-In an expression, and if the enum name can be deduced, you can omit it and use the `.Value` syntax.
+In expressions where the enum type can be deduced, you can omit the enum name and use the `.Value` syntax.
 */
 #test
 {
     enum Values { A, B }
 
-    // The normal form
+    // The explicit form
     let x = Values.A
 
-    // The simplified form, because 'Values' can be deduced from type of x
+    // The simplified form, since 'Values' can be inferred from 'x'
     @assert(x == .A)
     @assert(x != .B)
 }
 
 /**
-Works also for flags.
+This also works for enums used as flags.
 */
 #test
 {
@@ -403,7 +393,7 @@ Works also for flags.
 }
 
 /**
-Works also (most of the time), for functions.
+In most cases, the simplified `.Value` syntax also works when passing enum values to functions.
 */
 #test
 {
@@ -412,27 +402,67 @@ Works also (most of the time), for functions.
     toto(.A, .B)
 }
 
+/**
+# Visiting Enum Values
+Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum.
+
+The two primary mechanisms for iterating over enum values are the `loop` construct and the `visit` statement.
+*/
 
 /**
-By type reflection, you can loop/visit all values of an enum.
+## Loop 
 */
 #test
 {
-    enum RGB { R, G, B }
+    enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
 
+    // Counting Enum Values
     var cpt = 0
-    loop idx in RGB:
-        cpt += 1
-    @assert(cpt == 3)
+    loop idx in RGB:                      // Iterate over all enum values using 'loop'
+        cpt += 1                          // Increment counter for each value
+    @assert(cpt == 3)                     // Assert that the enum has exactly 3 values
 
-    visit val in RGB
+    // Note that '@countof(RGB)' will give you the exact same result
+    @assert(cpt == @countof(RGB))
+}
+
+/**
+The `loop idx in RGB:` statement is a powerful construct that allows you to iterate over all values in the `RGB` enum. During each iteration, `idx` holds the current enum value, which can be used within the loop body. In the example above, the loop simply counts the number of values in the enum, asserting that the total is 3.
+
+This method is useful when you need to apply the same operation to each enum value, such as populating a list, checking conditions, or performing calculations.
+*/
+
+/**
+## Visit 
+*/
+
+#test
+{
+    enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
+
+    // Performing Actions Based on Enum Values
+    visit val in RGB                      // Use 'visit' to iterate over each value in the enum
     {
-        switch val
+        switch val                        // A switch statement to perform actions based on the enum value
         {
-        case R:     break
-        case G:     break
-        case B:     break
-        default:    @assert(false)
+        case R:                           // Case for the value 'R'
+            // Perform action for 'R'
+            break
+        case G:                           // Case for the value 'G'
+            // Perform action for 'G'
+            break
+        case B:                           // Case for the value 'B'
+            // Perform action for 'B'
+            break
+        default:                          
+            // This should never be reached as we are covering all enum cases
+            @assert(false)
         }
     }
 }
+
+/**
+The `visit val in RGB` statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the `val` variable, which can then be used in a `switch` statement (or other logic) to perform specific actions based on the value.
+
+In the provided example, the `switch` statement checks the value of `val` and executes different blocks of code depending on whether `val` is `R`, `G`, or `B`. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same.
+*/

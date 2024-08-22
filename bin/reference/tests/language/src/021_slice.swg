@@ -1,53 +1,54 @@
 /**
-A slice is a pointer on a buffer of datas, and a `u64` to count the number of elements. Unlike a static array, its value can be changed at runtime.
+A slice in Swag is a flexible view over a contiguous block of memory. Unlike static arrays, slices can be resized or point to different segments of memory at runtime. A slice consists of a pointer to the data buffer and a `u64` value that stores the number of elements in the slice.
+
+This makes slices a powerful tool for working with subsets of data without copying it, allowing efficient manipulation of large datasets.
 */
 
-/**
-It is declared with `[..]`.
-*/
 #test
 {
-    var a: [..] bool // Slice of bool
-    #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
+    var a: [..] bool // Declare a slice of boolean values
+    #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)  // Verify that the size of the slice includes the pointer and the element count
 }
 
 /**
-You can initialize a slice like an array.
+Slices can be initialized similarly to arrays. You can assign an array literal to a slice, and the slice will point to the elements in the array.
 */
+
 #test
 {
-    var a: const [..] u32 = [10, 20, 30, 40, 50]
-    @assert(@countof(a) == 5)
+    var a: const [..] u32 = [10, 20, 30, 40, 50]  // Initialize a slice with an array literal
+    @assert(@countof(a) == 5)  // The slice contains 5 elements
     @assert(a[0] == 10)
     @assert(a[4] == 50)
 
-    // But as this is a slice and not a static array, you can change the value at runtime.
-    // So now 'a' is a slice of two s32 values.
-    a = [1, 2]
+    // Slices are dynamic, so you can change the elements at runtime.
+    a = [1, 2]  // Reassign the slice to a different array
     @assert(@countof(a) == 2)
     @assert(a[0] == 1)
     @assert(a[1] == 2)
 }
 
 /**
-At runtime, `@dataof` will return the address of the values, `@countof` the number of elements.
+At runtime, you can use `@dataof` to retrieve the address of the data buffer and `@countof` to get the number of elements in the slice.
 */
+
 #test
 {
-    var a:    const [..] u32 = [10, 20, 30, 40, 50]
-    let count = @countof(a)
-    let addr  = @dataof(a)
+    var a: const [..] u32 = [10, 20, 30, 40, 50]  // Initialize a slice with an array literal
+    let count = @countof(a)  // Get the number of elements in the slice
+    let addr  = @dataof(a)   // Get the address of the slice's data buffer
     @assert(count == 5)
     @assert(addr[0] == 10)
     @assert(addr[4] == 50)
 
-    a = [1, 2]
+    a = [1, 2]  // Reassign the slice to a different array
     @assert(@countof(a) == 2)
 }
 
 /**
-You can create a slice with your own `pointer` and `count` using `@mkslice`.
+You can create a slice with your own pointer and count using `@mkslice`.
 */
+
 #test
 {
     var array: [4] u32 = [10, 20, 30, 40]
@@ -67,6 +68,7 @@ You can create a slice with your own `pointer` and `count` using `@mkslice`.
 /**
 For a string, the slice must be `const` because a string is immutable.
 */
+
 #test
 {
     let str       = "string"
@@ -76,12 +78,9 @@ For a string, the slice must be `const` because a string is immutable.
 }
 
 /**
-# The slicing operator
+Instead of `@mkslice`, you can slice something with the `..` operator. For example, you can slice a string.
 */
 
-/**
-Instead of `@mkslice`, you can slice something with the `..` operator. For example you can slice a string.
-*/
 #test
 {
     let str = "string"
@@ -93,8 +92,9 @@ Instead of `@mkslice`, you can slice something with the `..` operator. For examp
 }
 
 /**
-The upper limit is **included** by default. If you want to exclude it, use `..<` insteand of `..`.
+The upper limit is **included** by default. If you want to exclude it, use `..<` instead of `..`.
 */
+
 #test
 {
     let str   = "string"
@@ -105,6 +105,7 @@ The upper limit is **included** by default. If you want to exclude it, use `..<`
 /**
 You can omit the upper bound if you want to slice to the end.
 */
+
 #test
 {
     let str   = "string"
@@ -115,6 +116,7 @@ You can omit the upper bound if you want to slice to the end.
 /**
 You can omit the lower bound if you want to slice from the start (0).
 */
+
 #test
 {
     let str   = "string"
@@ -127,6 +129,7 @@ You can omit the lower bound if you want to slice from the start (0).
 /**
 You can also slice an array.
 */
+
 #test
 {
     let arr   = [10, 20, 30, 40]
@@ -143,6 +146,7 @@ You can also slice an array.
 /**
 You can slice another slice.
 */
+
 #test
 {
     let arr    = [10, 20, 30, 40]
@@ -159,6 +163,7 @@ You can slice another slice.
 /**
 You can transform a pointer to a slice.
 */
+
 #test
 {
     var arr   = [10, 20, 30, 40]
