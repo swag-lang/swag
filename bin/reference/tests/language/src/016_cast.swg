@@ -58,7 +58,19 @@ This example demonstrates the reverse operation, where we take an integer repres
 
 /**
 # Implicit Casts
-Swag can sometimes automatically cast (implicit cast) from one type to another without requiring an explicit cast. However, this only happens when there is no loss of precision.
+Swag can automatically perform type conversions, known as *implicit casts*, when assigning a value of one type to a variable of another type. This happens without requiring an explicit `cast` statement. 
+
+However, implicit casts are only allowed when there is no loss of precision or range. This ensures that the value remains unchanged and no data is lost during the conversion.
+
+## Implicit Cast Rules
+1. **Widening Conversions**: Implicit casts are allowed when converting a smaller type to a larger type, such as from `s8` to `s16`, or from `f32` to `f64`. These conversions are safe because the larger type can represent all possible values of the smaller type.  
+
+2. **Sign Preservation**: When implicitly casting between signed and unsigned types, Swag ensures that no data loss occurs by checking that the value can be represented in both types. Implicit casts from unsigned to signed types (and vice versa) are only allowed when the value is positive and within the range of the target type.
+
+3. **No Implicit Narrowing**: Swag does not allow implicit casts that could potentially lose data or precision, such as from `s32` to `s8`. These narrowing conversions require an explicit cast to signal that the developer acknowledges the potential data loss.
+
+## Examples of Implicit Casts
+Let's explore some examples to illustrate these rules.
 */
 #test
 {
@@ -68,13 +80,54 @@ Swag can sometimes automatically cast (implicit cast) from one type to another w
     // Implicit cast from 16-bit signed integer (s16) to 32-bit signed integer (s32)
     let y: s32 = 1's16  // Safe conversion, no loss of precision
 
-    // However, the reverse would generate an error, as casting from a larger type to a smaller one
-    // can lead to loss of precision and requires an explicit cast.
-    // Uncommenting the following lines would cause a compilation error:
+    // Implicit cast from 32-bit signed integer (s32) to 64-bit signed integer (s64)
+    let z: s64 = 1's32  // Safe conversion, no loss of precision
 
-    // let z0: s16 = 1
+    // Implicit cast from 8-bit unsigned integer (u8) to 16-bit unsigned integer (u16)
+    let a: u16 = 255'u8  // Safe conversion, no loss of precision
+
+    // Implicit cast from 16-bit unsigned integer (u16) to 32-bit unsigned integer (u32)
+    let b: u32 = 65535'u16  // Safe conversion, no loss of precision
+
+    // Implicit cast from 32-bit unsigned integer (u32) to 64-bit unsigned integer (u64)
+    let c: u64 = 4294967295'u32  // Safe conversion, no loss of precision
+
+    // Implicit cast from 32-bit floating-point (f32) to 64-bit floating-point (f64)
+    let d: f64 = 1.23'f32  // Safe conversion, f64 can represent all f32 values accurately
+}
+
+/**
+## Examples Where Implicit Casts Are Not Allowed
+There are cases where an implicit cast is not allowed due to the potential for data loss or precision issues. In these situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks. 
+
+Note also that the cast modifier '#over' (stands for overflow) can be necessary to indicate the a value can lost some precision without raising an error.
+*/
+#test
+{
+    // Implicit cast from 16-bit signed integer (s16) to 8-bit signed integer (s8)
+    // This would generate a compilation error because s8 cannot represent all s16 values.
+    // Uncommenting the following lines would cause an error:
+
+    // let z0: s16 = 100
     // let z1: s8 = z0  // Error: Implicit cast from 's16' to 's8' is not allowed
 
-    // Instead, you would need to use an explicit cast like this:
-    // let z1: s8 = cast(s8) z0
+    // To perform this cast, an explicit cast is required:
+    let z0: s16 = 256
+    let z1: s8 = cast(s8) #over z0  // Explicit cast needed to convert from s16 to s8
+    @assert(z1 == 0)  // This may cause loss of data as 256 cannot be represented in s8 (which maxes out at 127)
+
+    // Implicit cast from unsigned to signed type where the value is out of range
+    let u_val: u16 = 65535
+    // let s_val: s16 = u_val  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss
+
+    // To perform this cast, an explicit cast is required, with the risk of data loss:
+    let s_val: s16 = cast(s16) #over u_val  // This could result in an unexpected negative value
+    @assert(s_val == -1)  // 65535 in u16 becomes -1 in s16 due to overflow
+
+    // Implicit cast from f64 to f32, which can lose precision
+    let large_float: f64 = 1.23456789012345611111
+    // let smaller_float: f32 = large_float  // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss
+
+    // Explicit cast is required when converting from f64 to f32
+    let smaller_float: f32 = cast(f32) large_float
 }

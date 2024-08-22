@@ -43,6 +43,8 @@
     .right h1   { margin-top: 50px; margin-bottom: 50px; }
     .right h2   { margin-top: 35px; }
 
+    .right ol li { margin-bottom: 10px; }
+
     .strikethrough-text { text-decoration: line-through; }
     .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
     .swag-watermark a   { text-decoration: none; color: inherit; }

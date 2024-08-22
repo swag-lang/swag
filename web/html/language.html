@@ -43,6 +43,8 @@
     .right h1   { margin-top: 50px; margin-bottom: 50px; }
     .right h2   { margin-top: 35px; }
 
+    .right ol li { margin-bottom: 10px; }
+
     .strikethrough-text { text-decoration: line-through; }
     .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
     .swag-watermark a   { text-decoration: none; color: inherit; }
@@ -169,6 +171,11 @@
 <li><a href="#_016_cast_swg_acast_(Automatic_Cast)">acast (Automatic Cast)</a></li>
 <li><a href="#_016_cast_swg_Bitcast">Bitcast</a></li>
 <li><a href="#_016_cast_swg_Implicit_Casts">Implicit Casts</a></li>
+<ul>
+<li><a href="#_016_cast_swg_Implicit_Casts_Implicit_Cast_Rules">Implicit Cast Rules</a></li>
+<li><a href="#_016_cast_swg_Implicit_Casts_Examples_of_Implicit_Casts">Examples of Implicit Casts</a></li>
+<li><a href="#_016_cast_swg_Implicit_Casts_Examples_Where_Implicit_Casts_Are_Not_Allowed">Examples Where Implicit Casts Are Not Allowed</a></li>
+</ul>
 </ul>
 <li><a href="#_020_array_swg">Array</a></li>
 <li><a href="#_021_slice_swg">Slice</a></li>
@@ -1685,7 +1692,7 @@ in
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
 <h3 id="_016_cast_swg_Bitcast">Bitcast </h3>
-<p>The <span class="code-inline">#bit</span> modifier allows you to reinterpret the bits of a value as a different type without changing the underlying bit pattern. This operation is called a bitcast and is only valid when the source and destination types have the same size. </p>
+<p>The <span class="code-inline">#bit</span> modifier allows you to reinterpret the bits of a value as a different type without changing the underlying bit pattern. This operation is called a <b>bitcast</b> and is only valid when the source and destination types have the same size. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
@@ -1708,7 +1715,16 @@ in
     <span class="SItr">@assert</span>(backToBits == <span class="SNum">0x40490FDB</span>)
 }</span></div>
 <h3 id="_016_cast_swg_Implicit_Casts">Implicit Casts </h3>
-<p>Swag can sometimes automatically cast (implicit cast) from one type to another without requiring an explicit cast. However, this only happens when there is no loss of precision. </p>
+<p>Swag can automatically perform type conversions, known as <i>implicit casts</i>, when assigning a value of one type to a variable of another type. This happens without requiring an explicit <span class="code-inline">cast</span> statement.  </p>
+<p>However, implicit casts are only allowed when there is no loss of precision or range. This ensures that the value remains unchanged and no data is lost during the conversion. </p>
+<h4 id="_016_cast_swg_Implicit_Casts_Implicit_Cast_Rules">Implicit Cast Rules </h4>
+<ol>
+<li><b>Widening Conversions</b>: Implicit casts are allowed when converting a smaller type to a larger type, such as from <span class="code-inline">s8</span> to <span class="code-inline">s16</span>, or from <span class="code-inline">f32</span> to <span class="code-inline">f64</span>. These conversions are safe because the larger type can represent all possible values of the smaller type.</li>
+<li><b>Sign Preservation</b>: When implicitly casting between signed and unsigned types, Swag ensures that no data loss occurs by checking that the value can be represented in both types. Implicit casts from unsigned to signed types (and vice versa) are only allowed when the value is positive and within the range of the target type.</li>
+<li><b>No Implicit Narrowing</b>: Swag does not allow implicit casts that could potentially lose data or precision, such as from <span class="code-inline">s32</span> to <span class="code-inline">s8</span>. These narrowing conversions require an explicit cast to signal that the developer acknowledges the potential data loss.</li>
+</ol>
+<h4 id="_016_cast_swg_Implicit_Casts_Examples_of_Implicit_Casts">Examples of Implicit Casts </h4>
+<p>Let's explore some examples to illustrate these rules. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Implicit cast from 8-bit signed integer (s8) to 16-bit signed integer (s16)</span>
@@ -1717,15 +1733,52 @@ in
     <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 32-bit signed integer (s32)</span>
     <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SNum">1</span>'<span class="STpe">s16</span>  <span class="SCmt">// Safe conversion, no loss of precision</span>
 
-    <span class="SCmt">// However, the reverse would generate an error, as casting from a larger type to a smaller one</span>
-    <span class="SCmt">// can lead to loss of precision and requires an explicit cast.</span>
-    <span class="SCmt">// Uncommenting the following lines would cause a compilation error:</span>
+    <span class="SCmt">// Implicit cast from 32-bit signed integer (s32) to 64-bit signed integer (s64)</span>
+    <span class="SKwd">let</span> z: <span class="STpe">s64</span> = <span class="SNum">1</span>'<span class="STpe">s32</span>  <span class="SCmt">// Safe conversion, no loss of precision</span>
 
-    <span class="SCmt">// let z0: s16 = 1</span>
+    <span class="SCmt">// Implicit cast from 8-bit unsigned integer (u8) to 16-bit unsigned integer (u16)</span>
+    <span class="SKwd">let</span> a: <span class="STpe">u16</span> = <span class="SNum">255</span>'<span class="STpe">u8</span>  <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 16-bit unsigned integer (u16) to 32-bit unsigned integer (u32)</span>
+    <span class="SKwd">let</span> b: <span class="STpe">u32</span> = <span class="SNum">65535</span>'<span class="STpe">u16</span>  <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 32-bit unsigned integer (u32) to 64-bit unsigned integer (u64)</span>
+    <span class="SKwd">let</span> c: <span class="STpe">u64</span> = <span class="SNum">4294967295</span>'<span class="STpe">u32</span>  <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 32-bit floating-point (f32) to 64-bit floating-point (f64)</span>
+    <span class="SKwd">let</span> d: <span class="STpe">f64</span> = <span class="SNum">1.23</span>'<span class="STpe">f32</span>  <span class="SCmt">// Safe conversion, f64 can represent all f32 values accurately</span>
+}</span></div>
+<h4 id="_016_cast_swg_Implicit_Casts_Examples_Where_Implicit_Casts_Are_Not_Allowed">Examples Where Implicit Casts Are Not Allowed </h4>
+<p>There are cases where an implicit cast is not allowed due to the potential for data loss or precision issues. In these situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks.  </p>
+<p>Note also that the cast modifier <span class="code-inline">#over</span> (stands for overflow) can be necessary to indicate the a value can lost some precision without raising an error. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 8-bit signed integer (s8)</span>
+    <span class="SCmt">// This would generate a compilation error because s8 cannot represent all s16 values.</span>
+    <span class="SCmt">// Uncommenting the following lines would cause an error:</span>
+
+    <span class="SCmt">// let z0: s16 = 100</span>
     <span class="SCmt">// let z1: s8 = z0  // Error: Implicit cast from 's16' to 's8' is not allowed</span>
 
-    <span class="SCmt">// Instead, you would need to use an explicit cast like this:</span>
-    <span class="SCmt">// let z1: s8 = cast(s8) z0</span>
+    <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
+    <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
+    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> z0  <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
+    <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)  <span class="SCmt">// This may cause loss of data as 256 cannot be represented in s8 (which maxes out at 127)</span>
+
+    <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
+    <span class="SKwd">let</span> u_val: <span class="STpe">u16</span> = <span class="SNum">65535</span>
+    <span class="SCmt">// let s_val: s16 = u_val  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
+
+    <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
+    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>(<span class="STpe">s16</span>) <span class="SKwd">#over</span> u_val  <span class="SCmt">// This could result in an unexpected negative value</span>
+    <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)  <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
+
+    <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
+    <span class="SKwd">let</span> large_float: <span class="STpe">f64</span> = <span class="SNum">1.23456789012345611111</span>
+    <span class="SCmt">// let smaller_float: f32 = large_float  // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss</span>
+
+    <span class="SCmt">// Explicit cast is required when converting from f64 to f32</span>
+    <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
 }</span></div>
 
 <h2 id="_020_array_swg">Array</h2><p>Remember that dynamic arrays are part of the <span class="code-inline">Std.Core</span> module. Here we are only talking about native static arrays. </p>
