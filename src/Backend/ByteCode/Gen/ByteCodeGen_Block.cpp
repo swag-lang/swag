@@ -944,7 +944,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
         inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
 
-        // Jump to the next case, except for the default, which is the last
+        // Jump to the next case
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
 
@@ -957,7 +957,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     }
     else if (whereClause && !whereClause->computedValue()->reg.b)
     {
-        // Jump to the next case, except for the default, which is the last
+        // Jump to the next case
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
     }
