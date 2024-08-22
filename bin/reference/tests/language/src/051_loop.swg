@@ -1,8 +1,10 @@
 /**
+# Introduction to `loop`
 `loop` is used to iterate a given number of times. It's a versatile construct in Swag, allowing for various iteration patterns.
 */
 
 /**
+# Basic Usage
 The loop expression is evaluated **once** and must be a **positive value**.
 */
 #test
@@ -14,6 +16,7 @@ The loop expression is evaluated **once** and must be a **positive value**.
 }
 
 /**
+# Using `#index`
 The compiler keyword `#index` returns the current index of the loop, starting at 0.
 */
 #test
@@ -28,6 +31,7 @@ The compiler keyword `#index` returns the current index of the loop, starting at
 }
 
 /**
+# Naming the Loop Index
 You can name the loop index if you want.
 */
 #test
@@ -46,7 +50,8 @@ You can name the loop index if you want.
 }
 
 /**
-`loop` can be used on any type that supports the `@countof` intrinsic, such as slices, arrays, and strings. We'll explore using it with structs later.
+# Looping Over Arrays and Slices
+`loop` can be used on any type that supports the `@countof` intrinsic, such as slices, arrays, and strings.
 */
 #test
 {
@@ -74,6 +79,7 @@ You can name the loop index if you want.
 }
 
 /**
+# Reverse Looping
 You can loop in reverse order by adding the `back` modifier after the `loop`.
 */
 #test
@@ -95,11 +101,12 @@ You can loop in reverse order by adding the `back` modifier after the `loop`.
 }
 
 /**
-# break, continue
+# Break and Continue
 `break` and `continue` can be used inside a loop.
 */
 
 /**
+# Exiting Early with `break`
 Exit a loop early with `break`.
 */
 #test
@@ -116,6 +123,7 @@ Exit a loop early with `break`.
 }
 
 /**
+# Skipping Iterations with `continue`
 Use `continue` to skip the remainder of the loop body and return to the loop evaluation.
 */
 #test
@@ -137,6 +145,7 @@ Use `continue` to skip the remainder of the loop body and return to the loop eva
 */
 
 /**
+# Looping Over a Range with `to`
 Use 'to' to loop from a given value *to* another value. The first value must be lower than or equal to the upper bound.
 */
 #test
@@ -154,6 +163,7 @@ Use 'to' to loop from a given value *to* another value. The first value must be 
 }
 
 /**
+# Excluding the Last Value with `until`
 Exclude the last value with 'until' instead of 'to'.
 */
 #test
@@ -169,6 +179,7 @@ Exclude the last value with 'until' instead of 'to'.
 }
 
 /**
+# Reverse Range Looping
 With a range, you can also loop in reverse order by adding the `back` modifier.
 */
 #test
@@ -190,7 +201,7 @@ With a range, you can also loop in reverse order by adding the `back` modifier.
 }
 
 /**
-# Infinite loop
+# Infinite Loop
 A loop without an expression but with a block is infinite, equivalent to `while true {}`.
 */
 #test
@@ -203,11 +214,12 @@ A loop without an expression but with a block is infinite, equivalent to `while 
 }
 
 /**
-# where
-The `where` clause allows you to filter loop iterations based on a condition. When using `where`, the loop will only execute for indexes or values that satisfy the condition specified in the `where` clause. This provides a convenient way to add additional logic to your loops, ensuring that only certain iterations are executed.
+# Using `where` Clause
+The `where` clause allows you to filter loop iterations based on a condition.
 */
 
 /**
+# Basic `where` Clause
 The `where` clause can be added directly after the `loop` statement. This clause applies a condition to the loop's index or value, and only those that meet the condition will be processed.
 */
 #test
@@ -224,6 +236,7 @@ The `where` clause can be added directly after the `loop` statement. This clause
 }
 
 /**
+# `where` with Arrays
 When looping over arrays, the `where` clause can filter elements based on their value or index.
 */
 #test
@@ -241,6 +254,7 @@ When looping over arrays, the `where` clause can filter elements based on their 
 }
 
 /**
+# Complex Conditions with `where`
 You can use the `where` clause to create complex filtering conditions. For example, you can combine multiple logical expressions to refine which elements the loop should process.
 */
 #test
@@ -258,6 +272,7 @@ You can use the `where` clause to create complex filtering conditions. For examp
 }
 
 /**
+# `where` with Ranges
 The `where` clause can also be applied to loops over ranges, allowing for precise control over which range values are included in the loop.
 */
 #test
@@ -274,6 +289,7 @@ The `where` clause can also be applied to loops over ranges, allowing for precis
 }
 
 /**
+# Combining `back` and `where`
 You can combine the `back` modifier with the `where` clause to filter values while iterating in reverse.
 */
 #test
@@ -291,6 +307,7 @@ You can combine the `back` modifier with the `where` clause to filter values whi
 }
 
 /**
+# Complex Logical Expressions with `where`
 The `where` clause supports complex logical expressions, enabling intricate filtering criteria directly within the loop.
 */
 #test
@@ -308,5 +325,6 @@ The `where` clause supports complex logical expressions, enabling intricate filt
 }
 
 /**
+# Conclusion
 The `where` clause is a powerful feature in Swag that enhances the flexibility of loops by allowing you to add conditional logic directly within the loop construct. This allows for cleaner, more readable code by avoiding the need for additional `if` statements inside the loop body.
 */

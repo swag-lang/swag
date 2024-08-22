@@ -1,6 +1,5 @@
-#global skipfmt
-
 /**
+# Introduction to `switch` in Swag
 The `switch` statement in this language is similar to the one in C/C++, with a notable difference: there's no need for an explicit `break` statement at the end of each `case` block unless the `case` is empty. This prevents unintentional `fallthrough` behavior, where execution would continue from one `case` to the next without stopping.
 */
 #test
@@ -34,6 +33,7 @@ The `switch` statement in this language is similar to the one in C/C++, with a n
 }
 
 /**
+# Multiple Values in a `case`
 You can assign multiple values to a single `case` statement, making it convenient to handle several potential matches with the same block of code.
 */
 #test
@@ -62,6 +62,7 @@ You can assign multiple values to a single `case` statement, making it convenien
 }
 
 /**
+# Using `switch` with Various Types
 The `switch` statement can be used with any type that supports the `==` operator. This includes not only numeric types but also strings, making it versatile for various comparisons.
 */
 #test
@@ -81,6 +82,7 @@ The `switch` statement can be used with any type that supports the `==` operator
 }
 
 /**
+# Intentional Fallthrough with `fallthrough`
 If you need behavior similar to C/C++ where one `case` can intentionally "fall through" to the next, you can use the `fallthrough` keyword. This explicitly tells the compiler to continue execution in the next `case` block.
 */
 #test
@@ -100,6 +102,7 @@ If you need behavior similar to C/C++ where one `case` can intentionally "fall t
 }
 
 /**
+# Exiting a `case` Early with `break`
 The `break` statement can be used to exit a `case` block early. This is useful if you only want to execute part of a `case` and then skip the rest of it.
 */
 #test
@@ -119,6 +122,7 @@ The `break` statement can be used to exit a `case` block early. This is useful i
 }
 
 /**
+# Handling Empty Cases with `break`
 A `case` cannot be left empty. If you need a `case` to do nothing, use the `break` statement explicitly.
 */
 #test
@@ -138,6 +142,7 @@ A `case` cannot be left empty. If you need a `case` to do nothing, use the `brea
 }
 
 /**
+# Variable and Expression Cases
 A `case` expression doesn't need to be a constant. You can use variables or even expressions that evaluate at runtime.
 */
 #test
@@ -159,7 +164,7 @@ A `case` expression doesn't need to be a constant. You can use variables or even
 }
 
 /**
-# The 'Swag.Complete' Attribute
+# The `Swag.Complete` Attribute
 The `Swag.Complete` attribute ensures that all possible cases in an enum are handled in the `switch` statement. If any enum value is not covered by a `case`, the compiler will raise an error, ensuring exhaustive handling of all enum variants.
 */
 #test
@@ -180,7 +185,7 @@ The `Swag.Complete` attribute ensures that all possible cases in an enum are han
 }
 
 /**
-# Specific Types
+# Switching on Type with `any` or `interface`
 When switching on a variable of type `any` or `interface`, the `switch` statement matches based on the underlying type of the variable. This behavior is similar to calling the `@kindof` intrinsic, which retrieves the type of the variable.
 */
 #test
@@ -198,7 +203,7 @@ When switching on a variable of type `any` or `interface`, the `switch` statemen
 }
 
 /**
-# Using Ranges
+# Matching Ranges in a `switch` Statement
 A `switch` statement can match against a **range of values**. This is particularly useful for handling multiple values that fall within a specific range without having to list each one individually.
 */
 #test
@@ -219,6 +224,7 @@ A `switch` statement can match against a **range of values**. This is particular
 }
 
 /**
+# Overlapping Ranges
 If ranges overlap, the first valid range that matches will be used, and subsequent ranges are ignored.
 */
 #test
@@ -239,7 +245,7 @@ If ranges overlap, the first valid range that matches will be used, and subseque
 }
 
 /**
-# The 'where' clause
+# Using the `where` Clause in `switch`
 You can add a `where` clause to a `case` in a `switch` statement. The `where` clause allows you to add an additional condition that must be satisfied for that `case` to execute. This provides a finer level of control within your `switch` statements, enabling more complex decision-making based on multiple variables.
 */
 #test
@@ -266,6 +272,7 @@ You can add a `where` clause to a `case` in a `switch` statement. The `where` cl
 }
 
 /**
+# Using `where` with `default`
 The `where` clause can also be applied to a `default` case, providing additional filtering even when no specific `case` matches. This is particularly useful when you want the `default` behavior to occur only under certain conditions.
 */
 #test
@@ -293,7 +300,6 @@ The `where` clause can also be applied to a `default` case, providing additional
         @assert(false)   // This will not be executed since the previous default matched.
     }
 }
-
 
 /**
 # Switch Without an Expression

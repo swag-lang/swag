@@ -1,4 +1,5 @@
 /**
+# Basic Usage of `if`
 A basic test with an `if`.
 
 In Swag, curly braces are optional for control structures like `if`, but if you omit them, you must use a colon `:`. This rule also applies to other control structures such as `while`, `for`, and `loop`.
@@ -48,7 +49,7 @@ Unlike C/C++, the condition in an `if` statement does not need to be enclosed in
 }
 
 /**
-# Variable declaration
+# Variable Declaration in `if`
 In an `if` expression, you can simultaneously declare and test a variable. The use of `var`, `let`, or `const` is mandatory in this context.
 
 The `if` statement will implicitly convert the declared variable to a boolean, evaluating it as `true` if it is non-zero. This means the `if` block will execute only if the declared variable is not zero.
@@ -78,6 +79,7 @@ The `if` statement will implicitly convert the declared variable to a boolean, e
 }
 
 /**
+# Adding Conditions with `where`
 You can also add an additional condition to the `if` statement with a `where` clause. This clause is evaluated only if the initial test passes.
 */
 #test
@@ -85,7 +87,7 @@ You can also add an additional condition to the `if` statement with a `where` cl
     func retSomething()->string => "string"
     func retNothing()->string   => null
 
-    // The 'where' clause is checked only if 'str' is not 0.
+    // The 'where' clause is checked only if 'str' is not null.
     if let str = retSomething() where str[0] == `s`:
         @assert(true)
     else:

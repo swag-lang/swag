@@ -208,18 +208,45 @@
 <li><a href="#_035_namespace_swg">Namespace</a></li>
 <li><a href="#_050_if_swg">If</a></li>
 <ul>
-<li><a href="#_050_if_swg_Variable_declaration">Variable declaration</a></li>
+<li><a href="#_050_if_swg_Basic_Usage_of_`if`">Basic Usage of `if`</a></li>
+<li><a href="#_050_if_swg_Variable_Declaration_in_`if`">Variable Declaration in `if`</a></li>
+<li><a href="#_050_if_swg_Adding_Conditions_with_`where`">Adding Conditions with `where`</a></li>
 </ul>
 <li><a href="#_051_loop_swg">Loop</a></li>
 <ul>
-<li><a href="#_051_loop_swg_break,_continue">break, continue</a></li>
+<li><a href="#_051_loop_swg_Introduction_to_`loop`">Introduction to `loop`</a></li>
+<li><a href="#_051_loop_swg_Basic_Usage">Basic Usage</a></li>
+<li><a href="#_051_loop_swg_Using_`#index`">Using `#index`</a></li>
+<li><a href="#_051_loop_swg_Naming_the_Loop_Index">Naming the Loop Index</a></li>
+<li><a href="#_051_loop_swg_Looping_Over_Arrays_and_Slices">Looping Over Arrays and Slices</a></li>
+<li><a href="#_051_loop_swg_Reverse_Looping">Reverse Looping</a></li>
+<li><a href="#_051_loop_swg_Break_and_Continue">Break and Continue</a></li>
+<li><a href="#_051_loop_swg_Exiting_Early_with_`break`">Exiting Early with `break`</a></li>
+<li><a href="#_051_loop_swg_Skipping_Iterations_with_`continue`">Skipping Iterations with `continue`</a></li>
 <li><a href="#_051_loop_swg_Ranges">Ranges</a></li>
-<li><a href="#_051_loop_swg_Infinite_loop">Infinite loop</a></li>
-<li><a href="#_051_loop_swg_where">where</a></li>
+<li><a href="#_051_loop_swg_Looping_Over_a_Range_with_`to`">Looping Over a Range with `to`</a></li>
+<li><a href="#_051_loop_swg_Excluding_the_Last_Value_with_`until`">Excluding the Last Value with `until`</a></li>
+<li><a href="#_051_loop_swg_Reverse_Range_Looping">Reverse Range Looping</a></li>
+<li><a href="#_051_loop_swg_Infinite_Loop">Infinite Loop</a></li>
+<li><a href="#_051_loop_swg_Using_`where`_Clause">Using `where` Clause</a></li>
+<li><a href="#_051_loop_swg_Basic_`where`_Clause">Basic `where` Clause</a></li>
+<li><a href="#_051_loop_swg_`where`_with_Arrays">`where` with Arrays</a></li>
+<li><a href="#_051_loop_swg_Complex_Conditions_with_`where`">Complex Conditions with `where`</a></li>
+<li><a href="#_051_loop_swg_`where`_with_Ranges">`where` with Ranges</a></li>
+<li><a href="#_051_loop_swg_Combining_`back`_and_`where`">Combining `back` and `where`</a></li>
+<li><a href="#_051_loop_swg_Complex_Logical_Expressions_with_`where`">Complex Logical Expressions with `where`</a></li>
+<li><a href="#_051_loop_swg_Conclusion">Conclusion</a></li>
 </ul>
 <li><a href="#_052_visit_swg">Visit</a></li>
 <ul>
-<li><a href="#_052_visit_swg_where">where</a></li>
+<li><a href="#_052_visit_swg_Introduction_to_`visit`">Introduction to `visit`</a></li>
+<li><a href="#_052_visit_swg_Naming_the_Value_and_Index">Naming the Value and Index</a></li>
+<li><a href="#_052_visit_swg_Using_Default_Aliases">Using Default Aliases</a></li>
+<li><a href="#_052_visit_swg_Reverse_Order_with_`back`">Reverse Order with `back`</a></li>
+<li><a href="#_052_visit_swg_Visiting_Arrays_and_Slices">Visiting Arrays and Slices</a></li>
+<li><a href="#_052_visit_swg_Multi-dimensional_Arrays">Multi-dimensional Arrays</a></li>
+<li><a href="#_052_visit_swg_Modifying_Elements_with_`&`">Modifying Elements with `&`</a></li>
+<li><a href="#_052_visit_swg_Filtering_with_`where`">Filtering with `where`</a></li>
 </ul>
 <li><a href="#_053_for_swg">For</a></li>
 <ul>
@@ -239,13 +266,30 @@
 </ul>
 <li><a href="#_055_switch_swg">Switch</a></li>
 <ul>
-<li><a href="#_055_switch_swg_The_'Swag_Complete'_Attribute">The 'Swag.Complete' Attribute</a></li>
-<li><a href="#_055_switch_swg_Specific_Types">Specific Types</a></li>
-<li><a href="#_055_switch_swg_Using_Ranges">Using Ranges</a></li>
-<li><a href="#_055_switch_swg_The_'where'_clause">The 'where' clause</a></li>
+<li><a href="#_055_switch_swg_Introduction_to_`switch`_in_Swag">Introduction to `switch` in Swag</a></li>
+<li><a href="#_055_switch_swg_Multiple_Values_in_a_`case`">Multiple Values in a `case`</a></li>
+<li><a href="#_055_switch_swg_Using_`switch`_with_Various_Types">Using `switch` with Various Types</a></li>
+<li><a href="#_055_switch_swg_Intentional_Fallthrough_with_`fallthrough`">Intentional Fallthrough with `fallthrough`</a></li>
+<li><a href="#_055_switch_swg_Exiting_a_`case`_Early_with_`break`">Exiting a `case` Early with `break`</a></li>
+<li><a href="#_055_switch_swg_Handling_Empty_Cases_with_`break`">Handling Empty Cases with `break`</a></li>
+<li><a href="#_055_switch_swg_Variable_and_Expression_Cases">Variable and Expression Cases</a></li>
+<li><a href="#_055_switch_swg_The_`Swag_Complete`_Attribute">The `Swag.Complete` Attribute</a></li>
+<li><a href="#_055_switch_swg_Switching_on_Type_with_`any`_or_`interface`">Switching on Type with `any` or `interface`</a></li>
+<li><a href="#_055_switch_swg_Matching_Ranges_in_a_`switch`_Statement">Matching Ranges in a `switch` Statement</a></li>
+<li><a href="#_055_switch_swg_Overlapping_Ranges">Overlapping Ranges</a></li>
+<li><a href="#_055_switch_swg_Using_the_`where`_Clause_in_`switch`">Using the `where` Clause in `switch`</a></li>
+<li><a href="#_055_switch_swg_Using_`where`_with_`default`">Using `where` with `default`</a></li>
 <li><a href="#_055_switch_swg_Switch_Without_an_Expression">Switch Without an Expression</a></li>
 </ul>
 <li><a href="#_056_break_swg">Break</a></li>
+<ul>
+<li><a href="#_056_break_swg_Introduction_to_`break`_in_Swag">Introduction to `break` in Swag</a></li>
+<li><a href="#_056_break_swg_Default_Behavior_of_`break`">Default Behavior of `break`</a></li>
+<li><a href="#_056_break_swg_Named_Scopes_with_`break`">Named Scopes with `break`</a></li>
+<li><a href="#_056_break_swg_Using_`continue`_with_Named_Scopes">Using `continue` with Named Scopes</a></li>
+<li><a href="#_056_break_swg_Unnamed_Scopes_for_Flow_Control">Unnamed Scopes for Flow Control</a></li>
+<li><a href="#_056_break_swg_Using_`break`_with_Simple_Statements">Using `break` with Simple Statements</a></li>
+</ul>
 <li><a href="#_060_struct_swg">Struct</a></li>
 <ul>
 <li><a href="#_060_struct_swg__061_001_declaration_swg">Declaration</a></li>
@@ -2910,7 +2954,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span>            <span class="SCmt">// Direct access to 'OtherSymbol' since it is private to the file</span></span></div>
 <p>By default, all symbols from a Swag source file are exported to other files within the same module. However, using <span class="code-inline">private</span> or namespaces helps protect against name conflicts, especially in larger projects where multiple files may define similar or identical symbols. </p>
 
-<h2 id="_050_if_swg">If</h2><p>A basic test with an <span class="code-inline">if</span>. </p>
+<h2 id="_050_if_swg">If</h2><h3 id="_050_if_swg_Basic_Usage_of_`if`">Basic Usage of <span class="code-inline">if</span> </h3>
+<p>A basic test with an <span class="code-inline">if</span>. </p>
 <p>In Swag, curly braces are optional for control structures like <span class="code-inline">if</span>, but if you omit them, you must use a colon <span class="code-inline">:</span>. This rule also applies to other control structures such as <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">loop</span>. </p>
 <p>Unlike C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2953,7 +2998,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>:          <span class="SCmt">// This condition is true (a is 1)</span>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
-<h3 id="_050_if_swg_Variable_declaration">Variable declaration </h3>
+<h3 id="_050_if_swg_Variable_Declaration_in_`if`">Variable Declaration in <span class="code-inline">if</span> </h3>
 <p>In an <span class="code-inline">if</span> expression, you can simultaneously declare and test a variable. The use of <span class="code-inline">var</span>, <span class="code-inline">let</span>, or <span class="code-inline">const</span> is mandatory in this context. </p>
 <p>The <span class="code-inline">if</span> statement will implicitly convert the declared variable to a boolean, evaluating it as <span class="code-inline">true</span> if it is non-zero. This means the <span class="code-inline">if</span> block will execute only if the declared variable is not zero. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2979,13 +3024,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">else</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 }</span></div>
+<h3 id="_050_if_swg_Adding_Conditions_with_`where`">Adding Conditions with <span class="code-inline">where</span> </h3>
 <p>You can also add an additional condition to the <span class="code-inline">if</span> statement with a <span class="code-inline">where</span> clause. This clause is evaluated only if the initial test passes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>
     <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="STpe">string</span>   =&gt; <span class="SKwd">null</span>
 
-    <span class="SCmt">// The 'where' clause is checked only if 'str' is not 0.</span>
+    <span class="SCmt">// The 'where' clause is checked only if 'str' is not null.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
     <span class="SLgc">else</span>:
@@ -2999,7 +3045,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
 
-<h2 id="_051_loop_swg">Loop</h2><p><span class="code-inline">loop</span> is used to iterate a given number of times. It's a versatile construct in Swag, allowing for various iteration patterns. </p>
+<h2 id="_051_loop_swg">Loop</h2><h3 id="_051_loop_swg_Introduction_to_`loop`">Introduction to <span class="code-inline">loop</span> </h3>
+<p><span class="code-inline">loop</span> is used to iterate a given number of times. It's a versatile construct in Swag, allowing for various iteration patterns. </p>
+<h3 id="_051_loop_swg_Basic_Usage">Basic Usage </h3>
 <p>The loop expression is evaluated <b>once</b> and must be a <b>positive value</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3008,6 +3056,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Using_`#index`">Using <span class="code-inline">#index</span> </h3>
 <p>The compiler keyword <span class="code-inline">#index</span> returns the current index of the loop, starting at 0. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3019,6 +3068,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Naming_the_Loop_Index">Naming the Loop Index </h3>
 <p>You can name the loop index if you want. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3034,7 +3084,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
     <span class="SItr">@assert</span>(cpt1 == cpt)
 }</span></div>
-<p><span class="code-inline">loop</span> can be used on any type that supports the <span class="code-inline">@countof</span> intrinsic, such as slices, arrays, and strings. We'll explore using it with structs later. </p>
+<h3 id="_051_loop_swg_Looping_Over_Arrays_and_Slices">Looping Over Arrays and Slices </h3>
+<p><span class="code-inline">loop</span> can be used on any type that supports the <span class="code-inline">@countof</span> intrinsic, such as slices, arrays, and strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]
@@ -3057,6 +3108,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Reverse_Looping">Reverse Looping </h3>
 <p>You can loop in reverse order by adding the <span class="code-inline">back</span> modifier after the <span class="code-inline">loop</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3075,8 +3127,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         cpt += <span class="SNum">1</span>
     }
 }</span></div>
-<h3 id="_051_loop_swg_break,_continue">break, continue </h3>
+<h3 id="_051_loop_swg_Break_and_Continue">Break and Continue </h3>
 <p><span class="code-inline">break</span> and <span class="code-inline">continue</span> can be used inside a loop. </p>
+<h3 id="_051_loop_swg_Exiting_Early_with_`break`">Exiting Early with <span class="code-inline">break</span> </h3>
 <p>Exit a loop early with <span class="code-inline">break</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3090,6 +3143,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Skipping_Iterations_with_`continue`">Skipping Iterations with <span class="code-inline">continue</span> </h3>
 <p>Use <span class="code-inline">continue</span> to skip the remainder of the loop body and return to the loop evaluation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3105,6 +3159,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h3 id="_051_loop_swg_Ranges">Ranges </h3>
 <p><span class="code-inline">loop</span> can also iterate over a <b>range</b> of signed values. </p>
+<h3 id="_051_loop_swg_Looping_Over_a_Range_with_`to`">Looping Over a Range with <span class="code-inline">to</span> </h3>
 <p>Use <span class="code-inline">to</span> to loop from a given value <i>to</i> another value. The first value must be lower than or equal to the upper bound. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3119,6 +3174,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>)
     <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Excluding_the_Last_Value_with_`until`">Excluding the Last Value with <span class="code-inline">until</span> </h3>
 <p>Exclude the last value with <span class="code-inline">until</span> instead of <span class="code-inline">to</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3131,6 +3187,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span> + <span class="SNum">2</span>)
 }</span></div>
+<h3 id="_051_loop_swg_Reverse_Range_Looping">Reverse Range Looping </h3>
 <p>With a range, you can also loop in reverse order by adding the <span class="code-inline">back</span> modifier. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3149,7 +3206,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
     }
 }</span></div>
-<h3 id="_051_loop_swg_Infinite_loop">Infinite loop </h3>
+<h3 id="_051_loop_swg_Infinite_Loop">Infinite Loop </h3>
 <p>A loop without an expression but with a block is infinite, equivalent to <span class="code-inline">while true {}</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3159,8 +3216,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">break</span>
     }
 }</span></div>
-<h3 id="_051_loop_swg_where">where </h3>
-<p>The <span class="code-inline">where</span> clause allows you to filter loop iterations based on a condition. When using <span class="code-inline">where</span>, the loop will only execute for indexes or values that satisfy the condition specified in the <span class="code-inline">where</span> clause. This provides a convenient way to add additional logic to your loops, ensuring that only certain iterations are executed. </p>
+<h3 id="_051_loop_swg_Using_`where`_Clause">Using <span class="code-inline">where</span> Clause </h3>
+<p>The <span class="code-inline">where</span> clause allows you to filter loop iterations based on a condition. </p>
+<h3 id="_051_loop_swg_Basic_`where`_Clause">Basic <span class="code-inline">where</span> Clause </h3>
 <p>The <span class="code-inline">where</span> clause can be added directly after the <span class="code-inline">loop</span> statement. This clause applies a condition to the loop's index or value, and only those that meet the condition will be processed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3174,6 +3232,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>)  <span class="SCmt">// Result is the sum of even numbers within the range</span>
 }</span></div>
+<h3 id="_051_loop_swg_`where`_with_Arrays"><span class="code-inline">where</span> with Arrays </h3>
 <p>When looping over arrays, the <span class="code-inline">where</span> clause can filter elements based on their value or index. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3188,6 +3247,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(sumOfEvens == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">50</span>)  <span class="SCmt">// Only the even numbers (10, 30, 50) are summed</span>
 }</span></div>
+<h3 id="_051_loop_swg_Complex_Conditions_with_`where`">Complex Conditions with <span class="code-inline">where</span> </h3>
 <p>You can use the <span class="code-inline">where</span> clause to create complex filtering conditions. For example, you can combine multiple logical expressions to refine which elements the loop should process. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3202,6 +3262,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(filteredSum == <span class="SNum">20</span> + <span class="SNum">30</span>)  <span class="SCmt">// Only 20 and 30 meet the condition</span>
 }</span></div>
+<h3 id="_051_loop_swg_`where`_with_Ranges"><span class="code-inline">where</span> with Ranges </h3>
 <p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, allowing for precise control over which range values are included in the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3215,6 +3276,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(sumOfPositiveEvens == <span class="SNum">2</span> + <span class="SNum">4</span>)  <span class="SCmt">// Only positive even numbers (2, 4) are summed</span>
 }</span></div>
+<h3 id="_051_loop_swg_Combining_`back`_and_`where`">Combining <span class="code-inline">back</span> and <span class="code-inline">where</span> </h3>
 <p>You can combine the <span class="code-inline">back</span> modifier with the <span class="code-inline">where</span> clause to filter values while iterating in reverse. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3229,6 +3291,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>)  <span class="SCmt">// Sums all even values in reverse order</span>
 }</span></div>
+<h3 id="_051_loop_swg_Complex_Logical_Expressions_with_`where`">Complex Logical Expressions with <span class="code-inline">where</span> </h3>
 <p>The <span class="code-inline">where</span> clause supports complex logical expressions, enabling intricate filtering criteria directly within the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3243,9 +3306,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(complexSum == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">45</span> + <span class="SNum">50</span> + <span class="SNum">65</span>)  <span class="SCmt">// Values matching the complex condition are summed</span>
 }</span></div>
+<h3 id="_051_loop_swg_Conclusion">Conclusion </h3>
 <p>The <span class="code-inline">where</span> clause is a powerful feature in Swag that enhances the flexibility of loops by allowing you to add conditional logic directly within the loop construct. This allows for cleaner, more readable code by avoiding the need for additional <span class="code-inline">if</span> statements inside the loop body. </p>
 
-<h2 id="_052_visit_swg">Visit</h2><p><span class="code-inline">visit</span> is used to iterate over all elements of a collection. It provides a simple and efficient way to process each item in the collection, whether it's an array, slice, or string. </p>
+<h2 id="_052_visit_swg">Visit</h2><h3 id="_052_visit_swg_Introduction_to_`visit`">Introduction to <span class="code-inline">visit</span> </h3>
+<p><span class="code-inline">visit</span> is used to iterate over all elements of a collection. It provides a simple and efficient way to process each item in the collection, whether it's an array, slice, or string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Here we visit every byte of the string.</span>
@@ -3265,6 +3330,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     }
 }</span></div>
+<h3 id="_052_visit_swg_Naming_the_Value_and_Index">Naming the Value and Index </h3>
 <p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. This allows for more readable code, especially when working with nested loops or complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3282,6 +3348,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     }
 }</span></div>
+<h3 id="_052_visit_swg_Using_Default_Aliases">Using Default Aliases </h3>
 <p>Both names are optional. If you don't specify names for the value and index, you can use the default aliases <span class="code-inline">#alias0</span> for the value and <span class="code-inline">#alias1</span> for the index. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3300,6 +3367,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     }
 }</span></div>
+<h3 id="_052_visit_swg_Reverse_Order_with_`back`">Reverse Order with <span class="code-inline">back</span> </h3>
 <p>You can visit elements in reverse order by adding the <span class="code-inline">back</span> modifier. This is useful when you need to process a collection from end to start. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3324,6 +3392,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         cpt += <span class="SNum">1</span>
     }
 }</span></div>
+<h3 id="_052_visit_swg_Visiting_Arrays_and_Slices">Visiting Arrays and Slices </h3>
 <p>You can visit arrays or slices, which allows you to easily process each element. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3335,6 +3404,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)
 }</span></div>
+<h3 id="_052_visit_swg_Multi-dimensional_Arrays">Multi-dimensional Arrays </h3>
 <p><span class="code-inline">visit</span> also works for multi-dimensional arrays, making it easy to process complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3346,6 +3416,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
 }</span></div>
+<h3 id="_052_visit_swg_Modifying_Elements_with_`&`">Modifying Elements with <span class="code-inline">&</span> </h3>
 <p>You can visit elements using a pointer to the value by adding <span class="code-inline">&</span> before the value name. This allows you to modify the elements in place. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3365,7 +3436,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)
 }</span></div>
-<h3 id="_052_visit_swg_where">where </h3>
+<h3 id="_052_visit_swg_Filtering_with_`where`">Filtering with <span class="code-inline">where</span> </h3>
 <p>You can add a <span class="code-inline">where</span> clause after the <span class="code-inline">visit</span> to filter the elements you want to process. This is useful for applying conditions directly within the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3582,7 +3653,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(iterations == <span class="SNum">10</span>) <span class="SCmt">// Asserts that the loop ran 5 times</span>
 }</span></div>
 
-<h2 id="_055_switch_swg">Switch</h2><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skipfmt</span></div>
+<h2 id="_055_switch_swg">Switch</h2><h3 id="_055_switch_swg_Introduction_to_`switch`_in_Swag">Introduction to <span class="code-inline">switch</span> in Swag </h3>
 <p>The <span class="code-inline">switch</span> statement in this language is similar to the one in C/C++, with a notable difference: there's no need for an explicit <span class="code-inline">break</span> statement at the end of each <span class="code-inline">case</span> block unless the <span class="code-inline">case</span> is empty. This prevents unintentional <span class="code-inline">fallthrough</span> behavior, where execution would continue from one <span class="code-inline">case</span> to the next without stopping. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3613,6 +3684,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">break</span>           <span class="SCmt">// Exits the switch when 'ch' is 'A'.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Multiple_Values_in_a_`case`">Multiple Values in a <span class="code-inline">case</span> </h3>
 <p>You can assign multiple values to a single <span class="code-inline">case</span> statement, making it convenient to handle several potential matches with the same block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3638,6 +3710,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no case matches.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Using_`switch`_with_Various_Types">Using <span class="code-inline">switch</span> with Various Types </h3>
 <p>The <span class="code-inline">switch</span> statement can be used with any type that supports the <span class="code-inline">==</span> operator. This includes not only numeric types but also strings, making it versatile for various comparisons. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3654,6 +3727,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value doesn't match any case, this fails.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Intentional_Fallthrough_with_`fallthrough`">Intentional Fallthrough with <span class="code-inline">fallthrough</span> </h3>
 <p>If you need behavior similar to C/C++ where one <span class="code-inline">case</span> can intentionally "fall through" to the next, you can use the <span class="code-inline">fallthrough</span> keyword. This explicitly tells the compiler to continue execution in the next <span class="code-inline">case</span> block. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3670,6 +3744,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Default case runs if no other cases match; true assertion keeps the test passing.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Exiting_a_`case`_Early_with_`break`">Exiting a <span class="code-inline">case</span> Early with <span class="code-inline">break</span> </h3>
 <p>The <span class="code-inline">break</span> statement can be used to exit a <span class="code-inline">case</span> block early. This is useful if you only want to execute part of a <span class="code-inline">case</span> and then skip the rest of it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3686,6 +3761,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This fails if value doesn't match any case.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Handling_Empty_Cases_with_`break`">Handling Empty Cases with <span class="code-inline">break</span> </h3>
 <p>A <span class="code-inline">case</span> cannot be left empty. If you need a <span class="code-inline">case</span> to do nothing, use the <span class="code-inline">break</span> statement explicitly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3702,6 +3778,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if value doesn't match any case.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Variable_and_Expression_Cases">Variable and Expression Cases </h3>
 <p>A <span class="code-inline">case</span> expression doesn't need to be a constant. You can use variables or even expressions that evaluate at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3720,7 +3797,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if test equals 2 (b + 1).</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_The_'Swag_Complete'_Attribute">The <span class="code-inline">Swag.Complete</span> Attribute </h3>
+<h3 id="_055_switch_swg_The_`Swag_Complete`_Attribute">The <span class="code-inline">Swag.Complete</span> Attribute </h3>
 <p>The <span class="code-inline">Swag.Complete</span> attribute ensures that all possible cases in an enum are handled in the <span class="code-inline">switch</span> statement. If any enum value is not covered by a <span class="code-inline">case</span>, the compiler will raise an error, ensuring exhaustive handling of all enum variants. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3738,7 +3815,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if color is Blue.</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_Specific_Types">Specific Types </h3>
+<h3 id="_055_switch_swg_Switching_on_Type_with_`any`_or_`interface`">Switching on Type with <span class="code-inline">any</span> or <span class="code-inline">interface</span> </h3>
 <p>When switching on a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, the <span class="code-inline">switch</span> statement matches based on the underlying type of the variable. This behavior is similar to calling the <span class="code-inline">@kindof</span> intrinsic, which retrieves the type of the variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3753,7 +3830,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if 'x' is not a string.</span>
     }
 }</span></div>
-<h3 id="_055_switch_swg_Using_Ranges">Using Ranges </h3>
+<h3 id="_055_switch_swg_Matching_Ranges_in_a_`switch`_Statement">Matching Ranges in a <span class="code-inline">switch</span> Statement </h3>
 <p>A <span class="code-inline">switch</span> statement can match against a <b>range of values</b>. This is particularly useful for handling multiple values that fall within a specific range without having to list each one individually. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3771,6 +3848,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(success)   <span class="SCmt">// Ensures that the correct case was matched.</span>
 }</span></div>
+<h3 id="_055_switch_swg_Overlapping_Ranges">Overlapping Ranges </h3>
 <p>If ranges overlap, the first valid range that matches will be used, and subsequent ranges are ignored. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3788,7 +3866,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(success)   <span class="SCmt">// Confirms that the first range was correctly applied.</span>
 }</span></div>
-<h3 id="_055_switch_swg_The_'where'_clause">The <span class="code-inline">where</span> clause </h3>
+<h3 id="_055_switch_swg_Using_the_`where`_Clause_in_`switch`">Using the <span class="code-inline">where</span> Clause in <span class="code-inline">switch</span> </h3>
 <p>You can add a <span class="code-inline">where</span> clause to a <span class="code-inline">case</span> in a <span class="code-inline">switch</span> statement. The <span class="code-inline">where</span> clause allows you to add an additional condition that must be satisfied for that <span class="code-inline">case</span> to execute. This provides a finer level of control within your <span class="code-inline">switch</span> statements, enabling more complex decision-making based on multiple variables. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3812,6 +3890,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed since the second case matches.</span>
     }
 }</span></div>
+<h3 id="_055_switch_swg_Using_`where`_with_`default`">Using <span class="code-inline">where</span> with <span class="code-inline">default</span> </h3>
 <p>The <span class="code-inline">where</span> clause can also be applied to a <span class="code-inline">default</span> case, providing additional filtering even when no specific <span class="code-inline">case</span> matches. This is particularly useful when you want the <span class="code-inline">default</span> behavior to occur only under certain conditions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3859,7 +3938,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h2 id="_056_break_swg">Break</h2><p>We have already seen that <span class="code-inline">break</span> is used to exit a <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span>. </p>
+<h2 id="_056_break_swg">Break</h2><h3 id="_056_break_swg_Introduction_to_`break`_in_Swag">Introduction to <span class="code-inline">break</span> in Swag </h3>
+<p>We have already seen that <span class="code-inline">break</span> is used to exit a <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">loop</span> <span class="SNum">10</span>:
@@ -3869,6 +3949,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">while</span> <span class="SKwd">false</span>:
         <span class="SLgc">break</span>                 <span class="SCmt">// Although this line will never be reached, it demonstrates usage</span>
 }</span></div>
+<h3 id="_056_break_swg_Default_Behavior_of_`break`">Default Behavior of <span class="code-inline">break</span> </h3>
 <p>By default, <span class="code-inline">break</span> will exit only the innermost loop or control structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3886,7 +3967,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)        <span class="SCmt">// The outer loop runs 10 times</span>
 }</span></div>
-<p>However, you can <b>name a scope</b> using the <span class="code-inline">#scope</span> compiler keyword and then use <span class="code-inline">break</span> to exit directly to the end of that named scope. </p>
+<h3 id="_056_break_swg_Named_Scopes_with_`break`">Named Scopes with <span class="code-inline">break</span> </h3>
+<p>You can <b>name a scope</b> using the <span class="code-inline">#scope</span> compiler keyword and then use <span class="code-inline">break</span> to exit directly to the end of that named scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -3906,6 +3988,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Execution resumes here after breaking out of 'BigScope'</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>)         <span class="SCmt">// Confirms that the loop inside 'BigScope' ran only once</span>
 }</span></div>
+<h3 id="_056_break_swg_Using_`continue`_with_Named_Scopes">Using <span class="code-inline">continue</span> with Named Scopes </h3>
 <p>When used with a named scope, <span class="code-inline">continue</span> allows you to return to the beginning of the scope, effectively restarting the scope's execution. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3920,6 +4003,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)        <span class="SCmt">// Ensures the loop runs exactly 5 times</span>
 }</span></div>
+<h3 id="_056_break_swg_Unnamed_Scopes_for_Flow_Control">Unnamed Scopes for Flow Control </h3>
 <p>It's not mandatory to name the scope, so this technique can be used as an alternative to a series of if/else statements, providing a clean and structured way to manage multiple conditions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3945,7 +4029,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     }
 }</span></div>
-<p>Note that a scope can be followed by a simple statement rather than a block, allowing for flexible control over flow. </p>
+<h3 id="_056_break_swg_Using_`break`_with_Simple_Statements">Using <span class="code-inline">break</span> with Simple Statements </h3>
+<p>A scope can be followed by a simple statement rather than a block, allowing for flexible control over flow. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmp">#scope</span> <span class="SCst">Up</span>

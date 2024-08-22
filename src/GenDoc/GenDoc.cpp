@@ -481,7 +481,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& l
                     break;
 
                 case UserBlockKind::OrderedList:
-                    if(line.empty())
+                    if (line.empty())
                     {
                     }
                     else if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')

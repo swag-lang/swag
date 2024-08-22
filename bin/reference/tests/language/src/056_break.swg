@@ -1,4 +1,5 @@
 /**
+# Introduction to `break` in Swag
 We have already seen that `break` is used to exit a `loop`, `visit`, `while`, `for`, and `switch`.
 */
 #test
@@ -12,6 +13,7 @@ We have already seen that `break` is used to exit a `loop`, `visit`, `while`, `f
 }
 
 /**
+# Default Behavior of `break`
 By default, `break` will exit only the innermost loop or control structure.
 */
 #test
@@ -32,7 +34,8 @@ By default, `break` will exit only the innermost loop or control structure.
 }
 
 /**
-However, you can **name a scope** using the `#scope` compiler keyword and then use `break` to exit directly to the end of that named scope.
+# Named Scopes with `break`
+You can **name a scope** using the `#scope` compiler keyword and then use `break` to exit directly to the end of that named scope.
 */
 #test
 {
@@ -55,6 +58,7 @@ However, you can **name a scope** using the `#scope` compiler keyword and then u
 }
 
 /**
+# Using `continue` with Named Scopes
 When used with a named scope, `continue` allows you to return to the beginning of the scope, effectively restarting the scope's execution.
 */
 #test
@@ -72,6 +76,7 @@ When used with a named scope, `continue` allows you to return to the beginning o
 }
 
 /**
+# Unnamed Scopes for Flow Control
 It's not mandatory to name the scope, so this technique can be used as an alternative to a series of if/else statements, providing a clean and structured way to manage multiple conditions.
 */
 #test
@@ -100,7 +105,8 @@ It's not mandatory to name the scope, so this technique can be used as an altern
 }
 
 /**
-Note that a scope can be followed by a simple statement rather than a block, allowing for flexible control over flow.
+# Using `break` with Simple Statements
+A scope can be followed by a simple statement rather than a block, allowing for flexible control over flow.
 */
 #test
 {

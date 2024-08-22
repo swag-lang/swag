@@ -1,4 +1,5 @@
 /**
+# Introduction to `visit`
 `visit` is used to iterate over all elements of a collection. It provides a simple and efficient way to process each item in the collection, whether it's an array, slice, or string.
 */
 #test
@@ -22,6 +23,7 @@
 }
 
 /**
+# Naming the Value and Index
 You can name both the **value** and the loop **index**, in that order. This allows for more readable code, especially when working with nested loops or complex data structures.
 */
 #test
@@ -42,6 +44,7 @@ You can name both the **value** and the loop **index**, in that order. This allo
 }
 
 /**
+# Using Default Aliases
 Both names are optional. If you don't specify names for the value and index, you can use the default aliases `#alias0` for the value and `#alias1` for the index.
 */
 #test
@@ -63,6 +66,7 @@ Both names are optional. If you don't specify names for the value and index, you
 }
 
 /**
+# Reverse Order with `back`
 You can visit elements in reverse order by adding the `back` modifier. This is useful when you need to process a collection from end to start.
 */
 #test
@@ -90,6 +94,7 @@ You can visit elements in reverse order by adding the `back` modifier. This is u
 }
 
 /**
+# Visiting Arrays and Slices
 You can visit arrays or slices, which allows you to easily process each element.
 */
 #test
@@ -104,6 +109,7 @@ You can visit arrays or slices, which allows you to easily process each element.
 }
 
 /**
+# Multi-dimensional Arrays
 `visit` also works for multi-dimensional arrays, making it easy to process complex data structures.
 */
 #test
@@ -118,6 +124,7 @@ You can visit arrays or slices, which allows you to easily process each element.
 }
 
 /**
+# Modifying Elements with `&`
 You can visit elements using a pointer to the value by adding `&` before the value name. This allows you to modify the elements in place.
 */
 #test
@@ -140,7 +147,7 @@ You can visit elements using a pointer to the value by adding `&` before the val
 }
 
 /**
-# where
+# Filtering with `where`
 You can add a `where` clause after the `visit` to filter the elements you want to process. This is useful for applying conditions directly within the loop.
 */
 #test
