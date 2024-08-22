@@ -1,21 +1,21 @@
 /**
-Let's start with the basics. Swag support classical single-line and multi-line comments.
-*/
+ * Swag supports both single-line and multi-line comments.
+ */
 
-// Single-line comment
+// Single-line comment example
 
 /*
-    Multi-line comment on...
-    ... multiple lines
+    Multi-line comment example,
+    which can span multiple lines.
 */
 
-const A = 0        // This is a constant with the value '0' assigned to it
-const B = /* false */true
+const A = 0                 // A constant with the value '0' assigned to it
+const B = /* false */ true  // This constant is set to 'true', with an inline comment showing an alternative value
 
 /**
-Nested comments are supported.
-*/
+ * Swag also supports nested comments within multi-line comments.
+ */
 
 /*
-    /* You can also nest multi-line comments */
+    /* Nested multi-line comment example */
 */
