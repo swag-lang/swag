@@ -467,12 +467,31 @@
 <li><a href="#_160_scoping_swg">Scoping</a></li>
 <ul>
 <li><a href="#_160_scoping_swg__161_001_defer_swg">Defer</a></li>
+<ul>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_`defer`_Statement">`defer` Statement</a></li>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_Defer_in_a_Block">Defer in a Block</a></li>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_Defer_with_Control_Flow">Defer with Control Flow</a></li>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_Defer_Execution_Order">Defer Execution Order</a></li>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_Example:_Defer_for_Resource_Management">Example: Defer for Resource Management</a></li>
+<li><a href="#_160_scoping_swg__161_001_defer_swg_Example:_Defer_in_Error_Handling">Example: Defer in Error Handling</a></li>
+</ul>
 <li><a href="#_160_scoping_swg__162_002_using_swg">Using</a></li>
 <ul>
-<li><a href="#_160_scoping_swg__162_002_using_swg_For_a_function_parameter">For a function parameter</a></li>
-<li><a href="#_160_scoping_swg__162_002_using_swg_For_a_field">For a field</a></li>
+<li><a href="#_160_scoping_swg__162_002_using_swg_`using`_with_Enums_and_Namespaces">`using` with Enums and Namespaces</a></li>
+<li><a href="#_160_scoping_swg__162_002_using_swg_`using`_with_Variables">`using` with Variables</a></li>
+<li><a href="#_160_scoping_swg__162_002_using_swg_Declaring_Variables_with_`using`">Declaring Variables with `using`</a></li>
+<li><a href="#_160_scoping_swg__162_002_using_swg_`using`_in_Function_Parameters">`using` in Function Parameters</a></li>
+<li><a href="#_160_scoping_swg__162_002_using_swg_`using`_with_Struct_Fields">`using` with Struct Fields</a></li>
 </ul>
 <li><a href="#_160_scoping_swg__163_003_with_swg">With</a></li>
+<ul>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_Statement">`with` Statement</a></li>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_on_a_Variable">`with` on a Variable</a></li>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_with_Function_Calls">`with` with Function Calls</a></li>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_with_a_Namespace">`with` with a Namespace</a></li>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_with_Variable_Declaration">`with` with Variable Declaration</a></li>
+<li><a href="#_160_scoping_swg__163_003_with_swg_`with`_with_an_Assignment_Statement">`with` with an Assignment Statement</a></li>
+</ul>
 </ul>
 <li><a href="#_164_alias_swg">Alias</a></li>
 <ul>
@@ -6953,15 +6972,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">attr</span> <span class="SCst">Align</span>(value: <span class="STpe">u8</span>)</span></div>
 
 <h2 id="_160_scoping_swg">Scoping</h2>
-<h3 id="_160_scoping_swg__161_001_defer_swg">Defer</h3><p><span class="code-inline">defer</span> is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left. </p>
+<h3 id="_160_scoping_swg__161_001_defer_swg">Defer</h3><h4 id="_160_scoping_swg__161_001_defer_swg_`defer`_Statement"><span class="code-inline">defer</span> Statement </h4>
+<p><span class="code-inline">defer</span> is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> v = <span class="SNum">0</span>
     <span class="SLgc">defer</span> <span class="SItr">@assert</span>(v == <span class="SNum">1</span>)
     v += <span class="SNum">1</span>
-    <span class="SCmt">// defer expression will be executed here</span>
+    <span class="SCmt">// The defer expression will be executed here, after v is incremented to 1.</span>
+    <span class="SCmt">// This allows you to ensure that certain operations are performed when leaving the scope.</span>
 }</span></div>
-<p><span class="code-inline">defer</span> can also be used within a block. </p>
+<h4 id="_160_scoping_swg__161_001_defer_swg_Defer_in_a_Block">Defer in a Block </h4>
+<p><span class="code-inline">defer</span> can also be used within a block, allowing you to group multiple statements together that should be executed when leaving the scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> v = <span class="SNum">0</span>
@@ -6972,30 +6994,33 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     v += <span class="SNum">5</span>
-    <span class="SCmt">// defer block will be executed here</span>
+    <span class="SCmt">// The defer block will be executed here, ensuring that v is correctly incremented by 10 after the main logic.</span>
 }</span></div>
-<p><span class="code-inline">defer</span> expressions are called when leaving the corresponding scope, even with <span class="code-inline">return</span>, <span class="code-inline">break</span>, <span class="code-inline">continue</span> etc., and even inside a <span class="code-inline">loop/while/for</span> etc. </p>
+<h4 id="_160_scoping_swg__161_001_defer_swg_Defer_with_Control_Flow">Defer with Control Flow </h4>
+<p><span class="code-inline">defer</span> expressions are executed when leaving the corresponding scope, even with control flow statements like <span class="code-inline">return</span>, <span class="code-inline">break</span>, or <span class="code-inline">continue</span>. This makes <span class="code-inline">defer</span> particularly useful for cleaning up resources or ensuring certain actions are performed, regardless of how the scope is exited. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>
     <span class="SLgc">loop</span> <span class="SNum">10</span>
     {
-        <span class="SLgc">defer</span> <span class="SCst">G</span> += <span class="SNum">1</span>
+        <span class="SLgc">defer</span> <span class="SCst">G</span> += <span class="SNum">1</span>  <span class="SCmt">// This defer ensures that G is incremented every time the loop iterates, even if we break out early.</span>
         <span class="SLgc">if</span> <span class="SCst">G</span> == <span class="SNum">2</span>:
-            <span class="SLgc">break</span> <span class="SCmt">// will be called here, before breaking the loop</span>
-        <span class="SCmt">// will be called here also</span>
+            <span class="SLgc">break</span> <span class="SCmt">// defer expression will be executed here before breaking the loop.</span>
+        <span class="SCmt">// defer expression will be executed here as well.</span>
     }
 
-    <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">3</span>)  <span class="SCmt">// Verifies that G was incremented correctly, even after breaking out of the loop.</span>
 }</span></div>
-<p><span class="code-inline">defer</span> are executed in reverse order of their declaration. </p>
+<h4 id="_160_scoping_swg__161_001_defer_swg_Defer_Execution_Order">Defer Execution Order </h4>
+<p><span class="code-inline">defer</span> statements are executed in reverse order of their declaration. This means that the last <span class="code-inline">defer</span> statement you declare will be the first one to execute when the scope is exited. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>
-    <span class="SLgc">defer</span> <span class="SItr">@assert</span>(x == <span class="SNum">2</span>) <span class="SCmt">// Will be executed second</span>
-    <span class="SLgc">defer</span> x *= <span class="SNum">2</span> <span class="SCmt">// Will be executed first</span>
+    <span class="SLgc">defer</span> <span class="SItr">@assert</span>(x == <span class="SNum">2</span>) <span class="SCmt">// This will be executed second, after x is multiplied by 2.</span>
+    <span class="SLgc">defer</span> x *= <span class="SNum">2</span>          <span class="SCmt">// This will be executed first, doubling the value of x.</span>
 }</span></div>
-<p>It's typically used to unregister/destroy a resource, by putting the release code just after the creation one. </p>
+<h4 id="_160_scoping_swg__161_001_defer_swg_Example:_Defer_for_Resource_Management">Example: Defer for Resource Management </h4>
+<p><span class="code-inline">defer</span> is typically used to unregister/destroy a resource, by placing the release code immediately after the creation code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
@@ -7018,17 +7043,50 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(!resource.<span class="SFct">isResourceCreated</span>())
 }</span></div>
+<h4 id="_160_scoping_swg__161_001_defer_swg_Example:_Defer_in_Error_Handling">Example: Defer in Error Handling </h4>
+<p>In complex functions, <span class="code-inline">defer</span> can help ensure that resources are always cleaned up, even in the presence of errors. This pattern is essential for writing robust, error-resilient code. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
+    <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) = <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
+    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
 
-<h3 id="_160_scoping_swg__162_002_using_swg">Using</h3><p><span class="code-inline">using</span> brings the scope of a namespace, a struct or an enum in the current one. </p>
+    <span class="SKwd">func</span> <span class="SFct">performTask</span>() -&gt; <span class="STpe">bool</span>
+    {
+        <span class="SKwd">var</span> resource = <span class="SFct">createResource</span>()
+        <span class="SLgc">defer</span>
+        {
+            <span class="SFct">releaseResource</span>(&resource)
+        }
+
+        <span class="SLgc">if</span> !resource.<span class="SFct">isResourceCreated</span>()
+        {
+            <span class="SCmt">// Return early if the resource wasn't created, but the defer block will still run.</span>
+            <span class="SLgc">return</span> <span class="SKwd">false</span>
+        }
+
+        <span class="SCmt">// Perform other tasks...</span>
+        <span class="SCmt">// If an error occurs, the resource will still be released.</span>
+        <span class="SLgc">return</span> <span class="SKwd">true</span>
+    }
+
+    <span class="SKwd">let</span> success = <span class="SFct">performTask</span>()
+    <span class="SItr">@assert</span>(success)
+    <span class="SCmt">// No matter what happened in performTask, the resource was released correctly.</span>
+}</span></div>
+
+<h3 id="_160_scoping_swg__162_002_using_swg">Using</h3><h4 id="_160_scoping_swg__162_002_using_swg_`using`_with_Enums_and_Namespaces"><span class="code-inline">using</span> with Enums and Namespaces </h4>
+<p><span class="code-inline">using</span> brings the scope of a namespace, a struct, or an enum into the current one. This allows you to reference members of the enum, namespace, or struct without needing to fully qualify them. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
     <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span> == <span class="SNum">0</span>)
 
     <span class="SKwd">using</span> <span class="SCst">RGB</span>
-    <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">1</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">1</span>)  <span class="SCmt">// 'G' is directly accessible without 'RGB.'</span>
 }</span></div>
-<p><span class="code-inline">using</span> can also be used with a variable </p>
+<h4 id="_160_scoping_swg__162_002_using_swg_`using`_with_Variables"><span class="code-inline">using</span> with Variables </h4>
+<p><span class="code-inline">using</span> can also be applied to variables, allowing you to access the fields of a struct directly without needing to reference the variable name each time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
@@ -7036,47 +7094,48 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
 
     <span class="SKwd">using</span> pt
-    x = <span class="SNum">1</span> <span class="SCmt">// no need to specify 'pt'</span>
-    y = <span class="SNum">2</span> <span class="SCmt">// no need to specify 'pt'</span>
+    x = <span class="SNum">1</span> <span class="SCmt">// No need to specify 'pt' to access its fields</span>
+    y = <span class="SNum">2</span> <span class="SCmt">// No need to specify 'pt'</span>
 
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)
 }</span></div>
-<p>You can declare a variable with <span class="code-inline">using</span> just before. </p>
+<h4 id="_160_scoping_swg__162_002_using_swg_Declaring_Variables_with_`using`">Declaring Variables with <span class="code-inline">using</span> </h4>
+<p>You can declare a variable using <span class="code-inline">using</span> directly, which automatically brings its fields into the current scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
     <span class="SKwd">using</span> <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
-    x = <span class="SNum">1</span> <span class="SCmt">// no need to specify 'pt'</span>
-    y = <span class="SNum">2</span> <span class="SCmt">// no need to specify 'pt'</span>
+    x = <span class="SNum">1</span> <span class="SCmt">// Direct access to fields without specifying 'pt'</span>
+    y = <span class="SNum">2</span> <span class="SCmt">// Direct access to fields without specifying 'pt'</span>
 
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)
 }</span></div>
-<h4 id="_160_scoping_swg__162_002_using_swg_For_a_function_parameter">For a function parameter </h4>
-<p><span class="code-inline">using</span> applied to a function parameter can be seen as the equivalent of the hidden <span class="code-inline">this</span> in C++. </p>
+<h4 id="_160_scoping_swg__162_002_using_swg_`using`_in_Function_Parameters"><span class="code-inline">using</span> in Function Parameters </h4>
+<p><span class="code-inline">using</span> applied to a function parameter can be seen as the equivalent of the hidden <span class="code-inline">this</span> pointer in C++. It allows you to refer to the fields of the passed struct directly, without needing to dereference the pointer or reference the parameter name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
 
     <span class="SKwd">func</span> <span class="SFct">setOne</span>(<span class="SKwd">using</span> point: *<span class="SCst">Point</span>)
     {
-        <span class="SCmt">// Here there's no need to specify 'point'</span>
+        <span class="SCmt">// No need to specify 'point' to access its fields</span>
         x, y = <span class="SNum">1</span>
     }
 
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
-    <span class="SFct">setOne</span>(&pt)
+    <span class="SFct">setOne</span>(&pt)  <span class="SCmt">// 'using' makes 'x' and 'y' directly accessible inside 'setOne'</span>
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">1</span>)
 
-    <span class="SCmt">// ufcs</span>
-    pt.<span class="SFct">setOne</span>()
+    <span class="SCmt">// UFCS (Uniform Function Call Syntax)</span>
+    pt.<span class="SFct">setOne</span>()  <span class="SCmt">// You can call the function as if it were a method</span>
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">1</span>)
 }</span></div>
-<h4 id="_160_scoping_swg__162_002_using_swg_For_a_field">For a field </h4>
-<p><span class="code-inline">using</span> can also be used with a field inside a struct. </p>
+<h4 id="_160_scoping_swg__162_002_using_swg_`using`_with_Struct_Fields"><span class="code-inline">using</span> with Struct Fields </h4>
+<p><span class="code-inline">using</span> can also be used with a field inside a struct. This allows the fields of a nested struct to be accessed directly as if they were part of the containing struct. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point2</span>
@@ -7086,32 +7145,33 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SKwd">struct</span> <span class="SCst">Point3</span>
     {
-        <span class="SKwd">using</span> base:     <span class="SCst">Point2</span>
-        z:              <span class="STpe">s32</span>
+        <span class="SKwd">using</span> base: <span class="SCst">Point2</span>  <span class="SCmt">// Brings 'Point2' fields into 'Point3'</span>
+        z: <span class="STpe">s32</span>
     }
 
-    <span class="SCmt">// That way the content of the field can be referenced directly</span>
+    <span class="SCmt">// The content of 'base' can be referenced directly</span>
     <span class="SKwd">var</span> value: <span class="SCst">Point3</span>
-    value.x = <span class="SNum">0</span> <span class="SCmt">// Equivalent to value.base.x = 0</span>
-    value.y = <span class="SNum">0</span> <span class="SCmt">// Equivalent to value.base.y = 0</span>
+    value.x = <span class="SNum">0</span>  <span class="SCmt">// Equivalent to 'value.base.x = 0'</span>
+    value.y = <span class="SNum">0</span>  <span class="SCmt">// Equivalent to 'value.base.y = 0'</span>
     value.z = <span class="SNum">0</span>
     <span class="SItr">@assert</span>(&value.x == &value.base.x)
     <span class="SItr">@assert</span>(&value.y == &value.base.y)
 
-    <span class="SCmt">// The compiler can then cast automatically 'Point3' to 'Point2'</span>
+    <span class="SCmt">// The compiler can cast 'Point3' to 'Point2' automatically thanks to `using`</span>
     <span class="SKwd">func</span> <span class="SFct">set1</span>(<span class="SKwd">using</span> ptr: *<span class="SCst">Point2</span>)
     {
         x, y = <span class="SNum">1</span>
     }
 
-    <span class="SFct">set1</span>(&value) <span class="SCmt">// Here the cast is automatic thanks to the using</span>
+    <span class="SFct">set1</span>(&value)  <span class="SCmt">// The cast to 'Point2' is automatic</span>
     <span class="SItr">@assert</span>(value.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(value.y == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(value.base.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(value.base.y == <span class="SNum">1</span>)
 }</span></div>
 
-<h3 id="_160_scoping_swg__163_003_with_swg">With</h3><p>You can use <span class="code-inline">with</span> to avoid repeating the same variable again and again. You can then access fields with a simple <span class="code-inline">.</span>. </p>
+<h3 id="_160_scoping_swg__163_003_with_swg">With</h3><h4 id="_160_scoping_swg__163_003_with_swg_`with`_Statement"><span class="code-inline">with</span> Statement </h4>
+<p>You can use <span class="code-inline">with</span> to avoid repeating the same variable again and again. Within the <span class="code-inline">with</span> block, you can access fields with a simple <span class="code-inline">.</span> prefix, which refers to the fields or methods of the variable or object specified in the <span class="code-inline">with</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point</span> { x, y: <span class="STpe">s32</span> }
 
 <span class="SKwd">impl</span> <span class="SCst">Point</span>
@@ -7121,43 +7181,47 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x, y = <span class="SNum">1</span>
     }
 }</span></div>
-<p><span class="code-inline">with</span> on a variable. </p>
+<h4 id="_160_scoping_swg__163_003_with_swg_`with`_on_a_Variable"><span class="code-inline">with</span> on a Variable </h4>
+<p><span class="code-inline">with</span> can be used with a variable to streamline access to its fields and methods. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
     <span class="SKwd">with</span> pt
     {
-        .x = <span class="SNum">1</span> <span class="SCmt">// equivalent to pt.x</span>
-        .y = <span class="SNum">2</span> <span class="SCmt">// equivalent to pt.y</span>
+        .x = <span class="SNum">1</span> <span class="SCmt">// Equivalent to pt.x</span>
+        .y = <span class="SNum">2</span> <span class="SCmt">// Equivalent to pt.y</span>
     }
 
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)
 }</span></div>
-<p>Works for function calls to. </p>
+<h4 id="_160_scoping_swg__163_003_with_swg_`with`_with_Function_Calls"><span class="code-inline">with</span> with Function Calls </h4>
+<p>The <span class="code-inline">with</span> statement also simplifies function calls on the object or struct. You can call methods or access fields directly within the <span class="code-inline">with</span> block. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
     <span class="SKwd">with</span> pt
     {
-        .<span class="SFct">setOne</span>() <span class="SCmt">// equivalent to pt.setOne() or setOne(pt)</span>
-        .y = <span class="SNum">2</span> <span class="SCmt">// equivalent to pt.y</span>
-        <span class="SItr">@assert</span>(.x == <span class="SNum">1</span>) <span class="SCmt">// equivalent to pt.x</span>
-        <span class="SItr">@assert</span>(.y == <span class="SNum">2</span>) <span class="SCmt">// equivalent to pt.y</span>
+        .<span class="SFct">setOne</span>() <span class="SCmt">// Equivalent to pt.setOne() or setOne(pt)</span>
+        .y = <span class="SNum">2</span> <span class="SCmt">// Equivalent to pt.y</span>
+        <span class="SItr">@assert</span>(.x == <span class="SNum">1</span>) <span class="SCmt">// Equivalent to pt.x</span>
+        <span class="SItr">@assert</span>(.y == <span class="SNum">2</span>) <span class="SCmt">// Equivalent to pt.y</span>
         <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)
         <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)
     }
 }</span></div>
-<p>Works also with a namespace. </p>
+<h4 id="_160_scoping_swg__163_003_with_swg_`with`_with_a_Namespace"><span class="code-inline">with</span> with a Namespace </h4>
+<p><span class="code-inline">with</span> can also be used with a namespace, allowing you to call functions or access constants within that namespace without repeating the namespace name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">with</span> <span class="SCst">NameSpace</span>
     {
-        .<span class="SFct">inside0</span>()
-        .<span class="SFct">inside1</span>()
+        .<span class="SFct">inside0</span>() <span class="SCmt">// Equivalent to NameSpace.inside0()</span>
+        .<span class="SFct">inside1</span>() <span class="SCmt">// Equivalent to NameSpace.inside1()</span>
     }
 }</span></div>
-<p>Instead of an identifier name, <span class="code-inline">with</span> also accepts a variable declaration. </p>
+<h4 id="_160_scoping_swg__163_003_with_swg_`with`_with_Variable_Declaration"><span class="code-inline">with</span> with Variable Declaration </h4>
+<p>Instead of an existing variable, <span class="code-inline">with</span> can also be used directly with a variable declaration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">with</span> <span class="SKwd">var</span> pt = <span class="SCst">Point</span>{<span class="SNum">1</span>, <span class="SNum">2</span>}
@@ -7179,7 +7243,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">10</span> <span class="SLgc">and</span> pt.y == <span class="SNum">20</span>)
 }</span></div>
-<p>Or an affectation statement. </p>
+<h4 id="_160_scoping_swg__163_003_with_swg_`with`_with_an_Assignment_Statement"><span class="code-inline">with</span> with an Assignment Statement </h4>
+<p><span class="code-inline">with</span> can also be used with an assignment statement, allowing you to immediately access and modify the fields of the assigned value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
