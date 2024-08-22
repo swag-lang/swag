@@ -126,15 +126,15 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Wrn0001, "%s");
-    SWAG_ERROR(Wrn0002, "deprecated usage                $ the %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])");
-    SWAG_ERROR(Wrn0003, "unchanged local variable        $ the variable [[%s]] remains unchanged after its declaration $ if you don't need to modify it, declare it with [[let]] instead of [[var]] to ensure immutability");
-    SWAG_ERROR(Wrn0004, "unchanged local variable        $ the variable [[%s]] is declared to its default value, and is never modified after that $ are you sure this variable is necessary?");
-    SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed");
-    SWAG_ERROR(Wrn0006, "unused %s                       $ the %s [[%s]] is not used");
-    SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ a [[break]] is only necessary in an empty [[case]] block $ consider removing it");
-    SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ consider replacing [[else: if]] with a single [[elif]]");
-    SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ consider replacing [[#else: #if]] with a single [[#elif]]");
-    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ consider replacing [[: if]] with a [[where]] clause after the [[%s]] expression");
+    SWAG_ERROR(Wrn0002, "deprecated usage                $ the %s [[%s]] is deprecated (attribute [[#[Swag.Deprecated]]])                            $ ");
+    SWAG_ERROR(Wrn0003, "unchanged local variable        $ the variable [[%s]] remains unchanged after its declaration                               $ if you don't need to modify it, declare it with [[let]] instead of [[var]] to ensure immutability");
+    SWAG_ERROR(Wrn0004, "unchanged local variable        $ the variable [[%s]] is declared to its default value, and is never modified after that    $ are you sure this variable is necessary?");
+    SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed                                     $ ");
+    SWAG_ERROR(Wrn0006, "unused %s                       $ the %s [[%s]] is not used                                                                 $ ");
+    SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ this [[break]] is not necessary                                                           $ a [[break]] is only required in an empty [[case]] block");
+    SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ the [[if]] statement after the [[else]] can be simplified by using a single [[elif]]      $ consider replacing [[else: if]] with [[elif]]");
+    SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ the [[#if]] statement after the [[#else]] can be simplified by using a single [[#elif]]   $ consider replacing [[#else: #if]] with [[#elif]]");
+    SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ the [[if]] statement can be simplified by using a [[where]] clause                        $ ");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -944,7 +944,7 @@ void initErrors()
     SWAG_ERROR(Nte0027, "consider adding [['&']] to get the address of this expression");
     SWAG_ERROR(Nte0028, "consider adding [[impl]] before if this is intentional");
     SWAG_ERROR(Nte0029, "consider adding [[using]] before [[self]] if you intend to access members of the instance directly");
-    SWAG_ERROR(Nte0030, "consider adding [[where <expression>]] after this to replace [[: if]]");
+    SWAG_ERROR(Nte0030, "consider using [[where <expression>]] after this to replace the [[if]] statement");
     SWAG_ERROR(Nte0031, "consider adding a [[break]] if you want to exit without any action");
     SWAG_ERROR(Nte0032, "consider adding a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
     SWAG_ERROR(Nte0033, "consider adding a return type [[->%s]] to the declaration");
@@ -973,7 +973,7 @@ void initErrors()
     SWAG_ERROR(Nte0056, "consider using [[@decltype]] to retrieve the type of an expression");
     SWAG_ERROR(Nte0057, "consider using [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0058, "consider using [[func(]] or [[closure(]] to declare a lambda type");
-    SWAG_ERROR(Nte0059, "consider using [[func]] instead of [[mtd]]");
+    SWAG_ERROR(Nte0059, "consider using [[func]] instead of [[mtd]] to avoid the implicit [[self]] parameter.");
     SWAG_ERROR(Nte0060, "consider using [[func]] to declare a function");
     SWAG_ERROR(Nte0061, "consider using [[mtd]] instead of [[func]] to implicitly include [[using self]] as the first parameter");
     SWAG_ERROR(Nte0062, "consider using [[typealias]] to create an alias for %s");

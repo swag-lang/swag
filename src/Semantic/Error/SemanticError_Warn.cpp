@@ -110,7 +110,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (scope->isNot(ScopeKind::Inline) && scope->owner != node && !node->isParentOf(scope->owner))
         return true;
-    
+
     const auto& table = scope->symTable;
     ScopedLock  lock(table.mutex);
 
@@ -259,34 +259,54 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
         const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
         block               = loopNode->block;
         expression          = loopNode->expression;
+        if (!block || block->isNot(AstNodeKind::Statement))
+            return true;
+        if (block->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE | AstStatement::SPEC_FLAG_CURLY))
+            return true;
+        if (block->childCount() != 1 || block->firstChild()->isNot(AstNodeKind::If))
+            return true;
+        const auto ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
+        if (ifNode->elseBlock)
+            return true;
     }
     else if (node->is(AstNodeKind::Visit))
     {
         const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
         block                = visitNode->block;
         expression           = visitNode->expression;
-    }
-
-    if (block &&
-        expression &&
-        block->is(AstNodeKind::Statement) &&
-        !block->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE) &&
-        !block->hasSpecFlag(AstStatement::SPEC_FLAG_CURLY) &&
-        block->childCount() == 1 &&
-        block->firstChild()->is(AstNodeKind::If))
-    {
+        if (!block || block->isNot(AstNodeKind::Statement))
+            return true;
+        if (block->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE | AstStatement::SPEC_FLAG_CURLY))
+            return true;
+        if (block->childCount() != 1 || block->firstChild()->isNot(AstNodeKind::If))
+            return true;
         const auto ifNode = castAst<AstIf>(block->firstChild(), AstNodeKind::If);
-        if (!ifNode->elseBlock)
-        {
-            SourceLocation loc;
-            expression->computeLocation(loc, loc);
-
-            Diagnostic err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
-            err.addNote(loc, loc, toNte(Nte0030));
-            SWAG_CHECK(context->report(err));
-        }
+        if (ifNode->elseBlock)
+            return true;
+    }
+    else if (node->is(AstNodeKind::SwitchCase))
+    {
+        const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+        block               = caseNode->block;
+        if (!caseNode->expressions.empty())
+            expression = caseNode->expressions.back();
+        if (block->childCount() != 1 || block->firstChild()->isNot(AstNodeKind::If))
+            return true;
     }
 
+    Diagnostic err{block->firstChild(), block->firstChild()->token, formErr(Wrn0010, node->token.cstr()), DiagnosticLevel::Warning};
+    if (expression)
+    {
+        SourceLocation loc;
+        expression->computeLocation(loc, loc);
+        err.addNote(loc, loc, toNte(Nte0030));
+    }
+    else
+    {
+        err.addNote(node, node->token, toNte(Nte0030));
+    }
+
+    SWAG_CHECK(context->report(err));
     return true;
 }
 

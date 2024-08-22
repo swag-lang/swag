@@ -540,7 +540,10 @@ bool Semantic::resolveCase(SemanticContext* context)
         ifNode->ifBlock->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
     }
     else
+    {
+        SWAG_CHECK(SemanticError::warnWhereDoIf(context));
         caseNode->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
+    }
 
     caseNode->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;
