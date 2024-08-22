@@ -1,4 +1,6 @@
 /**
+# Tuples in Swag
+
 A tuple in Swag is an anonymous structure, also known as a struct literal. The syntax for creating a tuple is simply `{}`, enclosing the elements you want to include. Tuples are useful for grouping different types of data together without the need to formally define a structure.
 */
 #test
@@ -8,6 +10,8 @@ A tuple in Swag is an anonymous structure, also known as a struct literal. The s
 }
 
 /**
+# Accessing Tuple Values
+
 By default, tuple values are accessed using automatically assigned field names in the form of `itemX`, where `X` is the index of the field starting from 0.
 */
 #test
@@ -19,6 +23,8 @@ By default, tuple values are accessed using automatically assigned field names i
 }
 
 /**
+# Named Fields in Tuples
+
 You can also specify your own names for the tuple fields, which allows for more descriptive access to the tuple's elements. When you define field names, the default `itemX` names are still available.
 */
 #test
@@ -31,6 +37,8 @@ You can also specify your own names for the tuple fields, which allows for more 
 }
 
 /**
+# Automatic Naming of Tuple Fields
+
 When creating a tuple literal with variables, the tuple fields will automatically take the names of the variables, unless you specify different names explicitly.
 */
 #test
@@ -45,6 +53,8 @@ When creating a tuple literal with variables, the tuple fields will automaticall
 }
 
 /**
+# Tuple Assignment and Compatibility
+
 Even if two tuples do not have the same field names, they can still be assigned to each other as long as the field types are compatible. This flexibility allows for easy data transfer between different tuple structures.
 */
 #test
@@ -62,10 +72,8 @@ Even if two tuples do not have the same field names, they can still be assigned 
 }
 
 /**
-# Tuple unpacking
-*/
+# Tuple Unpacking
 
-/**
 Tuples can be unpacked, meaning their fields can be extracted into individual variables. This feature is particularly useful for splitting a tuple's data into separate variables for further processing.
 */
 #test
@@ -84,6 +92,8 @@ Tuples can be unpacked, meaning their fields can be extracted into individual va
 }
 
 /**
+# Ignoring Tuple Fields During Unpacking
+
 You can ignore certain fields when unpacking a tuple by using the `?` placeholder. This is useful when you only need specific elements of a tuple and want to disregard the rest.
 */
 #test

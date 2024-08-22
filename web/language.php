@@ -1897,19 +1897,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(slice) == <span class="SNum">2</span>)
 }</span></div>
 
-<h2 id="_022_pointers_swg">Pointers</h2><h3 id="_022_pointers_swg">Single value pointers </h3>
+<h2 id="_022_pointers_swg">Pointers</h2><h3 id="_022_pointers_swg">Single Value Pointers </h3>
 <p>A pointer to a <b>single element</b> is declared with <span class="code-inline">*</span>. This allows you to create a pointer that can hold the address of one specific instance of a data type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>      <span class="SCmt">// This is a pointer to a single 'u8' value</span>
     <span class="SKwd">var</span> ptr2: **<span class="STpe">u8</span>     <span class="SCmt">// This is a pointer to another pointer, which in turn points to a single 'u8' value</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Null Pointers </h3>
 <p>A pointer can be <span class="code-inline">null</span>, meaning it does not point to any valid memory location. In Swag, like in many other languages, a null pointer is often used to indicate that the pointer is not yet initialized or intentionally points to "nothing". </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>  <span class="SCmt">// Declaring a pointer to 'u8' without initialization</span>
     <span class="SItr">@assert</span>(ptr1 == <span class="SKwd">null</span>)  <span class="SCmt">// By default, the pointer is null, indicating it doesn't point to any valid memory location</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Taking the Address of a Variable </h3>
 <p>You can take the address of a variable using the <span class="code-inline">&</span> operator. This operator allows you to obtain the memory address of a variable, which can then be stored in a pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1917,6 +1919,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> ptr = &arr  <span class="SCmt">// Take the address of the variable 'arr'</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == *<span class="STpe">s32</span>)  <span class="SCmt">// The type of 'ptr' is a pointer to 's32'</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Dereferencing a Pointer </h3>
 <p>You can get the value that a pointer is pointing to by using the <span class="code-inline">dref</span> intrinsic. Dereferencing a pointer means accessing the data stored at the memory location that the pointer holds. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1924,6 +1927,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> ptr = &arr  <span class="SCmt">// Take the address of 'arr'</span>
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">42</span>)  <span class="SCmt">// Dereference the pointer to access the value of 'arr'</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Const Pointers </h3>
 <p>Pointers can be <span class="code-inline">const</span>, meaning that the pointer itself cannot change what it points to, though the data being pointed to may still be mutable. This is useful when you want to ensure that a pointer always refers to the same memory location. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1931,6 +1935,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> ptr: <span class="SKwd">const</span> *<span class="STpe">u8</span> = <span class="SItr">@dataof</span>(str)  <span class="SCmt">// A const pointer to a 'u8' value</span>
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SStr">`s`</span>)  <span class="SCmt">// Dereferencing the pointer to get the first character of the string</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Combining <span class="code-inline">const</span> with Pointers </h3>
 <p>You can be more specific with pointers by combining <span class="code-inline">const</span> in different ways, but consider if it's necessary for your use case. For example, you can have pointers that are themselves constant, pointers to constant data, or both. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1938,7 +1943,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> ptr1: <span class="SKwd">const</span> *<span class="SKwd">const</span> *<span class="STpe">u8</span>     <span class="SCmt">// A const pointer to a const pointer to 'u8'</span>
     <span class="SKwd">var</span> ptr2: <span class="SKwd">const</span> **<span class="STpe">u8</span>           <span class="SCmt">// A const pointer to a normal pointer to 'u8'</span>
 }</span></div>
-<h3 id="_022_pointers_swg">Multiple values pointers </h3>
+<h3 id="_022_pointers_swg">Multiple Values Pointers </h3>
 <p>If you want to enable <b>pointer arithmetic</b> and make a pointer to <b>multiple values</b> (essentially treating the pointer as pointing to an array or a memory block), declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. This is useful when you need to iterate over a sequence of elements in memory. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1947,6 +1952,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Pointer arithmetic allows you to move the pointer to different elements in the memory block</span>
     ptr = ptr - <span class="SNum">1</span>  <span class="SCmt">// Move the pointer back by one 'u8'</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Pointer Arithmetic and Array Elements </h3>
 <p>Taking the address of an array element allows for pointer arithmetic. When you take the address of an element in an array, the resulting pointer is treated as pointing to multiple elements, enabling arithmetic operations like incrementing or decrementing the pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1957,6 +1963,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     ptr = ptr - <span class="SNum">1</span>  <span class="SCmt">// Move the pointer back to the first element</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>  <span class="SCmt">// The type of ptr is now a pointer to multiple 's32' values</span>
 }</span></div>
+<h3 id="_022_pointers_swg">Dereferencing with Indexes </h3>
 <p>As pointer arithmetic is enabled, you can dereference that kind of pointer by using an index. This allows you to access elements in an array-like manner, even though you're working with a pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1979,7 +1986,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value) == <span class="STpe">s32</span>
 }</span></div>
 
-<h2 id="_023_references_swg">References</h2><p>Swag also supports <b>references</b>, which are pointers that behave like values. References in Swag provide a convenient way to work with memory addresses while abstracting away the need for explicit pointer syntax, making them easier and safer to use in many cases. </p>
+<h2 id="_023_references_swg">References</h2><h3 id="_023_references_swg">References in Swag </h3>
+<p>Swag also supports <b>references</b>, which are pointers that behave like values. References in Swag provide a convenient way to work with memory addresses while abstracting away the need for explicit pointer syntax, making them easier and safer to use in many cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">42</span>
@@ -1993,6 +2001,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// You can think of this as an alias for 'x'.</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">42</span>)
 }</span></div>
+<h3 id="_023_references_swg">Assigning to References </h3>
 <p>When an assignment is made to a reference outside of its initialization, the operation changes the value of the variable being referenced, not the reference itself. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2007,7 +2016,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Since 'myRef' is an alias for 'x', 'x' is also updated.</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">66</span>)
 }</span></div>
-<p>However, unlike in C++, you can change the reference itself (reassign it) rather than the value it points to. To reassign the reference, use the <span class="code-inline">ref</span> modifier in the assignment. </p>
+<h3 id="_023_references_swg">Reassigning References </h3>
+<p>Unlike in C++, you can change the reference itself (reassign it) rather than the value it points to. To reassign the reference, use the <span class="code-inline">ref</span> modifier in the assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>
@@ -2021,6 +2031,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     myRef = <span class="SKwd">#ref</span> &y
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)
 }</span></div>
+<h3 id="_023_references_swg">Passing References to Functions </h3>
 <p>Most of the time, you need to take the address of a variable to create a reference to it. The only exception is when passing a reference to a function parameter, and the reference is declared as <span class="code-inline">const</span>. In such cases, taking the address explicitly is not necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2037,6 +2048,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> ptr = &x
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">4</span>)
 }</span></div>
+<h3 id="_023_references_swg">Using References with Structs </h3>
 <p>This approach is particularly useful for structs, as it allows passing literals directly to functions. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Our first simple struct!</span>
 <span class="SKwd">struct</span> <span class="SCst">MyStruct</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
@@ -2054,6 +2066,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(param.item0 == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(param.item1 == <span class="SNum">2</span>)
 }</span></div>
+<h3 id="_023_references_swg">Equivalent Reference Passing </h3>
 <p>Note that declaring a tuple type or a struct type as a parameter is equivalent to passing a constant reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">titi1</span>(param: { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> })
 {
@@ -2067,7 +2080,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(param.y == <span class="SNum">6</span>)
 }</span></div>
 
-<h2 id="_024_any_swg">Any</h2><p><span class="code-inline">any</span> is a specific type in Swag that can store values of any other type. </p>
+<h2 id="_024_any_swg">Any</h2><h3 id="_024_any_swg">The <span class="code-inline">any</span> Type in Swag </h3>
+<p><span class="code-inline">any</span> is a specific type in Swag that can store values of any other type. </p>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamically typed <b>reference</b> to an existing value. This means that <span class="code-inline">any</span> does not store a copy of the value, but rather a reference to the actual value, along with its type information. </p>
 </div>
@@ -2089,6 +2103,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a = <span class="SKwd">true</span>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">bool</span>) a == <span class="SKwd">true</span>)
 }</span></div>
+<h3 id="_024_any_swg">Working with <span class="code-inline">any</span> and Pointers </h3>
 <p><span class="code-inline">any</span> is effectively a pointer to the value it references, along with a <span class="code-inline">typeinfo</span> that describes the type of the value. You can use <span class="code-inline">@dataof</span> to retrieve the pointer to the actual value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2096,6 +2111,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> ptr = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="STpe">s32</span>) <span class="SItr">@dataof</span>(a)  <span class="SCmt">// Retrieve the pointer to the stored value</span>
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">6</span>)                 <span class="SCmt">// Dereference the pointer to get the value</span>
 }</span></div>
+<h3 id="_024_any_swg">Type Information and <span class="code-inline">any</span> </h3>
 <p>When you use <span class="code-inline">@typeof</span> on an <span class="code-inline">any</span>, it will return the type <span class="code-inline">any</span> itself, as <span class="code-inline">any</span> is the type of the reference. However, <span class="code-inline">@kindof</span> gives you the actual underlying type of the value stored in <span class="code-inline">any</span>. Note that <span class="code-inline">@kindof</span> is evaluated at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2106,6 +2122,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a = <span class="SKwd">true</span>                           <span class="SCmt">// Change the stored value to a bool</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">bool</span>)        <span class="SCmt">// Now the underlying type is 'bool'</span>
 }</span></div>
+<h3 id="_024_any_swg">Retrieving Values from <span class="code-inline">any</span> </h3>
 <p>You can retrieve the value stored in an <span class="code-inline">any</span> either directly or as a constant reference. This flexibility allows you to work with the value in whatever way best suits your needs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2118,6 +2135,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> &<span class="STpe">s32</span>) a         <span class="SCmt">// Get a constant reference to the value</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">42</span>)
 }</span></div>
+<h3 id="_024_any_swg">Arrays of <span class="code-inline">any</span> </h3>
 <p>You can also create arrays that contain multiple types using <span class="code-inline">any</span>. This allows for a heterogeneous collection where each element can be of a different type. This is useful in cases where you need to store and manipulate data of various types in a single structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2132,6 +2150,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">f32</span>) array[<span class="SNum">2</span>] == <span class="SNum">3.0</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) array[<span class="SNum">3</span>] == <span class="SStr">"4"</span>)
 }</span></div>
+<h3 id="_024_any_swg">Nullability of <span class="code-inline">any</span> </h3>
 <p>An <span class="code-inline">any</span> value can be set to null and tested against null, just like pointers or other nullable types. This feature allows you to handle cases where a value may or may not be set, providing flexibility in managing optional values. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2149,6 +2168,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     x = <span class="SKwd">null</span>                            <span class="SCmt">// Set 'x' back to null</span>
     <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
 }</span></div>
+<h3 id="_024_any_swg">Type Checking with <span class="code-inline">any</span> </h3>
 <p>An <span class="code-inline">any</span> value can be tested against a type using <span class="code-inline">==</span> and <span class="code-inline">!=</span>. This effectively calls <span class="code-inline">@kindof</span> to retrieve the underlying type for comparison. This capability is useful when you need to ensure that the value inside <span class="code-inline">any</span> is of a specific type before performing operations on it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2170,12 +2190,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SCst">A</span>)                     <span class="SCmt">// 'x' is of type A</span>
 }</span></div>
 
-<h2 id="_025_tuple_swg">Tuple</h2><p>A tuple in Swag is an anonymous structure, also known as a struct literal. The syntax for creating a tuple is simply <span class="code-inline">{}</span>, enclosing the elements you want to include. Tuples are useful for grouping different types of data together without the need to formally define a structure. </p>
+<h2 id="_025_tuple_swg">Tuple</h2><h3 id="_025_tuple_swg">Tuples in Swag </h3>
+<p>A tuple in Swag is an anonymous structure, also known as a struct literal. The syntax for creating a tuple is simply <span class="code-inline">{}</span>, enclosing the elements you want to include. Tuples are useful for grouping different types of data together without the need to formally define a structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> tuple1 = {<span class="SNum">2</span>, <span class="SNum">2</span>}                    <span class="SCmt">// A tuple with two integer elements</span>
     <span class="SKwd">let</span> tuple2 = {<span class="SStr">"string"</span>, <span class="SNum">2</span>, <span class="SKwd">true</span>}       <span class="SCmt">// A tuple with a string, an integer, and a boolean</span>
 }</span></div>
+<h3 id="_025_tuple_swg">Accessing Tuple Values </h3>
 <p>By default, tuple values are accessed using automatically assigned field names in the form of <span class="code-inline">itemX</span>, where <span class="code-inline">X</span> is the index of the field starting from 0. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2184,6 +2206,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2</span>)              <span class="SCmt">// Access the second element</span>
     <span class="SItr">@assert</span>(tuple.item2 == <span class="SKwd">true</span>)           <span class="SCmt">// Access the third element</span>
 }</span></div>
+<h3 id="_025_tuple_swg">Named Fields in Tuples </h3>
 <p>You can also specify your own names for the tuple fields, which allows for more descriptive access to the tuple's elements. When you define field names, the default <span class="code-inline">itemX</span> names are still available. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2193,6 +2216,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(tuple.y == <span class="SNum">2.0</span>)                <span class="SCmt">// Access using the custom field name 'y'</span>
     <span class="SItr">@assert</span>(tuple.item1 == <span class="SNum">2.0</span>)            <span class="SCmt">// Access using the default 'item1'</span>
 }</span></div>
+<h3 id="_025_tuple_swg">Automatic Naming of Tuple Fields </h3>
 <p>When creating a tuple literal with variables, the tuple fields will automatically take the names of the variables, unless you specify different names explicitly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2204,6 +2228,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(t.y == <span class="SNum">666</span>)                    <span class="SCmt">// Access using the variable name 'y'</span>
     <span class="SItr">@assert</span>(t.item1 == t.y)                <span class="SCmt">// 'item1' corresponds to 'y'</span>
 }</span></div>
+<h3 id="_025_tuple_swg">Tuple Assignment and Compatibility </h3>
 <p>Even if two tuples do not have the same field names, they can still be assigned to each other as long as the field types are compatible. This flexibility allows for easy data transfer between different tuple structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2218,7 +2243,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Even though 'x' and 'y' have different field names, their types are not considered identical.</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) != <span class="SItr">@typeof</span>(y)
 }</span></div>
-<h3 id="_025_tuple_swg">Tuple unpacking </h3>
+<h3 id="_025_tuple_swg">Tuple Unpacking </h3>
 <p>Tuples can be unpacked, meaning their fields can be extracted into individual variables. This feature is particularly useful for splitting a tuple's data into separate variables for further processing. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2234,6 +2259,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(name == <span class="SStr">"name"</span>)
     <span class="SItr">@assert</span>(value == <span class="SKwd">true</span>)
 }</span></div>
+<h3 id="_025_tuple_swg">Ignoring Tuple Fields During Unpacking </h3>
 <p>You can ignore certain fields when unpacking a tuple by using the <span class="code-inline">?</span> placeholder. This is useful when you only need specific elements of a tuple and want to disregard the rest. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2244,7 +2270,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y == <span class="SNum">2.0</span>)
 }</span></div>
 
-<h2 id="_030_enum_swg">Enum</h2><p>Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with <span class="code-inline">;</span>, <span class="code-inline">,</span>, or an end of line (eol). </p>
+<h2 id="_030_enum_swg">Enum</h2><h3 id="_030_enum_swg">Enums in Swag </h3>
+<p>Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with <span class="code-inline">;</span>, <span class="code-inline">,</span>, or an end of line (eol). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values0</span>
@@ -2270,6 +2297,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">enum</span> <span class="SCst">Values4</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
     <span class="SKwd">enum</span> <span class="SCst">Values5</span> { <span class="SCst">A</span>; <span class="SCst">B</span> }
 }</span></div>
+<h3 id="_030_enum_swg">Enum Underlying Type </h3>
 <p>By default, an enum in Swag is of type <span class="code-inline">s32</span>, meaning the underlying storage for each value is a 32-bit signed integer. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2281,6 +2309,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(type.rawType == <span class="STpe">s32</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
 }</span></div>
+<h3 id="_030_enum_swg">Using <span class="code-inline">@kindof</span> to Retrieve Underlying Type </h3>
 <p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2289,6 +2318,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) != <span class="SCst">RGB</span>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) == <span class="STpe">s32</span>
 }</span></div>
+<h3 id="_030_enum_swg">Custom Enum Underlying Type </h3>
 <p>You can specify a custom underlying type for an enum by appending it after the enum name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2302,6 +2332,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">Values1</span>) == <span class="STpe">s64</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values1</span>.<span class="SCst">A</span>) == <span class="SCst">Values1</span>
 }</span></div>
+<h3 id="_030_enum_swg">Default and Custom Enum Values </h3>
 <p>Enum values, if not explicitly specified, start at 0 and increase by 1 for each subsequent value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2330,6 +2361,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">20</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">30</span>
 }</span></div>
+<h3 id="_030_enum_swg">Incremental Enum Values </h3>
 <p>If you omit a value after assigning a specific one, it will be assigned the previous value plus 1. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2344,6 +2376,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">11</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">12</span>
 }</span></div>
+<h3 id="_030_enum_swg">Non-Integer Enum Values </h3>
 <p>For non-integer types, you <b>must</b> specify the values explicitly, as they cannot be deduced automatically. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2369,6 +2402,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">B</span> == <span class="SNum">3.14</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value2</span>.<span class="SCst">C</span> == <span class="SNum">6.0</span>
 }</span></div>
+<h3 id="_030_enum_swg">Counting Enum Values </h3>
 <p><span class="code-inline">@countof</span> can be used to return the number of values defined in an enum. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2382,6 +2416,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(<span class="SCst">Value</span>) == <span class="SNum">3</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(<span class="SCst">Value</span>) == <span class="SNum">3</span>
 }</span></div>
+<h3 id="_030_enum_swg">Using <span class="code-inline">using</span> with Enums </h3>
 <p>You can use the <span class="code-inline">using</span> keyword to make enum values accessible without needing to specify the enum name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2404,7 +2439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">B</span> == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">2</span>)
 }</span></div>
-<h3 id="_030_enum_swg">Enum as flags </h3>
+<h3 id="_030_enum_swg">Enums as Flags </h3>
 <p>Enums can be used as flags if declared with the <span class="code-inline">#[Swag.EnumFlags]</span> attribute. For this, the enum's underlying type should be <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span>, or <span class="code-inline">u64</span>. By default, enums declared as flags start at 1 (not 0), and each value is typically a power of 2. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2427,7 +2462,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(value & <span class="SCst">MyFlags</span>.<span class="SCst">B</span> == <span class="SCst">MyFlags</span>.<span class="SCst">B</span>)
     <span class="SItr">@assert</span>(value & <span class="SCst">MyFlags</span>.<span class="SCst">C</span> == <span class="SCst">MyFlags</span>.<span class="SCst">C</span>)
 }</span></div>
-<h3 id="_030_enum_swg">Enum of arrays </h3>
+<h3 id="_030_enum_swg">Enums with Arrays </h3>
 <p>You can define an enum where each value is associated with a const static array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2442,7 +2477,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span>[<span class="SNum">0</span>] == <span class="SNum">10</span>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span>[<span class="SNum">1</span>] == <span class="SNum">20</span>
 }</span></div>
-<h3 id="_030_enum_swg">Enum of slices </h3>
+<h3 id="_030_enum_swg">Enums with Slices </h3>
 <p>Similarly, you can define an enum where each value is associated with a const slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2462,7 +2497,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y[<span class="SNum">0</span>] == <span class="SNum">10</span>)
     <span class="SItr">@assert</span>(y[<span class="SNum">1</span>] == <span class="SNum">20</span>)
 }</span></div>
-<h3 id="_030_enum_swg">Nested enums </h3>
+<h3 id="_030_enum_swg">Nested Enums </h3>
 <p>Enums can be nested within other enums using the <span class="code-inline">using</span> keyword. Both enums must share the same underlying type. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">enum</span> <span class="SCst">BasicErrors</span>
 {
@@ -2476,8 +2511,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">using</span> <span class="SCst">BasicErrors</span>
     <span class="SCst">NotFound</span> = <span class="SNum">100</span>
 }</span></div>
+<h3 id="_030_enum_swg">Accessing Nested Enums </h3>
 <p>To access a value inside a nested enum, use the enum name (a scope is created). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">MyError0</span> = <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToSave</span></span></div>
+<h3 id="_030_enum_swg">Automatic Cast with Nested Enums </h3>
 <p>An <b>automatic cast</b> occurs when converting a nested enum to its parent enum. For example, a value of type <span class="code-inline">BasicErrors</span> can be passed to a parameter of type <span class="code-inline">MyErrors</span> because <span class="code-inline">MyErrors</span> includes <span class="code-inline">BasicErrors</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2493,7 +2530,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">toto</span>(<span class="SCst">E0</span>)
     <span class="SFct">toto</span>(<span class="SCst">E1</span>) <span class="SCmt">// Automatic cast from 'BasicErrors' to 'MyErrors'</span>
 }</span></div>
-<h3 id="_030_enum_swg">Specific attributes </h3>
+<h3 id="_030_enum_swg">Specific Attributes for Enums </h3>
 <p>You can use <span class="code-inline">#[Swag.EnumIndex]</span> to enable an enum value to be used directly as an index without needing to cast it. The underlying enum type must be an integer type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2503,6 +2540,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> <span class="SCst">Array</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SKwd">const</span> <span class="SCst">Valu</span> = <span class="SCst">Array</span>[<span class="SCst">MyIndex</span>.<span class="SCst">First</span>]   <span class="SCmt">// No need to cast 'MyIndex.First'</span>
 }</span></div>
+<h3 id="_030_enum_swg">Preventing Duplicate Enum Values </h3>
 <p>You can use <span class="code-inline">#[Swag.NoDuplicate]</span> to prevent duplicated values inside an enum. If the compiler detects a value defined more than once, it will raise an error. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2513,8 +2551,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">//Val1 = 0      // Will raise an error because '0' is already defined</span>
     }
 }</span></div>
-<h3 id="_030_enum_swg">Enum type inference </h3>
+<h3 id="_030_enum_swg">Enum Type Inference </h3>
 <p>Enums in Swag allow type inference, so you can often omit the enum type when assigning a value. </p>
+<h4 id="_030_enum_swg">Type Inference in Assignments </h4>
 <p>The enum type is not necessary in the assignment expression when declaring a variable, as it can be deduced. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2528,6 +2567,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(x == y)
 }</span></div>
+<h4 id="_030_enum_swg">Type Inference in <span class="code-inline">switch</span> Statements </h4>
 <p>The enum type is not necessary in a <span class="code-inline">case</span> expression of a <span class="code-inline">switch</span> block, as it is inferred from the switch expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2548,6 +2588,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">case</span> <span class="SCst">B</span>: <span class="SLgc">break</span>
     }
 }</span></div>
+<h4 id="_030_enum_swg">Simplified Enum Syntax </h4>
 <p>In expressions where the enum type can be deduced, you can omit the enum name and use the <span class="code-inline">.Value</span> syntax. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2560,6 +2601,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == .<span class="SCst">A</span>)
     <span class="SItr">@assert</span>(x != .<span class="SCst">B</span>)
 }</span></div>
+<h4 id="_030_enum_swg">Simplified Syntax for Enum Flags </h4>
 <p>This also works for enums used as flags. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2569,6 +2611,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> x = <span class="SCst">Values</span>.<span class="SCst">A</span> | <span class="SCst">Values</span>.<span class="SCst">B</span>
     <span class="SItr">@assert</span>((x & .<span class="SCst">A</span>) <span class="SLgc">and</span> (x & .<span class="SCst">B</span>))
 }</span></div>
+<h4 id="_030_enum_swg">Simplified Enum Syntax in Function Calls </h4>
 <p>In most cases, the simplified <span class="code-inline">.Value</span> syntax also works when passing enum values to functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2579,7 +2622,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h3 id="_030_enum_swg">Visiting Enum Values </h3>
 <p>Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum. </p>
 <p>The two primary mechanisms for iterating over enum values are the <span class="code-inline">loop</span> construct and the <span class="code-inline">visit</span> statement. </p>
-<h4 id="_030_enum_swg">Loop </h4>
+<h4 id="_030_enum_swg">Looping Over Enum Values </h4>
+<p>The <span class="code-inline">loop</span> construct allows you to iterate over all values in an enum. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
@@ -2595,7 +2639,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <p>The <span class="code-inline">loop idx in RGB:</span> statement is a powerful construct that allows you to iterate over all values in the <span class="code-inline">RGB</span> enum. During each iteration, <span class="code-inline">idx</span> holds the current enum value, which can be used within the loop body. In the example above, the loop simply counts the number of values in the enum, asserting that the total is 3. </p>
 <p>This method is useful when you need to apply the same operation to each enum value, such as populating a list, checking conditions, or performing calculations. </p>
-<h4 id="_030_enum_swg">Visit </h4>
+<h4 id="_030_enum_swg">Visiting Enum Values </h4>
+<p>The <span class="code-inline">visit</span> statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>

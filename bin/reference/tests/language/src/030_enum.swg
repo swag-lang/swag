@@ -1,4 +1,6 @@
 /**
+# Enums in Swag
+
 Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with `;`, `,`, or an end of line (eol).
 */
 #test
@@ -28,6 +30,8 @@ Enums in Swag allow you to define a set of named values. Unlike C/C++, enum valu
 }
 
 /**
+# Enum Underlying Type
+
 By default, an enum in Swag is of type `s32`, meaning the underlying storage for each value is a 32-bit signed integer.
 */
 #test
@@ -42,6 +46,8 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
 }
 
 /**
+# Using `@kindof` to Retrieve Underlying Type
+
 `@kindof` can be used to return the underlying type of the enum at runtime.
 */
 #test
@@ -53,6 +59,8 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
 }
 
 /**
+# Custom Enum Underlying Type
+
 You can specify a custom underlying type for an enum by appending it after the enum name.
 */
 #test
@@ -69,6 +77,8 @@ You can specify a custom underlying type for an enum by appending it after the e
 }
 
 /**
+# Default and Custom Enum Values
+
 Enum values, if not explicitly specified, start at 0 and increase by 1 for each subsequent value.
 */
 #test
@@ -103,6 +113,8 @@ You can specify custom values for each enum element.
 }
 
 /**
+# Incremental Enum Values
+
 If you omit a value after assigning a specific one, it will be assigned the previous value plus 1.
 */
 #test
@@ -120,6 +132,8 @@ If you omit a value after assigning a specific one, it will be assigned the prev
 }
 
 /**
+# Non-Integer Enum Values
+
 For non-integer types, you **must** specify the values explicitly, as they cannot be deduced automatically.
 */
 #test
@@ -148,6 +162,8 @@ For non-integer types, you **must** specify the values explicitly, as they canno
 }
 
 /**
+# Counting Enum Values
+
 `@countof` can be used to return the number of values defined in an enum.
 */
 #test
@@ -164,6 +180,8 @@ For non-integer types, you **must** specify the values explicitly, as they canno
 }
 
 /**
+# Using `using` with Enums
+
 You can use the `using` keyword to make enum values accessible without needing to specify the enum name.
 */
 #test
@@ -189,7 +207,8 @@ You can use the `using` keyword to make enum values accessible without needing t
 }
 
 /**
-# Enum as flags
+# Enums as Flags
+
 Enums can be used as flags if declared with the `#[Swag.EnumFlags]` attribute. For this, the enum's underlying type should be `u8`, `u16`, `u32`, or `u64`. By default, enums declared as flags start at 1 (not 0), and each value is typically a power of 2.
 */
 #test
@@ -215,7 +234,8 @@ Enums can be used as flags if declared with the `#[Swag.EnumFlags]` attribute. F
 }
 
 /**
-# Enum of arrays
+# Enums with Arrays
+
 You can define an enum where each value is associated with a const static array.
 */
 #test
@@ -233,7 +253,8 @@ You can define an enum where each value is associated with a const static array.
 }
 
 /**
-# Enum of slices
+# Enums with Slices
+
 Similarly, you can define an enum where each value is associated with a const slice.
 */
 #test
@@ -256,7 +277,8 @@ Similarly, you can define an enum where each value is associated with a const sl
 }
 
 /**
-# Nested enums
+# Nested Enums
+
 Enums can be nested within other enums using the `using` keyword. Both enums must share the same underlying type.
 */
 enum BasicErrors
@@ -273,11 +295,15 @@ enum MyErrors
 }
 
 /**
+# Accessing Nested Enums
+
 To access a value inside a nested enum, use the enum name (a scope is created).
 */
 const MyError0 = MyErrors.BasicErrors.FailedToSave
 
 /**
+# Automatic Cast with Nested Enums
+
 An **automatic cast** occurs when converting a nested enum to its parent enum. For example, a value of type `BasicErrors` can be passed to a parameter of type `MyErrors` because `MyErrors` includes `BasicErrors`.
 */
 #test
@@ -296,7 +322,8 @@ An **automatic cast** occurs when converting a nested enum to its parent enum. F
 }
 
 /**
-# Specific attributes
+# Specific Attributes for Enums
+
 You can use `#[Swag.EnumIndex]` to enable an enum value to be used directly as an index without needing to cast it. The underlying enum type must be an integer type.
 */
 #test
@@ -309,6 +336,8 @@ You can use `#[Swag.EnumIndex]` to enable an enum value to be used directly as a
 }
 
 /**
+# Preventing Duplicate Enum Values
+
 You can use `#[Swag.NoDuplicate]` to prevent duplicated values inside an enum. If the compiler detects a value defined more than once, it will raise an error.
 */
 #test
@@ -322,11 +351,14 @@ You can use `#[Swag.NoDuplicate]` to prevent duplicated values inside an enum. I
 }
 
 /**
-# Enum type inference
+# Enum Type Inference
+
 Enums in Swag allow type inference, so you can often omit the enum type when assigning a value.
 */
 
 /**
+## Type Inference in Assignments
+
 The enum type is not necessary in the assignment expression when declaring a variable, as it can be deduced.
 */
 #test
@@ -343,6 +375,8 @@ The enum type is not necessary in the assignment expression when declaring a var
 }
 
 /**
+## Type Inference in `switch` Statements
+
 The enum type is not necessary in a `case` expression of a `switch` block, as it is inferred from the switch expression.
 */
 #test
@@ -366,6 +400,8 @@ The enum type is not necessary in a `case` expression of a `switch` block, as it
 }
 
 /**
+## Simplified Enum Syntax
+
 In expressions where the enum type can be deduced, you can omit the enum name and use the `.Value` syntax.
 */
 #test
@@ -381,6 +417,8 @@ In expressions where the enum type can be deduced, you can omit the enum name an
 }
 
 /**
+## Simplified Syntax for Enum Flags
+
 This also works for enums used as flags.
 */
 #test
@@ -393,6 +431,8 @@ This also works for enums used as flags.
 }
 
 /**
+## Simplified Enum Syntax in Function Calls
+
 In most cases, the simplified `.Value` syntax also works when passing enum values to functions.
 */
 #test
@@ -404,13 +444,16 @@ In most cases, the simplified `.Value` syntax also works when passing enum value
 
 /**
 # Visiting Enum Values
+
 Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum.
 
 The two primary mechanisms for iterating over enum values are the `loop` construct and the `visit` statement.
 */
 
 /**
-## Loop 
+## Looping Over Enum Values
+
+The `loop` construct allows you to iterate over all values in an enum.
 */
 #test
 {
@@ -433,9 +476,10 @@ This method is useful when you need to apply the same operation to each enum val
 */
 
 /**
-## Visit 
-*/
+## Visiting Enum Values
 
+The `visit` statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value.
+*/
 #test
 {
     enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B

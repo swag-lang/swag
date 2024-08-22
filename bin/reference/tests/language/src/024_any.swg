@@ -1,4 +1,6 @@
 /**
+# The `any` Type in Swag
+
 `any` is a specific type in Swag that can store values of any other type.
 
 > WARNING:
@@ -25,6 +27,8 @@
 }
 
 /**
+# Working with `any` and Pointers
+
 `any` is effectively a pointer to the value it references, along with a `typeinfo` that describes the type of the value. You can use `@dataof` to retrieve the pointer to the actual value.
 */
 #test
@@ -35,6 +39,8 @@
 }
 
 /**
+# Type Information and `any`
+
 When you use `@typeof` on an `any`, it will return the type `any` itself, as `any` is the type of the reference. However, `@kindof` gives you the actual underlying type of the value stored in `any`. Note that `@kindof` is evaluated at runtime.
 */
 #test
@@ -48,6 +54,8 @@ When you use `@typeof` on an `any`, it will return the type `any` itself, as `an
 }
 
 /**
+# Retrieving Values from `any`
+
 You can retrieve the value stored in an `any` either directly or as a constant reference. This flexibility allows you to work with the value in whatever way best suits your needs.
 */
 #test
@@ -63,6 +71,8 @@ You can retrieve the value stored in an `any` either directly or as a constant r
 }
 
 /**
+# Arrays of `any`
+
 You can also create arrays that contain multiple types using `any`. This allows for a heterogeneous collection where each element can be of a different type. This is useful in cases where you need to store and manipulate data of various types in a single structure.
 */
 #test
@@ -80,6 +90,8 @@ You can also create arrays that contain multiple types using `any`. This allows 
 }
 
 /**
+# Nullability of `any`
+
 An `any` value can be set to null and tested against null, just like pointers or other nullable types. This feature allows you to handle cases where a value may or may not be set, providing flexibility in managing optional values.
 */
 #test
@@ -100,6 +112,8 @@ An `any` value can be set to null and tested against null, just like pointers or
 }
 
 /**
+# Type Checking with `any`
+
 An `any` value can be tested against a type using `==` and `!=`. This effectively calls `@kindof` to retrieve the underlying type for comparison. This capability is useful when you need to ensure that the value inside `any` is of a specific type before performing operations on it.
 */
 #test

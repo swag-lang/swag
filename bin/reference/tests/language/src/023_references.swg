@@ -1,4 +1,6 @@
 /**
+# References in Swag
+
 Swag also supports **references**, which are pointers that behave like values. References in Swag provide a convenient way to work with memory addresses while abstracting away the need for explicit pointer syntax, making them easier and safer to use in many cases.
 */
 
@@ -17,6 +19,8 @@ Swag also supports **references**, which are pointers that behave like values. R
 }
 
 /**
+# Assigning to References
+
 When an assignment is made to a reference outside of its initialization, the operation changes the value of the variable being referenced, not the reference itself.
 */
 
@@ -35,7 +39,9 @@ When an assignment is made to a reference outside of its initialization, the ope
 }
 
 /**
-However, unlike in C++, you can change the reference itself (reassign it) rather than the value it points to. To reassign the reference, use the `ref` modifier in the assignment.
+# Reassigning References
+
+Unlike in C++, you can change the reference itself (reassign it) rather than the value it points to. To reassign the reference, use the `ref` modifier in the assignment.
 */
 
 #test
@@ -53,6 +59,8 @@ However, unlike in C++, you can change the reference itself (reassign it) rather
 }
 
 /**
+# Passing References to Functions
+
 Most of the time, you need to take the address of a variable to create a reference to it. The only exception is when passing a reference to a function parameter, and the reference is declared as `const`. In such cases, taking the address explicitly is not necessary.
 */
 
@@ -73,6 +81,8 @@ func toto(x: const &s32)
 }
 
 /**
+# Using References with Structs
+
 This approach is particularly useful for structs, as it allows passing literals directly to functions.
 */
 
@@ -94,6 +104,8 @@ func titi0(param: const &{ x: s32, y: s32 })
 }
 
 /**
+# Equivalent Reference Passing
+
 Note that declaring a tuple type or a struct type as a parameter is equivalent to passing a constant reference.
 */
 func titi1(param: { x: s32, y: s32 })

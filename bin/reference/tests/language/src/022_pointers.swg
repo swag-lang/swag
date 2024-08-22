@@ -1,8 +1,6 @@
 /**
-# Single value pointers
-*/
+# Single Value Pointers
 
-/**
 A pointer to a **single element** is declared with `*`. This allows you to create a pointer that can hold the address of one specific instance of a data type.
 */
 #test
@@ -12,6 +10,8 @@ A pointer to a **single element** is declared with `*`. This allows you to creat
 }
 
 /**
+# Null Pointers
+
 A pointer can be `null`, meaning it does not point to any valid memory location. In Swag, like in many other languages, a null pointer is often used to indicate that the pointer is not yet initialized or intentionally points to "nothing".
 */
 #test
@@ -21,6 +21,8 @@ A pointer can be `null`, meaning it does not point to any valid memory location.
 }
 
 /**
+# Taking the Address of a Variable
+
 You can take the address of a variable using the `&` operator. This operator allows you to obtain the memory address of a variable, which can then be stored in a pointer.
 */
 #test
@@ -31,6 +33,8 @@ You can take the address of a variable using the `&` operator. This operator all
 }
 
 /**
+# Dereferencing a Pointer
+
 You can get the value that a pointer is pointing to by using the `dref` intrinsic. Dereferencing a pointer means accessing the data stored at the memory location that the pointer holds.
 */
 #test
@@ -41,6 +45,8 @@ You can get the value that a pointer is pointing to by using the `dref` intrinsi
 }
 
 /**
+# Const Pointers
+
 Pointers can be `const`, meaning that the pointer itself cannot change what it points to, though the data being pointed to may still be mutable. This is useful when you want to ensure that a pointer always refers to the same memory location.
 */
 #test
@@ -51,6 +57,8 @@ Pointers can be `const`, meaning that the pointer itself cannot change what it p
 }
 
 /**
+# Combining `const` with Pointers
+
 You can be more specific with pointers by combining `const` in different ways, but consider if it's necessary for your use case. For example, you can have pointers that are themselves constant, pointers to constant data, or both.
 */
 #test
@@ -61,7 +69,8 @@ You can be more specific with pointers by combining `const` in different ways, b
 }
 
 /**
-# Multiple values pointers
+# Multiple Values Pointers
+
 If you want to enable **pointer arithmetic** and make a pointer to **multiple values** (essentially treating the pointer as pointing to an array or a memory block), declare your pointer with `^` instead of `*`. This is useful when you need to iterate over a sequence of elements in memory.
 */
 #test
@@ -73,6 +82,8 @@ If you want to enable **pointer arithmetic** and make a pointer to **multiple va
 }
 
 /**
+# Pointer Arithmetic and Array Elements
+
 Taking the address of an array element allows for pointer arithmetic. When you take the address of an element in an array, the resulting pointer is treated as pointing to multiple elements, enabling arithmetic operations like incrementing or decrementing the pointer.
 */
 #test
@@ -86,6 +97,8 @@ Taking the address of an array element allows for pointer arithmetic. When you t
 }
 
 /**
+# Dereferencing with Indexes
+
 As pointer arithmetic is enabled, you can dereference that kind of pointer by using an index. This allows you to access elements in an array-like manner, even though you're working with a pointer.
 */
 #test
