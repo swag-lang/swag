@@ -118,7 +118,12 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
         what = Naming::kindName(thisKind);
 
     Diagnostic err{sourceFile, token, formErr(Err0522, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
-    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0196));
+
+    if (otherSymbolDecl->isGeneratedSelf())
+        err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, toNte(Nte0221));
+    else
+        err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0196));
+    
     return context->report(err);
 }
 
