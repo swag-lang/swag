@@ -938,7 +938,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     }
 
     // default with a "where"
-    else if (whereClause)
+    else if (whereClause && !whereClause->hasComputedValue())
     {
         allJumps.push_back(context->bc->numInstructions);
         const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
@@ -954,6 +954,12 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
             jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
         }        
+    }
+    else if (whereClause && !whereClause->computedValue()->reg.b)
+    {
+        // Jump to the next case, except for the default, which is the last
+        blockNode->seekJumpNextCase = context->bc->numInstructions;
+        EMIT_INST0(context, ByteCodeOp::Jump);
     }
 
     if (whereClause)
