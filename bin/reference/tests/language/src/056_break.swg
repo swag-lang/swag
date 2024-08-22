@@ -1,18 +1,18 @@
 /**
-We have already seen than `break` is used to exit a `loop`, `visit`, `while`, `for`, `switch`.
+We have already seen that `break` is used to exit a `loop`, `visit`, `while`, `for`, and `switch`.
 */
 #test
 {
     loop 10:
-        break
+        break                 // Exits the loop immediately
     for var i = 0; i < 10; i += 1:
-        break
+        break                 // Exits the loop immediately
     while false:
-        break
+        break                 // Although this line will never be reached, it demonstrates usage
 }
 
 /**
-By default, `break` will exit the parent scope only.
+By default, `break` will exit only the innermost loop or control structure.
 */
 #test
 {
@@ -21,41 +21,41 @@ By default, `break` will exit the parent scope only.
     {
         loop 10
         {
-            break // Exit the inner loop...
+            break             // Exits the inner loop...
         }
 
-        // ...and continue execution here
+        // ...and continues execution here in the outer loop
         cpt += 1
     }
 
-    @assert(cpt == 10)
+    @assert(cpt == 10)        // The outer loop runs 10 times
 }
 
 /**
-But you can **name a scope** with the `#scope` compiler keyword, and exit to the end of it with a `break`.
+However, you can **name a scope** using the `#scope` compiler keyword and then use `break` to exit directly to the end of that named scope.
 */
 #test
 {
     var cpt = 0
 
-    // Creates a scope named 'BigScope'
+    // Define a scope named 'BigScope'
     #scope BigScope
     {
         loop 10
         {
             cpt += 1
-            break BigScope // Break to the outer scope...
+            break BigScope    // Breaks out of the entire 'BigScope'
         }
 
-        @assert(false)
+        @assert(false)        // This assertion is never reached
     }
 
-    // ...and continue execution here
-    @assert(cpt == 1)
+    // Execution resumes here after breaking out of 'BigScope'
+    @assert(cpt == 1)         // Confirms that the loop inside 'BigScope' ran only once
 }
 
 /**
-When used with a scope, a continue is a way to go back to the start of the scope.
+When used with a named scope, `continue` allows you to return to the beginning of the scope, effectively restarting the scope's execution.
 */
 #test
 {
@@ -64,15 +64,15 @@ When used with a scope, a continue is a way to go back to the start of the scope
     {
         cpt += 1
         if cpt == 5:
-            break
-        continue // Loop
+            break            // Exits the 'Loop' scope when `cpt` reaches 5
+        continue             // Returns to the start of 'Loop'
     }
 
-    @assert(cpt == 5)
+    @assert(cpt == 5)        // Ensures the loop runs exactly 5 times
 }
 
 /**
-It's not mandatory to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else.
+It's not mandatory to name the scope, so this technique can be used as an alternative to a series of if/else statements, providing a clean and structured way to manage multiple conditions.
 */
 #test
 {
@@ -82,25 +82,25 @@ It's not mandatory to name the scope, so this can also be used (for example) as 
         if cpt == 1
         {
             @assert(cpt == 1)
-            break
+            break            // Exits the unnamed scope
         }
 
         if cpt == 2
         {
             @assert(cpt == 2)
-            break
+            break            // Exits the unnamed scope
         }
 
         if cpt == 3
         {
             @assert(cpt == 3)
-            break
+            break            // Exits the unnamed scope
         }
     }
 }
 
 /**
-Note that a scope can be followed by a simple statement, not always a block.
+Note that a scope can be followed by a simple statement rather than a block, allowing for flexible control over flow.
 */
 #test
 {
@@ -110,9 +110,9 @@ Note that a scope can be followed by a simple statement, not always a block.
         loop 10
         {
             if #index == 5:
-                break Up
+                break Up      // Exits to the 'Up' scope
         }
 
-        @assert(false)
+        @assert(false)        // This assertion is never reached
     }
 }
