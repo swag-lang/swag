@@ -1,8 +1,12 @@
 /**
-Remember that dynamic arrays are part of the `Std.Core` module. Here we are only discussing native static arrays, which are arrays with fixed size determined at compile time.
+# Static Arrays in Swag
+
+Remember that dynamic arrays are part of the `Std.Core` module. Here we are only discussing native static arrays, which are arrays with fixed sizes determined at compile time.
 */
 
 /**
+# Declaring a Static Array
+
 A static array is declared using the syntax `[N]` followed by the type, where `N` represents the number of elements in the array (the dimension).
 */
 #test
@@ -13,6 +17,8 @@ A static array is declared using the syntax `[N]` followed by the type, where `N
 }
 
 /**
+# Array Size and Memory
+
 You can determine the number of elements in an array using the `@countof` intrinsic and the size of the array in bytes using `@sizeof`.
 */
 #test
@@ -23,6 +29,8 @@ You can determine the number of elements in an array using the `@countof` intrin
 }
 
 /**
+# Obtaining the Address of an Array
+
 To obtain the address of an array, you can use the `@dataof` intrinsic.
 */
 #test
@@ -40,6 +48,8 @@ To obtain the address of an array, you can use the `@dataof` intrinsic.
 }
 
 /**
+# Array Literals
+
 An **array literal** is a list of elements enclosed in square brackets `[A, B, ...]`.
 */
 #test
@@ -50,6 +60,8 @@ An **array literal** is a list of elements enclosed in square brackets `[A, B, .
 }
 
 /**
+# Type Deduction in Arrays
+
 The size of the array can be deduced from the initialization expression, meaning you don't have to specify the dimension if it can be inferred.
 */
 #test
@@ -69,6 +81,8 @@ The size of the array can be deduced from the initialization expression, meaning
 }
 
 /**
+# Default Initialization
+
 Like other types in Swag, an array is initialized by default with zero values (0 for integers, null for strings, false for booleans, etc.).
 */
 #test
@@ -79,6 +93,8 @@ Like other types in Swag, an array is initialized by default with zero values (0
 }
 
 /**
+# Preventing Default Initialization
+
 For performance reasons, you can prevent an array from being initialized by using `undefined`. This is useful when you know the array will be fully initialized manually and you want to avoid the cost of default initialization.
 */
 #test
@@ -87,6 +103,8 @@ For performance reasons, you can prevent an array from being initialized by usin
 }
 
 /**
+# Constant Arrays
+
 A static array with compile-time values can be stored as a constant, meaning it cannot be modified after its declaration.
 */
 #test
@@ -97,6 +115,8 @@ A static array with compile-time values can be stored as a constant, meaning it 
 }
 
 /**
+# Type Inference from Array Literals
+
 If the type of the array is not explicitly specified, the type of the **first** literal value will be used for all other elements in the array.
 */
 #test
@@ -108,6 +128,8 @@ If the type of the array is not explicitly specified, the type of the **first** 
 }
 
 /**
+# Multi-Dimensional Arrays
+
 Swag supports multi-dimensional arrays, allowing you to declare arrays with multiple dimensions.
 */
 
@@ -124,6 +146,8 @@ The syntax for multi-dimensional arrays is `[X, Y, Z...]`, where `X`, `Y`, and `
 }
 
 /**
+# C/C++ Style Multi-Dimensional Arrays
+
 Swag also accepts the C/C++ syntax for declaring arrays, where you declare an array of arrays. In essence, this approach is equivalent to declaring a multi-dimensional array in Swag.
 */
 #test
@@ -136,6 +160,8 @@ Swag also accepts the C/C++ syntax for declaring arrays, where you declare an ar
 }
 
 /**
+# Array Size Deduction
+
 The sizes of arrays, including multi-dimensional arrays, can be deduced from the initialization expression.
 */
 #test
@@ -148,6 +174,8 @@ The sizes of arrays, including multi-dimensional arrays, can be deduced from the
 }
 
 /**
+# Single Value Initialization
+
 Swag allows you to initialize an entire array with a single value. This is only available for variables, not constants, and only basic types (integers, floats, strings, bools, runes) are supported.
 */
 #test

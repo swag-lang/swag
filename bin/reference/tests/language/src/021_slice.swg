@@ -1,4 +1,6 @@
 /**
+# Slices in Swag
+
 A slice in Swag is a flexible view over a contiguous block of memory. Unlike static arrays, slices can be resized or point to different segments of memory at runtime. A slice consists of a pointer to the data buffer and a `u64` value that stores the number of elements in the slice.
 
 This makes slices a powerful tool for working with subsets of data without copying it, allowing efficient manipulation of large datasets.
@@ -11,6 +13,8 @@ This makes slices a powerful tool for working with subsets of data without copyi
 }
 
 /**
+# Initializing Slices
+
 Slices can be initialized similarly to arrays. You can assign an array literal to a slice, and the slice will point to the elements in the array.
 */
 
@@ -29,6 +33,8 @@ Slices can be initialized similarly to arrays. You can assign an array literal t
 }
 
 /**
+# Accessing Slice Data
+
 At runtime, you can use `@dataof` to retrieve the address of the data buffer and `@countof` to get the number of elements in the slice.
 */
 
@@ -46,6 +52,8 @@ At runtime, you can use `@dataof` to retrieve the address of the data buffer and
 }
 
 /**
+# Creating Slices with `@mkslice`
+
 You can create a slice with your own pointer and count using `@mkslice`.
 */
 
@@ -66,6 +74,8 @@ You can create a slice with your own pointer and count using `@mkslice`.
 }
 
 /**
+# Slicing Strings
+
 For a string, the slice must be `const` because a string is immutable.
 */
 
@@ -78,6 +88,8 @@ For a string, the slice must be `const` because a string is immutable.
 }
 
 /**
+# Slicing with the `..` Operator
+
 Instead of `@mkslice`, you can slice something with the `..` operator. For example, you can slice a string.
 */
 
@@ -92,6 +104,8 @@ Instead of `@mkslice`, you can slice something with the `..` operator. For examp
 }
 
 /**
+# Inclusive and Exclusive Slicing
+
 The upper limit is **included** by default. If you want to exclude it, use `..<` instead of `..`.
 */
 
@@ -103,6 +117,8 @@ The upper limit is **included** by default. If you want to exclude it, use `..<`
 }
 
 /**
+# Slicing to the End
+
 You can omit the upper bound if you want to slice to the end.
 */
 
@@ -114,7 +130,9 @@ You can omit the upper bound if you want to slice to the end.
 }
 
 /**
-You can omit the lower bound if you want to slice from the start (0).
+# Slicing from the Start
+
+You can omit the lower bound if you want to slice from the start (index 0).
 */
 
 #test
@@ -127,6 +145,8 @@ You can omit the lower bound if you want to slice from the start (0).
 }
 
 /**
+# Slicing Arrays
+
 You can also slice an array.
 */
 
@@ -144,6 +164,8 @@ You can also slice an array.
 }
 
 /**
+# Slicing a Slice
+
 You can slice another slice.
 */
 
@@ -161,7 +183,9 @@ You can slice another slice.
 }
 
 /**
-You can transform a pointer to a slice.
+# Transforming a Pointer to a Slice
+
+You can transform a pointer into a slice.
 */
 
 #test

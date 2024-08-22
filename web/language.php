@@ -1622,7 +1622,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
 }</span></div>
 
-<h2 id="_020_array_swg">Array</h2><p>Remember that dynamic arrays are part of the <span class="code-inline">Std.Core</span> module. Here we are only discussing native static arrays, which are arrays with fixed size determined at compile time. </p>
+<h2 id="_020_array_swg">Array</h2><h3 id="_020_array_swg">Static Arrays in Swag </h3>
+<p>Remember that dynamic arrays are part of the <span class="code-inline">Std.Core</span> module. Here we are only discussing native static arrays, which are arrays with fixed sizes determined at compile time. </p>
+<h3 id="_020_array_swg">Declaring a Static Array </h3>
 <p>A static array is declared using the syntax <span class="code-inline">[N]</span> followed by the type, where <span class="code-inline">N</span> represents the number of elements in the array (the dimension). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1630,6 +1632,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     array[<span class="SNum">0</span>] = <span class="SNum">1</span>  <span class="SCmt">// Assign the first element</span>
     array[<span class="SNum">1</span>] = <span class="SNum">2</span>  <span class="SCmt">// Assign the second element</span>
 }</span></div>
+<h3 id="_020_array_swg">Array Size and Memory </h3>
 <p>You can determine the number of elements in an array using the <span class="code-inline">@countof</span> intrinsic and the size of the array in bytes using <span class="code-inline">@sizeof</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1637,6 +1640,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>  <span class="SCmt">// Verify the array contains 2 elements</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the size in bytes (2 elements * size of s32)</span>
 }</span></div>
+<h3 id="_020_array_swg">Obtaining the Address of an Array </h3>
 <p>To obtain the address of an array, you can use the <span class="code-inline">@dataof</span> intrinsic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1651,6 +1655,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
 }</span></div>
+<h3 id="_020_array_swg">Array Literals </h3>
 <p>An <b>array literal</b> is a list of elements enclosed in square brackets <span class="code-inline">[A, B, ...]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1658,6 +1663,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>  <span class="SCmt">// Verify the array contains 4 elements</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">s32</span>  <span class="SCmt">// Verify the array's type</span>
 }</span></div>
+<h3 id="_020_array_swg">Type Deduction in Arrays </h3>
 <p>The size of the array can be deduced from the initialization expression, meaning you don't have to specify the dimension if it can be inferred. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1674,6 +1680,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(array1[<span class="SNum">2</span>] == <span class="SStr">"30"</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array1) == <span class="SNum">3</span>
 }</span></div>
+<h3 id="_020_array_swg">Default Initialization </h3>
 <p>Like other types in Swag, an array is initialized by default with zero values (0 for integers, null for strings, false for booleans, etc.). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1681,11 +1688,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">0</span>)  <span class="SCmt">// Default initialization to 0</span>
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">0</span>)
 }</span></div>
+<h3 id="_020_array_swg">Preventing Default Initialization </h3>
 <p>For performance reasons, you can prevent an array from being initialized by using <span class="code-inline">undefined</span>. This is useful when you know the array will be fully initialized manually and you want to avoid the cost of default initialization. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">100</span>] <span class="STpe">s32</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// Declare a large array without initializing it</span>
 }</span></div>
+<h3 id="_020_array_swg">Constant Arrays </h3>
 <p>A static array with compile-time values can be stored as a constant, meaning it cannot be modified after its declaration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1693,6 +1702,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> array[<span class="SNum">0</span>] == <span class="SNum">1</span>  <span class="SCmt">// Dereference is done at compile time</span>
     <span class="SCmp">#assert</span> array[<span class="SNum">3</span>] == <span class="SNum">4</span>
 }</span></div>
+<h3 id="_020_array_swg">Type Inference from Array Literals </h3>
 <p>If the type of the array is not explicitly specified, the type of the <b>first</b> literal value will be used for all other elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1701,6 +1711,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">f64</span>  <span class="SCmt">// Verify that all elements are of type f64</span>
     <span class="SItr">@assert</span>(arr[<span class="SNum">3</span>] == <span class="SNum">4.0</span>)
 }</span></div>
+<h3 id="_020_array_swg">Multi-Dimensional Arrays </h3>
 <p>Swag supports multi-dimensional arrays, allowing you to declare arrays with multiple dimensions. </p>
 <p>The syntax for multi-dimensional arrays is <span class="code-inline">[X, Y, Z...]</span>, where <span class="code-inline">X</span>, <span class="code-inline">Y</span>, and <span class="code-inline">Z</span> are the dimensions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1711,6 +1722,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     array[<span class="SNum">1</span>, <span class="SNum">0</span>] = <span class="SNum">3</span>  <span class="SCmt">// Access and assign the third element</span>
     array[<span class="SNum">1</span>, <span class="SNum">1</span>] = <span class="SNum">4</span>  <span class="SCmt">// Access and assign the fourth element</span>
 }</span></div>
+<h3 id="_020_array_swg">C/C++ Style Multi-Dimensional Arrays </h3>
 <p>Swag also accepts the C/C++ syntax for declaring arrays, where you declare an array of arrays. In essence, this approach is equivalent to declaring a multi-dimensional array in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1720,6 +1732,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     array[<span class="SNum">1</span>, <span class="SNum">0</span>] = <span class="SNum">3</span>
     array[<span class="SNum">1</span>, <span class="SNum">1</span>] = <span class="SNum">4</span>
 }</span></div>
+<h3 id="_020_array_swg">Array Size Deduction </h3>
 <p>The sizes of arrays, including multi-dimensional arrays, can be deduced from the initialization expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1729,6 +1742,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">4</span>  <span class="SCmt">// Verify size is 4</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array1) == <span class="SNum">2</span>  <span class="SCmt">// Verify outer array has 2 elements</span>
 }</span></div>
+<h3 id="_020_array_swg">Single Value Initialization </h3>
 <p>Swag allows you to initialize an entire array with a single value. This is only available for variables, not constants, and only basic types (integers, floats, strings, bools, runes) are supported. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1743,13 +1757,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(arr1[<span class="SNum">4</span>, <span class="SNum">9</span>] == <span class="SStr">"string"</span>)
 }</span></div>
 
-<h2 id="_021_slice_swg">Slice</h2><p>A slice in Swag is a flexible view over a contiguous block of memory. Unlike static arrays, slices can be resized or point to different segments of memory at runtime. A slice consists of a pointer to the data buffer and a <span class="code-inline">u64</span> value that stores the number of elements in the slice. </p>
+<h2 id="_021_slice_swg">Slice</h2><h3 id="_021_slice_swg">Slices in Swag </h3>
+<p>A slice in Swag is a flexible view over a contiguous block of memory. Unlike static arrays, slices can be resized or point to different segments of memory at runtime. A slice consists of a pointer to the data buffer and a <span class="code-inline">u64</span> value that stores the number of elements in the slice. </p>
 <p>This makes slices a powerful tool for working with subsets of data without copying it, allowing efficient manipulation of large datasets. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a: [..] <span class="STpe">bool</span> <span class="SCmt">// Declare a slice of boolean values</span>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(a) == <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>) + <span class="SItr">@sizeof</span>(<span class="STpe">u64</span>)  <span class="SCmt">// Verify that the size of the slice includes the pointer and the element count</span>
 }</span></div>
+<h3 id="_021_slice_swg">Initializing Slices </h3>
 <p>Slices can be initialized similarly to arrays. You can assign an array literal to a slice, and the slice will point to the elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1764,6 +1780,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(a[<span class="SNum">1</span>] == <span class="SNum">2</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Accessing Slice Data </h3>
 <p>At runtime, you can use <span class="code-inline">@dataof</span> to retrieve the address of the data buffer and <span class="code-inline">@countof</span> to get the number of elements in the slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1777,6 +1794,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a = [<span class="SNum">1</span>, <span class="SNum">2</span>]  <span class="SCmt">// Reassign the slice to a different array</span>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(a) == <span class="SNum">2</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Creating Slices with <span class="code-inline">@mkslice</span> </h3>
 <p>You can create a slice with your own pointer and count using <span class="code-inline">@mkslice</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1793,6 +1811,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     slice[<span class="SNum">0</span>] = <span class="SNum">314</span>
     <span class="SItr">@assert</span>(array[<span class="SNum">2</span>] == <span class="SNum">314</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Slicing Strings </h3>
 <p>For a string, the slice must be <span class="code-inline">const</span> because a string is immutable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1801,6 +1820,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(strSlice[<span class="SNum">0</span>] == <span class="SStr">`s`</span>)
     <span class="SItr">@assert</span>(strSlice[<span class="SNum">1</span>] == <span class="SStr">`t`</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Slicing with the <span class="code-inline">..</span> Operator </h3>
 <p>Instead of <span class="code-inline">@mkslice</span>, you can slice something with the <span class="code-inline">..</span> operator. For example, you can slice a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1811,6 +1831,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(slice == <span class="SStr">"tri"</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Inclusive and Exclusive Slicing </h3>
 <p>The upper limit is <b>included</b> by default. If you want to exclude it, use <span class="code-inline">..&lt;</span> instead of <span class="code-inline">..</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1818,6 +1839,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> slice = str[<span class="SNum">1.</span>.&lt;<span class="SNum">3</span>]
     <span class="SItr">@assert</span>(slice == <span class="SStr">"tr"</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Slicing to the End </h3>
 <p>You can omit the upper bound if you want to slice to the end. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1825,7 +1847,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> slice = str[<span class="SNum">2.</span>.]
     <span class="SItr">@assert</span>(slice == <span class="SStr">"ring"</span>)
 }</span></div>
-<p>You can omit the lower bound if you want to slice from the start (0). </p>
+<h3 id="_021_slice_swg">Slicing from the Start </h3>
+<p>You can omit the lower bound if you want to slice from the start (index 0). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> str   = <span class="SStr">"string"</span>
@@ -1834,6 +1857,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> slice1 = str[..&lt;<span class="SNum">2</span>] <span class="SCmt">// Index 2 is excluded</span>
     <span class="SItr">@assert</span>(slice1 == <span class="SStr">"st"</span>)
 }</span></div>
+<h3 id="_021_slice_swg">Slicing Arrays </h3>
 <p>You can also slice an array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1847,6 +1871,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> slice1 = arr[..]
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(slice1) == <span class="SItr">@countof</span>(arr))
 }</span></div>
+<h3 id="_021_slice_swg">Slicing a Slice </h3>
 <p>You can slice another slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1860,7 +1885,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(slice2[<span class="SNum">0</span>] == <span class="SNum">30</span>)
     <span class="SItr">@assert</span>(slice2[<span class="SNum">1</span>] == <span class="SNum">40</span>)
 }</span></div>
-<p>You can transform a pointer to a slice. </p>
+<h3 id="_021_slice_swg">Transforming a Pointer to a Slice </h3>
+<p>You can transform a pointer into a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr   = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]
@@ -7213,181 +7239,215 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer(noerr) and the normal defer</span>
 }</span></div>
 
-<h2 id="_175_safety_swg">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
-<p>Safety checks can also be changed for a specific build configuration (<span class="code-inline">--cfg:&lt;config&gt;</span>) with <span class="code-inline">buildCfg.safetyGuards</span>. </p>
+<h2 id="_175_safety_swg">Safety</h2><h3 id="_175_safety_swg">Safety Checks in Swag </h3>
+<p>Swag provides a variety of safety checks that can be enabled at different levels—module, function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
+<p>These safety checks are designed to prevent common programming errors by triggering panics during unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
+<p>You can also configure safety checks globally based on the build configuration using <span class="code-inline">buildCfg.safetyGuards</span>. </p>
 <div class="blockquote blockquote-default">
-<p> Swag comes with four predefined configurations : <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span>. Safety checks are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span>. </p>
+<p> Note: Swag offers four predefined build configurations: <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span>, and <span class="code-inline">release</span>. Safety checks are enabled by default in <span class="code-inline">debug</span> and <span class="code-inline">fast-debug</span>, but they are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span> for performance reasons. </p>
 </div>
-<h3 id="_175_safety_swg">overflow </h3>
+<h3 id="_175_safety_swg">Overflow Safety </h3>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("overflow", true)]</span></div>
-<p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
-<p>Operators that can overflow are : <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their equivalent <span class="code-inline">+= -= *= &lt;&lt;= &gt;&gt;=</span>. </p>
+<p>When overflow safety is enabled, Swag will panic if arithmetic operations overflow or if bits are lost during an integer conversion. </p>
+<p>Operators that can cause overflows include: <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their compound assignments <span class="code-inline">+= -= *= &lt;&lt;= &gt;&gt;=</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    <span class="SCmt">// x += 1      // This would overflow, and panic, because we lose informations</span>
+    <span class="SCmt">// x += 1  // Uncommenting this will cause a panic because it overflows</span>
 }</span></div>
-<p>But if you know what your are doing, you can use a special version of those operators, which will not panic. Add the <span class="code-inline"> #over</span> modifier after the operation. This will disable safety checks. </p>
+<h4 id="_175_safety_swg">Disabling Overflow Safety with <span class="code-inline">#over</span> </h4>
+<p>If you are certain that an overflow is expected and you want to prevent a panic, you can use the <span class="code-inline">#over</span> modifier with the operation. This will bypass the safety check. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SKwd">#over</span> <span class="SNum">1</span> <span class="SCmt">// Overflow is expected, so this will wrap around</span>
+    x += <span class="SKwd">#over</span> <span class="SNum">1</span> <span class="SCmt">// This will wrap around without causing a panic</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
 }</span></div>
-<p>You can also use <span class="code-inline">#[Swag.Overflow(true)]</span> to authorize overflow on a more global scale. </p>
+<h4 id="_175_safety_swg">Global Overflow Safety Control </h4>
+<p>You can globally allow overflows by using <span class="code-inline">#[Swag.Overflow(true)]</span>, which disables the overflow safety checks for all operations within the scope. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SNum">1</span> <span class="SCmt">// No need for operator modifier ' #over'</span>
+    x += <span class="SNum">1</span> <span class="SCmt">// No need for `#over` since overflow is globally allowed</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
 }</span></div>
-<p>For 8 or 16 bits, you can promote an operation to 32 bits by using ' #prom'. </p>
+<h4 id="_175_safety_swg">Promoting Operations to Prevent Overflow </h4>
+<p>For 8-bit or 16-bit integers, you can promote an operation to 32-bit using the <span class="code-inline">#prom</span> modifier. This avoids overflow by widening the operand types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)
 }</span></div>
-<p>Swag will also check that a cast does not lose information. </p>
+<h3 id="_175_safety_swg">Information Loss During Casting </h3>
+<p>Swag will also check for potential information loss during type casting operations, such as converting between different integer types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x1 = <span class="SNum">255</span>'<span class="STpe">u8</span>
 
-    <span class="SCmt">//var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'</span>
-    <span class="SCmt">//@print(y0)</span>
+    <span class="SCmt">// var y0 = cast(s8) x1     // This would cause a panic because 255 cannot be represented as `s8`</span>
+    <span class="SCmt">// @print(y0)</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> x1 <span class="SCmt">// But ' #over' can be used on the cast operation too</span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> x1 <span class="SCmt">// Use `#over` to bypass safety checks and allow this cast</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)
 
     <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>
-    <span class="SCmt">//var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'</span>
-    <span class="SCmt">//@print(y)</span>
+    <span class="SCmt">// var y2 = cast(u8) x2     // This would also cause a panic because `x2` is negative</span>
     <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>(<span class="STpe">u8</span>) <span class="SKwd">#over</span> x2
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)
 }</span></div>
-<p>Rember that you can disable these safety checks with the corresponding attribute. </p>
+<h4 id="_175_safety_swg">Disabling Overflow Safety Globally </h4>
+<p>Here, safety checks for overflow are disabled, allowing operations that would typically panic due to overflow to proceed normally. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SNum">255</span> <span class="SCmt">// 254</span>
-    x += <span class="SNum">1</span> <span class="SCmt">// 255</span>
-    x &gt;&gt;= <span class="SNum">1</span> <span class="SCmt">// 127</span>
+    x += <span class="SNum">255</span> <span class="SCmt">// x becomes 254</span>
+    x += <span class="SNum">1</span>   <span class="SCmt">// x becomes 255</span>
+    x &gt;&gt;= <span class="SNum">1</span>  <span class="SCmt">// x becomes 127</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">127</span>)
 }</span></div>
-<h3 id="_175_safety_swg">any </h3>
+<h3 id="_175_safety_swg"><span class="code-inline">any</span> Type Safety </h3>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("any", true)]</span></div>
-<p>Swag will panic if a bad cast from <span class="code-inline">any</span> is performed. </p>
+<p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"1"</span>
-    <span class="SKwd">let</span> y  = <span class="SKwd">cast</span>(<span class="STpe">string</span>) x     <span class="SCmt">// This is valid, because this is the correct underlying type</span>
-    <span class="SCmt">//var z = cast(s32) x      // This is not valid, and will panic</span>
-    <span class="SCmt">//@assert(z == 0)</span>
+    <span class="SKwd">let</span> y  = <span class="SKwd">cast</span>(<span class="STpe">string</span>) x     <span class="SCmt">// This is valid because the underlying type is correct</span>
+    <span class="SCmt">// var z = cast(s32) x      // This is invalid and will cause a panic</span>
+    <span class="SCmt">// @assert(z == 0)</span>
 }</span></div>
-<h3 id="_175_safety_swg">boundcheck </h3>
+<h3 id="_175_safety_swg">Array Bounds Checking </h3>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></div>
-<p>Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string... </p>
-<p>Safety for fixed size arrays. </p>
+<p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a slice, or a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x   = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SKwd">var</span> idx = <span class="SNum">10</span>
-    <span class="SCmt">//@assert(x[idx] == 1)     // '10' is out of range, will panic</span>
+    <span class="SCmt">// @assert(x[idx] == 1)     // `10` is out of range, this will cause a panic</span>
 }</span></div>
-<p>Safety when indexing a slice. </p>
+<h4 id="_175_safety_swg">Safety When Indexing a Slice </h4>
+<p>Swag ensures that indexing operations on slices are within bounds. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x:  <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
+    <span class="SKwd">let</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SKwd">var</span> idx = <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(x[idx] == <span class="SNum">1</span>) <span class="SCmt">// '1' is in range, ok</span>
+    <span class="SItr">@assert</span>(x[idx] == <span class="SNum">1</span>) <span class="SCmt">// `1` is in range, so this is safe</span>
     idx += <span class="SNum">9</span>
-    <span class="SCmt">//@assert(x[idx] == 1)      // '10' is out of range, will panic</span>
+    <span class="SCmt">// @assert(x[idx] == 1)      // `10` is out of range, this will cause a panic</span>
 }</span></div>
-<p>Safety when slicing a sized value. </p>
+<h4 id="_175_safety_swg">Safety When Slicing a Sized Value </h4>
+<p>Swag will panic if a slice operation goes out of bounds. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
-    <span class="SCmt">//var slice = x[1..4]              // '4' is out of range, will panic</span>
-    <span class="SCmt">//@assert(slice[0] == 1)</span>
+    <span class="SCmt">// var slice = x[1..4]      // `4` is out of range, this will cause a panic</span>
+    <span class="SCmt">// @assert(slice[0] == 1)</span>
 }
 
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x   = <span class="SStr">"string"</span>
     <span class="SKwd">var</span> idx = <span class="SNum">10</span>
-    <span class="SCmt">//var slice = x[0..idx]            // '10' is out of range, will panic</span>
-    <span class="SCmt">//@assert(slice[0] == `s`)</span>
+    <span class="SCmt">// var slice = x[0..idx]    // `10` is out of range, this will cause a panic</span>
+    <span class="SCmt">// @assert(slice[0] == `s`)</span>
 }</span></div>
-<h3 id="_175_safety_swg">math </h3>
+<h3 id="_175_safety_swg">Math Safety </h3>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("math", true)]</span></div>
-<p>Swag will panic if some math operations are invalid. </p>
+<p>Swag will panic if certain math operations are invalid, such as division by zero. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>'<span class="STpe">f32</span>
     <span class="SKwd">var</span> y = <span class="SNum">0</span>'<span class="STpe">f32</span>
-    <span class="SCmt">//var z = x / y        // Division by zero, panic</span>
-    <span class="SCmt">//@print(z)</span>
+    <span class="SCmt">// var z = x / y        // Division by zero will cause a panic</span>
+    <span class="SCmt">// @print(z)</span>
 }</span></div>
-<p>Swag will also check for invalid arguments on some math intrinsics. </p>
+<h4 id="_175_safety_swg">Checking Invalid Math Intrinsic Arguments </h4>
+<p>Swag also checks for invalid arguments passed to certain math intrinsics, which will cause a panic if unsupported. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// All of this will panic if the arguments are unsupported.</span>
+    <span class="SCmt">// All of the following operations will panic if the arguments are invalid:</span>
 
-    <span class="SCmt">//@abs(-128)</span>
-    <span class="SCmt">//@log(-2'f32)</span>
-    <span class="SCmt">//@log2(-2'f32)</span>
-    <span class="SCmt">//@log10(2'f64)</span>
-    <span class="SCmt">//@sqrt(-2'f32)</span>
-    <span class="SCmt">//@asin(-2'f32)</span>
-    <span class="SCmt">//@acos(2'f32)</span>
+    <span class="SCmt">// @abs(-128)</span>
+    <span class="SCmt">// @log(-2'f32)</span>
+    <span class="SCmt">// @log2(-2'f32)</span>
+    <span class="SCmt">// @log10(2'f64)</span>
+    <span class="SCmt">// @sqrt(-2'f32)</span>
+    <span class="SCmt">// @asin(-2'f32)</span>
+    <span class="SCmt">// @acos(2'f32)</span>
 }</span></div>
-<h3 id="_175_safety_swg">switch </h3>
+<h3 id="_175_safety_swg">Switch Safety </h3>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("switch", true)]</span></div>
-<p>Swag will panic if a switch is marked with <span class="code-inline">#[Swag.Complete]</span>, but the value is not covered by a <span class="code-inline">case</span>. </p>
-<h3 id="_175_safety_swg">bool </h3>
-<div class="code-block"><span class="SAtr">#[Swag.Safety("bool", true)]</span></div>
-<p>Swag will panic if a boolean value is not <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0). </p>
-<h3 id="_175_safety_swg">nan </h3>
-<div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
-<p>Swag will panic if a floating point <span class="code-inline">NaN</span> is used in an operation. </p>
+<p>Swag will panic if a switch statement marked with <span class="code-inline">#[Swag.Complete]</span> does not cover all possible cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-}</span></div>
+    <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }
 
-<h2 id="_180_type_reflection_swg">Type reflection</h2><p>In Swag, <b>types are also values</b> that can be inspected at compile time or at runtime. The two main intrinsics for this are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
-<p>You can get the type of an expression with <span class="code-inline">@typeof</span>, or just with the type itself. </p>
+    <span class="SKwd">func</span> <span class="SFct">colorToString</span>(color: <span class="SCst">Color</span>) -&gt; <span class="STpe">string</span>
+    {
+        <span class="SCmt">// #[Swag.Complete]</span>
+        <span class="SLgc">switch</span> color
+        {
+            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>: <span class="SLgc">return</span> <span class="SStr">"Red"</span>
+            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>: <span class="SLgc">return</span> <span class="SStr">"Green"</span>
+            <span class="SCmt">// If `Color.Blue` is not covered, this will cause a panic</span>
+        }
+
+        <span class="SLgc">return</span> <span class="SStr">""</span>
+    }
+}</span></div>
+<h3 id="_175_safety_swg">Boolean Safety </h3>
+<div class="code-block"><span class="SAtr">#[Swag.Safety("bool", true)]</span></div>
+<p>Swag will panic if a boolean value is not either <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SKwd">var</span> b: <span class="STpe">u8</span> = <span class="SNum">2</span>
+    <span class="SCmt">// if b { ... }    // This will panic because `b` is not a valid boolean</span>
+}</span></div>
+<h3 id="_175_safety_swg">NaN Safety </h3>
+<div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
+<p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation. </p>
+
+<h2 id="_180_type_reflection_swg">Type reflection</h2><h3 id="_180_type_reflection_swg">Types as Values in Swag </h3>
+<p>In Swag, <b>types are also values</b> that can be inspected and manipulated at both compile-time and runtime. This feature enables powerful metaprogramming capabilities. The two primary intrinsics for interacting with types are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
+<h3 id="_180_type_reflection_swg">Using <span class="code-inline">@typeof</span> to Inspect Types </h3>
+<p>You can retrieve the type of an expression using <span class="code-inline">@typeof</span>. Additionally, you can also directly use the type itself when the expression explicitly represents a type. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Using @typeof to get the type of a basic type like 's8'</span>
     <span class="SKwd">let</span> ptr1 = <span class="SItr">@typeof</span>(<span class="STpe">s8</span>)
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"s8"</span>)
     <span class="SItr">@assert</span>(ptr1 == <span class="STpe">s8</span>)
 
+    <span class="SCmt">// Using @typeof to get the type of another basic type 's16'</span>
     <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>(<span class="STpe">s16</span>)
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"s16"</span>)
     <span class="SItr">@assert</span>(ptr2 == <span class="STpe">s16</span>)
 
-    <span class="SCmt">// See that '@typeof' is not really necessary if the expression on the right is a type.</span>
+    <span class="SCmt">// Directly using the type without @typeof</span>
     <span class="SKwd">let</span> ptr3 = <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(ptr3.name == <span class="SStr">"s32"</span>)
     <span class="SItr">@assert</span>(ptr3 == <span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
 
+    <span class="SCmt">// Another direct type usage</span>
     <span class="SKwd">let</span> ptr4 = <span class="STpe">s64</span>
     <span class="SItr">@assert</span>(ptr4.name == <span class="SStr">"s64"</span>)
     <span class="SItr">@assert</span>(ptr4 == <span class="STpe">s64</span>)
 }</span></div>
-<p>The return result of <span class="code-inline">@typeof</span> is a const pointer to a <span class="code-inline">Swag.TypeInfo</span> kind of structure. This is a typealias for the <span class="code-inline">typeinfo</span> type. All types have a corresponding struct that can be found in the <span class="code-inline">Swag</span> namespace, which is part of the compiler runtime. </p>
+<h3 id="_180_type_reflection_swg">Understanding the Result of <span class="code-inline">@typeof</span> </h3>
+<p>The result of <span class="code-inline">@typeof</span> is a constant pointer to a <span class="code-inline">Swag.TypeInfo</span> structure. This structure is a type descriptor that provides detailed information about the type. The <span class="code-inline">Swag.TypeInfo</span> type is a type alias for <span class="code-inline">typeinfo</span>, and each type has a corresponding <span class="code-inline">TypeInfo</span> struct found in the <span class="code-inline">Swag</span> namespace, part of the compiler runtime. </p>
 <div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can find all the type descriptors in the runtime <a href="https://www.swag-lang.org/swag.runtime.php">documentation</a> </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can find all the type descriptors in the runtime documentation on the Swag website. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> ptr = <span class="STpe">bool</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>))
 
-    <span class="SCmt">// '#type' can be used when the right expression is ambiguous. In the case of arrays, it could be</span>
-    <span class="SCmt">// a type or the start of an array literal, so '#type' tells the compiler this is a type.</span>
+    <span class="SCmt">// '#type' can be used when the right expression is ambiguous. </span>
+    <span class="SCmt">// For example, with arrays, it might not be clear whether the expression represents a type or an array literal. </span>
+    <span class="SCmt">// In such cases, '#type' clarifies that it is a type.</span>
     <span class="SKwd">let</span> ptr1 = <span class="STpe">#type</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr1) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"[2] s32"</span>)
@@ -7396,30 +7456,32 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr2) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"const [3] s32"</span>)
 }</span></div>
-<p>The <span class="code-inline">TypeInfo</span> structure contains a different enum value for each type. </p>
+<h3 id="_180_type_reflection_swg">Working with <span class="code-inline">TypeInfo</span> Structures </h3>
+<p>The <span class="code-inline">TypeInfo</span> structure includes a <span class="code-inline">kind</span> field that indicates the specific kind of type (e.g., native type, pointer, array, etc.). This <span class="code-inline">kind</span> field is particularly useful when working with types in a more abstract way. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> typeOf = <span class="STpe">f64</span>
     <span class="SItr">@assert</span>(typeOf.kind == <span class="SCst">Swag</span>.<span class="SCst">TypeInfoKind</span>.<span class="SCst">Native</span>)
 
-    <span class="SCmt">// This can be evaluated compile-time</span>
+    <span class="SCmt">// These checks can be evaluated at compile time</span>
     <span class="SKwd">using</span> <span class="SCst">Swag</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(*<span class="STpe">u8</span>).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>
 }</span></div>
-<h3 id="_180_type_reflection_swg">@decltype </h3>
-<p><span class="code-inline">@decltype</span> can be used to transform a <span class="code-inline">typeinfo</span> to a real compiler type. This is the opposite of <span class="code-inline">@typeof</span> or <span class="code-inline">@kindof</span>. </p>
+<h3 id="_180_type_reflection_swg"><span class="code-inline">@decltype</span> </h3>
+<p><span class="code-inline">@decltype</span> is the reverse of <span class="code-inline">@typeof</span> or <span class="code-inline">@kindof</span>. It is used to convert a <span class="code-inline">typeinfo</span> back into an actual compiler type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>
 }</span></div>
-<p><span class="code-inline">@decltype</span> can evaluate a <i>constexpr</i> expression that returns a <span class="code-inline">typeinfo</span> to determine the real type. </p>
+<h3 id="_180_type_reflection_swg">Using <span class="code-inline">@decltype</span> with Compile-Time Expressions </h3>
+<p><span class="code-inline">@decltype</span> can evaluate a <i>constexpr</i> expression that returns a <span class="code-inline">typeinfo</span> to determine the actual type. This is useful when the type depends on compile-time logic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">getType</span>(needAString: <span class="STpe">bool</span>)-&gt;<span class="STpe">typeinfo</span>
+    <span class="SKwd">func</span> <span class="SFct">getType</span>(needAString: <span class="STpe">bool</span>) -&gt; <span class="STpe">typeinfo</span>
     {
         <span class="SLgc">if</span> needAString:
             <span class="SLgc">return</span> <span class="STpe">string</span>
@@ -7438,28 +7500,100 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <h2 id="_190_compile-time_evaluation_swg">Compile-time evaluation</h2><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
 
-<h3 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Constexpr</h3><p>The attribute <span class="code-inline">#[Swag.ConstExpr]</span> can be used to mark functions. It tells the compiler that this specific function can be called compile-time if possible. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// 'isThisDebug' is marked with 'Swag.ConstExpr', so it can be automatically evaluated</span>
-<span class="SCmt">// at compile time</span>
+<h3 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Constexpr</h3><h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Function Evaluation with <span class="code-inline">#[Swag.ConstExpr]</span> </h4>
+<p>The attribute <span class="code-inline">#[Swag.ConstExpr]</span> is used to mark functions that can be evaluated at compile time. This tells the compiler that the function's result can be determined during compilation, rather than at runtime, if the necessary conditions are met. </p>
+<p>This feature is particularly useful for functions that return constant values or perform operations that are known ahead of time, allowing the compiler to optimize the code by eliminating unnecessary runtime calculations. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisDebug' is marked with 'Swag.ConstExpr', meaning it can be</span>
+<span class="SCmt">// evaluated at compile time. Since the function always returns `true`, this value</span>
+<span class="SCmt">// is determined during compilation.</span>
 <span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">isThisDebug</span>() =&gt; <span class="SKwd">true</span>
 
-<span class="SCmt">// This call is valid, and will be done by the compiler. As 'isThisDebug' returns</span>
-<span class="SCmt">// true, then the '#error' inside the '#if' will never be compiled.</span>
+<span class="SCmt">// This conditional block demonstrates how 'isThisDebug' can be used in a compile-time</span>
+<span class="SCmt">// context. Since 'isThisDebug' returns `true`, the condition `isThisDebug() == false`</span>
+<span class="SCmt">// will evaluate to `false`, and the compiler will never compile the code inside the block.</span>
 <span class="SCmp">#if</span> <span class="SFct">isThisDebug</span>() == <span class="SKwd">false</span>
 {
-    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
+    <span class="SCmp">#error</span> <span class="SStr">"this should not be called!"</span>
 }</span></div>
-<p>A more complicated compile-time <span class="code-inline">#assert</span>. </p>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Recursive Compile-Time Evaluation </h4>
+<p>The <span class="code-inline">#[Swag.ConstExpr]</span> attribute can also be applied to more complex functions, such as those that perform recursion. This allows such functions to be fully evaluated at compile time, reducing runtime overhead. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
-<span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 {
+    <span class="SCmt">// Base case: if x is 1, return 1</span>
     <span class="SLgc">if</span> x == <span class="SNum">1</span>:
         <span class="SLgc">return</span> <span class="SNum">1</span>
+    
+    <span class="SCmt">// Recursive case: multiply x by the factorial of (x - 1)</span>
     <span class="SLgc">return</span> x * <span class="SFct">factorial</span>(x - <span class="SNum">1</span>)
 }
 
+<span class="SCmt">// The `#assert` directive is used here to ensure that the result of 'factorial(4)' is 24.</span>
+<span class="SCmt">// Since 'factorial' is marked as 'Swag.ConstExpr', this calculation is performed during</span>
+<span class="SCmt">// compilation, and the assertion is checked before the code is even run.</span>
 <span class="SCmp">#assert</span> <span class="SFct">factorial</span>(<span class="SNum">4</span>) == <span class="SNum">24</span> <span class="SCmt">// Evaluated at compile time</span></span></div>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Constant Expressions </h4>
+<p>In this example, <span class="code-inline">#[Swag.ConstExpr]</span> is used to define a simple constant expression. This function returns a fixed value, which the compiler can evaluate during compilation. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">getMagicNumber</span>() -&gt; <span class="STpe">s32</span>
+{
+    <span class="SLgc">return</span> <span class="SNum">42</span>
+}
+
+<span class="SCmt">// Since 'getMagicNumber()' is a constant expression, this assertion is checked at compile time.</span>
+<span class="SCmp">#assert</span> <span class="SFct">getMagicNumber</span>() == <span class="SNum">42</span></span></div>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Conditional Logic </h4>
+<p>Here, the function <span class="code-inline">isEven</span> checks if a given number is even. By marking it with <span class="code-inline">#[Swag.ConstExpr]</span>, the compiler can evaluate this logic at compile time. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">isEven</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">bool</span>
+{
+    <span class="SLgc">return</span> x % <span class="SNum">2</span> == <span class="SNum">0</span>
+}
+
+<span class="SCmt">// This block will only compile if the number 4 is even, which it is. So, the error</span>
+<span class="SCmt">// will not be triggered, and the code compiles successfully.</span>
+<span class="SCmp">#if</span> <span class="SFct">isEven</span>(<span class="SNum">4</span>) == <span class="SKwd">false</span>
+{
+    <span class="SCmp">#error</span> <span class="SStr">"4 should be even!"</span>
+}</span></div>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Slice Operations </h4>
+<p>In this example, we use <span class="code-inline">#[Swag.ConstExpr]</span> to calculate the sum of elements in an array. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">arraySum</span>(arr: <span class="SKwd">const</span> [..] <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
+{
+    <span class="SKwd">var</span> sum = <span class="SNum">0</span>
+    <span class="SLgc">visit</span> val <span class="SLgc">in</span> arr:
+        sum += val
+    <span class="SLgc">return</span> sum
+}
+
+<span class="SCmt">// The sum of this array is computed at compile time, allowing the program to skip</span>
+<span class="SCmt">// runtime calculation and simply use the precomputed result.</span>
+<span class="SCmp">#assert</span> <span class="SFct">arraySum</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]) == <span class="SNum">15</span></span></div>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Fibonacci Sequence </h4>
+<p>This example demonstrates how <span class="code-inline">#[Swag.ConstExpr]</span> can be used with a recursive function to compute the Fibonacci sequence at compile time. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">fibonacci</span>(n: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
+{
+    <span class="SLgc">if</span> n &lt;= <span class="SNum">1</span>:
+        <span class="SLgc">return</span> n
+    <span class="SLgc">return</span> <span class="SFct">fibonacci</span>(n - <span class="SNum">1</span>) + <span class="SFct">fibonacci</span>(n - <span class="SNum">2</span>)
+}
+
+<span class="SCmt">// The 5th Fibonacci number is 5, and this value is computed at compile time.</span>
+<span class="SCmp">#assert</span> <span class="SFct">fibonacci</span>(<span class="SNum">5</span>) == <span class="SNum">5</span></span></div>
+<h4 id="_190_compile-time_evaluation_swg__191_001_constexpr_swg">Compile-Time Bitwise Operations </h4>
+<p>Bitwise operations can also be performed at compile time using <span class="code-inline">#[Swag.ConstExpr]</span>. In this example, we use it to check if a specific bit is set in a number. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">isBitSet</span>(num: <span class="STpe">s32</span>, bit: <span class="STpe">s32</span>) -&gt; <span class="STpe">bool</span>
+{
+    <span class="SLgc">return</span> (num & (<span class="SNum">1</span> &lt;&lt; bit)) != <span class="SNum">0</span>
+}
+
+<span class="SCmt">// This assertion checks if the 3rd bit (0-indexed) in the number 8 is set. It is,</span>
+<span class="SCmt">// because 8 in binary is 1000, so this check is evaluated at compile time.</span>
+<span class="SCmp">#assert</span> <span class="SFct">isBitSet</span>(<span class="SNum">8</span>, <span class="SNum">3</span>) == <span class="SKwd">true</span></span></div>
 
 <h3 id="_190_compile-time_evaluation_swg__192_002_run_swg">Run</h3><h4 id="_190_compile-time_evaluation_swg__192_002_run_swg">Force compile-time call </h4>
 <p><span class="code-inline">#run</span> can be used to call a function that is not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
@@ -7573,38 +7707,51 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 </div>
 
 <h3 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Special functions</h3><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
-<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">#main </h4>
-<p><span class="code-inline">#main</span> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Main Function (#main) </h4>
+<p>The <span class="code-inline">#main</span> function serves as the entry point of the program. It is analogous to the <span class="code-inline">main()</span> function in languages like C or C++. However, unlike C, this function can only be defined <b>once</b> per module.  </p>
+<p>This function is only meaningful in the context of an executable program. It is where the program's execution begins. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
 }</span></div>
-<p>Unlike the C function <span class="code-inline">main()</span>, there's no argument, but you can use the intrinsic <span class="code-inline">@args</span> to get a slice of all the specified program arguments. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Handling Program Arguments </h4>
+<p>Unlike the C function <span class="code-inline">main()</span>, the <span class="code-inline">#main</span> function in this language does not take arguments directly. However, you can retrieve command-line arguments using the intrinsic <span class="code-inline">@args</span>, which returns a slice containing all the program arguments. </p>
+<p>Here's an example of how you might use it: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
+    <span class="SCmt">// Retrieve the program arguments</span>
     <span class="SKwd">var</span> myArgs = <span class="SItr">@args</span>()
+    
+    <span class="SCmt">// Get the count of arguments</span>
     <span class="SKwd">var</span> count = <span class="SItr">@countof</span>(myArgs)
+    
+    <span class="SCmt">// Example of handling a specific argument</span>
     <span class="SLgc">if</span> myArgs[<span class="SNum">0</span>] == <span class="SStr">"fullscreen"</span>
     {
+        <span class="SCmt">// Logic for fullscreen mode</span>
         ...
     }
 }</span></div>
-<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">#premain </h4>
-<p><span class="code-inline">#premain</span> will be called after all the modules have done their <span class="code-inline">#init</span> code, but before the <span class="code-inline">#main</span> function is called. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Pre-Main Function (#premain) </h4>
+<p>The <span class="code-inline">#premain</span> function is invoked after all the modules have executed their <span class="code-inline">#init</span> functions, but before the <span class="code-inline">#main</span> function is called.  </p>
+<p>This is typically used to perform any setup that must occur after initialization but before the main program logic begins. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#premain</span>
 {
 }</span></div>
-<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">#init </h4>
-<p><span class="code-inline">#init</span> will be called at runtime, during the module initialization. You can have as many <span class="code-inline">#init</span> as you want, but the execution order in the same module is undefined. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Initialization Function (#init) </h4>
+<p>The <span class="code-inline">#init</span> function is called at runtime during the module initialization phase. You can define multiple <span class="code-inline">#init</span> functions within the same module, allowing you to perform different initialization tasks. </p>
+<p>However, the order in which these functions execute within the same module is undefined. They will run as the module is loaded. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#init</span>
 {
 }</span></div>
-<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">#drop </h4>
-<p><span class="code-inline">#drop</span> will be called at runtime, when module is unloaded. You can have as many <span class="code-inline">#drop</span> as you want. The execution order in the same module is undefined, but is always the inverse order of <span class="code-inline">#init</span>. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Drop Function (#drop) </h4>
+<p>The <span class="code-inline">#drop</span> function is the counterpart to <span class="code-inline">#init</span>. It is called when a module is unloaded at runtime.  </p>
+<p>You can define multiple <span class="code-inline">#drop</span> functions, just like <span class="code-inline">#init</span>, to handle different cleanup tasks. The execution order within the same module is also undefined, but <span class="code-inline">#drop</span> functions are guaranteed to run in the reverse order of the corresponding <span class="code-inline">#init</span> functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#drop</span>
 {
 }</span></div>
-<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">#test </h4>
-<p><span class="code-inline">#test</span> is a special function than can be used in the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> will be executed only if swag is running in test mode. </p>
+<h4 id="_190_compile-time_evaluation_swg__193_003_special_functions_swg">Test Function (#test) </h4>
+<p>The <span class="code-inline">#test</span> function is a special function used within the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> functions are executed only when the program is run in test mode. </p>
+<p>This function is essential for validating the functionality of your code in a controlled environment before deployment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
 }</span></div>
