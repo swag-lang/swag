@@ -229,9 +229,9 @@
 </ul>
 <li><a href="#_230_000_documentation_md">Documentation</a></li>
 <ul>
-<li><a href="#_230_000_documentation_md__230_001_Api_swg">Api</a></li>
-<li><a href="#_230_000_documentation_md__230_002_Examples_md">Examples</a></li>
-<li><a href="#_230_000_documentation_md__230_003_Pages_md">Pages</a></li>
+<li><a href="#_230_000_documentation_md__230_001_api_swg">Api</a></li>
+<li><a href="#_230_000_documentation_md__230_002_examples_md">Examples</a></li>
+<li><a href="#_230_000_documentation_md__230_003_pages_md">Pages</a></li>
 </ul>
 </div>
 </div>
@@ -8439,7 +8439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> This is <span class="code-inline">inline code</span> with back ticks.<br/>  This is inline <span class="code-inline">code</span> with normal ticks, but just for a single word (no blanks).<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This is <b><i>bold and italic</i></b>.<br/>  This is <span class="strikethrough-text">strikethrough</span>.<br/>  This character n is escaped, and <span class="code-inline">n</span> will be output as is.<br/> </p>
 </div>
 
-<h3 id="_230_000_documentation_md__230_001_Api_swg">Api</h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
+<h3 id="_230_000_documentation_md__230_001_api_swg">Api</h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <span class="code-inline">module.swg</span> file. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// This is the main module documentation.</span>
 <span class="SFct">#dependencies</span>
@@ -8465,20 +8465,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">Red</span>      <span class="SCmt">// This is the documentation comment of enum value 'Red'</span>
     <span class="SCst">Blue</span>     <span class="SCmt">// This is the documentation comment of enum value 'Blue'</span>
 }</span></div>
-<h4 id="_230_000_documentation_md__230_001_Api_swg">References </h4>
+<h4 id="_230_000_documentation_md__230_001_api_swg">References </h4>
 <p>You can create a <b>reference</b> to something in the current module with <span class="code-inline">[[name]]</span> or <span class="code-inline">[[name1.name2 etc.]]</span> </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// This is a function with a 'value' parameter.</span>
 <span class="SKwd">func</span> <span class="SFct">one</span>(value: <span class="STpe">s32</span>) {}
 
 <span class="SCmt">// This is a reference to [[one]]</span>
 <span class="SKwd">func</span> <span class="SFct">two</span>() {}</span></div>
-<h4 id="_230_000_documentation_md__230_001_Api_swg">NoDoc </h4>
+<h4 id="_230_000_documentation_md__230_001_api_swg">NoDoc </h4>
 <p>You can use the <span class="code-inline">#[Swag.NoDoc]</span> attribute to prevent a certain element from showing up in the documentation. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// The function 'three' will be ignored when generating the documentation.</span>
 <span class="SAtr">#[Swag.NoDoc]</span>
 <span class="SKwd">func</span> <span class="SFct">three</span>() {}</span></div>
 
-<h3 id="_230_000_documentation_md__230_002_Examples_md">Examples</h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, swag will generate a documentation like this one. Each file will be a chapter or a sub chapter. </p>
+<h3 id="_230_000_documentation_md__230_002_examples_md">Examples</h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, swag will generate a documentation like this one. Each file will be a chapter or a sub chapter. </p>
 <p>File names must start with a number of 3 digits, and can be followed by another number for a sub part. </p>
 <div class="code-block"><span class="SCde">100_my_title.swg            =&gt; will generate a '&lt;h1&gt;My title&lt;&lt;h1&gt;' heading
 101_001_my_sub_title.swg    =&gt; will generate a '&lt;h2&gt;My sub title&lt;&lt;h2&gt;' heading
@@ -8492,7 +8492,7 @@ The comment must start with /** and end with */, which should be alone on their 
 */</span></div>
 <p>Note that the documentation you are reading right now has been generated in that mode, from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
 
-<h3 id="_230_000_documentation_md__230_003_Pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
+<h3 id="_230_000_documentation_md__230_003_pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
 Generated on 22-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
