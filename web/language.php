@@ -131,12 +131,12 @@
 <li><a href="#_003_000_fundamentals_swg__003_001_basic_types_swg">Basic types</a></li>
 <li><a href="#_003_000_fundamentals_swg__003_002_number_literals_swg">Number literals</a></li>
 <li><a href="#_003_000_fundamentals_swg__003_003_string_swg">String</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_004_variables_swg">Variables</a></li>
+<li><a href="#_003_000_fundamentals_swg__003_004_cast_swg">Cast</a></li>
 <li><a href="#_003_000_fundamentals_swg__003_005_constants_swg">Constants</a></li>
 <li><a href="#_003_000_fundamentals_swg__003_006_operators_swg">Operators</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_007_cast_swg">Cast</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_008_alias_swg">Alias</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_009_namespace_swg">Namespace</a></li>
+<li><a href="#_003_000_fundamentals_swg__003_007_variables_swg">Variables</a></li>
+<li><a href="#_003_000_fundamentals_swg__003_008_namespace_swg">Namespace</a></li>
+<li><a href="#_003_000_fundamentals_swg__003_009_alias_swg">Alias</a></li>
 </ul>
 <li><a href="#_004_000_data_structures_swg">Data structures</a></li>
 <ul>
@@ -1143,126 +1143,115 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@nameof</span>(<span class="SCst">X</span>) == <span class="SStr">"X"</span>                      <span class="SCmt">// Returns the variable name "X"</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_004_variables_swg">Variables</h3><h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Variable Declaration </h4>
-<p>In Swag, variables are declared using the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and the variable's type. </p>
-<ul>
-<li><b><span class="code-inline">let</span></b>: Used for declaring a constant variable. The value assigned cannot be modified, ensuring immutability.</li>
-<li><b><span class="code-inline">var</span></b>: Used for declaring a mutable variable. The value assigned can be modified after initialization.</li>
-</ul>
+<h3 id="_003_000_fundamentals_swg__003_004_cast_swg">Cast</h3><h4 id="_003_000_fundamentals_swg__003_004_cast_swg">Explicit Cast with <span class="code-inline">cast</span> </h4>
+<p>Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the <span class="code-inline">cast(type)</span> function, which transforms the value into the specified type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// 'a' is a constant variable of type 'u32', initialized with the value 1.</span>
-    <span class="SCmt">// It is immutable, meaning its value cannot be altered after assignment.</span>
-    <span class="SKwd">let</span> a: <span class="STpe">u32</span> = <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
+    <span class="SCmt">// 'x' is initialized as a floating-point number (f32 by default)</span>
+    <span class="SKwd">let</span> x = <span class="SNum">1.0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">f32</span>
 
-    <span class="SCmt">// 'b' is a constant variable of type 'string', initialized with the value "string".</span>
-    <span class="SKwd">let</span> b: <span class="STpe">string</span> = <span class="SStr">"string"</span>
-    <span class="SItr">@assert</span>(b == <span class="SStr">"string"</span>)
-
-    <span class="SCmt">// 'c' is a mutable variable of type 's32'. Its value is initialized to 42 and can be modified later.</span>
-    <span class="SKwd">var</span> c: <span class="STpe">s32</span> = <span class="SNum">42</span>
-    c += <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(c == <span class="SNum">43</span>)  <span class="SCmt">// Verifies that 'c' has been correctly incremented to 43.</span>
+    <span class="SCmt">// 'y' is explicitly cast to a 32-bit signed integer (s32)</span>
+    <span class="SKwd">let</span> y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
+    <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)                            <span class="SCmt">// The floating-point value 1.0 is cast to the integer value 1</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Multiple Variable Declarations </h4>
-<p>Swag allows the declaration of multiple variables of the same type on a single line. </p>
+<h4 id="_003_000_fundamentals_swg__003_004_cast_swg">Automatic Cast with <span class="code-inline">acast</span> </h4>
+<p><span class="code-inline">acast</span> stands for <span class="code-inline">automatic cast</span>, allowing the compiler to automatically determine and perform the cast to match the type on the left-hand side of the assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> a, b: <span class="STpe">u32</span> = <span class="SNum">123</span>  <span class="SCmt">// Both 'a' and 'b' are of type 'u32', initialized with the value 123.</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">123</span>)
-    <span class="SItr">@assert</span>(b == <span class="SNum">123</span>)
+    <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
+    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">acast</span> x                       <span class="SCmt">// Automatically cast 'x' to 's32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
+    <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
-<p>Alternatively, multiple variables of different types can also be declared on the same line. </p>
+<h4 id="_003_000_fundamentals_swg__003_004_cast_swg">Bitcast </h4>
+<p>The <span class="code-inline">#bit</span> modifier enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a <b>bitcast</b>, is only valid when the source and destination types share the same size. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> a: <span class="STpe">u32</span> = <span class="SNum">12</span>, b: <span class="STpe">f32</span> = <span class="SNum">1.5</span>  <span class="SCmt">// 'a' is of type 'u32', and 'b' is of type 'f32'.</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)
-    <span class="SItr">@assert</span>(b == <span class="SNum">1.5</span>)
+    <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
+    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
+    <span class="SItr">@assert</span>(y == <span class="SNum">0x3f800000</span>)                   <span class="SCmt">// 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex</span>
+
+    <span class="SCmt">// Casting back to the original type should yield the original value</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Default Initialization </h4>
-<p>In Swag, if a variable is declared without an initial value, it is automatically initialized with its default value. A variable is <b>always</b> initialized, ensuring it never holds an undefined value. </p>
+<p>This example demonstrates the reverse operation, where an integer representing a bit pattern is reinterpreted as a floating-point number. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: <span class="STpe">bool</span>
-    <span class="SItr">@assert</span>(a == <span class="SKwd">false</span>)  <span class="SCmt">// The default value for a boolean is 'false'.</span>
+    <span class="SKwd">let</span> rawBits: <span class="STpe">u32</span> = <span class="SNum">0x40490FDB</span>              <span class="SCmt">// Hexadecimal representation of the float 3.1415927</span>
+    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
+    <span class="SItr">@assert</span>(pi == <span class="SNum">3.1415927</span>)                   <span class="SCmt">// This now represents the value of pi as a floating-point number</span>
 
-    <span class="SKwd">var</span> b: <span class="STpe">string</span>
-    <span class="SItr">@assert</span>(b == <span class="SKwd">null</span>)  <span class="SCmt">// The default value for a string is 'null'.</span>
-
-    <span class="SKwd">var</span> c: <span class="STpe">f64</span>
-    <span class="SItr">@assert</span>(c == <span class="SNum">0</span>)  <span class="SCmt">// The default value for a floating-point number is 0.</span>
+    <span class="SCmt">// Verifying that casting back to the original bit pattern restores the initial value</span>
+    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> pi
+    <span class="SItr">@assert</span>(backToBits == <span class="SNum">0x40490FDB</span>)
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Uninitialized Variables </h4>
-<p>If you want a variable to remain uninitialized and avoid the default initialization cost, you can assign it <span class="code-inline">undefined</span>. This approach should be used with caution, as the variable will be in an undefined state. </p>
+<h4 id="_003_000_fundamentals_swg__003_004_cast_swg">Implicit Casts </h4>
+<p>Swag allows automatic type conversions, known as <i>implicit casts</i>, when assigning a value of one type to a variable of another type. This occurs without requiring an explicit <span class="code-inline">cast</span> statement. However, implicit casts are only permitted when there is no risk of precision loss or range overflow, ensuring that the value remains intact and no data is lost during the conversion. </p>
+<h5 id="_003_000_fundamentals_swg__003_004_cast_swg">Implicit Cast Rules </h5>
+<ol>
+<li><b>Widening Conversions</b>: Implicit casts are allowed when converting a smaller type to a larger type, such as from <span class="code-inline">s8</span> to <span class="code-inline">s16</span>, or from <span class="code-inline">f32</span> to <span class="code-inline">f64</span>. These conversions are safe because the larger type can represent all possible values of the smaller type.</li>
+<li><b>Sign Preservation</b>: When implicitly casting between signed and unsigned types, Swag ensures that no data loss occurs by verifying that the value can be represented in both types. Implicit casts from unsigned to signed types (and vice versa) are only allowed when the value is positive and within the range of the target type.</li>
+<li><b>No Implicit Narrowing</b>: Swag does not permit implicit casts that could potentially lose data or precision, such as from <span class="code-inline">s32</span> to <span class="code-inline">s8</span>. These narrowing conversions require an explicit cast to indicate that the developer is aware of the potential data loss.</li>
+</ol>
+<h5 id="_003_000_fundamentals_swg__003_004_cast_swg">Examples of Implicit Casts </h5>
+<p>Let's explore some examples to illustrate these rules. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> a: <span class="STpe">bool</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'a' is intentionally left uninitialized.</span>
-    <span class="SKwd">var</span> b: <span class="STpe">string</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'b' is intentionally left uninitialized.</span>
+    <span class="SCmt">// Implicit cast from 8-bit signed integer (s8) to 16-bit signed integer (s16)</span>
+    <span class="SKwd">let</span> x: <span class="STpe">s16</span> = <span class="SNum">1</span>'<span class="STpe">s8</span>                         <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 32-bit signed integer (s32)</span>
+    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SNum">1</span>'<span class="STpe">s16</span>                        <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 32-bit signed integer (s32) to 64-bit signed integer (s64)</span>
+    <span class="SKwd">let</span> z: <span class="STpe">s64</span> = <span class="SNum">1</span>'<span class="STpe">s32</span>                        <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 8-bit unsigned integer (u8) to 16-bit unsigned integer (u16)</span>
+    <span class="SKwd">let</span> a: <span class="STpe">u16</span> = <span class="SNum">255</span>'<span class="STpe">u8</span>                       <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 16-bit unsigned integer (u16) to 32-bit unsigned integer (u32)</span>
+    <span class="SKwd">let</span> b: <span class="STpe">u32</span> = <span class="SNum">65535</span>'<span class="STpe">u16</span>                    <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 32-bit unsigned integer (u32) to 64-bit unsigned integer (u64)</span>
+    <span class="SKwd">let</span> c: <span class="STpe">u64</span> = <span class="SNum">4294967295</span>'<span class="STpe">u32</span>               <span class="SCmt">// Safe conversion, no loss of precision</span>
+
+    <span class="SCmt">// Implicit cast from 32-bit floating-point (f32) to 64-bit floating-point (f64)</span>
+    <span class="SKwd">let</span> d: <span class="STpe">f64</span> = <span class="SNum">1.23</span>'<span class="STpe">f32</span>                     <span class="SCmt">// Safe conversion, f64 can represent all f32 values accurately</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Type Inference </h4>
-<p>Swag supports type inference, where the type of a variable can be automatically deduced from its assigned value. This allows the omission of explicit type annotations in many cases. </p>
-<p>Below are examples demonstrating <b>type inference</b>. </p>
+<h5 id="_003_000_fundamentals_swg__003_004_cast_swg">Examples Where Implicit Casts Are Not Allowed </h5>
+<p>There are cases where implicit casts are not permitted due to the risk of data loss or precision issues. In such situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks. </p>
+<p>Additionally, the <span class="code-inline">#over</span> modifier can be used in explicit casts to indicate that the value may lose some precision without raising an error. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> a = <span class="SNum">1.5</span>  <span class="SCmt">// The type of 'a' is inferred to be 'f32' due to the floating-point literal.</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f32</span>
+    <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 8-bit signed integer (s8)</span>
+    <span class="SCmt">// This would generate a compilation error because s8 cannot represent all s16 values.</span>
+    <span class="SCmt">// Uncommenting the following lines would cause an error:</span>
 
-    <span class="SKwd">let</span> b = <span class="SStr">"string"</span>  <span class="SCmt">// The type of 'b' is inferred to be 'string'.</span>
-    <span class="SItr">@assert</span>(b == <span class="SStr">"string"</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="STpe">string</span>
+    <span class="SCmt">// let z0: s16 = 100</span>
+    <span class="SCmt">// let z1: s8 = z0                         // Error: Implicit cast from 's16' to 's8' is not allowed</span>
 
-    <span class="SKwd">let</span> c = <span class="SNum">1.5</span>'<span class="STpe">f64</span>  <span class="SCmt">// The type of 'c' is explicitly set to 'f64' using a suffix.</span>
-    <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f64</span>
-}</span></div>
-<p>Type inference also applies when declaring multiple variables simultaneously. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">let</span> a, b = <span class="SKwd">true</span>  <span class="SCmt">// Both 'a' and 'b' are inferred to be of type 'bool'.</span>
-    <span class="SItr">@assert</span>(a == <span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(b == <span class="SKwd">true</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(<span class="SKwd">true</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="SItr">@typeof</span>(a)
+    <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
+    <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
+    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
+    <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                          <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
 
-    <span class="SKwd">let</span> c = <span class="SNum">1.5</span>, d = <span class="SStr">"string"</span>  <span class="SCmt">// 'c' is inferred as 'f32', and 'd' as 'string'.</span>
-    <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
-    <span class="SItr">@assert</span>(d == <span class="SStr">"string"</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">string</span>
-}</span></div>
-<h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Special Variables </h4>
-<p>Swag offers special keywords and attributes to manage variable storage and behavior beyond typical usage. </p>
-<h5 id="_003_000_fundamentals_swg__003_004_variables_swg">Thread-Local Storage </h5>
-<p>By tagging a global variable with <span class="code-inline">#[Swag.Tls]</span>, you can store it in thread-local storage.  Each thread will then have its own independent copy of the variable. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
-<span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G' is a global variable stored in thread-local storage.</span></span></div>
-<h5 id="_003_000_fundamentals_swg__003_004_variables_swg">Global Variables </h5>
-<p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global, functioning similarly to the <span class="code-inline">static</span> keyword in C/C++. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">func</span> <span class="SFct">toto</span>() -&gt; <span class="STpe">s32</span>
-    {
-        <span class="SAtr">#[Swag.Global]</span>
-        <span class="SKwd">var</span> <span class="SCst">G1</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G1' is a static-like variable that retains its value across function calls.</span>
+    <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
+    <span class="SKwd">let</span> u_val: <span class="STpe">u16</span> = <span class="SNum">65535</span>
+    <span class="SCmt">// let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
 
-        <span class="SCst">G1</span> += <span class="SNum">1</span>
-        <span class="SLgc">return</span> <span class="SCst">G1</span>
-    }
+    <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
+    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>(<span class="STpe">s16</span>) <span class="SKwd">#over</span> u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
+    <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                      <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
 
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">1</span>)  <span class="SCmt">// First call increments G1 to 1.</span>
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">2</span>)  <span class="SCmt">// Second call increments G1 to 2.</span>
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)  <span class="SCmt">// Third call increments G1 to 3.</span>
-}</span></div>
-<h5 id="_003_000_fundamentals_swg__003_004_variables_swg">Compile-Time Variables </h5>
-<p>Global variables marked with <span class="code-inline">#[Swag.Compiler]</span> are only accessible during compile-time and are excluded from the runtime code. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
-<span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G2' is a compile-time-only variable.</span>
+    <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
+    <span class="SKwd">let</span> large_float: <span class="STpe">f64</span> = <span class="SNum">1.23456789012345611111</span>
+    <span class="SCmt">// let smaller_float: f32 = large_float    // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss</span>
 
-<span class="SFct">#run</span>
-{
-    <span class="SCst">G2</span> += <span class="SNum">5</span>  <span class="SCmt">// This increment occurs at compile-time.</span>
+    <span class="SCmt">// Explicit cast is required when converting from f64 to f32</span>
+    <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
 }</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_005_constants_swg">Constants</h3><h4 id="_003_000_fundamentals_swg__003_005_constants_swg">Constants with <span class="code-inline">const</span> </h4>
@@ -1547,175 +1536,129 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(((<span class="SNum">10</span> & <span class="SNum">2</span>) &lt;&lt; <span class="SNum">1</span>) == <span class="SNum">4</span>)
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_007_cast_swg">Cast</h3><h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Explicit Cast </h4>
-<p>Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the <span class="code-inline">cast(type)</span> function, which transforms the value into the specified type. </p>
+<h3 id="_003_000_fundamentals_swg__003_007_variables_swg">Variables</h3><h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Variable Declaration </h4>
+<p>In Swag, variables are declared using the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and the variable's type. </p>
+<ul>
+<li><b><span class="code-inline">let</span></b>: Used for declaring a constant variable. The value assigned cannot be modified, ensuring immutability.</li>
+<li><b><span class="code-inline">var</span></b>: Used for declaring a mutable variable. The value assigned can be modified after initialization.</li>
+</ul>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// 'x' is initialized as a floating-point number (f32 by default)</span>
-    <span class="SKwd">let</span> x = <span class="SNum">1.0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">f32</span>
+    <span class="SCmt">// 'a' is a constant variable of type 'u32', initialized with the value 1.</span>
+    <span class="SCmt">// It is immutable, meaning its value cannot be altered after assignment.</span>
+    <span class="SKwd">let</span> a: <span class="STpe">u32</span> = <span class="SNum">1</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
 
-    <span class="SCmt">// 'y' is explicitly cast to a 32-bit signed integer (s32)</span>
-    <span class="SKwd">let</span> y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)                            <span class="SCmt">// The floating-point value 1.0 is cast to the integer value 1</span>
+    <span class="SCmt">// 'b' is a constant variable of type 'string', initialized with the value "string".</span>
+    <span class="SKwd">let</span> b: <span class="STpe">string</span> = <span class="SStr">"string"</span>
+    <span class="SItr">@assert</span>(b == <span class="SStr">"string"</span>)
+
+    <span class="SCmt">// 'c' is a mutable variable of type 's32'. Its value is initialized to 42 and can be modified later.</span>
+    <span class="SKwd">var</span> c: <span class="STpe">s32</span> = <span class="SNum">42</span>
+    c += <span class="SNum">1</span>
+    <span class="SItr">@assert</span>(c == <span class="SNum">43</span>)  <span class="SCmt">// Verifies that 'c' has been correctly incremented to 43.</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_007_cast_swg">acast (Automatic Cast) </h4>
-<p><span class="code-inline">acast</span> stands for <span class="code-inline">automatic cast</span>, allowing the compiler to automatically determine and perform the cast to match the type on the left-hand side of the assignment. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Multiple Variable Declarations </h4>
+<p>Swag allows the declaration of multiple variables of the same type on a single line. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">acast</span> x                       <span class="SCmt">// Automatically cast 'x' to 's32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
+    <span class="SKwd">let</span> a, b: <span class="STpe">u32</span> = <span class="SNum">123</span>  <span class="SCmt">// Both 'a' and 'b' are of type 'u32', initialized with the value 123.</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">123</span>)
+    <span class="SItr">@assert</span>(b == <span class="SNum">123</span>)
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Bitcast </h4>
-<p>The <span class="code-inline">#bit</span> modifier enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a <b>bitcast</b>, is only valid when the source and destination types share the same size. </p>
+<p>Alternatively, multiple variables of different types can also be declared on the same line. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
-    <span class="SItr">@assert</span>(y == <span class="SNum">0x3f800000</span>)                   <span class="SCmt">// 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex</span>
-
-    <span class="SCmt">// Casting back to the original type should yield the original value</span>
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
+    <span class="SKwd">let</span> a: <span class="STpe">u32</span> = <span class="SNum">12</span>, b: <span class="STpe">f32</span> = <span class="SNum">1.5</span>  <span class="SCmt">// 'a' is of type 'u32', and 'b' is of type 'f32'.</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)
+    <span class="SItr">@assert</span>(b == <span class="SNum">1.5</span>)
 }</span></div>
-<p>This example demonstrates the reverse operation, where an integer representing a bit pattern is reinterpreted as a floating-point number. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Default Initialization </h4>
+<p>In Swag, if a variable is declared without an initial value, it is automatically initialized with its default value. A variable is <b>always</b> initialized, ensuring it never holds an undefined value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> rawBits: <span class="STpe">u32</span> = <span class="SNum">0x40490FDB</span>              <span class="SCmt">// Hexadecimal representation of the float 3.1415927</span>
-    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
-    <span class="SItr">@assert</span>(pi == <span class="SNum">3.1415927</span>)                   <span class="SCmt">// This now represents the value of pi as a floating-point number</span>
+    <span class="SKwd">var</span> a: <span class="STpe">bool</span>
+    <span class="SItr">@assert</span>(a == <span class="SKwd">false</span>)  <span class="SCmt">// The default value for a boolean is 'false'.</span>
 
-    <span class="SCmt">// Verifying that casting back to the original bit pattern restores the initial value</span>
-    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> pi
-    <span class="SItr">@assert</span>(backToBits == <span class="SNum">0x40490FDB</span>)
+    <span class="SKwd">var</span> b: <span class="STpe">string</span>
+    <span class="SItr">@assert</span>(b == <span class="SKwd">null</span>)  <span class="SCmt">// The default value for a string is 'null'.</span>
+
+    <span class="SKwd">var</span> c: <span class="STpe">f64</span>
+    <span class="SItr">@assert</span>(c == <span class="SNum">0</span>)  <span class="SCmt">// The default value for a floating-point number is 0.</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Implicit Casts </h4>
-<p>Swag allows automatic type conversions, known as <i>implicit casts</i>, when assigning a value of one type to a variable of another type. This occurs without requiring an explicit <span class="code-inline">cast</span> statement. However, implicit casts are only permitted when there is no risk of precision loss or range overflow, ensuring that the value remains intact and no data is lost during the conversion. </p>
-<h5 id="_003_000_fundamentals_swg__003_007_cast_swg">Implicit Cast Rules </h5>
-<ol>
-<li><b>Widening Conversions</b>: Implicit casts are allowed when converting a smaller type to a larger type, such as from <span class="code-inline">s8</span> to <span class="code-inline">s16</span>, or from <span class="code-inline">f32</span> to <span class="code-inline">f64</span>. These conversions are safe because the larger type can represent all possible values of the smaller type.</li>
-<li><b>Sign Preservation</b>: When implicitly casting between signed and unsigned types, Swag ensures that no data loss occurs by verifying that the value can be represented in both types. Implicit casts from unsigned to signed types (and vice versa) are only allowed when the value is positive and within the range of the target type.</li>
-<li><b>No Implicit Narrowing</b>: Swag does not permit implicit casts that could potentially lose data or precision, such as from <span class="code-inline">s32</span> to <span class="code-inline">s8</span>. These narrowing conversions require an explicit cast to indicate that the developer is aware of the potential data loss.</li>
-</ol>
-<h5 id="_003_000_fundamentals_swg__003_007_cast_swg">Examples of Implicit Casts </h5>
-<p>Let's explore some examples to illustrate these rules. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Uninitialized Variables </h4>
+<p>If you want a variable to remain uninitialized and avoid the default initialization cost, you can assign it <span class="code-inline">undefined</span>. This approach should be used with caution, as the variable will be in an undefined state. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Implicit cast from 8-bit signed integer (s8) to 16-bit signed integer (s16)</span>
-    <span class="SKwd">let</span> x: <span class="STpe">s16</span> = <span class="SNum">1</span>'<span class="STpe">s8</span>                         <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 32-bit signed integer (s32)</span>
-    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SNum">1</span>'<span class="STpe">s16</span>                        <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 32-bit signed integer (s32) to 64-bit signed integer (s64)</span>
-    <span class="SKwd">let</span> z: <span class="STpe">s64</span> = <span class="SNum">1</span>'<span class="STpe">s32</span>                        <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 8-bit unsigned integer (u8) to 16-bit unsigned integer (u16)</span>
-    <span class="SKwd">let</span> a: <span class="STpe">u16</span> = <span class="SNum">255</span>'<span class="STpe">u8</span>                       <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 16-bit unsigned integer (u16) to 32-bit unsigned integer (u32)</span>
-    <span class="SKwd">let</span> b: <span class="STpe">u32</span> = <span class="SNum">65535</span>'<span class="STpe">u16</span>                    <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 32-bit unsigned integer (u32) to 64-bit unsigned integer (u64)</span>
-    <span class="SKwd">let</span> c: <span class="STpe">u64</span> = <span class="SNum">4294967295</span>'<span class="STpe">u32</span>               <span class="SCmt">// Safe conversion, no loss of precision</span>
-
-    <span class="SCmt">// Implicit cast from 32-bit floating-point (f32) to 64-bit floating-point (f64)</span>
-    <span class="SKwd">let</span> d: <span class="STpe">f64</span> = <span class="SNum">1.23</span>'<span class="STpe">f32</span>                     <span class="SCmt">// Safe conversion, f64 can represent all f32 values accurately</span>
+    <span class="SKwd">var</span> a: <span class="STpe">bool</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'a' is intentionally left uninitialized.</span>
+    <span class="SKwd">var</span> b: <span class="STpe">string</span> = <span class="SKwd">undefined</span>  <span class="SCmt">// 'b' is intentionally left uninitialized.</span>
 }</span></div>
-<h5 id="_003_000_fundamentals_swg__003_007_cast_swg">Examples Where Implicit Casts Are Not Allowed </h5>
-<p>There are cases where implicit casts are not permitted due to the risk of data loss or precision issues. In such situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks. </p>
-<p>Additionally, the <span class="code-inline">#over</span> modifier can be used in explicit casts to indicate that the value may lose some precision without raising an error. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Type Inference </h4>
+<p>Swag supports type inference, where the type of a variable can be automatically deduced from its assigned value. This allows the omission of explicit type annotations in many cases. </p>
+<p>Below are examples demonstrating <b>type inference</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 8-bit signed integer (s8)</span>
-    <span class="SCmt">// This would generate a compilation error because s8 cannot represent all s16 values.</span>
-    <span class="SCmt">// Uncommenting the following lines would cause an error:</span>
+    <span class="SKwd">let</span> a = <span class="SNum">1.5</span>  <span class="SCmt">// The type of 'a' is inferred to be 'f32' due to the floating-point literal.</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f32</span>
 
-    <span class="SCmt">// let z0: s16 = 100</span>
-    <span class="SCmt">// let z1: s8 = z0                         // Error: Implicit cast from 's16' to 's8' is not allowed</span>
+    <span class="SKwd">let</span> b = <span class="SStr">"string"</span>  <span class="SCmt">// The type of 'b' is inferred to be 'string'.</span>
+    <span class="SItr">@assert</span>(b == <span class="SStr">"string"</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="STpe">string</span>
 
-    <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
-    <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
-    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
-    <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                          <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
-
-    <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
-    <span class="SKwd">let</span> u_val: <span class="STpe">u16</span> = <span class="SNum">65535</span>
-    <span class="SCmt">// let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
-
-    <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
-    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>(<span class="STpe">s16</span>) <span class="SKwd">#over</span> u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
-    <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                      <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
-
-    <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
-    <span class="SKwd">let</span> large_float: <span class="STpe">f64</span> = <span class="SNum">1.23456789012345611111</span>
-    <span class="SCmt">// let smaller_float: f32 = large_float    // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss</span>
-
-    <span class="SCmt">// Explicit cast is required when converting from f64 to f32</span>
-    <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
+    <span class="SKwd">let</span> c = <span class="SNum">1.5</span>'<span class="STpe">f64</span>  <span class="SCmt">// The type of 'c' is explicitly set to 'f64' using a suffix.</span>
+    <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f64</span>
 }</span></div>
-
-<h3 id="_003_000_fundamentals_swg__003_008_alias_swg">Alias</h3><h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Type Alias </h4>
-<p>A <span class="code-inline">typealias</span> allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with. </p>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Basic Type Alias </h4>
-<p>Using <span class="code-inline">typealias</span>, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one. </p>
+<p>Type inference also applies when declaring multiple variables simultaneously. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
-    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span> == <span class="SNum">0</span>)
+    <span class="SKwd">let</span> a, b = <span class="SKwd">true</span>  <span class="SCmt">// Both 'a' and 'b' are inferred to be of type 'bool'.</span>
+    <span class="SItr">@assert</span>(a == <span class="SKwd">true</span>)
+    <span class="SItr">@assert</span>(b == <span class="SKwd">true</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(<span class="SKwd">true</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="SItr">@typeof</span>(a)
 
-    <span class="SKwd">typealias</span> <span class="SCst">Color</span> = <span class="SCst">RGB</span>                   <span class="SCmt">// 'Color' is now a shorthand for 'RGB'</span>
-    <span class="SItr">@assert</span>(<span class="SCst">Color</span>.<span class="SCst">G</span> == <span class="SNum">1</span>)                   <span class="SCmt">// 'Color' can be used wherever 'RGB' is expected.</span>
+    <span class="SKwd">let</span> c = <span class="SNum">1.5</span>, d = <span class="SStr">"string"</span>  <span class="SCmt">// 'c' is inferred as 'f32', and 'd' as 'string'.</span>
+    <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
+    <span class="SItr">@assert</span>(d == <span class="SStr">"string"</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">string</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Aliasing Primitive Types </h4>
-<p>You can create aliases for primitive types, making your code more readable and meaningful, especially when the alias represents a specific domain concept. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_variables_swg">Special Variables </h4>
+<p>Swag offers special keywords and attributes to manage variable storage and behavior beyond typical usage. </p>
+<h5 id="_003_000_fundamentals_swg__003_007_variables_swg">Thread-Local Storage </h5>
+<p>By tagging a global variable with <span class="code-inline">#[Swag.Tls]</span>, you can store it in thread-local storage.  Each thread will then have its own independent copy of the variable. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
+<span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G' is a global variable stored in thread-local storage.</span></span></div>
+<h5 id="_003_000_fundamentals_swg__003_007_variables_swg">Global Variables </h5>
+<p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global, functioning similarly to the <span class="code-inline">static</span> keyword in C/C++. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Float32</span> = <span class="STpe">f32</span>                 <span class="SCmt">// 'Float32' is an alias for 'f32'</span>
-    <span class="SKwd">typealias</span> <span class="SCst">Float64</span> = <span class="STpe">f64</span>                 <span class="SCmt">// 'Float64' is an alias for 'f64'</span>
+    <span class="SKwd">func</span> <span class="SFct">toto</span>() -&gt; <span class="STpe">s32</span>
+    {
+        <span class="SAtr">#[Swag.Global]</span>
+        <span class="SKwd">var</span> <span class="SCst">G1</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G1' is a static-like variable that retains its value across function calls.</span>
 
-    <span class="SKwd">var</span> x: <span class="SCst">Float32</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var x: f32'</span>
-    <span class="SKwd">var</span> y: <span class="SCst">Float64</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var y: f64'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float32</span>) == <span class="STpe">f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float64</span>) == <span class="STpe">f64</span>
+        <span class="SCst">G1</span> += <span class="SNum">1</span>
+        <span class="SLgc">return</span> <span class="SCst">G1</span>
+    }
+
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">1</span>)  <span class="SCmt">// First call increments G1 to 1.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">2</span>)  <span class="SCmt">// Second call increments G1 to 2.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)  <span class="SCmt">// Third call increments G1 to 3.</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Strict Type Alias </h4>
-<p>In cases where you need to enforce type safety, Swag provides the <span class="code-inline">Swag.Strict</span> attribute, which can be applied to a <span class="code-inline">typealias</span>. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+<h5 id="_003_000_fundamentals_swg__003_007_variables_swg">Compile-Time Variables </h5>
+<p>Global variables marked with <span class="code-inline">#[Swag.Compiler]</span> are only accessible during compile-time and are excluded from the runtime code. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
+<span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>  <span class="SCmt">// 'G2' is a compile-time-only variable.</span>
+
+<span class="SFct">#run</span>
 {
-    <span class="SAtr">#[Swag.Strict]</span>
-    <span class="SKwd">typealias</span> <span class="SCst">MyType</span> = <span class="STpe">s32</span>                  <span class="SCmt">// 'MyType' is a distinct type, not interchangeable with 's32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">MyType</span>) != <span class="STpe">s32</span>
-
-    <span class="SKwd">let</span> x: <span class="SCst">MyType</span> = <span class="SKwd">cast</span>(<span class="SCst">MyType</span>) <span class="SNum">0</span>          <span class="SCmt">// Explicit cast is required to assign a value</span>
-    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x                <span class="SCmt">// Casting back to 's32' also requires an explicit cast</span>
-}</span></div>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Name Alias </h4>
-<p>A <span class="code-inline">namealias</span> allows you to create an alternative name or shortcut for functions, variables, or namespaces. This can be particularly useful for simplifying code, managing long or complex names, or improving the readability and maintainability of your code. </p>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Function Name Alias </h4>
-<p>With <span class="code-inline">namealias</span>, you can define a shorter or more convenient name for a function. This is particularly helpful when dealing with functions that have long or descriptive names, allowing you to simplify your code without sacrificing functionality. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">func</span> <span class="SFct">thisIsABigFunctionName</span>(x: <span class="STpe">s32</span>) =&gt; x * x
-
-    <span class="SKwd">namealias</span> myFunc = thisIsABigFunctionName
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">4</span>) == <span class="SNum">16</span>)                <span class="SCmt">// 'myFunc' is now an alias for 'thisIsABigFunctionName'</span>
-}</span></div>
-<h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Variable and Namespace Alias </h4>
-<p><span class="code-inline">namealias</span> can also be used to alias variables and namespaces, offering a shorter or more convenient reference that can be used throughout your code. This is particularly useful in large codebases where certain variables or namespaces are frequently referenced. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">var</span> myLongVariableName: <span class="STpe">s32</span> = <span class="SNum">0</span>
-    <span class="SKwd">namealias</span> short = myLongVariableName
-
-    short += <span class="SNum">2</span>                              <span class="SCmt">// 'short' is an alias for 'myLongVariableName'</span>
-    <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)        <span class="SCmt">// The original variable reflects changes made via the alias</span>
+    <span class="SCst">G2</span> += <span class="SNum">5</span>  <span class="SCmt">// This increment occurs at compile-time.</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_009_namespace_swg">Namespace</h3><h4 id="_003_000_fundamentals_swg__003_009_namespace_swg">Namespaces in Swag </h4>
+<h3 id="_003_000_fundamentals_swg__003_008_namespace_swg">Namespace</h3><h4 id="_003_000_fundamentals_swg__003_008_namespace_swg">Namespaces in Swag </h4>
 <p>Namespaces in Swag provide a mechanism to organize and encapsulate symbols such as functions, variables, and types within a specific scope. By grouping related symbols together under a namespace, you can avoid naming conflicts and make your codebase more modular and maintainable. Symbols within a namespace are accessible only through the namespace unless explicitly made available outside of it. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Define a simple namespace 'A'</span>
 <span class="SKwd">namespace</span> <span class="SCst">A</span>
@@ -1723,7 +1666,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Function 'a' is defined within the namespace 'A'.</span>
     <span class="SKwd">func</span> <span class="SFct">a</span>() =&gt; <span class="SNum">1</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_009_namespace_swg">Nested Namespaces </h4>
+<h4 id="_003_000_fundamentals_swg__003_008_namespace_swg">Nested Namespaces </h4>
 <p>Swag allows you to create nested namespaces, enabling hierarchical organization of symbols. In the following example, namespace <span class="code-inline">C</span> is nested inside <span class="code-inline">B</span>, which is itself nested inside <span class="code-inline">A</span>. This structure facilitates even finer control and organization, particularly useful in large projects. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Define a nested namespace 'A.B.C'</span>
 <span class="SKwd">namespace</span> <span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>
@@ -1738,7 +1681,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SFct">a</span>() == <span class="SNum">1</span>)          <span class="SCmt">// Calls the 'a' function from namespace 'A'</span>
     <span class="SItr">@assert</span>(<span class="SCst">A</span>.<span class="SCst">B</span>.<span class="SCst">C</span>.<span class="SFct">a</span>() == <span class="SNum">2</span>)      <span class="SCmt">// Calls the 'a' function from nested namespace 'A.B.C'</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_009_namespace_swg">Using <span class="code-inline">using</span> with Namespaces </h4>
+<h4 id="_003_000_fundamentals_swg__003_008_namespace_swg">Using <span class="code-inline">using</span> with Namespaces </h4>
 <p>The <span class="code-inline">using</span> keyword allows you to import symbols from a namespace into the current scope, eliminating the need to fully qualify those symbols with the namespace name. This makes the code more concise and improves readability, particularly when working with deeply nested namespaces. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SKwd">namespace</span> <span class="SCst">Private</span>
 {
@@ -1747,7 +1690,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">Private</span>.<span class="SCst">FileSymbol</span>     <span class="SCmt">// Accessing 'FileSymbol' with the full namespace path</span>
 <span class="SKwd">const</span> <span class="SCst">C</span> = <span class="SCst">FileSymbol</span>             <span class="SCmt">// Direct access to 'FileSymbol' thanks to the 'using' directive</span></span></div>
-<h4 id="_003_000_fundamentals_swg__003_009_namespace_swg">Private Scopes with <span class="code-inline">private</span> </h4>
+<h4 id="_003_000_fundamentals_swg__003_008_namespace_swg">Private Scopes with <span class="code-inline">private</span> </h4>
 <p>In addition to named namespaces, Swag allows you to define a private scope using the <span class="code-inline">private</span> keyword. A private scope creates a unique, unnamed namespace that restricts access to the enclosed symbols to the current file, effectively making them private. This is particularly useful for isolating symbols that should not be accessible outside the file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">private</span>
 {
@@ -1755,8 +1698,65 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }
 
 <span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span>            <span class="SCmt">// Direct access to 'OtherSymbol' as it is private to the file</span></span></div>
-<h4 id="_003_000_fundamentals_swg__003_009_namespace_swg">Exporting Symbols </h4>
+<h4 id="_003_000_fundamentals_swg__003_008_namespace_swg">Exporting Symbols </h4>
 <p>By default, all symbols defined in a Swag source file are exported and can be accessed by other files within the same module. However, using <span class="code-inline">private</span> scopes or explicit namespaces provides a layer of protection against unintentional name conflicts, particularly in larger projects where different files may define symbols with similar or identical names. </p>
+
+<h3 id="_003_000_fundamentals_swg__003_009_alias_swg">Alias</h3><h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Type Alias </h4>
+<p>A <span class="code-inline">typealias</span> allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with. </p>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Basic Type Alias </h4>
+<p>Using <span class="code-inline">typealias</span>, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
+    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span> == <span class="SNum">0</span>)
+
+    <span class="SKwd">typealias</span> <span class="SCst">Color</span> = <span class="SCst">RGB</span>                   <span class="SCmt">// 'Color' is now a shorthand for 'RGB'</span>
+    <span class="SItr">@assert</span>(<span class="SCst">Color</span>.<span class="SCst">G</span> == <span class="SNum">1</span>)                   <span class="SCmt">// 'Color' can be used wherever 'RGB' is expected.</span>
+}</span></div>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Aliasing Primitive Types </h4>
+<p>You can create aliases for primitive types, making your code more readable and meaningful, especially when the alias represents a specific domain concept. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">typealias</span> <span class="SCst">Float32</span> = <span class="STpe">f32</span>                 <span class="SCmt">// 'Float32' is an alias for 'f32'</span>
+    <span class="SKwd">typealias</span> <span class="SCst">Float64</span> = <span class="STpe">f64</span>                 <span class="SCmt">// 'Float64' is an alias for 'f64'</span>
+
+    <span class="SKwd">var</span> x: <span class="SCst">Float32</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var x: f32'</span>
+    <span class="SKwd">var</span> y: <span class="SCst">Float64</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var y: f64'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float32</span>) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float64</span>) == <span class="STpe">f64</span>
+}</span></div>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Strict Type Alias </h4>
+<p>In cases where you need to enforce type safety, Swag provides the <span class="code-inline">Swag.Strict</span> attribute, which can be applied to a <span class="code-inline">typealias</span>. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.Strict]</span>
+    <span class="SKwd">typealias</span> <span class="SCst">MyType</span> = <span class="STpe">s32</span>                  <span class="SCmt">// 'MyType' is a distinct type, not interchangeable with 's32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">MyType</span>) != <span class="STpe">s32</span>
+
+    <span class="SKwd">let</span> x: <span class="SCst">MyType</span> = <span class="SKwd">cast</span>(<span class="SCst">MyType</span>) <span class="SNum">0</span>          <span class="SCmt">// Explicit cast is required to assign a value</span>
+    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x                <span class="SCmt">// Casting back to 's32' also requires an explicit cast</span>
+}</span></div>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Name Alias </h4>
+<p>A <span class="code-inline">namealias</span> allows you to create an alternative name or shortcut for functions, variables, or namespaces. This can be particularly useful for simplifying code, managing long or complex names, or improving the readability and maintainability of your code. </p>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Function Name Alias </h4>
+<p>With <span class="code-inline">namealias</span>, you can define a shorter or more convenient name for a function. This is particularly helpful when dealing with functions that have long or descriptive names, allowing you to simplify your code without sacrificing functionality. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">func</span> <span class="SFct">thisIsABigFunctionName</span>(x: <span class="STpe">s32</span>) =&gt; x * x
+
+    <span class="SKwd">namealias</span> myFunc = thisIsABigFunctionName
+    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">4</span>) == <span class="SNum">16</span>)                <span class="SCmt">// 'myFunc' is now an alias for 'thisIsABigFunctionName'</span>
+}</span></div>
+<h4 id="_003_000_fundamentals_swg__003_009_alias_swg">Variable and Namespace Alias </h4>
+<p><span class="code-inline">namealias</span> can also be used to alias variables and namespaces, offering a shorter or more convenient reference that can be used throughout your code. This is particularly useful in large codebases where certain variables or namespaces are frequently referenced. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> myLongVariableName: <span class="STpe">s32</span> = <span class="SNum">0</span>
+    <span class="SKwd">namealias</span> short = myLongVariableName
+
+    short += <span class="SNum">2</span>                              <span class="SCmt">// 'short' is an alias for 'myLongVariableName'</span>
+    <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)        <span class="SCmt">// The original variable reflects changes made via the alias</span>
+}</span></div>
 
 <h2 id="_004_000_data_structures_swg">Data structures</h2>
 <h3 id="_004_000_data_structures_swg__004_001_array_swg">Array</h3><h4 id="_004_000_data_structures_swg__004_001_array_swg">Static Arrays in Swag </h4>

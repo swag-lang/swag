@@ -1,5 +1,5 @@
 /**
-# Explicit Cast
+# Explicit Cast with 'cast'
 Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the `cast(type)` function, which transforms the value into the specified type.
 */
 #test
@@ -15,7 +15,7 @@ Explicit casting is necessary when you need to convert a value from one type to 
 }
 
 /**
-# acast (Automatic Cast)
+# Automatic Cast with 'acast'
 `acast` stands for `automatic cast`, allowing the compiler to automatically determine and perform the cast to match the type on the left-hand side of the assignment.
 */
 #test
