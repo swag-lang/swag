@@ -12,40 +12,65 @@ This attribute indicates that the function is intended to be a macro, which can 
 
 /**
 # Macro Scope
-Macros operate within their own scope, unlike mixins that share the scope of their caller. 
-This isolation ensures that variables within a macro do not interfere with those outside it, preventing conflicts.
+Macros operate within their own scope, which is separate and isolated from the caller's scope. 
+This is different from mixins, which share the caller's scope. 
+The isolation provided by macros ensures that any variables defined inside the macro do not interfere 
+with or modify variables outside the macro, preventing potential naming conflicts.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro()
     {
-        var a = 666                            // 'a' is confined to the macro's scope
+        // This variable 'a' is local to the macro and does not affect or interfere 
+        // with any 'a' outside the macro.
+
+        var a = 666     // 'a' is confined to the macro's scope
     }
 
+    // Declare a variable 'a' in the outer scope and initialize it to 0.
     let a = 0
-    myMacro()                                  // No conflict with the outer 'a'
-    @assert(a == 0)                            // 'a' remains as defined outside the macro
+
+    // Call the macro `myMacro()`. The macro defines its own 'a', but this does not 
+    // conflict with the outer 'a'.
+
+    myMacro()          // No conflict with the outer 'a'
+
+    // Verify that the outer 'a' remains unchanged.
+    @assert(a == 0)
 }
 
 /**
 # Resolving Identifiers Outside the Macro Scope
-Using the `#up` keyword, you can explicitly reference variables from outside the macro's scope.
-This allows a macro to interact with variables in the caller's environment.
+Macros typically have their own scope, which means variables inside them are isolated from the outer environment.
+However, using the `#up` keyword, you can explicitly reference and modify variables that are defined outside the macro.
+This allows the macro to interact with the caller's environment.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro()
     {
-        #up a += 1                             // References 'a' from the outer scope
+        // Use `#up` to access and modify the variable `a` from the outer scope (the scope where the 
+        // macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's 
+        // own scope (which might not exist).
+
+        #up a += 1  // Increments the outer 'a' by 1
     }
 
+    // Declare a variable `a` in the outer scope
     var a = 0
-    myMacro()                                  // Increments the outer 'a' by 1
-    myMacro()                                  // Increments the outer 'a' by 1 again
-    @assert(a == 2)                            // Verifies that 'a' has been incremented twice
+
+    // Call the macro `myMacro()`, which increments the outer `a` by 1 using `#up`
+    myMacro()   // `a` becomes 1
+
+    // Call the macro `myMacro()` again, which increments `a` by 1 again
+    myMacro()   // `a` becomes 2
+
+    // Verify that `a` has been incremented twice
+    @assert(a == 2)
 }
+
 
 /**
 # Macros with Code Parameters

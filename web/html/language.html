@@ -5420,33 +5420,54 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>() {}
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Macro Scope </h4>
-<p>Macros operate within their own scope, unlike mixins that share the scope of their caller.  This isolation ensures that variables within a macro do not interfere with those outside it, preventing conflicts. </p>
+<p>Macros operate within their own scope, which is separate and isolated from the caller's scope.  This is different from mixins, which share the caller's scope.  The isolation provided by macros ensures that any variables defined inside the macro do not interfere  with or modify variables outside the macro, preventing potential naming conflicts. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SKwd">var</span> a = <span class="SNum">666</span>                            <span class="SCmt">// 'a' is confined to the macro's scope</span>
+        <span class="SCmt">// This variable 'a' is local to the macro and does not affect or interfere </span>
+        <span class="SCmt">// with any 'a' outside the macro.</span>
+
+        <span class="SKwd">var</span> a = <span class="SNum">666</span>     <span class="SCmt">// 'a' is confined to the macro's scope</span>
     }
 
+    <span class="SCmt">// Declare a variable 'a' in the outer scope and initialize it to 0.</span>
     <span class="SKwd">let</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMacro</span>()                                  <span class="SCmt">// No conflict with the outer 'a'</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">0</span>)                            <span class="SCmt">// 'a' remains as defined outside the macro</span>
+
+    <span class="SCmt">// Call the macro `myMacro()`. The macro defines its own 'a', but this does not </span>
+    <span class="SCmt">// conflict with the outer 'a'.</span>
+
+    <span class="SFct">myMacro</span>()          <span class="SCmt">// No conflict with the outer 'a'</span>
+
+    <span class="SCmt">// Verify that the outer 'a' remains unchanged.</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">0</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Resolving Identifiers Outside the Macro Scope </h4>
-<p>Using the <span class="code-inline">#up</span> keyword, you can explicitly reference variables from outside the macro's scope. This allows a macro to interact with variables in the caller's environment. </p>
+<p>Macros typically have their own scope, which means variables inside them are isolated from the outer environment. However, using the <span class="code-inline">#up</span> keyword, you can explicitly reference and modify variables that are defined outside the macro. This allows the macro to interact with the caller's environment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SCmp">#up</span> a += <span class="SNum">1</span>                             <span class="SCmt">// References 'a' from the outer scope</span>
+        <span class="SCmt">// Use `#up` to access and modify the variable `a` from the outer scope (the scope where the </span>
+        <span class="SCmt">// macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's </span>
+        <span class="SCmt">// own scope (which might not exist).</span>
+
+        <span class="SCmp">#up</span> a += <span class="SNum">1</span>  <span class="SCmt">// Increments the outer 'a' by 1</span>
     }
 
+    <span class="SCmt">// Declare a variable `a` in the outer scope</span>
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SFct">myMacro</span>()                                  <span class="SCmt">// Increments the outer 'a' by 1</span>
-    <span class="SFct">myMacro</span>()                                  <span class="SCmt">// Increments the outer 'a' by 1 again</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)                            <span class="SCmt">// Verifies that 'a' has been incremented twice</span>
+
+    <span class="SCmt">// Call the macro `myMacro()`, which increments the outer `a` by 1 using `#up`</span>
+    <span class="SFct">myMacro</span>()   <span class="SCmt">// `a` becomes 1</span>
+
+    <span class="SCmt">// Call the macro `myMacro()` again, which increments `a` by 1 again</span>
+    <span class="SFct">myMacro</span>()   <span class="SCmt">// `a` becomes 2</span>
+
+    <span class="SCmt">// Verify that `a` has been incremented twice</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Macros with Code Parameters </h4>
 <p>Macros can take <span class="code-inline">code</span> parameters, enabling you to pass and insert code blocks dynamically within the macro. This feature is similar to mixins but within the macro's scope. </p>
