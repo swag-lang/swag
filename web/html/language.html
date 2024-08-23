@@ -7143,74 +7143,72 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="_012_000_error_management_and_safety_swg">Error management and safety</h2>
-<h3 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">Error management</h3><p>In a few words, a function marked with <span class="code-inline">throw</span> can return an error by calling <span class="code-inline">throw</span> followed by the error value. An error value is a struct. If an error has been raised, a caller can either stop its execution and return that same error with <span class="code-inline">try</span>, or it can <span class="code-inline">catch</span> the error and deal with it with a dedicated intrinsic <span class="code-inline">@err()</span>. </p>
-<p>So <span class="code-inline">throw Error{}</span> is equivalent to a return, and every rule when leaving a function is the same (call of <span class="code-inline">defer</span>, variables drop, and so on). </p>
+<h3 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">Error management</h3><p>A function marked with <span class="code-inline">throw</span> indicates that it can return an error by invoking the <span class="code-inline">throw</span> keyword, followed by an error value. The error value is a struct, which encapsulates the error details. If an error occurs, the caller has the option to either halt execution and propagate the error using <span class="code-inline">try</span>, or handle the error explicitly using the <span class="code-inline">@err()</span> intrinsic. </p>
 <div class="blockquote blockquote-default">
-<p> These are <b>not</b> exceptions! You should consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
+<p> It's crucial to understand that these are <b>not</b> exceptions in the traditional sense. Consider <span class="code-inline">throw</span> as a specialized form of <span class="code-inline">return</span> that carries an error value. </p>
 </div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">throw </h4>
-<p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This allows the function to raise an error with the same <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
+<p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This enables the function to raise an error using the <span class="code-inline">throw</span> keyword, passing an error value structured as a custom-defined struct. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Defines a custom error type by extending the default runtime base error.</span>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
-    <span class="SCmt">// The default runtime base error contains some default fields, like a 'message'</span>
+    <span class="SCmt">// The default runtime base error includes fields such as a 'message'.</span>
     <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
 }</span></div>
-<p>Note that when a function returns because of an error, the real return value will always be equal to the <b>default value</b> depending on the type. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw' at the end of its signature.</span>
+<p>When a function returns due to an error, the actual return value will always be the <b>default value</b> for the return type. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'count()' function may raise an error, so 'throw' is added at the end of its signature.</span>
 <span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
     {
-        <span class="SCmt">// Throw a 'MyError' error, and initialize it with a compile-time string.</span>
-        <span class="SCmt">// 'count()' will also return 0, because this is the default value for 'u64'.</span>
-        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}
+        <span class="SCmt">// Throwing a 'MyError' initialized with a compile-time string.</span>
+        <span class="SCmt">// The return value will be 0, the default for 'u64'.</span>
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}  <span class="SCmt">// Error: null pointer</span>
     }
 
-    <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)
+    <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)  <span class="SCmt">// Return the count of characters in the string</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">catch </h4>
-<p>The caller will then have to deal with the error in some way. </p>
-<p>It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. In that case, the error is dismissed, and the execution will continue at the call site. </p>
+<p>The caller must handle the error appropriately. </p>
+<p>The error can be <span class="code-inline">caught</span> using the <span class="code-inline">catch</span> keyword, and the value can be tested (or not) using the <span class="code-inline">@err()</span> intrinsic. If caught, the error is dismissed, and execution continues from the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
-    <span class="SCmt">// Dismiss the potential error with 'catch' and continue execution.</span>
+    <span class="SCmt">// Dismiss any potential error using 'catch' and proceed with execution.</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// We can test it with '@err()', which returns the 'throw' corresponding value as long as</span>
-    <span class="SCmt">// another error is not raised. Consider it a good idea to test it right</span>
-    <span class="SCmt">// after the 'catch'.</span>
+    <span class="SCmt">// Test the error using '@err()'. This should be done immediately after 'catch' to ensure</span>
+    <span class="SCmt">// proper error handling.</span>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
-        <span class="SCmt">// '@err()' returns an 'any', so you can test the type of the error directly with its name.</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
+        <span class="SCmt">// '@err()' returns an 'any', allowing direct type comparison with the error type.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Ensure the error is of type 'MyError'</span>
 
-        <span class="SCmt">// The function 'count()' should have returned the default value, so 0.</span>
+        <span class="SCmt">// Verify that 'count()' returned the default value, which is 0.</span>
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
 
-        <span class="SItr">@print</span>(<span class="SStr">"an error was raised"</span>)
+        <span class="SItr">@print</span>(<span class="SStr">"An error was raised"</span>)  <span class="SCmt">// Inform the user that an error was encountered.</span>
         <span class="SLgc">return</span>
     }
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">trycatch </h4>
-<p>Instead of <span class="code-inline">catch</span>, you can use <span class="code-inline">trycatch</span>, which will dismiss the error and exit the current function, returning the default value if necessary. For the caller, no error has been raised. </p>
+<p>Alternatively, the <span class="code-inline">trycatch</span> construct can be used to dismiss the error and exit the current function, returning the default value if needed. This approach ensures that no error is propagated to the caller. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myOtherFunc</span>()
 {
-    <span class="SCmt">// If count() throws an error, we just exit the function without further notice.</span>
+    <span class="SCmt">// If 'count()' throws an error, exit the function silently.</span>
     <span class="SKwd">var</span> cpt1 = <span class="SKwd">trycatch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// This is equivalent to:</span>
+    <span class="SCmt">// Equivalent to the following block:</span>
     <span class="SKwd">var</span> cpt2 = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>:
-        <span class="SLgc">return</span>
+        <span class="SLgc">return</span>  <span class="SCmt">// Exit if an error is caught</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">try </h4>
-<p>The caller can also <b>stop the execution</b> with <span class="code-inline">try</span>, and return to its own caller with the same error raised. The function must then also be marked with <span class="code-inline">throw</span>. </p>
-<p>Here, the caller of <span class="code-inline">myFunc1</span> will also have to deal with the error. </p>
+<p>The caller can also halt execution with <span class="code-inline">try</span>, propagating the error to its caller. The function must also be annotated with <span class="code-inline">throw</span>. </p>
+<p>In this example, the caller of <span class="code-inline">myFunc1</span> will need to handle the error. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc1</span>() <span class="SKwd">throw</span>
 {
     <span class="SCmt">// If 'count()' raises an error, 'myFunc1' will return with the same error.</span>
-    <span class="SKwd">var</span> cpt = <span class="SKwd">try</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+    <span class="SKwd">var</span> cpt = <span class="SKwd">try</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Propagate the error if one occurs</span>
 }</span></div>
 <p>This is equivalent to: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>() <span class="SKwd">throw</span>
@@ -7218,38 +7216,36 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// If 'count()' raises an error, 'myFunc2' will return with the same error.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>:
-        <span class="SKwd">throw</span> <span class="SItr">@err</span>()
+        <span class="SKwd">throw</span> <span class="SItr">@err</span>()  <span class="SCmt">// Re-throw the caught error</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">assume </h4>
-<p>The caller can also panic if an error is raised, with <span class="code-inline">assume</span>. </p>
+<p>The caller can choose to panic on error using <span class="code-inline">assume</span>. </p>
 <div class="blockquote blockquote-default">
-<p> This can be disabled in release builds (in that case the behavior is undefined). </p>
+<p> Note: This behavior can be disabled in release builds, leading to undefined behavior. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>()
 {
-    <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error.</span>
-    <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+    <span class="SCmt">// The program will panic with an error message if 'count()' throws an error.</span>
+    <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Panic on error</span>
 }</span></div>
 <div class="blockquote blockquote-default">
-<p> If an error is never caught, then Swag will panic at runtime, as the top-level caller always has an <span class="code-inline">assume</span>. </p>
+<p> If an error is not caught, Swag will panic at runtime, as the top-level caller always assumes a safe execution. </p>
 </div>
 <h5 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">Implicit assume </h5>
-<p>You can annotate the whole function with <span class="code-inline">assume</span> (instead of <span class="code-inline">throw</span>). This is equivalent to one big block around the function body. </p>
+<p>You can annotate the entire function with <span class="code-inline">assume</span> instead of <span class="code-inline">throw</span>. This treats the function as one large block where errors cause an automatic panic. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3A</span>() <span class="SKwd">assume</span>
 {
-    <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error, but no</span>
-    <span class="SCmt">// need to specify 'assume'.</span>
-    <span class="SKwd">var</span> cpt = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+    <span class="SCmt">// The program will panic if 'count()' throws an error.</span>
+    <span class="SKwd">var</span> cpt = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit 'assume'</span>
 
-    <span class="SCmt">// Same here. Implicit 'assume'.</span>
-    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+    <span class="SCmt">// Repeated logic for another filename.</span>
+    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit 'assume'</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">Blocks </h4>
-<p>You can use a block instead of one single statement (this does not create a scope). </p>
+<p>Blocks can be used instead of a single statement. This does not create a new scope but groups operations. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// This is not really necessary, see below, but this is just to show 'try' with a block</span>
-    <span class="SCmt">// instead of one single call.</span>
+    <span class="SCmt">// Demonstrating 'try' with a block instead of a single call.</span>
     <span class="SKwd">try</span>
     {
         <span class="SKwd">var</span> cpt0 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
@@ -7262,16 +7258,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">var</span> cpt3 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Works also for 'catch' if you do not want to deal with the error message.</span>
-    <span class="SCmt">// Calling '@err()' in that case is not really relevant.</span>
+    <span class="SCmt">// Using 'catch' to dismiss errors without handling the error message.</span>
+    <span class="SCmt">// In this case, '@err()' is irrelevant.</span>
     <span class="SKwd">catch</span>
     {
         <span class="SKwd">var</span> cpt4 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt5 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Works also for 'trycatch' if you do not want to deal with the error message</span>
-    <span class="SCmt">// and you want to return as soon as an error is raised.</span>
+    <span class="SCmt">// Using 'trycatch' to exit immediately if an error is raised, without handling the error message.</span>
     <span class="SKwd">trycatch</span>
     {
         <span class="SKwd">var</span> cpt6 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
@@ -7279,7 +7274,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">Implicit try </h4>
-<p>When a function is marked with <span class="code-inline">throw</span>, the <span class="code-inline">try</span> for a function call is implicit <b>if not specified</b>. That means that most of the time it's not necessary to specify it if you do not want to be explicit about it. </p>
+<p>When a function is annotated with <span class="code-inline">throw</span>, the <span class="code-inline">try</span> for function calls is implicit unless explicitly stated. This reduces verbosity when error handling is not required in specific scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">mySubFunc2</span>() <span class="SKwd">throw</span>
@@ -7294,228 +7289,228 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SKwd">func</span> <span class="SFct">mySubFunc1</span>() <span class="SKwd">throw</span>
     {
-        <span class="SCmt">// There's no need to add a 'try' before the call because 'mySubFunc1' is marked with 'throw'.</span>
-        <span class="SCmt">// This is less verbose when you do not want to do something special in case</span>
-        <span class="SCmt">// of errors (with 'assume', 'catch', or 'trycatch').</span>
-        <span class="SFct">mySubFunc2</span>() <span class="SCmt">// implicit</span>
-        <span class="SKwd">try</span> <span class="SFct">mySubFunc3</span>() <span class="SCmt">// explicit</span>
+        <span class="SCmt">// No explicit 'try' needed before the call, as 'mySubFunc1' is marked with 'throw'.</span>
+        <span class="SCmt">// This reduces verbosity when no specific error handling is required.</span>
+        <span class="SFct">mySubFunc2</span>()  <span class="SCmt">// Implicit 'try'</span>
+        <span class="SKwd">try</span> <span class="SFct">mySubFunc3</span>()  <span class="SCmt">// Explicit 'try'</span>
     }
 
     <span class="SKwd">catch</span> <span class="SFct">mySubFunc1</span>()
-    <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
+    <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Confirm the error is of type 'MyError'</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">The error struct </h4>
-<p>We have seen that the error value is a struct. This means that you can add some specific error parameters, like the line and column numbers in the case of a syntax error, for example. </p>
+<p>As discussed, the error value is a struct. This allows you to add specific error parameters, such as line and column numbers for syntax errors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SyntaxError</span>
 {
     <span class="SKwd">using</span> base:     <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
     line, col:      <span class="STpe">u32</span>
 }</span></div>
-<p>But be aware that a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span>, etc.) must remain valid all the time. The runtime will drop complex types when needed, so you should store complex things in the heap or in a dedicated allocator in the current context. </p>
+<p>Note: Ensure that references to external values (e.g., <span class="code-inline">string</span>, <span class="code-inline">any</span>) remain valid throughout the error's lifecycle. The runtime will manage complex types, so it's recommended to store such values in the heap or a dedicated allocator within the current context. </p>
 <h4 id="_012_000_error_management_and_safety_swg__012_001_error_management_swg">defer </h4>
-<p>Throwing an error is equivalent to returning from the function. So a <span class="code-inline">defer</span> expression works also in that case. </p>
-<p>But <span class="code-inline">defer</span> can have a specific mode (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to control if it should be executed depending on the error status. </p>
+<p>Throwing an error is functionally equivalent to returning. Therefore, the <span class="code-inline">defer</span> expression behaves similarly in both cases. </p>
+<p><span class="code-inline">defer</span> can be customized with a specific mode (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to determine its execution based on the error state. </p>
 <table class="table-markdown">
-<tr><td> <span class="code-inline">defer(err)</span>   </td><td> will be called for each <span class="code-inline">throw</span>, so only when an error is raised</td></tr>
-<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> will be called only when the function returns in a normal way</td></tr>
-<tr><td> <span class="code-inline">defer</span>        </td><td> will always be called whatever the reason is (normal way or error)</td></tr>
+<tr><td> <span class="code-inline">defer(err)</span>   </td><td> Executes when an error is raised via <span class="code-inline">throw</span></td></tr>
+<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> Executes when the function returns normally without errors</td></tr>
+<tr><td> <span class="code-inline">defer</span>        </td><td> Executes regardless of how the function exits</td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>
 
 <span class="SKwd">func</span> <span class="SFct">raiseError</span>() <span class="SKwd">throw</span>
 {
-    <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error"</span>}
+    <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error"</span>}  <span class="SCmt">// Raise a custom error</span>
 }
 
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
-    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span> <span class="SCmt">// This will be called in case an error is raised, before exiting.</span>
-    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span> <span class="SCmt">// This will only be called in case an error is not raised.</span>
-    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span> <span class="SCmt">// This will be called in both cases.</span>
+    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increments if an error is raised</span>
+    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increments if no error occurs</span>
+    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span>  <span class="SCmt">// Increments regardless of error state</span>
     <span class="SLgc">if</span> err:
-        <span class="SFct">raiseError</span>()
+        <span class="SFct">raiseError</span>()  <span class="SCmt">// Raise an error if 'err' is true</span>
 }
 
 <span class="SFct">#test</span>
 {
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>) <span class="SCmt">// Will call only defer(err) and the normal defer.</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Only 'defer(err)' and normal 'defer' executed</span>
 
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>) <span class="SCmt">// Will call only defer(noerr) and the normal defer.</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)  <span class="SCmt">// Only 'defer(noerr)' and normal 'defer' executed</span>
 }</span></div>
 
 <h3 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Safety</h3><h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Safety Checks in Swag </h4>
-<p>Swag provides a variety of safety checks that can be enabled at different levels—module, function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
-<p>These safety checks are designed to prevent common programming errors by triggering panics during unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
-<p>You can also configure safety checks globally based on the build configuration using <span class="code-inline">buildCfg.safetyGuards</span>. </p>
+<p>Swag provides various safety checks that can be enabled at different granularity levels—module,  function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
+<p>These safety checks are designed to prevent common programming errors by triggering panics during  unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
+<p>You can also configure safety checks globally based on the build configuration using  <span class="code-inline">buildCfg.safetyGuards</span>. </p>
 <div class="blockquote blockquote-default">
 <p> Note: Swag offers four predefined build configurations: <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span>, and <span class="code-inline">release</span>. Safety checks are enabled by default in <span class="code-inline">debug</span> and <span class="code-inline">fast-debug</span>, but they are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span> for performance reasons. </p>
 </div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Overflow Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("overflow", true)]</span></div>
-<p>When overflow safety is enabled, Swag will panic if arithmetic operations overflow or if bits are lost during an integer conversion. </p>
-<p>Operators that can cause overflows include: <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their compound assignments <span class="code-inline">+= -= *= &lt;&lt;= &gt;&gt;=</span>. </p>
+<p>When overflow safety is enabled, Swag will panic if arithmetic operations overflow or if bits  are lost during an integer conversion. </p>
+<p>Operators that can cause overflows include: <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their compound assignments <span class="code-inline">+= -= *= </code> &lt;&lt;= &gt;&gt;=<span class="code-inline">.</code> </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    <span class="SCmt">// x += 1  // Uncommenting this will cause a panic because it overflows</span>
+    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
+    <span class="SCmt">// x += 1                                      // Uncommenting this will cause a panic due to overflow</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Disabling Overflow Safety with <span class="code-inline">#over</span> </h5>
-<p>If you are certain that an overflow is expected and you want to prevent a panic, you can use the <span class="code-inline">#over</span> modifier with the operation. This will bypass the safety check. </p>
+<p>If an overflow is expected and should not cause a panic, the <span class="code-inline">#over</span> modifier can be used with the  operation to bypass the safety check. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SKwd">#over</span> <span class="SNum">1</span> <span class="SCmt">// This will wrap around without causing a panic</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
+    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
+    x += <span class="SKwd">#over</span> <span class="SNum">1</span>                                  <span class="SCmt">// This will wrap around without causing a panic</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Global Overflow Safety Control </h5>
-<p>You can globally allow overflows by using <span class="code-inline">#[Swag.Overflow(true)]</span>, which disables the overflow safety checks for all operations within the scope. </p>
+<p>To disable overflow safety checks globally within a scope, use <span class="code-inline">#[Swag.Overflow(true)]</span>. This  prevents overflows from causing panics for all operations in the scope. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
 <span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SNum">1</span> <span class="SCmt">// No need for `#over` since overflow is globally allowed</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
+    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
+    x += <span class="SNum">1</span>                                        <span class="SCmt">// Overflow occurs, but no panic due to global setting</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Promoting Operations to Prevent Overflow </h5>
-<p>For 8-bit or 16-bit integers, you can promote an operation to 32-bit using the <span class="code-inline">#prom</span> modifier. This avoids overflow by widening the operand types. </p>
+<p>For operations involving 8-bit or 16-bit integers, you can use the <span class="code-inline">#prom</span> modifier to promote the  operation to 32-bit, thereby avoiding overflow by widening the operand types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)
+    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)                             <span class="SCmt">// Assert that the result is 256</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Information Loss During Casting </h4>
-<p>Swag will also check for potential information loss during type casting operations, such as converting between different integer types. </p>
+<p>Swag checks for potential information loss during type casting operations, such as when converting  between different integer types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x1 = <span class="SNum">255</span>'<span class="STpe">u8</span>
+    <span class="SKwd">let</span> x1 = <span class="SNum">255</span>'<span class="STpe">u8</span>                               <span class="SCmt">// Initialize x1 with the maximum value for u8</span>
 
-    <span class="SCmt">// var y0 = cast(s8) x1     // This would cause a panic because 255 cannot be represented as `s8`</span>
-    <span class="SCmt">// @print(y0)</span>
+    <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be </span>
+                                                  <span class="SCmt">// represented as s8</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> x1 <span class="SCmt">// Use `#over` to bypass safety checks and allow this cast</span>
-    <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
+                                                  <span class="SCmt">// cast</span>
+    <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)                             <span class="SCmt">// Assert that y1 is -1 after wrapping</span>
 
-    <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>
-    <span class="SCmt">// var y2 = cast(u8) x2     // This would also cause a panic because `x2` is negative</span>
-    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>(<span class="STpe">u8</span>) <span class="SKwd">#over</span> x2
-    <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)
+    <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>                                <span class="SCmt">// Initialize x2 with the minimum value for s8</span>
+    <span class="SCmt">// var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative</span>
+    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>(<span class="STpe">u8</span>) <span class="SKwd">#over</span> x2                    <span class="SCmt">// Use #over to bypass safety checks</span>
+    <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)                            <span class="SCmt">// Assert that y2 is 255 after wrapping</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Disabling Overflow Safety Globally </h5>
-<p>Here, safety checks for overflow are disabled, allowing operations that would typically panic due to overflow to proceed normally. </p>
+<p>Safety checks for overflow can be globally disabled, allowing operations that would typically  panic due to overflow to proceed normally. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
 <span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x += <span class="SNum">255</span> <span class="SCmt">// x becomes 254</span>
-    x += <span class="SNum">1</span>   <span class="SCmt">// x becomes 255</span>
-    x &gt;&gt;= <span class="SNum">1</span>  <span class="SCmt">// x becomes 127</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">127</span>)
+    <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
+    x += <span class="SNum">255</span>                                      <span class="SCmt">// x becomes 254 after wrapping</span>
+    x += <span class="SNum">1</span>                                        <span class="SCmt">// x becomes 255</span>
+    x &gt;&gt;= <span class="SNum">1</span>                                       <span class="SCmt">// x becomes 127 after right shift</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">127</span>)                             <span class="SCmt">// Assert that x is 127</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg"><span class="code-inline">any</span> Type Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("any", true)]</span></div>
-<p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid. </p>
+<p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid, ensuring type safety  when working with dynamic types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"1"</span>
-    <span class="SKwd">let</span> y  = <span class="SKwd">cast</span>(<span class="STpe">string</span>) x     <span class="SCmt">// This is valid because the underlying type is correct</span>
-    <span class="SCmt">// var z = cast(s32) x      // This is invalid and will cause a panic</span>
+    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"1"</span>                              <span class="SCmt">// Initialize x with a string</span>
+    <span class="SKwd">let</span> y  = <span class="SKwd">cast</span>(<span class="STpe">string</span>) x                       <span class="SCmt">// This is valid because the underlying type is correct</span>
+    <span class="SCmt">// var z = cast(s32) x                        // This is invalid and will cause a panic</span>
     <span class="SCmt">// @assert(z == 0)</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Array Bounds Checking </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></div>
-<p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a slice, or a string. </p>
+<p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a  slice, or a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x   = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
-    <span class="SKwd">var</span> idx = <span class="SNum">10</span>
-    <span class="SCmt">// @assert(x[idx] == 1)     // `10` is out of range, this will cause a panic</span>
+    <span class="SKwd">var</span> x   = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]                           <span class="SCmt">// Initialize an array</span>
+    <span class="SKwd">var</span> idx = <span class="SNum">10</span>                                  <span class="SCmt">// Set an out-of-bounds index</span>
+    <span class="SCmt">// @assert(x[idx] == 1)                       // This will cause a panic due to out-of-bounds access</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Safety When Indexing a Slice </h5>
-<p>Swag ensures that indexing operations on slices are within bounds. </p>
+<p>Swag ensures that indexing operations on slices are within bounds to prevent runtime errors. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
-    <span class="SKwd">var</span> idx = <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(x[idx] == <span class="SNum">1</span>) <span class="SCmt">// `1` is in range, so this is safe</span>
-    idx += <span class="SNum">9</span>
-    <span class="SCmt">// @assert(x[idx] == 1)      // `10` is out of range, this will cause a panic</span>
+    <span class="SKwd">let</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]             <span class="SCmt">// Initialize a slice</span>
+    <span class="SKwd">var</span> idx = <span class="SNum">1</span>                                   <span class="SCmt">// Set a valid index</span>
+    <span class="SItr">@assert</span>(x[idx] == <span class="SNum">1</span>)                          <span class="SCmt">// Assert that x[1] is 1</span>
+    idx += <span class="SNum">9</span>                                      <span class="SCmt">// Move the index out of bounds</span>
+    <span class="SCmt">// @assert(x[idx] == 1)                       // This will cause a panic due to out-of-bounds access</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Safety When Slicing a Sized Value </h5>
-<p>Swag will panic if a slice operation goes out of bounds. </p>
+<p>Swag will panic if a slice operation goes out of bounds, ensuring safe slicing of arrays or strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
-    <span class="SCmt">// var slice = x[1..4]      // `4` is out of range, this will cause a panic</span>
+    <span class="SKwd">var</span> x: <span class="SKwd">const</span> [..] <span class="STpe">s32</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]             <span class="SCmt">// Initialize a slice</span>
+    <span class="SCmt">// var slice = x[1..4]                        // This will cause a panic due to out-of-bounds access</span>
     <span class="SCmt">// @assert(slice[0] == 1)</span>
 }
 
 <span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x   = <span class="SStr">"string"</span>
-    <span class="SKwd">var</span> idx = <span class="SNum">10</span>
-    <span class="SCmt">// var slice = x[0..idx]    // `10` is out of range, this will cause a panic</span>
-    <span class="SCmt">// @assert(slice[0] == `s`)</span>
+    <span class="SKwd">var</span> x   = <span class="SStr">"string"</span>                            <span class="SCmt">// Initialize a string</span>
+    <span class="SKwd">var</span> idx = <span class="SNum">10</span>                                  <span class="SCmt">// Set an out-of-bounds index for slicing</span>
+    <span class="SCmt">// var slice = x[0..idx]                      // This will cause a panic due to out-of-bounds slicing</span>
+    <span class="SCmt">// @assert(slice[0] == 's')</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Math Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("math", true)]</span></div>
-<p>Swag will panic if certain math operations are invalid, such as division by zero. </p>
+<p>Swag will panic if certain math operations are invalid, such as division by zero or invalid  arguments to math functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> x = <span class="SNum">1</span>'<span class="STpe">f32</span>
-    <span class="SKwd">var</span> y = <span class="SNum">0</span>'<span class="STpe">f32</span>
-    <span class="SCmt">// var z = x / y        // Division by zero will cause a panic</span>
+    <span class="SKwd">var</span> x = <span class="SNum">1</span>'<span class="STpe">f32</span>                                 <span class="SCmt">// Initialize x with a float value</span>
+    <span class="SKwd">var</span> y = <span class="SNum">0</span>'<span class="STpe">f32</span>                                 <span class="SCmt">// Initialize y with zero</span>
+    <span class="SCmt">// var z = x / y                              // Division by zero will cause a panic</span>
     <span class="SCmt">// @print(z)</span>
 }</span></div>
 <h5 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Checking Invalid Math Intrinsic Arguments </h5>
-<p>Swag also checks for invalid arguments passed to certain math intrinsics, which will cause a panic if unsupported. </p>
+<p>Swag also checks for invalid arguments passed to certain math intrinsics, causing a panic if the  arguments are unsupported or invalid. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// All of the following operations will panic if the arguments are invalid:</span>
+    <span class="SCmt">// The following operations will panic if the arguments are invalid:</span>
 
-    <span class="SCmt">// @abs(-128)</span>
-    <span class="SCmt">// @log(-2'f32)</span>
-    <span class="SCmt">// @log2(-2'f32)</span>
-    <span class="SCmt">// @log10(2'f64)</span>
-    <span class="SCmt">// @sqrt(-2'f32)</span>
-    <span class="SCmt">// @asin(-2'f32)</span>
-    <span class="SCmt">// @acos(2'f32)</span>
+    <span class="SCmt">// @abs(-128)                                 // Invalid argument for abs</span>
+    <span class="SCmt">// @log(-2'f32)                               // Logarithm of a negative number is invalid</span>
+    <span class="SCmt">// @log2(-2'f32)                              // Logarithm base 2 of a negative number is invalid</span>
+    <span class="SCmt">// @log10(2'f64)                              // Logarithm base 10 of a negative number is invalid</span>
+    <span class="SCmt">// @sqrt(-2'f32)                              // Square root of a negative number is invalid</span>
+    <span class="SCmt">// @asin(-2'f32)                              // Arc sine out of valid range is invalid</span>
+    <span class="SCmt">// @acos(2'f32)                               // Arc cosine out of valid range is invalid</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Switch Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("switch", true)]</span></div>
-<p>Swag will panic if a switch statement marked with <span class="code-inline">#[Swag.Complete]</span> does not cover all possible cases. </p>
+<p>Swag will panic if a switch statement marked with <span class="code-inline">#[Swag.Complete]</span> does not cover all possible  cases, ensuring exhaustive pattern matching. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }
+    <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }               <span class="SCmt">// Define an enum with three values</span>
 
     <span class="SKwd">func</span> <span class="SFct">colorToString</span>(color: <span class="SCst">Color</span>) -&gt; <span class="STpe">string</span>
     {
-        <span class="SCmt">// #[Swag.Complete]</span>
+        <span class="SCmt">// #[Swag.Complete]                       // Mark the switch as complete</span>
         <span class="SLgc">switch</span> color
         {
-            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>: <span class="SLgc">return</span> <span class="SStr">"Red"</span>
-            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>: <span class="SLgc">return</span> <span class="SStr">"Green"</span>
-            <span class="SCmt">// If `Color.Blue` is not covered, this will cause a panic</span>
+            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>: <span class="SLgc">return</span> <span class="SStr">"Red"</span>          <span class="SCmt">// Handle Red</span>
+            <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>: <span class="SLgc">return</span> <span class="SStr">"Green"</span>      <span class="SCmt">// Handle Green</span>
+            <span class="SCmt">// If `Color.Blue` is not covered, this will cause a panic due to missing case</span>
         }
 
-        <span class="SLgc">return</span> <span class="SStr">""</span>
+        <span class="SLgc">return</span> <span class="SStr">""</span>                                 <span class="SCmt">// Return an empty string as a fallback</span>
     }
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">Boolean Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("bool", true)]</span></div>
-<p>Swag will panic if a boolean value is not either <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0). </p>
+<p>Swag will panic if a boolean value is not either <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0), enforcing strict  boolean type safety. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> b: <span class="STpe">u8</span> = <span class="SNum">2</span>
-    <span class="SCmt">// if b { ... }    // This will panic because `b` is not a valid boolean</span>
+    <span class="SKwd">var</span> b: <span class="STpe">u8</span> = <span class="SNum">2</span>                                 <span class="SCmt">// Initialize b with an invalid boolean value</span>
+    <span class="SCmt">// if b { ... }                               // This will panic because b is not a valid boolean</span>
 }</span></div>
 <h4 id="_012_000_error_management_and_safety_swg__012_002_safety_swg">NaN Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
-<p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation. </p>
+<p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation, ensuring that  NaNs do not propagate through calculations. </p>
 
 <h2 id="_014_000_compile-time_evaluation_swg">Compile-time evaluation</h2><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
 
