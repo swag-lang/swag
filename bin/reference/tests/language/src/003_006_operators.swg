@@ -1,75 +1,77 @@
 /**
-These are all the Swag operators that can be used to manipulate variables and values.
-*/
-
-/**
-# Arithmetic operators
+# Arithmetic Operators
+These operators perform basic arithmetic operations such as addition, subtraction, multiplication,
+and division. Modulus operation is also supported to get the remainder of a division.
 */
 #test
 {
     var x: s32 = 10
 
-    // Addition
-    x = x + 1
+    // Addition: Increments x by 1
+    x = x + 1                                                              
 
-    // Substraction
-    x = x - 1
+    // Subtraction: Decrements x by 1
+    x = x - 1                                                              
 
-    // Multiplication
-    x = x * 2
+    // Multiplication: Multiplies x by 2
+    x = x * 2                                                              
 
-    // Division
-    x = x / 2
+    // Division: Divides x by 2
+    x = x / 2                                                              
 
-    // Modulus
-    x = x % 2
+    // Modulus: Finds remainder when x is divided by 2
+    x = x % 2                                                              
 }
 
 /**
-# Bitwise operators
+# Bitwise Operators
+Bitwise operators manipulate individual bits of integral types. These operators perform operations 
+such as XOR, AND, OR, and bit shifting.
 */
 #test
 {
     var x: s32 = 10
 
-    // Xor
-    x = x ^ 2
+    // XOR: Bitwise XOR with 2
+    x = x ^ 2                                                              
 
-    // Bitmask and
-    x = x & 0b0000_0001's32
+    // Bitwise AND: Applies a bitmask to retain only the least significant bit
+    x = x & 0b0000_0001's32                                                
 
-    // Bitmask or
-    x = x | cast(s32) 0b0000_0001
+    // Bitwise OR: Sets the least significant bit to 1
+    x = x | cast(s32) 0b0000_0001                                          
 
-    // Shift bits left
-    x = x << 1
+    // Shift Left: Shifts bits to the left by 1 position
+    x = x << 1                                                             
 
-    // Shift bits right
-    x = x >> 1
+    // Shift Right: Shifts bits to the right by 1 position
+    x = x >> 1                                                             
 }
 
 /**
-# Assignment operators
-All the arithmetic and bitwise operators have an `affect` version.
+# Assignment Operators
+These operators perform the basic arithmetic or bitwise operation and assign the result directly 
+to the left operand. The 'affect' versions of these operators make the code concise and clear.
 */
 #test
 {
     var x: s32 = 10
 
-    x += 1
-    x -= 1
-    x *= 2
-    x /= 2
-    x %= 2
-    x ^= 2
-    x |= 0b0000_0001
-    x &= 0b0000_0001
-    x <<= 1
-    x >>= 1
+    x += 1           // Addition assignment
+    x -= 1           // Subtraction assignment
+    x *= 2           // Multiplication assignment
+    x /= 2           // Division assignment
+    x %= 2           // Modulus assignment
+    x ^= 2           // XOR assignment
+    x |= 0b0000_0001 // Bitwise OR assignment
+    x &= 0b0000_0001 // Bitwise AND assignment
+    x <<= 1          // Shift left assignment
+    x >>= 1          // Shift right assignment
 }
 
 /**
-# Unary operators
+# Unary Operators
+Unary operators operate on a single operand. These include logical NOT, bitwise NOT, and negation.
 */
 #test
 {
@@ -77,14 +79,14 @@ All the arithmetic and bitwise operators have an `affect` version.
     var y = 0b0000_0001'u8
     var z = 1
 
-    // Invert boolean
-    x = !x
+    // Invert boolean: Logical NOT
+    x = !x                                                               
 
-    // Invert bits
-    y = ~y
+    // Invert bits: Bitwise NOT
+    y = ~y                                                               
 
-    // Negative
-    z = -z
+    // Negation: Unary minus
+    z = -z                                                               
 
     @assert(z == -1)
     @assert(x == false)
@@ -92,30 +94,32 @@ All the arithmetic and bitwise operators have an `affect` version.
 }
 
 /**
-# Comparison operators
+# Comparison Operators
+Comparison operators compare two values and return a boolean result. They include equality, inequality,
+and relational operators.
 */
 #test
 {
     {
         var a = false
 
-        // Equal
-        a = 1 == 1 ? true : false
+        // Equal: Checks if two values are equal
+        a = 1 == 1 ? true : false                                        
 
-        // Not equal
-        a = 1 != 1 ? true : false
+        // Not equal: Checks if two values are not equal
+        a = 1 != 1 ? true : false                                        
 
-        // Lower equal
-        a = 1 <= 1 ? true : false
+        // Less than or equal: Checks if the left value is less than or equal to the right value
+        a = 1 <= 1 ? true : false                                        
 
-        // Greater equal
-        a = 1 >= 1 ? true : false
+        // Greater than or equal: Checks if the left value is greater than or equal to the right value
+        a = 1 >= 1 ? true : false                                        
 
-        // Lower
-        a = 1 < 1 ? true : false
+        // Less than: Checks if the left value is less than the right value
+        a = 1 < 1 ? true : false                                         
 
-        // Greater
-        a = 1 > 1 ? true : false
+        // Greater than: Checks if the left value is greater than the right value
+        a = 1 > 1 ? true : false                                         
     }
 
     {
@@ -131,20 +135,22 @@ All the arithmetic and bitwise operators have an `affect` version.
 }
 
 /**
-# Logical operators
-This is **not** `&&` and `||` like in C/C++, but `and` and `or`.
+# Logical Operators
+Logical operators evaluate expressions to return a boolean value. Swag uses `and` and `or` instead 
+of `&&` and `||` found in C/C++.
 */
 #test
 {
     var a = false
-    a = (1 > 10) and (10 < 1)
-    a = (1 > 10) or (10 < 1)
+    a = (1 > 10) and (10 < 1)  // Logical AND
+    a = (1 > 10) or (10 < 1)   // Logical OR
 }
 
 /**
-# Ternary operator
-The ternary operator will test an expression, and will return a value depending on the result of the test.
-`A = Expression ? B : C` will return `B` if the expression is true, and will return `C` if the expression is false.
+# Ternary Operator
+The ternary operator tests an expression and returns one of two values depending on the result of 
+the test. The syntax is `A = Expression ? B : C`, where `B` is returned if the expression is true,
+and `C` is returned if the expression is false.
 */
 #test
 {
@@ -158,13 +164,14 @@ The ternary operator will test an expression, and will return a value depending 
 }
 
 /**
-# Spaceshift operator
-Operator `<=>` will return -1, 0 or 1 if the expression on the left is **lower**, **equal** or **greater** than the expression on the right. The returned type is `s32`.
+# Spaceshift Operator
+Operator `<=>` returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right 
+expression, respectively. The returned type is `s32`.
 ```swag
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
 A <=> B == 1  if A > B
-```
+  ```
 */
 #test
 {
@@ -189,12 +196,13 @@ A <=> B == 1  if A > B
 }
 
 /**
-# Null-coalescing operator
-The operator `orelse` will return the left expression if it is not zero, otherwise it will return the right expression.
+# Null-Coalescing Operator
+The operator `orelse` returns the left expression if it is not null, otherwise it returns the right 
+expression.
 */
 
 /**
-Works with strings, pointers and structures with the `opData` special function (we'll see that later).
+Works with strings, pointers, and structures with the `opData` special function (covered later).
 */
 #test
 {
@@ -222,8 +230,9 @@ Works also for basic types like integers.
 }
 
 /**
-# Type promotion
-Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation: not have the same type.
+# Type Promotion
+Unlike C, types are not promoted to 32 bits when dealing with 8 or 16-bit types. However, types will 
+be promoted if the two sides of an operation do not have the same type.
 */
 #test
 {
@@ -231,7 +240,7 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
     #assert @typeof(0'u8 + 1'u16) == u16 // Priority to bigger type
     #assert @typeof(0'u8 + 1'u32) == u32
     #assert @typeof(0'u8 + 1'u64) == u64
-    #assert @typeof(0'u8 + 1's8) == s8 // Priority to signed type
+    #assert @typeof(0'u8 + 1's8) == s8   // Priority to signed type
     #assert @typeof(0'u8 + 1's16) == s16
     #assert @typeof(0'u8 + 1's32) == s32
     #assert @typeof(0'u8 + 1's64) == s64
@@ -242,8 +251,9 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 }
 
 /**
-This means that a 8/16 bits operation (like an addition) can more easily **overflow** if you: not take care.
-In that case, you can use the ` #prom` **modifier** on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
+This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take 
+care. In that case, you can use the ` #prom` modifier on the operation, which will promote the type 
+to at least 32 bits. The operation will be done accordingly.
 */
 #test
 {
@@ -256,7 +266,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 */
 
 /**
-# Operator precedence
+# Operator Precedence
 ```swag
 ~
 * / %

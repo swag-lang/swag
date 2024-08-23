@@ -399,7 +399,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             result += syntaxColorToVTS(SyntaxColor::SyntaxNumber, mode);
             result += c;
             result += *pz++;
-            while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
+            while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
             result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);

@@ -1,25 +1,27 @@
 /**
 # Number Representations
-In Swag, integers can be written in *decimal*, *hexadecimal*, or *binary* forms. These different representations allow you to express numbers in the format that best suits your needs.
+In Swag, integers can be written in multiple formats: *decimal*, *hexadecimal*, or *binary*. These
+different representations allow you to express numbers in the format that best suits your needs.
 */
 #test
 {
-    const a: u32 = 123456         // Decimal format
-    const b: u32 = 0xFFFF         // Hexadecimal format, prefixed with '0x'
-    const c: u32 = 0b00001111     // Binary format, prefixed with '0b'
+    const a: u32 = 123456          // Decimal format representation of the integer
+    const b: u32 = 0xFFFF          // Hexadecimal format, prefixed with '0x' (representing 65535)
+    const c: u32 = 0b00001111      // Binary format, prefixed with '0b' (representing 15)
 
-    @assert(a == 123456)          // Verifies that 'a' holds the correct decimal value
-    @assert(b == 65535)           // Verifies that 'b' holds the correct hexadecimal value
-    @assert(c == 15)              // Verifies that 'c' holds the correct binary value
+    @assert(a == 123456)           // Verifies that 'a' holds the correct decimal value
+    @assert(b == 65535)            // Verifies that 'b' holds the correct hexadecimal value
+    @assert(c == 15)               // Verifies that 'c' holds the correct binary value
 }
 
 /**
 # Digit Separators
-You can separate digits within numeric literals using the `_` character for better readability, especially with large numbers. This does not affect the value of the number.
+Numeric literals can be more readable by using the `_` character as a digit separator. This is 
+particularly useful for large numbers, without affecting their value.
 */
 #test
 {
-    const a: u32 = 123_456         // Decimal with digit separators
+    const a: u32 = 123_456         // Decimal with digit separators for better readability
     const b: u32 = 0xF_F_F_F       // Hexadecimal with digit separators
     const c: u32 = 0b0000_1111     // Binary with digit separators
 
@@ -30,43 +32,43 @@ You can separate digits within numeric literals using the `_` character for bett
 
 /**
 # Default Integer Types
-The default type of a hexadecimal or binary number in Swag is `u32` if it fits within 32 bits. If the value exceeds 32 bits, the type is automatically inferred as `u64`.
+In Swag, hexadecimal or binary numbers default to `u32` if they fit within 32 bits. If the value 
+exceeds 32 bits, it is automatically inferred as `u64`.
 */
 #test
 {
-    // The compiler will deduce that the type of 'a' is 'u32' since the value fits within 32 bits.
-    const a = 0xFF
+    const a = 0xFF                 // Compiler infers 'a' as 'u32' since value fits within 32 bits
     #assert @typeof(a) == u32      // Verifies that 'a' is of type 'u32'
 
-    // The compiler will deduce that the type of 'b' is 'u64' because the constant
-    // is too large to fit within 32 bits.
-    const b = 0xF_FFFFF_FFFFFF
+    const b = 0xF_FFFFF_FFFFFF     // Large value exceeding 32 bits; inferred as 'u64'
     #assert @typeof(b) == u64      // Verifies that 'b' is of type 'u64'
 
-    const c = 0b00000001           // Binary value within 32 bits
+    const c = 0b00000001           // Binary value within 32 bits, inferred as 'u32'
     #assert @typeof(c) == u32      // Verifies that 'c' is of type 'u32'
 
-    const d = 0b00000001_00000001_00000001_00000001_00000001  // Binary value that exceeds 32 bits
+    const d = 0b00000001_00000001_00000001_00000001_00000001  // Exceeds 32 bits, inferred as 'u64'
     #assert @typeof(d) == u64      // Verifies that 'd' is of type 'u64'
 }
 
 /**
 # Booleans
-A boolean in Swag can be either `true` or `false`. Since constants are known at compile time, we can use `#assert` to check their values directly during compilation.
+In Swag, a boolean type can be either `true` or `false`. As constants are known at compile time, you 
+can use `#assert` to verify their values during compilation.
 */
 #test
 {
     const a = true
-    #assert a == true              // Compile-time check that 'a' is true
+    #assert a == true              // Compile-time check that 'a' holds the value true
 
     const b, c = false
-    #assert b == false             // Compile-time check that 'b' is false
-    #assert c == false             // Compile-time check that 'c' is false
+    #assert b == false             // Compile-time check that 'b' holds the value false
+    #assert c == false             // Compile-time check that 'c' holds the value false
 }
 
 /**
 # Floating Point Values
-Floating point values in Swag follow the standard C/C++ notation for floating-point literals.
+Floating point values in Swag use the standard C/C++ notation for floating-point literals. This 
+provides familiarity and ease of use for developers.
 */
 #test
 {
@@ -89,7 +91,8 @@ Floating point values in Swag follow the standard C/C++ notation for floating-po
 
 /**
 # Default Floating Point Type
-By default, floating point literals in Swag are of type `f32`, unlike in C/C++, where they default to `double` (`f64`).
+By default, floating-point literals in Swag are of type `f32`. This is different from languages like 
+C/C++, where floating-point literals default to `double` (`f64`).
 */
 #test
 {
@@ -101,18 +104,17 @@ By default, floating point literals in Swag are of type `f32`, unlike in C/C++, 
 
 /**
 # Suffix
-You can explicitly set the type of a literal number by adding a **suffix**. This is useful when you need a specific type, such as `f64` or `u8`. We will explore how this syntax is used for generic arguments later on.
+To specify the type of a literal explicitly, you can add a **suffix** to the literal. This is useful 
+when a specific type is required, such as `f64` or `u8`.
 */
 #test
 {
-    // Declare 'a' to be of type 'f64' and assign it the value '1.5'
-    let a = 1.5'f64
+    let a = 1.5'f64                // Explicitly declare 'a' as 'f64' with the value 1.5
     @assert(a == 1.5)              // Verifies that 'a' holds the value 1.5
-    @assert(a == 1.5'f64)          // Verifies that 'a' holds the value 1.5 explicitly as 'f64'
+    @assert(a == 1.5'f64)          // Verifies that 'a' explicitly holds the value 1.5 as 'f64'
     #assert @typeof(a) == f64      // Verifies that 'a' is of type 'f64'
 
-    // 'b' is a variable of type 'u8', initialized with the value '10'
-    let b = 10'u8
+    let b = 10'u8                  // Declare 'b' as 'u8' and assign it the value 10
     @assert(b == 10)               // Verifies that 'b' holds the value 10
     #assert @typeof(b) == u8       // Verifies that 'b' is of type 'u8'
 

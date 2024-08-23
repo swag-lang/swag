@@ -1,54 +1,69 @@
 /**
 # Constants with `const`
-If you use `const` instead of `var` or `let`, the value must be **known by the compiler** at compile time. This means that the value of a `const` is evaluated during compilation, and there's no runtime memory footprint for simple types like integers or strings. The compiler simply replaces the use of these constants with their values wherever they are used in the code.
+Using `const` in Swag implies that the value must be **known by the compiler** at compile time. 
+This ensures that the value is embedded directly into the compiled code, eliminating any runtime 
+memory usage for simple types like integers or strings. Essentially, the compiler replaces occurrences 
+of these constants with their respective values wherever they are referenced in the code, leading to 
+more optimized and efficient code execution.
 */
 
 #test
 {
-    // These are constants, not variables. Once declared, they cannot be modified.
-    const a = 666  // 'a' is a constant integer known at compile time.
-    #assert a == 666
+    // These are immutable constants. Once declared, they are fixed and cannot be altered.
+    const a = 666               // 'a' is an integer constant known and resolved at compile time.
+    #assert a == 666            // Assertion to verify the value of 'a'.
 
-    const b: string = "string"  // 'b' is a constant string known at compile time.
-    #assert b == "string"
+    const b: string = "string"  // 'b' is a string constant known and resolved at compile time.
+    #assert b == "string"       // Assertion to verify the value of 'b'.
 }
 
 /**
 # Constants with Complex Types
-Constants in Swag can also have more complex types, such as arrays or structures. In such cases, there is a memory footprint because these constants are stored in the data segment of the program. This also means that you can take the address of these constants at runtime.
+Swag also supports constants with more complex data types, such as arrays or structures. When 
+declaring constants with these types, the data is stored in the program's data segment, which incurs 
+a memory footprint. Additionally, you can obtain the memory address of these constants at runtime, 
+allowing you to manipulate their values indirectly through pointers.
 */
 
 /**
 ## Static Arrays
-This is our first static array. It contains 3 elements, and the type of the elements is `s32` (signed 32-bit integer).
+The following example demonstrates a static array, which is an array with a fixed size. This array 
+contains three elements of type `s32`, a signed 32-bit integer.
 */
 #test
 {
-    const a: [3] s32 = [0, 1, 2]  // 'a' is a constant array of 3 integers.
+    const a: [3] s32 = [0, 1, 2]  // 'a' is a constant static array with 3 signed 32-bit integers.
 
-    let ptr = &a[0]       // Take the address of the first element of the array.
-    @assert(ptr[0] == 0)  // Access the first element through the pointer.
-    @assert(ptr[2] == 2)  // Access the third element through the pointer.
+    let ptr = &a[0]               // Obtain the memory address of the first element of the array.
+    @assert(ptr[0] == 0)          // Verify the first element via pointer dereferencing.
+    @assert(ptr[2] == 2)          // Verify the third element via pointer dereferencing.
 
-    // Since 'a' is a constant, we can also perform compile-time checks.
-    #assert a[0] == 0
-    #assert a[1] == 1
-    #assert a[2] == 2
+    // Compile-time assertions to ensure the array's contents are as expected.
+    #assert a[0] == 0             // Verify the first element of the array at compile time.
+    #assert a[1] == 1             // Verify the second element of the array at compile time.
+    #assert a[2] == 2             // Verify the third element of the array at compile time.
 }
 
 /**
 ## Multidimensional Arrays
-Here is an example of a multidimensional array declared as a constant. We will cover arrays in more detail later.
+This example illustrates a multidimensional array declared as a constant. The array is a 4x4 matrix of 
+32-bit floating-point numbers (`f32`). We will explore arrays in further detail later in this documentation.
 */
 #test
 {
-    const M4x4: [4, 4] f32 = [    [1, 0, 0, 0],  // First row
-    [0, 1, 0, 0],  // Second row
-    [0, 0, 1, 0],  // Third row
-    [0, 0, 0, 1]]  // Fourth row
+    const M4x4: [4, 4] f32 = [   // 'M4x4' is a constant 4x4 matrix of 32-bit floating-point numbers.
+        [1, 0, 0, 0],            // First row of the matrix.
+        [0, 1, 0, 0],            // Second row of the matrix.
+        [0, 0, 1, 0],            // Third row of the matrix.
+        [0, 0, 0, 1]             // Fourth row of the matrix.
+    ]
 }
 
 /**
 # Key Difference Between `let` and `const`
-The key difference between `let` and `const` is that the value of a `const` must be known at compile time, whereas the value of a `let` can be determined dynamically at runtime. However, both `let` and `const` require that the variable or constant is assigned exactly once and cannot be reassigned.
+The primary distinction between `let` and `const` lies in the timing of value determination. The value 
+assigned to a `const` must be determined at compile time, meaning it is fixed and known before the program 
+runs. Conversely, a `let` allows for dynamic assignment, where the value can be computed and assigned 
+during runtime. Despite this, both `let` and `const` ensure that their values are assigned only once, 
+maintaining immutability.
 */

@@ -1,218 +1,230 @@
 /**
 # UTF-8 Encoding
-In Swag, strings are encoded in UTF-8, allowing them to support a wide range of characters from different languages and symbol sets.
+Swag uses UTF-8 encoding for strings, which allows representation of a wide range of characters,
+including those from various languages and symbol sets.
 */
 
 /**
 # String Comparison
-Strings can be compared directly for equality.
+Strings in Swag can be compared directly for equality using the `==` operator.
 */
 #test
 {
-    const a = "this is a Chinese character: 是"
-    #assert a == "this is a Chinese character: 是"
+    const a = "this is a Chinese character: 是"       // String with a Chinese character
+    #assert a == "this is a Chinese character: 是"   // Assert equality between two identical strings
 
-    const b = "these are some Cyrillic characters: ӜИ"
-    #assert b == "these are some Cyrillic characters: ӜИ"
+    const b = "these are some Cyrillic characters: ӜИ"  // String with Cyrillic characters
+    #assert b == "these are some Cyrillic characters: ӜИ" // Assert equality for another string
 }
 
 /**
 # Rune Type
-A `rune` in Swag represents a Unicode code point and is stored as a 32-bit value.
+In Swag, a `rune` represents a Unicode code point and is stored as a 32-bit value, ensuring 
+it can accommodate any Unicode character.
 */
 #test
 {
-    const a: rune = `是`
-    #assert a == `是`
-    #assert @sizeof(a) == @sizeof(u32)  // Ensures that a `rune` is the same size as a 32-bit integer.
+    const a: rune = `是`                             // Define a rune using a Chinese character
+    #assert a == `是`                                // Assert the rune matches the expected value
+    #assert @sizeof(a) == @sizeof(u32)               // Confirm the size of a rune is 32 bits (same as u32)
 }
 
 /**
-> WARNING: You cannot index a string to directly retrieve a `rune`, except in ASCII strings. This is because Swag does not include the runtime cost of UTF-8 encoding/decoding in its string operations. However, the `Std.Core` module provides utilities to handle UTF-8 strings effectively.
+> WARNING: Direct indexing of a string to retrieve a `rune` is not possible, except for ASCII strings. 
+> This is because Swag avoids the runtime overhead of UTF-8 decoding in string operations. However, 
+> the `Std.Core` module provides utilities for working with UTF-8 encoded strings.
 */
 
 /**
 # String Indexing
-When you index a string, you retrieve a byte rather than a `rune`.
+When indexing a string, Swag returns a byte (`u8`), not a `rune`, which reflects the underlying
+UTF-8 encoding.
 */
 #test
 {
-    const a = "this is a Chinese character: 是"
+    const a = "this is a Chinese character: 是"      // Define a string with mixed characters
 
-    // Retrieves the first byte of the string.
+    // Retrieves the first byte of the string, which corresponds to the character 't'
     const b = a[0]
-    #assert b == `t`
-    #assert @typeof(b) == @typeof(u8)  // Confirms that the result is a byte (u8).
+    #assert b == `t`                                 // Assert the first byte is 't'
+    #assert @typeof(b) == @typeof(u8)                // Confirm the type is `u8` (byte)
 
-    // The 'X' character here does not have the index '1' because the preceding Chinese character
-    // is encoded in UTF-8, which uses multiple bytes.
-    const c = "是X是"
-    #assert c[1] != `X` // False because byte 1 is not the character 'X'
+    // UTF-8 encoding affects indexing. 'X' is not at index 1 due to the multibyte encoding of the
+    // preceding Chinese character.
+    const c = "是X是"                              
+    #assert c[1] != `X`                              // Assert that the byte at index 1 is not 'X'
 }
 
 /**
 # String Concatenation
-You can concatenate strings and other values at compile time using the `++` operator.
+Swag allows compile-time concatenation of strings and other values using the `++` operator.
 */
 #test
 {
-    const a = "the devil's number is " ++ 666
-    #assert a == "the devil's number is 666"
+    const a = "the devil's number is " ++ 666       // Concatenation of a string with a number
+    #assert a == "the devil's number is 666"        // Assert the resulting string is as expected
 
     const b = 666
-    let c   = "the devil's number is not " ++ (b + 1) ++ "!"
-    @assert(c == "the devil's number is not 667!")
+    let c   = "the devil's number is not " ++ (b + 1) ++ "!"  
+    @assert(c == "the devil's number is not 667!")  // Assert the concatenated string after arithmetic
 
     let d = "there are " ++ 4 ++ " apples in " ++ (2 * 2) ++ " baskets"
-    @assert(d == "there are 4 apples in 4 baskets")
+    @assert(d == "there are 4 apples in 4 baskets") // Concatenation with a mix of literals and expressions
 }
 
 /**
 # Null Strings
-A string can be `null` if it has not been defined.
+In Swag, a string can be `null` if it has not been initialized. This behavior can be used to 
+check whether a string has been assigned a value.
 */
 #test
 {
-    var a: string
-    @assert(a == null)  // Initially, 'a' is null.
-    a = "not null"
-    @assert(a != null)  // Now 'a' is not null.
-    a = null
-    @assert(a == null)  // 'a' is null again.
+    var a: string                                   // Declare a string variable without initialization
+    @assert(a == null)                              // Initially, the string is null
+    a = "not null"                                  // Assign a value to the string
+    @assert(a != null)                              // Assert that the string is no longer null
+    a = null                                        // Set the string back to null
+    @assert(a == null)                              // Confirm the string is null again
 }
 
 /**
 # Character Literals
-A *character* is represented using backticks.
+Character literals in Swag are enclosed in backticks. These literals can represent any Unicode 
+character, not just ASCII characters.
 */
 #test
 {
-    let char0 = `a`
-    let char1 = `我`
+    let char0 = `a`                                 // ASCII character literal
+    let char1 = `我`                                // Unicode character literal
 }
 
 /**
 # Default Type of Character Literals
-By default, a character literal is a 32-bit integer that can be assigned to any integer type or to a `rune`, as long as the value fits within the target type.
+A character literal is a 32-bit integer by default. It can be assigned to any integer type or 
+a `rune`, provided the value fits within the target type.
 */
 #test
 {
     {
-        let a: u8 = `a`
-        let b: u16 = `a`
-        let c: u32 = `我`
-        let d: u64 = `我`
-        let e: rune = `我`
+        let a: u8 = `a`                             // Assign character literal to an 8-bit unsigned integer
+        let b: u16 = `a`                            // Assign to a 16-bit unsigned integer
+        let c: u32 = `我`                           // Assign to a 32-bit unsigned integer
+        let d: u64 = `我`                           // Assign to a 64-bit unsigned integer
+        let e: rune = `我`                          // Assign to a rune (32-bit)
     }
 
     {
-        let a: s8 = `a`
-        let b: s16 = `a`
-        let c: s32 = `我`
-        let d: s64 = `我`
+        let a: s8 = `a`                             // Assign to an 8-bit signed integer
+        let b: s16 = `a`                            // Assign to a 16-bit signed integer
+        let c: s32 = `我`                           // Assign to a 32-bit signed integer
+        let d: s64 = `我`                           // Assign to a 64-bit signed integer
     }
 }
 
 /**
 # Specifying Character Literal Types
-You can specify the underlying type of a character literal by using a type suffix.
+Swag allows you to specify the type of a character literal using a suffix. This is useful for
+controlling the storage size of the character.
 */
 #test
 {
-    let a = `0`'u8
-    @assert(a == 48)              // ASCII value of '0' is 48.
-    @assert(@typeof(a) == u8)
+    let a = `0`'u8                                 // Character literal explicitly typed as u8
+    @assert(a == 48)                               // ASCII value of '0' is 48
+    @assert(@typeof(a) == u8)                      // Confirm type is u8
 
-    let b = `1`'u16
-    @assert(b == 49)              // ASCII value of '1' is 49.
-    @assert(@typeof(b) == u16)
+    let b = `1`'u16                                // Character literal explicitly typed as u16
+    @assert(b == 49)                               // ASCII value of '1' is 49
+    @assert(@typeof(b) == u16)                     // Confirm type is u16
 
-    let c = `2`'u32
-    @assert(c == 50)              // ASCII value of '2' is 50.
-    @assert(@typeof(c) == u32)
+    let c = `2`'u32                                // Character literal explicitly typed as u32
+    @assert(c == 50)                               // ASCII value of '2' is 50
+    @assert(@typeof(c) == u32)                     // Confirm type is u32
 
-    let d = `3`'u64
-    @assert(d == 51)              // ASCII value of '3' is 51.
-    @assert(@typeof(d) == u64)
+    let d = `3`'u64                                // Character literal explicitly typed as u64
+    @assert(d == 51)                               // ASCII value of '3' is 51
+    @assert(@typeof(d) == u64)                     // Confirm type is u64
 
-    let e = `4`'rune
-    @assert(e == 52)              // ASCII value of '4' is 52.
-    @assert(@typeof(e) == rune)
+    let e = `4`'rune                               // Character literal explicitly typed as rune
+    @assert(e == 52)                               // ASCII value of '4' is 52
+    @assert(@typeof(e) == rune)                    // Confirm type is rune
 }
 
 /**
 # Escape Sequences
-Strings and character literals can contain *escape sequences* to represent special characters.
+Swag supports escape sequences in strings and character literals, allowing special characters
+to be represented within these literals.
 */
 
 /**
-An escape sequence begins with a backslash `\`.
+An escape sequence starts with a backslash `\` and is followed by a specific character.
 */
 #test
 {
-    const a = "this is ASCII code 0x00:   \0"     // null
-    const b = "this is ASCII code 0x07:   \a"     // bell
-    const c = "this is ASCII code 0x08:   \b"     // backspace
-    const d = "this is ASCII code 0x09:   \t"     // horizontal tab
-    const e = "this is ASCII code 0x0A:   \n"     // line feed
-    const f = "this is ASCII code 0x0B:   \v"     // vertical tab
-    const g = "this is ASCII code 0x0C:   \f"     // form feed
-    const h = "this is ASCII code 0x0D:   \r"     // carriage return
-    const i = "this is ASCII code 0x22:   \""     // double quote
-    const j = "this is ASCII code 0x27:   \'"     // single quote
-    const k = "this is ASCII code 0x60:   \`"     // backtick
-    const l = "this is ASCII code 0x5C:   \\"     // backslash
+    const a = "this is ASCII code 0x00:   \0"      // Null character escape sequence
+    const b = "this is ASCII code 0x07:   \a"      // Bell (alert) escape sequence
+    const c = "this is ASCII code 0x08:   \b"      // Backspace escape sequence
+    const d = "this is ASCII code 0x09:   \t"      // Horizontal tab escape sequence
+    const e = "this is ASCII code 0x0A:   \n"      // Line feed escape sequence
+    const f = "this is ASCII code 0x0B:   \v"      // Vertical tab escape sequence
+    const g = "this is ASCII code 0x0C:   \f"      // Form feed escape sequence
+    const h = "this is ASCII code 0x0D:   \r"      // Carriage return escape sequence
+    const i = "this is ASCII code 0x22:   \""      // Double quote escape sequence
+    const j = "this is ASCII code 0x27:   \'"      // Single quote escape sequence
+    const k = "this is ASCII code 0x60:   \`"      // Backtick escape sequence
+    const l = "this is ASCII code 0x5C:   \\"      // Backslash escape sequence
 }
 
 /**
 # ASCII and Unicode Escape Sequences
-Escape sequences can also specify ASCII or Unicode values.
+Escape sequences can also be used to specify characters via their ASCII or Unicode values.
 */
 #test
 {
     {
-        const a = "\x26"           // 1 byte, hexadecimal, extended ASCII
-        const b = "\u2626"         // 2 bytes, hexadecimal, Unicode 16-bit
-        const c = "\U00101234"     // 4 bytes, hexadecimal, Unicode 32-bit
+        const a = "\x26"                           // 1-byte hexadecimal ASCII escape sequence
+        const b = "\u2626"                         // 2-byte hexadecimal Unicode 16-bit escape sequence
+        const c = "\U00101234"                     // 4-byte hexadecimal Unicode 32-bit escape sequence
     }
 
     {
-        const d = "\u2F46\u2F46"
-        #assert d == "⽆⽆"
+        const d = "\u2F46\u2F46"                   // Unicode escape sequences for two identical characters
+        #assert d == "⽆⽆"                         // Assert the resulting string matches expected characters
 
-        const e = `\u2F46`
-        #assert e == `⽆`
+        const e = `\u2F46`                         // Unicode escape sequence as a rune literal
+        #assert e == `⽆`                           // Assert the rune matches the expected character
     }
 }
 
 /**
 # Raw Strings
-A *raw string* does not process escape sequences or special characters within it.
+A raw string in Swag is a string where escape sequences and special characters are not processed.
+This can be useful for strings that contain many special characters or backslashes.
 */
 
 /**
-A raw string starts and ends with the `#` character.
+A raw string is enclosed within `#` characters, which ensures that its content is taken literally.
 */
 #test
 {
-    const a = #"\u2F46"#
-    #assert a != "⽆"               // The raw string does not interpret \u2F46.
-    #assert a == #"\u2F46"#         // The raw string matches the literal content.
+    const a = #"\u2F46"#                           // Raw string containing a Unicode escape sequence
+    #assert a != "⽆"                               // Raw string does not interpret the escape sequence
+    #assert a == #"\u2F46"#                        // Raw string content matches the literal input
 }
 
 /**
-These two strings are equivalent:
+These two strings are equivalent, even though one uses escape sequences and the other is raw:
 */
 #test
 {
-    const a = "\\hello \\world"     // Using escape sequences
-    const b = #"\hello \world"#     // As a raw string, no escaping needed
-    #assert a == b                  // Both strings are identical.
+    const a = "\\hello \\world"                    // String with escape sequences
+    const b = #"\hello \world"#                    // Equivalent raw string
+    #assert a == b                                 // Assert both strings are identical
 }
 
 /**
 # Multiline Raw Strings
-A raw string can span multiple lines because the line feed is part of the string.
+Raw strings in Swag can span multiple lines, and all leading spaces before the closing `"#` are 
+removed from each line.
 */
 #test
 {
@@ -223,10 +235,12 @@ A raw string can span multiple lines because the line feed is part of the string
 }
 
 /**
-In a multi-line raw string, all leading spaces before the closing `"#` are removed from each line. So, the above string is equivalent to:
+In the above example, the multiline raw string retains its formatting, except that leading spaces
+before the closing `"#` are stripped from each line.
 */
 #test
 {
+    // The resulting string is:
     // this is
     // a
     // string
@@ -234,7 +248,8 @@ In a multi-line raw string, all leading spaces before the closing `"#` are remov
 
 /**
 # Multiline Strings
-A multiline string starts and ends with `"""`. Unlike raw strings, multiline strings still process escape sequences.
+Multiline strings in Swag start and end with `"""`. Unlike raw strings, they still process escape 
+sequences.
 */
 #test
 {
@@ -251,7 +266,8 @@ A multiline string starts and ends with `"""`. Unlike raw strings, multiline str
 }
 
 /**
-In a multiline or raw string, if you end a line with `\`, the following 'end of line' (EOL) will **not** be included in the string.
+In a multiline or raw string, ending a line with `\` prevents the following end of line (EOL) 
+from being included in the string.
 */
 #test
 {
@@ -260,7 +276,7 @@ In a multiline or raw string, if you end a line with `\`, the following 'end of 
               a
               string
               """
-    // Is equivalent to:
+    // The resulting string is:
     // this is
     // a
     // string
@@ -268,20 +284,21 @@ In a multiline or raw string, if you end a line with `\`, the following 'end of 
 
 /**
 # @stringof and @nameof Intrinsics
-The `@stringof` intrinsic returns the string representation of a constant expression at compile time.
+The `@stringof` intrinsic in Swag returns the string representation of a constant expression 
+at compile time.
 */
 #test
 {
     const X = 1
-    #assert @stringof(X) == "1"
-    #assert @stringof(X + 10) == "11"
+    #assert @stringof(X) == "1"                    // The string representation of X is "1"
+    #assert @stringof(X + 10) == "11"              // Expression evaluation is also possible
 }
 
 /**
-You can use the `@nameof` intrinsic to return the name of a variable, function, etc., as a string.
+The `@nameof` intrinsic returns the name of a variable, function, etc., as a string.
 */
 #test
 {
     const X = 1
-    #assert @nameof(X) == "X"
+    #assert @nameof(X) == "X"                      // Returns the variable name "X"
 }
