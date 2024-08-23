@@ -7396,156 +7396,183 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-default">
 <p> It's crucial to understand that these are <b>not</b> exceptions in the traditional sense. Consider <span class="code-inline">throw</span> as a specialized form of <span class="code-inline">return</span> that carries an error value. </p>
 </div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">throw </h4>
-<p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This enables the function to raise an error using the <span class="code-inline">throw</span> keyword, passing an error value structured as a custom-defined struct. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Defines a custom error type by extending the default runtime base error.</span>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Using <span class="code-inline">throw</span> with Custom Errors </h4>
+<p>A function that has the potential to return an error must be annotated with the <span class="code-inline">throw</span> keyword. This annotation signals that the function can raise an error using the <span class="code-inline">throw</span> statement. When an error is thrown, it is represented as a structured value, typically using a custom-defined struct to encapsulate the error information. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Here, we define a custom error type named `MyError`. This custom error extends a default runtime base error provided by the language.</span>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
-    <span class="SCmt">// The default runtime base error includes fields such as a 'message'.</span>
+    <span class="SCmt">// The custom error inherits from the base error type `Swag.BaseError`.</span>
+    <span class="SCmt">// The base error type includes common fields such as an error 'message', which can be useful for debugging or error reporting.</span>
     <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
 }</span></div>
-<p>When a function returns due to an error, the actual return value will always be the <b>default value</b> for the return type. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The 'count()' function may raise an error, so 'throw' is added at the end of its signature.</span>
-<span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
+<p>When a function encounters an error and exits early, the actual return value is not what the function was originally intended to return. Instead, the function returns the <b>default value</b> for its return type. For example, if the return type is an integer, the default value would typically be 0. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' is defined to take a string parameter named 'name' and return an unsigned 64-bit integer (u64).</span>
+<span class="SCmt">// The 'throw' keyword at the end of the function's signature indicates that this function can potentially raise an error.</span>
+<span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>) -&gt; <span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
+    <span class="SCmt">// Inside the function, we first check if the input parameter 'name' is null (i.e., it has no value assigned to it).</span>
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
     {
-        <span class="SCmt">// Throwing a 'MyError' initialized with a compile-time string.</span>
-        <span class="SCmt">// The return value will be 0, the default for 'u64'.</span>
-        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}  <span class="SCmt">// Error: null pointer</span>
+        <span class="SCmt">// If 'name' is null, we raise (throw) an error of type `MyError`.</span>
+        <span class="SCmt">// The error is initialized with a string message "null pointer" to describe the problem.</span>
+        <span class="SCmt">// When an error is thrown, the function will not proceed to return the intended value.</span>
+        <span class="SCmt">// Instead, it will return 0, which is the default value for the u64 type.</span>
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}  <span class="SCmt">// Error is thrown with the message: "null pointer"</span>
     }
 
+    <span class="SCmt">// If 'name' is not null, the function proceeds to count the number of characters in the string.</span>
+    <span class="SCmt">// The '@countof(name)' function is used to determine this count, and the result is returned.</span>
     <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)  <span class="SCmt">// Return the count of characters in the string</span>
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">catch </h4>
-<p>The caller must handle the error appropriately. </p>
-<p>The error can be <span class="code-inline">caught</span> using the <span class="code-inline">catch</span> keyword, and the value can be tested (or not) using the <span class="code-inline">@err()</span> intrinsic. If caught, the error is dismissed, and execution continues from the call site. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Handling Errors with <span class="code-inline">catch</span> and <span class="code-inline">@err()</span> </h4>
+<p>When calling a function that can throw an error, it's essential to handle the error appropriately. This is where the <span class="code-inline">catch</span> keyword comes into play. The error can be <span class="code-inline">caught</span> using <span class="code-inline">catch</span>, and its value can be tested (or ignored) using the <span class="code-inline">@err()</span> intrinsic. If an error is caught, it is dismissed, allowing the program to continue execution from the point where the error was handled. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
-    <span class="SCmt">// Dismiss any potential error using 'catch' and proceed with execution.</span>
+    <span class="SCmt">// Attempt to call the `count()` function. If `count()` throws an error,</span>
+    <span class="SCmt">// `catch` will intercept it. The function will then return the default value </span>
+    <span class="SCmt">// of the return type (in this case, 0) and assign it to `cpt`.</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// Test the error using '@err()'. This should be done immediately after 'catch' to ensure</span>
-    <span class="SCmt">// proper error handling.</span>
+    <span class="SCmt">// Immediately after catching the error, use `@err()` to check if an error occurred.</span>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
-        <span class="SCmt">// '@err()' returns an 'any', allowing direct type comparison with the error type.</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Ensure the error is of type 'MyError'</span>
+        <span class="SCmt">// `@err()` returns an 'any' type, representing the caught error.</span>
+        <span class="SCmt">// Here, we assert that the error is of type `MyError` to ensure correct error handling.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Validate that the error is indeed a `MyError`.</span>
 
-        <span class="SCmt">// Verify that 'count()' returned the default value, which is 0.</span>
+        <span class="SCmt">// Also, assert that the value returned by `count()` is the default value (0 in this case),</span>
+        <span class="SCmt">// which happens when an error is thrown.</span>
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
 
-        <span class="SItr">@print</span>(<span class="SStr">"An error was raised"</span>)  <span class="SCmt">// Inform the user that an error was encountered.</span>
-        <span class="SLgc">return</span>
+        <span class="SCmt">// Inform the user that an error was encountered during the execution.</span>
+        <span class="SItr">@print</span>(<span class="SStr">"An error was raised"</span>)
+        <span class="SLgc">return</span>  <span class="SCmt">// Exit the function early since an error was handled.</span>
     }
+
+    <span class="SCmt">// If no error was caught, the function would proceed normally from this point.</span>
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">trycatch </h4>
-<p>Alternatively, the <span class="code-inline">trycatch</span> construct can be used to dismiss the error and exit the current function, returning the default value if needed. This approach ensures that no error is propagated to the caller. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Error Handling with <span class="code-inline">trycatch</span> </h4>
+<p>The <span class="code-inline">trycatch</span> construct provides an alternative way to handle errors. It allows the function to dismiss the error and exit gracefully, returning the default value if necessary. This approach ensures that no error is propagated to the caller, effectively containing the error within the current function. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myOtherFunc</span>()
 {
-    <span class="SCmt">// If 'count()' throws an error, exit the function silently.</span>
+    <span class="SCmt">// Attempt to call the `count()` function. If it throws an error, </span>
+    <span class="SCmt">// `trycatch` catches the error, assigns the default value to `cpt1`, </span>
+    <span class="SCmt">// and the function continues without propagating the error.</span>
     <span class="SKwd">var</span> cpt1 = <span class="SKwd">trycatch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// Equivalent to the following block:</span>
+    <span class="SCmt">// The above `trycatch` block is equivalent to using `catch` followed by an error check:</span>
     <span class="SKwd">var</span> cpt2 = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>:
-        <span class="SLgc">return</span>  <span class="SCmt">// Exit if an error is caught</span>
+        <span class="SLgc">return</span>  <span class="SCmt">// If an error is caught, exit the function silently</span>
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">try </h4>
-<p>The caller can also halt execution with <span class="code-inline">try</span>, propagating the error to its caller. The function must also be annotated with <span class="code-inline">throw</span>. </p>
-<p>In this example, the caller of <span class="code-inline">myFunc1</span> will need to handle the error. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Propagating Errors with <span class="code-inline">try</span> </h4>
+<p>The <span class="code-inline">try</span> keyword allows a function to halt its execution and propagate any encountered errors to its caller. The function using <span class="code-inline">try</span> must be annotated with <span class="code-inline">throw</span>, indicating that it can pass errors up the call stack. </p>
+<p>In this example, if the function <span class="code-inline">myFunc1</span> encounters an error, it will propagate that error to its caller, requiring the caller to handle it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc1</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// If 'count()' raises an error, 'myFunc1' will return with the same error.</span>
+    <span class="SCmt">// Attempt to call the `count()` function. If it raises an error,</span>
+    <span class="SCmt">// `try` will automatically propagate the error to the caller of `myFunc1`.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">try</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Propagate the error if one occurs</span>
 }</span></div>
-<p>This is equivalent to: </p>
+<p>This behavior is equivalent to the following code, which uses <span class="code-inline">catch</span> to catch the error and then explicitly re-throws it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// If 'count()' raises an error, 'myFunc2' will return with the same error.</span>
+    <span class="SCmt">// Call `count()` and catch any error that might be raised.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
-    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>:
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
+    {
+        <span class="SCmt">// If an error is caught, re-throw the same error, propagating it to the caller.</span>
         <span class="SKwd">throw</span> <span class="SItr">@err</span>()  <span class="SCmt">// Re-throw the caught error</span>
+    }
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">assume </h4>
-<p>The caller can choose to panic on error using <span class="code-inline">assume</span>. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Forcing Panic with <span class="code-inline">assume</span> </h4>
+<p>The <span class="code-inline">assume</span> keyword allows the caller to force a panic if an error occurs, rather than handling or propagating the error. This is useful in scenarios where you expect the code to run without errors, and any error should result in an immediate halt. </p>
 <div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This behavior can be disabled in release builds, leading to undefined behavior. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> In <span class="code-inline">release</span> builds, the <span class="code-inline">assume</span> behavior can be disabled, which may lead to undefined behavior if an error occurs. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>()
 {
-    <span class="SCmt">// The program will panic with an error message if 'count()' throws an error.</span>
+    <span class="SCmt">// If the `count()` function throws an error, the program will panic and terminate,</span>
+    <span class="SCmt">// displaying an error message. The error is not propagated or handled.</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Panic on error</span>
 }</span></div>
-<div class="blockquote blockquote-default">
-<p> If an error is not caught, Swag will panic at runtime, as the top-level caller always assumes a safe execution. </p>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> If an error is not caught, Swag will <b>panic</b> at runtime. This is because the top-level caller always assumes safe execution, ensuring that unhandled errors result in a program halt. </p>
 </div>
-<h5 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Implicit assume </h5>
-<p>You can annotate the entire function with <span class="code-inline">assume</span> instead of <span class="code-inline">throw</span>. This treats the function as one large block where errors cause an automatic panic. </p>
+<h5 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Implicit <span class="code-inline">assume</span> </h5>
+<p>Instead of using <span class="code-inline">throw</span>, you can annotate the entire function with <span class="code-inline">assume</span>. This treats the entire function as if every error is critical, causing an automatic panic if any error occurs. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3A</span>() <span class="SKwd">assume</span>
 {
-    <span class="SCmt">// The program will panic if 'count()' throws an error.</span>
-    <span class="SKwd">var</span> cpt = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit 'assume'</span>
+    <span class="SCmt">// Since the function is annotated with `assume`, any error thrown by `count()` will</span>
+    <span class="SCmt">// cause an immediate panic, without the need for explicit `assume` statements.</span>
+    <span class="SKwd">var</span> cpt = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit `assume`</span>
 
-    <span class="SCmt">// Repeated logic for another filename.</span>
-    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit 'assume'</span>
+    <span class="SCmt">// Additional calls to `count()` are also covered by the implicit `assume`.</span>
+    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit `assume`</span>
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Blocks </h4>
-<p>Blocks can be used instead of a single statement. This does not create a new scope but groups operations. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Blocks in Error Handling </h4>
+<p>Blocks can be used in place of a single statement to group multiple operations together in error-handling constructs like <span class="code-inline">try</span>, <span class="code-inline">assume</span>, <span class="code-inline">catch</span>, and <span class="code-inline">trycatch</span>. These blocks do not create a new scope but allow you to execute several related operations under a single error-handling strategy. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>
 {
-    <span class="SCmt">// Demonstrating 'try' with a block instead of a single call.</span>
+    <span class="SCmt">// Using 'try' with a block to propagate errors from multiple operations.</span>
     <span class="SKwd">try</span>
     {
         <span class="SKwd">var</span> cpt0 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
+    <span class="SCmt">// Using 'assume' with a block to enforce a panic on any error occurring in the block.</span>
     <span class="SKwd">assume</span>
     {
         <span class="SKwd">var</span> cpt2 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt3 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Using 'catch' to dismiss errors without handling the error message.</span>
-    <span class="SCmt">// In this case, '@err()' is irrelevant.</span>
+    <span class="SCmt">// Using 'catch' with a block to catch and dismiss errors, proceeding with execution without handling or propagating the error.</span>
+    <span class="SCmt">// In this context, checking '@err()' is irrelevant as the errors are dismissed.</span>
     <span class="SKwd">catch</span>
     {
         <span class="SKwd">var</span> cpt4 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt5 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 
-    <span class="SCmt">// Using 'trycatch' to exit immediately if an error is raised, without handling the error message.</span>
+    <span class="SCmt">// Using 'trycatch' with a block to catch errors and exit immediately, without propagating or handling the error message.</span>
     <span class="SKwd">trycatch</span>
     {
         <span class="SKwd">var</span> cpt6 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
         <span class="SKwd">var</span> cpt7 = <span class="SFct">count</span>(<span class="SStr">"other filename"</span>)
     }
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Implicit try </h4>
-<p>When a function is annotated with <span class="code-inline">throw</span>, the <span class="code-inline">try</span> for function calls is implicit unless explicitly stated. This reduces verbosity when error handling is not required in specific scenarios. </p>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Implicit <span class="code-inline">try</span> </h4>
+<p>When a function is annotated with <span class="code-inline">throw</span>, any function calls within it that can raise errors will implicitly use <span class="code-inline">try</span> unless explicitly overridden. This implicit behavior reduces verbosity in scenarios where specific error handling is not required. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// Define a function 'mySubFunc2' that throws an error.</span>
     <span class="SKwd">func</span> <span class="SFct">mySubFunc2</span>() <span class="SKwd">throw</span>
     {
-        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error from mySubFunc2"</span>}
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error from mySubFunc2"</span>}  <span class="SCmt">// Raise a custom error</span>
     }
 
+    <span class="SCmt">// Define another function 'mySubFunc3' that also throws an error.</span>
     <span class="SKwd">func</span> <span class="SFct">mySubFunc3</span>() <span class="SKwd">throw</span>
     {
-        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error from mySubFunc3"</span>}
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error from mySubFunc3"</span>}  <span class="SCmt">// Raise a custom error</span>
     }
 
+    <span class="SCmt">// Define 'mySubFunc1', which is marked with 'throw' indicating it can propagate errors.</span>
     <span class="SKwd">func</span> <span class="SFct">mySubFunc1</span>() <span class="SKwd">throw</span>
     {
-        <span class="SCmt">// No explicit 'try' needed before the call, as 'mySubFunc1' is marked with 'throw'.</span>
-        <span class="SCmt">// This reduces verbosity when no specific error handling is required.</span>
+        <span class="SCmt">// When calling 'mySubFunc2()', there's no need for an explicit 'try' since 'mySubFunc1'</span>
+        <span class="SCmt">// is marked with 'throw'. The 'try' is implicit, reducing the need for additional syntax.</span>
         <span class="SFct">mySubFunc2</span>()  <span class="SCmt">// Implicit 'try'</span>
+
+        <span class="SCmt">// However, you can still use an explicit 'try' if specific error handling is desired.</span>
         <span class="SKwd">try</span> <span class="SFct">mySubFunc3</span>()  <span class="SCmt">// Explicit 'try'</span>
     }
 
+    <span class="SCmt">// Catch the error raised by 'mySubFunc1' and confirm that it is of type 'MyError'.</span>
     <span class="SKwd">catch</span> <span class="SFct">mySubFunc1</span>()
-    <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Confirm the error is of type 'MyError'</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)  <span class="SCmt">// Ensure the error is of type 'MyError'</span>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">The error struct </h4>
 <p>As discussed, the error value is a struct. This allows you to add specific error parameters, such as line and column numbers for syntax errors. </p>
@@ -7554,40 +7581,52 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">using</span> base:     <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
     line, col:      <span class="STpe">u32</span>
 }</span></div>
-<p>Note: Ensure that references to external values (e.g., <span class="code-inline">string</span>, <span class="code-inline">any</span>) remain valid throughout the error's lifecycle. The runtime will manage complex types, so it's recommended to store such values in the heap or a dedicated allocator within the current context. </p>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">defer </h4>
-<p>Throwing an error is functionally equivalent to returning. Therefore, the <span class="code-inline">defer</span> expression behaves similarly in both cases. </p>
-<p><span class="code-inline">defer</span> can be customized with a specific mode (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to determine its execution based on the error state. </p>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Ensure that references to external values (e.g., <span class="code-inline">string</span>, <span class="code-inline">any</span>) remain valid throughout the error's lifecycle. The runtime will manage complex types, so it's recommended to store such values in the heap or a dedicated allocator within the current context. </p>
+</div>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg"><span class="code-inline">defer</span> </h4>
+<p>The <span class="code-inline">defer</span> statement schedules a block of code to be executed when the function exits, whether it's through a normal return or due to an error being thrown. Since throwing an error is functionally similar to returning, <span class="code-inline">defer</span> behaves consistently in both cases. </p>
+<p><span class="code-inline">defer</span> can be customized with specific modes (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to control its execution based on the function's exit state: </p>
 <table class="table-markdown">
-<tr><td> <span class="code-inline">defer(err)</span>   </td><td> Executes when an error is raised via <span class="code-inline">throw</span></td></tr>
-<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> Executes when the function returns normally without errors</td></tr>
-<tr><td> <span class="code-inline">defer</span>        </td><td> Executes regardless of how the function exits</td></tr>
+<tr><td> <span class="code-inline">defer(err)</span>   </td><td> Executes only when an error is raised via <span class="code-inline">throw</span>.</td></tr>
+<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> Executes only when the function returns normally without errors.</td></tr>
+<tr><td> <span class="code-inline">defer</span>        </td><td> Executes regardless of how the function exits (either by returning normally or by throwing an error).</td></tr>
 </table>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>  <span class="SCmt">// A global variable to track the execution of defer statements</span>
 
+<span class="SCmt">// A function that raises an error based on the provided input</span>
 <span class="SKwd">func</span> <span class="SFct">raiseError</span>() <span class="SKwd">throw</span>
 {
     <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error"</span>}  <span class="SCmt">// Raise a custom error</span>
 }
 
+<span class="SCmt">// A function that demonstrates the use of defer with different modes</span>
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
-    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increments if an error is raised</span>
-    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increments if no error occurs</span>
-    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span>  <span class="SCmt">// Increments regardless of error state</span>
+    <span class="SCmt">// Schedules this block to execute only if an error is raised.</span>
+    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increment if an error occurs</span>
+
+    <span class="SCmt">// Schedules this block to execute only if the function exits without an error.</span>
+    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increment if no error occurs</span>
+
+    <span class="SCmt">// Schedules this block to execute regardless of whether an error occurs.</span>
+    <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span>  <span class="SCmt">// Increment regardless of error state</span>
+
     <span class="SLgc">if</span> err:
-        <span class="SFct">raiseError</span>()  <span class="SCmt">// Raise an error if 'err' is true</span>
+        <span class="SFct">raiseError</span>()  <span class="SCmt">// If 'err' is true, raise an error</span>
 }
 
 <span class="SFct">#test</span>
 {
+    <span class="SCmt">// Test case where an error is raised</span>
     g_Defer = <span class="SNum">0</span>
-    <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Only 'defer(err)' and normal 'defer' executed</span>
+    <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)  <span class="SCmt">// Execute the function with error condition</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Expect g_Defer to be 4 (1 + 3) since only 'defer(err)' and the general 'defer' executed</span>
 
+    <span class="SCmt">// Test case where no error is raised</span>
     g_Defer = <span class="SNum">0</span>
-    <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)  <span class="SCmt">// Only 'defer(noerr)' and normal 'defer' executed</span>
+    <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Execute the function without error condition</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)  <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer(noerr)' and the general 'defer' executed</span>
 }</span></div>
 
 <h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety</h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
