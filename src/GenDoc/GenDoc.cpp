@@ -105,6 +105,12 @@ void GenDoc::outputStyles()
     .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
     .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
     .code-block a { color: inherit; }
+
+    .blockquote-default     .code-inline    { background-color: #FFE89C; }
+    .blockquote-note        .code-inline    { border-color: #9DBECD; background-color: #BDDEED; }
+    .blockquote-tip         .code-inline    { border-color: #ACBFAC; background-color: #CCDFCC; }
+    .blockquote-warning     .code-inline    { border-color: #CFADA3; background-color: #EFCDC3; }
+    .blockquote-attention   .code-inline    { border-color: #CDAAA8; background-color: #EDCAC8; }
 )";
 
     const float    lum        = module->buildCfg.genDoc.syntaxColorLum;

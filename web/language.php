@@ -89,6 +89,12 @@
     .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
     .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
     .code-block a { color: inherit; }
+
+    .blockquote-default     .code-inline    { background-color: #FFE89C; }
+    .blockquote-note        .code-inline    { border-color: #9DBECD; background-color: #BDDEED; }
+    .blockquote-tip         .code-inline    { border-color: #ACBFAC; background-color: #CCDFCC; }
+    .blockquote-warning     .code-inline    { border-color: #CFADA3; background-color: #EFCDC3; }
+    .blockquote-attention   .code-inline    { border-color: #CDAAA8; background-color: #EDCAC8; }
     .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -7463,8 +7469,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">assume </h4>
 <p>The caller can choose to panic on error using <span class="code-inline">assume</span>. </p>
-<div class="blockquote blockquote-default">
-<p> Note: This behavior can be disabled in release builds, leading to undefined behavior. </p>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This behavior can be disabled in release builds, leading to undefined behavior. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>()
 {
@@ -7588,8 +7594,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Swag provides various safety checks that can be enabled at different granularity levels—module,  function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
 <p>These safety checks are designed to prevent common programming errors by triggering panics during  unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
 <p>You can also configure safety checks globally based on the build configuration using  <span class="code-inline">buildCfg.safetyGuards</span>. </p>
-<div class="blockquote blockquote-default">
-<p> Note: Swag offers four predefined build configurations: <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span>, and <span class="code-inline">release</span>. Safety checks are enabled by default in <span class="code-inline">debug</span> and <span class="code-inline">fast-debug</span>, but they are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span> for performance reasons. </p>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> Swag offers four predefined build configurations: <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span>, and <span class="code-inline">release</span>. Safety checks are enabled by default in <span class="code-inline">debug</span> and <span class="code-inline">fast-debug</span>, but they are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span> for performance reasons. </p>
 </div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Overflow Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("overflow", true)]</span></div>

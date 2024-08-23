@@ -99,7 +99,8 @@ func myFunc2() throw
 # assume
 The caller can choose to panic on error using 'assume'.
 
-> Note: This behavior can be disabled in release builds, leading to undefined behavior.
+> NOTE: 
+> This behavior can be disabled in release builds, leading to undefined behavior.
 */
 func myFunc3()
 {

@@ -10,7 +10,8 @@ unsafe operations, such as overflows, invalid math operations, or out-of-bounds 
 You can also configure safety checks globally based on the build configuration using 
 `buildCfg.safetyGuards`.
 
-> Note: Swag offers four predefined build configurations: `debug`, `fast-debug`, `fast-compile`, and `release`. Safety checks are enabled by default in `debug` and `fast-debug`, but they are disabled in `fast-compile` and `release` for performance reasons.
+> NOTE: 
+> Swag offers four predefined build configurations: `debug`, `fast-debug`, `fast-compile`, and `release`. Safety checks are enabled by default in `debug` and `fast-debug`, but they are disabled in `fast-compile` and `release` for performance reasons.
 */
 
 /**
