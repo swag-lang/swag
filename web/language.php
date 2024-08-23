@@ -5830,11 +5830,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">square</span>(n: <span class="STpe">s32</span>) =&gt; n * n
 
 <span class="SKwd">const</span> <span class="SCst">Squares</span> = [<span class="SFct">square</span>(<span class="SNum">1</span>), <span class="SFct">square</span>(<span class="SNum">2</span>), <span class="SFct">square</span>(<span class="SNum">3</span>), <span class="SFct">square</span>(<span class="SNum">4</span>), <span class="SFct">square</span>(<span class="SNum">5</span>)]
-<span class="SCmt">// #assert Squares[1] == 1</span>
-<span class="SCmt">// #assert Squares[1] == 4</span>
-<span class="SCmt">// #assert Squares[2] == 9</span>
-<span class="SCmt">// #assert Squares[3] == 16</span>
-<span class="SCmt">// #assert Squares[4] == 25</span></span></div>
+<span class="SCmp">#assert</span> <span class="SCst">Squares</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>
+<span class="SCmp">#assert</span> <span class="SCst">Squares</span>[<span class="SNum">1</span>] == <span class="SNum">4</span>
+<span class="SCmp">#assert</span> <span class="SCst">Squares</span>[<span class="SNum">2</span>] == <span class="SNum">9</span>
+<span class="SCmp">#assert</span> <span class="SCst">Squares</span>[<span class="SNum">3</span>] == <span class="SNum">16</span>
+<span class="SCmp">#assert</span> <span class="SCst">Squares</span>[<span class="SNum">4</span>] == <span class="SNum">25</span></span></div>
 <h4 id="_007_000_functions_swg__007_008_constexpr_swg">Forcing Compile-Time Execution with <span class="code-inline">#run</span> </h4>
 <p>If a function is not marked with <span class="code-inline">Swag.ConstExpr</span>, but you still want to execute it at compile time,  you can use the <span class="code-inline">#run</span> directive. This forces the compiler to execute the function during  compilation and use the result in your code. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mul</span>(x, y: <span class="STpe">f32</span>) =&gt; x * y      <span class="SCmt">// This is a normal function, not marked as `Swag.ConstExpr`.</span>
