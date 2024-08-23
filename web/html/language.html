@@ -8494,22 +8494,40 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SAtr">#[Swag.NoDoc]</span>
 <span class="SKwd">func</span> <span class="SFct">three</span>() {}</span></div>
 
-<h3 id="_018_000_documentation_md__018_002_examples_md">Examples</h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, swag will generate a documentation like this one. Each file will be a chapter or a sub chapter. </p>
-<p>File names must start with a number of 3 digits, and can be followed by another number for a sub part. </p>
-<div class="code-block"><span class="SCde">100_my_title.swg            =&gt; will generate a '&lt;h1&gt;My title&lt;&lt;h1&gt;' heading
-101_001_my_sub_title.swg    =&gt; will generate a '&lt;h2&gt;My sub title&lt;&lt;h2&gt;' heading
-102_002_my_sub_title.swg    =&gt; will generate a '&lt;h2&gt;My sub title&lt;&lt;h2&gt;' heading
-110_my_other_title.swg      =&gt; will generate a '&lt;h1&gt;My other title&lt;&lt;h1&gt;' heading
-111_my_other_title.md       =&gt; you can mix with '.md' files</span></div>
-<p>In that mode, the comments in the code you want to be interpreted as documentation (and not swag comments) must start with <span class="code-inline">/**</span>. </p>
+<h3 id="_018_000_documentation_md__018_002_examples_md">Examples</h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, documentation is generated systematically, with each file representing a chapter or subchapter. The following guidelines outline the structure and formatting required for effective documentation creation. </p>
+<h4 id="_018_000_documentation_md__018_002_examples_md">File Naming Convention </h4>
+<p>File names must adhere to the format <span class="code-inline">DDD_DDD_name</span>, where each <span class="code-inline">D</span> represents a digit. This naming convention facilitates the hierarchical organization of the documentation. </p>
+<div class="description-list-title"><p>Main Titles</p></div>
+<div class="description-list-block">
+<p>Files with names formatted as <span class="code-inline">100_000_my_title.swg</span> will generate a main heading (<span class="code-inline">&lt;h1&gt;My Title&lt;/h1&gt;</span>). </p>
+</div>
+<div class="description-list-title"><p>Subtitles</p></div>
+<div class="description-list-block">
+<p>Files named <span class="code-inline">101_001_my_sub_title.swg</span> or <span class="code-inline">102_002_my_sub_title.swg</span> will generate subheadings (<span class="code-inline">&lt;h2&gt;My Sub Title&lt;/h2&gt;</span>) under the corresponding main title. </p>
+</div>
+<div class="description-list-title"><p>Multiple Main Titles</p></div>
+<div class="description-list-block">
+<p>For separate sections, such as <span class="code-inline">110_000_my_other_title.swg</span>, another main heading (<span class="code-inline">&lt;h1&gt;My Other Title&lt;/h1&gt;</span>) will be generated. </p>
+</div>
+<div class="description-list-title"><p>File Type Flexibility</p></div>
+<div class="description-list-block">
+<p>You can mix <span class="code-inline">.swg</span> files with <span class="code-inline">.md</span> files. For example, <span class="code-inline">111_000_my_other_title.md</span> will seamlessly integrate Markdown files into the documentation structure. </p>
+</div>
+<h4 id="_018_000_documentation_md__018_002_examples_md">Comment Format for Documentation </h4>
+<p>To include comments in your code that should be interpreted as part of the documentation (as opposed to standard Swag comments), use the following syntax: </p>
 <div class="code-block"><span class="SCde">/**
-This is a valid documentation comment.
-The comment must start with /** and end with */, which should be alone on their respective line.
-*/</span></div>
-<p>Note that the documentation you are reading right now has been generated in that mode, from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
+ This is a valid documentation comment.
+ The comment must start with /** and end with */, each on a separate line.
+ */</span></div>
+<p>These comments will be processed and included in the generated documentation, ensuring that inline comments are properly formatted and contribute to the final output. </p>
+<h4 id="_018_000_documentation_md__018_002_examples_md">Source of Documentation </h4>
+<p>The documentation you are reading is generated from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. This directory contains examples and files structured according to these guidelines, showcasing how to effectively create and manage documentation in <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 
-<h3 id="_018_000_documentation_md__018_003_pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
-<p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
+<h3 id="_018_000_documentation_md__018_003_pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file generates an individual webpage, with the page name matching the file name. Aside from this distinction, the behavior is consistent with that of <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
+<h4 id="_018_000_documentation_md__018_003_pages_md">File Naming and Page Generation </h4>
+<p>Each file in this mode generates a separate webpage. The page name will directly correspond to the file name. </p>
+<h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
+<p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
 Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
