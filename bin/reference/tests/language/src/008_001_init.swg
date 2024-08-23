@@ -1,11 +1,11 @@
 /**
 # `@init` Intrinsic
-The `@init` intrinsic in Swag is used to reinitialize a variable or a memory block to its default value. This is particularly useful when you need to reset the state of variables or memory without manually setting each field or element.
+The `@init` intrinsic in Swag is used to reinitialize a variable or a memory block to its default value. This intrinsic is especially useful when you need to reset the state of variables or memory blocks without manually setting each field or element. The ability to reset variables to their default states or to a specific value simplifies state management in Swag applications.
 */
 
 /**
 # Reinitializing a Single Variable
-You can reinitialize a single variable to its default value by simply passing the variable as an argument to `@init`.
+To reinitialize a single variable to its default value, simply pass the variable as an argument to `@init`.
 */
 
 #test
@@ -17,7 +17,7 @@ You can reinitialize a single variable to its default value by simply passing th
 
 /**
 # Reinitializing Multiple Elements
-You can also specify a pointer to a memory block and the count of elements to reinitialize a specific number of elements.
+You can also specify a pointer to a memory block and the count of elements to reinitialize a specific number of elements within that memory block. This is useful for resetting arrays or parts of them.
 */
 
 #test
@@ -36,7 +36,7 @@ You can also specify a pointer to a memory block and the count of elements to re
 
 /**
 # Initializing with a Specific Value
-Instead of reinitializing a variable to its default value, you can specify a value to initialize it with.
+The `@init` intrinsic can also initialize a variable with a specific value instead of its default. This provides a flexible way to reset variables to any desired state.
 */
 
 #test
@@ -48,7 +48,7 @@ Instead of reinitializing a variable to its default value, you can specify a val
 
 /**
 # Initializing Arrays with a Specific Value
-The `@init` intrinsic can also be used to reinitialize all elements of an array with a specific value.
+The `@init` intrinsic can be applied to arrays to reinitialize all elements with a specific value, ensuring consistency across the array.
 */
 
 #test
@@ -61,7 +61,7 @@ The `@init` intrinsic can also be used to reinitialize all elements of an array 
 
 /**
 # Reinitializing Structs
-When you use `@init` on a struct, it restores the struct to the values defined in its declaration.
+When applied to structs, `@init` restores the struct to its default state as defined in its declaration. This is particularly useful for resetting complex data structures.
 */
 
 #test
@@ -82,7 +82,7 @@ When you use `@init` on a struct, it restores the struct to the values defined i
 
 /**
 # Specifying Initialization Values for Structs
-You can also specify the values to initialize a struct directly using `@init`.
+You can also initialize a struct with specific values directly using `@init`, providing a convenient way to set all fields at once.
 */
 
 #test
@@ -103,7 +103,7 @@ You can also specify the values to initialize a struct directly using `@init`.
 
 /**
 # Reinitializing Arrays of Structs
-The `@init` intrinsic also works with arrays of structs, allowing you to initialize each element with specific values.
+The `@init` intrinsic can be used with arrays of structs, allowing you to reinitialize each element with specific values. This is particularly useful for resetting large data structures efficiently.
 */
 
 #test
@@ -120,24 +120,4 @@ The `@init` intrinsic also works with arrays of structs, allowing you to initial
     @assert(rgb[3].r == 50)
     @assert(rgb[3].g == 60)
     @assert(rgb[3].b == 70)
-}
-
-/**
-# `@drop` Intrinsic
-While `@init` resets the variable without calling any destructors, the `@drop` intrinsic works similarly, but it also calls `opDrop` if it is defined for the struct. This ensures that any necessary cleanup (like freeing resources) is performed before reinitializing.
-*/
-
-#test
-{
-    struct RGB { r = 1, g = 2, b = 3 }
-
-    var rgb: [4] RGB
-
-    // Calling `@drop` on the array. If `RGB` had an `opDrop` defined, it would be called here.
-    @drop(&rgb, 4)
-
-    @init(&rgb, 4)(5, 6, 7) // Reinitialize after dropping
-    @assert(rgb[3].r == 5)
-    @assert(rgb[3].g == 6)
-    @assert(rgb[3].b == 7)
 }

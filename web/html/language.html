@@ -191,6 +191,7 @@
 <li><a href="#_008_000_intrinsics_swg">Intrinsics</a></li>
 <ul>
 <li><a href="#_008_000_intrinsics_swg__008_001_init_swg">Init</a></li>
+<li><a href="#_008_000_intrinsics_swg__008_002_drop_swg">Drop</a></li>
 </ul>
 <li><a href="#_009_000_generics_swg">Generics</a></li>
 <ul>
@@ -6019,218 +6020,223 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Links the 'kernel32.dll' library to the executable, resolving external function calls.</span>
 <span class="SCmp">#foreignlib</span> <span class="SStr">"kernel32"</span></span></div>
 
-<h2 id="_008_000_intrinsics_swg">Intrinsics</h2><p>This is the list of all intrinsics. All intrinsics start with <span class="code-inline">@</span>, which is reserved for them. </p>
+<h2 id="_008_000_intrinsics_swg">Intrinsics</h2><h3 id="_008_000_intrinsics_swg">Intrinsics in Swag </h3>
+<p>Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to  specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with <span class="code-inline">@</span>,  which is reserved exclusively for these functions. </p>
+<p>This document provides a categorized list of all intrinsics available in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
-<h3 id="_008_000_intrinsics_swg">Base </h3>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@assert</span>(value: <span class="STpe">bool</span>);
-<span class="SKwd">func</span> <span class="SItr">@breakpoint</span>();
-<span class="SKwd">func</span> <span class="SItr">@getcontext</span>()-&gt;*<span class="SCst">Swag</span>.<span class="SCst">Context</span>;
-<span class="SKwd">func</span> <span class="SItr">@setcontext</span>(context: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">Context</span>);
-<span class="SKwd">func</span> <span class="SItr">@isbytecode</span>()-&gt;<span class="STpe">bool</span>;
-<span class="SKwd">func</span> <span class="SItr">@compiler</span>()-&gt;<span class="SCst">Swag</span>.<span class="SCst">ICompiler</span>;
+<h3 id="_008_000_intrinsics_swg">Base Intrinsics </h3>
+<p>These base intrinsics provide fundamental functionalities that are commonly needed across various Swag programs. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@assert</span>(value: <span class="STpe">bool</span>);                       <span class="SCmt">// Asserts that a condition is true, used for debugging.</span>
+<span class="SKwd">func</span> <span class="SItr">@breakpoint</span>();                              <span class="SCmt">// Triggers a breakpoint in the debugger.</span>
+<span class="SKwd">func</span> <span class="SItr">@getcontext</span>() -&gt; *<span class="SCst">Swag</span>.<span class="SCst">Context</span>;             <span class="SCmt">// Retrieves the current execution context.</span>
+<span class="SKwd">func</span> <span class="SItr">@setcontext</span>(context: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">Context</span>);  <span class="SCmt">// Sets the current execution context.</span>
+<span class="SKwd">func</span> <span class="SItr">@isbytecode</span>() -&gt; <span class="STpe">bool</span>;                      <span class="SCmt">// Checks if the code is being executed as bytecode.</span>
+<span class="SKwd">func</span> <span class="SItr">@compiler</span>() -&gt; <span class="SCst">Swag</span>.<span class="SCst">ICompiler</span>;              <span class="SCmt">// Retrieves the current compiler interface.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@args</span>()-&gt;<span class="SKwd">const</span> [..] <span class="STpe">string</span>;
-<span class="SItr">@panic</span>()
-<span class="SItr">@compilererror</span>()
-<span class="SItr">@compilerwarning</span>()</span></div>
-<h3 id="_008_000_intrinsics_swg">Buildin </h3>
-<div class="code-block"><span class="SCde"><span class="SItr">@spread</span>()
-<span class="SItr">@init</span>()
-<span class="SItr">@drop</span>()
-<span class="SItr">@postmove</span>()
-<span class="SItr">@postcopy</span>()
-<span class="SItr">@sizeof</span>()
-<span class="SItr">@alignof</span>()
-<span class="SItr">@offsetof</span>()
-<span class="SItr">@typeof</span>()
-<span class="SItr">@kindof</span>()
-<span class="SItr">@countof</span>()
-<span class="SItr">@stringof</span>()
-<span class="SItr">@dataof</span>()
-<span class="SItr">@mkslice</span>()
-<span class="SItr">@mkstring</span>()
-<span class="SItr">@mkany</span>()
-<span class="SItr">@mkinterface</span>()
-<span class="SItr">@mkcallback</span>()
-<span class="SItr">@pinfos</span>()
-<span class="SItr">@isconstexpr</span>()
-<span class="SItr">@itftableof</span>()
+<span class="SKwd">func</span> <span class="SItr">@args</span>() -&gt; <span class="SKwd">const</span> [..] <span class="STpe">string</span>;               <span class="SCmt">// Returns the command-line arguments passed to the program.</span>
+<span class="SItr">@panic</span>()                                         <span class="SCmt">// Triggers a panic, stopping program execution.</span>
+<span class="SItr">@compilererror</span>()                                 <span class="SCmt">// Generates a compile-time error.</span>
+<span class="SItr">@compilerwarning</span>()                               <span class="SCmt">// Generates a compile-time warning.</span></span></div>
+<h3 id="_008_000_intrinsics_swg">Built-in Intrinsics </h3>
+<p>These intrinsics provide essential built-in operations related to type and memory management, typically for  low-level or performance-critical code. </p>
+<div class="code-block"><span class="SCde"><span class="SItr">@spread</span>()                   <span class="SCmt">// Expands a value into a wider context.</span>
+<span class="SItr">@init</span>()                     <span class="SCmt">// Initializes a variable or memory area.</span>
+<span class="SItr">@drop</span>()                     <span class="SCmt">// Destroys a variable or memory area.</span>
+<span class="SItr">@postmove</span>()                 <span class="SCmt">// Called after a move operation to handle post-move logic.</span>
+<span class="SItr">@postcopy</span>()                 <span class="SCmt">// Called after a copy operation to handle post-copy logic.</span>
+<span class="SItr">@sizeof</span>()                   <span class="SCmt">// Returns the size, in bytes, of a type or variable.</span>
+<span class="SItr">@alignof</span>()                  <span class="SCmt">// Returns the alignment requirement of a type.</span>
+<span class="SItr">@offsetof</span>()                 <span class="SCmt">// Returns the offset, in bytes, of a field within a struct.</span>
+<span class="SItr">@typeof</span>()                   <span class="SCmt">// Returns the type of a given expression.</span>
+<span class="SItr">@kindof</span>()                   <span class="SCmt">// Returns the kind (e.g., primitive, struct) of a type.</span>
+<span class="SItr">@countof</span>()                  <span class="SCmt">// Returns the number of elements in an array.</span>
+<span class="SItr">@stringof</span>()                 <span class="SCmt">// Returns the string representation of a type or expression.</span>
+<span class="SItr">@dataof</span>()                   <span class="SCmt">// Returns a pointer to the underlying data of a type.</span>
+<span class="SItr">@mkslice</span>()                  <span class="SCmt">// Creates a slice from a given data pointer and length.</span>
+<span class="SItr">@mkstring</span>()                 <span class="SCmt">// Creates a string from a given data pointer and length.</span>
+<span class="SItr">@mkany</span>()                    <span class="SCmt">// Creates a generic `any` type from a given value.</span>
+<span class="SItr">@mkinterface</span>()              <span class="SCmt">// Creates an interface type from a given implementation.</span>
+<span class="SItr">@mkcallback</span>()               <span class="SCmt">// Creates a callback from a given function pointer.</span>
+<span class="SItr">@pinfos</span>()                   <span class="SCmt">// Retrieves program information.</span>
+<span class="SItr">@isconstexpr</span>()              <span class="SCmt">// Checks if an expression is a constant expression.</span>
+<span class="SItr">@itftableof</span>()               <span class="SCmt">// Returns the interface table for a given type.</span></span></div>
+<h3 id="_008_000_intrinsics_swg">Memory-related Intrinsics </h3>
+<p>These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation,  deallocation, and manipulation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>) -&gt; *<span class="STpe">void</span>;                         <span class="SCmt">// Allocates a block of memory of the given size.</span>
+<span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>) -&gt; *<span class="STpe">void</span>;           <span class="SCmt">// Reallocates a block of memory to a new size.</span>
+<span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: *<span class="STpe">void</span>);                                  <span class="SCmt">// Frees a previously allocated block of memory.</span>
+<span class="SKwd">func</span> <span class="SItr">@memset</span>(dst: *<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>);          <span class="SCmt">// Sets a block of memory to a specific value.</span>
+<span class="SKwd">func</span> <span class="SItr">@memcpy</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>);   <span class="SCmt">// Copies a block of memory from one location to another.</span>
+<span class="SKwd">func</span> <span class="SItr">@memmove</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>);  <span class="SCmt">// Moves a block of memory, handling overlapping areas.</span>
+<span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>) -&gt; <span class="STpe">s32</span>;   <span class="SCmt">// Compares two blocks of memory.</span>
+<span class="SKwd">func</span> <span class="SItr">@strlen</span>(value: <span class="SKwd">const</span> *<span class="STpe">u8</span>) -&gt; <span class="STpe">u64</span>;                   <span class="SCmt">// Returns the length of a null-terminated string.</span></span></div>
+<h3 id="_008_000_intrinsics_swg">Atomic Operations </h3>
+<p>Atomic operations provide thread-safe manipulation of variables in shared memory, ensuring data consistency  without the need for explicit locking mechanisms. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;
 
-<span class="SItr">#index</span></span></div>
-<h3 id="_008_000_intrinsics_swg">Memory related </h3>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
-<span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
-<span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: *<span class="STpe">void</span>);
-<span class="SKwd">func</span> <span class="SItr">@memset</span>(dst: *<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>);
-<span class="SKwd">func</span> <span class="SItr">@memcpy</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>);
-<span class="SKwd">func</span> <span class="SItr">@memmove</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>);
-<span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@strlen</span>(value: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span>;</span></div>
-<h3 id="_008_000_intrinsics_swg">Atomic operations </h3>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;
 
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;
 
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;
 
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s8</span>, exchangeWith: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s32</span>, exchangeWith: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s64</span>, exchangeWith: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u8</span>, exchangeWith: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u32</span>, exchangeWith: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u64</span>, exchangeWith: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;
 
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s8</span>,  exchangeWith: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s32</span>, exchangeWith: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s64</span>, exchangeWith: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u8</span>,  exchangeWith: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u32</span>, exchangeWith: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u64</span>, exchangeWith: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s8</span>, compareTo, exchangeWith: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s16</span>, compareTo, exchangeWith: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s32</span>, compareTo, exchangeWith: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s64</span>, compareTo, exchangeWith: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u8</span>, compareTo, exchangeWith: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u16</span>, compareTo, exchangeWith: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u32</span>, compareTo, exchangeWith: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u64</span>, compareTo, exchangeWith: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;</span></div>
+<h3 id="_008_000_intrinsics_swg">Math Intrinsics </h3>
+<p>These intrinsics provide various mathematical operations, including trigonometric, logarithmic, and other common  functions, offering precise control over mathematical calculations in Swag programs. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the square root of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the square root of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s8</span>,  compareTo, exchangeWith: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s16</span>, compareTo, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s32</span>, compareTo, exchangeWith: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s64</span>, compareTo, exchangeWith: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u8</span>,  compareTo, exchangeWith: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u16</span>, compareTo, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u32</span>, compareTo, exchangeWith: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u64</span>, compareTo, exchangeWith: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;</span></div>
-<h3 id="_008_000_intrinsics_swg">Math </h3>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the sine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the sine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the cosine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the cosine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the tangent of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the tangent of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the hyperbolic sine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the hyperbolic sine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the hyperbolic cosine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the hyperbolic cosine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the hyperbolic tangent of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the hyperbolic tangent of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the arc sine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the arc sine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the arc cosine of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the arc cosine of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the arc tangent of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the arc tangent of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the natural logarithm of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the natural logarithm of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the base-2 logarithm of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the base-2 logarithm of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;           <span class="SCmt">// Computes the base-10 logarithm of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;           <span class="SCmt">// Computes the base-10 logarithm of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;           <span class="SCmt">// Computes the floor of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;           <span class="SCmt">// Computes the floor of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the ceiling of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the ceiling of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;           <span class="SCmt">// Truncates a 32-bit floating-point number to its integer part.</span>
+<span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;           <span class="SCmt">// Truncates a 64-bit floating-point number to its integer part.</span>
+<span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;           <span class="SCmt">// Rounds a 32-bit floating-point number to the nearest integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;           <span class="SCmt">// Rounds a 64-bit floating-point number to the nearest integer.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;               <span class="SCmt">// Computes the absolute value of an 8-bit signed integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;             <span class="SCmt">// Computes the absolute value of a 16-bit signed integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;             <span class="SCmt">// Computes the absolute value of a 32-bit signed integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;             <span class="SCmt">// Computes the absolute value of a 64-bit signed integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the absolute value of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the absolute value of a 64-bit floating-point number.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;             <span class="SCmt">// Computes the exponential function of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;             <span class="SCmt">// Computes the exponential function of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes 2 raised to the power of a 32-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes 2 raised to the power of a 64-bit floating-point number.</span>
+<span class="SKwd">func</span> <span class="SItr">@pow</span>(value1, value2: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;    <span class="SCmt">// Computes the power function for 32-bit floating-point numbers.</span>
+<span class="SKwd">func</span> <span class="SItr">@pow</span>(value1, value2: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;    <span class="SCmt">// Computes the power function for 64-bit floating-point numbers.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
-<span class="SKwd">func</span> <span class="SItr">@pow</span>(value1, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@pow</span>(value1, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;      <span class="SCmt">// Returns the minimum of two 8-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;    <span class="SCmt">// Returns the minimum of two 16-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;    <span class="SCmt">// Returns the minimum of two 32-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;    <span class="SCmt">// Returns the minimum of two 64-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;      <span class="SCmt">// Returns the minimum of two 8-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;    <span class="SCmt">// Returns the minimum of two 16-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;    <span class="SCmt">// Returns the minimum of two 32-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;    <span class="SCmt">// Returns the minimum of two 64-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;    <span class="SCmt">// Returns the minimum of two 32-bit floating-point numbers.</span>
+<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;    <span class="SCmt">// Returns the minimum of two 64-bit floating-point numbers.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@min</span>(value1, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;      <span class="SCmt">// Returns the maximum of two 8-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;    <span class="SCmt">// Returns the maximum of two 16-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;    <span class="SCmt">// Returns the maximum of two 32-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s64</span>) -&gt; <span class="STpe">s64</span>;    <span class="SCmt">// Returns the maximum of two 64-bit signed integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;      <span class="SCmt">// Returns the maximum of two 8-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;    <span class="SCmt">// Returns the maximum of two 16-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;    <span class="SCmt">// Returns the maximum of two 32-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;    <span class="SCmt">// Returns the maximum of two 64-bit unsigned integers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;    <span class="SCmt">// Returns the maximum of two 32-bit floating-point numbers.</span>
+<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;    <span class="SCmt">// Returns the maximum of two 64-bit floating-point numbers.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@max</span>(value1, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
+<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;        <span class="SCmt">// Counts the number of set bits in an 8-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;      <span class="SCmt">// Counts the number of set bits in a 16-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;      <span class="SCmt">// Counts the number of set bits in a 32-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;      <span class="SCmt">// Counts the number of set bits in a 64-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;        <span class="SCmt">// Counts the number of trailing zeros in an 8-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;      <span class="SCmt">// Counts the number of trailing zeros in a 16-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;      <span class="SCmt">// Counts the number of trailing zeros in a 32-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;      <span class="SCmt">// Counts the number of trailing zeros in a 64-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;        <span class="SCmt">// Counts the number of leading zeros in an 8-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;      <span class="SCmt">// Counts the number of leading zeros in a 16-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;      <span class="SCmt">// Counts the number of leading zeros in a 32-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;      <span class="SCmt">// Counts the number of leading zeros in a 64-bit unsigned integer.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;        <span class="SCmt">// Swaps the byte order of a 16-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;        <span class="SCmt">// Swaps the byte order of a 32-bit unsigned integer.</span>
+<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;        <span class="SCmt">// Swaps the byte order of a 64-bit unsigned integer.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;          <span class="SCmt">// Rotates an 8-bit unsigned integer left by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;        <span class="SCmt">// Rotates a 16-bit unsigned integer left by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;        <span class="SCmt">// Rotates a 32-bit unsigned integer left by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;        <span class="SCmt">// Rotates a 64-bit unsigned integer left by a specified number of bits.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u8</span>) -&gt; <span class="STpe">u8</span>;          <span class="SCmt">// Rotates an 8-bit unsigned integer right by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u16</span>) -&gt; <span class="STpe">u16</span>;        <span class="SCmt">// Rotates a 16-bit unsigned integer right by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;        <span class="SCmt">// Rotates a 32-bit unsigned integer right by a specified number of bits.</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;        <span class="SCmt">// Rotates a 64-bit unsigned integer right by a specified number of bits.</span>
 
-<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
-<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
-<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
-<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
-
-<span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
-<span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;</span></div>
+<span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;     <span class="SCmt">// Performs a multiply-add operation for 32-bit floating-point numbers.</span>
+<span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;     <span class="SCmt">// Performs a multiply-add operation for 64-bit floating-point numbers.</span></span></div>
 
 <h3 id="_008_000_intrinsics_swg__008_001_init_swg">Init</h3><h4 id="_008_000_intrinsics_swg__008_001_init_swg"><span class="code-inline">@init</span> Intrinsic </h4>
-<p>The <span class="code-inline">@init</span> intrinsic in Swag is used to reinitialize a variable or a memory block to its default value. This is particularly useful when you need to reset the state of variables or memory without manually setting each field or element. </p>
+<p>The <span class="code-inline">@init</span> intrinsic in Swag is used to reinitialize a variable or a memory block to its default value. This intrinsic is especially useful when you need to reset the state of variables or memory blocks without manually setting each field or element. The ability to reset variables to their default states or to a specific value simplifies state management in Swag applications. </p>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Reinitializing a Single Variable </h4>
-<p>You can reinitialize a single variable to its default value by simply passing the variable as an argument to <span class="code-inline">@init</span>. </p>
+<p>To reinitialize a single variable to its default value, simply pass the variable as an argument to <span class="code-inline">@init</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">666</span>
@@ -6238,7 +6244,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)    <span class="SCmt">// The default value for a simple variable like 'x' is 0</span>
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Reinitializing Multiple Elements </h4>
-<p>You can also specify a pointer to a memory block and the count of elements to reinitialize a specific number of elements. </p>
+<p>You can also specify a pointer to a memory block and the count of elements to reinitialize a specific number of elements within that memory block. This is useful for resetting arrays or parts of them. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = [<span class="SNum">1</span>, <span class="SNum">2</span>]
@@ -6253,7 +6259,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x[<span class="SNum">1</span>] == <span class="SNum">0</span>)
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Initializing with a Specific Value </h4>
-<p>Instead of reinitializing a variable to its default value, you can specify a value to initialize it with. </p>
+<p>The <span class="code-inline">@init</span> intrinsic can also initialize a variable with a specific value instead of its default. This provides a flexible way to reset variables to any desired state. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">666</span>'<span class="STpe">f32</span>
@@ -6261,7 +6267,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">3.14</span>)
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Initializing Arrays with a Specific Value </h4>
-<p>The <span class="code-inline">@init</span> intrinsic can also be used to reinitialize all elements of an array with a specific value. </p>
+<p>The <span class="code-inline">@init</span> intrinsic can be applied to arrays to reinitialize all elements with a specific value, ensuring consistency across the array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = [<span class="SNum">1</span>, <span class="SNum">2</span>]
@@ -6270,7 +6276,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x[<span class="SNum">1</span>] == <span class="SNum">555</span>)
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Reinitializing Structs </h4>
-<p>When you use <span class="code-inline">@init</span> on a struct, it restores the struct to the values defined in its declaration. </p>
+<p>When applied to structs, <span class="code-inline">@init</span> restores the struct to its default state as defined in its declaration. This is particularly useful for resetting complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">RGB</span> { r = <span class="SNum">1</span>, g = <span class="SNum">2</span>, b = <span class="SNum">3</span> }
@@ -6287,7 +6293,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(rgb.b == <span class="SNum">3</span>)
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Specifying Initialization Values for Structs </h4>
-<p>You can also specify the values to initialize a struct directly using <span class="code-inline">@init</span>. </p>
+<p>You can also initialize a struct with specific values directly using <span class="code-inline">@init</span>, providing a convenient way to set all fields at once. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">RGB</span> { r = <span class="SNum">1</span>, g = <span class="SNum">2</span>, b = <span class="SNum">3</span> }
@@ -6304,7 +6310,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(rgb.b == <span class="SNum">7</span>)
 }</span></div>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Reinitializing Arrays of Structs </h4>
-<p>The <span class="code-inline">@init</span> intrinsic also works with arrays of structs, allowing you to initialize each element with specific values. </p>
+<p>The <span class="code-inline">@init</span> intrinsic can be used with arrays of structs, allowing you to reinitialize each element with specific values. This is particularly useful for resetting large data structures efficiently. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">RGB</span> { r = <span class="SNum">1</span>, g = <span class="SNum">2</span>, b = <span class="SNum">3</span> }
@@ -6320,8 +6326,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(rgb[<span class="SNum">3</span>].g == <span class="SNum">60</span>)
     <span class="SItr">@assert</span>(rgb[<span class="SNum">3</span>].b == <span class="SNum">70</span>)
 }</span></div>
-<h4 id="_008_000_intrinsics_swg__008_001_init_swg"><span class="code-inline">@drop</span> Intrinsic </h4>
-<p>While <span class="code-inline">@init</span> resets the variable without calling any destructors, the <span class="code-inline">@drop</span> intrinsic works similarly, but it also calls <span class="code-inline">opDrop</span> if it is defined for the struct. This ensures that any necessary cleanup (like freeing resources) is performed before reinitializing. </p>
+
+<h3 id="_008_000_intrinsics_swg__008_002_drop_swg">Drop</h3><h4 id="_008_000_intrinsics_swg__008_002_drop_swg"><span class="code-inline">@drop</span> Intrinsic </h4>
+<p>The <span class="code-inline">@drop</span> intrinsic calls the <span class="code-inline">opDrop</span> method if it is defined for the struct. This ensures that any necessary cleanup operations (such as freeing resources) are performed before the variable is reinitialized. <span class="code-inline">@drop</span> is particularly useful in resource management, where explicit cleanup is required before resetting the variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">RGB</span> { r = <span class="SNum">1</span>, g = <span class="SNum">2</span>, b = <span class="SNum">3</span> }
