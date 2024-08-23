@@ -557,8 +557,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="STpe">cvarargs</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Compiler Instructions </h4>
 <p>Compiler instructions are prefixed with <span class="code-inline">#</span> and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with <span class="code-inline">#</span>, ensuring that compiler keywords do not conflict with user-defined names. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#global</span>
-<span class="STpe">#type</span>
+<div class="code-block"><span class="SCde"><span class="STpe">#type</span>
 
 <span class="SFct">#run</span>
 <span class="SFct">#ast</span>
@@ -570,6 +569,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SFct">#message</span>
 <span class="SFct">#dependencies</span>
 
+<span class="SCmp">#global</span>
 <span class="SCmp">#include</span>
 <span class="SCmp">#load</span>
 <span class="SCmp">#assert</span>
@@ -7584,7 +7584,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Ensure that references to external values (e.g., <span class="code-inline">string</span>, <span class="code-inline">any</span>) remain valid throughout the error's lifecycle. The runtime will manage complex types, so it's recommended to store such values in the heap or a dedicated allocator within the current context. </p>
 </div>
-<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg"><span class="code-inline">defer</span> </h4>
+<h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Using <span class="code-inline">defer</span> for Controlled Cleanup </h4>
 <p>The <span class="code-inline">defer</span> statement schedules a block of code to be executed when the function exits, whether it's through a normal return or due to an error being thrown. Since throwing an error is functionally similar to returning, <span class="code-inline">defer</span> behaves consistently in both cases. </p>
 <p><span class="code-inline">defer</span> can be customized with specific modes (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to control its execution based on the function's exit state: </p>
 <table class="table-markdown">

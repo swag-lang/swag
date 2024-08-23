@@ -105,7 +105,6 @@ cvarargs
 Compiler instructions are prefixed with `#` and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with `#`, ensuring that compiler keywords do not conflict with user-defined names.
 
 ```swag
-#global
 #type
 
 #run
@@ -118,6 +117,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #message
 #dependencies
 
+#global
 #include
 #load
 #assert
