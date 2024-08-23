@@ -1028,6 +1028,29 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             node->addSemFlag(SEMFLAG_ASSIGN_COMPUTED);
         }
     }
+    else if (node->assignment &&
+             node->assignment->is(AstNodeKind::ExpressionList) &&
+             !isGeneric)
+    {
+        if (!node->hasAstFlag(AST_FROM_GENERIC) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
+        {
+            for (const auto child : node->assignment->children)
+            {
+                SWAG_CHECK(checkIsConcreteOrType(context, child));
+                YIELD();
+
+                if (overFlags.has(OVERLOAD_VAR_GLOBAL) || overFlags.has(OVERLOAD_VAR_FUNC_PARAM) || node->assignment->hasAstFlag(AST_CONST_EXPR))
+                {
+                    SWAG_CHECK(evaluateConstExpression(context, child));
+                    YIELD();
+                    if (overFlags.has(OVERLOAD_VAR_GLOBAL))
+                        child->addAstFlag(AST_NO_BYTECODE);
+                }
+            }
+
+            node->addSemFlag(SEMFLAG_ASSIGN_COMPUTED);
+        }
+    }
 
     // A global variable or a constant must have its value computed at that point
     if (!node->hasAstFlag(AST_FROM_GENERIC) && !isGeneric && node->assignment)

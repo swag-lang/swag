@@ -45,11 +45,11 @@ compile time. This example demonstrates how an array of precomputed values is cr
 func square(n: s32) => n * n
 
 const Squares = [square(1), square(2), square(3), square(4), square(5)]
-// #assert Squares[1] == 1
-// #assert Squares[1] == 4
-// #assert Squares[2] == 9
-// #assert Squares[3] == 16
-// #assert Squares[4] == 25
+#assert Squares[0] == 1
+#assert Squares[1] == 4
+#assert Squares[2] == 9
+#assert Squares[3] == 16
+#assert Squares[4] == 25
 
 /**
 # Forcing Compile-Time Execution with `#run`
