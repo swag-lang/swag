@@ -1,5 +1,10 @@
 /**
-You can force the layout of a field within a struct using the `Swag.Offset` attribute. This allows you to manually specify the memory offset of a field, potentially causing fields to overlap or share memory space.
+# Custom Field Layout with `Swag.Offset`
+
+You can force the layout of a field within a struct using the `Swag.Offset` attribute. 
+This allows you to manually specify the memory offset of a field, which can be useful 
+for creating custom memory layouts, such as overlapping fields or sharing memory space 
+between different fields.
 */
 #test
 {
@@ -24,7 +29,10 @@ You can force the layout of a field within a struct using the `Swag.Offset` attr
 }
 
 /**
-Another example of using `Swag.Offset`, this time to reference a group of fields by index.
+# Using `Swag.Offset` for Indexed Field Access
+
+In this example, `Swag.Offset` is used to reference a group of fields by index, 
+enabling indexed access to multiple fields through a single array.
 */
 #test
 {
@@ -32,7 +40,7 @@ Another example of using `Swag.Offset`, this time to reference a group of fields
     {
         x, y, z: f32
 
-        // Here, 'idx' is an array that references the same memory locations as 'x', 'y', and 'z'.
+        // 'idx' is an array that references the same memory locations as 'x', 'y', and 'z'.
         // This allows you to access 'x', 'y', and 'z' via indexed access through 'idx'.
         #[Swag.Offset("x")]
         idx: [3] f32

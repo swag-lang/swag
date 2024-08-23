@@ -1,67 +1,74 @@
 /**
-`opAffect` allows you to define custom assignment behavior for your struct using the `=` operator. You can overload `opAffect` to handle different types, providing specific behavior depending on the type of value assigned.
+# Custom Assignment Behavior with `opAffect`
+
+The `opAffect` method in Swag allows you to define custom assignment behaviors for your struct using the `=` operator.
+By overloading `opAffect`, you can handle assignments of different types, enabling you to specify how your struct should 
+behave when different types of values are assigned.
 */
 
 struct Struct
 {
-    x, y, z: s32 = 666  // Fields with default values
+    x, y, z: s32 = 666  // Fields 'x', 'y', and 'z' with a default value of 666
 }
 
 impl Struct
 {
-    // Overloaded `opAffect` to handle `s32` assignments
+    // Overloaded `opAffect` to handle assignments of type `s32`
     #[Swag.Overload]
     mtd opAffect(value: s32) { 
-        x, y = value;  // Assign value to fields x and y
+        x, y = value  // Assign the provided `value` to both 'x' and 'y'
     }
 
-    // Overloaded `opAffect` to handle `bool` assignments
+    // Overloaded `opAffect` to handle assignments of type `bool`
     #[Swag.Overload]
     mtd opAffect(value: bool) { 
-        x, y = value ? 1 : 0;  // Assign 1 if true, 0 if false, to fields x and y
+        x, y = value ? 1 : 0  // Assign 1 if `value` is true, otherwise 0, to both 'x' and 'y'
     }
 }
 
 #test
 {
-    // Initialize 'v' and call opAffect(s32) with the value '4'
+    // Initialize 'v' and invoke `opAffect(s32)` with the value '4'
     var v: Struct = 4's32
     @assert(v.x == 4)    // 'x' is set to 4
     @assert(v.y == 4)    // 'y' is set to 4
-    @assert(v.z == 666)  // 'z' retains its default value as 'opAffect' does not modify it
+    @assert(v.z == 666)  // 'z' remains at its default value since `opAffect` doesn't modify it
 
-    // Initialize 'v1' and call opAffect(bool) with 'true'
+    // Initialize 'v1' and invoke `opAffect(bool)` with 'true'
     var v1: Struct = true
-    @assert(v1.x == 1)   // 'x' is set to 1 (true)
-    @assert(v1.y == 1)   // 'y' is set to 1 (true)
+    @assert(v1.x == 1)   // 'x' is set to 1 because 'true' was assigned
+    @assert(v1.y == 1)   // 'y' is also set to 1 because 'true' was assigned
 
-    // Assign 'false' to 'v1', invoking opAffect(bool)
+    // Assign 'false' to 'v1', triggering `opAffect(bool)`
     v1 = false
     @assert(v1.x == 0)   // 'x' is set to 0 (false)
     @assert(v1.y == 0)   // 'y' is set to 0 (false)
 }
 
 /**
-If `opAffect` fully initializes the struct, you can use the `#[Swag.Complete]` attribute to optimize initialization. This prevents the struct from being initialized with default values before being reassigned, which can save performance.
+# Optimizing Initialization with `Swag.Complete`
+
+When `opAffect` fully initializes the struct, you can annotate it with `#[Swag.Complete]`. This prevents the struct from being initialized with default values before the assignment, enhancing performance by avoiding redundant assignments.
 */
 
 impl Struct
 {
-    // Marking `opAffect` with `Swag.Complete` ensures only one initialization step
+    // Mark `opAffect` with `Swag.Complete` to ensure only one initialization step
     #[Swag.Complete, Swag.Overload]
     mtd opAffect(value: u64) { 
-        x, y, z = cast(s32) value;  // Assign value to x, y, z, converting from u64 to s32
+        x, y, z = cast(s32) value  // Convert `value` from u64 to s32 and assign it to 'x', 'y', and 'z'
     }
 
-    // Implicit conversion example for u16
+    // Implicit conversion example for u16 assignments
     #[Swag.Implicit, Swag.Overload]
     mtd opAffect(value: u16) { 
-        x, y = cast(s32) value;  // Assign value to x, y, converting from u16 to s32
+        x, y = cast(s32) value  // Convert `value` from u16 to s32 and assign it to 'x' and 'y'
     }
 }
 
 /**
-Here, the variable `v` is initialized directly by `opAffect(u64)`, skipping the default initialization. This approach is more optimal as it reduces unnecessary assignments.
+In this case, the struct `v` is directly initialized by `opAffect(u64)`, skipping the default initialization step. 
+This optimization leads to more efficient code by reducing unnecessary initializations.
 */
 #test
 {
@@ -72,7 +79,9 @@ Here, the variable `v` is initialized directly by `opAffect(u64)`, skipping the 
 }
 
 /**
-By default, function arguments do not undergo automatic conversion via `opAffect`, so explicit casting is necessary.
+# Handling Function Arguments and Automatic Conversion
+
+By default, function arguments do not automatically undergo conversion via `opAffect`. Explicit casting is necessary unless `Swag.Implicit` is used to allow automatic conversion.
 */
 #test
 {
@@ -80,39 +89,43 @@ By default, function arguments do not undergo automatic conversion via `opAffect
     {
         @assert(v.x == 5)
         @assert(v.y == 5)
-        @assert(v.z == 666)
+        @assert(v.z == 666)  // 'z' remains unchanged
     }
 
     func titi(v: Struct)
     {
-        @assert(v.y == 666)
+        @assert(v.y == 666)  // 'y' remains at its default value
     }
 
-    // Explicit cast required to invoke opAffect(s32)
+    // Explicit cast required to invoke `opAffect(s32)`
     toto(cast(Struct) 5's32)
 
-    // With #[Swag.Implicit], casting is not necessary; automatic conversion occurs
-    toto(5'u16)  // Implicitly calls opAffect(u16)
+    // With `#[Swag.Implicit]`, casting is not required, and automatic conversion occurs
+    toto(5'u16)  // Implicitly calls `opAffect(u16)`
 }
 
 /**
-If you want a struct to be usable as a constant and initialized via `opAffect`, you can mark the method with `#[Swag.ConstExpr]`.
+# Using `opAffect` in Constant Expressions
+
+To use `opAffect` in a context where the struct needs to be a constant, you can mark the method with `#[Swag.ConstExpr]`. This allows the struct to be initialized at compile-time via `opAffect`.
 */
+
 struct Vector2
 {
-    x, y: f32  // Fields of type f32
+    x, y: f32  // Fields of type f32 representing coordinates
 }
 
 impl Vector2
 {
+    // Enables the use of `opAffect(f32)` for constant initialization
     #[Swag.ConstExpr]
     mtd opAffect(one: f32)
     {
-        x, y = one  // Assign the same value to both x and y
+        x, y = one  // Assign the same value to both 'x' and 'y'
     }
 }
 
-// Using opAffect(f32) to initialize a constant at compile time
+// Using `opAffect(f32)` to initialize a compile-time constant
 const One: Vector2 = 1.0
 #assert One.x == 1.0
 #assert One.y == 1.0

@@ -2,17 +2,17 @@
 Interfaces in Swag are **virtual tables** (a list of function pointers) that can be associated with a struct.
 
 Unlike C++, the virtual table is not embedded within the struct. It is a **separate** object.
-You can then *implement* an interface for a given struct without changing the struct definition.
+This allows for implementing an interface for a given struct without altering the struct's definition.
 */
 
 struct Point2
 {
-    x, y: f32
+    x, y: f32  // Represents the coordinates of a point in a 2D space
 }
 
 struct Point3
 {
-    x, y, z: f32
+    x, y, z: f32  // Represents the coordinates of a point in a 3D space
 }
 
 /**
@@ -39,18 +39,18 @@ impl IReset for Point2
     // You must add 'impl' to indicate that you want to implement a function of the interface.
     mtd impl set(val: f32)
     {
-        x = val
-        y = val + 1
+        x = val              // Set x to the given value
+        y = val + 1          // Set y to the value incremented by 1
     }
 
     // Don't forget that 'mtd' is just syntactic sugar. 'func' still works.
     func impl reset(self)
     {
-        self.x, self.y = 0
+        self.x, self.y = 0   // Reset x and y to 0
     }
 
     // Note that you can also declare 'normal' functions or methods in an 'impl' block.
-    mtd myOtherMethod() {}
+    mtd myOtherMethod() {}   // Example of an additional method
 }
 
 /**
@@ -61,14 +61,14 @@ impl IReset for Point3
 {
     mtd impl set(val: f32)
     {
-        x = val
-        y = val + 1
-        z = val + 2
+        x = val              // Set x to the given value
+        y = val + 1          // Set y to the value incremented by 1
+        z = val + 2          // Set z to the value incremented by 2
     }
 
     mtd impl reset()
     {
-        x, y, z = 0
+        x, y, z = 0          // Reset x, y, and z to 0
     }
 }
 
@@ -150,16 +150,15 @@ Just declare a body in the interface function to provide a default implementatio
 */
 interface ITest
 {
-    mtd isImplemented()->bool { return false; }
+    mtd isImplemented()->bool { return false; }  // Default implementation returns false
 }
 
 /**
-# Overriding Default Implementation
 Here we define a specific version of 'isImplemented' for `Point2`, and no specific implementation for `Point3`.
 */
 impl ITest for Point2
 {
-    mtd impl isImplemented()->bool { return true; }
+    mtd impl isImplemented()->bool { return true; }  // Override to return true for Point2
 }
 
 impl ITest for Point3
@@ -168,7 +167,6 @@ impl ITest for Point3
 }
 
 /**
-# Testing Default Implementation Behavior
 For `Point3`, `isImplemented()` will return `false` because this is the default implementation.
 */
 #test

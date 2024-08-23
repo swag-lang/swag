@@ -1,54 +1,64 @@
 struct MyStruct
 {
-    x:     s32 = 10
-    y:     s32 = 20
-    z:     s32 = 30
+    x:     s32 = 10  // Field 'x' initialized with default value 10
+    y:     s32 = 20  // Field 'y' initialized with default value 20
+    z:     s32 = 30  // Field 'z' initialized with default value 30
 }
 
 /**
-`opVisit` is a versatile macro used for iteration over elements in a struct, but it is not limited to fields. It can be used to visit any kind of data the struct holds, such as elements of a dynamic array, internal buffers, or complex object graphs.
+# Introduction to `opVisit`
 
-The `#[Swag.Macro]` attribute is mandatory for `opVisit`.
-It is also a generic function with two compile-time boolean parameters:
-* `ptr`: If `true`, visit elements by pointer (address).
-* `back`: If `true`, visit elements in reverse order (last to first).
+`opVisit` is a highly flexible macro used for iterating over the elements in a struct. 
+This macro is not confined to just the struct's fields; it can also be used to traverse 
+any data the struct contains, such as elements in dynamic arrays, internal buffers, or 
+complex object graphs.
+
+The `#[Swag.Macro]` attribute is mandatory when using `opVisit`. It defines the macro's 
+behavior, allowing it to be integrated seamlessly into the codebase.
+
+`opVisit` is a generic function that accepts two compile-time boolean parameters:
+
+- `ptr`: When set to `true`, elements are visited by pointer (address), enabling reference-based operations.
+- `back`: When set to `true`, elements are visited in reverse order (from last to first).
 */
 impl MyStruct
 {
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(self, stmt: code)
     {
-        // `ptr` and `back` provide flexibility for visiting by reference or in reverse order.
+        // The `ptr` and `back` parameters offer flexibility, allowing for reference-based 
+        // or reverse-order iterations.
+
         #if ptr:
-            #error "visiting by pointer is not supported in this example"
+            #error "Visiting by pointer is not supported in this example."
 
         #if back:
-            #error "reverse visiting is not supported in this example"
+            #error "Reverse visiting is not supported in this example."
 
-        // Example of visiting the fields of `MyStruct`. This is just one way to use `opVisit`.
+        // Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.
         loop idx in 3
         {
-            // `#macro` ensures the code is injected into the caller's scope.
+            // The `#macro` directive ensures that the code is injected into the caller's scope.
             #macro
             {
-                // `#alias0` is used for the current value being visited.
+                // `#alias0` is used to represent the current value being visited.
                 var #alias0: s32 = undefined
 
-                // Access the correct field based on the current `idx`.
+                // Access the appropriate field based on the current `idx`.
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up self.x
+                    #alias0 = #up self.x  // Accessing field 'x'
                 case 1:
-                    #alias0 = #up self.y
+                    #alias0 = #up self.y  // Accessing field 'y'
                 case 2:
-                    #alias0 = #up self.z
+                    #alias0 = #up self.z  // Accessing field 'z'
                 }
 
                 // `#alias1` holds the current index of the iteration.
                 var #alias1 = #index
 
-                // Insert the user-defined logic from the calling scope.
+                // Insert user-defined logic from the calling scope.
                 #mixin #up stmt
             }
         }
@@ -56,9 +66,11 @@ impl MyStruct
 }
 
 /**
-This is just one way to use `opVisit`, visiting the struct's fields. You can apply the same concept to visit more complex data, like elements in a dynamic array or other internal structures.
-*/
+# Iterating Over Struct Fields
 
+This example demonstrates one way to use `opVisit` for iterating over the fields of a struct.
+The same approach can be extended to visit more complex data structures.
+*/
 #test
 {
     var myStruct = MyStruct{}
@@ -86,9 +98,10 @@ This is just one way to use `opVisit`, visiting the struct's fields. You can app
 }
 
 /**
-You can also implement different versions of `opVisit` to handle other data. For example, if your struct contains dynamic arrays or buffers, you can iterate over those elements using the same macro structure.
+# Extending `opVisit`: Reverse Order Iteration
 
-Here, we'll demonstrate a variant that visits the fields in reverse order.
+You can also implement different versions of `opVisit` to handle other data structures. 
+For instance, you may want to visit the fields in reverse order.
 */
 impl MyStruct
 {
@@ -104,11 +117,11 @@ impl MyStruct
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up self.z
+                    #alias0 = #up self.z  // Accessing field 'z' in reverse order
                 case 1:
-                    #alias0 = #up self.y
+                    #alias0 = #up self.y  // Accessing field 'y' in reverse order
                 case 2:
-                    #alias0 = #up self.x
+                    #alias0 = #up self.x  // Accessing field 'x' in reverse order
                 }
 
                 var #alias1 = #index
@@ -119,7 +132,10 @@ impl MyStruct
 }
 
 /**
-The `opVisitReverse` variant allows us to visit the struct in reverse order.
+# Reverse Order Iteration
+
+The `opVisitReverse` variant allows us to visit the struct's fields in reverse order, 
+providing flexibility depending on the needs of your application.
 */
 #test
 {
@@ -146,17 +162,24 @@ The `opVisitReverse` variant allows us to visit the struct in reverse order.
 }
 
 /**
-Beyond struct fields, `opVisit` can be designed to visit elements in dynamic arrays, buffers, or other types of data. The flexibility of `opVisit` means it can adapt to whatever data structure the struct holds.
+# Visiting Elements in Dynamic Arrays
 
-For instance, if you had a struct with a slice:
+Beyond struct fields, `opVisit` can be designed to visit elements in dynamic arrays, buffers, 
+or other types of data. The flexibility of `opVisit` means it can adapt to whatever data 
+structure the struct holds.
+
+For example, consider a struct with a slice:
 */
 struct SliceStruct
 {
-    buffer: [] s32 = [1, 2, 3, 4, 5]
+    buffer: [] s32 = [1, 2, 3, 4, 5]  // A dynamic array (slice) initialized with values
 }
 
 /**
-You could define an `opVisit` that iterates over the elements of the `buffer` rather than the struct's fields.
+# Custom `opVisit` for Dynamic Arrays
+
+You could define an `opVisit` that iterates over the elements of the `buffer` rather than 
+the struct's fields.
 */
 impl SliceStruct
 {
@@ -180,6 +203,12 @@ impl SliceStruct
     }
 }
 
+/**
+# Iterating Over a Dynamic Array
+
+This example shows how to visit each element in a dynamic array (slice) and perform 
+operations such as summing the elements.
+*/
 #test
 {
     var arrStruct = SliceStruct{}
@@ -191,5 +220,5 @@ impl SliceStruct
         sum += v
     }
 
-    @assert(sum == 1 + 2 + 3 + 4 + 5)
+    @assert(sum == 1 + 2 + 3 + 4 + 5)  // Ensuring the sum of the elements is correct
 }
