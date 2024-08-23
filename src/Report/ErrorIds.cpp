@@ -150,7 +150,7 @@ void initErrors()
     SWAG_ERROR(Err0008, "ambiguous resolution                              $ cannot resolve [[%s]] because it is ambiguous                                                                                            $ ");
     SWAG_ERROR(Err0009, "ambiguous resolution                              $ cannot resolve the %s [[%s]] because it is ambiguous                                                                                     $ ");
     SWAG_ERROR(Err0010, "ambiguous resolution                              $ cannot resolve the generic %s [[%s]] because it is ambiguous                                                                             $ ");
-    SWAG_ERROR(Err0011, "ambiguous syntax                                  $ cannot determine if this is an initialization of [[%s]] or the start of a new block                                                      $ ");
+    SWAG_ERROR(Err0011, "ambiguous syntax                                  $ cannot determine if this is an initialization of [[%s]] or the beginning of a new block                                                  $ ");
     SWAG_ERROR(Err0012, "ambiguous syntax                                  $ cannot resolve ambiguous declaration within lambda parameters                                                                            $ ");
     SWAG_ERROR(Err0013, "bytecode stack overflow                           $ cannot exceed the stack size limit of [[%s]] set by [[--stack-size]]                                                                     $ ");
     SWAG_ERROR(Err0014, "capture size overflow                             $ cannot capture the total requested size of [[%u]] bytes because it exceeds the maximum authorized size of [[%u]]                         $ ");
@@ -953,13 +953,13 @@ void initErrors()
     SWAG_ERROR(Nte0036, "consider casting to the underlying [[any]] type");
     SWAG_ERROR(Nte0037, "consider casting with [[cast(%s)]]");
     SWAG_ERROR(Nte0038, "consider initializing the global variable with [[undefined]] instead of zero");
-    SWAG_ERROR(Nte0039, "consider moving the [[{]] to a new line to start a new block");
+    SWAG_ERROR(Nte0039, "if you want to start a new block, consider moving the [[{]] to the next line");
     SWAG_ERROR(Nte0040, "consider prefixing [[%s]] with [[const]] to declare a generic constant");
     SWAG_ERROR(Nte0041, "consider prefixing with [[#run]] to enforce a compile-time call");
     SWAG_ERROR(Nte0042, "consider removing [[var]] or replacing it with [[const]] if you intend to declare a generic value");
     SWAG_ERROR(Nte0043, "consider removing one [[using]]");
     SWAG_ERROR(Nte0044, "consider removing the %s or replacing it with the scope [[%s]]");
-    SWAG_ERROR(Nte0045, "consider removing the spaces between [[%s]] and the [[{]] to initialize the struct [[%s]]");
+    SWAG_ERROR(Nte0045, "if this is an initialization of [[%s]], consider removing the space between the name and the [[{]]");
     SWAG_ERROR(Nte0046, "consider renaming it to [[_%s]] if this is intentional");
     SWAG_ERROR(Nte0047, "consider replacing [[undefined]] with an explicit initialization value");
     SWAG_ERROR(Nte0048, "consider taking the address with [['&']] to create a reference");

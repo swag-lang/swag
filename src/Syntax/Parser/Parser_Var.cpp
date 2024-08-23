@@ -398,7 +398,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 if (typeExpr->identifier)
                 {
                     Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.cstr())};
-                    err.addNote(formNte(Nte0045, typeExpr->identifier->token.cstr(), typeExpr->identifier->token.cstr()));
+                    err.addNote(formNte(Nte0045, typeExpr->identifier->token.cstr()));
                     err.addNote(toNte(Nte0039));
                     return context->report(err);
                 }
