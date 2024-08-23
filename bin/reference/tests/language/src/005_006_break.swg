@@ -1,20 +1,22 @@
 /**
 # Introduction to `break` in Swag
-We have already seen that `break` is used to exit a `loop`, `visit`, `while`, `for`, and `switch`.
+The `break` statement is a powerful control structure in Swag, allowing you to exit from `loop`, `visit`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
 */
 #test
 {
     loop 10:
-        break                 // Exits the loop immediately
+        break                 // Immediately exits the loop, no further iterations occur
+
     for var i = 0; i < 10; i += 1:
-        break                 // Exits the loop immediately
+        break                 // Exits the loop instantly after the first iteration
+
     while false:
-        break                 // Although this line will never be reached, it demonstrates usage
+        break                 // Demonstrates usage, but this line is never reached due to the false condition
 }
 
 /**
 # Default Behavior of `break`
-By default, `break` will exit only the innermost loop or control structure.
+By default, the `break` statement exits only the innermost loop or control structure in which it resides. This ensures that nested loops or structures can be controlled independently.
 */
 #test
 {
@@ -23,61 +25,62 @@ By default, `break` will exit only the innermost loop or control structure.
     {
         loop 10
         {
-            break             // Exits the inner loop...
+            break             // Exits the inner loop only, allowing the outer loop to continue
         }
 
-        // ...and continues execution here in the outer loop
+        // The outer loop continues its execution here
         cpt += 1
     }
 
-    @assert(cpt == 10)        // The outer loop runs 10 times
+    @assert(cpt == 10)        // Verifies that the outer loop has run exactly 10 times
 }
 
 /**
 # Named Scopes with `break`
-You can **name a scope** using the `#scope` compiler keyword and then use `break` to exit directly to the end of that named scope.
+Swag allows you to define named scopes using the `#scope` keyword. The `break` statement can then be directed to exit from the named scope, offering a structured approach to control flow within complex nested loops or conditions.
 */
 #test
 {
     var cpt = 0
 
-    // Define a scope named 'BigScope'
+    // Defining a scope named 'BigScope'
     #scope BigScope
     {
         loop 10
         {
             cpt += 1
-            break BigScope    // Breaks out of the entire 'BigScope'
+            break BigScope    // Exits the entire 'BigScope' scope after incrementing `cpt`
         }
 
-        @assert(false)        // This assertion is never reached
+        @assert(false)        // This assertion is never reached due to the break statement above
     }
 
-    // Execution resumes here after breaking out of 'BigScope'
-    @assert(cpt == 1)         // Confirms that the loop inside 'BigScope' ran only once
+    // Execution resumes after 'BigScope'
+    @assert(cpt == 1)         // Confirms that the loop inside 'BigScope' executed only once
 }
 
 /**
 # Using `continue` with Named Scopes
-When used with a named scope, `continue` allows you to return to the beginning of the scope, effectively restarting the scope's execution.
+The `continue` statement can be used with a named scope to restart the execution from the beginning of the scope. This can be useful for iterating until a specific condition is met.
 */
 #test
 {
     var cpt = 0
+
     #scope Loop
     {
         cpt += 1
         if cpt == 5:
-            break            // Exits the 'Loop' scope when `cpt` reaches 5
-        continue             // Returns to the start of 'Loop'
+            break            // Exits the 'Loop' scope when `cpt` equals 5, ending the loop
+        continue             // Restarts the 'Loop' scope, incrementing `cpt` each time
     }
 
-    @assert(cpt == 5)        // Ensures the loop runs exactly 5 times
+    @assert(cpt == 5)        // Verifies that the loop runs exactly 5 times before exiting
 }
 
 /**
 # Unnamed Scopes for Flow Control
-It's not mandatory to name the scope, so this technique can be used as an alternative to a series of if/else statements, providing a clean and structured way to manage multiple conditions.
+Named scopes are optional. You can also use unnamed scopes to manage control flow, offering a structured alternative to traditional if/else statements. This can help simplify complex conditions.
 */
 #test
 {
@@ -87,26 +90,26 @@ It's not mandatory to name the scope, so this technique can be used as an altern
         if cpt == 1
         {
             @assert(cpt == 1)
-            break            // Exits the unnamed scope
+            break            // Exits the unnamed scope if `cpt` equals 1
         }
 
         if cpt == 2
         {
             @assert(cpt == 2)
-            break            // Exits the unnamed scope
+            break            // Exits the unnamed scope if `cpt` equals 2
         }
 
         if cpt == 3
         {
             @assert(cpt == 3)
-            break            // Exits the unnamed scope
+            break            // Exits the unnamed scope if `cpt` equals 3
         }
     }
 }
 
 /**
 # Using `break` with Simple Statements
-A scope can be followed by a simple statement rather than a block, allowing for flexible control over flow.
+A scope in Swag can also be followed by a simple statement rather than a block, providing additional flexibility in controlling the flow of execution.
 */
 #test
 {
@@ -116,9 +119,9 @@ A scope can be followed by a simple statement rather than a block, allowing for 
         loop 10
         {
             if #index == 5:
-                break Up      // Exits to the 'Up' scope
+                break Up      // Exits to the 'Up' scope when the inner loop index equals 5
         }
 
-        @assert(false)        // This assertion is never reached
+        @assert(false)        // This assertion is never reached due to the break statement above
     }
 }

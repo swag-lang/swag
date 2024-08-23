@@ -1,18 +1,18 @@
 /**
 # Introduction to `while` Loops
-`while` is a loop that continues to execute as long as the specified expression evaluates to `true`. The loop stops running when the expression becomes `false`.
+A `while` loop is a control flow statement that allows repeated execution of a block of code as long as the specified condition evaluates to `true`. Once the condition becomes `false`, the loop terminates.
 */
 #test
 {
     var i = 0
-    while i < 10:        // Loop runs until 'i' is no longer less than 10
-        i += 1
-    @assert(i == 10)     // Asserts that 'i' is 10 after the loop exits
+    while i < 10:                // Loop executes repeatedly until 'i' is no longer less than 10
+        i += 1                   // Increment 'i' by 1 on each iteration
+    @assert(i == 10)             // Verify that 'i' equals 10 after loop completion
 }
 
 /**
 # Breaking Out of a `while` Loop
-You can use `break` to exit a `while` loop prematurely. This is useful when you want to stop the loop based on a certain condition before the loop's natural termination.
+The `break` statement provides a way to exit a `while` loop before the loop’s condition becomes `false`. This is particularly useful when an early termination of the loop is needed based on a specific condition.
 */
 #test
 {
@@ -20,16 +20,16 @@ You can use `break` to exit a `while` loop prematurely. This is useful when you 
     while i < 10
     {
         if i == 5:
-            break        // Exit the loop when 'i' equals 5
-        i += 1
+            break                // Exit the loop immediately when 'i' reaches 5
+        i += 1                   // Increment 'i' by 1 on each iteration
     }
 
-    @assert(i == 5)       // Asserts that 'i' equals 5 after breaking out of the loop
+    @assert(i == 5)              // Confirm that 'i' equals 5 after breaking out of the loop
 }
 
 /**
 # Skipping Iterations with `continue`
-`continue` can be used to skip the rest of the current iteration and immediately proceed to the next iteration of the loop.
+The `continue` statement allows you to skip the current iteration and proceed directly to the next iteration of the loop. This is useful for ignoring specific conditions within the loop while continuing its execution.
 */
 #test
 {
@@ -37,18 +37,18 @@ You can use `break` to exit a `while` loop prematurely. This is useful when you 
     var i = 0
     while i < 10
     {
-        i += 1
+        i += 1                   // Increment 'i' by 1 at the start of each iteration
         if i % 2 == 0:
-            continue      // Skip the even numbers
-        sum += i          // Add only odd numbers to 'sum'
+            continue             // Skip adding 'i' to 'sum' if 'i' is an even number
+        sum += i                 // Add only odd numbers to 'sum'
     }
 
-    @assert(sum == 25)    // Asserts that the sum of odd numbers from 1 to 9 is 25
+    @assert(sum == 25)           // Ensure that the sum of odd numbers from 1 to 9 equals 25
 }
 
 /**
 # Nested `while` Loops
-`while` loops can be nested within each other. The `break` and `continue` statements only affect the innermost loop in which they are placed.
+A `while` loop can contain another `while` loop, forming a nested loop structure. In such cases, the `break` and `continue` statements apply only to the loop in which they are directly placed.
 */
 #test
 {
@@ -62,19 +62,19 @@ You can use `break` to exit a `while` loop prematurely. This is useful when you 
         while j < 3
         {
             if j == 2:
-                break      // Breaks out of the inner loop when 'j' equals 2
-            count += 1
-            j += 1
+                break            // Exit the inner loop when 'j' equals 2
+            count += 1           // Increment 'count' each time the inner loop completes an iteration
+            j += 1               // Increment 'j' by 1 on each iteration of the inner loop
         }
-        i += 1
+        i += 1                   // Increment 'i' by 1 on each iteration of the outer loop
     }
 
-    @assert(count == 6)    // Asserts that the inner loop ran 6 times (2 times for each of the 3 iterations of the outer loop)
+    @assert(count == 6)          // Confirm that 'count' equals 6, indicating the inner loop ran 6 times
 }
 
 /**
 # Using `while` with Complex Conditions
-The `while` loop condition can involve complex logical expressions, allowing for intricate control flow.
+The condition in a `while` loop can involve complex logical expressions, allowing for more sophisticated and controlled execution of the loop.
 */
 #test
 {
@@ -84,12 +84,12 @@ The `while` loop condition can involve complex logical expressions, allowing for
 
     while a < 100 and b < 200
     {
-        a += 10
-        b += 20
-        iterations += 1
+        a += 10                 // Increment 'a' by 10 on each iteration
+        b += 20                 // Increment 'b' by 20 on each iteration
+        iterations += 1         // Increment 'iterations' to track the number of loop executions
     }
 
-    @assert(a == 100)         // Asserts that 'a' reached 100
-    @assert(b == 201)         // Asserts that 'b' reached 201
-    @assert(iterations == 10) // Asserts that the loop ran 5 times
+    @assert(a == 100)           // Ensure that 'a' reaches 100 upon loop completion
+    @assert(b == 201)           // Ensure that 'b' reaches 201 upon loop completion
+    @assert(iterations == 10)   // Confirm that the loop executed 10 times
 }

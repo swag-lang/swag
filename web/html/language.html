@@ -2863,371 +2863,366 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <h2 id="_005_000_control_flow_swg">Control flow</h2>
 <h3 id="_005_000_control_flow_swg__005_001_if_swg">If</h3><h4 id="_005_000_control_flow_swg__005_001_if_swg">Basic Usage of <span class="code-inline">if</span> </h4>
-<p>A basic test with an <span class="code-inline">if</span>. </p>
-<p>In Swag, curly braces are optional for control structures like <span class="code-inline">if</span>, but if you omit them, you must use a colon <span class="code-inline">:</span>. This rule also applies to other control structures such as <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">loop</span>. </p>
-<p>Unlike C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. </p>
+<p>A basic test with an <span class="code-inline">if</span> statement. </p>
+<p>In Swag, curly braces <span class="code-inline">{}</span> are optional for control structures like <span class="code-inline">if</span>. However, if you choose to omit them, you must use a colon <span class="code-inline">:</span>. This syntax rule also applies to other control structures such as <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">loop</span>. </p>
+<p>Unlike in C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. Parentheses can be used for clarity or grouping, but they are not mandatory. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
-    <span class="SLgc">if</span> a == <span class="SNum">1</span>:                    <span class="SCmt">// No curly braces, so use ':'</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute because the condition is false</span>
+    <span class="SLgc">if</span> a == <span class="SNum">1</span>:                    <span class="SCmt">// No curly braces, so a colon ':' is required after the condition</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute since 'a' is not equal to 1</span>
 
-    <span class="SLgc">if</span> (a == <span class="SNum">1</span>):                  <span class="SCmt">// Parentheses can still be used if desired</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">if</span> (a == <span class="SNum">1</span>):                  <span class="SCmt">// Parentheses can be used for grouping or clarity, but are optional</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will also not execute</span>
 
-    <span class="SLgc">if</span> a == <span class="SNum">0</span>                     <span class="SCmt">// Curly braces can be used, no colon needed</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span>                     <span class="SCmt">// Curly braces are used, no colon is needed here</span>
     {
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute because the condition is true</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute because 'a' equals 0</span>
     }
 
-    <span class="SCmt">// 'else' can be used as in most languages.</span>
-    <span class="SCmt">// If there are no curly braces, the colon ':' is mandatory.</span>
+    <span class="SCmt">// The 'else' keyword can be used as in most programming languages.</span>
+    <span class="SCmt">// When not using curly braces, the colon ':' after the condition is mandatory.</span>
     <span class="SLgc">if</span> a == <span class="SNum">0</span>:
-        a += <span class="SNum">1</span>                    <span class="SCmt">// This will execute, making 'a' equal to 1</span>
+        a += <span class="SNum">1</span>                    <span class="SCmt">// This block will execute, setting 'a' to 1</span>
     <span class="SLgc">else</span>:
-        a += <span class="SNum">2</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
+        a += <span class="SNum">2</span>                    <span class="SCmt">// This block is skipped because the 'if' condition is true</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)               <span class="SCmt">// Asserts that 'a' is now 1</span>
 
-    <span class="SCmt">// 'elif' is used for else-if chains, similar to 'else if'.</span>
+    <span class="SCmt">// The 'elif' keyword is used for else-if chains, functioning similarly to 'else if' in other languages.</span>
     <span class="SLgc">if</span> a == <span class="SNum">1</span>:
-        a += <span class="SNum">1</span>                    <span class="SCmt">// This will execute, making 'a' equal to 2</span>
+        a += <span class="SNum">1</span>                    <span class="SCmt">// This block will execute, making 'a' equal to 2</span>
     <span class="SLgc">else</span>:
-        <span class="SLgc">if</span> a == <span class="SNum">2</span>:
+        <span class="SLgc">if</span> a == <span class="SNum">2</span>:                <span class="SCmt">// This nested 'if' will not execute</span>
             <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-        <span class="SLgc">elif</span> a == <span class="SNum">3</span>:
+        <span class="SLgc">elif</span> a == <span class="SNum">3</span>:              <span class="SCmt">// This condition is also false</span>
             <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-        <span class="SLgc">elif</span> a == <span class="SNum">4</span>:
+        <span class="SLgc">elif</span> a == <span class="SNum">4</span>:              <span class="SCmt">// This condition is false as well</span>
             <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
-    <span class="SCmt">// Logical expressions with 'and' and 'or' work as expected</span>
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span>:         <span class="SCmt">// This condition is false</span>
+    <span class="SCmt">// Logical expressions using 'and' and 'or' work as expected</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span>:         <span class="SCmt">// This condition is false because 'a' cannot be both 0 and 1</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>:          <span class="SCmt">// This condition is false because 'a' is 2</span>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>:          <span class="SCmt">// This condition is true (a is 1)</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+    <span class="SLgc">if</span> a == <span class="SNum">1</span> <span class="SLgc">or</span> a == <span class="SNum">2</span>:          <span class="SCmt">// This condition is true because 'a' is 2</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_001_if_swg">Variable Declaration in <span class="code-inline">if</span> </h4>
-<p>In an <span class="code-inline">if</span> expression, you can simultaneously declare and test a variable. The use of <span class="code-inline">var</span>, <span class="code-inline">let</span>, or <span class="code-inline">const</span> is mandatory in this context. </p>
-<p>The <span class="code-inline">if</span> statement will implicitly convert the declared variable to a boolean, evaluating it as <span class="code-inline">true</span> if it is non-zero. This means the <span class="code-inline">if</span> block will execute only if the declared variable is not zero. </p>
+<p>You can declare and test a variable in an <span class="code-inline">if</span> statement simultaneously. In this context, the use of <span class="code-inline">var</span>, <span class="code-inline">let</span>, or <span class="code-inline">const</span> is mandatory. </p>
+<p>The condition in the <span class="code-inline">if</span> statement will automatically convert the declared variable to a boolean. If the variable is non-zero, the condition evaluates to <span class="code-inline">true</span>, and the <span class="code-inline">if</span> block will execute. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Declare and test 'a' in the same expression.</span>
-    <span class="SCmt">// Since 'a' is 0, the if block will not execute.</span>
-    <span class="SCmt">// 'a' is only visible within this 'if' block.</span>
+    <span class="SCmt">// Declare and test 'a' within the 'if' statement. Since 'a' is 0, the 'if' block will not execute.</span>
+    <span class="SCmt">// The variable 'a' is only scoped within this 'if' block.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">0</span>
     {
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
     }
 
     <span class="SCmt">// You can redeclare 'a' as a constant in another block.</span>
-    <span class="SCmt">// Since 'a' is 1, the if block will execute.</span>
+    <span class="SCmt">// Since 'a' is 1, the 'if' block will execute.</span>
     <span class="SLgc">if</span> <span class="SKwd">const</span> a = <span class="SNum">1</span>:
-        <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
+        <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)           <span class="SCmt">// This block will execute and assert that 'a' is 1</span>
     <span class="SLgc">else</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
 
-    <span class="SCmt">// Another example with 'let'</span>
+    <span class="SCmt">// Another example using 'let'</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">1</span>:
-        <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
+        <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)           <span class="SCmt">// This block will execute, confirming that 'a' is 1</span>
     <span class="SLgc">else</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_001_if_swg">Adding Conditions with <span class="code-inline">where</span> </h4>
-<p>When the <span class="code-inline">if</span> has a variable declaration, you can add an additional condition with a <span class="code-inline">where</span> clause. This clause is evaluated only if the initial test passes. </p>
+<p>When an <span class="code-inline">if</span> statement includes a variable declaration, you can add an additional condition using a <span class="code-inline">where</span> clause. The <span class="code-inline">where</span> clause is evaluated only if the initial test passes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>
     <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="STpe">string</span>   =&gt; <span class="SKwd">null</span>
 
-    <span class="SCmt">// The 'where' clause is checked only if 'str' is not null.</span>
+    <span class="SCmt">// The 'where' clause is only evaluated if 'str' is not null.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute since 'str' starts with 's'</span>
     <span class="SLgc">else</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
 
-    <span class="SCmt">// In this case, the initial test fails because 'str' is null,</span>
+    <span class="SCmt">// In this example, the initial test fails because 'str' is null,</span>
     <span class="SCmt">// so the 'where' clause is not evaluated.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retNothing</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">`s`</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)            <span class="SCmt">// This block will not execute</span>
     <span class="SLgc">else</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute since the initial test fails</span>
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_002_loop_swg">Loop</h3><h4 id="_005_000_control_flow_swg__005_002_loop_swg">Introduction to <span class="code-inline">loop</span> </h4>
-<p><span class="code-inline">loop</span> is used to iterate a given number of times. It's a versatile construct in Swag, allowing for various iteration patterns. </p>
+<p>The <span class="code-inline">loop</span> construct in Swag is a powerful tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the <span class="code-inline">loop</span> construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the <span class="code-inline">where</span> clause. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Basic Usage </h4>
-<p>The loop expression is evaluated <b>once</b> and must be a <b>positive value</b>. </p>
+<p>The <span class="code-inline">loop</span> expression dictates the number of iterations and is evaluated only <b>once</b> before the loop begins. This value must be a <b>positive integer</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>:                        <span class="SCmt">// Loops 10 times</span>
-        cpt += <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
+    <span class="SLgc">loop</span> <span class="SNum">10</span>:                         <span class="SCmt">// Executes the loop 10 times</span>
+        cpt += <span class="SNum">1</span>                     <span class="SCmt">// Increment the counter on each iteration</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)               <span class="SCmt">// Assert that the loop executed exactly 10 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Using <span class="code-inline">#index</span> </h4>
-<p>The compiler keyword <span class="code-inline">#index</span> returns the current index of the loop, starting at 0. </p>
+<p>Within a loop, the compiler automatically provides the <span class="code-inline">#index</span> keyword, which holds the current iteration index, starting from 0. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
-    <span class="SLgc">loop</span> <span class="SNum">5</span>
+    <span class="SLgc">loop</span> <span class="SNum">5</span>                            <span class="SCmt">// Loop 5 times</span>
     {
-        cpt += <span class="SItr">#index</span>
+        cpt += <span class="SItr">#index</span>                 <span class="SCmt">// Add the current index value to 'cpt' in each iteration</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Assert that 'cpt' equals the sum of the indices</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Naming the Loop Index </h4>
-<p>You can name the loop index if you want. </p>
+<p>Assigning a name to the loop index can improve code readability and clarify the loop's intent. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt  = <span class="SNum">0</span>
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>
 
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                     <span class="SCmt">// index is named 'i'</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                       <span class="SCmt">// The loop index is named 'i'</span>
     {
-        cpt += i
-        cpt1 += <span class="SItr">#index</span>              <span class="SCmt">// #index is still available, even when named</span>
+        cpt += i                      <span class="SCmt">// Use the named index 'i'</span>
+        cpt1 += <span class="SItr">#index</span>                <span class="SCmt">// '#index' is still accessible and returns the same value as 'i'</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
-    <span class="SItr">@assert</span>(cpt1 == cpt)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Confirm that 'cpt' equals the sum of indices</span>
+    <span class="SItr">@assert</span>(cpt1 == cpt)              <span class="SCmt">// Confirm that 'cpt1' and 'cpt' are equal</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Looping Over Arrays and Slices </h4>
-<p><span class="code-inline">loop</span> can be used on any type that supports the <span class="code-inline">@countof</span> intrinsic, such as slices, arrays, and strings. </p>
+<p>The <span class="code-inline">loop</span> construct is versatile and can iterate over any collection type that supports the <span class="code-inline">@countof</span> intrinsic, such as arrays, slices, and strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>
+    <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]        <span class="SCmt">// Define an array with 4 elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>        <span class="SCmt">// Verify the array has 4 elements</span>
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> arr:                       <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
-        cpt += arr[<span class="SItr">#index</span>]
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
+    <span class="SLgc">loop</span> arr:                         <span class="SCmt">// Loop over the array's elements</span>
+        cpt += arr[<span class="SItr">#index</span>]            <span class="SCmt">// Add the current element's value to 'cpt'</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>) <span class="SCmt">// Verify that 'cpt' equals the sum of the array elements</span>
 }</span></div>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> On a string, it will loop over each byte, <b>not</b> runes (if a rune is encoded in more than one byte). To iterate over runes, use the Std.Core module. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> When looping over a string, the loop will iterate over each byte, <b>not</b> over runes. For handling runes (characters that may be encoded in multiple bytes), consider using the Std.Core module. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SStr">"⻘"</span>:
-        cpt += <span class="SNum">1</span>
+    <span class="SLgc">loop</span> <span class="SStr">"⻘"</span>:                        <span class="SCmt">// Loop over each byte in the string "⻘"</span>
+        cpt += <span class="SNum">1</span>                     <span class="SCmt">// Increment the counter for each byte</span>
 
-    <span class="SCmt">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span>
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)                <span class="SCmt">// Assert that the character '⻘' consists of 3 bytes</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Reverse Looping </h4>
-<p>You can loop in reverse order by adding the <span class="code-inline">back</span> modifier after the <span class="code-inline">loop</span>. </p>
+<p>To iterate in reverse order, append the <span class="code-inline">#back</span> modifier to the <span class="code-inline">loop</span> statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// Index will be 2, 1, then 0.</span>
+    <span class="SCmt">// Loop in reverse order, starting from index 2 down to 0</span>
     <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)     <span class="SCmt">// First iteration, index should be 2</span>
         <span class="SLgc">elif</span> cpt == <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)     <span class="SCmt">// Second iteration, index should be 1</span>
         <span class="SLgc">elif</span> cpt == <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)     <span class="SCmt">// Third iteration, index should be 0</span>
 
         cpt += <span class="SNum">1</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Break and Continue </h4>
-<p><span class="code-inline">break</span> and <span class="code-inline">continue</span> can be used inside a loop. </p>
+<p>The <span class="code-inline">break</span> and <span class="code-inline">continue</span> keywords provide control over the loop's execution flow. <span class="code-inline">break</span> exits the loop early, while <span class="code-inline">continue</span> skips the remainder of the current iteration and proceeds with the next. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Exiting Early with <span class="code-inline">break</span> </h4>
-<p>Exit a loop early with <span class="code-inline">break</span>. </p>
+<p>The <span class="code-inline">break</span> keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>
+    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                     <span class="SCmt">// Loop 10 times with index named 'x'</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
-            <span class="SLgc">break</span>
+            <span class="SLgc">break</span>                    <span class="SCmt">// Exit the loop when 'x' equals 5</span>
         cpt += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)                <span class="SCmt">// Confirm that the loop executed 5 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Skipping Iterations with <span class="code-inline">continue</span> </h4>
-<p>Use <span class="code-inline">continue</span> to skip the remainder of the loop body and return to the loop evaluation. </p>
+<p>The <span class="code-inline">continue</span> keyword skips the rest of the current loop iteration and jumps to the next, which is useful when certain conditions should bypass processing. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>
+    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                     <span class="SCmt">// Loop 10 times with index named 'x'</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
-            <span class="SLgc">continue</span>              <span class="SCmt">// Skip iteration when x is 5</span>
+            <span class="SLgc">continue</span>                 <span class="SCmt">// Skip the iteration when 'x' equals 5</span>
         cpt += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)                <span class="SCmt">// Confirm that the loop executed 9 times, skipping the 5th iteration</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Ranges </h4>
-<p><span class="code-inline">loop</span> can also iterate over a <b>range</b> of signed values. </p>
+<p>The <span class="code-inline">loop</span> construct supports iteration over a <b>range</b> of signed values, enabling flexible iteration over specified intervals. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Looping Over a Range with <span class="code-inline">to</span> </h4>
-<p>Use <span class="code-inline">to</span> to loop from a given value <i>to</i> another value. The first value must be lower than or equal to the upper bound. </p>
+<p>The <span class="code-inline">to</span> keyword defines a loop that iterates from one value to another, inclusive. The start value must be less than or equal to the end value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
     <span class="SKwd">var</span> sum   = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>              <span class="SCmt">// loop from -1 to 1, inclusive</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>                <span class="SCmt">// Loop from -1 to 1, inclusive</span>
     {
-        count += <span class="SNum">1</span>
-        sum += i
+        count += <span class="SNum">1</span>                   <span class="SCmt">// Count the number of iterations</span>
+        sum += i                     <span class="SCmt">// Sum the current index value</span>
     }
 
-    <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>)
-    <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>)                <span class="SCmt">// Verify that the sum is 0 (-1 + 0 + 1)</span>
+    <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)              <span class="SCmt">// Confirm that the loop executed 3 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Excluding the Last Value with <span class="code-inline">until</span> </h4>
-<p>Exclude the last value with <span class="code-inline">until</span> instead of <span class="code-inline">to</span>. </p>
+<p>The <span class="code-inline">until</span> keyword enables iteration up to, but not including, the end value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Loop from 1 to 2, excluding 3</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>
+    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>              <span class="SCmt">// Loop from 1 up to, but excluding, 3</span>
     {
-        cpt += i
+        cpt += i                     <span class="SCmt">// Add the current index value to 'cpt'</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span> + <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span> + <span class="SNum">2</span>)            <span class="SCmt">// Verify that 'cpt' equals the sum of 1 and 2</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Reverse Range Looping </h4>
-<p>With a range, you can also loop in reverse order by adding the <span class="code-inline">back</span> modifier. </p>
+<p>When using ranges, you can iterate in reverse order by adding the <span class="code-inline">#back</span> modifier after the loop statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Loop from 5 to 0</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>
+    <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>                <span class="SCmt">// Loop from 5 down to 0, inclusive</span>
     {
     }
 
-    <span class="SCmt">// Loop from 1 to -1</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>
+    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>               <span class="SCmt">// Loop from 1 down to -1, inclusive</span>
     {
     }
 
-    <span class="SCmt">// Loop from 1 to -2, excluding the upper limit.</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>
+    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>            <span class="SCmt">// Loop from 1 down to -2, excluding 2</span>
     {
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Infinite Loop </h4>
-<p>A loop without an expression but with a block is infinite, equivalent to <span class="code-inline">while true {}</span>. </p>
+<p>A <span class="code-inline">loop</span> without an expression but with a block of code creates an infinite loop, functionally equivalent to <span class="code-inline">while true {}</span>. Infinite loops are often controlled with <span class="code-inline">break</span> statements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">loop</span>
     {
-        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:            <span class="SCmt">// #index is still valid, but cannot be renamed</span>
+        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:              <span class="SCmt">// Use `#index` to break the loop after 4 iterations</span>
             <span class="SLgc">break</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Using <span class="code-inline">where</span> Clause </h4>
-<p>The <span class="code-inline">where</span> clause allows you to filter loop iterations based on a condition. </p>
+<p>The <span class="code-inline">where</span> clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Basic <span class="code-inline">where</span> Clause </h4>
-<p>The <span class="code-inline">where</span> clause can be added directly after the <span class="code-inline">loop</span> statement. This clause applies a condition to the loop's index or value, and only those that meet the condition will be processed. </p>
+<p>The <span class="code-inline">where</span> clause is appended directly after the <span class="code-inline">loop</span> statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
-    <span class="SCmt">// The loop will only visit 'even' indexes from 0 to 9.</span>
+    <span class="SCmt">// Loop over the range from 0 to 9, but only process even indices.</span>
     <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
-        result += i
+        result += i                  <span class="SCmt">// Sum only even indices</span>
     }
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>)  <span class="SCmt">// Result is the sum of even numbers within the range</span>
+    <span class="SItr">@assert</span>(result == <span class="SNum">0</span> + <span class="SNum">2</span> + <span class="SNum">4</span> + <span class="SNum">6</span> + <span class="SNum">8</span>) <span class="SCmt">// Verify that 'result' equals the sum of even indices</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg"><span class="code-inline">where</span> with Arrays </h4>
-<p>When looping over arrays, the <span class="code-inline">where</span> clause can filter elements based on their value or index. </p>
+<p>When looping over arrays, the <span class="code-inline">where</span> clause can filter elements based on their value or index, enabling targeted iteration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">21</span>, <span class="SNum">30</span>, <span class="SNum">41</span>, <span class="SNum">50</span>]
     <span class="SKwd">var</span> sumOfEvens = <span class="SNum">0</span>
 
-    <span class="SCmt">// This loop sums up only the even numbers in the array.</span>
+    <span class="SCmt">// Loop over the array, summing only the even numbers.</span>
     <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
-        sumOfEvens += arr[i]
+        sumOfEvens += arr[i]          <span class="SCmt">// Add the even element values to 'sumOfEvens'</span>
     }
 
-    <span class="SItr">@assert</span>(sumOfEvens == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">50</span>)  <span class="SCmt">// Only the even numbers (10, 30, 50) are summed</span>
+    <span class="SItr">@assert</span>(sumOfEvens == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">50</span>) <span class="SCmt">// Verify that 'sumOfEvens' equals the sum of even numbers</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Complex Conditions with <span class="code-inline">where</span> </h4>
-<p>You can use the <span class="code-inline">where</span> clause to create complex filtering conditions. For example, you can combine multiple logical expressions to refine which elements the loop should process. </p>
+<p>The <span class="code-inline">where</span> clause supports combining multiple logical expressions, allowing for complex filtering conditions directly within the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">15</span>, <span class="SNum">20</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">35</span>]
     <span class="SKwd">var</span> filteredSum = <span class="SNum">0</span>
 
-    <span class="SCmt">// Sum only even numbers greater than 15.</span>
+    <span class="SCmt">// Loop over the array, summing only even numbers greater than 15.</span>
     <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
     {
-        filteredSum += arr[i]
+        filteredSum += arr[i]         <span class="SCmt">// Add the element values that meet the condition</span>
     }
 
-    <span class="SItr">@assert</span>(filteredSum == <span class="SNum">20</span> + <span class="SNum">30</span>)  <span class="SCmt">// Only 20 and 30 meet the condition</span>
+    <span class="SItr">@assert</span>(filteredSum == <span class="SNum">20</span> + <span class="SNum">30</span>)   <span class="SCmt">// Verify that 'filteredSum' equals the sum of 20 and 30</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg"><span class="code-inline">where</span> with Ranges </h4>
-<p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, allowing for precise control over which range values are included in the loop. </p>
+<p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, providing precise control over which range values are processed in the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> sumOfPositiveEvens = <span class="SNum">0</span>
 
-    <span class="SCmt">// Loop over the range from -5 to 5, but only include positive even numbers.</span>
+    <span class="SCmt">// Loop over the range from -5 to 5, but process only positive even numbers.</span>
     <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
-        sumOfPositiveEvens += i
+        sumOfPositiveEvens += i       <span class="SCmt">// Add the positive even values to 'sumOfPositiveEvens'</span>
     }
 
-    <span class="SItr">@assert</span>(sumOfPositiveEvens == <span class="SNum">2</span> + <span class="SNum">4</span>)  <span class="SCmt">// Only positive even numbers (2, 4) are summed</span>
+    <span class="SItr">@assert</span>(sumOfPositiveEvens == <span class="SNum">2</span> + <span class="SNum">4</span>) <span class="SCmt">// Verify that 'sumOfPositiveEvens' equals the sum of 2 and 4</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Combining <span class="code-inline">back</span> and <span class="code-inline">where</span> </h4>
-<p>You can combine the <span class="code-inline">back</span> modifier with the <span class="code-inline">where</span> clause to filter values while iterating in reverse. </p>
+<p>You can combine the <span class="code-inline">#back</span> modifier with the <span class="code-inline">where</span> clause to filter values while iterating in reverse order. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>, <span class="SNum">50</span>]
     <span class="SKwd">var</span> reversedSum = <span class="SNum">0</span>
 
-    <span class="SCmt">// Loop through the array in reverse, summing only the even values.</span>
+    <span class="SCmt">// Loop through the array in reverse order, summing only even values.</span>
     <span class="SLgc">loop</span> <span class="SKwd">#back</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
-        reversedSum += arr[i]
+        reversedSum += arr[i]         <span class="SCmt">// Add the even values to 'reversedSum'</span>
     }
 
-    <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>)  <span class="SCmt">// Sums all even values in reverse order</span>
+    <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>) <span class="SCmt">// Verify the sum of even values in reverse</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Complex Logical Expressions with <span class="code-inline">where</span> </h4>
-<p>The <span class="code-inline">where</span> clause supports complex logical expressions, enabling intricate filtering criteria directly within the loop. </p>
+<p>The <span class="code-inline">where</span> clause in Swag allows for complex logical expressions, enabling intricate filtering criteria directly within the loop construct. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">45</span>, <span class="SNum">50</span>, <span class="SNum">65</span>]
     <span class="SKwd">var</span> complexSum = <span class="SNum">0</span>
 
-    <span class="SCmt">// Sum elements that are either even or greater than 40.</span>
+    <span class="SCmt">// Loop over the array, summing elements that are either even or greater than 40.</span>
     <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
     {
-        complexSum += arr[i]
+        complexSum += arr[i]          <span class="SCmt">// Add the values that meet the complex condition to 'complexSum'</span>
     }
 
-    <span class="SItr">@assert</span>(complexSum == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">45</span> + <span class="SNum">50</span> + <span class="SNum">65</span>)  <span class="SCmt">// Values matching the complex condition are summed</span>
+    <span class="SItr">@assert</span>(complexSum == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">45</span> + <span class="SNum">50</span> + <span class="SNum">65</span>) <span class="SCmt">// Verify that 'complexSum' equals the sum of matching values</span>
 }</span></div>
-<h4 id="_005_000_control_flow_swg__005_002_loop_swg">Conclusion </h4>
-<p>The <span class="code-inline">where</span> clause is a powerful feature in Swag that enhances the flexibility of loops by allowing you to add conditional logic directly within the loop construct. This allows for cleaner, more readable code by avoiding the need for additional <span class="code-inline">if</span> statements inside the loop body. </p>
 
 <h3 id="_005_000_control_flow_swg__005_003_for_swg">For</h3><h4 id="_005_000_control_flow_swg__005_003_for_swg">Introduction to <span class="code-inline">for</span> Loops </h4>
-<p><span class="code-inline">for</span> loops in Swag follow the traditional structure seen in C/C++: a <i>start statement</i>, a <i>test expression</i>, and an <i>ending statement</i>. This structure provides a versatile way to iterate over a range of values with fine control over the loop's behavior. </p>
+<p>In Swag, the <span class="code-inline">for</span> loop offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a <i>start statement</i>, a <i>test expression</i>, and an <i>ending statement</i>. This provides fine-grained control over the loop's execution, making it a powerful tool for various iteration scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SCmt">// Standard 'for' loop with initialization, condition, and increment.</span>
-    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>;:
+    
+    <span class="SCmt">// A standard 'for' loop with initialization, condition, and increment.</span>
+    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>:
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 
-    <span class="SCmt">// Semicolons ';' can be replaced by newlines for cleaner syntax.</span>
+    <span class="SCmt">// Alternative syntax: Semicolons ';' can be replaced by newlines for cleaner, more readable code.</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>
         i &lt; <span class="SNum">10</span>
         i += <span class="SNum">1</span>
@@ -3236,7 +3231,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
     <span class="SItr">@assert</span>(cpt == <span class="SNum">20</span>)
 
-    <span class="SCmt">// Instead of a single expression, you can use a statement block for the initialization or increment.</span>
+    <span class="SCmt">// Using statement blocks for initialization or increment provides additional flexibility.</span>
     <span class="SLgc">for</span> { <span class="SKwd">var</span> i = <span class="SNum">0</span>; cpt = <span class="SNum">0</span>; }
         i &lt; <span class="SNum">10</span>
         i += <span class="SNum">1</span>
@@ -3254,11 +3249,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Accessing Loop Index with <span class="code-inline">#index</span> </h4>
-<p>Like <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, and <span class="code-inline">while</span>, the <span class="code-inline">for</span> loop gives you access to <span class="code-inline">#index</span>, which represents the <b>current loop index</b>. This can be useful when you need to keep track of the iteration count separately from the loop variable. </p>
+<p>Similar to other looping constructs like <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, and <span class="code-inline">while</span>, the <span class="code-inline">for</span> loop in Swag provides access to the <span class="code-inline">#index</span> keyword. This keyword represents the <b>current loop index</b> and is particularly useful when you need to keep track of the iteration count separately from the loop variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
-    <span class="SCmt">// Use of `#index` to accumulate the loop indices.</span>
+    
+    <span class="SCmt">// Using `#index` to accumulate the loop indices.</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>:
         cpt += <span class="SItr">#index</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
@@ -3269,16 +3265,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt1 == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Using <span class="code-inline">break</span> and <span class="code-inline">continue</span> in <span class="code-inline">for</span> Loops </h4>
-<p>As with other loops, you can use <span class="code-inline">break</span> to exit a <span class="code-inline">for</span> loop prematurely and <span class="code-inline">continue</span> to skip the rest of the current iteration and move on to the next iteration. </p>
+<p>In Swag, <span class="code-inline">break</span> and <span class="code-inline">continue</span> work within <span class="code-inline">for</span> loops just as they do in other loop structures. Use <span class="code-inline">break</span> to exit the loop prematurely, effectively terminating the loop when a specific condition is met. The <span class="code-inline">continue</span> statement, on the other hand, skips the remainder of the current loop iteration and jumps to the next iteration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
+    
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>
     {
         <span class="SLgc">if</span> i == <span class="SNum">5</span>:
             <span class="SLgc">break</span>  <span class="SCmt">// Exit the loop when 'i' equals 5</span>
         sum += i
     }
+    
     <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)  <span class="SCmt">// Sum is 10</span>
 
     sum = <span class="SNum">0</span>
@@ -3288,10 +3286,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">continue</span>  <span class="SCmt">// Skip even numbers</span>
         sum += i
     }
+
     <span class="SItr">@assert</span>(sum == <span class="SNum">1</span>+<span class="SNum">3</span>+<span class="SNum">5</span>+<span class="SNum">7</span>+<span class="SNum">9</span>)  <span class="SCmt">// Sum is 25</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Nested <span class="code-inline">for</span> Loops </h4>
-<p><span class="code-inline">for</span> loops can be nested, allowing for more complex iteration patterns. The <span class="code-inline">#index</span> within a nested loop corresponds to the innermost loop. </p>
+<p>Swag supports nested <span class="code-inline">for</span> loops, which are useful for more complex iteration patterns. In nested loops, the <span class="code-inline">#index</span> keyword refers to the current index of the innermost loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">u64</span>
@@ -3305,10 +3304,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             result += <span class="SItr">#index</span>  <span class="SCmt">// Adds the index of the inner loop</span>
         }
     }
+
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> * <span class="SNum">5</span>)  <span class="SCmt">// Each inner loop runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Iterating Over Arrays with <span class="code-inline">for</span> </h4>
-<p>The <span class="code-inline">for</span> loop can also be used to iterate over elements of an array or other iterable collections. </p>
+<p>The <span class="code-inline">for</span> loop can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]
@@ -3318,50 +3318,51 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         sum += array[i]
     }
+
     <span class="SItr">@assert</span>(sum == <span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>+<span class="SNum">5</span>)  <span class="SCmt">// Sum is 15</span>
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_004_while_swg">While</h3><h4 id="_005_000_control_flow_swg__005_004_while_swg">Introduction to <span class="code-inline">while</span> Loops </h4>
-<p><span class="code-inline">while</span> is a loop that continues to execute as long as the specified expression evaluates to <span class="code-inline">true</span>. The loop stops running when the expression becomes <span class="code-inline">false</span>. </p>
+<p>A <span class="code-inline">while</span> loop is a control flow statement that allows repeated execution of a block of code as long as the specified condition evaluates to <span class="code-inline">true</span>. Once the condition becomes <span class="code-inline">false</span>, the loop terminates. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
-    <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>:        <span class="SCmt">// Loop runs until 'i' is no longer less than 10</span>
-        i += <span class="SNum">1</span>
-    <span class="SItr">@assert</span>(i == <span class="SNum">10</span>)     <span class="SCmt">// Asserts that 'i' is 10 after the loop exits</span>
+    <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>:                <span class="SCmt">// Loop executes repeatedly until 'i' is no longer less than 10</span>
+        i += <span class="SNum">1</span>                   <span class="SCmt">// Increment 'i' by 1 on each iteration</span>
+    <span class="SItr">@assert</span>(i == <span class="SNum">10</span>)             <span class="SCmt">// Verify that 'i' equals 10 after loop completion</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_004_while_swg">Breaking Out of a <span class="code-inline">while</span> Loop </h4>
-<p>You can use <span class="code-inline">break</span> to exit a <span class="code-inline">while</span> loop prematurely. This is useful when you want to stop the loop based on a certain condition before the loop's natural termination. </p>
+<p>The <span class="code-inline">break</span> statement provides a way to exit a <span class="code-inline">while</span> loop before the loop’s condition becomes <span class="code-inline">false</span>. This is particularly useful when an early termination of the loop is needed based on a specific condition. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
     <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>
     {
         <span class="SLgc">if</span> i == <span class="SNum">5</span>:
-            <span class="SLgc">break</span>        <span class="SCmt">// Exit the loop when 'i' equals 5</span>
-        i += <span class="SNum">1</span>
+            <span class="SLgc">break</span>                <span class="SCmt">// Exit the loop immediately when 'i' reaches 5</span>
+        i += <span class="SNum">1</span>                   <span class="SCmt">// Increment 'i' by 1 on each iteration</span>
     }
 
-    <span class="SItr">@assert</span>(i == <span class="SNum">5</span>)       <span class="SCmt">// Asserts that 'i' equals 5 after breaking out of the loop</span>
+    <span class="SItr">@assert</span>(i == <span class="SNum">5</span>)              <span class="SCmt">// Confirm that 'i' equals 5 after breaking out of the loop</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_004_while_swg">Skipping Iterations with <span class="code-inline">continue</span> </h4>
-<p><span class="code-inline">continue</span> can be used to skip the rest of the current iteration and immediately proceed to the next iteration of the loop. </p>
+<p>The <span class="code-inline">continue</span> statement allows you to skip the current iteration and proceed directly to the next iteration of the loop. This is useful for ignoring specific conditions within the loop while continuing its execution. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
     <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>
     {
-        i += <span class="SNum">1</span>
+        i += <span class="SNum">1</span>                   <span class="SCmt">// Increment 'i' by 1 at the start of each iteration</span>
         <span class="SLgc">if</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>:
-            <span class="SLgc">continue</span>      <span class="SCmt">// Skip the even numbers</span>
-        sum += i          <span class="SCmt">// Add only odd numbers to 'sum'</span>
+            <span class="SLgc">continue</span>             <span class="SCmt">// Skip adding 'i' to 'sum' if 'i' is an even number</span>
+        sum += i                 <span class="SCmt">// Add only odd numbers to 'sum'</span>
     }
 
-    <span class="SItr">@assert</span>(sum == <span class="SNum">25</span>)    <span class="SCmt">// Asserts that the sum of odd numbers from 1 to 9 is 25</span>
+    <span class="SItr">@assert</span>(sum == <span class="SNum">25</span>)           <span class="SCmt">// Ensure that the sum of odd numbers from 1 to 9 equals 25</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_004_while_swg">Nested <span class="code-inline">while</span> Loops </h4>
-<p><span class="code-inline">while</span> loops can be nested within each other. The <span class="code-inline">break</span> and <span class="code-inline">continue</span> statements only affect the innermost loop in which they are placed. </p>
+<p>A <span class="code-inline">while</span> loop can contain another <span class="code-inline">while</span> loop, forming a nested loop structure. In such cases, the <span class="code-inline">break</span> and <span class="code-inline">continue</span> statements apply only to the loop in which they are directly placed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
@@ -3374,17 +3375,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">while</span> j &lt; <span class="SNum">3</span>
         {
             <span class="SLgc">if</span> j == <span class="SNum">2</span>:
-                <span class="SLgc">break</span>      <span class="SCmt">// Breaks out of the inner loop when 'j' equals 2</span>
-            count += <span class="SNum">1</span>
-            j += <span class="SNum">1</span>
+                <span class="SLgc">break</span>            <span class="SCmt">// Exit the inner loop when 'j' equals 2</span>
+            count += <span class="SNum">1</span>           <span class="SCmt">// Increment 'count' each time the inner loop completes an iteration</span>
+            j += <span class="SNum">1</span>               <span class="SCmt">// Increment 'j' by 1 on each iteration of the inner loop</span>
         }
-        i += <span class="SNum">1</span>
+        i += <span class="SNum">1</span>                   <span class="SCmt">// Increment 'i' by 1 on each iteration of the outer loop</span>
     }
 
-    <span class="SItr">@assert</span>(count == <span class="SNum">6</span>)    <span class="SCmt">// Asserts that the inner loop ran 6 times (2 times for each of the 3 iterations of the outer loop)</span>
+    <span class="SItr">@assert</span>(count == <span class="SNum">6</span>)          <span class="SCmt">// Confirm that 'count' equals 6, indicating the inner loop ran 6 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_004_while_swg">Using <span class="code-inline">while</span> with Complex Conditions </h4>
-<p>The <span class="code-inline">while</span> loop condition can involve complex logical expressions, allowing for intricate control flow. </p>
+<p>The condition in a <span class="code-inline">while</span> loop can involve complex logical expressions, allowing for more sophisticated and controlled execution of the loop. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
@@ -3393,162 +3394,162 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SLgc">while</span> a &lt; <span class="SNum">100</span> <span class="SLgc">and</span> b &lt; <span class="SNum">200</span>
     {
-        a += <span class="SNum">10</span>
-        b += <span class="SNum">20</span>
-        iterations += <span class="SNum">1</span>
+        a += <span class="SNum">10</span>                 <span class="SCmt">// Increment 'a' by 10 on each iteration</span>
+        b += <span class="SNum">20</span>                 <span class="SCmt">// Increment 'b' by 20 on each iteration</span>
+        iterations += <span class="SNum">1</span>         <span class="SCmt">// Increment 'iterations' to track the number of loop executions</span>
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">100</span>)         <span class="SCmt">// Asserts that 'a' reached 100</span>
-    <span class="SItr">@assert</span>(b == <span class="SNum">201</span>)         <span class="SCmt">// Asserts that 'b' reached 201</span>
-    <span class="SItr">@assert</span>(iterations == <span class="SNum">10</span>) <span class="SCmt">// Asserts that the loop ran 5 times</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">100</span>)           <span class="SCmt">// Ensure that 'a' reaches 100 upon loop completion</span>
+    <span class="SItr">@assert</span>(b == <span class="SNum">201</span>)           <span class="SCmt">// Ensure that 'b' reaches 201 upon loop completion</span>
+    <span class="SItr">@assert</span>(iterations == <span class="SNum">10</span>)   <span class="SCmt">// Confirm that the loop executed 10 times</span>
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_005_switch_swg">Switch</h3><h4 id="_005_000_control_flow_swg__005_005_switch_swg">Introduction to <span class="code-inline">switch</span> in Swag </h4>
-<p>The <span class="code-inline">switch</span> statement in this language is similar to the one in C/C++, with a notable difference: there's no need for an explicit <span class="code-inline">break</span> statement at the end of each <span class="code-inline">case</span> block unless the <span class="code-inline">case</span> is empty. This prevents unintentional <span class="code-inline">fallthrough</span> behavior, where execution would continue from one <span class="code-inline">case</span> to the next without stopping. </p>
+<p>The <span class="code-inline">switch</span> statement in Swag operates similarly to those in C/C++, with a key distinction: Swag does not require an explicit <span class="code-inline">break</span> statement at the end of each <span class="code-inline">case</span> block. Instead, it prevents unintentional <span class="code-inline">fallthrough</span> behavior by design, except when the <span class="code-inline">case</span> is empty, where a <span class="code-inline">break</span> statement is necessary. This ensures that each <span class="code-inline">case</span> is independent unless explicitly designed otherwise, reducing the risk of errors in control flow. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
 
-    <span class="SCmt">// The switch statement here checks the value of 'value'.</span>
-    <span class="SCmt">// Depending on the value, it executes the corresponding case.</span>
+    <span class="SCmt">// The `switch` statement evaluates the value of 'value'.</span>
+    <span class="SCmt">// The corresponding `case` block is executed based on the match.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">0</span>:  
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is 0, this assertion fails (test fails).</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if 'value' is 0.</span>
     <span class="SLgc">case</span> <span class="SNum">5</span>:  
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is 5, this assertion fails (test fails).</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if 'value' is 5.</span>
     <span class="SLgc">case</span> <span class="SNum">6</span>:  
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is 6, this assertion passes (test succeeds).</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Assertion passes if 'value' is 6.</span>
     <span class="SLgc">default</span>: 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value doesn't match any case, this fails (test fails).</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if no cases match.</span>
     }
 
     <span class="SKwd">let</span> ch = <span class="SStr">`A`</span>'<span class="STpe">rune</span>
 
-    <span class="SCmt">// This switch checks the value of 'ch'.</span>
+    <span class="SCmt">// This `switch` checks the value of 'ch'.</span>
     <span class="SLgc">switch</span> ch
     {
     <span class="SLgc">case</span> <span class="SStr">`B`</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If ch is 'B', this fails.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if 'ch' is 'B'.</span>
     <span class="SLgc">case</span> <span class="SStr">`A`</span>: 
         <span class="SLgc">break</span>           <span class="SCmt">// Exits the switch when 'ch' is 'A'.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Multiple Values in a <span class="code-inline">case</span> </h4>
-<p>You can assign multiple values to a single <span class="code-inline">case</span> statement, making it convenient to handle several potential matches with the same block of code. </p>
+<p>Swag allows you to assign multiple values to a single <span class="code-inline">case</span> statement, simplifying the code when the same block of code should execute for several potential matches. This feature enhances the readability and maintainability of your switch statements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
 
-    <span class="SCmt">// Here, case 2, 4, and 6 all trigger the same action.</span>
+    <span class="SCmt">// In this switch, the `case` statement handles multiple values.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">2</span>, <span class="SNum">4</span>, <span class="SNum">6</span>:   
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is 2, 4, or 6, this assertion passes.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Assertion passes if 'value' is 2, 4, or 6.</span>
     <span class="SLgc">default</span>:        
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is anything else, this fails.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if 'value' does not match any case.</span>
     }
 
-    <span class="SCmt">// The same concept, but with each value listed on its own line for clarity.</span>
+    <span class="SCmt">// Listing each value on its own line for enhanced readability.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">2</span>,
          <span class="SNum">4</span>,
          <span class="SNum">6</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Matches any of these values.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Assertion passes for any listed value.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no case matches.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if no cases match.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Using <span class="code-inline">switch</span> with Various Types </h4>
-<p>The <span class="code-inline">switch</span> statement can be used with any type that supports the <span class="code-inline">==</span> operator. This includes not only numeric types but also strings, making it versatile for various comparisons. </p>
+<p>The <span class="code-inline">switch</span> statement in Swag is versatile, supporting any type that implements the <span class="code-inline">==</span> operator. This flexibility extends beyond numeric types to include strings and other comparable types, making it a powerful tool for various decision-making scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SStr">"myString"</span>
 
-    <span class="SCmt">// Switch works with strings, too.</span>
+    <span class="SCmt">// A `switch` statement can match string values as well.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SStr">"myString"</span>:    
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// If value is "myString", this passes.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Assertion passes if 'value' matches "myString".</span>
     <span class="SLgc">case</span> <span class="SStr">"otherString"</span>: 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value is "otherString", this fails.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if 'value' matches "otherString".</span>
     <span class="SLgc">default</span>:            
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// If value doesn't match any case, this fails.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if no cases match.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Intentional Fallthrough with <span class="code-inline">fallthrough</span> </h4>
-<p>If you need behavior similar to C/C++ where one <span class="code-inline">case</span> can intentionally "fall through" to the next, you can use the <span class="code-inline">fallthrough</span> keyword. This explicitly tells the compiler to continue execution in the next <span class="code-inline">case</span> block. </p>
+<p>Swag allows for intentional <span class="code-inline">fallthrough</span> behavior, similar to C/C++, using the <span class="code-inline">fallthrough</span> keyword. This feature provides the option to continue execution from one <span class="code-inline">case</span> block to the next, which can be useful in scenarios where multiple cases share common logic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
 
-    <span class="SCmt">// Demonstrates fallthrough: execution will continue from case 6 to case 7.</span>
+    <span class="SCmt">// Demonstrating fallthrough where execution continues from `case 6` to `case 7`.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">6</span>:
-        <span class="SLgc">fallthrough</span>     <span class="SCmt">// Fall through to the next case, even though value is still 6.</span>
+        <span class="SLgc">fallthrough</span>     <span class="SCmt">// Explicitly continues to the next `case`.</span>
     <span class="SLgc">case</span> <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(value == <span class="SNum">6</span>) <span class="SCmt">// This assertion checks that value is 6, even in case 7.</span>
+        <span class="SItr">@assert</span>(value == <span class="SNum">6</span>) <span class="SCmt">// Assertion passes, confirming 'value' is 6.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Default case runs if no other cases match; true assertion keeps the test passing.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Default case is a safeguard; true assertion keeps the test passing.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Exiting a <span class="code-inline">case</span> Early with <span class="code-inline">break</span> </h4>
-<p>The <span class="code-inline">break</span> statement can be used to exit a <span class="code-inline">case</span> block early. This is useful if you only want to execute part of a <span class="code-inline">case</span> and then skip the rest of it. </p>
+<p>The <span class="code-inline">break</span> statement in Swag allows for early exit from a <span class="code-inline">case</span> block. This is particularly useful when only a portion of the block should be executed under specific conditions, enhancing control flow within your <span class="code-inline">switch</span> statements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
 
-    <span class="SCmt">// This switch demonstrates the use of break to exit early.</span>
+    <span class="SCmt">// Demonstrating the use of `break` to exit the switch early.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">6</span>:
         <span class="SLgc">if</span> value == <span class="SNum">6</span>:
-            <span class="SLgc">break</span>       <span class="SCmt">// Exits the switch here if the condition is met.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This will never be reached if value is 6.</span>
+            <span class="SLgc">break</span>       <span class="SCmt">// Exits the switch if the condition is true.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This line is never reached if `value` is 6.</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This fails if value doesn't match any case.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if no cases match.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Handling Empty Cases with <span class="code-inline">break</span> </h4>
-<p>A <span class="code-inline">case</span> cannot be left empty. If you need a <span class="code-inline">case</span> to do nothing, use the <span class="code-inline">break</span> statement explicitly. </p>
+<p>In Swag, a <span class="code-inline">case</span> statement cannot be left empty. If no action is required for a particular <span class="code-inline">case</span>, the <span class="code-inline">break</span> statement must be used explicitly to avoid compilation errors, ensuring clarity in control flow. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
 
-    <span class="SCmt">// This switch demonstrates handling cases where no action is needed.</span>
+    <span class="SCmt">// Handling cases where no action is needed using `break`.</span>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">5</span>:     
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This fails if value is 5.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `value` is 5.</span>
     <span class="SLgc">case</span> <span class="SNum">6</span>:     
-        <span class="SLgc">break</span>           <span class="SCmt">// No action taken; exits the switch cleanly.</span>
+        <span class="SLgc">break</span>           <span class="SCmt">// No action is taken; switch exits cleanly.</span>
     <span class="SLgc">default</span>:    
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if value doesn't match any case.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if no cases match.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Variable and Expression Cases </h4>
-<p>A <span class="code-inline">case</span> expression doesn't need to be a constant. You can use variables or even expressions that evaluate at runtime. </p>
+<p>Swag’s <span class="code-inline">switch</span> statement offers the flexibility to use variables and expressions in <span class="code-inline">case</span> conditions. This allows for dynamic evaluation based on runtime values, further extending the utility of the <span class="code-inline">switch</span> statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> test = <span class="SNum">2</span>
     <span class="SKwd">let</span> a = <span class="SNum">0</span>
     <span class="SKwd">let</span> b = <span class="SNum">1</span>
 
-    <span class="SCmt">// This switch demonstrates the flexibility of using variables and expressions.</span>
+    <span class="SCmt">// Demonstrating the use of variables and expressions in switch cases.</span>
     <span class="SLgc">switch</span> test
     {
-    <span class="SLgc">case</span> a:     <span class="SCmt">// Here, 'a' is a variable, not a constant.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if test is equal to a (which is 0).</span>
-    <span class="SLgc">case</span> b:     <span class="SCmt">// 'b' is another variable.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if test is equal to b (which is 1).</span>
+    <span class="SLgc">case</span> a:     <span class="SCmt">// `a` is a variable here, not a constant.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `test` equals `a` (0).</span>
+    <span class="SLgc">case</span> b:     <span class="SCmt">// `b` is another variable.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `test` equals `b` (1).</span>
     <span class="SLgc">case</span> b + <span class="SNum">1</span>: <span class="SCmt">// This case uses an expression.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if test equals 2 (b + 1).</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Assertion passes if `test` equals `b + 1` (2).</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">The <span class="code-inline">Swag.Complete</span> Attribute </h4>
-<p>The <span class="code-inline">Swag.Complete</span> attribute ensures that all possible cases in an enum are handled in the <span class="code-inline">switch</span> statement. If any enum value is not covered by a <span class="code-inline">case</span>, the compiler will raise an error, ensuring exhaustive handling of all enum variants. </p>
+<p>The <span class="code-inline">Swag.Complete</span> attribute ensures exhaustive handling of all possible cases in an enum within a <span class="code-inline">switch</span> statement. If any enum value is not explicitly handled, the compiler will raise an error, enforcing robust and complete logic coverage. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }
@@ -3558,149 +3559,137 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">switch</span> color
     {
     <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Red</span>:     
-        <span class="SLgc">break</span>           <span class="SCmt">// Handle the Red case.</span>
+        <span class="SLgc">break</span>           <span class="SCmt">// Handles the `Red` case.</span>
     <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Green</span>:   
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if color is Green.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `color` is Green.</span>
     <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Blue</span>:    
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if color is Blue.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `color` is Blue.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switching on Type with <span class="code-inline">any</span> or <span class="code-inline">interface</span> </h4>
-<p>When switching on a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, the <span class="code-inline">switch</span> statement matches based on the underlying type of the variable. This behavior is similar to calling the <span class="code-inline">@kindof</span> intrinsic, which retrieves the type of the variable. </p>
+<p>When using a <span class="code-inline">switch</span> statement with a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, Swag matches cases based on the underlying type of the variable. This behavior is akin to the <span class="code-inline">@kindof</span> intrinsic, which allows for dynamic type checking within a switch construct. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
 
-    <span class="SCmt">// This switch is based on the type of 'x'.</span>
-    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly performs @kindof(x) to determine the type of 'x'.</span>
+    <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
+    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
     <span class="SLgc">case</span> <span class="STpe">string</span>: 
-        <span class="SLgc">break</span>           <span class="SCmt">// Matches if 'x' is a string.</span>
+        <span class="SLgc">break</span>           <span class="SCmt">// Executes if `x` is of type string.</span>
     <span class="SLgc">default</span>:     
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if 'x' is not a string.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `x` is not a string.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Matching Ranges in a <span class="code-inline">switch</span> Statement </h4>
-<p>A <span class="code-inline">switch</span> statement can match against a <b>range of values</b>. This is particularly useful for handling multiple values that fall within a specific range without having to list each one individually. </p>
+<p>Swag supports matching a <b>range of values</b> in a <span class="code-inline">switch</span> statement, allowing you to group and handle multiple values that fall within a specific range efficiently. This is useful for concise and clear range-based logic within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> success = <span class="SKwd">false</span>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
 
-    <span class="SCmt">// This switch uses ranges to match a group of values.</span>
+    <span class="SCmt">// Switch statement using ranges to match a group of values.</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>:  
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if x is between 0 and 5, inclusive.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `x` is between 0 and 5.</span>
     <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">to</span> <span class="SNum">15</span>: 
-        success = <span class="SKwd">true</span>  <span class="SCmt">// Succeeds if x is between 6 and 15, inclusive.</span>
+        success = <span class="SKwd">true</span>  <span class="SCmt">// Sets `success` to true if `x` is between 6 and 15.</span>
     }
 
-    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Ensures that the correct case was matched.</span>
+    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Ensures the correct case was matched.</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Overlapping Ranges </h4>
-<p>If ranges overlap, the first valid range that matches will be used, and subsequent ranges are ignored. </p>
+<p>In Swag, if ranges within a <span class="code-inline">switch</span> statement overlap, the first valid range that matches will be executed, while subsequent overlapping ranges are ignored. This order of precedence must be carefully considered in your logic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> success = <span class="SKwd">false</span>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
 
-    <span class="SCmt">// Demonstrates overlapping ranges and their precedence.</span>
+    <span class="SCmt">// Demonstrating overlapping ranges and their precedence.</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">10</span>:    
-        success = <span class="SKwd">true</span>  <span class="SCmt">// This case is matched first, and the subsequent case is ignored.</span>
+        success = <span class="SKwd">true</span>  <span class="SCmt">// This case matches first; subsequent cases are ignored.</span>
     <span class="SLgc">case</span> <span class="SNum">5</span> <span class="SLgc">until</span> <span class="SNum">15</span>: 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This is not reached because the first case matches.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// This is not reached because the first range matches.</span>
     }
 
-    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Confirms that the first range was correctly applied.</span>
+    <span class="SItr">@assert</span>(success)   <span class="SCmt">// Confirms that the first range was applied correctly.</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Using the <span class="code-inline">where</span> Clause in <span class="code-inline">switch</span> </h4>
-<p>You can add a <span class="code-inline">where</span> clause to a <span class="code-inline">case</span> in a <span class="code-inline">switch</span> statement. The <span class="code-inline">where</span> clause allows you to add an additional condition that must be satisfied for that <span class="code-inline">case</span> to execute. This provides a finer level of control within your <span class="code-inline">switch</span> statements, enabling more complex decision-making based on multiple variables. </p>
+<p>The <span class="code-inline">where</span> clause in Swag allows you to add additional conditions to a <span class="code-inline">case</span> in a <span class="code-inline">switch</span> statement. This provides finer control over the logic, enabling complex decision-making scenarios where multiple variables influence the outcome. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
     <span class="SKwd">let</span> y = <span class="SNum">10</span>
 
-    <span class="SCmt">// In this switch, each case not only checks the value of 'x',</span>
-    <span class="SCmt">// but also applies an additional condition using 'where'.</span>
+    <span class="SCmt">// Each `case` checks the value of 'x' and applies an additional condition with 'where'.</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">9</span>:    
-        <span class="SCmt">// This case checks if 'x' is 6 and 'y' is 9.</span>
-        <span class="SCmt">// 'y' is 10 here, so this case is skipped.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// Skipped because `y` is not 9.</span>
     <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>:   
-        <span class="SCmt">// This case checks if 'x' is 6 and 'y' is 10.</span>
-        <span class="SCmt">// Both conditions are true, so this case is executed.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)    <span class="SCmt">// This assertion will pass.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)    <span class="SCmt">// Executes because both `x` and `y` match the conditions.</span>
     <span class="SLgc">default</span>:
-        <span class="SCmt">// This case is a fallback if no other cases match.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed since the second case matches.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// Fallback case; should not be executed here.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Using <span class="code-inline">where</span> with <span class="code-inline">default</span> </h4>
-<p>The <span class="code-inline">where</span> clause can also be applied to a <span class="code-inline">default</span> case, providing additional filtering even when no specific <span class="code-inline">case</span> matches. This is particularly useful when you want the <span class="code-inline">default</span> behavior to occur only under certain conditions. </p>
+<p>The <span class="code-inline">where</span> clause can also be applied to a <span class="code-inline">default</span> case, providing conditional logic even when no specific <span class="code-inline">case</span> matches. This allows you to handle default scenarios with more precision, based on additional criteria. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SNum">7</span>
     <span class="SKwd">let</span> y = <span class="SNum">10</span>
 
-    <span class="SCmt">// This switch demonstrates how different 'where' clauses can lead to different outcomes.</span>
+    <span class="SCmt">// Demonstrates different outcomes based on 'where' clauses in default.</span>
     <span class="SLgc">switch</span> x
     {
     <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>: 
-        <span class="SCmt">// Checks if 'x' is 6 and 'y' is 10.</span>
-        <span class="SCmt">// 'x' is 7 here, so this case is skipped.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// Skipped because `x` is not 6.</span>
     <span class="SLgc">case</span> <span class="SNum">7</span> <span class="SLgc">where</span> y == <span class="SNum">9</span>:  
-        <span class="SCmt">// Checks if 'x' is 7 and 'y' is 9.</span>
-        <span class="SCmt">// 'y' is 10 here, so this case is also skipped.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// Skipped because `y` is not 9.</span>
     <span class="SLgc">default</span> <span class="SLgc">where</span> y == <span class="SNum">10</span>: 
-        <span class="SCmt">// This default case includes a 'where' clause.</span>
-        <span class="SCmt">// If 'x' didn't match any previous case and 'y' is 10, this case is executed.</span>
-        <span class="SLgc">break</span>            <span class="SCmt">// This will execute since 'y' is 10.</span>
+        <span class="SLgc">break</span>            <span class="SCmt">// Executes because `y` is 10 and no previous case matched.</span>
     <span class="SLgc">default</span>:
-        <span class="SCmt">// A general fallback default case.</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// This will not be executed since the previous default matched.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// General fallback case; should not be executed.</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switch Without an Expression </h4>
-<p>If no expression is provided in the <span class="code-inline">switch</span> statement, it behaves like a series of <span class="code-inline">if/else</span> statements. Each <span class="code-inline">case</span> is evaluated in order, and the first one that evaluates to <span class="code-inline">true</span> is executed. </p>
+<p>A <span class="code-inline">switch</span> statement in Swag can operate without an expression, behaving like a series of <span class="code-inline">if/else</span> statements. Each <span class="code-inline">case</span> is evaluated sequentially, and the first one that evaluates to <span class="code-inline">true</span> is executed, allowing for more complex conditional logic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SNum">6</span>
     <span class="SKwd">let</span> value1 = <span class="SStr">"true"</span>
 
-    <span class="SCmt">// Demonstrates a switch statement without an expression.</span>
-    <span class="SCmt">// This works like an if-else chain.</span>
+    <span class="SCmt">// Switch statement without an expression, behaving like an if-else chain.</span>
     <span class="SLgc">switch</span>
     {
     <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value == <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if value is 6 or 7.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if `value` is 6 or 7.</span>
         <span class="SLgc">fallthrough</span>     <span class="SCmt">// Continues to the next case regardless.</span>
     <span class="SLgc">case</span> value1 == <span class="SStr">"true"</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if value1 is "true".</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if `value1` is "true".</span>
     <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no previous case was matched.</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Fails if no cases match.</span>
     }
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_006_break_swg">Break</h3><h4 id="_005_000_control_flow_swg__005_006_break_swg">Introduction to <span class="code-inline">break</span> in Swag </h4>
-<p>We have already seen that <span class="code-inline">break</span> is used to exit a <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span>. </p>
+<p>The <span class="code-inline">break</span> statement is a powerful control structure in Swag, allowing you to exit from <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span> constructs. Understanding how and when to use <span class="code-inline">break</span> is essential for effective flow control in your programs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">loop</span> <span class="SNum">10</span>:
-        <span class="SLgc">break</span>                 <span class="SCmt">// Exits the loop immediately</span>
+        <span class="SLgc">break</span>                 <span class="SCmt">// Immediately exits the loop, no further iterations occur</span>
+
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>:
-        <span class="SLgc">break</span>                 <span class="SCmt">// Exits the loop immediately</span>
+        <span class="SLgc">break</span>                 <span class="SCmt">// Exits the loop instantly after the first iteration</span>
+
     <span class="SLgc">while</span> <span class="SKwd">false</span>:
-        <span class="SLgc">break</span>                 <span class="SCmt">// Although this line will never be reached, it demonstrates usage</span>
+        <span class="SLgc">break</span>                 <span class="SCmt">// Demonstrates usage, but this line is never reached due to the false condition</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_006_break_swg">Default Behavior of <span class="code-inline">break</span> </h4>
-<p>By default, <span class="code-inline">break</span> will exit only the innermost loop or control structure. </p>
+<p>By default, the <span class="code-inline">break</span> statement exits only the innermost loop or control structure in which it resides. This ensures that nested loops or structures can be controlled independently. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -3708,53 +3697,54 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SLgc">loop</span> <span class="SNum">10</span>
         {
-            <span class="SLgc">break</span>             <span class="SCmt">// Exits the inner loop...</span>
+            <span class="SLgc">break</span>             <span class="SCmt">// Exits the inner loop only, allowing the outer loop to continue</span>
         }
 
-        <span class="SCmt">// ...and continues execution here in the outer loop</span>
+        <span class="SCmt">// The outer loop continues its execution here</span>
         cpt += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)        <span class="SCmt">// The outer loop runs 10 times</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)        <span class="SCmt">// Verifies that the outer loop has run exactly 10 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_006_break_swg">Named Scopes with <span class="code-inline">break</span> </h4>
-<p>You can <b>name a scope</b> using the <span class="code-inline">#scope</span> compiler keyword and then use <span class="code-inline">break</span> to exit directly to the end of that named scope. </p>
+<p>Swag allows you to define named scopes using the <span class="code-inline">#scope</span> keyword. The <span class="code-inline">break</span> statement can then be directed to exit from the named scope, offering a structured approach to control flow within complex nested loops or conditions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// Define a scope named 'BigScope'</span>
+    <span class="SCmt">// Defining a scope named 'BigScope'</span>
     <span class="SCmp">#scope</span> <span class="SCst">BigScope</span>
     {
         <span class="SLgc">loop</span> <span class="SNum">10</span>
         {
             cpt += <span class="SNum">1</span>
-            <span class="SLgc">break</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Breaks out of the entire 'BigScope'</span>
+            <span class="SLgc">break</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Exits the entire 'BigScope' scope after incrementing `cpt`</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break statement above</span>
     }
 
-    <span class="SCmt">// Execution resumes here after breaking out of 'BigScope'</span>
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>)         <span class="SCmt">// Confirms that the loop inside 'BigScope' ran only once</span>
+    <span class="SCmt">// Execution resumes after 'BigScope'</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>)         <span class="SCmt">// Confirms that the loop inside 'BigScope' executed only once</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_006_break_swg">Using <span class="code-inline">continue</span> with Named Scopes </h4>
-<p>When used with a named scope, <span class="code-inline">continue</span> allows you to return to the beginning of the scope, effectively restarting the scope's execution. </p>
+<p>The <span class="code-inline">continue</span> statement can be used with a named scope to restart the execution from the beginning of the scope. This can be useful for iterating until a specific condition is met. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+
     <span class="SCmp">#scope</span> <span class="SCst">Loop</span>
     {
         cpt += <span class="SNum">1</span>
         <span class="SLgc">if</span> cpt == <span class="SNum">5</span>:
-            <span class="SLgc">break</span>            <span class="SCmt">// Exits the 'Loop' scope when `cpt` reaches 5</span>
-        <span class="SLgc">continue</span>             <span class="SCmt">// Returns to the start of 'Loop'</span>
+            <span class="SLgc">break</span>            <span class="SCmt">// Exits the 'Loop' scope when `cpt` equals 5, ending the loop</span>
+        <span class="SLgc">continue</span>             <span class="SCmt">// Restarts the 'Loop' scope, incrementing `cpt` each time</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)        <span class="SCmt">// Ensures the loop runs exactly 5 times</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)        <span class="SCmt">// Verifies that the loop runs exactly 5 times before exiting</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_006_break_swg">Unnamed Scopes for Flow Control </h4>
-<p>It's not mandatory to name the scope, so this technique can be used as an alternative to a series of if/else statements, providing a clean and structured way to manage multiple conditions. </p>
+<p>Named scopes are optional. You can also use unnamed scopes to manage control flow, offering a structured alternative to traditional if/else statements. This can help simplify complex conditions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> cpt = <span class="SNum">0</span>
@@ -3763,24 +3753,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">if</span> cpt == <span class="SNum">1</span>
         {
             <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>)
-            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope</span>
+            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope if `cpt` equals 1</span>
         }
 
         <span class="SLgc">if</span> cpt == <span class="SNum">2</span>
         {
             <span class="SItr">@assert</span>(cpt == <span class="SNum">2</span>)
-            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope</span>
+            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope if `cpt` equals 2</span>
         }
 
         <span class="SLgc">if</span> cpt == <span class="SNum">3</span>
         {
             <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
-            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope</span>
+            <span class="SLgc">break</span>            <span class="SCmt">// Exits the unnamed scope if `cpt` equals 3</span>
         }
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_006_break_swg">Using <span class="code-inline">break</span> with Simple Statements </h4>
-<p>A scope can be followed by a simple statement rather than a block, allowing for flexible control over flow. </p>
+<p>A scope in Swag can also be followed by a simple statement rather than a block, providing additional flexibility in controlling the flow of execution. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmp">#scope</span> <span class="SCst">Up</span>
@@ -3789,169 +3779,169 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">loop</span> <span class="SNum">10</span>
         {
             <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">5</span>:
-                <span class="SLgc">break</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope</span>
+                <span class="SLgc">break</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break statement above</span>
     }
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_007_visit_swg">Visit</h3><h4 id="_005_000_control_flow_swg__005_007_visit_swg">Introduction to <span class="code-inline">visit</span> </h4>
-<p><span class="code-inline">visit</span> is used to iterate over all elements of a collection. It provides a simple and efficient way to process each item in the collection, whether it's an array, slice, or string. </p>
+<p>The <span class="code-inline">visit</span> statement is designed to iterate over all elements within a collection. It provides a streamlined  and efficient way to process each item in a collection, which can be an array, slice, or string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here we visit every byte of the string.</span>
-    <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'.</span>
+    <span class="SCmt">// Iterating through each byte in the string "ABC".</span>
+    <span class="SCmt">// The current byte will be stored in the variable 'value'.</span>
     <span class="SLgc">visit</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
-        <span class="SKwd">let</span> a = <span class="SItr">#index</span>
+        <span class="SCmt">// '#index' is available to store the loop index.</span>
+        <span class="SKwd">let</span> a = <span class="SItr">#index</span>                                     <span class="SCmt">// Index of the current iteration</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)                          <span class="SCmt">// Check if the first value is 'A'</span>
         <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)                          <span class="SCmt">// Check if the second value is 'B'</span>
         <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)                          <span class="SCmt">// Check if the third value is 'C'</span>
         }
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Naming the Value and Index </h4>
-<p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. This allows for more readable code, especially when working with nested loops or complex data structures. </p>
+<p>Both the <b>value</b> and the loop <b>index</b> can be named explicitly. This enhances code readability,  especially in cases involving nested loops or complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">visit</span> value, index <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SKwd">let</span> a = index
+        <span class="SKwd">let</span> a = index                                      <span class="SCmt">// The current loop index</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)                          <span class="SCmt">// Check if the first value is 'A'</span>
         <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)                          <span class="SCmt">// Check if the second value is 'B'</span>
         <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)                          <span class="SCmt">// Check if the third value is 'C'</span>
         }
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Using Default Aliases </h4>
-<p>Both names are optional. If you don't specify names for the value and index, you can use the default aliases <span class="code-inline">#alias0</span> for the value and <span class="code-inline">#alias1</span> for the index. </p>
+<p>Both the <b>value</b> and the <b>index</b> are optional. If names are not explicitly provided,  the default aliases <span class="code-inline">#alias0</span> for the value and <span class="code-inline">#alias1</span> for the index can be used. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SLgc">visit</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SKwd">let</span> a = <span class="SItr">#alias1</span> <span class="SCmt">// This is the index.</span>
-        <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)
+        <span class="SKwd">let</span> a = <span class="SItr">#alias1</span>                                    <span class="SCmt">// Default alias for the index</span>
+        <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)                               <span class="SCmt">// Ensure alias matches the index</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`A`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`A`</span>)                        <span class="SCmt">// Check if the first alias is 'A'</span>
         <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`B`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`B`</span>)                        <span class="SCmt">// Check if the second alias is 'B'</span>
         <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`C`</span>)
+            <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SStr">`C`</span>)                        <span class="SCmt">// Check if the third alias is 'C'</span>
         }
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Reverse Order with <span class="code-inline">back</span> </h4>
-<p>You can visit elements in reverse order by adding the <span class="code-inline">back</span> modifier. This is useful when you need to process a collection from end to start. </p>
+<p>To iterate over elements in reverse order, use the <span class="code-inline">back</span> modifier. This is particularly useful  when processing a collection from the last element to the first. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here we visit every byte of the string in reverse order.</span>
+    <span class="SCmt">// Visiting each byte in the string "ABC" in reverse order.</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">visit</span> <span class="SKwd">#back</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
-        <span class="SCmt">// '#index' is also available. It stores the loop index.</span>
+        <span class="SCmt">// '#index' still stores the loop index, even in reverse order.</span>
         <span class="SLgc">switch</span> cpt
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)                          <span class="SCmt">// First value should be 'C'</span>
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)                           <span class="SCmt">// Index should be 2</span>
         <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)                          <span class="SCmt">// Second value should be 'B'</span>
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)                           <span class="SCmt">// Index should be 1</span>
         <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)
+            <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)                          <span class="SCmt">// Third value should be 'A'</span>
+            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)                           <span class="SCmt">// Index should be 0</span>
         }
 
-        cpt += <span class="SNum">1</span>
+        cpt += <span class="SNum">1</span>                                           <span class="SCmt">// Increment the counter</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Visiting Arrays and Slices </h4>
-<p>You can visit arrays or slices, which allows you to easily process each element. </p>
+<p>The <span class="code-inline">visit</span> statement can be used to iterate over arrays or slices,  enabling straightforward processing of each element. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]
+    <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]                               <span class="SCmt">// Define an array of integers</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:
-        result += it
+    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:                                     <span class="SCmt">// Iterate over each element in the array</span>
+        result += it                                       <span class="SCmt">// Accumulate the values</span>
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)                        <span class="SCmt">// Ensure the sum matches the expected result</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Multi-dimensional Arrays </h4>
-<p><span class="code-inline">visit</span> also works for multi-dimensional arrays, making it easy to process complex data structures. </p>
+<p><span class="code-inline">visit</span> supports multi-dimensional arrays, facilitating the processing of complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]           <span class="SCmt">// Define a 2x2 array</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:
-        result += it
+    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:                                     <span class="SCmt">// Iterate over each element in the 2D array</span>
+        result += it                                       <span class="SCmt">// Accumulate the values</span>
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)                   <span class="SCmt">// Ensure the sum matches the expected result</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Modifying Elements with <span class="code-inline">&</span> </h4>
-<p>You can visit elements using a pointer to the value by adding <span class="code-inline">&</span> before the value name. This allows you to modify the elements in place. </p>
+<p>By prefixing the value name with <span class="code-inline">&</span>, <span class="code-inline">visit</span> allows you to visit elements by reference,  enabling in-place modification of the elements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]               <span class="SCmt">// Define a 2x2 array</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
     <span class="SLgc">visit</span> &it <span class="SLgc">in</span> array
     {
-        result += <span class="SKwd">dref</span> it
-        <span class="SKwd">dref</span> it = <span class="SNum">555</span>
+        result += <span class="SKwd">dref</span> it                                  <span class="SCmt">// Accumulate the values</span>
+        <span class="SKwd">dref</span> it = <span class="SNum">555</span>                                      <span class="SCmt">// Modify each element in place</span>
     }
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)                       <span class="SCmt">// Ensure the sum matches the expected result</span>
 
-    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)
-    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)
-    <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)
-    <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)
+    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)                            <span class="SCmt">// Verify the first element is modified</span>
+    <span class="SItr">@assert</span>(array[<span class="SNum">0</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)                            <span class="SCmt">// Verify the second element is modified</span>
+    <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">0</span>] == <span class="SNum">555</span>)                            <span class="SCmt">// Verify the third element is modified</span>
+    <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)                            <span class="SCmt">// Verify the fourth element is modified</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Filtering with <span class="code-inline">where</span> </h4>
-<p>You can add a <span class="code-inline">where</span> clause after the <span class="code-inline">visit</span> to filter the elements you want to process. This is useful for applying conditions directly within the loop. </p>
+<p>The <span class="code-inline">where</span> clause can be used with <span class="code-inline">visit</span> to filter the elements processed based on specific conditions. This approach is efficient for conditionally applying logic to only the elements that meet certain criteria. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
+    <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]                       <span class="SCmt">// Define an array of integers</span>
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
-    <span class="SCmt">// Just process even values.</span>
+    <span class="SCmt">// Process only even values using `where`.</span>
     <span class="SLgc">visit</span> value <span class="SLgc">in</span> array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
-        result += value
+        result += value                                    <span class="SCmt">// Accumulate only even values</span>
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 
-    <span class="SCmt">// Equivalent using an if statement inside the visit loop:</span>
+    <span class="SCmt">// Equivalent using an if statement inside the `visit` loop:</span>
     result = <span class="SNum">0</span>
     <span class="SLgc">visit</span> value <span class="SLgc">in</span> array:
-        <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
-            result += value  
-    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>) 
+        <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:                                 <span class="SCmt">// Check if the value is even</span>
+            result += value                                <span class="SCmt">// Accumulate even values</span>
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 
-    <span class="SCmt">// Equivalent using continue to skip odd values:</span>
+    <span class="SCmt">// Equivalent using `continue` to skip odd values:</span>
     result = <span class="SNum">0</span>
     <span class="SLgc">visit</span> value <span class="SLgc">in</span> array
     {
-        <span class="SLgc">if</span> (value & <span class="SNum">1</span>) != <span class="SNum">0</span>:
+        <span class="SLgc">if</span> (value & <span class="SNum">1</span>) != <span class="SNum">0</span>:                               <span class="SCmt">// Skip odd values</span>
             <span class="SLgc">continue</span>
-        result += value        
+        result += value                                    <span class="SCmt">// Accumulate even values</span>
     }
-    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)
+    <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 }</span></div>
 
 <h2 id="_006_000_structs_swg">Structs</h2>

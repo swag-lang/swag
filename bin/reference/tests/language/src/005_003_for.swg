@@ -1,16 +1,18 @@
 /**
 # Introduction to `for` Loops
-`for` loops in Swag follow the traditional structure seen in C/C++: a *start statement*, a *test expression*, and an *ending statement*. This structure provides a versatile way to iterate over a range of values with fine control over the loop's behavior.
+
+In Swag, the `for` loop offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *start statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the loop's execution, making it a powerful tool for various iteration scenarios.
 */
 #test
 {
     var cpt = 0
-    // Standard 'for' loop with initialization, condition, and increment.
-    for var i = 0; i < 10; i += 1;:
+    
+    // A standard 'for' loop with initialization, condition, and increment.
+    for var i = 0; i < 10; i += 1:
         cpt += 1
     @assert(cpt == 10)
 
-    // Semicolons ';' can be replaced by newlines for cleaner syntax.
+    // Alternative syntax: Semicolons ';' can be replaced by newlines for cleaner, more readable code.
     for var i = 0
         i < 10
         i += 1
@@ -19,7 +21,7 @@
     }
     @assert(cpt == 20)
 
-    // Instead of a single expression, you can use a statement block for the initialization or increment.
+    // Using statement blocks for initialization or increment provides additional flexibility.
     for { var i = 0; cpt = 0; }
         i < 10
         i += 1
@@ -39,12 +41,14 @@
 
 /**
 # Accessing Loop Index with `#index`
-Like `loop`, `visit`, and `while`, the `for` loop gives you access to `#index`, which represents the **current loop index**. This can be useful when you need to keep track of the iteration count separately from the loop variable.
+
+Similar to other looping constructs like `loop`, `visit`, and `while`, the `for` loop in Swag provides access to the `#index` keyword. This keyword represents the **current loop index** and is particularly useful when you need to keep track of the iteration count separately from the loop variable.
 */
 #test
 {
     var cpt = 0'u64
-    // Use of `#index` to accumulate the loop indices.
+    
+    // Using `#index` to accumulate the loop indices.
     for var i: u32 = 10; i < 15; i += 1:
         cpt += #index
     @assert(cpt == 0+1+2+3+4)
@@ -57,17 +61,20 @@ Like `loop`, `visit`, and `while`, the `for` loop gives you access to `#index`, 
 
 /**
 # Using `break` and `continue` in `for` Loops
-As with other loops, you can use `break` to exit a `for` loop prematurely and `continue` to skip the rest of the current iteration and move on to the next iteration.
+
+In Swag, `break` and `continue` work within `for` loops just as they do in other loop structures. Use `break` to exit the loop prematurely, effectively terminating the loop when a specific condition is met. The `continue` statement, on the other hand, skips the remainder of the current loop iteration and jumps to the next iteration.
 */
 #test
 {
     var sum = 0
+    
     for var i = 0; i < 10; i += 1
     {
         if i == 5:
             break  // Exit the loop when 'i' equals 5
         sum += i
     }
+    
     @assert(sum == 0+1+2+3+4)  // Sum is 10
 
     sum = 0
@@ -77,12 +84,14 @@ As with other loops, you can use `break` to exit a `for` loop prematurely and `c
             continue  // Skip even numbers
         sum += i
     }
+
     @assert(sum == 1+3+5+7+9)  // Sum is 25
 }
 
 /**
 # Nested `for` Loops
-`for` loops can be nested, allowing for more complex iteration patterns. The `#index` within a nested loop corresponds to the innermost loop.
+
+Swag supports nested `for` loops, which are useful for more complex iteration patterns. In nested loops, the `#index` keyword refers to the current index of the innermost loop.
 */
 #test
 {
@@ -97,12 +106,14 @@ As with other loops, you can use `break` to exit a `for` loop prematurely and `c
             result += #index  // Adds the index of the inner loop
         }
     }
+
     @assert(result == 10 * 5)  // Each inner loop runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5
 }
 
 /**
 # Iterating Over Arrays with `for`
-The `for` loop can also be used to iterate over elements of an array or other iterable collections.
+
+The `for` loop can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection.
 */
 #test
 {
@@ -113,5 +124,6 @@ The `for` loop can also be used to iterate over elements of an array or other it
     {
         sum += array[i]
     }
+
     @assert(sum == 1+2+3+4+5)  // Sum is 15
 }
