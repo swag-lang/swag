@@ -6640,41 +6640,39 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h2 id="_010_000_attributes_swg">Attributes</h2><p>Attributes are tags associated with functions, structures etc... </p>
 
 <h3 id="_010_000_attributes_swg__010_001_user_attributes_swg">User attributes</h3><h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">User Attributes in Swag </h4>
-<p>Attributes in Swag are similar to function declarations but are defined using the <span class="code-inline">attr</span> keyword. They allow you to annotate functions, structs, and other elements with metadata that can be used for various purposes, such as code generation, documentation, or runtime reflection. </p>
-<h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Basic Attribute Declaration </h4>
-<p>To declare an attribute, you use the <span class="code-inline">attr</span> keyword followed by the attribute name and its parameters. </p>
+<p>Attributes in Swag serve as a powerful mechanism for annotating various elements of the code, such as functions and structs, with metadata. These annotations, defined using the <span class="code-inline">attr</span> keyword, can be leveraged for a variety of purposes, including code generation, documentation enhancement, and runtime reflection. By attaching attributes, developers can enrich their code with additional information that can be accessed both at compile-time and runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Swag</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeA</span>()</span></div>
+<span class="SKwd">attr</span> <span class="SCst">AttributeA</span>()   <span class="SCmt">// A simple attribute without parameters</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Attributes with Parameters </h4>
-<p>Attributes can have parameters, just like functions. These parameters can be used to pass specific values or configuration data to the attribute. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeB</span>(x, y: <span class="STpe">s32</span>, z: <span class="STpe">string</span>)</span></div>
+<p>Attributes in Swag can accept parameters in a manner similar to functions. These parameters enable the customization of the attribute's behavior or configuration when it is applied to a code element. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeB</span>(x, y: <span class="STpe">s32</span>, z: <span class="STpe">string</span>)   <span class="SCmt">// Attribute with multiple parameters</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Attributes with Default Values </h4>
-<p>Attributes can also have default values for their parameters, making them optional when the attribute is applied. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeBA</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">string</span> = <span class="SStr">"string"</span>)</span></div>
+<p>Swag attributes support parameters with default values, providing flexibility when applying attributes. This means that when such attributes are used, some or all of the parameters can be omitted, and the default values will be applied automatically. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeBA</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">string</span> = <span class="SStr">"string"</span>)  <span class="SCmt">// Attribute with a default parameter</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Restricting Attribute Usage </h4>
-<p>You can restrict the usage of an attribute to specific elements (e.g., functions, structs) by specifying an <span class="code-inline">AttrUsage</span>. This helps to ensure that attributes are only applied to relevant elements. </p>
+<p>Swag allows developers to control where an attribute can be applied through the <span class="code-inline">AttrUsage</span> specifier. By restricting an attribute's usage to specific elements (such as functions or structs), you ensure that the attribute is only used in appropriate contexts, thereby enhancing code safety and clarity. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeC</span>()</span></div>
+<span class="SKwd">attr</span> <span class="SCst">AttributeC</span>()   <span class="SCmt">// Attribute restricted to function usage</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Applying Attributes </h4>
-<p>To apply an attribute, use the syntax <span class="code-inline">#[attribute, attribute...]</span> before the element you want to annotate. Multiple attributes can be applied to the same element by separating them with commas. </p>
+<p>To apply attributes in Swag, use the syntax <span class="code-inline">#[attribute, attribute...]</span> immediately before the element you wish to annotate. This syntax supports the application of multiple attributes to a single element by listing them sequentially, separated by commas. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[AttributeA, AttributeB(0, 0, "string")]</span>
-<span class="SKwd">func</span> <span class="SFct">function1</span>() {}</span></div>
+<span class="SKwd">func</span> <span class="SFct">function1</span>() {}   <span class="SCmt">// Function annotated with multiple attributes</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Multiple Usages </h4>
-<p>An attribute can be applied to multiple types of elements by specifying a bitwise combination of <span class="code-inline">AttrUsage</span> values. </p>
+<p>An attribute in Swag can be designed to be applicable to multiple types of code elements by specifying a combination of <span class="code-inline">AttrUsage</span> values using a bitwise OR operation. This capability allows a single attribute to be reused across different contexts, such as both functions and structs. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeD</span>(x: <span class="STpe">s32</span>)
+<span class="SKwd">attr</span> <span class="SCst">AttributeD</span>(x: <span class="STpe">s32</span>)  <span class="SCmt">// Attribute applicable to both functions and structs</span>
 
 <span class="SAtr">#[AttributeD(6)]</span>
-<span class="SKwd">func</span> <span class="SFct">function2</span>() {}
+<span class="SKwd">func</span> <span class="SFct">function2</span>() {}      <span class="SCmt">// Function annotated with a multi-usage attribute</span>
 
 <span class="SAtr">#[AttributeD(150)]</span>
-<span class="SKwd">struct</span> struct1 {}</span></div>
+<span class="SKwd">struct</span> struct1 {}        <span class="SCmt">// Struct annotated with the same attribute</span></span></div>
 <h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">Retrieving Attributes at Runtime </h4>
-<p>Attributes can be accessed at runtime using <b>type reflection</b>. This allows you to inspect the metadata associated with functions, structs, or other elements and take action based on the presence or values of attributes. </p>
+<p>Swag supports the retrieval and inspection of attributes at runtime through type reflection. This feature enables dynamic interaction with the metadata associated with various code elements, allowing developers to adapt behavior based on the presence or configuration of attributes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(function2) <span class="SCmt">// Get the type of the function</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>) <span class="SCmt">// Check that the function has one attribute associated with it</span>
+    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(function2)  <span class="SCmt">// Retrieve the type of the function</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>)  <span class="SCmt">// Assert that the function has exactly one attribute</span>
 }</span></div>
 
 <h3 id="_010_000_attributes_swg__010_002_predefined_attributes_swg">Predefined attributes</h3><p>This is the list of predefined attributes. All are located in the reserved <span class="code-inline">Swag</span> namespace. </p>
@@ -6684,7 +6682,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span>
 <span class="SKwd">attr</span> <span class="SCst">ConstExpr</span>()
 
-<span class="SCmt">// On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations)</span>
+<span class="SCmt">// On a function or a struct, this will print the associated generated bytecode </span>
+<span class="SCmt">// (right after generation, without bytecode optimizations)</span>
 <span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct | AttributeUsage.File)]</span>
 <span class="SKwd">attr</span> <span class="SCst">PrintGenBc</span>()
 
