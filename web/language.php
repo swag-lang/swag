@@ -1151,7 +1151,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_004_variables_swg">Variables</h3><h4 id="_003_000_fundamentals_swg__003_004_variables_swg">Variable Declaration </h4>
 <p>To declare a variable in Swag, you use the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and then the type. </p>
-<p>- <span class="code-inline">let</span> is used for a variable that cannot be changed after its initial assignment. It's immutable. - <span class="code-inline">var</span> is used for a variable that can be changed after its initial assignment. It's mutable. </p>
+<ul>
+<li><span class="code-inline">let</span> is used for a variable that cannot be changed after its initial assignment. It's immutable.</li>
+<li><span class="code-inline">var</span> is used for a variable that can be changed after its initial assignment. It's mutable.</li>
+</ul>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// 'a' is a constant variable of type 'u32' and is initialized with the value 1. It cannot be modified later.</span>
@@ -8505,7 +8508,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_018_000_documentation_md__018_003_pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 22-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
