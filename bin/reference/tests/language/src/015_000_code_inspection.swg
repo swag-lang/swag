@@ -1,69 +1,100 @@
 /**
 # `#message` Function
-`#message` is a special function that will be called by the compiler when certain events occur during the build process. The parameter of `#message` is a mask that tells the compiler when to trigger the function. This allows you to hook into specific compilation stages and perform custom actions or checks.
+
+The `#message` function in Swag is a special hook that gets invoked by the compiler 
+when specific events occur during the build process. This function allows you to 
+intercept certain stages of compilation and execute custom actions or checks. 
+The parameter of `#message` is a mask that specifies the compilation stage or 
+event that should trigger the function. By utilizing these hooks, developers 
+can gain deeper insights into the compilation process and perform additional 
+processing when necessary.
 */
 
 /**
 # Function Message Mask
-For example, with the `Swag.CompilerMsgMask.SemFunctions` flag, `#message` will be called each time a function in the module **has been typed**. You can use `getMessage()` in the `@compiler()` interface to retrieve information about the event that triggered the call.
+
+For instance, when you use the `Swag.CompilerMsgMask.SemFunctions` flag, the `#message` 
+function will be called each time a function within the module has been successfully 
+typed. This means the function has been fully analyzed and its type information is 
+available. Within the `@compiler()` interface, you can use the `getMessage()` method 
+to retrieve details about the event that triggered the call, such as the function's name 
+and type information.
 */
 #message(Swag.CompilerMsgMask.SemFunctions)
 {
-    // Get the interface to communicate with the compiler
+    // Obtain the compiler interface to interact with the compilation process
     let itf = @compiler()
 
-    // Get the current message
+    // Retrieve the current compilation message
     let msg = itf.getMessage()
 
-    // Since the mask is `Swag.CompilerMsgMask.SemFunctions`, we know that the type
-    // in the message is a function. We can safely cast it.
+    // Given that the mask is `Swag.CompilerMsgMask.SemFunctions`, the message 
+    // pertains to a function, allowing us to safely cast the type information.
     let typeFunc = cast(const *Swag.TypeInfoFunc) msg.type
 
-    // The message name for `Swag.CompilerMsgMask.SemFunctions` is the name of the
-    // function being compiled.
+    // The message name, in this case, corresponds to the function's name being compiled.
     let nameFunc = msg.name
 
-    // Example: Count functions starting with "XX"
+    // Example: Count functions whose names start with "XX"
     if @countof(nameFunc) > 2 and nameFunc[0] == `X` and nameFunc[1] == `X`:
         G += 1
 }
 
-// Global variable to count functions starting with "XX"
+// Global variable to count the number of functions starting with "XX"
 var G = 0
 
-// Example functions to demonstrate `#message` functionality
+// Example functions to demonstrate the functionality of the `#message` hook
 func XXTestFunc1() {}
 func XXTestFunc2() {}
 func XXTestFunc3() {}
 
 /**
 # Semantic Pass Completion
-The compiler will call the following function after the semantic pass, which occurs after **all functions** in the module have been parsed. This is useful for performing checks or actions once the entire module has been processed.
+
+The compiler will invoke the following `#message` function after the semantic pass 
+has completed. The semantic pass occurs after all functions within the module have 
+been parsed and typed. This stage is ideal for performing final checks or actions 
+that need to consider the entire module's content.
 */
 #message(Swag.CompilerMsgMask.PassAfterSemantic)
 {
-    // Ensure that exactly 3 functions starting with "XX" were found
+    // Verify that exactly 3 functions starting with "XX" were found during the compilation
     @assert(G == 3)
 }
 
 /**
 # Global Variables Message Mask
-This `#message` will be called for every global variable in the module. This allows you to perform actions or checks on each global variable.
+
+The `#message` function can also be triggered for each global variable in the module 
+by using the `Swag.CompilerMsgMask.SemGlobals` flag. This allows you to process or 
+validate each global variable as it is encountered by the compiler during the 
+semantic analysis phase.
 */
 #message(Swag.CompilerMsgMask.SemGlobals)
 {
+    // Retrieve the compiler interface
     let itf = @compiler()
+
+    // Get the current message, which contains details about the global variable
     var msg = itf.getMessage()
-    // You can process the message as needed
+
+    // Process the message as needed, for example, by analyzing the global variable's properties
 }
 
 /**
 # Global Types Message Mask
-This `#message` will be called for every global type in the module, such as structs, enums, and interfaces. You can use this to analyze or modify global types during compilation.
+
+Similarly, the `Swag.CompilerMsgMask.SemTypes` flag triggers the `#message` function 
+for each global type in the module, such as structs, enums, and interfaces. 
+This allows you to inspect, analyze, or modify global types during compilation.
 */
 #message(Swag.CompilerMsgMask.SemTypes)
 {
+    // Access the compiler interface
     let itf = @compiler()
+
+    // Retrieve the current message, which contains information about the global type
     var msg = itf.getMessage()
-    // You can process the message as needed
+
+    // Process the message as required, which could include analyzing type attributes or properties
 }

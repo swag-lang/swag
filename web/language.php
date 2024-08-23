@@ -223,13 +223,7 @@
 <li><a href="#_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</a></li>
 </ul>
 <li><a href="#_015_000_code_inspection_swg">Code inspection</a></li>
-<ul>
-<li><a href="#_015_000_code_inspection_swg__015_001_overview_swg">Overview</a></li>
-</ul>
 <li><a href="#_016_000_type_reflection_swg">Type reflection</a></li>
-<ul>
-<li><a href="#_016_000_type_reflection_swg__016_001_overview_swg">Overview</a></li>
-</ul>
 <li><a href="#_017_000_meta_programming_swg">Meta programming</a></li>
 <ul>
 <li><a href="#_017_000_meta_programming_swg__017_001_ast_swg">Ast</a></li>
@@ -7853,133 +7847,143 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>This example links the program with the "windows.lib" library, allowing the use of Windows  API functions and resources defined within that library. </p>
 
 <h2 id="_015_000_code_inspection_swg">Code inspection</h2><h3 id="_015_000_code_inspection_swg"><span class="code-inline">#message</span> Function </h3>
-<p><span class="code-inline">#message</span> is a special function that will be called by the compiler when certain events occur during the build process. The parameter of <span class="code-inline">#message</span> is a mask that tells the compiler when to trigger the function. This allows you to hook into specific compilation stages and perform custom actions or checks. </p>
+<p>The <span class="code-inline">#message</span> function in Swag is a special hook that gets invoked by the compiler  when specific events occur during the build process. This function allows you to  intercept certain stages of compilation and execute custom actions or checks.  The parameter of <span class="code-inline">#message</span> is a mask that specifies the compilation stage or  event that should trigger the function. By utilizing these hooks, developers  can gain deeper insights into the compilation process and perform additional  processing when necessary. </p>
 <h3 id="_015_000_code_inspection_swg">Function Message Mask </h3>
-<p>For example, with the <span class="code-inline">Swag.CompilerMsgMask.SemFunctions</span> flag, <span class="code-inline">#message</span> will be called each time a function in the module <b>has been typed</b>. You can use <span class="code-inline">getMessage()</span> in the <span class="code-inline">@compiler()</span> interface to retrieve information about the event that triggered the call. </p>
+<p>For instance, when you use the <span class="code-inline">Swag.CompilerMsgMask.SemFunctions</span> flag, the <span class="code-inline">#message</span>  function will be called each time a function within the module has been successfully  typed. This means the function has been fully analyzed and its type information is  available. Within the <span class="code-inline">@compiler()</span> interface, you can use the <span class="code-inline">getMessage()</span> method  to retrieve details about the event that triggered the call, such as the function's name  and type information. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">Swag</span>.<span class="SCst">CompilerMsgMask</span>.<span class="SCst">SemFunctions</span>)
 {
-    <span class="SCmt">// Get the interface to communicate with the compiler</span>
+    <span class="SCmt">// Obtain the compiler interface to interact with the compilation process</span>
     <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
 
-    <span class="SCmt">// Get the current message</span>
+    <span class="SCmt">// Retrieve the current compilation message</span>
     <span class="SKwd">let</span> msg = itf.<span class="SFct">getMessage</span>()
 
-    <span class="SCmt">// Since the mask is `Swag.CompilerMsgMask.SemFunctions`, we know that the type</span>
-    <span class="SCmt">// in the message is a function. We can safely cast it.</span>
+    <span class="SCmt">// Given that the mask is `Swag.CompilerMsgMask.SemFunctions`, the message </span>
+    <span class="SCmt">// pertains to a function, allowing us to safely cast the type information.</span>
     <span class="SKwd">let</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoFunc</span>) msg.type
 
-    <span class="SCmt">// The message name for `Swag.CompilerMsgMask.SemFunctions` is the name of the</span>
-    <span class="SCmt">// function being compiled.</span>
+    <span class="SCmt">// The message name, in this case, corresponds to the function's name being compiled.</span>
     <span class="SKwd">let</span> nameFunc = msg.name
 
-    <span class="SCmt">// Example: Count functions starting with "XX"</span>
+    <span class="SCmt">// Example: Count functions whose names start with "XX"</span>
     <span class="SLgc">if</span> <span class="SItr">@countof</span>(nameFunc) &gt; <span class="SNum">2</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">0</span>] == <span class="SStr">`X`</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">1</span>] == <span class="SStr">`X`</span>:
         <span class="SCst">G</span> += <span class="SNum">1</span>
 }
 
-<span class="SCmt">// Global variable to count functions starting with "XX"</span>
+<span class="SCmt">// Global variable to count the number of functions starting with "XX"</span>
 <span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>
 
-<span class="SCmt">// Example functions to demonstrate `#message` functionality</span>
+<span class="SCmt">// Example functions to demonstrate the functionality of the `#message` hook</span>
 <span class="SKwd">func</span> <span class="SCst">XXTestFunc1</span>() {}
 <span class="SKwd">func</span> <span class="SCst">XXTestFunc2</span>() {}
 <span class="SKwd">func</span> <span class="SCst">XXTestFunc3</span>() {}</span></div>
 <h3 id="_015_000_code_inspection_swg">Semantic Pass Completion </h3>
-<p>The compiler will call the following function after the semantic pass, which occurs after <b>all functions</b> in the module have been parsed. This is useful for performing checks or actions once the entire module has been processed. </p>
+<p>The compiler will invoke the following <span class="code-inline">#message</span> function after the semantic pass  has completed. The semantic pass occurs after all functions within the module have  been parsed and typed. This stage is ideal for performing final checks or actions  that need to consider the entire module's content. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">Swag</span>.<span class="SCst">CompilerMsgMask</span>.<span class="SCst">PassAfterSemantic</span>)
 {
-    <span class="SCmt">// Ensure that exactly 3 functions starting with "XX" were found</span>
+    <span class="SCmt">// Verify that exactly 3 functions starting with "XX" were found during the compilation</span>
     <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">3</span>)
 }</span></div>
 <h3 id="_015_000_code_inspection_swg">Global Variables Message Mask </h3>
-<p>This <span class="code-inline">#message</span> will be called for every global variable in the module. This allows you to perform actions or checks on each global variable. </p>
+<p>The <span class="code-inline">#message</span> function can also be triggered for each global variable in the module  by using the <span class="code-inline">Swag.CompilerMsgMask.SemGlobals</span> flag. This allows you to process or  validate each global variable as it is encountered by the compiler during the  semantic analysis phase. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">Swag</span>.<span class="SCst">CompilerMsgMask</span>.<span class="SCst">SemGlobals</span>)
 {
+    <span class="SCmt">// Retrieve the compiler interface</span>
     <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
+
+    <span class="SCmt">// Get the current message, which contains details about the global variable</span>
     <span class="SKwd">var</span> msg = itf.<span class="SFct">getMessage</span>()
-    <span class="SCmt">// You can process the message as needed</span>
+
+    <span class="SCmt">// Process the message as needed, for example, by analyzing the global variable's properties</span>
 }</span></div>
 <h3 id="_015_000_code_inspection_swg">Global Types Message Mask </h3>
-<p>This <span class="code-inline">#message</span> will be called for every global type in the module, such as structs, enums, and interfaces. You can use this to analyze or modify global types during compilation. </p>
+<p>Similarly, the <span class="code-inline">Swag.CompilerMsgMask.SemTypes</span> flag triggers the <span class="code-inline">#message</span> function  for each global type in the module, such as structs, enums, and interfaces.  This allows you to inspect, analyze, or modify global types during compilation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">Swag</span>.<span class="SCst">CompilerMsgMask</span>.<span class="SCst">SemTypes</span>)
 {
+    <span class="SCmt">// Access the compiler interface</span>
     <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
+
+    <span class="SCmt">// Retrieve the current message, which contains information about the global type</span>
     <span class="SKwd">var</span> msg = itf.<span class="SFct">getMessage</span>()
-    <span class="SCmt">// You can process the message as needed</span>
+
+    <span class="SCmt">// Process the message as required, which could include analyzing type attributes or properties</span>
 }</span></div>
 
-<h3 id="_015_000_code_inspection_swg__015_001_overview_swg">Overview</h3>
 <h2 id="_016_000_type_reflection_swg">Type reflection</h2><h3 id="_016_000_type_reflection_swg">Types as Values in Swag </h3>
-<p>In Swag, <b>types are also values</b> that can be inspected and manipulated at both compile-time and runtime. This feature enables powerful metaprogramming capabilities. The two primary intrinsics for interacting with types are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
+<p>In Swag, <b>types are treated as first-class values</b> that can be inspected and manipulated  at both compile-time and runtime. This powerful feature enables advanced metaprogramming  capabilities, allowing developers to write more flexible and reusable code. The primary  intrinsics for interacting with types are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>, which provide the ability  to introspect and work with types dynamically. </p>
 <h3 id="_016_000_type_reflection_swg">Using <span class="code-inline">@typeof</span> to Inspect Types </h3>
-<p>You can retrieve the type of an expression using <span class="code-inline">@typeof</span>. Additionally, you can also directly use the type itself when the expression explicitly represents a type. </p>
+<p>The <span class="code-inline">@typeof</span> intrinsic allows you to retrieve the type information of an expression.  When an expression explicitly represents a type, you can also directly use the type  itself. This is particularly useful for type inspection and validation at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Using @typeof to get the type of a basic type like 's8'</span>
+    <span class="SCmt">// Using @typeof to retrieve the type information of the basic type 's8'</span>
     <span class="SKwd">let</span> ptr1 = <span class="SItr">@typeof</span>(<span class="STpe">s8</span>)
-    <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"s8"</span>)
-    <span class="SItr">@assert</span>(ptr1 == <span class="STpe">s8</span>)
+    <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"s8"</span>) <span class="SCmt">// Verifies that the name of the type is 's8'</span>
+    <span class="SItr">@assert</span>(ptr1 == <span class="STpe">s8</span>)        <span class="SCmt">// Confirms that the retrieved type matches 's8'</span>
 
-    <span class="SCmt">// Using @typeof to get the type of another basic type 's16'</span>
+    <span class="SCmt">// Retrieving the type of another basic type 's16' using @typeof</span>
     <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>(<span class="STpe">s16</span>)
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"s16"</span>)
     <span class="SItr">@assert</span>(ptr2 == <span class="STpe">s16</span>)
 
-    <span class="SCmt">// Directly using the type without @typeof</span>
+    <span class="SCmt">// Directly using the type 's32' without @typeof</span>
     <span class="SKwd">let</span> ptr3 = <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(ptr3.name == <span class="SStr">"s32"</span>)
     <span class="SItr">@assert</span>(ptr3 == <span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
 
-    <span class="SCmt">// Another direct type usage</span>
+    <span class="SCmt">// Another example of direct type usage with 's64'</span>
     <span class="SKwd">let</span> ptr4 = <span class="STpe">s64</span>
     <span class="SItr">@assert</span>(ptr4.name == <span class="SStr">"s64"</span>)
     <span class="SItr">@assert</span>(ptr4 == <span class="STpe">s64</span>)
 }</span></div>
 <h3 id="_016_000_type_reflection_swg">Understanding the Result of <span class="code-inline">@typeof</span> </h3>
-<p>The result of <span class="code-inline">@typeof</span> is a constant pointer to a <span class="code-inline">Swag.TypeInfo</span> structure. This structure is a type descriptor that provides detailed information about the type. The <span class="code-inline">Swag.TypeInfo</span> type is a type alias for <span class="code-inline">typeinfo</span>, and each type has a corresponding <span class="code-inline">TypeInfo</span> struct found in the <span class="code-inline">Swag</span> namespace, part of the compiler runtime. </p>
+<p>The result of the <span class="code-inline">@typeof</span> intrinsic is a constant pointer to a <span class="code-inline">Swag.TypeInfo</span> structure.  This structure serves as a type descriptor, providing detailed information about the type  it describes. The <span class="code-inline">Swag.TypeInfo</span> is an alias for the <span class="code-inline">typeinfo</span> type, and each type in Swag  corresponds to a specific <span class="code-inline">TypeInfo</span> structure found in the <span class="code-inline">Swag</span> namespace, which is  part of the compiler runtime. </p>
 <div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can find all the type descriptors in the runtime documentation on the Swag website. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can explore all available type descriptors in the runtime documentation on the Swag website. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// Using @typeof on a bool type, which is a native type</span>
     <span class="SKwd">let</span> ptr = <span class="STpe">bool</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>))
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>)) 
 
-    <span class="SCmt">// '#type' can be used when the right expression is ambiguous. </span>
-    <span class="SCmt">// For example, with arrays, it might not be clear whether the expression represents a type or an array literal. </span>
-    <span class="SCmt">// In such cases, '#type' clarifies that it is a type.</span>
+    <span class="SCmt">// The `#type` keyword is used when the expression might be ambiguous, such as with arrays.</span>
+    <span class="SCmt">// This ensures that the compiler understands the expression as a type.</span>
     <span class="SKwd">let</span> ptr1 = <span class="STpe">#type</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr1) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr1) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>)) 
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"[2] s32"</span>)
 
+    <span class="SCmt">// Using @typeof on an array literal</span>
     <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>])
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr2) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"const [3] s32"</span>)
 }</span></div>
 <h3 id="_016_000_type_reflection_swg">Working with <span class="code-inline">TypeInfo</span> Structures </h3>
-<p>The <span class="code-inline">TypeInfo</span> structure includes a <span class="code-inline">kind</span> field that indicates the specific kind of type (e.g., native type, pointer, array, etc.). This <span class="code-inline">kind</span> field is particularly useful when working with types in a more abstract way. </p>
+<p>The <span class="code-inline">TypeInfo</span> structure includes a <span class="code-inline">kind</span> field that identifies the specific category  of the type, such as native type, pointer, array, or struct. This <span class="code-inline">kind</span> field is crucial  when dealing with types in a more abstract or generic manner, as it allows you to differentiate  between various kinds of types and handle them appropriately. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// Checking the 'kind' field of the typeinfo for 'f64', which should be a native type</span>
     <span class="SKwd">let</span> typeOf = <span class="STpe">f64</span>
     <span class="SItr">@assert</span>(typeOf.kind == <span class="SCst">Swag</span>.<span class="SCst">TypeInfoKind</span>.<span class="SCst">Native</span>)
 
-    <span class="SCmt">// These checks can be evaluated at compile time</span>
+    <span class="SCmt">// Evaluating these type checks at compile time</span>
     <span class="SKwd">using</span> <span class="SCst">Swag</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(*<span class="STpe">u8</span>).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(*<span class="STpe">u8</span>).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>  <span class="SCmt">// Ensures the type is recognized as a pointer</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>  <span class="SCmt">// Ensures the type is recognized as an array</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>  <span class="SCmt">// Ensures the type is recognized as a struct</span>
 }</span></div>
 <h3 id="_016_000_type_reflection_swg"><span class="code-inline">@decltype</span> </h3>
-<p><span class="code-inline">@decltype</span> is the reverse of <span class="code-inline">@typeof</span> or <span class="code-inline">@kindof</span>. It is used to convert a <span class="code-inline">typeinfo</span> back into an actual compiler type. </p>
+<p>The <span class="code-inline">@decltype</span> intrinsic performs the reverse operation of <span class="code-inline">@typeof</span> or <span class="code-inline">@kindof</span>.  It converts a <span class="code-inline">typeinfo</span> structure back into an actual compiler type. This is useful  when you need to dynamically determine the type of a variable based on compile-time  information and then use that type within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// Using @decltype to declare a variable of type s32 based on its typeinfo</span>
     <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that the variable 'x' is indeed of type 's32'</span>
 }</span></div>
 <h3 id="_016_000_type_reflection_swg">Using <span class="code-inline">@decltype</span> with Compile-Time Expressions </h3>
-<p><span class="code-inline">@decltype</span> can evaluate a <i>constexpr</i> expression that returns a <span class="code-inline">typeinfo</span> to determine the actual type. This is useful when the type depends on compile-time logic. </p>
+<p><span class="code-inline">@decltype</span> can evaluate a compile-time constant expression (<i>constexpr</i>) that returns  a <span class="code-inline">typeinfo</span> to determine the actual type. This is particularly powerful when the type  depends on compile-time logic, allowing for dynamic yet type-safe programming patterns. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SCmt">// A function that returns a typeinfo based on a compile-time condition</span>
     <span class="SAtr">#[Swag.ConstExpr]</span>
     <span class="SKwd">func</span> <span class="SFct">getType</span>(needAString: <span class="STpe">bool</span>) -&gt; <span class="STpe">typeinfo</span>
     {
@@ -7989,42 +7993,44 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">return</span> <span class="STpe">s32</span>
     }
 
+    <span class="SCmt">// Using @decltype to determine the type of 'x' based on the compile-time condition</span>
     <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">false</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that 'x' is of type s32</span>
     x = <span class="SNum">0</span>
 
+    <span class="SCmt">// Another example with the condition evaluating to true</span>
     <span class="SKwd">var</span> x1: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">true</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x1) == <span class="STpe">string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x1) == <span class="STpe">string</span>  <span class="SCmt">// Confirms that 'x1' is of type string</span>
     x1 = <span class="SStr">"0"</span>
 }</span></div>
 
-<h3 id="_016_000_type_reflection_swg__016_001_overview_swg">Overview</h3>
-<h2 id="_017_000_meta_programming_swg">Meta programming</h2><p>In Swag you can construct some source code at compile time, which will then be compiled. The source code you provide in the form of a <b>string</b> must be a valid Swag program. </p>
+<h2 id="_017_000_meta_programming_swg">Meta programming</h2><p>Swag provides the ability to construct and inject source code at compile time.  This powerful feature allows you to dynamically generate code based on compile-time  conditions or inputs, and have that code seamlessly integrated into the final program.  The source code is supplied as a <b>string</b>, and it must be a valid Swag program. </p>
+<p>This technique opens up possibilities for advanced metaprogramming, where code can  be generated, modified, or extended during the compilation process, reducing redundancy  and enabling more flexible, adaptive programs. </p>
 
 <h3 id="_017_000_meta_programming_swg__017_001_ast_swg">Ast</h3><h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> Block </h4>
-<p>The most simple way to produce a string that contains the Swag code to compile is with an <span class="code-inline">#ast</span> block. An <span class="code-inline">#ast</span> block is executed at compile time, and the string it returns will be compiled <b>in place</b>. </p>
+<p>The <span class="code-inline">#ast</span> block is one of the simplest methods to generate Swag code dynamically at compile time. It allows you to write code that, when executed during compilation, produces a string. This string is then compiled <b>in place</b> as if it were written directly in the source code. </p>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg">Basic <span class="code-inline">#ast</span> Usage </h4>
-<p>The <span class="code-inline">#ast</span> can be a simple expression that returns the string to compile. This allows you to dynamically generate code at compile time. </p>
+<p>A <span class="code-inline">#ast</span> block can be as straightforward as a single expression that returns the string to be compiled. This feature is highly useful for injecting dynamically generated code during compilation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SFct">#ast</span> <span class="SStr">"var x = 666"</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">666</span>) <span class="SCmt">// The variable 'x' is generated by the `#ast` block and holds the value 666.</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">666</span>)          <span class="SCmt">// The variable 'x' is generated by the `#ast` block and initialized with the value 666.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> Block with <span class="code-inline">return</span> </h4>
-<p>An <span class="code-inline">#ast</span> block can also be a more complex block of code, with an explicit <span class="code-inline">return</span> statement that returns the string to be compiled. </p>
+<p>The <span class="code-inline">#ast</span> block can contain more complex logic, including multiple statements and an explicit <span class="code-inline">return</span>. The returned string will be compiled at the location of the <span class="code-inline">#ast</span> block. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">2</span>
     <span class="SFct">#ast</span>
     {
         <span class="SKwd">const</span> <span class="SCst">INC</span> = <span class="SNum">5</span>
-        <span class="SLgc">return</span> <span class="SStr">"cpt += "</span> ++ <span class="SCst">INC</span> <span class="SCmt">// Generates the code 'cpt += 5'.</span>
+        <span class="SLgc">return</span> <span class="SStr">"cpt += "</span> ++ <span class="SCst">INC</span> <span class="SCmt">// Generates the code 'cpt += 5', incrementing 'cpt' by the value of 'INC'.</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">7</span>) <span class="SCmt">// The variable 'cpt' is incremented by 5 as generated by the `#ast` block.</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">7</span>)          <span class="SCmt">// The variable 'cpt' is incremented by 5 as generated by the `#ast` block.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> for Structs and Enums </h4>
-<p><span class="code-inline">#ast</span> can be used to dynamically generate the content of a <span class="code-inline">struct</span> or <span class="code-inline">enum</span>. This is useful for creating code based on compile-time conditions or inputs. </p>
+<p>The <span class="code-inline">#ast</span> block can be used to dynamically generate the content of complex types like <span class="code-inline">structs</span> or <span class="code-inline">enums</span>. This approach is particularly valuable for creating code structures based on compile-time conditions or parameters. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
@@ -8036,11 +8042,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
-    <span class="SItr">@assert</span>(v.x == <span class="SNum">666</span>)
-    <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
+    <span class="SItr">@assert</span>(v.x == <span class="SNum">666</span>)         <span class="SCmt">// Asserts that the generated field 'x' is correctly initialized to 666.</span>
+    <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)         <span class="SCmt">// Asserts that the generated field 'y' is correctly initialized to 666.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> with Generics </h4>
-<p><span class="code-inline">#ast</span> works seamlessly with generics and can be combined with static declarations. This allows for highly flexible and reusable code generation patterns. </p>
+<p>The <span class="code-inline">#ast</span> block can be effectively used with generics, allowing for flexible and reusable code generation patterns. This can be particularly powerful when combined with static declarations. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">MyStruct</span>
@@ -8050,21 +8056,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">return</span> <span class="SStr">"x, y: "</span> ++ <span class="SItr">@typeof</span>(<span class="SCst">T</span>).name <span class="SCmt">// Generates fields 'x' and 'y' with the type of the generic parameter 'T'.</span>
         }
 
-        z: <span class="STpe">string</span> <span class="SCmt">// Additional static declaration.</span>
+        z: <span class="STpe">string</span>          <span class="SCmt">// Additional static declaration that adds a field 'z' of type string.</span>
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>'<span class="STpe">bool</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.x) == <span class="STpe">bool</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.y) == <span class="STpe">bool</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.z) == <span class="STpe">string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.x) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'bool'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.y) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'bool'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.z) == <span class="STpe">string</span>   <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
 
     <span class="SKwd">var</span> v1: <span class="SCst">MyStruct</span>'<span class="STpe">f64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.x) == <span class="STpe">f64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.y) == <span class="STpe">f64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.z) == <span class="STpe">string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.x) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'f64'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.y) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'f64'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.z) == <span class="STpe">string</span>  <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg">Constructing Strings in <span class="code-inline">#ast</span> </h4>
-<p><span class="code-inline">#ast</span> needs to return a <i>string-like</i> value, which can be dynamically constructed. In this example, we manually build a string, though typically you would use a more sophisticated method such as <span class="code-inline">Core.String</span>. </p>
+<p>The <span class="code-inline">#ast</span> block requires a <i>string-like</i> value to be returned, which can be dynamically constructed. In this example, the string is manually built, although a more sophisticated method like <span class="code-inline">Core.String</span> is typically recommended. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Compiler]</span>
@@ -8092,12 +8098,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">Vector3</span>
-    <span class="SItr">@assert</span>(v.x == <span class="SNum">1</span>)
-    <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(v.z == <span class="SNum">3</span>)
+    <span class="SItr">@assert</span>(v.x == <span class="SNum">1</span>)           <span class="SCmt">// Asserts that the generated field 'x' is initialized to 1.</span>
+    <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>)           <span class="SCmt">// Asserts that the generated field 'y' is initialized to 2.</span>
+    <span class="SItr">@assert</span>(v.z == <span class="SNum">3</span>)           <span class="SCmt">// Asserts that the generated field 'z' is initialized to 3.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg">Real-World Example </h4>
-<p>Here is a real-life example of <span class="code-inline">#ast</span> usage from the <span class="code-inline">Std.Core</span> module. This code generates a structure that contains all the fields of another structure, but where the types are forced to be <span class="code-inline">bool</span>. </p>
+<p>The following is a practical example from the <span class="code-inline">Std.Core</span> module. It demonstrates how an <span class="code-inline">#ast</span> block can generate a structure where all the fields of another structure have their types converted to <span class="code-inline">bool</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">IsSet</span>
 {
     <span class="SFct">#ast</span>
@@ -8118,26 +8124,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">return</span> str.<span class="SFct">toString</span>()
     }
 }</span></div>
-<h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> at global scope </h4>
-<p><span class="code-inline">#ast</span> can also be called at the global scope, allowing you to generate global variables, constants, or other declarations dynamically. </p>
+<h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> at Global Scope </h4>
+<p>The <span class="code-inline">#ast</span> block can also be employed at the global scope to dynamically generate global variables, constants, or other declarations. This feature allows for a high degree of flexibility in defining global entities. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#ast</span>
 {
     <span class="SKwd">const</span> value = <span class="SNum">666</span>
-    <span class="SLgc">return</span> <span class="SStr">"const myGeneratedConst = "</span> ++ value
+    <span class="SLgc">return</span> <span class="SStr">"const myGeneratedConst = "</span> ++ value <span class="SCmt">// Generates a global constant 'myGeneratedConst' with the value 666.</span>
 }</span></div>
-<p>But be aware that you must use <span class="code-inline">#placeholder</span> in case you are generating global symbols that can be used by something else in the code. This will tell Swag that <i>this symbol</i> will exist at some point, so please wait for it to <i>exist</i> before complaining. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#placeholder</span> myGeneratedConst <span class="SCmt">// Symbol `myGeneratedConst` will be generated</span></span></div>
-<p>Here for example, thanks to the <span class="code-inline">#placeholder</span>, the <span class="code-inline">#assert</span> will wait for the symbol <span class="code-inline">myGeneratedConst</span> to be replaced with its real content. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> myGeneratedConst == <span class="SNum">666</span></span></div>
+<h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#placeholder</span> Usage </h4>
+<p>When generating global symbols that may be referenced elsewhere in the code, it is necessary to use <span class="code-inline">#placeholder</span>. This directive informs Swag that the symbol will be generated later, preventing compilation errors when the symbol is referenced before it exists. </p>
+<div class="code-block"><span class="SCde"><span class="SCmp">#placeholder</span> myGeneratedConst <span class="SCmt">// Declares that the symbol `myGeneratedConst` will be generated.</span></span></div>
+<p>Here, thanks to the <span class="code-inline">#placeholder</span>, the <span class="code-inline">#assert</span> will wait for the symbol <span class="code-inline">myGeneratedConst</span> to be replaced with its actual value before performing the assertion. </p>
+<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> myGeneratedConst == <span class="SNum">666</span> <span class="SCmt">// Asserts that the generated constant 'myGeneratedConst' equals 666.</span></span></div>
 
-<h3 id="_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler interface</h3><p>The other method to compile generated code is to use the function <span class="code-inline">compileString()</span> in the <span class="code-inline">@compiler()</span> interface. Of course this should be called at compile time, and mostly during a <span class="code-inline">#message</span> call. </p>
-<p>Here is a real life example from the <span class="code-inline">Std.Ogl</span> module (opengl wrapper), which uses <span class="code-inline">#message</span> to track functions marked with a specific <b>user attribute</b> <span class="code-inline">Ogl.Extension</span>, and generates some code for each function that has been found. </p>
-<p>First we declare a new specific attribute, which can then be associated with a function. </p>
+<h3 id="_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler interface</h3><p>The <span class="code-inline">compileString()</span> function within the <span class="code-inline">@compiler()</span> interface is another method to compile  generated code. This function should be invoked at compile time, typically within a <span class="code-inline">#message</span>  call. </p>
+<p>Below is an example from the <span class="code-inline">Std.Ogl</span> module (an OpenGL wrapper), which utilizes <span class="code-inline">#message</span> to  identify functions annotated with a specific user attribute, <span class="code-inline">Ogl.Extension</span>, and subsequently  generates code for each identified function. </p>
+<p>First, we define a new attribute that can be associated with functions. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Extension</span>()
-
-<span class="SCmt">// Here is an example of usage of that attribute.</span>
-<span class="SAtr">#[Extension]</span>
+<span class="SKwd">attr</span> <span class="SCst">Extension</span>()</span></div>
+<p>Example of applying the custom attribute to OpenGL functions. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Extension]</span>
 {
     <span class="SKwd">func</span> <span class="SFct">glUniformMatrix2x3fv</span>(location: <span class="SCst">GLint</span>, count: <span class="SCst">GLsizei</span>, transpose: <span class="SCst">GLboolean</span>, value: <span class="SKwd">const</span> *<span class="SCst">GLfloat</span>);
     <span class="SKwd">func</span> <span class="SFct">glUniformMatrix2x4fv</span>(location: <span class="SCst">GLint</span>, count: <span class="SCst">GLsizei</span>, transpose: <span class="SCst">GLboolean</span>, value: <span class="SKwd">const</span> *<span class="SCst">GLfloat</span>);
@@ -8161,16 +8167,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
     <span class="SKwd">var</span> msg = itf.<span class="SFct">getMessage</span>()
 
-    <span class="SCmt">// If the function does not have our attribute, forget it</span>
+    <span class="SCmt">// If the function does not have our attribute, ignore it</span>
     <span class="SLgc">if</span> !<span class="SCst">Reflection</span>.<span class="SFct">hasAttribute</span>(msg.type, <span class="SCst">Extension</span>)
         <span class="SLgc">return</span>
 
-    <span class="SCmt">// We just track all the functions with the given attribute</span>
+    <span class="SCmt">// Track all functions with the specified attribute</span>
     g_Functions.<span class="SFct">add</span>({msg.type, msg.name})
 }</span></div>
 <p>We will generate a <span class="code-inline">glInitExtensions</span> global function, so we register it as a placeholder. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#placeholder</span> glInitExtensions</span></div>
-<p>This is called once all functions of the module have been typed, and this is the main code generation. </p>
+<p>This code is called once all functions of the module have been typed, and it handles the main  code generation process. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">CompilerMsgMask</span>.<span class="SCst">PassAfterSemantic</span>)
 {
     <span class="SKwd">var</span> builderVars: <span class="SCst">StringBuilder</span>
@@ -8179,7 +8185,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Generate the `glInitExtensions` function</span>
     builderInit.<span class="SFct">appendString</span>(<span class="SStr">"public func glInitExtensions()\n{\n"</span>);
 
-    <span class="SCmt">// Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.</span>
+    <span class="SCmt">// Visit all functions we have registered, i.e., all functions with the `Ogl.Extension` attribute.</span>
     <span class="SLgc">visit</span> e <span class="SLgc">in</span> g_Functions
     {
         <span class="SKwd">let</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">TypeInfoFunc</span>) e.type
@@ -8209,7 +8215,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         builderVars.<span class="SFct">appendString</span>(<span class="SStr">");\n}\n\n"</span>)
 
         <span class="SCmt">// Initialize the variable with the getExtensionAddress</span>
-        builderInit.<span class="SFct">appendFormat</span>(<span class="SStr">"\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n"</span>, e.name, typeFunc.name, e.name);
+        builderInit.<span class="SFct">appendFormat</span>(<span class="SStr">"\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n"</span>, 
+                                 e.name, typeFunc.name, e.name);
     }
 
     <span class="SCmt">// Compile !!</span>
