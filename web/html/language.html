@@ -119,7 +119,6 @@
 </ul>
 <li><a href="#_002_000_code_structure_swg">Code structure</a></li>
 <ul>
-<li><a href="#_002_000_code_structure_swg__002_001_overview_swg">Overview</a></li>
 <li><a href="#_002_000_code_structure_swg__002_002_source_code_organization_swg">Source code organization</a></li>
 <li><a href="#_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global declaration order</a></li>
 <li><a href="#_002_000_code_structure_swg__002_004_identifiers_swg">Identifiers</a></li>
@@ -346,7 +345,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>A module can be either a <span class="code-inline">dll</span> (on Windows) or an executable, and a workspace may encompass multiple modules. Therefore, a workspace typically contains both the modules you develop (such as your main executable) and all your dependencies (including any external modules you use). </p>
 <p>In most cases, the entire workspace is compiled together. </p>
 
-<h3 id="_002_000_code_structure_swg__002_001_overview_swg">Overview</h3>
 <h3 id="_002_000_code_structure_swg__002_002_source_code_organization_swg">Source code organization</h3><p>In Swag, all source files use the <span class="code-inline">.swg</span> extension, except for simple scripts, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b>. </p>
 <p>Swag does not support compiling individual source files (with the exception of <span class="code-inline">.swgs</span> script files). Instead, source code is organized within a <b>workspace</b> that contains one or more <b>modules</b>. </p>
 <p>For instance, <span class="code-inline">Std</span> is a workspace that includes all the Swag standard modules. </p>
@@ -2935,7 +2933,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_001_if_swg">Adding Conditions with <span class="code-inline">where</span> </h4>
-<p>You can also add an additional condition to the <span class="code-inline">if</span> statement with a <span class="code-inline">where</span> clause. This clause is evaluated only if the initial test passes. </p>
+<p>When the <span class="code-inline">if</span> has a variable declaration, you can add an additional condition with a <span class="code-inline">where</span> clause. This clause is evaluated only if the initial test passes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>

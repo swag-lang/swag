@@ -80,7 +80,7 @@ The `if` statement will implicitly convert the declared variable to a boolean, e
 
 /**
 # Adding Conditions with `where`
-You can also add an additional condition to the `if` statement with a `where` clause. This clause is evaluated only if the initial test passes.
+When the 'if' has a variable declaration, you can add an additional condition with a `where` clause. This clause is evaluated only if the initial test passes.
 */
 #test
 {
