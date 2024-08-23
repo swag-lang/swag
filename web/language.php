@@ -187,6 +187,7 @@
 <li><a href="#_007_000_functions_swg__007_010_discard_swg">Discard</a></li>
 <li><a href="#_007_000_functions_swg__007_011_retval_swg">Retval</a></li>
 <li><a href="#_007_000_functions_swg__007_012_foreign_swg">Foreign</a></li>
+<li><a href="#_007_000_functions_swg__007_013_special_functions_swg">Special functions</a></li>
 </ul>
 <li><a href="#_008_000_intrinsics_swg">Intrinsics</a></li>
 <ul>
@@ -219,8 +220,7 @@
 <ul>
 <li><a href="#_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr</a></li>
 <li><a href="#_014_000_compile-time_evaluation_swg__014_002_run_swg">Run</a></li>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Special functions</a></li>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">Compiler instructions</a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</a></li>
 </ul>
 <li><a href="#_015_000_code_inspection_swg">Code inspection</a></li>
 <ul>
@@ -6021,6 +6021,56 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Links the 'kernel32.dll' library to the executable, resolving external function calls.</span>
 <span class="SCmp">#foreignlib</span> <span class="SStr">"kernel32"</span></span></div>
 
+<h3 id="_007_000_functions_swg__007_013_special_functions_swg">Special functions</h3><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Main Function (<span class="code-inline">#main</span>) </h4>
+<p>The <span class="code-inline">#main</span> function is the primary entry point for the program, similar to the <span class="code-inline">main()</span>  function in languages like C or C++. This function is unique within each module, meaning  you can only define it <b>once</b> per module.  </p>
+<p>In the context of an executable program, <span class="code-inline">#main</span> is where the program's execution begins.  Any code placed within this function will be the first to execute when the program runs. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
+{
+}</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Handling Program Arguments </h4>
+<p>Unlike the <span class="code-inline">main()</span> function in C, the <span class="code-inline">#main</span> function in this language does not  take arguments directly. Instead, command-line arguments can be retrieved using the  intrinsic <span class="code-inline">@args</span>, which provides a slice containing all the arguments passed to the program. </p>
+<p>Here’s an example demonstrating how to work with command-line arguments: </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
+{
+    <span class="SCmt">// Retrieve the program arguments using the @args intrinsic</span>
+    <span class="SKwd">var</span> myArgs = <span class="SItr">@args</span>()
+    
+    <span class="SCmt">// Determine the number of arguments passed</span>
+    <span class="SKwd">var</span> count = <span class="SItr">@countof</span>(myArgs)
+    
+    <span class="SCmt">// Handle a specific argument, for example, enabling fullscreen mode</span>
+    <span class="SLgc">if</span> myArgs[<span class="SNum">0</span>] == <span class="SStr">"fullscreen"</span>
+    {
+        <span class="SCmt">// Logic to initiate fullscreen mode would go here</span>
+        ...
+    }
+}</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Pre-Main Function (<span class="code-inline">#premain</span>) </h4>
+<p>The <span class="code-inline">#premain</span> function is executed after all <span class="code-inline">#init</span> functions across all modules have  completed, but before the <span class="code-inline">#main</span> function begins.  </p>
+<p>This function is typically used for tasks that need to be performed after module  initialization, yet before the main program logic is executed. It's useful for setup  tasks that depend on the initial state of the program being fully established. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#premain</span>
+{
+}</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Initialization Function (<span class="code-inline">#init</span>) </h4>
+<p>The <span class="code-inline">#init</span> function is executed at runtime during the module initialization phase.  You can define multiple <span class="code-inline">#init</span> functions within the same module, allowing different  parts of the module to initialize independently. </p>
+<p>The execution order of <span class="code-inline">#init</span> functions within the same module is undefined,  so you should not rely on a specific sequence of initialization tasks. However,  all <span class="code-inline">#init</span> functions will execute before any code in the <span class="code-inline">#main</span> or <span class="code-inline">#premain</span> functions. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#init</span>
+{
+}</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Drop Function (<span class="code-inline">#drop</span>) </h4>
+<p>The <span class="code-inline">#drop</span> function acts as a cleanup function and is called when a module is unloaded  at runtime. It serves as the counterpart to <span class="code-inline">#init</span>, ensuring that any resources allocated  during initialization are properly released. </p>
+<p>Just like <span class="code-inline">#init</span>, you can define multiple <span class="code-inline">#drop</span> functions within a module, and  the order of their execution is undefined. However, <span class="code-inline">#drop</span> functions are guaranteed  to run in the reverse order of their corresponding <span class="code-inline">#init</span> functions, ensuring a  logical cleanup process. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#drop</span>
+{
+}</span></div>
+<h4 id="_007_000_functions_swg__007_013_special_functions_swg">Test Function (<span class="code-inline">#test</span>) </h4>
+<p>The <span class="code-inline">#test</span> function is a specialized function designed for testing purposes.  It is typically used within the <span class="code-inline">tests/</span> folder of your workspace and is executed  only when the program is run in test mode. </p>
+<p>This function is crucial for validating the correctness and functionality of your  code in a controlled environment before it is deployed or released. It allows you  to define test cases and assertions to ensure that your code behaves as expected. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+}</span></div>
+
 <h2 id="_008_000_intrinsics_swg">Intrinsics</h2><h3 id="_008_000_intrinsics_swg">Intrinsics in Swag </h3>
 <p>Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to  specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with <span class="code-inline">@</span>,  which is reserved exclusively for these functions. </p>
 <p>This document provides a categorized list of all intrinsics available in Swag. </p>
@@ -7512,30 +7562,34 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
 <p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation, ensuring that  NaNs do not propagate through calculations. </p>
 
-<h2 id="_014_000_compile-time_evaluation_swg">Compile-time evaluation</h2><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
+<h2 id="_014_000_compile-time_evaluation_swg">Compile-time evaluation</h2><p>One of the most powerful features of Swag is its ability to execute <b>everything</b> at compile-time.  This capability allows Swag to function not only as a compiled language but also as a scripting  language, where the compiler effectively acts as an interpreter. This flexibility enables developers  to leverage compile-time execution for tasks that traditionally require runtime evaluation,  resulting in more efficient and versatile code. </p>
 
 <h3 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr</h3><h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Function Evaluation with <span class="code-inline">#[Swag.ConstExpr]</span> </h4>
-<p>The attribute <span class="code-inline">#[Swag.ConstExpr]</span> is used to mark functions that can be evaluated at compile time. This tells the compiler that the function's result can be determined during compilation, rather than at runtime, if the necessary conditions are met. </p>
-<p>This feature is particularly useful for functions that return constant values or perform operations that are known ahead of time, allowing the compiler to optimize the code by eliminating unnecessary runtime calculations. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisDebug' is marked with 'Swag.ConstExpr', meaning it can be</span>
-<span class="SCmt">// evaluated at compile time. Since the function always returns `true`, this value</span>
-<span class="SCmt">// is determined during compilation.</span>
+<p>The <span class="code-inline">#[Swag.ConstExpr]</span> attribute marks a function as capable of being evaluated during compile time.  This enables the compiler to resolve the function's result at compile time, provided that all inputs  are also known at compile time. This approach significantly optimizes the code by precomputing values  and eliminating the need for these calculations at runtime.  </p>
+<p>Functions marked with <span class="code-inline">#[Swag.ConstExpr]</span> are ideal for returning constant values or performing operations  that are determined before runtime, thereby improving efficiency. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisDebug' is annotated with 'Swag.ConstExpr', indicating that </span>
+<span class="SCmt">// it can be evaluated during the compilation phase. Given that this function </span>
+<span class="SCmt">// consistently returns `true`, the result is established at compile time.</span>
 <span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">isThisDebug</span>() =&gt; <span class="SKwd">true</span>
 
-<span class="SCmt">// This conditional block demonstrates how 'isThisDebug' can be used in a compile-time</span>
-<span class="SCmt">// context. Since 'isThisDebug' returns `true`, the condition `isThisDebug() == false`</span>
-<span class="SCmt">// will evaluate to `false`, and the compiler will never compile the code inside the block.</span>
+<span class="SCmt">// This conditional block demonstrates how 'isThisDebug' can be utilized in a </span>
+<span class="SCmt">// compile-time context. Since 'isThisDebug' invariably returns `true`, the </span>
+<span class="SCmt">// condition `isThisDebug() == false` evaluates to `false`, and thus the compiler </span>
+<span class="SCmt">// will exclude the code inside the block from the final compilation.</span>
 <span class="SCmp">#if</span> <span class="SFct">isThisDebug</span>() == <span class="SKwd">false</span>
 {
     <span class="SCmp">#error</span> <span class="SStr">"this should not be called!"</span>
 }</span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Recursive Compile-Time Evaluation </h4>
-<p>The <span class="code-inline">#[Swag.ConstExpr]</span> attribute can also be applied to more complex functions, such as those that perform recursion. This allows such functions to be fully evaluated at compile time, reducing runtime overhead. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>The <span class="code-inline">#[Swag.ConstExpr]</span> attribute can also be applied to more complex functions,  including those that perform recursion. This allows such recursive functions to  be entirely evaluated at compile time, effectively reducing runtime overhead  and improving overall performance. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// This function 'factorial' calculates the factorial of a given number recursively. </span>
+<span class="SCmt">// By marking it with 'Swag.ConstExpr', the factorial is computed during compilation, </span>
+<span class="SCmt">// avoiding the need for runtime computation.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 {
-    <span class="SCmt">// Base case: if x is 1, return 1</span>
+    <span class="SCmt">// Base case: return 1 when x equals 1</span>
     <span class="SLgc">if</span> x == <span class="SNum">1</span>:
         <span class="SLgc">return</span> <span class="SNum">1</span>
     
@@ -7543,37 +7597,42 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">return</span> x * <span class="SFct">factorial</span>(x - <span class="SNum">1</span>)
 }
 
-<span class="SCmt">// The `#assert` directive is used here to ensure that the result of 'factorial(4)' is 24.</span>
-<span class="SCmt">// Since 'factorial' is marked as 'Swag.ConstExpr', this calculation is performed during</span>
-<span class="SCmt">// compilation, and the assertion is checked before the code is even run.</span>
+<span class="SCmt">// The `#assert` directive ensures that 'factorial(4)' equals 24. As 'factorial' </span>
+<span class="SCmt">// is evaluated at compile time, this assertion is verified before execution begins.</span>
 <span class="SCmp">#assert</span> <span class="SFct">factorial</span>(<span class="SNum">4</span>) == <span class="SNum">24</span> <span class="SCmt">// Evaluated at compile time</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Constant Expressions </h4>
-<p>In this example, <span class="code-inline">#[Swag.ConstExpr]</span> is used to define a simple constant expression. This function returns a fixed value, which the compiler can evaluate during compilation. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>In this section, <span class="code-inline">#[Swag.ConstExpr]</span> is utilized to define a straightforward constant  expression. The function returns a fixed value that the compiler resolves during compilation. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'getMagicNumber' function returns a constant value of 42. </span>
+<span class="SCmt">// Since it's a compile-time constant expression, this value is resolved at compile time.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">getMagicNumber</span>() -&gt; <span class="STpe">s32</span>
 {
     <span class="SLgc">return</span> <span class="SNum">42</span>
 }
 
-<span class="SCmt">// Since 'getMagicNumber()' is a constant expression, this assertion is checked at compile time.</span>
+<span class="SCmt">// The assertion checks that 'getMagicNumber()' equals 42, verified at compile time.</span>
 <span class="SCmp">#assert</span> <span class="SFct">getMagicNumber</span>() == <span class="SNum">42</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Conditional Logic </h4>
-<p>Here, the function <span class="code-inline">isEven</span> checks if a given number is even. By marking it with <span class="code-inline">#[Swag.ConstExpr]</span>, the compiler can evaluate this logic at compile time. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>This example illustrates how the function <span class="code-inline">isEven</span> determines if a number is even.  By marking it with <span class="code-inline">#[Swag.ConstExpr]</span>, the compiler can perform this logic during  the compilation phase. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'isEven' function checks whether a number is even. </span>
+<span class="SCmt">// With the 'Swag.ConstExpr' annotation, this check occurs at compile time.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">isEven</span>(x: <span class="STpe">s32</span>) -&gt; <span class="STpe">bool</span>
 {
     <span class="SLgc">return</span> x % <span class="SNum">2</span> == <span class="SNum">0</span>
 }
 
-<span class="SCmt">// This block will only compile if the number 4 is even, which it is. So, the error</span>
-<span class="SCmt">// will not be triggered, and the code compiles successfully.</span>
+<span class="SCmt">// This block only compiles if the number 4 is even. Since 4 is indeed even, </span>
+<span class="SCmt">// the error is not triggered, and the code compiles successfully.</span>
 <span class="SCmp">#if</span> <span class="SFct">isEven</span>(<span class="SNum">4</span>) == <span class="SKwd">false</span>
 {
     <span class="SCmp">#error</span> <span class="SStr">"4 should be even!"</span>
 }</span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Slice Operations </h4>
-<p>In this example, we use <span class="code-inline">#[Swag.ConstExpr]</span> to calculate the sum of elements in an array. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>In this example, <span class="code-inline">#[Swag.ConstExpr]</span> is used to calculate the sum of elements within an array.  The summation is performed during the compilation, optimizing runtime performance. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'arraySum' function calculates the sum of all elements in an array. </span>
+<span class="SCmt">// Since it is a compile-time function, the sum is computed during the compilation phase.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">arraySum</span>(arr: <span class="SKwd">const</span> [..] <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
@@ -7582,12 +7641,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">return</span> sum
 }
 
-<span class="SCmt">// The sum of this array is computed at compile time, allowing the program to skip</span>
-<span class="SCmt">// runtime calculation and simply use the precomputed result.</span>
+<span class="SCmt">// The assertion verifies that the sum of the array [1, 2, 3, 4, 5] equals 15. </span>
+<span class="SCmt">// This is checked and confirmed at compile time.</span>
 <span class="SCmp">#assert</span> <span class="SFct">arraySum</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]) == <span class="SNum">15</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Fibonacci Sequence </h4>
-<p>This example demonstrates how <span class="code-inline">#[Swag.ConstExpr]</span> can be used with a recursive function to compute the Fibonacci sequence at compile time. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>This example showcases how <span class="code-inline">#[Swag.ConstExpr]</span> enables a recursive function to  compute the Fibonacci sequence at compile time, optimizing the execution. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'fibonacci' function calculates the nth Fibonacci number recursively. </span>
+<span class="SCmt">// The result is computed during the compilation when marked with 'Swag.ConstExpr'.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">fibonacci</span>(n: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 {
     <span class="SLgc">if</span> n &lt;= <span class="SNum">1</span>:
@@ -7595,34 +7656,41 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">return</span> <span class="SFct">fibonacci</span>(n - <span class="SNum">1</span>) + <span class="SFct">fibonacci</span>(n - <span class="SNum">2</span>)
 }
 
-<span class="SCmt">// The 5th Fibonacci number is 5, and this value is computed at compile time.</span>
+<span class="SCmt">// The 5th Fibonacci number, which is 5, is calculated during compilation and asserted here.</span>
 <span class="SCmp">#assert</span> <span class="SFct">fibonacci</span>(<span class="SNum">5</span>) == <span class="SNum">5</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Bitwise Operations </h4>
-<p>Bitwise operations can also be performed at compile time using <span class="code-inline">#[Swag.ConstExpr]</span>. In this example, we use it to check if a specific bit is set in a number. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<p>Bitwise operations can also be evaluated at compile time using <span class="code-inline">#[Swag.ConstExpr]</span>.  This example demonstrates how to check if a specific bit is set within a number. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'isBitSet' function checks whether a particular bit is set in a number. </span>
+<span class="SCmt">// With 'Swag.ConstExpr', this operation is performed at compile time.</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">isBitSet</span>(num: <span class="STpe">s32</span>, bit: <span class="STpe">s32</span>) -&gt; <span class="STpe">bool</span>
 {
     <span class="SLgc">return</span> (num & (<span class="SNum">1</span> &lt;&lt; bit)) != <span class="SNum">0</span>
 }
 
-<span class="SCmt">// This assertion checks if the 3rd bit (0-indexed) in the number 8 is set. It is,</span>
-<span class="SCmt">// because 8 in binary is 1000, so this check is evaluated at compile time.</span>
+<span class="SCmt">// The assertion verifies that the 3rd bit (0-indexed) of the number 8 is set. </span>
+<span class="SCmt">// Since 8 in binary is 1000, the check is resolved during compilation.</span>
 <span class="SCmp">#assert</span> <span class="SFct">isBitSet</span>(<span class="SNum">8</span>, <span class="SNum">3</span>) == <span class="SKwd">true</span></span></div>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Run</h3><h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Force compile-time call </h4>
-<p><span class="code-inline">#run</span> can be used to call a function that is not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// This time 'isThisRelease' is not marked with 'Swag.ConstExpr'</span>
+<h3 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Run</h3><h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Force Compile-Time Execution with <span class="code-inline">#run</span> </h4>
+<p>The <span class="code-inline">#run</span> directive allows you to invoke a function at compile time, even if that function  is not marked with the <span class="code-inline">#[Swag.ConstExpr]</span> attribute. This powerful feature enables  compile-time execution of any function, regardless of its original design or intent,  whether it comes from external modules, system libraries, or is defined within your code. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisRelease' is not marked with 'Swag.ConstExpr', which means</span>
+<span class="SCmt">// it is not specifically prepared for compile-time evaluation.</span>
 <span class="SKwd">func</span> <span class="SFct">isThisRelease</span>() =&gt; <span class="SKwd">true</span>
 
-<span class="SCmt">// But this call is still valid because we force the compile time execution with '#run'</span>
+<span class="SCmt">// However, by using the `#run` directive, we force the function to be executed </span>
+<span class="SCmt">// at compile time. In this example, since 'isThisRelease()' returns `true`, the </span>
+<span class="SCmt">// condition `isThisRelease() == false` evaluates to `false`, and the code block </span>
+<span class="SCmt">// is excluded from the compilation process.</span>
 <span class="SCmp">#if</span> <span class="SFct">#run</span> <span class="SFct">isThisRelease</span>() == <span class="SKwd">false</span>
 {
-    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
+    <span class="SCmp">#error</span> <span class="SStr">"this should not be called!"</span>
 }</span></div>
-<p>So that means that you can call everything compile-time, even a function from an external module, a system function etc. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// This function was not 'prepared' for compile-time evaluation, because there's no</span>
-<span class="SCmt">// specific attribute</span>
-<span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
+<p>This capability allows you to execute any function at compile time, whether it  is a system function, a function from an external module, or a user-defined function. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'sum' is a regular function that sums a variable number of integers.</span>
+<span class="SCmt">// It is not explicitly marked for compile-time evaluation, as it lacks the </span>
+<span class="SCmt">// 'Swag.ConstExpr' attribute.</span>
+<span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...) -&gt; <span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
     <span class="SLgc">visit</span> v <span class="SLgc">in</span> values:
@@ -7630,15 +7698,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">return</span> result
 }
 
-<span class="SCmt">// But you can call it compile-time with '#run'</span>
+<span class="SCmt">// Despite the absence of 'Swag.ConstExpr', we can still execute 'sum' at compile time </span>
+<span class="SCmt">// using the `#run` directive. The expression `#run sum(1, 2, 3, 4) + 10` is evaluated </span>
+<span class="SCmt">// during compilation, and the result is assigned to 'SumValue'.</span>
 <span class="SKwd">const</span> <span class="SCst">SumValue</span> = <span class="SFct">#run</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>) + <span class="SNum">10</span>
 <span class="SCmp">#assert</span> <span class="SCst">SumValue</span> == <span class="SNum">20</span></span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">#run block </h4>
-<p><span class="code-inline">#run</span> is also a special function that will be called by the compiler. You can have as many <span class="code-inline">#run</span> block as you want, but be aware that the execution order in that case is undefined. </p>
-<p>It can be used to precompute some global values for example. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// A global variable we would like to initialize in a 'complexe' way.</span>
+<h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg"><span class="code-inline">#run</span> Block </h4>
+<p>The <span class="code-inline">#run</span> directive can also be used in a block format. When placed inside a block,  <span class="code-inline">#run</span> enables you to execute complex logic or initialize global variables at compile time.  Multiple <span class="code-inline">#run</span> blocks can exist in a program, but the execution order is undefined,  so care must be taken when relying on the order of these blocks. </p>
+<p>An example of using <span class="code-inline">#run</span> to precompute global values at compile time. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// A global array 'G' that we intend to initialize using a more complex logic.</span>
 <span class="SKwd">var</span> <span class="SCst">G</span>: [<span class="SNum">5</span>] <span class="STpe">f32</span> = <span class="SKwd">undefined</span></span></div>
-<p>Initialize <span class="code-inline">G</span> with <span class="code-inline">[1,2,4,8,16]</span> at compile time. </p>
+<p>The <span class="code-inline">#run</span> block below initializes the global array <span class="code-inline">G</span> with the values <span class="code-inline">[1, 2, 4, 8, 16]</span>  at compile time, ensuring that the array is fully prepared before runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SKwd">var</span> value = <span class="SNum">1</span>'<span class="STpe">f32</span>
@@ -7648,7 +7718,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         value *= <span class="SNum">2</span>
     }
 }</span></div>
-<p><span class="code-inline">#test</span> blocks are executed after <span class="code-inline">#run</span>, even at compile time (during testing). So we can test the values of <span class="code-inline">G</span> here. </p>
+<p><span class="code-inline">#test</span> blocks are executed after <span class="code-inline">#run</span> blocks, even when run at compile time  (during testing). This allows you to validate the correctness of compile-time  calculations, as demonstrated below by verifying the contents of <span class="code-inline">G</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
@@ -7657,9 +7727,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>)
     <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">4</span>] == <span class="SNum">16</span>)
 }</span></div>
-<p>This is where we can see that Swag can be used as a scripting language, because if you have a project with just some <span class="code-inline">#run</span> blocks, you have in fact a... script. </p>
-<h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">#run expression </h4>
-<p><span class="code-inline">#run</span> can also be used as an expression block. The return type is deduced from the <span class="code-inline">return</span> statement. </p>
+<p>The flexibility of Swag allows it to function as a scripting language.  In fact, if your project only contains <span class="code-inline">#run</span> blocks, you are effectively  writing a script that runs during compilation. </p>
+<h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg"><span class="code-inline">#run</span> Expression </h4>
+<p>The <span class="code-inline">#run</span> directive can also be used as an expression block. The return type  of the block is inferred from the <span class="code-inline">return</span> statement within it. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">Value</span> = <span class="SFct">#run</span>
@@ -7667,14 +7737,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">var</span> result: <span class="STpe">f32</span>
         <span class="SLgc">loop</span> <span class="SNum">10</span>:
             result += <span class="SNum">1</span>
-        <span class="SLgc">return</span> result <span class="SCmt">// 'Value' will be of type 'f32'</span>
+        <span class="SLgc">return</span> result <span class="SCmt">// The inferred type of 'Value' will be 'f32'.</span>
     }
     <span class="SCmp">#assert</span> <span class="SCst">Value</span> == <span class="SNum">10.0</span>
 }</span></div>
-<p>Can also be used to initialize a static array. </p>
+<p>This technique can also be utilized to initialize a static array. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">N</span>           = <span class="SNum">4</span>
+    <span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">4</span>
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
     {
         <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
@@ -7688,8 +7758,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>
 }</span></div>
-<p>Can also be used to initialize a string. </p>
-<p>This is legit to return a string that is constructed on the stack, because the <span class="code-inline">#run</span> block will make a copy. Remember that a string is a pointer to the bytes (in UTF8 format) and a length. </p>
+<p>String initialization is another use case for <span class="code-inline">#run</span> blocks. The block  below demonstrates how to construct a string at compile time. This is safe  because the <span class="code-inline">#run</span> block creates a copy of the string, ensuring it persists  beyond the block's execution. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">MyString</span>: <span class="STpe">string</span> = <span class="SFct">#run</span>
@@ -7702,7 +7771,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
     <span class="SCmp">#assert</span> <span class="SCst">MyString</span> == <span class="SStr">"abc"</span>
 }</span></div>
-<p>Can also be used to initialize a plain old data struct. Note that you can also force the struct to be considered as a POD by tagging it with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
+<p><span class="code-inline">#run</span> blocks can also initialize plain old data (POD) structs. If necessary,  you can enforce POD status on a struct by tagging it with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">RGB</span> { r, g, b: <span class="STpe">u8</span> }
@@ -7717,111 +7786,71 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SCst">White</span>.r == <span class="SNum">255</span> <span class="SLgc">and</span> <span class="SCst">White</span>.g == <span class="SNum">255</span> <span class="SLgc">and</span> <span class="SCst">White</span>.b == <span class="SNum">255</span>
 }</span></div>
 <div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can also convert a complex struct (which uses the heap for example), as long the struct implements <span class="code-inline">opCount</span> and <span class="code-inline">opSlice</span>. In that case, the resulting type will be a static array. The compiler will call <span class="code-inline">opCount</span> to get the size of the array, and <span class="code-inline">opSlice</span> to initialize its content. If the struct implements <span class="code-inline">opDrop</span>, then it will be called after the conversion to an array has been done. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> It is possible to convert a complex struct (e.g., one that uses the heap) into  a static array, provided the struct implements the <span class="code-inline">opCount</span> and <span class="code-inline">opSlice</span> methods.  In this case, the resulting type will be a static array. The compiler will invoke  <span class="code-inline">opCount</span> to determine the array size and <span class="code-inline">opSlice</span> to initialize its content.  If the struct also implements <span class="code-inline">opDrop</span>, it will be called after the array  conversion is complete. </p>
 </div>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Special functions</h3><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Main Function (#main) </h4>
-<p>The <span class="code-inline">#main</span> function serves as the entry point of the program. It is analogous to the <span class="code-inline">main()</span> function in languages like C or C++. However, unlike C, this function can only be defined <b>once</b> per module.  </p>
-<p>This function is only meaningful in the context of an executable program. It is where the program's execution begins. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
-{
-}</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Handling Program Arguments </h4>
-<p>Unlike the C function <span class="code-inline">main()</span>, the <span class="code-inline">#main</span> function in this language does not take arguments directly. However, you can retrieve command-line arguments using the intrinsic <span class="code-inline">@args</span>, which returns a slice containing all the program arguments. </p>
-<p>Here's an example of how you might use it: </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
-{
-    <span class="SCmt">// Retrieve the program arguments</span>
-    <span class="SKwd">var</span> myArgs = <span class="SItr">@args</span>()
-    
-    <span class="SCmt">// Get the count of arguments</span>
-    <span class="SKwd">var</span> count = <span class="SItr">@countof</span>(myArgs)
-    
-    <span class="SCmt">// Example of handling a specific argument</span>
-    <span class="SLgc">if</span> myArgs[<span class="SNum">0</span>] == <span class="SStr">"fullscreen"</span>
-    {
-        <span class="SCmt">// Logic for fullscreen mode</span>
-        ...
-    }
-}</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Pre-Main Function (#premain) </h4>
-<p>The <span class="code-inline">#premain</span> function is invoked after all the modules have executed their <span class="code-inline">#init</span> functions, but before the <span class="code-inline">#main</span> function is called.  </p>
-<p>This is typically used to perform any setup that must occur after initialization but before the main program logic begins. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#premain</span>
-{
-}</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Initialization Function (#init) </h4>
-<p>The <span class="code-inline">#init</span> function is called at runtime during the module initialization phase. You can define multiple <span class="code-inline">#init</span> functions within the same module, allowing you to perform different initialization tasks. </p>
-<p>However, the order in which these functions execute within the same module is undefined. They will run as the module is loaded. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#init</span>
-{
-}</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Drop Function (#drop) </h4>
-<p>The <span class="code-inline">#drop</span> function is the counterpart to <span class="code-inline">#init</span>. It is called when a module is unloaded at runtime.  </p>
-<p>You can define multiple <span class="code-inline">#drop</span> functions, just like <span class="code-inline">#init</span>, to handle different cleanup tasks. The execution order within the same module is also undefined, but <span class="code-inline">#drop</span> functions are guaranteed to run in the reverse order of the corresponding <span class="code-inline">#init</span> functions. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#drop</span>
-{
-}</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_special_functions_swg">Test Function (#test) </h4>
-<p>The <span class="code-inline">#test</span> function is a special function used within the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> functions are executed only when the program is run in test mode. </p>
-<p>This function is essential for validating the functionality of your code in a controlled environment before deployment. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-}</span></div>
-
-<h3 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">Compiler instructions</h3><h4 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">#assert </h4>
-<p><span class="code-inline">#assert</span> is a static assert (at compile time). </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span></span></div>
-<p><span class="code-inline">@defined(SYMBOL)</span> returns true, at compile time, if the given symbol exists in the current context. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>)
-<span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)
-<span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span></span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">#if/#else </h4>
-<p>A static <span class="code-inline">#if/#elif/#else</span>, with an expression that can be evaluated at compile time. </p>
+<h3 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</h3><h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#assert</span> </h4>
+<p>The <span class="code-inline">#assert</span> directive is used to perform a static assertion during the compilation process.  It ensures that a particular condition is true at compile time. If the condition evaluates to <span class="code-inline">false</span>,  compilation will fail, providing an error message. This is particularly useful for enforcing  compile-time invariants and validating assumptions within your code. </p>
+<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span> <span class="SCmt">// This assertion always passes, so no error is triggered.</span></span></div>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">@defined(SYMBOL)</span> </h4>
+<p>The <span class="code-inline">@defined(SYMBOL)</span> intrinsic checks if a given symbol exists within the current context  at compile time. It returns <span class="code-inline">true</span> if the symbol is defined, and <span class="code-inline">false</span> otherwise. This is  useful for conditional compilation, allowing you to verify the existence of variables,  constants, or functions before using them. </p>
+<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>) <span class="SCmt">// Ensures that the symbol 'DOES_NOT_EXISTS' is not defined.</span>
+<span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)            <span class="SCmt">// Confirms that the symbol 'Global' is defined.</span>
+<span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span>                      <span class="SCmt">// Define a global variable 'Global'.</span></span></div>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#if</span>/<span class="code-inline">#elif</span>/<span class="code-inline">#else</span> </h4>
+<p>The <span class="code-inline">#if</span>/<span class="code-inline">#elif</span>/<span class="code-inline">#else</span> directives are used for static conditional compilation.  They evaluate expressions at compile time and include or exclude code based on the result.  This mechanism allows you to compile different sections of code based on predefined constants  or compile-time conditions. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">DEBUG</span>   = <span class="SNum">1</span>
 <span class="SKwd">const</span> <span class="SCst">RELEASE</span> = <span class="SNum">0</span>
+
 <span class="SCmp">#if</span> <span class="SCst">DEBUG</span>
 {
+    <span class="SCmt">// This block is compiled because DEBUG is set to 1.</span>
 }
 <span class="SCmp">#elif</span> <span class="SCst">RELEASE</span>
 {
+    <span class="SCmt">// This block would be compiled if RELEASE were true and DEBUG were false.</span>
 }
 <span class="SCmp">#else</span>
 {
+    <span class="SCmt">// This block is compiled if neither DEBUG nor RELEASE is true.</span>
 }</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">#error/#warning </h4>
-<p><span class="code-inline">#error</span> to raise a compile-time error, and <span class="code-inline">#warning</span> to raise a compile-time warning. </p>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#error</span>/<span class="code-inline">#warning</span> </h4>
+<p>The <span class="code-inline">#error</span> and <span class="code-inline">#warning</span> directives allow you to raise compile-time errors and warnings,  respectively. <span class="code-inline">#error</span> will cause the compilation to fail with a custom error message,  while <span class="code-inline">#warning</span> will produce a warning message during compilation but will not stop the process.  These directives are useful for enforcing compile-time checks and providing informative messages  during the build process. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#if</span> <span class="SKwd">false</span>
 {
-    <span class="SCmp">#error</span> <span class="SStr">"this is an error"</span>
-    <span class="SCmp">#warning</span> <span class="SStr">"this is a warning"</span>
+    <span class="SCmp">#error</span> <span class="SStr">"this is an error"</span>       <span class="SCmt">// Raises a compile-time error if this block is reached.</span>
+    <span class="SCmp">#warning</span> <span class="SStr">"this is a warning"</span>    <span class="SCmt">// Raises a compile-time warning if this block is reached.</span>
 }</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">#global </h4>
-<p>A bunch of <span class="code-inline">#global</span> can be put <b>at the top</b> of a source file. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Skip the content of the file (but must be a valid swag file)</span>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#global</span> </h4>
+<p>The <span class="code-inline">#global</span> directive can be placed at the top of a source file to apply global settings  or attributes across the entire file. These directives control various aspects of the  compilation and symbol visibility for the entire file. </p>
+<p>Examples: </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Skip the content of the file (but it must be a valid Swag file).</span>
 <span class="SCmp">#global</span> skip
 
-<span class="SCmt">// All symbols in the file will be public/internal</span>
+<span class="SCmt">// All symbols in the file will be public (accessible from other modules).</span>
 <span class="SCmp">#global</span> <span class="SKwd">public</span>
+
+<span class="SCmt">// All symbols in the file will be internal (accessible only within the same module).</span>
 <span class="SCmp">#global</span> <span class="SKwd">internal</span>
 
-<span class="SCmt">// All symbols in the file will go in the namespace 'Toto'</span>
+<span class="SCmt">// All symbols in the file will be placed within the namespace 'Toto'.</span>
 <span class="SCmp">#global</span> <span class="SKwd">namespace</span> <span class="SCst">Toto</span>
 
-<span class="SCmt">// A #if for the whole file</span>
+<span class="SCmt">// Conditional compilation for the entire file.</span>
 <span class="SCmp">#global</span> <span class="SCmp">#if</span> <span class="SCst">DEBUG</span> == <span class="SKwd">true</span>
 
-<span class="SCmt">// Some attributes can be assigned to the full file</span>
+<span class="SCmt">// Apply attributes to all declarations in the file.</span>
 <span class="SCmp">#global</span> <span class="SAtr">#[Swag.Safety("", true)]</span>
 
-<span class="SCmt">// The file will be exported for external usage</span>
-<span class="SCmt">// It's like putting everything in public, except that the file will</span>
-<span class="SCmt">// be copied in its totality in the public folder</span>
+<span class="SCmt">// Export the entire file for external usage.</span>
+<span class="SCmt">// This is similar to making everything public, but the file will also be copied </span>
+<span class="SCmt">// in its entirety to the public folder.</span>
 <span class="SCmp">#global</span> export</span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_004_compiler_instructions_swg">#foreignlib </h4>
-<p>Link with a given external library. </p>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#foreignlib</span> </h4>
+<p>The <span class="code-inline">#foreignlib</span> directive is used to link with an external library during the compilation  process. This allows your program to utilize functions, variables, and resources defined  in the external library. The library name should be provided as a string. </p>
+<p>Example: </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></div>
+<p>This example links the program with the "windows.lib" library, allowing the use of Windows  API functions and resources defined within that library. </p>
 
 <h2 id="_015_000_code_inspection_swg">Code inspection</h2><h3 id="_015_000_code_inspection_swg"><span class="code-inline">#message</span> Function </h3>
 <p><span class="code-inline">#message</span> is a special function that will be called by the compiler when certain events occur during the build process. The parameter of <span class="code-inline">#message</span> is a mask that tells the compiler when to trigger the function. This allows you to hook into specific compilation stages and perform custom actions or checks. </p>
