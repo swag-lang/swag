@@ -1,7 +1,7 @@
 /**
 # The `any` Type in Swag
 
-`any` is a specific type in Swag that can store values of any other type.
+`any` is a versatile type in Swag that can reference values of any other type. This allows for dynamic type handling within your code.
 
 > WARNING:
 > `any` is **not a variant**. It's a dynamically typed **reference** to an existing value. This means that `any` does not store a copy of the value, but rather a reference to the actual value, along with its type information.
@@ -9,12 +9,12 @@
 
 #test
 {
-    var a: any    // Declare a variable of type 'any'
+    var a: any                        // Declare a variable of type 'any'
 
     // Store an 's32' literal value in the 'any'
     a = 6
 
-    // To access the value stored inside 'any', you need to cast it to the desired type.
+    // Access the value stored inside 'any' by casting it to the desired type.
     @assert(cast(s32) a == 6)
 
     // Now store a string instead of the 's32' value
@@ -29,52 +29,56 @@
 /**
 # Working with `any` and Pointers
 
-`any` is effectively a pointer to the value it references, along with a `typeinfo` that describes the type of the value. You can use `@dataof` to retrieve the pointer to the actual value.
+`any` acts as a reference to the value it holds, alongside the `typeinfo` that describes the value's type. You can use `@dataof` to obtain the pointer to the actual value.
 */
+
 #test
 {
-    let a: any = 6                         // Store an s32 value in 'a'
-    let ptr = cast(const *s32) @dataof(a)  // Retrieve the pointer to the stored value
-    @assert(dref ptr == 6)                 // Dereference the pointer to get the value
+    let a: any = 6                          // Store an s32 value in 'a'
+    let ptr = cast(const *s32) @dataof(a)   // Retrieve the pointer to the stored value
+    @assert(dref ptr == 6)                  // Dereference the pointer to get the value
 }
 
 /**
 # Type Information and `any`
 
-When you use `@typeof` on an `any`, it will return the type `any` itself, as `any` is the type of the reference. However, `@kindof` gives you the actual underlying type of the value stored in `any`. Note that `@kindof` is evaluated at runtime.
+When `@typeof` is used on an `any`, it returns `any` as the type because `any` is the type of the reference. To obtain the underlying type of the value stored in `any`, use `@kindof`, which is evaluated at runtime.
 */
+
 #test
 {
-    var a: any = "string"              // Store a string in 'a'
-    #assert @typeof(a) == any          // The type of 'a' is 'any'
-    @assert(@kindof(a) == string)      // The underlying type of the value is 'string'
+    var a: any = "string"             // Store a string in 'a'
+    #assert @typeof(a) == any         // The type of 'a' is 'any'
+    @assert(@kindof(a) == string)     // The underlying type of the value is 'string'
 
-    a = true                           // Change the stored value to a bool
-    @assert(@kindof(a) == bool)        // Now the underlying type is 'bool'
+    a = true                          // Change the stored value to a bool
+    @assert(@kindof(a) == bool)       // Now the underlying type is 'bool'
 }
 
 /**
 # Retrieving Values from `any`
 
-You can retrieve the value stored in an `any` either directly or as a constant reference. This flexibility allows you to work with the value in whatever way best suits your needs.
+You can retrieve the value stored in an `any` either directly or as a constant reference. This provides flexibility in how you interact with the stored value.
 */
+
 #test
 {
-    let a: any = 42                    // Store an s32 value in 'a'
-    #assert @typeof(a) == any          // The type of 'a' is 'any'
-    @assert(@kindof(a) == s32)         // The underlying type is 's32'
+    let a: any = 42                   // Store an s32 value in 'a'
+    #assert @typeof(a) == any         // The type of 'a' is 'any'
+    @assert(@kindof(a) == s32)        // The underlying type is 's32'
 
-    let b = cast(s32) a                // Get the value itself
+    let b = cast(s32) a               // Get the value itself
     @assert(b == 42)
-    let c = cast(const &s32) a         // Get a constant reference to the value
+    let c = cast(const &s32) a        // Get a constant reference to the value
     @assert(c == 42)
 }
 
 /**
 # Arrays of `any`
 
-You can also create arrays that contain multiple types using `any`. This allows for a heterogeneous collection where each element can be of a different type. This is useful in cases where you need to store and manipulate data of various types in a single structure.
+You can create arrays containing multiple types using `any`. This allows you to maintain a heterogeneous collection where each element can be of a different type, enabling you to manage and manipulate data of various types within a single structure.
 */
+
 #test
 {
     var array: [] any = [true, 2, 3.0, "4"]  // An array containing different types
@@ -92,46 +96,48 @@ You can also create arrays that contain multiple types using `any`. This allows 
 /**
 # Nullability of `any`
 
-An `any` value can be set to null and tested against null, just like pointers or other nullable types. This feature allows you to handle cases where a value may or may not be set, providing flexibility in managing optional values.
+An `any` value can be set to null and tested against null, similar to pointers or other nullable types. This allows for flexible handling of cases where a value may or may not be set, providing a robust approach to managing optional values.
 */
+
 #test
 {
-    var x: any                          // Declare an 'any' type variable
-    @assert(x == null)                  // Initially, 'x' is null
+    var x: any                         // Declare an 'any' type variable
+    @assert(x == null)                 // Initially, 'x' is null
 
-    x = 6                               // Store an s32 value in 'x'
-    @assert(x != null)                  // Now 'x' holds a value
+    x = 6                              // Store an s32 value in 'x'
+    @assert(x != null)                 // Now 'x' holds a value
     @assert(cast(s32) x == 6)
 
-    x = "string"                        // Change the stored value to a string
+    x = "string"                       // Change the stored value to a string
     @assert(x != null)
     @assert(cast(string) x == "string")
 
-    x = null                            // Set 'x' back to null
+    x = null                           // Set 'x' back to null
     @assert(x == null)
 }
 
 /**
 # Type Checking with `any`
 
-An `any` value can be tested against a type using `==` and `!=`. This effectively calls `@kindof` to retrieve the underlying type for comparison. This capability is useful when you need to ensure that the value inside `any` is of a specific type before performing operations on it.
+An `any` value can be tested against a type using `==` and `!=`. This effectively uses `@kindof` to retrieve the underlying type for comparison. This is particularly useful when you need to confirm the type of the value inside `any` before performing type-specific operations.
 */
+
 #test
 {
-    var x: any                          // Declare an 'any' type variable
-    @assert(x == null)                  // 'x' is null
-    @assert(x != s32)                   // 'x' does not contain an s32
+    var x: any                         // Declare an 'any' type variable
+    @assert(x == null)                 // 'x' is null
+    @assert(x != s32)                  // 'x' does not contain an s32
 
-    x = 6                               // Store an s32 value in 'x'
-    @assert(x == s32)                   // Now 'x' contains an s32
-    @assert(x != bool)                  // But it does not contain a bool
+    x = 6                              // Store an s32 value in 'x'
+    @assert(x == s32)                  // Now 'x' contains an s32
+    @assert(x != bool)                 // But it does not contain a bool
 
-    x = "string"                        // Change the stored value to a string
-    @assert(x != s32)                   // Now 'x' contains a string, not an s32
-    @assert(x == string)                // Confirm it holds a string
+    x = "string"                       // Change the stored value to a string
+    @assert(x != s32)                  // Now 'x' contains a string, not an s32
+    @assert(x == string)               // Confirm it holds a string
 
-    struct A {}                         // Define a simple struct
+    struct A {}                        // Define a simple struct
 
-    x = A{}                             // Store an instance of A in 'x'
-    @assert(x == A)                     // 'x' is of type A
+    x = A{}                            // Store an instance of A in 'x'
+    @assert(x == A)                    // 'x' is of type A
 }

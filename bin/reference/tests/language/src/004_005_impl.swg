@@ -1,55 +1,77 @@
 /**
-# Using `impl` with Enums in Swag
+# Utilizing the `impl` Keyword with Enums in Swag
 
-The `impl` keyword in Swag allows you to define methods and functions within the scope of an enum. This feature enhances the functionality of enums by enabling you to associate behaviors directly with the enum values. The keyword `self` is used within these methods to refer to the current enum value.
+In Swag, the `impl` keyword allows you to define methods and functions within the scope of an enum. 
+This is particularly useful for associating specific behaviors directly with the enum values. 
+The `self` keyword within these methods refers to the current enum instance, providing a clean 
+and organized way to encapsulate logic related to the enum.
 */
 
-// Define an enum RGB with three values
+// Define an enum RGB with three possible values
 enum RGB
 {
-    R
-    G
-    B
+    R   // Represents the Red color
+    G   // Represents the Green color
+    B   // Represents the Blue color
 }
 
 /**
-# Defining Methods with `impl`
+# Implementing Methods for an Enum
 
-In the example below, we use the `impl enum` syntax to define methods for the `RGB` enum. The `impl` keyword is used to declare that the following block contains methods associated with the `RGB` enum. We will explore `impl` further when we look at structs, but the concept is similar.
+In the following example, we utilize the `impl enum` syntax to define methods for the `RGB` enum. 
+This syntax allows us to extend the functionality of the enum by associating methods with it. 
+The methods we define will operate on the enum's values, providing a clear and structured approach 
+to handling logic related to these values.
 */
 impl enum RGB
 {
-    // This method checks if the enum value is `R`.
-    func isRed(self) => self == R
+    // Method to check if the current enum value is `R`.
+    func isRed(self) => self == R                        
 
-    // This method checks if the enum value is either `R` or `B`.
-    func isRedOrBlue(self) => self == R or self == B
+    // Method to check if the current enum value is either `R` or `B`.
+    func isRedOrBlue(self) => self == R or self == B     
 }
 
 #test
 {
-    // Test the methods defined in the `impl` block.
+    // Testing the `RGB` enum methods
 
-    // Check if `RGB.R` is red
-    @assert(RGB.isRed(RGB.R))
+    // Verify if `RGB.R` is recognized as red
+    @assert(RGB.isRed(RGB.R))                               
 
-    // Check if `RGB.B` is red or blue
-    @assert(RGB.isRedOrBlue(RGB.B))
+    // Verify if `RGB.B` is recognized as either red or blue
+    @assert(RGB.isRedOrBlue(RGB.B))                          
+}
 
-    /**
-    # Using `using` with Enum Methods
+/**
+# Applying the `using` Keyword with Enum Methods
 
-    The `using` keyword allows us to omit the enum type when calling methods, making the code cleaner and more concise.
-    */
+The `using` keyword simplifies method calls by allowing you to omit the enum type when invoking 
+methods. This results in more concise and readable code, especially when the enum type is used 
+frequently within a block.
+*/
+#test
+{
     using RGB
-    @assert(isRedOrBlue(R))
-    @assert(isRedOrBlue(B))
 
-    /**
-    # Uniform Function Call Syntax (UFCS)
+    // Test the method without specifying the enum type
+    @assert(isRedOrBlue(R))                                 
+    @assert(isRedOrBlue(B))      
+}                           
 
-    A first look at Uniform Function Call Syntax (UFCS): UFCS allows calling methods directly on enum values, improving readability and making the code more intuitive.
-    */
-    @assert(R.isRedOrBlue())
-    @assert(!RGB.G.isRedOrBlue())
+/**
+# Introduction to Uniform Function Call Syntax (UFCS)
+
+Uniform Function Call Syntax (UFCS) in Swag enhances code readability by allowing methods to be 
+called directly on enum values. This feature leads to more intuitive and clean code, particularly 
+when working with enums.
+*/
+#test 
+{
+    using RGB
+    
+    @assert(R.isRedOrBlue())                                 
+
+    // Verify that `RGB.G` is not recognized as either red or blue
+    @assert(!RGB.G.isRedOrBlue())                            
 }
