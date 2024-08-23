@@ -328,7 +328,11 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& l
             }
             else if (line.startsWith("* "))
             {
-                blk->kind = UserBlockKind::List;
+                blk->kind = UserBlockKind::ListStar;
+            }
+            else if (line.startsWith("- "))
+            {
+                blk->kind = UserBlockKind::ListNeg;
             }
             else if (line.length() > 1 && SWAG_IS_DIGIT(line[0]) && line[1] == '.')
             {
@@ -469,8 +473,18 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& l
                         blk->lines.push_back(lines[start]);
                     break;
 
-                case UserBlockKind::List:
+                case UserBlockKind::ListStar:
                     if (!line.startsWith("* "))
+                        mustEnd = true;
+                    else
+                    {
+                        line.remove(0, 2); // *<blank>
+                        line.trim();
+                        blk->lines.push_back(line);
+                    }
+                    break;
+                case UserBlockKind::ListNeg:
+                    if (!line.startsWith("- "))
                         mustEnd = true;
                     else
                     {
@@ -964,7 +978,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 helpContent += "<p>";
             break;
 
-        case UserBlockKind::List:
+        case UserBlockKind::ListStar:
+        case UserBlockKind::ListNeg:
             helpContent += "<ul>\n";
             break;
         case UserBlockKind::OrderedList:
@@ -1087,8 +1102,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             // Update toc
             if (docKind == BuildCfgDocKind::Examples)
             {
-                //uint32_t myTitleLevel = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
-                //addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
+                // uint32_t myTitleLevel = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
+                // addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
             }
 
             uint32_t level = static_cast<uint32_t>(user.kind) - static_cast<uint32_t>(UserBlockKind::Title1);
@@ -1147,7 +1162,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             }
             helpContent += "</tr>\n";
         }
-        else if (user.kind == UserBlockKind::List || user.kind == UserBlockKind::OrderedList)
+        else if (user.kind == UserBlockKind::ListStar ||
+                 user.kind == UserBlockKind::ListNeg ||
+                 user.kind == UserBlockKind::OrderedList)
         {
             helpContent += "<li>";
             helpContent += getFormattedText(line);
@@ -1206,7 +1223,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         case UserBlockKind::BlockquoteExample:
             helpContent += "</div>\n";
             break;
-        case UserBlockKind::List:
+        case UserBlockKind::ListStar:
+        case UserBlockKind::ListNeg:
             helpContent += "</ul>\n";
             break;
         case UserBlockKind::OrderedList:
