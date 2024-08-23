@@ -1,8 +1,7 @@
 /**
-This is the list of all keywords in the language.
+# Special Keywords
+Special keywords are predefined, reserved identifiers that have specific meanings within the Swag compiler. These cannot be used as identifiers in your code as they are integral to the language's structure.
 
-# Special keywords
-Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program.
 ```swag
 if
 else
@@ -25,7 +24,6 @@ orelse
 unreachable
 to
 until
-do
 where
 in
 
@@ -68,14 +66,19 @@ let
 const
 moveref
 ```
-# Reserved keywords
-These keywords are reserved by the language, just in case...
+
+# Reserved Keywords
+These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features.
+
 ```swag
+do
 is
 not
 ```
-# Basic types
-These are all the native types of the language. All are reserved keywords too.
+
+# Basic Types
+These are the fundamental data types provided by the language. They are reserved keywords and form the core types that can be used to define variables, constants, and function return types.
+
 ```swag
 s8
 s16
@@ -97,8 +100,10 @@ code
 cstring
 cvarargs
 ```
-# Compiler keywords
-Compiler keywords always start with '#'. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers.
+
+# Compiler Instructions
+Compiler instructions are prefixed with `#` and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with `#`, ensuring that compiler keywords do not conflict with user-defined names.
+
 ```swag
 #global
 #type
@@ -156,8 +161,10 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #mix1
 #mix2 // and more generally #mixinN
 ```
-# Misc intrinsics
-Intrisic keywords always start with '@'. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers.
+
+# Miscellaneous Intrinsics
+Intrinsic functions are prefixed with `@` and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context.
+
 ```swag
 @err
 @alignof
@@ -206,7 +213,10 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @typecmp
 @typeof
 ```
-# Intrinsics libc
+
+# Intrinsics from libc
+These intrinsic functions provide access to standard libc functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with `@` to avoid conflicts with user-defined identifiers.
+
 ```swag
 @abs
 @acos
@@ -257,11 +267,10 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @tanh
 @trunc
 ```
-*/
 
-/**
 # Modifiers
-Modifiers can be applied to some specific keywords or operators to change their behaviours.
+Modifiers can be applied to specific keywords or operators to alter their behavior. These modifiers allow developers to fine-tune operations, giving more control over how certain code constructs are executed.
+
 ```swag
 #prom
 #over

@@ -335,11 +335,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at runtime !"</span>)
 }</span></div>
 
-<h2 id="_002_000_code_structure_swg">Code structure</h2><p>In Swag, all source files use the <span class="code-inline">.swg</span> extension, except for simple scripts, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b>. </p>
-<p>Swag does not support compiling individual source files (with the exception of <span class="code-inline">.swgs</span> script files). Instead, source code is organized within a <b>workspace</b> that contains one or more <b>modules</b>. </p>
-<p>For instance, <span class="code-inline">Std</span> is a workspace that includes all the Swag standard modules. </p>
-<p>A module can be either a <span class="code-inline">dll</span> (on Windows) or an executable, and a workspace may encompass multiple modules. Therefore, a workspace typically contains both the modules you develop (such as your main executable) and all your dependencies (including any external modules you use). </p>
-<p>In most cases, the entire workspace is compiled together. </p>
+<h2 id="_002_000_code_structure_swg">Code structure</h2><p>In Swag, all source files are required to use the <span class="code-inline">.swg</span> extension, with the exception of simple script files, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b> to ensure proper handling of text and symbols. </p>
+<p>Swag does not support the compilation of individual source files (except for <span class="code-inline">.swgs</span> script files). Instead, source code is structured within a <b>workspace</b> that comprises one or more <b>modules</b>. This approach promotes organized and modular development, allowing for efficient management of complex projects. </p>
+<p>For example, <span class="code-inline">Std</span> is a workspace that includes all the standard modules provided by Swag. </p>
+<p>A module can either be a <span class="code-inline">dll</span> (on Windows) or an executable. A single workspace may contain multiple modules, meaning that a workspace usually includes the modules you develop (such as your main executable) as well as all your dependencies, including any external modules. </p>
+<p>Typically, the entire workspace is compiled together, ensuring that all modules and their dependencies are up to date and correctly integrated. </p>
 
 <h3 id="_002_000_code_structure_swg__002_002_source_code_organization_swg">Source code organization</h3><p>In Swag, all source files use the <span class="code-inline">.swg</span> extension, except for simple scripts, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b>. </p>
 <p>Swag does not support compiling individual source files (with the exception of <span class="code-inline">.swgs</span> script files). Instead, source code is organized within a <b>workspace</b> that contains one or more <b>modules</b>. </p>
@@ -347,51 +347,56 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>A module can be either a <span class="code-inline">dll</span> (on Windows) or an executable, and a workspace may encompass multiple modules. Therefore, a workspace typically contains both the modules you develop (such as your main executable) and all your dependencies (including any external modules you use). </p>
 <p>In most cases, the entire workspace is compiled together. </p>
 
-<h3 id="_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global declaration order</h3><p>The order of all <b>top-level</b> declarations in Swag does not matter. This means that you can reference constants, variables, or functions before they are defined within the same file or even across multiple files. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// Here we declare a constant 'A' and initialize it with 'B', </span>
-<span class="SCmt">// even though 'B' has not been declared or defined yet.</span>
+<h3 id="_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global declaration order</h3><p>The order of all <b>top-level</b> declarations in Swag does not matter. This feature allows you to reference constants, variables, or functions before they are defined, either within the same file or even across multiple files. This flexibility can be particularly useful in large codebases, where the natural flow of logic or readability may benefit from organizing code independently of its declaration order. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// In this example, we declare a constant 'A' and initialize it with 'B', </span>
+<span class="SCmt">// even though 'B' has not yet been declared or defined.</span>
 <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SCst">B</span>
 
-<span class="SCmt">// Now we declare a constant 'B' and initialize it with 'C',</span>
-<span class="SCmt">// which is also not yet declared or defined.</span>
+<span class="SCmt">// Next, we declare a constant 'B' and initialize it with 'C',</span>
+<span class="SCmt">// which is also not declared or defined at this point.</span>
 <span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCst">C</span>
 
 <span class="SCmt">// Finally, we declare and define 'C' as a constant of type 'u64' </span>
 <span class="SCmt">// (an unsigned 64-bit integer) with a value of 1.</span>
-<span class="SCmt">// This retroactively defines 'A' and 'B' as well, based on the earlier assignments.</span>
+<span class="SCmt">// This retroactively assigns values to both 'A' and 'B', </span>
+<span class="SCmt">// based on the earlier assignments.</span>
 <span class="SKwd">const</span> <span class="SCst">C</span>: <span class="STpe">u64</span> = <span class="SNum">1</span></span></div>
-<p>In this test, we call the function <span class="code-inline">functionDeclaredLater</span> before it is defined. This is acceptable in Swag, demonstrating the flexibility of top-level declaration order. </p>
+<p>In this test, we demonstrate Swag's flexibility by calling the function <span class="code-inline">functionDeclaredLater</span> before it is defined. Swag's allowance for this behavior highlights the language's flexibility in handling the order of top-level declarations. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
-    <span class="SCmt">// Here, we call the function 'functionDeclaredLater' before it is declared.</span>
-    <span class="SCmt">// This works fine because Swag allows functions to be called before their definition.</span>
+    <span class="SCmt">// We call the function 'functionDeclaredLater' before it is declared.</span>
+    <span class="SCmt">// Swag permits this because the order of function declarations and calls is flexible.</span>
     <span class="SFct">functionDeclaredLater</span>()
 }
 
-<span class="SCmt">// The function is declared here, after it was called.</span>
+<span class="SCmt">// The function is declared here, after it has already been called.</span>
 <span class="SKwd">func</span> <span class="SFct">functionDeclaredLater</span>() {}</span></div>
-<p>Note that the order of declarations is not only irrelevant within the same file but also across multiple files. For example, you can call a function in one file and define it in another. The global order of declarations does not matter! </p>
+<p>It is important to note that this flexibility applies not only within the same file but also across multiple files. For instance, you can call a function in one file and define it in another. The global order of declarations in Swag is designed to be non-restrictive, allowing for a more intuitive organization of your code. </p>
 
-<h3 id="_002_000_code_structure_swg__002_004_identifiers_swg">Identifiers</h3><p>User-defined identifiers (such as variables, constants, and function names) must begin with either an underscore or an ASCII letter. These identifiers can then include underscores, ASCII letters, and digits. </p>
+<h3 id="_002_000_code_structure_swg__002_004_identifiers_swg">Identifiers</h3><h4 id="_002_000_code_structure_swg__002_004_identifiers_swg">Naming </h4>
+<p>User-defined identifiers, such as variables, constants, and function names, must begin with either an underscore or an ASCII letter. These identifiers can then include underscores, ASCII letters, and digits. </p>
 <p>Examples: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> thisIsAValidIdentifier0   = <span class="SNum">0</span>
 <span class="SKwd">const</span> this_is_also_valid        = <span class="SNum">0</span>
 <span class="SKwd">const</span> this_1_is_2_also__3_valid = <span class="SNum">0</span></span></div>
 <p>However, identifiers cannot start with two underscores, as this prefix is reserved by the compiler. </p>
 <div class="code-block"><span class="SCmt">// const __this_is_invalid = 0</span></div>
-<p>Additionally, some identifiers may begin with <span class="code-inline">#</span>, indicating a <b>compiler special keyword</b>. </p>
+<h4 id="_002_000_code_structure_swg__002_004_identifiers_swg">Compiler Instructions </h4>
+<p>Additionally, some identifiers may begin with <span class="code-inline">#</span>, indicating a compiler instruction. These instructions have specific roles within the Swag programming environment. </p>
+<p>Examples of compiler instructions: </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span>
 <span class="SFct">#run</span>
 <span class="SFct">#main</span></span></div>
+<h4 id="_002_000_code_structure_swg__002_004_identifiers_swg">Intrinsics </h4>
 <p>Identifiers that start with <span class="code-inline">@</span> represent intrinsic functions. These functions may be available only at compile time or at both compile time and runtime, depending on the specific intrinsic. </p>
+<p>Examples of intrinsic functions: </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@min</span>()
 <span class="SItr">@max</span>()
 <span class="SItr">@sqrt</span>()
 <span class="SItr">@print</span>()</span></div>
 
-<h3 id="_002_000_code_structure_swg__002_005_keywords_swg">Keywords</h3><p>This is the list of all keywords in the language. </p>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Special keywords </h4>
-<p>Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program. </p>
+<h3 id="_002_000_code_structure_swg__002_005_keywords_swg">Keywords</h3><h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Special Keywords </h4>
+<p>Special keywords are predefined, reserved identifiers that have specific meanings within the Swag compiler. These cannot be used as identifiers in your code as they are integral to the language's structure. </p>
 <div class="code-block"><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
 <span class="SLgc">elif</span>
@@ -413,7 +418,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SLgc">unreachable</span>
 <span class="SLgc">to</span>
 <span class="SLgc">until</span>
-<span class="SInv">do</span>
 <span class="SLgc">where</span>
 <span class="SLgc">in</span>
 
@@ -455,12 +459,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">let</span>
 <span class="SKwd">const</span>
 <span class="SKwd">moveref</span></span></div>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Reserved keywords </h4>
-<p>These keywords are reserved by the language, just in case... </p>
-<div class="code-block"><span class="SCde"><span class="SInv">is</span>
+<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Reserved Keywords </h4>
+<p>These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features. </p>
+<div class="code-block"><span class="SCde"><span class="SInv">do</span>
+<span class="SInv">is</span>
 <span class="SInv">not</span></span></div>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Basic types </h4>
-<p>These are all the native types of the language. All are reserved keywords too. </p>
+<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Basic Types </h4>
+<p>These are the fundamental data types provided by the language. They are reserved keywords and form the core types that can be used to define variables, constants, and function return types. </p>
 <div class="code-block"><span class="SCde"><span class="STpe">s8</span>
 <span class="STpe">s16</span>
 <span class="STpe">s32</span>
@@ -480,8 +485,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="STpe">code</span>
 <span class="STpe">cstring</span>
 <span class="STpe">cvarargs</span></span></div>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Compiler keywords </h4>
-<p>Compiler keywords always start with <span class="code-inline">#</span>. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers. </p>
+<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Compiler Instructions </h4>
+<p>Compiler instructions are prefixed with <span class="code-inline">#</span> and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with <span class="code-inline">#</span>, ensuring that compiler keywords do not conflict with user-defined names. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#global</span>
 <span class="STpe">#type</span>
 
@@ -537,8 +542,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">#mix0</span>
 <span class="SItr">#mix1</span>
 <span class="SItr">#mix2</span> <span class="SCmt">// and more generally #mixinN</span></span></div>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Misc intrinsics </h4>
-<p>Intrisic keywords always start with <span class="code-inline">@</span>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
+<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Miscellaneous Intrinsics </h4>
+<p>Intrinsic functions are prefixed with <span class="code-inline">@</span> and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@err</span>
 <span class="SItr">@alignof</span>
 <span class="SItr">@args</span>
@@ -585,7 +590,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@sysalloc</span>
 <span class="SItr">@typecmp</span>
 <span class="SItr">@typeof</span></span></div>
-<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Intrinsics libc </h4>
+<h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Intrinsics from libc </h4>
+<p>These intrinsic functions provide access to standard libc functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with <span class="code-inline">@</span> to avoid conflicts with user-defined identifiers. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@abs</span>
 <span class="SItr">@acos</span>
 <span class="SItr">@alloc</span>
@@ -635,7 +641,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@tanh</span>
 <span class="SItr">@trunc</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_005_keywords_swg">Modifiers </h4>
-<p>Modifiers can be applied to some specific keywords or operators to change their behaviours. </p>
+<p>Modifiers can be applied to specific keywords or operators to alter their behavior. These modifiers allow developers to fine-tune operations, giving more control over how certain code constructs are executed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">#prom</span>
 <span class="SKwd">#over</span>
 <span class="SKwd">#nodrop</span>
@@ -647,61 +653,67 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">#ref</span>
 <span class="SKwd">#constref</span></span></div>
 
-<h3 id="_002_000_code_structure_swg__002_006_comments_swg">Comments</h3><ul>
-<li>Swag supports both single-line and multi-line comments.</li>
-</ul>
+<h3 id="_002_000_code_structure_swg__002_006_comments_swg">Comments</h3><p>Swag supports both single-line and multi-line comments, allowing for flexible documentation  and inline explanations within your code. This capability is essential for maintaining clarity  and readability, especially in complex codebases. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Example of a single-line comment</span>
+<span class="SCmt">// Single-line comments are typically used for brief explanations or notes.</span>
 
 <span class="SCmt">/*
     Example of a multi-line comment
     that spans several lines.
+    
+    Multi-line comments are useful when more detailed explanations are required. 
+    These comments can describe the overall purpose of a function, document complex 
+    logic, or provide additional context to developers.
 */</span>
 
-<span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>                 <span class="SCmt">// A constant assigned the value '0'</span>
-<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCmt">/* false */</span> <span class="SKwd">true</span>  <span class="SCmt">// A constant assigned the value 'true', with an inline comment indicating an alternative value</span></span></div>
-<ul>
-<li>Swag also supports nested comments within multi-line comments.</li>
-</ul>
+<span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>                 <span class="SCmt">// A constant named 'A' is declared and assigned the value '0'.</span>
+<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCmt">/* false */</span> <span class="SKwd">true</span>  <span class="SCmt">// A constant named 'B' is assigned the value 'true', with an inline </span>
+                            <span class="SCmt">// comment indicating that 'false' was an alternative considered value.</span></span></div>
+<p>Swag also supports nested comments within multi-line comments. This feature can be particularly useful when temporarily disabling a block of code  or when adding additional notes inside an existing comment block. </p>
 <div class="code-block"><span class="SCmt">/*
     */ Example of a nested multi-line comment */
+    The nested comment above is encapsulated within another multi-line comment.
+    This demonstrates Swag's ability to handle complex comment structures without 
+    causing errors or ambiguity.
 */</span></div>
 
 <h3 id="_002_000_code_structure_swg__002_007_semicolons_swg">Semicolons</h3><h4 id="_002_000_code_structure_swg__002_007_semicolons_swg">Statement Termination in Swag </h4>
-<p>In Swag, unlike in C/C++, there's no requirement to end statements with a semicolon (<span class="code-inline">;</span>). Typically, the end of a line (<span class="code-inline">end of line</span>) is sufficient to terminate a statement, resulting in cleaner and more concise syntax. </p>
+<p>In Swag, unlike languages such as C/C++, there is no strict requirement to end statements with a semicolon (<span class="code-inline">;</span>). The default method of terminating a statement in Swag is simply reaching the end of a line (<span class="code-inline">end of line</span>). This feature allows for cleaner and more concise syntax, reducing visual clutter and making the code easier to read. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Declare two variables, x and y, of type s32 (signed 32-bit integer) and initialize them both to 1.</span>
+    <span class="SCmt">// Declare two variables, x and y, both of type s32 (signed 32-bit integer), </span>
+    <span class="SCmt">// and initialize them with the value 1.</span>
     <span class="SKwd">var</span> x, y: <span class="STpe">s32</span> = <span class="SNum">1</span>
 
-    <span class="SCmt">// Increment both x and y by 1.</span>
+    <span class="SCmt">// Increment the value of both x and y by 1.</span>
     x += <span class="SNum">1</span>
     y += <span class="SNum">1</span>
 
-    <span class="SCmt">// Use the '@assert' intrinsic to verify the correctness of the values of x and y.</span>
-    <span class="SItr">@assert</span>(x == <span class="SNum">2</span>)     <span class="SCmt">// Ensure that x equals 2, raising an error if it does not.</span>
-    <span class="SItr">@assert</span>(y == x)     <span class="SCmt">// Ensure that y equals x (which should be 2).</span>
+    <span class="SCmt">// Use the '@assert' intrinsic to verify the correctness of the program logic.</span>
+    <span class="SItr">@assert</span>(x == <span class="SNum">2</span>)     <span class="SCmt">// Confirms that x equals 2. An error is raised if this assertion fails.</span>
+    <span class="SItr">@assert</span>(y == x)     <span class="SCmt">// Confirms that y equals x, which should also be 2 at this point.</span>
 }</span></div>
 <h4 id="_002_000_code_structure_swg__002_007_semicolons_swg">Optional Semicolons </h4>
-<p>Although semicolons are optional, you can still use them when preferred or when they enhance readability in certain situations. </p>
+<p>While semicolons are optional in Swag, they can still be used if desired. In some cases, using semicolons might enhance the clarity of the code or improve readability, particularly when dealing with more complex statements or when writing multiple statements on a single line. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Note that type inference is used here, so the types of x and y are not explicitly specified.</span>
-    <span class="SKwd">var</span> x, y = <span class="SNum">0</span>;  <span class="SCmt">// Both variables are initialized to 0, with their types inferred automatically.</span>
+    <span class="SCmt">// Here, type inference is used, so the types of x and y are not explicitly defined.</span>
+    <span class="SKwd">var</span> x, y = <span class="SNum">0</span>;  <span class="SCmt">// Both x and y are initialized to 0, with their types inferred automatically.</span>
 
-    <span class="SCmt">// The short syntax below applies the same operation to both variables.</span>
-    x, y += <span class="SNum">1</span>;     <span class="SCmt">// Both x and y are incremented by 1.</span>
+    <span class="SCmt">// The following statement increments both x and y by 1 simultaneously.</span>
+    x, y += <span class="SNum">1</span>;     <span class="SCmt">// Both x and y now have the value 1.</span>
 }</span></div>
 <h4 id="_002_000_code_structure_swg__002_007_semicolons_swg">Multiple Statements on a Single Line </h4>
-<p>Semicolons can be particularly useful when writing multiple statements on the same line. This can make the code more compact, though it should be used sparingly to maintain readability. </p>
+<p>Semicolons become particularly useful when you need to write multiple statements on a single line.  Although this can make the code more compact, it is advisable to use this approach sparingly,  as excessive use may negatively impact code readability. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Two statements on the same line, separated by a semicolon.</span>
+    <span class="SCmt">// Two variable declarations and initializations on a single line.</span>
     <span class="SKwd">var</span> x = <span class="SNum">0</span>; <span class="SKwd">var</span> y = <span class="SNum">0</span>
 
-    <span class="SCmt">// Increment both x and y on the same line.</span>
+    <span class="SCmt">// Increment both x and y by 1, all on the same line.</span>
     x += <span class="SNum">1</span>; y += <span class="SNum">1</span>
 
-    <span class="SCmt">// Validate the values of x and y on the same line.</span>
+    <span class="SCmt">// Assert the correctness of both x and y values on the same line.</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">1</span>); <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
 
