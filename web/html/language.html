@@ -5574,6 +5574,60 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Assertion to check if `a` is indeed 10 after the loop exits</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)  <span class="SCmt">// Verifies that the loop exited when `a` reached 10</span>
 }</span></div>
+<h5 id="_007_000_functions_swg__007_005_macro_swg">Another example: </h5>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
+    {
+        <span class="SCmt">// Define a label `Outer` for the scope that will allow us to </span>
+        <span class="SCmt">// break or continue from the outermost loop</span>
+        <span class="SCmp">#scope</span> <span class="SCst">Outer</span>
+
+        <span class="SCmt">// Outer loop: this will run `count` times</span>
+        <span class="SLgc">loop</span> count
+        {
+            <span class="SCmt">// Inner loop: also runs `count` times</span>
+            <span class="SLgc">loop</span> count
+            {
+                <span class="SCmp">#macro</span>
+                {
+                    <span class="SCmt">// `break` in the user code is replaced with `break Outer`, exiting the outer loop.</span>
+                    <span class="SCmt">// `continue` is replaced with `break`, skipping to the next iteration of the inner loop.</span>
+                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Outer</span>; <span class="SLgc">continue</span> = <span class="SLgc">break</span>; }
+                }
+            }
+        }
+    }
+
+    <span class="SCmt">// Initialize a variable `a` to 0 and a variable `b` to 0</span>
+    <span class="SKwd">var</span> a = <span class="SNum">0</span>
+    <span class="SKwd">var</span> b = <span class="SNum">0</span>
+
+    <span class="SCmt">// Call the `repeatSquare` function with `count = 5`</span>
+    <span class="SCmt">// The provided code block increments `a` and uses `continue` and `break` under certain conditions</span>
+    <span class="SFct">repeatSquare</span>(<span class="SNum">5</span>)
+    {
+        a += <span class="SNum">1</span>
+
+        <span class="SCmt">// If `a` is divisible by 3, skip to the next iteration of the outer loop (both loops)</span>
+        <span class="SLgc">if</span> a % <span class="SNum">3</span> == <span class="SNum">0</span>:
+            <span class="SLgc">continue</span>
+
+        <span class="SCmt">// Increment `b` only if `continue` was not called</span>
+        b += <span class="SNum">1</span>
+
+        <span class="SCmt">// If `a` equals 8, exit both loops</span>
+        <span class="SLgc">if</span> a == <span class="SNum">8</span>:
+            <span class="SLgc">break</span>
+    }
+   
+    <span class="SCmt">// Verifies that the loop exited when `a` reached 8</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">8</span>) 
+
+    <span class="SCmt">// Verifies that `b` was incremented 6 times, skipping increments when `a` was divisible by 3</span>
+    <span class="SItr">@assert</span>(b == <span class="SNum">6</span>) 
+}</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Using Aliases in Macros </h4>
 <p>Special variables named <span class="code-inline">#alias&lt;num&gt;</span> can be used within macros, similar to mixins. These aliases allow you to define and access specific variables within a macro. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>

@@ -190,6 +190,63 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
 }
 
 /**
+## Another example:
+*/
+#test
+{
+    #[Swag.Macro]
+    func repeatSquare(count: u32, what: code)
+    {
+        // Define a label `Outer` for the scope that will allow us to 
+        // break or continue from the outermost loop
+        #scope Outer
+
+        // Outer loop: this will run `count` times
+        loop count
+        {
+            // Inner loop: also runs `count` times
+            loop count
+            {
+                #macro
+                {
+                    // `break` in the user code is replaced with `break Outer`, exiting the outer loop.
+                    // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
+                    #mixin #up what where { break = break Outer; continue = break; }
+                }
+            }
+        }
+    }
+
+    // Initialize a variable `a` to 0 and a variable `b` to 0
+    var a = 0
+    var b = 0
+
+    // Call the `repeatSquare` function with `count = 5`
+    // The provided code block increments `a` and uses `continue` and `break` under certain conditions
+    repeatSquare(5)
+    {
+        a += 1
+
+        // If `a` is divisible by 3, skip to the next iteration of the outer loop (both loops)
+        if a % 3 == 0:
+            continue
+
+        // Increment `b` only if `continue` was not called
+        b += 1
+
+        // If `a` equals 8, exit both loops
+        if a == 8:
+            break
+    }
+   
+    // Verifies that the loop exited when `a` reached 8
+    @assert(a == 8) 
+
+    // Verifies that `b` was incremented 6 times, skipping increments when `a` was divisible by 3
+    @assert(b == 6) 
+}
+
+/**
 # Using Aliases in Macros
 Special variables named `#alias<num>` can be used within macros, similar to mixins.
 These aliases allow you to define and access specific variables within a macro.
