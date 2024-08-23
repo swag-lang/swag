@@ -195,8 +195,9 @@
 </ul>
 <li><a href="#_009_000_generics_swg">Generics</a></li>
 <ul>
-<li><a href="#_009_000_generics_swg__009_001_declaration_swg">Declaration</a></li>
-<li><a href="#_009_000_generics_swg__009_002_where_swg">Where</a></li>
+<li><a href="#_009_000_generics_swg__009_001_functions_swg">Functions</a></li>
+<li><a href="#_009_000_generics_swg__009_002_structs_swg">Structs</a></li>
+<li><a href="#_009_000_generics_swg__009_003_where_constraints_swg">Where constraints</a></li>
 </ul>
 <li><a href="#_010_000_attributes_swg">Attributes</a></li>
 <ul>
@@ -6345,82 +6346,81 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="_009_000_generics_swg">Generics</h2>
-<h3 id="_009_000_generics_swg__009_001_declaration_swg">Declaration</h3><h4 id="_009_000_generics_swg__009_001_declaration_swg">Generic Functions </h4>
-<p>A function can be made generic by specifying type parameters after the <span class="code-inline">func</span> keyword. These type parameters allow the function to operate on different types while using the same code. </p>
-<p>The generic type parameters are specified within parentheses after <span class="code-inline">func</span>, and when calling the function, the generic types are specified using <span class="code-inline">funcCall'(type1, type2, ...)</span>. If there is only one generic parameter, you can omit the parentheses. </p>
+<h3 id="_009_000_generics_swg__009_001_functions_swg">Functions</h3><h4 id="_009_000_generics_swg__009_001_functions_swg">Generic Functions </h4>
+<p>A function can be made generic by specifying type parameters after the <span class="code-inline">func</span> keyword. These type  parameters allow the function to operate on various types using the same implementation. The generic  type parameters are placed within parentheses after <span class="code-inline">func</span>. When calling the function, the generic  types are specified using <span class="code-inline">funcCall'(type1, type2, ...)</span>. If there is only one generic parameter,  you can omit the parentheses. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
         <span class="SCmt">// Example of a generic function where 'T' is the generic type.</span>
         <span class="SKwd">func</span>(<span class="SKwd">var</span> <span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">s32</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)  <span class="SCmt">// Explicitly passing 's32' as the generic type.</span>
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>) <span class="SCmt">// Explicitly passing 'f32' as the generic type.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">s32</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)             <span class="SCmt">// Explicitly passing 's32' as the generic type.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>)         <span class="SCmt">// Explicitly passing 'f32' as the generic type.</span>
     }
 
     {
         <span class="SCmt">// Declaring the generic type without 'var'.</span>
         <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">s32</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">s32</span>(<span class="SNum">2</span>) == <span class="SNum">4</span>)             <span class="SCmt">// Type 's32' is inferred as the generic type.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>)         <span class="SCmt">// Type 'f32' is inferred as the generic type.</span>
     }
 
     {
         <span class="SCmt">// Setting a default value for the generic type.</span>
         <span class="SKwd">func</span>(<span class="SCst">T</span> = <span class="STpe">s32</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">4</span>)  <span class="SCmt">// Uses default type 's32'.</span>
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>)  <span class="SCmt">// Overrides the default type with 'f32'.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">4</span>)             <span class="SCmt">// Uses default type 's32'.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'<span class="STpe">f32</span>(<span class="SNum">2.0</span>) == <span class="SNum">4.0</span>)         <span class="SCmt">// Overrides the default type with 'f32'.</span>
     }
 
     {
         <span class="SCmt">// Using multiple generic parameters.</span>
         <span class="SKwd">func</span>(<span class="SCst">K</span>, <span class="SCst">V</span>) <span class="SFct">myFunc</span>(key: <span class="SCst">K</span>, value: <span class="SCst">V</span>) =&gt; value
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>, <span class="SStr">"value"</span>) == <span class="SStr">"value"</span>) <span class="SCmt">// Both K and V are deduced from the parameters.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>, <span class="SStr">"value"</span>) == <span class="SStr">"value"</span>)     <span class="SCmt">// Both K and V are deduced from the parameters.</span>
         <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="STpe">string</span>)(<span class="SNum">2</span>, <span class="SStr">"value"</span>) == <span class="SStr">"value"</span>) <span class="SCmt">// K and V are specified explicitly.</span>
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>, <span class="SKwd">true</span>) == <span class="SKwd">true</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="STpe">bool</span>)(<span class="SNum">2</span>, <span class="SKwd">true</span>) == <span class="SKwd">true</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>, <span class="SKwd">true</span>) == <span class="SKwd">true</span>)           <span class="SCmt">// Type deduction used for both K and V.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="STpe">bool</span>)(<span class="SNum">2</span>, <span class="SKwd">true</span>) == <span class="SKwd">true</span>)   <span class="SCmt">// Explicit type declaration for K and V.</span>
     }
 }</span></div>
-<h4 id="_009_000_generics_swg__009_001_declaration_swg">Type Deduction </h4>
-<p>Generic types can often be deduced from the function's parameters, eliminating the need to specify the type explicitly at the call site. </p>
+<h4 id="_009_000_generics_swg__009_001_functions_swg">Type Deduction </h4>
+<p>Generic types can often be deduced from the function's parameters, eliminating the need to specify  the type explicitly at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
 
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">4</span>)  <span class="SCmt">// The type 'T' is deduced as 's32'.</span>
-    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2.0</span>'<span class="STpe">f32</span>) == <span class="SNum">4.0</span>)  <span class="SCmt">// The type 'T' is deduced as 'f32'.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">4</span>)               <span class="SCmt">// The type 'T' is deduced as 's32'.</span>
+    <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">2.0</span>'<span class="STpe">f32</span>) == <span class="SNum">4.0</span>)           <span class="SCmt">// The type 'T' is deduced as 'f32'.</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_001_declaration_swg">Using Constants as Generic Parameters </h4>
+<h4 id="_009_000_generics_swg__009_001_functions_swg">Using Constants as Generic Parameters </h4>
 <p>In addition to types, you can also specify constants as generic parameters. </p>
 <p>In the example below, <span class="code-inline">N</span> is a constant of type <span class="code-inline">s32</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()  <span class="SCmt">// Call the function with a constant value of 10.</span>
+    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()                                <span class="SCmt">// Call the function with a constant value of 10.</span>
 }</span></div>
-<p><span class="code-inline">const</span> can be omitted when declaring constants, as an identifier followed by a type is considered a constant. </p>
+<p><span class="code-inline">const</span> can be omitted when declaring constants, as an identifier followed by a type is considered  a constant. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()
+    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()                                <span class="SCmt">// Function called with a constant value of 10.</span>
 }</span></div>
 <p>You can also assign a default value to a constant parameter. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>()  <span class="SCmt">// Calls the function using the default value of 10.</span>
+    <span class="SFct">myFunc</span>()                                   <span class="SCmt">// Calls the function using the default value of 10.</span>
 }</span></div>
-<p>If you declare the constant using <span class="code-inline">const</span>, the type can be omitted, and it will be deduced from the assignment expression. </p>
+<p>If you declare the constant using <span class="code-inline">const</span>, the type can be omitted, and it will be deduced from  the assignment expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>()
+    <span class="SFct">myFunc</span>()                                   <span class="SCmt">// Constant value is deduced as 's32'.</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_001_declaration_swg">Mixing Types and Constants </h4>
+<h4 id="_009_000_generics_swg__009_001_functions_swg">Mixing Types and Constants </h4>
 <p>You can mix types and constants in generic parameters. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6429,26 +6429,27 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>(x: <span class="SCst">T</span>) =&gt; x * <span class="SCst">N</span>
 
         <span class="SKwd">namealias</span> call = <span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="SNum">10</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">2</span>) == <span class="SNum">20</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">100</span>) == <span class="SNum">1000</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">2</span>) == <span class="SNum">20</span>)                 <span class="SCmt">// Function call with 's32' type and 10 constant.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">100</span>) == <span class="SNum">1000</span>)             <span class="SCmt">// Another call with the same type and constant.</span>
     }
 
     {
         <span class="SCmt">// Declaring multiple constants requires specifying the type for each.</span>
         <span class="SKwd">func</span>(<span class="SCst">T</span>: <span class="STpe">s32</span>, <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() =&gt; <span class="SCst">T</span> * <span class="SCst">N</span>
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="SNum">5</span>, <span class="SNum">10</span>)() == <span class="SNum">50</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="SNum">5</span>, <span class="SNum">10</span>)() == <span class="SNum">50</span>)        <span class="SCmt">// Function call with two 's32' constants.</span>
     }
 
     {
         <span class="SCmt">// Declaring multiple types with default values.</span>
         <span class="SKwd">func</span>(<span class="SCst">T</span> = <span class="STpe">s32</span>, <span class="SCst">V</span> = <span class="STpe">s32</span>) <span class="SFct">myFunc</span>(x: <span class="SCst">T</span>, y: <span class="SCst">V</span>) =&gt; x * y
 
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">1</span>'<span class="STpe">s32</span>, <span class="SNum">2</span>'<span class="STpe">f32</span>) == <span class="SNum">2.0</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">1</span>'<span class="STpe">s32</span>, <span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">2</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">1</span>'<span class="STpe">s32</span>, <span class="SNum">2</span>'<span class="STpe">f32</span>) == <span class="SNum">2.0</span>)   <span class="SCmt">// Calls with 's32' and 'f32', type deduced.</span>
+        <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">1</span>'<span class="STpe">s32</span>, <span class="SNum">2</span>'<span class="STpe">s32</span>) == <span class="SNum">2</span>)     <span class="SCmt">// Calls with 's32' for both parameters.</span>
     }
 }</span></div>
-<h4 id="_009_000_generics_swg__009_001_declaration_swg">Generic Structs </h4>
+
+<h3 id="_009_000_generics_swg__009_002_structs_swg">Structs</h3><h4 id="_009_000_generics_swg__009_002_structs_swg">Generic Structs </h4>
 <p>Structs in Swag can also be made generic, allowing them to operate with different types and constants. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6460,9 +6461,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SKwd">var</span> x: <span class="SCst">Struct</span>'<span class="STpe">s32</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">s32</span>)  <span class="SCmt">// The type of 'val' is deduced as 's32'.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">s32</span>)         <span class="SCmt">// The type of 'val' is deduced as 's32'.</span>
         <span class="SKwd">var</span> x1: <span class="SCst">Struct</span>'<span class="STpe">f32</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x1.val) == <span class="STpe">f32</span>)  <span class="SCmt">// The type of 'val' is deduced as 'f32'.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x1.val) == <span class="STpe">f32</span>)        <span class="SCmt">// The type of 'val' is deduced as 'f32'.</span>
     }
 
     {
@@ -6473,135 +6474,137 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SKwd">var</span> x: <span class="SCst">Struct</span>'(<span class="STpe">bool</span>, <span class="SNum">10</span>)
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">#type</span> [<span class="SNum">10</span>] <span class="STpe">bool</span>)  <span class="SCmt">// The type is an array of 10 booleans.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">#type</span> [<span class="SNum">10</span>] <span class="STpe">bool</span>) <span class="SCmt">// The type is an array of 10 booleans.</span>
     }
 }</span></div>
 
-<h3 id="_009_000_generics_swg__009_002_where_swg">Where</h3><h4 id="_009_000_generics_swg__009_002_where_swg">Single Evaluation </h4>
-<p>The <span class="code-inline">where</span> clause in Swag can be used to apply constraints on functions, ensuring that they are only callable when specific conditions are met. This is particularly useful for generic functions, where you want to restrict the types or values that can be passed as arguments. </p>
-<p>If the <span class="code-inline">where</span> expression returns <span class="code-inline">false</span>, the function will not be considered for the call. If no other overload matches, the compiler will raise an error. The <span class="code-inline">where</span> expression is evaluated <b>only once</b>, typically when the function is instantiated, making it ideal for applying constraints on generic parameters. </p>
+<h3 id="_009_000_generics_swg__009_003_where_constraints_swg">Where constraints</h3><h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Single Evaluation </h4>
+<p>The <span class="code-inline">where</span> clause in Swag is a powerful tool for applying constraints on function invocations, ensuring that they can only be called when specific conditions are met. This feature is particularly useful in generic functions where you want to restrict the permissible types or values passed as arguments. </p>
+<p>When the <span class="code-inline">where</span> expression evaluates to <span class="code-inline">false</span>, the function will not be considered during the call. If no alternative overloads match, the compiler will raise an error. Notably, the <span class="code-inline">where</span> expression is evaluated <b>only once</b>, usually during the function's instantiation. This makes it ideal for applying constraints on generic parameters in a consistent and predictable manner. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Here we validate the function only if the generic type is `s32` or `s64`.</span>
-    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
-        <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>
+    <span class="SCmt">// This function validates the type and executes only if the generic type is `s32` or `s64`.</span>
+    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>                            
+        <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>                      <span class="SCmt">// Restricting `T` to `s32` or `s64`</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
         <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
-            total += it
-        <span class="SLgc">return</span> total
+            total += it                                 <span class="SCmt">// Accumulate the values</span>
+        <span class="SLgc">return</span> total                                    <span class="SCmt">// Return the sum</span>
     }
 
-    <span class="SCmt">// These calls are valid because `T` is `s32` or `s64`.</span>
-    <span class="SKwd">let</span> res1 = <span class="SFct">sum</span>'<span class="STpe">s32</span>(<span class="SNum">1</span>, <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(res1 == <span class="SNum">3</span>)
-    <span class="SKwd">let</span> res2 = <span class="SFct">sum</span>'<span class="STpe">s64</span>(<span class="SNum">10</span>, <span class="SNum">20</span>)
-    <span class="SItr">@assert</span>(res2 == <span class="SNum">30</span>)
+    <span class="SCmt">// These calls are valid since `T` is `s32` or `s64`.</span>
+    <span class="SKwd">let</span> res1 = <span class="SFct">sum</span>'<span class="STpe">s32</span>(<span class="SNum">1</span>, <span class="SNum">2</span>)                            <span class="SCmt">// Sum with `s32`</span>
+    <span class="SItr">@assert</span>(res1 == <span class="SNum">3</span>)                                  <span class="SCmt">// Assert that result is 3</span>
+    <span class="SKwd">let</span> res2 = <span class="SFct">sum</span>'<span class="STpe">s64</span>(<span class="SNum">10</span>, <span class="SNum">20</span>)                          <span class="SCmt">// Sum with `s64`</span>
+    <span class="SItr">@assert</span>(res2 == <span class="SNum">30</span>)                                 <span class="SCmt">// Assert that result is 30</span>
 
-    <span class="SCmt">// The following would generate an error because the type is `f32`, and there's no matching overload.</span>
+    <span class="SCmt">// The following would generate an error since `f32` is not a matching type.</span>
 
     <span class="SCmt">// var res3 = sum'f32(1, 2)</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_002_where_swg">Generic Specialization </h4>
-<p>You can use the <span class="code-inline">where</span> clause to create specialized versions of a generic function. This allows you to provide different implementations based on the type or value of the parameters. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Generic Specialization </h4>
+<p>The <span class="code-inline">where</span> clause also facilitates the creation of specialized versions of generic functions. This feature allows you to provide distinct implementations based on the type or value of the parameters, enhancing flexibility and efficiency. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Specialized version for `s32`.</span>
+    <span class="SCmt">// Specialized implementation for `s32`.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
+    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>                          <span class="SCmt">// Specializing for `s32`</span>
         <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">s32</span>
     {
-        <span class="SLgc">return</span> x == <span class="SNum">0</span>
+        <span class="SLgc">return</span> x == <span class="SNum">0</span>                                   <span class="SCmt">// Return true if `x` is zero</span>
     }
 
-    <span class="SCmt">// Specialized version for `f32` and `f64`.</span>
+    <span class="SCmt">// Specialized implementation for `f32` and `f64`.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
+    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>                          <span class="SCmt">// Specializing for `f32` or `f64`</span>
         <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">f64</span>
     {
-        <span class="SLgc">return</span> <span class="SItr">@abs</span>(x) &lt; <span class="SNum">0.01</span>
+        <span class="SLgc">return</span> <span class="SItr">@abs</span>(x) &lt; <span class="SNum">0.01</span>                           <span class="SCmt">// Return true if `x` is close to zero</span>
     }
 
-    <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0</span>'<span class="STpe">s32</span>))
-    <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0.001</span>'<span class="STpe">f32</span>))
+    <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0</span>'<span class="STpe">s32</span>))                              <span class="SCmt">// Assert true for `s32` zero</span>
+    <span class="SItr">@assert</span>(<span class="SFct">isNull</span>(<span class="SNum">0.001</span>'<span class="STpe">f32</span>))                          <span class="SCmt">// Assert true for `f32` close to zero</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_002_where_swg">Block-based <span class="code-inline">where</span> Clause </h4>
-<p>Instead of a single expression, the <span class="code-inline">where</span> clause can be followed by a block that returns a <span class="code-inline">bool</span> value. This allows for more complex conditions that might involve multiple checks or custom logic. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Block-based <span class="code-inline">where</span> Clause </h4>
+<p>The <span class="code-inline">where</span> clause can also take the form of a block returning a <span class="code-inline">bool</span> value. This allows for more complex conditional logic that may involve multiple checks, making it suitable for advanced validation scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
+    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>                             <span class="SCmt">// Function with a block-based `where`</span>
         <span class="SLgc">where</span>
         {
-            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>:
-                <span class="SLgc">return</span> <span class="SKwd">true</span>
-            <span class="SLgc">return</span> <span class="SKwd">false</span>
+            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>:  <span class="SCmt">// Check if `T` is `s32` or `s64`</span>
+                <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Return true if valid</span>
+            <span class="SLgc">return</span> <span class="SKwd">false</span>                                <span class="SCmt">// Return false otherwise</span>
         }
     {
-        <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
+        <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>                                 <span class="SCmt">// Initialize total with type `T`</span>
         <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
-            total += it
-        <span class="SLgc">return</span> total
+            total += it                                 <span class="SCmt">// Accumulate the values</span>
+        <span class="SLgc">return</span> total                                    <span class="SCmt">// Return the sum</span>
     }
 }</span></div>
-<h4 id="_009_000_generics_swg__009_002_where_swg">Custom Compile-time Errors </h4>
-<p>Using the <span class="code-inline">@compilererror</span> intrinsic, you can trigger custom compile-time errors if the <span class="code-inline">where</span> condition is not met. This allows for clear and specific error messages when the function is used incorrectly. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Custom Compile-time Errors </h4>
+<p>Using the <span class="code-inline">@compilererror</span> intrinsic, you can trigger custom compile-time errors when the <span class="code-inline">where</span> condition is not met. This provides a mechanism for generating clear and specific error messages, guiding users when a function is used incorrectly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
+    <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>                             <span class="SCmt">// Function with custom compile-time error</span>
         <span class="SLgc">where</span>
         {
-            <span class="SLgc">if</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>:
-                <span class="SLgc">return</span> <span class="SKwd">true</span>
+            <span class="SLgc">if</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>:                    <span class="SCmt">// Check if `T` is `s32` or `s64`</span>
+                <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Return true if valid</span>
+
             <span class="SItr">@compilererror</span>(<span class="SStr">"Invalid type "</span> ++ <span class="SItr">@stringof</span>(<span class="SCst">T</span>), <span class="SItr">@location</span>(<span class="SCst">T</span>))
-            <span class="SLgc">return</span> <span class="SKwd">false</span>
+            <span class="SLgc">return</span> <span class="SKwd">false</span>                                <span class="SCmt">// Return false after error</span>
         }
     {
-        <span class="SLgc">return</span> x + y
+        <span class="SLgc">return</span> x + y                                    <span class="SCmt">// Return the sum of `x` and `y`</span>
     }
 
-    <span class="SCmt">// This will trigger an error because `f32` is not a valid type.</span>
+    <span class="SCmt">// This will trigger a compile-time error as `f32` is not a valid type.</span>
 
     <span class="SCmt">// var x = sum'f32(1, 2)</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_002_where_swg">Generic Structs with <span class="code-inline">where</span> </h4>
-<p>The <span class="code-inline">where</span> clause can also be used with generic structs. If the condition is not met, an error will be generated immediately since there is no overload resolution for structs. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Generic Structs with <span class="code-inline">where</span> </h4>
+<p>The <span class="code-inline">where</span> clause can also be applied to generic structs. If the condition is not met, an error will be generated immediately since there is no overload resolution for structs, providing a direct mechanism for enforcing constraints on struct instantiation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">Point</span>
+    <span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">Point</span>                                     <span class="SCmt">// Struct with type constraints</span>
         <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">f64</span>
     {
-        x, y: <span class="SCst">T</span>
+        x, y: <span class="SCst">T</span>                                         <span class="SCmt">// Coordinates with type `T`</span>
     }
 
     <span class="SCmt">// Valid instantiation with `f32`.</span>
-    <span class="SKwd">var</span> v: <span class="SCst">Point</span>'<span class="STpe">f32</span>
+    <span class="SKwd">var</span> v: <span class="SCst">Point</span>'<span class="STpe">f32</span>                                    <span class="SCmt">// Create a Point with `f32`</span>
 
-    <span class="SCmt">// The following would generate an error because `s32` is not allowed.</span>
+    <span class="SCmt">// The following would generate an error since `s32` is not allowed.</span>
 
     <span class="SCmt">// var v: Point's32</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_002_where_swg">Multiple Evaluations </h4>
-<p>By using the <span class="code-inline">where(call)</span> mode, the <span class="code-inline">where</span> clause is evaluated for <b>each</b> function call, instead of just once per function instantiation. This is useful for checking conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Multiple Evaluations </h4>
+<p>By utilizing the <span class="code-inline">where(call)</span> mode, the <span class="code-inline">where</span> clause is evaluated for <b>each</b> function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
-        <span class="SCmt">// Example where `y` must not be zero at compile time.</span>
-        <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+        <span class="SCmt">// Function to ensure that `y` is not zero at compile time.</span>
+        <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                        <span class="SCmt">// Division function with compile-time check</span>
             <span class="SLgc">where</span>(call)
             {
-                <span class="SCmt">// Check if `y` is a compile-time constant.</span>
+                <span class="SCmt">// Verify if `y` is a compile-time constant.</span>
                 <span class="SLgc">if</span> !<span class="SItr">@isconstexpr</span>(y):
-                    <span class="SLgc">return</span> <span class="SKwd">true</span>
+                    <span class="SLgc">return</span> <span class="SKwd">true</span>                         <span class="SCmt">// Allow if `y` is not constant</span>
                 <span class="SLgc">if</span> y == <span class="SNum">0</span>:
-                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>, <span class="SItr">@location</span>(y))
-                <span class="SLgc">return</span> <span class="SKwd">true</span>
+                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>,  <span class="SCmt">// Error for division by zero</span>
+                        <span class="SItr">@location</span>(y))
+                <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Allow otherwise</span>
             }
         {
-            <span class="SLgc">return</span> x / y
+            <span class="SLgc">return</span> x / y                                <span class="SCmt">// Perform the division</span>
         }
 
         <span class="SCmt">// Valid division.</span>
-        <span class="SKwd">var</span> x1 = <span class="SFct">div</span>(<span class="SNum">1</span>, <span class="SNum">1</span>)
+        <span class="SKwd">var</span> x1 = <span class="SFct">div</span>(<span class="SNum">1</span>, <span class="SNum">1</span>)                              <span class="SCmt">// Division with non-zero `y`</span>
 
         <span class="SCmt">// The following would generate a compile-time error due to division by zero.</span>
 
@@ -6609,28 +6612,28 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     {
-        <span class="SCmt">// A function with different implementations based on whether `x` is known at compile time.</span>
+        <span class="SCmt">// Function with different implementations based on whether `x` is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
-        <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+        <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for constexpr `x`</span>
             <span class="SLgc">where</span>(call) <span class="SItr">@isconstexpr</span>(x)
         {
-            <span class="SLgc">return</span> <span class="SNum">555</span>
+            <span class="SLgc">return</span> <span class="SNum">555</span>                                  <span class="SCmt">// Return 555 if `x` is constexpr</span>
         }
 
-        <span class="SCmt">// Another overload for the case where `x` is not known at compile time.</span>
+        <span class="SCmt">// Overload for the case where `x` is not known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
-        <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+        <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for non-constexpr `x`</span>
             <span class="SLgc">where</span>(call) !<span class="SItr">@isconstexpr</span>(x)
         {
-            <span class="SLgc">return</span> <span class="SNum">666</span>
+            <span class="SLgc">return</span> <span class="SNum">666</span>                                  <span class="SCmt">// Return 666 if `x` is not constexpr</span>
         }
 
         <span class="SCmt">// Will call the first version because `x` is a literal.</span>
-        <span class="SItr">@assert</span>(<span class="SFct">first</span>(<span class="SNum">0</span>) == <span class="SNum">555</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">first</span>(<span class="SNum">0</span>) == <span class="SNum">555</span>)                        <span class="SCmt">// Assert that 555 is returned</span>
 
         <span class="SCmt">// Will call the second version because `x` is a variable.</span>
         <span class="SKwd">var</span> a: <span class="STpe">s32</span>
-        <span class="SItr">@assert</span>(<span class="SFct">first</span>(a) == <span class="SNum">666</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">first</span>(a) == <span class="SNum">666</span>)                        <span class="SCmt">// Assert that 666 is returned</span>
     }
 }</span></div>
 
