@@ -5,7 +5,7 @@ func toto(stmt: code)
     {
         loop 10
         {
-            #mixin stmt { break = @assert(false); }
+            #mixin stmt where { break = @assert(false); }
         }
     }
 }

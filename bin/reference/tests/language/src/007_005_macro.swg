@@ -139,37 +139,54 @@ This avoids the overhead associated with lambda calls, making macros a performan
 }
 
 /**
-# Handling Breaks in User Code with Macros
-Macros can handle user-defined `break` statements, allowing for controlled exits from nested loops.
-This is particularly useful for complex loops where break conditions are needed.
+# Handling 'break' and 'continue' in User Code with Macros
+Macros allow you to customize the behavior of `break` and `continue` statements in loops. This can be particularly useful in complex nested loops where you want a `break` or `continue` statement to affect an outer loop, not just the immediate one.
+
+By using a macro, you can define aliases for `break` and `continue` that allow you to control exactly which loop they affect.
 */
 #test
 {
     #[Swag.Macro]
     func repeatSquare(count: u32, what: code)
     {
-        #scope Up                              // Define a scope for handling loop breaks
+        // Define a label `Up` for the scope that will allow us to break out of the outermost loop
+        #scope Up                              
+        
+        // Outer loop: this will run `count` times
         loop count
         {
+            // Inner loop: also runs `count` times
             loop count
             {
                 #macro
                 {
-                    #mixin #up what { break = break Up; }
+                    // Injects the user code `what` here.
+                    // The `#mixin` directive replaces certain parts of the user code:
+                    // - `break` in the user code is replaced with `break Up`, meaning it will break 
+                    //   out of the `Up` scope (i.e., the outer loop).
+                    // - You can similarly redefine `continue` if needed.
+                    #mixin #up what where { break = break Up; }
                 }
             }
         }
     }
 
+    // Initialize a variable `a` to 0
     var a = 0
+
+    // Call the `repeatSquare` function with `count = 5`
+    // The provided code block increments `a` and breaks when `a == 10`
     repeatSquare(5)
     {
         a += 1
         if a == 10:
-            break                              // This 'break' exits the outermost loop
+            // This `break` statement is replaced by `break Up` due to the macro,
+            // meaning it will exit the outermost loop, not just the inner loop.
+            break  
     }
 
-    @assert(a == 10)                           // Verifies loop exit after 'a' reached 10
+    // Assertion to check if `a` is indeed 10 after the loop exits
+    @assert(a == 10)  // Verifies that the loop exited when `a` reached 10
 }
 
 /**

@@ -5,7 +5,7 @@ func toto(stmt: code)
     {
         loop 10
         {
-            #mixin stmt { break = @assert(false); }
+            #mixin stmt where { break = @assert(false); }
         }
     }
 }
@@ -18,7 +18,7 @@ func titi(stmt: code)
     {
         loop 5
         {
-            #mixin stmt { break = break Up; }
+            #mixin stmt where { break = break Up; }
         }
     }
 }

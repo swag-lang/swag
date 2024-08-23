@@ -138,6 +138,8 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
     if (!compilerMixin->replaceTokens.empty())
     {
         concat->addBlank();
+        concat->addString("where");
+        concat->addBlank();
         concat->addChar('{');
         concat->addBlank();
         for (const auto m : compilerMixin->replaceTokens)

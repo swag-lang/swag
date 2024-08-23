@@ -5527,35 +5527,52 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
     <span class="SItr">@assert</span>(a == <span class="SNum">10</span> + <span class="SNum">3</span>)                       <span class="SCmt">// Verifies the final sum after both repeats</span>
 }</span></div>
-<h4 id="_007_000_functions_swg__007_005_macro_swg">Handling Breaks in User Code with Macros </h4>
-<p>Macros can handle user-defined <span class="code-inline">break</span> statements, allowing for controlled exits from nested loops. This is particularly useful for complex loops where break conditions are needed. </p>
+<h4 id="_007_000_functions_swg__007_005_macro_swg">Handling <span class="code-inline">break</span> and <span class="code-inline">continue</span> in User Code with Macros </h4>
+<p>Macros allow you to customize the behavior of <span class="code-inline">break</span> and <span class="code-inline">continue</span> statements in loops. This can be particularly useful in complex nested loops where you want a <span class="code-inline">break</span> or <span class="code-inline">continue</span> statement to affect an outer loop, not just the immediate one. </p>
+<p>By using a macro, you can define aliases for <span class="code-inline">break</span> and <span class="code-inline">continue</span> that allow you to control exactly which loop they affect. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
     {
-        <span class="SCmp">#scope</span> <span class="SCst">Up</span>                              <span class="SCmt">// Define a scope for handling loop breaks</span>
+        <span class="SCmt">// Define a label `Up` for the scope that will allow us to break out of the outermost loop</span>
+        <span class="SCmp">#scope</span> <span class="SCst">Up</span>                              
+        
+        <span class="SCmt">// Outer loop: this will run `count` times</span>
         <span class="SLgc">loop</span> count
         {
+            <span class="SCmt">// Inner loop: also runs `count` times</span>
             <span class="SLgc">loop</span> count
             {
                 <span class="SCmp">#macro</span>
                 {
-                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Up</span>; }
+                    <span class="SCmt">// Injects the user code `what` here.</span>
+                    <span class="SCmt">// The `#mixin` directive replaces certain parts of the user code:</span>
+                    <span class="SCmt">// - `break` in the user code is replaced with `break Up`, meaning it will break </span>
+                    <span class="SCmt">//   out of the `Up` scope (i.e., the outer loop).</span>
+                    <span class="SCmt">// - You can similarly redefine `continue` if needed.</span>
+                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Up</span>; }
                 }
             }
         }
     }
 
+    <span class="SCmt">// Initialize a variable `a` to 0</span>
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
+
+    <span class="SCmt">// Call the `repeatSquare` function with `count = 5`</span>
+    <span class="SCmt">// The provided code block increments `a` and breaks when `a == 10`</span>
     <span class="SFct">repeatSquare</span>(<span class="SNum">5</span>)
     {
         a += <span class="SNum">1</span>
         <span class="SLgc">if</span> a == <span class="SNum">10</span>:
-            <span class="SLgc">break</span>                              <span class="SCmt">// This 'break' exits the outermost loop</span>
+            <span class="SCmt">// This `break` statement is replaced by `break Up` due to the macro,</span>
+            <span class="SCmt">// meaning it will exit the outermost loop, not just the inner loop.</span>
+            <span class="SLgc">break</span>  
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)                           <span class="SCmt">// Verifies loop exit after 'a' reached 10</span>
+    <span class="SCmt">// Assertion to check if `a` is indeed 10 after the loop exits</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)  <span class="SCmt">// Verifies that the loop exited when `a` reached 10</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Using Aliases in Macros </h4>
 <p>Special variables named <span class="code-inline">#alias&lt;num&gt;</span> can be used within macros, similar to mixins. These aliases allow you to define and access specific variables within a macro. </p>

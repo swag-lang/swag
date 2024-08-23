@@ -163,12 +163,16 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
     // Replacement parameters
-    if (tokenParse.is(TokenId::SymLeftCurly) && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    if (tokenParse.is(TokenId::KwdWhere))
     {
+        SWAG_CHECK(eatToken());
+
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_VERIFY(node->hasOwnerBreakable(), error(tokenParse, toErr(Err0316)));
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightCurly), error(tokenParse, toErr(Err0044)));
+        SWAG_CHECK(eatTokenError(TokenId::SymLeftCurly, toErr(Err0767)));
+
+        if (tokenParse.is(TokenId::SymRightCurly))
+            return error(tokenParse, toErr(Err0044));
         if (tokenParse.isNot(TokenId::KwdBreak) && tokenParse.isNot(TokenId::KwdContinue))
             return error(tokenParse, toErr(Err0118));
 

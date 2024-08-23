@@ -5,6 +5,6 @@ func toto(stmt: code)
 {
     loop 5
     {
-        #mixin stmt { toto = titi; }
+        #mixin stmt where { toto = titi; }
     }
 }

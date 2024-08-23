@@ -112,7 +112,7 @@ public impl BitArray
                 {
                     let #alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
                     let #alias1 = #up countBits
-                    #mixin #up stmt { break = break Up; continue = break Down; }
+                    #mixin #up stmt where { break = break Up; continue = break Down; }
                 }
 
                 countBits += 1
