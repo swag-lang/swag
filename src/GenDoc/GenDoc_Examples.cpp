@@ -100,13 +100,24 @@ bool GenDoc::generateExamples()
         const Utf8& name  = path;
         Utf8        title = path.replace_extension();
 
-        int titleLevel = 0;
-        while (title.length() > 4 && SWAG_IS_DIGIT(title[0]) && SWAG_IS_DIGIT(title[1]) && SWAG_IS_DIGIT(title[2]) && title[3] == '_')
+        // Be sure we have the DDD_DDD_name format
+        if (title.length() < 9 ||
+            !SWAG_IS_DIGIT(title[0]) ||
+            !SWAG_IS_DIGIT(title[1]) ||
+            !SWAG_IS_DIGIT(title[2]) ||
+            !SWAG_IS_DIGIT(title[4]) ||
+            !SWAG_IS_DIGIT(title[5]) ||
+            !SWAG_IS_DIGIT(title[6]) ||
+            title[3] != '_' ||
+            title[7] != '_')
         {
-            title.remove(0, 4);
-            if(title[0] != '0' || title[1] != '0' || title[2] != '0')
-                titleLevel++;
+            continue;
         }
+
+        int titleLevel = 1;
+        if (title[4] != '0' || title[5] != '0' || title[6] != '0')
+            titleLevel = 2;
+        title.remove(0, 8);
 
         title.buffer[0] = static_cast<char>(toupper(title.buffer[0]));
         title.replace("_", " ");
