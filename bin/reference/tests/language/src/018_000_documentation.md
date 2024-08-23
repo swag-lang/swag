@@ -1,8 +1,10 @@
-The Swag compiler can generate documentation for all the modules of a given workspace.
+The Swag compiler is capable of generating comprehensive documentation for all modules within a specified workspace.
+
+To generate documentation for your workspace, use the following command:
 
     swag doc -w:myWorkspaceFolder
 
-Swag can generate documentations in various modes. That mode should be specified in the 'module.swg' file, in the [[Swag.BuildCfg]] struct.
+Swag supports various documentation generation modes, which should be specified in the module.swg file within the [[Swag.BuildCfg]] structure.
 
 ```swag
 #dependencies
@@ -102,6 +104,17 @@ You can create a **list** of bullet points with `\*`.
 > * This is a bullet point
 > * This is a bullet point
 > * This is a bullet point
+
+```swag
+// - This is a bullet point
+// - This is a bullet point
+// - This is a bullet point
+```
+
+> EXAMPLE:
+> - This is a bullet point
+> - This is a bullet point
+> - This is a bullet point
 
 You can create an **ordered** list by starting the line with a digit followed by a '.'.
 

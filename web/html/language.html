@@ -8229,9 +8229,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     itf.<span class="SFct">compileString</span>(str.<span class="SFct">toString</span>())
 }</span></div>
 
-<h2 id="_018_000_documentation_md">Documentation</h2><p>The Swag compiler can generate documentation for all the modules of a given workspace. </p>
+<h2 id="_018_000_documentation_md">Documentation</h2><p>The Swag compiler is capable of generating comprehensive documentation for all modules within a specified workspace. </p>
+<p>To generate documentation for your workspace, use the following command: </p>
 <div class="code-block"><span class="SCde">swag doc -w:myWorkspaceFolder</span></div>
-<p>Swag can generate documentations in various modes. That mode should be specified in the <span class="code-inline">module.swg</span> file, in the <a href="swag.runtime.php#Swag_BuildCfg">Swag.BuildCfg</a> struct. </p>
+<p>Swag supports various documentation generation modes, which should be specified in the module.swg file within the <a href="swag.runtime.php#Swag_BuildCfg">Swag.BuildCfg</a> structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#import</span> <span class="SStr">"pixel"</span>
@@ -8293,6 +8294,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span></span></div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><ul>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+</ul>
+</div>
+<div class="code-block"><span class="SCde"><span class="SCmt">// - This is a bullet point</span>
+<span class="SCmt">// - This is a bullet point</span>
+<span class="SCmt">// - This is a bullet point</span></span></div>
 <div class="blockquote blockquote-example">
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><ul>
 <li>This is a bullet point</li>
