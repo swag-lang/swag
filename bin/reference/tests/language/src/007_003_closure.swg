@@ -1,27 +1,30 @@
 /**
 # Introduction to Closures in Swag
-Swag supports a limited implementation of the `closure` concept. A closure allows you to capture variables from its surrounding scope. Currently, Swag allows capturing up to 48 bytes, ensuring no hidden allocations. However, only simple variables (without custom behaviors like `opDrop`, `opPostCopy`, or `opPostMove`) can be captured.
+Swag supports a limited implementation of the `closure` concept. A closure allows capturing variables 
+from its surrounding scope. Swag currently permits capturing up to 48 bytes, ensuring no hidden 
+allocations. However, only simple variables (i.e., variables without custom behaviors such as `opDrop`, 
+`opPostCopy`, or `opPostMove`) are eligible for capture.
 */
 
 /**
 # Declaring a Closure
-A closure is declared similarly to a lambda, with the captured variables specified between `|...|` before the function parameters.
+A closure is declared similarly to a lambda, with captured variables specified between `|...|` before 
+the function parameters.
 */
 #test
 {
-    let a = 125
-    let b = 521
+    let a = 125                      // Initialize variable 'a' with a value of 125.
+    let b = 521                      // Initialize variable 'b' with a value of 521.
 
     // Capture 'a' and 'b' by value, meaning copies of these variables are captured.
     let fct: closure() = closure|a, b|()
     {
         // Inside the closure, the captured values 'a' and 'b' are accessible.
-        @assert(a == 125)
-        @assert(b == 521)
+        @assert(a == 125)            // Verify that the captured 'a' equals 125.
+        @assert(b == 521)            // Verify that the captured 'b' equals 521.
     }
 
-    // Invoke the closure.
-    fct()
+    fct()                            // Invoke the closure.
 }
 
 /**
@@ -30,91 +33,84 @@ Variables can also be captured by reference using `&`. By default, variables are
 */
 #test
 {
-    var a = 125
+    var a = 125                      // Declare a mutable variable 'a' with an initial value of 125.
 
-    // Capture 'a' by reference, meaning changes to 'a' inside the closure will affect 'a' outside the closure as well.
+    // Capture 'a' by reference, meaning changes to 'a' inside the closure will affect 'a' outside the closure.
     let fct: closure() = closure|&a|()
     {
-        // Modify the captured variable 'a' by incrementing it.
-        a += 1
+        a += 1                       // Modify the captured variable 'a' by incrementing it.
     }
 
-    // Invoke the closure, which increments 'a' by 1.
-    fct()
-    @assert(a == 126)  // Check that 'a' has been incremented to 126.
+    fct()                            // Invoke the closure, which increments 'a' by 1.
+    @assert(a == 126)                // Check that 'a' has been incremented to 126.
 
-    // Invoke the closure again, further incrementing 'a'.
-    fct()
-    @assert(a == 127)  // Check that 'a' has been incremented to 127.
+    fct()                            // Invoke the closure again, further incrementing 'a'.
+    @assert(a == 127)                // Check that 'a' has been incremented to 127.
 }
 
 /**
 # Assigning Lambdas to Closure Variables
-A closure variable can also hold a standard lambda (without capture). This provides flexibility in assigning different types of functions to the same variable.
+A closure variable can also hold a standard lambda (without capture). This provides flexibility in 
+assigning different types of functions to the same variable.
 */
 #test
 {
-    var fct: closure(s32, s32) -> s32
+    var fct: closure(s32, s32) -> s32 // Declare a closure variable that takes two integers and returns an integer.
 
     // Assign a simple lambda that adds two integers to the closure variable 'fct'.
     fct = func(x, y) => x + y
 
-    // Test the lambda by passing values 1 and 2, expecting the result to be 3.
-    @assert(fct(1, 2) == 3)
+    @assert(fct(1, 2) == 3)          // Test the lambda by passing values 1 and 2, expecting the result to be 3.
 }
 
 /**
 # Capturing Complex Types
-You can capture arrays, structs, slices, etc., as long as they fit within the maximum capture size and the struct is a Plain Old Data (POD) type.
+You can capture arrays, structs, slices, etc., as long as they fit within the maximum capture size and 
+the struct is a Plain Old Data (POD) type.
 */
 #test
 {
-    var x = [1, 2, 3]  // An array of integers.
+    var x = [1, 2, 3]                // Declare and initialize an array 'x' of integers.
 
-    var fct: closure(s32) -> s32
+    var fct: closure(s32) -> s32     // Declare a closure variable that takes an integer and returns an integer.
 
     // Capture the array 'x' by value (a copy of the array is made).
     fct = closure|x|(toAdd)
     {
-        var res = 0
-        // Iterate over the captured array 'x' and sum its elements.
-        visit v in x:
+        var res = 0                  // Initialize a result variable 'res' to accumulate the sum.
+        visit v in x:                // Iterate over the captured array 'x' and sum its elements.
             res += v
-        // Add the 'toAdd' parameter to the sum.
-        res += toAdd
+        res += toAdd                 // Add the 'toAdd' parameter to the sum.
         return res
     }
 
-    // Invoke the closure with the value 4, expecting the result to be the sum of 1+2+3+4.
-    let result = fct(4)
-    @assert(result == 1 + 2 + 3 + 4)
+    let result = fct(4)              // Invoke the closure with the value 4.
+    @assert(result == 1 + 2 + 3 + 4) // Verify the result is the sum of 1 + 2 + 3 + 4.
 }
 
 /**
 # Modifying Captured Variables
-Captured variables are mutable and part of the closure, allowing you to modify them. This enables the creation of stateful functions.
+Captured variables are mutable and part of the closure, allowing you to modify them. This enables the 
+creation of stateful functions.
 */
 #test
 {
     // A function that returns a closure, which increments a captured variable 'x' each time it's called.
     func getInc() -> closure() -> s32
     {
-        let x = 10  // Initialize 'x' with 10.
+        let x = 10                   // Initialize 'x' with 10.
 
         // Return a closure that captures 'x' by value.
         return closure|x|() -> s32
         {
-            // Increment the captured 'x' and return its new value.
-            x += 1
+            x += 1                   // Increment the captured 'x' and return its new value.
             return x
         }
     }
 
-    // Obtain the closure returned by 'getInc'.
-    let fct = getInc()
+    let fct = getInc()               // Obtain the closure returned by 'getInc'.
 
-    // Invoke the closure multiple times, verifying that 'x' increments correctly.
-    @assert(fct() == 11)  // First call, 'x' becomes 11.
-    @assert(fct() == 12)  // Second call, 'x' becomes 12.
-    @assert(fct() == 13)  // Third call, 'x' becomes 13.
+    @assert(fct() == 11)             // First call, 'x' becomes 11.
+    @assert(fct() == 12)             // Second call, 'x' becomes 12.
+    @assert(fct() == 13)             // Third call, 'x' becomes 13.
 }

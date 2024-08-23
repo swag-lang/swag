@@ -1,79 +1,89 @@
 /**
 # Introduction to Variadic Functions
-A function can take a variable number of arguments using `...`. This allows you to create functions that accept a flexible number of arguments.
+
+Variadic functions accept a variable number of arguments using `...`. This capability enables
+functions to handle a flexible number of parameters, making them more versatile in scenarios
+where the exact number of arguments is not known in advance.
 */
 
 #test
 {
     func myFunction(value: bool, parameters: ...)
     {
-        // This function can now take any number of additional arguments after 'value'
+        // This function can now accept any number of additional arguments after 'value'.
     }
 
-    myFunction(true, 4, "true", 5.6) // Passes 4, "true", and 5.6 as additional parameters
+    myFunction(true, 4, "true", 5.6)   // Passes 4, "true", and 5.6 as additional parameters.
 }
 
 /**
 # Working with Variadic Parameters as Slices
-When a function takes a variadic parameter, the `parameters` variable is treated as a slice of type `any`.
-This allows the function to handle different types of arguments flexibly at runtime.
+
+When a function takes a variadic parameter, the `parameters` variable is treated as a slice of type 
+`any`. This feature allows the function to flexibly handle different types of arguments at runtime.
 */
+
 #test
 {
     func myFunction(parameters: ...)
     {
-        // Determine the number of parameters passed
+        // Determine the number of parameters passed.
         @assert(@countof(parameters) == 3)
 
-        // Each parameter is initially treated as 'any' type
+        // Each parameter is initially treated as 'any' type.
         #assert @typeof(parameters[0]) == any
         #assert @typeof(parameters[1]) == any
         #assert @typeof(parameters[2]) == any
 
-        // Use '@kindof' to determine the actual type of each parameter at runtime
+        // Use '@kindof' to determine the actual type of each parameter at runtime.
         @assert(@kindof(parameters[0]) == s32)
         @assert(@kindof(parameters[1]) == string)
         @assert(@kindof(parameters[2]) == f32)
     }
 
-    myFunction(4, "true", 5.6) // Passes an integer, string, and float
+    myFunction(4, "true", 5.6)         // Passes an integer, string, and float.
 }
 
 /**
 # Forcing Variadic Parameters to a Specific Type
+
 If all variadic parameters are of the same type, you can enforce that type using type annotations.
-This makes the parameters' type explicit, and they will not be treated as `any`.
+This practice makes the parameters' type explicit, ensuring they are not treated as `any`.
 */
+
 #test
 {
     func myFunction(value: bool, parameters: s32...)
     {
-        // All parameters in 'parameters' must be of type 's32'
+        // All parameters in 'parameters' must be of type 's32'.
         #assert @typeof(parameters[0]).name == "s32"
         #assert @typeof(parameters[1]).name == "s32"
         #assert @typeof(parameters[2]) == s32
         #assert @typeof(parameters[3]) == s32
 
-        // Verify that the parameters have been passed correctly
+        // Verify that the parameters have been passed correctly.
         @assert(parameters[0] == 10)
         @assert(parameters[1] == 20)
         @assert(parameters[2] == 30)
         @assert(parameters[3] == 40)
     }
 
-    myFunction(true, 10, 20, 30, 40) // Passes four integers
+    myFunction(true, 10, 20, 30, 40)   // Passes four integers.
 }
 
 /**
 # Passing Variadic Parameters Between Functions
-You can pass variadic parameters from one function to another, maintaining their types and values.
-This is useful when you need to delegate tasks to other functions without losing the variadic nature of the arguments.
+
+You can pass variadic parameters from one function to another, preserving their types and values.
+This technique is useful when you need to delegate tasks to other functions without losing the 
+variadic nature of the arguments.
 */
+
 #test
 {
     func A(params: ...)
     {
-        // Expecting a string and a boolean
+        // Expecting a string and a boolean.
         @assert(@countof(params) == 2)
         @assert(@kindof(params[0]) == string)
         @assert(@kindof(params[1]) == bool)
@@ -83,23 +93,25 @@ This is useful when you need to delegate tasks to other functions without losing
 
     func B(params: ...)
     {
-        // Pass the variadic parameters from B to A
+        // Pass the variadic parameters from B to A.
         A(params)
     }
 
-    B("value", true) // Passes the parameters to function A through B
+    B("value", true)                   // Passes the parameters to function A through B.
 }
 
 /**
 # Spreading Arrays or Slices to Variadic Parameters
-You can spread the contents of an array or slice into variadic parameters using `@spread`.
-This feature is handy when you have a collection of values that you want to pass as individual arguments.
+
+You can spread the contents of an array or slice into variadic parameters using `@spread`. This 
+feature is handy when you have a collection of values that you want to pass as individual arguments.
 */
+
 #test
 {
     func sum(params: s32...)->s32
     {
-        // Variadic parameters can be iterated, as they are slices
+        // Variadic parameters can be iterated as they are slices.
         var total = 0
         visit v in params:
             total += v
@@ -107,22 +119,25 @@ This feature is handy when you have a collection of values that you want to pass
     }
 
     var arr = [1, 2, 3, 4]
-    let res = sum(@spread(arr))     // is equivalent to sum(1, 2, 3, 4)
+    let res = sum(@spread(arr))        // Equivalent to sum(1, 2, 3, 4).
     @assert(res == 1 + 2 + 3 + 4)
 
-    let res1 = sum(@spread(arr[1..3])) // is equivalent to sum(2, 3, 4)
+    let res1 = sum(@spread(arr[1..3])) // Equivalent to sum(2, 3, 4).
     @assert(res1 == 2 + 3 + 4)
 }
 
 /**
 # Advanced Example: Combining Variadic and Non-Variadic Parameters
-In this example, we demonstrate how to combine fixed parameters with variadic parameters and use them together in a function.
+
+This example demonstrates how to combine fixed parameters with variadic parameters and use them 
+together in a function.
 */
+
 private func print()
 {
     func logMessage(prefix: string, messages: ...)
     {
-        // Print each message with the given prefix
+        // Print each message with the given prefix.
         visit msg in messages
         {
             @print(prefix, " => ", cast(string) msg)
@@ -134,8 +149,11 @@ private func print()
 
 /**
 # Example: Handling Different Types in Variadic Parameters
-This example shows how to handle different types within a variadic function, such as summing integers and concatenating strings.
+
+This example shows how to handle different types within a variadic function, such as summing 
+integers and concatenating strings.
 */
+
 #test
 {
     func processParameters(params: ...)->s32

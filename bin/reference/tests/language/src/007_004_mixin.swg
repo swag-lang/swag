@@ -1,56 +1,57 @@
 /**
 # Introduction to Swag Mixins
 A mixin in Swag is declared similarly to a function but with the attribute `#[Swag.Mixin]`. 
-Mixins allow injecting code into the caller's scope, manipulating variables or executing code as if it were part of that scope.
-This documentation provides an overview of Swag Mixins with various examples.
+Mixins allow injecting code into the caller's scope, manipulating variables, or executing code as if it were part of that scope.
+This documentation provides an overview of Swag Mixins with various examples, demonstrating their flexibility and use cases.
 */
 
 #test
 {
     #[Swag.Mixin]
-    func myMixin() {}
+    func myMixin() {}  // Declaring a basic mixin with no functionality
 }
 
 /**
 # Basic Example of a Mixin
-A mixin function can directly modify variables in the caller's scope. Below is an example where a mixin increments a variable `a` by 1 each time it is called.
+A mixin function can directly modify variables in the caller's scope. 
+In this example, the mixin increments a variable `a` by 1 each time it is called.
 */
 #test
 {
     #[Swag.Mixin]
     func myMixin()
     {
-        a += 1
+        a += 1                          // Incrementing 'a' by 1
     }
 
     var a = 0
-    myMixin() // Equivalent to writing 'a += 1' directly in the scope
-    myMixin() // Again, equivalent to 'a += 1'
-    @assert(a == 2)  // Verifies that 'a' has been incremented twice
+    myMixin()                           // Equivalent to writing 'a += 1' directly in the scope
+    myMixin()                           // Again, equivalent to 'a += 1'
+    @assert(a == 2)                     // Verifies that 'a' has been incremented twice
 }
 
 /**
 # Mixins with Parameters
-Mixins behave like functions, so you can define parameters, assign default values, and even return values.
-This example shows a mixin with an `increment` parameter that defaults to 1.
+Mixins behave like functions, allowing parameters, default values, and even return values.
+This example demonstrates a mixin with an `increment` parameter that defaults to 1.
 */
 #test
 {
     #[Swag.Mixin]
     func myMixin(increment: s32 = 1)
     {
-        a += increment
+        a += increment                  // Incrementing 'a' by the value of 'increment'
     }
 
     var a = 0
-    myMixin()    // Equivalent to 'a += 1', using the default value
-    myMixin(2)   // Equivalent to 'a += 2', using the passed parameter
-    @assert(a == 3)  // Verifies that 'a' has been incremented by 1 and 2
+    myMixin()                           // Equivalent to 'a += 1', using the default value
+    myMixin(2)                          // Equivalent to 'a += 2', using the passed parameter
+    @assert(a == 3)                     // Verifies that 'a' has been incremented by 1 and 2
 }
 
 /**
 # Mixins with Code Blocks
-A mixin can accept a special parameter of type `code`, which represents a Swag code block defined at the call site. 
+A mixin can accept a special parameter of type `code`, representing a Swag code block defined at the call site. 
 The mixin can execute this code block multiple times using the `#mixin` keyword.
 */
 #test
@@ -58,16 +59,14 @@ The mixin can execute this code block multiple times using the `#mixin` keyword.
     #[Swag.Mixin]
     func doItTwice(what: code)
     {
-        // The mixin can insert the passed code block multiple times using '#mixin'.
-        #mixin what
-        #mixin what
+        #mixin what                      // Executing the passed code block the first time
+        #mixin what                      // Executing the passed code block the second time
     }
 
     var a = 0
 
-    // Use '#code' to define a code block that will be executed twice by the mixin.
-    doItTwice(#code { a += 1; })
-    @assert(a == 2)  // Verifies that 'a' was incremented twice
+    doItTwice(#code { a += 1; })         // Incrementing 'a' twice through the mixin
+    @assert(a == 2)                      // Verifies that 'a' was incremented twice
 }
 
 /**
@@ -80,41 +79,39 @@ This provides a more natural syntax for passing code blocks.
     #[Swag.Mixin]
     func doItTwice(value: s32, what: code)
     {
-        #mixin what
-        #mixin what
+        #mixin what                      // Executing the passed code block the first time
+        #mixin what                      // Executing the passed code block the second time
     }
 
     var a = 0
 
-    // Pass a code block using the `#code` syntax.
-    doItTwice(4, #code { a += value; })
+    doItTwice(4, #code { a += value; })  // Passing code block with direct syntax
 
-    // Alternatively, you can pass the code block directly in a more natural syntax.
-    doItTwice(2)
+    doItTwice(2)                         // Alternatively, pass the code block naturally
     {
-        a += value
+        a += value                       // Incrementing 'a' by 'value' twice
     }
 
-    @assert(a == 12)  // Verifies that 'a' was incremented as expected
+    @assert(a == 12)                     // Verifies that 'a' was incremented as expected
 }
 
 /**
 # Creating Aliases with Mixins
 You can use the special name `#alias` to create a named alias for an identifier. 
-This allows flexible manipulation of variables through mixins.
+This enables flexible manipulation of variables through mixins.
 */
 #test
 {
     #[Swag.Mixin]
     func inc10()
     {
-        #alias0 += 10  // Increment the aliased variable by 10
+        #alias0 += 10                    // Incrementing the aliased variable by 10
     }
 
     var a, b = 0
-    inc10(|a|)  // Use 'a' as the alias
-    inc10(|b|)  // Use 'b' as the alias
-    @assert(a == b and b == 10)  // Verifies that both 'a' and 'b' were incremented by 10
+    inc10(|a|)                           // Use 'a' as the alias
+    inc10(|b|)                           // Use 'b' as the alias
+    @assert(a == b and b == 10)          // Verifies that both 'a' and 'b' were incremented by 10
 }
 
 #test
@@ -122,15 +119,15 @@ This allows flexible manipulation of variables through mixins.
     #[Swag.Mixin]
     func setVar(value: s32)
     {
-        let #alias0 = value  // Set the aliased variable to 'value'
+        let #alias0 = value              // Setting the aliased variable to 'value'
     }
 
-    setVar(|a| 10)  // Set 'a' to 10
-    setVar(|b| 20)  // Set 'b' to 20
-    @assert(a == 10)  // Verifies that 'a' was set to 10
-    @assert(b == 20)  // Verifies that 'b' was set to 20
-    setVar(30)  // No alias provided, so default alias '#alias0' is used
-    @assert(#alias0 == 30)  // Verifies that '#alias0' was set to 30
+    setVar(|a| 10)                       // Set 'a' to 10
+    setVar(|b| 20)                       // Set 'b' to 20
+    @assert(a == 10)                     // Verifies that 'a' was set to 10
+    @assert(b == 20)                     // Verifies that 'b' was set to 20
+    setVar(30)                           // No alias provided, so default alias '#alias0' is used
+    @assert(#alias0 == 30)               // Verifies that '#alias0' was set to 30
 }
 
 /**
@@ -145,13 +142,13 @@ These variables receive a unique name each time the mixin is invoked, preventing
     #[Swag.Mixin]
     func toScope()
     {
-        var #mix0: s32 = 1  // Declare a unique variable named '#mix0'
-        total += #mix0       // Add the value of '#mix0' to 'total'
+        var #mix0: s32 = 1               // Declaring a unique variable named '#mix0'
+        total += #mix0                   // Adding the value of '#mix0' to 'total'
     }
 
-    toScope()  // First invocation of the mixin
-    toScope()  // Second invocation
-    toScope()  // Third invocation
+    toScope()                            // First invocation of the mixin
+    toScope()                            // Second invocation
+    toScope()                            // Third invocation
 
-    @assert(total == 3)  // Verifies that 'total' is the sum of all mixin invocations
+    @assert(total == 3)                  // Verifies that 'total' is the sum of all mixin invocations
 }

@@ -1,35 +1,45 @@
 /**
 # Interoperability with External Modules
-Swag can interoperate with external "modules" (such as DLLs on Windows), which contain exported C functions. This allows Swag code to call functions from these external libraries, providing powerful integration with system-level APIs and third-party libraries.
+Swag provides the ability to interoperate with external modules, such as Dynamic Link Libraries (DLLs) on Windows, 
+which export C functions. This interoperability allows Swag code to invoke functions from these external libraries, 
+enabling seamless integration with system-level APIs and third-party libraries. This feature is particularly 
+powerful for extending Swag applications with capabilities provided by external systems.
 */
 
 /**
 # Declaring External Functions
-To declare an external function, use the `Swag.Foreign` attribute before the function prototype. This attribute specifies the module where the function is located.
-
-* The module name can refer to a Swag-compiled module or an external system module.
-* The location of external system modules depends on the operating system.
-*/
-
-/**
-# Example: Windows API
-In the example below, the functions `ExitProcess` and `Sleep` are declared as external functions located in the `kernel32.dll` module on Windows.
+To use functions from external modules, you declare them in your Swag code with the `Swag.Foreign` attribute. 
+This attribute specifies the external module where the function is located. The module name can refer to either 
+a Swag-compiled module or an external system module, depending on your needs. The exact location of these external 
+modules varies by operating system, so it is important to specify the correct module name based on the target platform.
 */
 
 #[Swag.Foreign("kernel32")]
-func ExitProcess(uExitCode: u32); // Declares the 'ExitProcess' function from 'kernel32.dll'
+func ExitProcess(uExitCode: u32);                 // Declares the 'ExitProcess' function from 'kernel32.dll'
 
 #[Swag.Foreign("kernel32")]
 {
-    func Sleep(dwMilliseconds: u32); // Declares the 'Sleep' function from 'kernel32.dll'
+    func Sleep(dwMilliseconds: u32);              // Declares the 'Sleep' function from 'kernel32.dll'
 }
 
 /**
-# Linking to External Libraries
-When working with external modules, you must also ensure that the library is linked to the executable. This is necessary for the linker to resolve the references to the external functions.
-
-* Use `#foreignlib` to force a link to the specified library when generating executables.
-* This directive tells the compiler to include the specified external module during the linking stage.
+# Example: Windows API
+In this example, two functions (`ExitProcess` and `Sleep`) are declared as external functions that reside in the 
+`kernel32.dll` module, a core system library on Windows. By declaring these functions with `Swag.Foreign`, you 
+can directly invoke Windows API functions within your Swag code, allowing for system-level operations such as 
+exiting a process or pausing execution for a specified amount of time.
 */
 
-#foreignlib "kernel32" // Links the 'kernel32.dll' library to the executable, resolving external function calls.
+/**
+# Linking to External Libraries
+When working with external modules, it is essential to ensure that the corresponding library is linked to the 
+final executable. This linking process is crucial because it allows the linker to resolve the references to 
+the external functions declared in your code.
+
+* Use the `#foreignlib` directive to specify which external library should be linked during the compilation process.
+* This directive informs the Swag compiler to include the specified external module during the linking stage, ensuring 
+  that all external function calls are correctly resolved at runtime.
+*/
+
+// Links the 'kernel32.dll' library to the executable, resolving external function calls.
+#foreignlib "kernel32"    

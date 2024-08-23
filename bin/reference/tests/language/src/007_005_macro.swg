@@ -1,6 +1,7 @@
 /**
 # Introduction to Swag Macros
-A macro in Swag is declared similarly to a function, but with the attribute `#[Swag.Macro]`.
+Macros in Swag are defined similarly to functions, with the key distinction being the `#[Swag.Macro]` attribute.
+This attribute indicates that the function is intended to be a macro, which can be reused and expanded at compile-time.
 */
 
 #test
@@ -11,98 +12,100 @@ A macro in Swag is declared similarly to a function, but with the attribute `#[S
 
 /**
 # Macro Scope
-Unlike a mixin, a macro has its own scope. This means that variables declared within the macro do not conflict with variables in the function where the macro is used.
+Macros operate within their own scope, unlike mixins that share the scope of their caller. 
+This isolation ensures that variables within a macro do not interfere with those outside it, preventing conflicts.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro()
     {
-        var a = 666 // 'a' is local to the macro's scope
+        var a = 666                            // 'a' is confined to the macro's scope
     }
 
     let a = 0
-    myMacro() // No conflict with the 'a' declared in the outer scope
-    @assert(a == 0) // 'a' remains unchanged
+    myMacro()                                  // No conflict with the outer 'a'
+    @assert(a == 0)                            // 'a' remains as defined outside the macro
 }
 
 /**
 # Resolving Identifiers Outside the Macro Scope
-You can force an identifier to be resolved **outside** the macro's scope using the `#up` keyword.
+Using the `#up` keyword, you can explicitly reference variables from outside the macro's scope.
+This allows a macro to interact with variables in the caller's environment.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro()
     {
-        #up a += 1 // References the 'a' from the outer scope
+        #up a += 1                             // References 'a' from the outer scope
     }
 
     var a = 0
-    myMacro() // Increment the outer 'a' by 1
-    myMacro() // Increment the outer 'a' by 1 again
-    @assert(a == 2) // Verify that 'a' has been incremented twice
+    myMacro()                                  // Increments the outer 'a' by 1
+    myMacro()                                  // Increments the outer 'a' by 1 again
+    @assert(a == 2)                            // Verifies that 'a' has been incremented twice
 }
 
 /**
 # Macros with Code Parameters
-Like mixins, macros can accept `code` parameters, allowing the insertion of code blocks within the macro.
+Macros can take `code` parameters, enabling you to pass and insert code blocks dynamically within the macro.
+This feature is similar to mixins but within the macro's scope.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro(what: code)
     {
-        #mixin what // Insert the provided code block
+        #mixin what                            // Inserts the provided code block
     }
 
     var a = 0
 
     myMacro(#code
     {
-        #up a += 1 // Increment 'a' within the code block
+        #up a += 1                             // Increment 'a' within the code block
     })
 
     myMacro()
     {
-        #up a += 1 // Another way to pass the code block directly
+        #up a += 1                             // Alternative way to pass the code block directly
     }
 
-    @assert(a == 2) // Verify that 'a' has been incremented twice
+    @assert(a == 2)                            // Verifies that 'a' has been incremented twice
 }
 
 /**
 # Forcing Code into the Caller’s Scope with `#macro`
-You can use `#macro` within a macro to force the following code to be inserted in the caller's scope. This means no `#up` is necessary to reference variables from the caller.
+The `#macro` keyword can be used to ensure that the code within a macro operates in the caller's scope.
+This technique negates the need for the `#up` keyword when referencing the caller's variables.
 */
 #test
 {
     #[Swag.Macro]
     func myMacro(what: code)
     {
-        // Declare 'a' in the macro's own scope
-        var a = 666
+        var a = 666                            // Declare 'a' in the macro's own scope
 
-        // Use '#macro' to ensure the following code operates in the caller's scope
-        #macro
+        #macro                                 // Ensures the following code operates in the caller's scope
         {
-            // The code block here references the caller's 'a'
-            #mixin #up what
+            #mixin #up what                    // References the caller's 'a'
         }
     }
 
     var a = 1
     myMacro()
     {
-        a += 2 // This 'a' references the caller's 'a' due to '#macro'
+        a += 2                                 // 'a' references the caller's 'a' due to '#macro'
     }
 
-    @assert(a == 3) // Verify that the caller's 'a' was incremented
+    @assert(a == 3)                            // Verifies that the caller's 'a' was incremented
 }
 
 /**
 # Performance Considerations with Macros
-Macros allow you to extend the language without using function pointers, avoiding the cost of lambda calls.
+Macros in Swag can extend the language capabilities without relying on function pointers.
+This avoids the overhead associated with lambda calls, making macros a performance-efficient choice.
 */
 #test
 {
@@ -114,11 +117,9 @@ Macros allow you to extend the language without using function pointers, avoidin
         {
             #macro
             {
-                // 'index' references 'a' from the caller's scope
-                var index = #up a
-                #mixin #up what
+                var index = #up a              // 'index' references 'a' from the caller's scope
+                #mixin #up what                // Insert the provided code block
             }
-
             a += 1
         }
     }
@@ -126,34 +127,34 @@ Macros allow you to extend the language without using function pointers, avoidin
     var a = 0
     repeat(5)
     {
-        a += index // Sum 'index' values, where 'index' is from the macro's loop
+        a += index                             // Sum 'index' values from the macro's loop
     }
-    @assert(a == 0 + 1 + 2 + 3 + 4) // Verify the sum after the first repeat
+    @assert(a == 0 + 1 + 2 + 3 + 4)            // Verifies the sum after the first repeat
 
     repeat(3)
     {
-        a += index // Continue summing with a new loop
+        a += index                             // Continue summing with a new loop
     }
-    @assert(a == 10 + 3) // Verify the final sum after both repeats
+    @assert(a == 10 + 3)                       // Verifies the final sum after both repeats
 }
 
 /**
 # Handling Breaks in User Code with Macros
-You can use `break` within user code to exit from a nested loop. This can be handled by macros using scoped loop control.
+Macros can handle user-defined `break` statements, allowing for controlled exits from nested loops.
+This is particularly useful for complex loops where break conditions are needed.
 */
 #test
 {
     #[Swag.Macro]
     func repeatSquare(count: u32, what: code)
     {
-        #scope Up // Define a scope for breaking out of nested loops
+        #scope Up                              // Define a scope for handling loop breaks
         loop count
         {
             loop count
             {
                 #macro
                 {
-                    // Handle 'break' in user code to break out of the outer loop
                     #mixin #up what { break = break Up; }
                 }
             }
@@ -165,42 +166,42 @@ You can use `break` within user code to exit from a nested loop. This can be han
     {
         a += 1
         if a == 10:
-            break // This 'break' exits the outermost loop due to the macro handling
+            break                              // This 'break' exits the outermost loop
     }
 
-    @assert(a == 10) // Verify that the loop was exited correctly after 'a' reached 10
+    @assert(a == 10)                           // Verifies loop exit after 'a' reached 10
 }
 
 /**
 # Using Aliases in Macros
-In a macro, you can use special variables named `#alias<num>`, similar to mixins. These allow you to define and reference variables with specific names.
+Special variables named `#alias<num>` can be used within macros, similar to mixins.
+These aliases allow you to define and access specific variables within a macro.
 */
 #test
 {
     #[Swag.Macro]
     func call(v: s32, stmt: code)
     {
-        let #alias0 = v // Assign 'v' to '#alias0'
-        let #alias1 = v * 2 // Assign 'v * 2' to '#alias1'
-        #mixin stmt // Insert the provided code block
+        let #alias0 = v                        // Assign 'v' to '#alias0'
+        let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'
+        #mixin stmt                            // Insert the provided code block
     }
 
     call(20)
     {
-        @assert(#alias0 == 20) // Verify '#alias0' equals 20
-        @assert(#alias1 == 40) // Verify '#alias1' equals 40
+        @assert(#alias0 == 20)                 // Verifies '#alias0' equals 20
+        @assert(#alias1 == 40)                 // Verifies '#alias1' equals 40
     }
 
-    // The caller can rename these special variables by using the alias syntax
     call(|x| 20)
     {
-        @assert(x == 20) // 'x' is used as an alias for '#alias0'
-        @assert(#alias1 == 40) // '#alias1' is still referenced as is
+        @assert(x == 20)                       // 'x' is used as an alias for '#alias0'
+        @assert(#alias1 == 40)                 // '#alias1' remains unchanged
     }
 
     call(|x, y| 20)
     {
-        @assert(x == 20) // 'x' replaces '#alias0'
-        @assert(y == 40) // 'y' replaces '#alias1'
+        @assert(x == 20)                       // 'x' replaces '#alias0'
+        @assert(y == 40)                       // 'y' replaces '#alias1'
     }
 }
