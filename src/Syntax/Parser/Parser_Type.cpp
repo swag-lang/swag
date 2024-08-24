@@ -650,6 +650,10 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     // Cast modifiers
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
+
+    if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
+        return error(node, formErr(Err0036, "#bit", "#over"));
+    
     if (mdfFlags.has(MODIFIER_OVERFLOW))
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
@@ -660,11 +664,6 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
         node->semanticFct = Semantic::resolveExplicitBitCast;
-    }
-
-    if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
-    {
-        return error(node, formErr(Err0036, "bit", "over"));
     }
 
     if (mdfFlags.has(MODIFIER_UN_CONST))

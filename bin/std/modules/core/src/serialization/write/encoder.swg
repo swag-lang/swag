@@ -99,7 +99,7 @@ impl Encoder
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue()
-        defer(noerr) serializer.endValue()
+        defer #noerr serializer.endValue()
 
         // Native
         if type.kind == .Native
@@ -146,7 +146,7 @@ impl Encoder
             let itf = cast(const *Swag.Interface) data
 
             serializer.beginSection(.Raw)
-            defer(noerr) serializer.endSection()
+            defer #noerr serializer.endSection()
 
             var objType, itfType: typeinfo
             if itf.itable
@@ -218,7 +218,7 @@ impl Encoder
             // Start a fields section
             let structType = cast(const *TypeInfoStruct) type
             let treated    = serializer.beginStruct(structType, data)
-            defer(noerr) serializer.endStruct()
+            defer #noerr serializer.endStruct()
             if treated:
                 return
 
@@ -323,7 +323,7 @@ impl IEncoder for Encoder
     mtd impl writeBufferU8(data: const ^u8, count: u64) throw
     {
         let treated = serializer.beginSequence(u8, data, count)
-        defer(noerr) serializer.endSequence()
+        defer #noerr serializer.endSequence()
 
         if !treated
         {

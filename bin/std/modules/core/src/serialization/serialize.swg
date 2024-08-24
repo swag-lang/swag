@@ -96,7 +96,7 @@ impl Serializer
         if isWrite
         {
             encode.beginField(value)
-            defer(noerr) encode.endField()
+            defer #noerr encode.endField()
 
             #if MT == s8:
                 encode.writeS8(dref res)
@@ -127,7 +127,7 @@ impl Serializer
         {
             if !decode.beginField(value):
                 return
-            defer(noerr) decode.endField()
+            defer #noerr decode.endField()
 
             #if MT == s8:
                 dref res = decode.readS8()

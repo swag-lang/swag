@@ -219,7 +219,7 @@ impl RecentWnd
         visit r, idx in res
         {
             let capture = catch recent.addRecent(r.fullname, front: false)
-            defer(err) Memory.delete(capture)
+            defer #err Memory.delete(capture)
             if @err() != null:
                 continue
 

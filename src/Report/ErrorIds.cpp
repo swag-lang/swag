@@ -175,7 +175,7 @@ void initErrors()
     SWAG_ERROR(Err0033, "conflicting attributes                            $ cannot use [[#[Swag.Macro]]] and [[#[Swag.Inline]]] together because they are mutually exclusive                                         $ ");
     SWAG_ERROR(Err0034, "conflicting attributes                            $ cannot use [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] together because they are mutually exclusive                                          $ ");
     SWAG_ERROR(Err0035, "conflicting attributes                            $ cannot use [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] together because they are mutually exclusive                                         $ ");
-    SWAG_ERROR(Err0036, "conflicting cast modifiers                        $ cannot use the cast modifiers [[%s]] and [[%s]] together because they are mutually exclusive                                             $ ");
+    SWAG_ERROR(Err0036, "conflicting modifiers                             $ cannot use the modifiers [[%s]] and [[%s]] together because they are mutually exclusive                                                  $ ");
     SWAG_ERROR(Err0037, "division by zero                                  $ cannot divide because the divider expression evaluates to 0                                                                              $ ");
     SWAG_ERROR(Err0038, "division overflow                                 $ cannot divide because the result does not fit in [[%s]]                                                                                  $ ");
     SWAG_ERROR(Err0039, "duplicated attribute                              $ cannot assign the attribute [[%s]] twice because [[Swag.AttrMulti]] is not present in the declaration                                    $ ");
@@ -195,7 +195,7 @@ void initErrors()
     SWAG_ERROR(Err0053, "empty float exponent                              $ cannot have an empty float exponent                                                                                                      $ ");
     SWAG_ERROR(Err0054, "empty hexadecimal number                          $ cannot have an empty hexadecimal literal                                                                                                 $ hexadecimal literals require at least one digit ([[0-9]], [[A-F]], [[a-f]])");
     SWAG_ERROR(Err0055, "empty statement [[;]]                             $ cannot use a [[;]] alone to mark an empty statement                                                                                      $ consider using [[{}]] for an intentional empty statement");
-    SWAG_ERROR(Err0056, "escaping defer throw                              $ cannot have an error escape a [[defer]] or [[defer(err)]] block                                                                          $ ");
+    SWAG_ERROR(Err0056, "escaping defer throw                              $ cannot have an error escape a [[defer]] or [[defer #err]] block                                                                          $ ");
     SWAG_ERROR(Err0057, "escaping stack frame                              $ cannot reference the %s [[%s]] because it is in a different stack frame                                                                  $ ");
     SWAG_ERROR(Err0058, "exception!                                        $ cannot proceed because of an execution exception                                                                                         $ ");
     SWAG_ERROR(Err0059, "expected [[%s]]                                   $ expected [[%s]] %s, found $$TKN$$ instead                                                                                                $ ");
@@ -846,7 +846,7 @@ void initErrors()
     SWAG_ERROR(Err0700, "unexpected type suffix                            $ cannot have a type suffix after %s                                                                                                       $ ");
     SWAG_ERROR(Err0701, "unexpected visit name                             $ cannot use a visit specialization name for [[%s]]                                                                                        $ it is only valid to visit a struct");
     SWAG_ERROR(Err0702, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
-    SWAG_ERROR(Err0703, "unknown [[defer]] mode                            $ cannot recognize [[%s]] as a valid [[defer]] mode                                                                                        $ the acceptable modes are [[err]] and [[noerr]]");
+    SWAG_ERROR(Err0703, nullptr);
     SWAG_ERROR(Err0704, nullptr);
     SWAG_ERROR(Err0705, "unknown attribute                                 $ cannot find the attribute [[%s]]                                                                                                         $ ");
     SWAG_ERROR(Err0706, "unknown compiler instruction                      $ cannot recognize [[%s]] as a valid compiler instruction                                                                                  $ a compiler instruction starts with the symbol [['#']]");

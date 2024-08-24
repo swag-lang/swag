@@ -18,7 +18,7 @@ impl DriverNative
         Debug.assert(!xAudio2)
 
         var result: HRESULT
-        defer(err) destroyNative()
+        defer #err destroyNative()
 
         if initCOM
         {

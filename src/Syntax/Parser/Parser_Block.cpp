@@ -577,28 +577,16 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Defer kind
-    if (tokenParse.is(TokenId::SymLeftParen))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
+    ModifierFlags mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
 
-        if (tokenParse.is(g_LangSpec->name_err))
-        {
-            SWAG_CHECK(eatToken());
-            node->deferKind = DeferKind::Error;
-        }
-        else if (tokenParse.is(g_LangSpec->name_noerr))
-        {
-            SWAG_CHECK(eatToken());
-            node->deferKind = DeferKind::NoError;
-        }
-        else
-        {
-            return error(tokenParse, formErr(Err0703, tokenParse.cstr()));
-        }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[defer]] mode"));
-    }
+    if (mdfFlags.has(MODIFIER_ERR) && mdfFlags.has(MODIFIER_NO_ERR))
+        return error(node, formErr(Err0036, "#err", "#noerr"));
+    
+    if (mdfFlags.has(MODIFIER_ERR))
+        node->deferKind = DeferKind::Error;
+    else if (mdfFlags.has(MODIFIER_NO_ERR))
+        node->deferKind = DeferKind::NoError;
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);
     SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult, false));

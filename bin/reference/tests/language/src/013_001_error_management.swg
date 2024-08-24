@@ -237,10 +237,10 @@ struct SyntaxError
 # Using `defer` for Controlled Cleanup
 The `defer` statement schedules a block of code to be executed when the function exits, whether it's through a normal return or due to an error being thrown. Since throwing an error is functionally similar to returning, `defer` behaves consistently in both cases.
 
-`defer` can be customized with specific modes (`err` or `noerr`) to control its execution based on the function's exit state:
+`defer` can be customized with specific modes (`#err` or `#noerr`) to control its execution based on the function's exit state:
 
-| `defer(err)`   | Executes only when an error is raised via `throw`.
-| `defer(noerr)` | Executes only when the function returns normally without errors.
+| `defer #err`   | Executes only when an error is raised via `throw`.
+| `defer #noerr` | Executes only when the function returns normally without errors.
 | `defer`        | Executes regardless of how the function exits (either by returning normally or by throwing an error).
 */
 var g_Defer = 0  // A global variable to track the execution of defer statements
@@ -255,10 +255,10 @@ func raiseError() throw
 func testDefer(err: bool) throw
 {
     // Schedules this block to execute only if an error is raised.
-    defer(err) g_Defer += 1  // Increment if an error occurs
+    defer #err g_Defer += 1  // Increment if an error occurs
 
     // Schedules this block to execute only if the function exits without an error.
-    defer(noerr) g_Defer += 2  // Increment if no error occurs
+    defer #noerr g_Defer += 2  // Increment if no error occurs
 
     // Schedules this block to execute regardless of whether an error occurs.
     defer g_Defer += 3  // Increment regardless of error state
