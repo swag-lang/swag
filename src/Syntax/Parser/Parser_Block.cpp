@@ -589,10 +589,8 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveBreak;
     *result           = node;
     SWAG_CHECK(eatToken());
-    if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-        return true;
-
-    if (tokenParse.isNot(TokenId::SymSemiColon))
+    
+    if (!Tokenizer::isStartOfNewStatement(tokenParse))
     {
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0648)));
         node->label = tokenParse.token;

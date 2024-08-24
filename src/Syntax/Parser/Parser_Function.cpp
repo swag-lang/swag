@@ -1080,11 +1080,10 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
     *result           = node;
     node->semanticFct = Semantic::resolveReturn;
 
-    // Return value
     SWAG_CHECK(eatToken());
-    if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-        return true;
-    if (tokenParse.isNot(TokenId::SymSemiColon))
+
+    // Return value
+    if (!Tokenizer::isStartOfNewStatement(tokenParse))
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
     return true;
