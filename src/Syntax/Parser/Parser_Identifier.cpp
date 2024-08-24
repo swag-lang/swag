@@ -238,16 +238,19 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
         }
 
-        if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_CALL_PARAMS) && tokenParse.is(TokenId::SymLeftParen))
+        if(!Tokenizer::isStartOfNewStatement(tokenParse))
         {
-            // :SilentCall
-            SWAG_CHECK(eatToken());
-            identifier = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, parent);
-            identifier->inheritTokenLocation(tokenParse.token);
-            identifier->token.text = "";
-            identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
-            identifier->semanticFct = Semantic::resolveIdentifier;
-            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            if (tokenParse.is(TokenId::SymLeftParen))
+            {
+                // :SilentCall
+                SWAG_CHECK(eatToken());
+                identifier = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, parent);
+                identifier->inheritTokenLocation(tokenParse.token);
+                identifier->token.text = "";
+                identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
+                identifier->semanticFct = Semantic::resolveIdentifier;
+                SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            }
         }
     }
 
