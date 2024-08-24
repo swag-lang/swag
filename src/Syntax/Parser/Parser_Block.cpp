@@ -580,9 +580,6 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
 
-    if (mdfFlags.has(MODIFIER_ERR) && mdfFlags.has(MODIFIER_NO_ERR))
-        return error(node, formErr(Err0036, "#err", "#noerr"));
-    
     if (mdfFlags.has(MODIFIER_ERR))
         node->deferKind = DeferKind::Error;
     else if (mdfFlags.has(MODIFIER_NO_ERR))

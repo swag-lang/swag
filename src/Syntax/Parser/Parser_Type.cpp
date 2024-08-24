@@ -650,9 +650,6 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     // Cast modifiers
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
-
-    if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
-        return error(node, formErr(Err0036, "#bit", "#over"));
     
     if (mdfFlags.has(MODIFIER_OVERFLOW))
     {
