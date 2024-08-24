@@ -64,11 +64,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote(toNte(Nte0060));
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
-                    err.addNote(formNte(Nte0082, "public"));                
+                    err.addNote(formNte(Nte0082, "public"));
                 else if (nextToken.is(TokenId::SymLeftParen))
                     err.addNote(toNte(Nte0060));
                 else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0060));                
+                    err.addNote(toNte(Nte0060));
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
                     err.addNote(toNte(Nte0079));
                 else
@@ -100,7 +100,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 else
                     note = toNte(Nte0204);
             }
-        
+
             break;
 
         ///////////////////////////////////////////
@@ -156,4 +156,51 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0133, myToken.token.cstr()));
     return context->report(err);
+}
+
+bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
+{
+    if (tokenParse.is(TokenId::SymAsterisk) && getNextToken().is(TokenId::SymSlash))
+        return error(tokenParse, formErr(Err0289, "left expression"));
+
+    if (!leftAlone)
+        return error(tokenParse, formErr(Err0452, "left affectation"));
+
+    if (tokenParse.is(TokenId::SymEqualEqual))
+        return error(tokenParse, toErr(Err0662));
+
+    if (leftNode->is(AstNodeKind::IdentifierRef) &&
+        leftNode->lastChild()->is(AstNodeKind::Identifier) &&
+        tokenParse.is(TokenId::Identifier) &&
+        !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    {
+        const auto id = castAst<AstIdentifier>(leftNode->lastChild(), AstNodeKind::Identifier);
+        if (!id->callParameters)
+        {
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0678)};
+            const auto nextToken = getNextToken();
+            if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
+                err.addNote(formNte(Nte0081, id->token.cstr(), tokenParse.cstr()));
+            else if (Tokenizer::isStartOfNewStatement(nextToken))
+                err.addNote(formNte(Nte0069, tokenParse.cstr(), id->token.cstr()));
+            else
+                err.addNote(leftNode, toNte(Nte0209));
+            return context->report(err);
+        }
+    }
+
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return toNte(Nte0211); });
+
+    Utf8 afterMsg = "left expression";
+    if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))
+        afterMsg = form("identifier [[%s]]", leftNode->lastChild()->token.cstr());
+    else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
+        afterMsg = "tuple unpacking";
+    else if (leftNode->is(AstNodeKind::MultiIdentifier))
+        afterMsg = "variable list";
+
+    if (Tokenizer::isSymbol(tokenParse.token.id))
+        return error(tokenParse, formErr(Err0694, tokenParse.cstr(), afterMsg.cstr()));
+
+    return error(tokenParse, formErr(Err0444, afterMsg.cstr()));
 }

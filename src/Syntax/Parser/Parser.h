@@ -105,6 +105,7 @@ struct Parser
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
     bool invalidTokenError(InvalidTokenError kind);
     bool invalidIdentifierError(const TokenParse& myToken, const char* msg = nullptr) const;
+    bool endOfLineError(AstNode* leftNode, bool leftAlone);
 
     TokenParse getNextToken(uint32_t count = 1);
     bool       eatToken();
