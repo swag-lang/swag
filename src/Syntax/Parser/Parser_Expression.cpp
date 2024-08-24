@@ -788,6 +788,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE_RAW), error(tokenParse, formErr(Err0036, "#move", "#moveraw")));
             mdfFlags.add(MODIFIER_MOVE);
             SWAG_CHECK(eatToken());
             continue;
@@ -803,9 +804,9 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                     return error(tokenParse, formErr(Err0681, tokenParse.cstr(), forNode.cstr()));
             }
 
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_RIGHT_DROP), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0041, g_LangSpec->name_move.cstr())));
-            mdfFlags.add(MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP);
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE_RAW), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0036, "#moveraw", "#move")));
+            mdfFlags.add(MODIFIER_MOVE_RAW);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -1108,7 +1109,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
     }
 
     // move
-    if (mdfFlags.has(MODIFIER_MOVE))
+    if (mdfFlags.has(MODIFIER_MOVE | MODIFIER_MOVE_RAW))
     {
         auto exprNode         = Ast::newNode<AstNode>(AstNodeKind::Move, this, parent);
         *result               = exprNode;
@@ -1118,7 +1119,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
         result = &dummyResult;
 
         // no drop right
-        if (mdfFlags.has(MODIFIER_NO_RIGHT_DROP))
+        if (mdfFlags.has(MODIFIER_MOVE_RAW))
         {
             exprNode              = Ast::newNode<AstNode>(AstNodeKind::NoDrop, this, parent);
             *result               = exprNode;

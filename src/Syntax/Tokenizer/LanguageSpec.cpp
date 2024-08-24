@@ -592,7 +592,7 @@ void LanguageSpec::setupModifiers()
     modifiers.add(name_over, MODIFIER_OVERFLOW);
     modifiers.add(name_nodrop, MODIFIER_NO_LEFT_DROP);
     modifiers.add(name_move, MODIFIER_MOVE);
-    modifiers.add(name_moveraw, MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP);
+    modifiers.add(name_moveraw, MODIFIER_MOVE_RAW);
     modifiers.add(name_bit, MODIFIER_BIT);
     modifiers.add(name_unconst, MODIFIER_UN_CONST);
     modifiers.add(name_back, MODIFIER_BACK);
