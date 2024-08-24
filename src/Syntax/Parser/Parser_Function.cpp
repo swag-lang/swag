@@ -32,7 +32,7 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
         switch (tokenParse.token.id)
         {
             case TokenId::Identifier:
-                SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_FCT_PARAMS));
+                SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_CALL_PARAMS));
                 break;
 
             case TokenId::KwdTrue:

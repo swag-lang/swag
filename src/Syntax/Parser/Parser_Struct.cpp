@@ -50,7 +50,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
+        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_CALL_PARAMS));
         implNode->identifierFor->allocateExtension(ExtensionKind::Semantic);
         implNode->identifierFor->extSemantic()->semanticAfterFct = Semantic::resolveImplForAfterFor;
         implNode->semanticFct                                    = Semantic::resolveImplFor;

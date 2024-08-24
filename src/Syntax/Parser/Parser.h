@@ -52,7 +52,7 @@ enum class SyntaxStructType
 };
 
 constexpr ModifierFlags MODIFIER_OVERFLOW      = 0x00000001;
-constexpr ModifierFlags MODIFIER_PROM            = 0x00000002;
+constexpr ModifierFlags MODIFIER_PROM          = 0x00000002;
 constexpr ModifierFlags MODIFIER_NO_LEFT_DROP  = 0x00000004;
 constexpr ModifierFlags MODIFIER_MOVE          = 0x00000008;
 constexpr ModifierFlags MODIFIER_NO_RIGHT_DROP = 0x00000010;
@@ -62,12 +62,12 @@ constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
 constexpr ModifierFlags MODIFIER_REF           = 0x00000100;
 constexpr ModifierFlags MODIFIER_CONST_REF     = 0x00000200;
 
-constexpr IdentifierFlags IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
+constexpr IdentifierFlags IDENTIFIER_NO_CALL_PARAMS  = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 constexpr IdentifierFlags IDENTIFIER_TYPE_DECL       = 0x00000004;
 constexpr IdentifierFlags IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 constexpr IdentifierFlags IDENTIFIER_NO_ARRAY        = 0x00000010;
-constexpr IdentifierFlags IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
+constexpr IdentifierFlags IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_CALL_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
 constexpr ExprFlags EXPR_FLAG_NONE                  = 0x00000000;
 constexpr ExprFlags EXPR_FLAG_SIMPLE                = 0x00000001;

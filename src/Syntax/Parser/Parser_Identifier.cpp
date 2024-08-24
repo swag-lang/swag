@@ -2,7 +2,6 @@
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Report/Report.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
@@ -178,35 +177,41 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     }
 
     // Generic arguments
-    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
+    if (!identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
     {
-        if (tokenParse.is(TokenId::SymQuote))
+        if (!Tokenizer::isStartOfNewStatement(tokenParse))
         {
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doGenericFuncCallArguments(identifier, &identifier->genericParameters));
-            identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
+            if (tokenParse.is(TokenId::SymQuote))
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doGenericFuncCallArguments(identifier, &identifier->genericParameters));
+                identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
+            }
         }
     }
 
-    // Function call parameters
-    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS))
+    // Function call parameters or struct initialization values
+    if (!identifierFlags.has(IDENTIFIER_NO_CALL_PARAMS))
     {
-        if (tokenParse.is(TokenId::SymLeftParen))
+        if (!Tokenizer::isStartOfNewStatement(tokenParse))
         {
-            if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
+            if (tokenParse.is(TokenId::SymLeftParen))
             {
-                Diagnostic err{identifier, tokenParse.token, toErr(Err0235)};
-                return context->report(err);
-            }
+                if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
+                {
+                    Diagnostic err{identifier, tokenParse.token, toErr(Err0235)};
+                    return context->report(err);
+                }
 
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
-        }
-        else if (!tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
-        {
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightCurly));
-            identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            }
+            else if (!tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightCurly));
+                identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
+            }
         }
     }
 
@@ -231,7 +236,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
         }
 
-        if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS) && tokenParse.is(TokenId::SymLeftParen))
+        if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && !identifierFlags.has(IDENTIFIER_NO_CALL_PARAMS) && tokenParse.is(TokenId::SymLeftParen))
         {
             // :SilentCall
             SWAG_CHECK(eatToken());
@@ -487,7 +492,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0653)));
 
     AstNode* expr;
-    SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
+    SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_CALL_PARAMS | IDENTIFIER_NO_ARRAY));
 
     SWAG_CHECK(eatSemiCol("[[namealias]] declaration"));
     expr->lastChild()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
