@@ -435,18 +435,6 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             if (inTypeVarDecl)
                 node->identifier->lastChild()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
             node->token.endLocation = node->identifier->token.endLocation;
-
-            // Ambiguous {
-            if (tokenParse.is(TokenId::SymLeftCurly) &&
-                tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) &&
-                !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) &&
-                !node->findParent(AstNodeKind::FuncDeclType))
-            {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0011, node->identifier->token.cstr())};
-                err.addNote(formNte(Nte0045, node->identifier->token.cstr()));
-                err.addNote(toNte(Nte0039));
-                return context->report(err);
-            }
             return true;
 
         case TokenId::KwdStruct:
@@ -619,19 +607,10 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         // parameters like a normal struct).
         // So we create an identifier, that will be matched with the type alias automatically
         // created in the function.
-        if (!Tokenizer::isStartOfNewStatement(tokenParse))
+        if (Tokenizer::isJustAfterPrevious(tokenParse))
         {
             if (tokenParse.is(TokenId::SymLeftCurly))
             {
-                // Ambiguous {
-                if (tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE))
-                {
-                    Diagnostic err{sourceFile, tokenParse, formErr(Err0011, node->token.cstr())};
-                    err.addNote(formNte(Nte0045, node->token.cstr()));
-                    err.addNote(toNte(Nte0039));
-                    return context->report(err);
-                }
-
                 node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node);
                 const auto id    = castAst<AstIdentifier>(node->identifier->lastChild(), AstNodeKind::Identifier);
                 SWAG_CHECK(eatToken());
