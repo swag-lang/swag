@@ -487,8 +487,6 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
 
 bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
-
     const auto node = Ast::newTypeExpression(this, parent);
     *result         = node;
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
@@ -565,17 +563,6 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         auto rightSquareToken = tokenParse;
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.token.startLocation));
-        if (tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
-        {
-            if (exprFlags.has(EXPR_FLAG_TYPE_EXPR))
-            {
-                if (inTypeVarDecl)
-                    return context->report({sourceFile, rightSquareToken.token, toErr(Err0683)});
-                const Diagnostic err{sourceFile, rightSquareToken.token, toErr(Err0683)};
-                return context->report(err);
-            }
-            return error(rightSquareToken.token, toErr(Err0683));
-        }
 
         if (tokenParse.is(TokenId::SymComma))
         {

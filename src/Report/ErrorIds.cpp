@@ -826,7 +826,7 @@ void initErrors()
     SWAG_ERROR(Err0680, "unexpected instrinsic scope                       $ unexpected scoping of an intrinsic                                                                                                       $ intrinsics do not belong to a specific scope");
     SWAG_ERROR(Err0681, "unexpected instruction modifier                   $ cannot apply the instruction modifier [[%s]] to [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0682, "unexpected lambda parameter name                  $ cannot use a name when declaring a lambda type                                                                                           $ consider removing it");
-    SWAG_ERROR(Err0683, "unexpected line break                             $ cannot place the array type on a different line                                                                                          $ it should be on the same line as the array dimensions");
+    SWAG_ERROR(Err0683, nullptr);
     SWAG_ERROR(Err0684, "unexpected name                                   $ cannot use more than [[2]] [[visit]] alias names ([[%u]] were provided)                                                                  $ ");
     SWAG_ERROR(Err0685, "unexpected number prefix                          $ expected [[0x]] for hexadecimal or [[0b]] for binary, got 0$$TKN$$ instead                                                               $ ");
     SWAG_ERROR(Err0686, "unexpected parameter name                         $ expected a parameter name, found $$TKN$$ instead                                                                                         $ ");
