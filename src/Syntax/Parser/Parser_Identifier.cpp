@@ -179,7 +179,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     // Generic arguments
     if (!identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
     {
-        if (!Tokenizer::isStartOfNewStatement(tokenParse))
+        if (Tokenizer::isJustAfterPrevious(tokenParse))
         {
             if (tokenParse.is(TokenId::SymQuote))
             {
@@ -192,7 +192,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (!identifierFlags.has(IDENTIFIER_NO_CALL_PARAMS))
     {
-        if (!Tokenizer::isStartOfNewStatement(tokenParse))
+        if (Tokenizer::isJustAfterPrevious(tokenParse))
         {
             // Function call parameters
             if (tokenParse.is(TokenId::SymLeftParen))
@@ -208,7 +208,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             }
 
             // Struct initialization values
-            else if (!tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
+            else if (tokenParse.is(TokenId::SymLeftCurly))
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightCurly));
@@ -220,7 +220,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     // Array index
     if (!identifierFlags.has(IDENTIFIER_NO_PARAMS))
     {
-        if (!Tokenizer::isStartOfNewStatement(tokenParse))
+        if (Tokenizer::isJustAfterPrevious(tokenParse))
         {
             if (tokenParse.is(TokenId::SymLeftSquare))
             {
@@ -242,7 +242,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                         serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
                 }
 
-                if (!Tokenizer::isStartOfNewStatement(tokenParse))
+                if (Tokenizer::isJustAfterPrevious(tokenParse))
                 {
                     if (tokenParse.is(TokenId::SymLeftParen))
                     {

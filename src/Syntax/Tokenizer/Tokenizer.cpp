@@ -49,11 +49,16 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
 
 bool Tokenizer::isStartOfNewStatement(const TokenParse& token)
 {
-    if(token.is(TokenId::SymSemiColon) || token.is(TokenId::EndOfFile))
+    if (token.is(TokenId::SymSemiColon) || token.is(TokenId::EndOfFile))
         return true;
-    if(token.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    if (token.flags.has(TOKEN_PARSE_EOL_BEFORE))
         return true;
     return false;
+}
+
+bool Tokenizer::isJustAfterPrevious(const TokenParse& token)
+{
+    return !isStartOfNewStatement(token) && !token.flags.has(TOKEN_PARSE_BLANK_BEFORE);
 }
 
 void Tokenizer::saveState(const TokenParse& token)

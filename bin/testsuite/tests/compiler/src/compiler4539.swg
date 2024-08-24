@@ -3,5 +3,5 @@ struct A{}
 
 #test
 {
-    var x: A ()
+    var x: A()
 }

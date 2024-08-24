@@ -87,6 +87,7 @@ struct Tokenizer
     static bool isIntrinsicNoReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
     static bool isTopLevelInst(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }
     static bool isStartOfNewStatement(const TokenParse& token);
+    static bool isJustAfterPrevious(const TokenParse& token);
 
     SourceLocation location;
 
