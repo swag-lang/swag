@@ -703,8 +703,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                     return error(tokenParse, formErr(Err0681, tokenParse.cstr(), forNode.cstr()));
             }
 
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0036, "#ref", "#constref")));
             mdfFlags.add(MODIFIER_REF);
             SWAG_CHECK(eatToken());
             continue;
@@ -721,7 +721,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0036, "#constref", "#ref")));
             mdfFlags.add(MODIFIER_CONST_REF);
             SWAG_CHECK(eatToken());
             continue;
