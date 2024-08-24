@@ -18,7 +18,7 @@ TokenParse Parser::getNextToken(uint32_t count)
 {
     tokenizer.saveState(tokenParse);
     for (uint32_t i = 0; i < count; i++)
-        eatToken();
+        tokenizer.nextToken(tokenParse);
     const auto save = tokenParse;
     tokenizer.restoreState(tokenParse);
     return save;

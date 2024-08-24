@@ -124,7 +124,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0285);
             else
-                msg = toErr(Err0665);
+            {
+                Diagnostic err{sourceFile, startToken, toErr(Err0665)};
+                return context->report(err);
+            }
+
             break;
 
         ///////////////////////////////////////////
