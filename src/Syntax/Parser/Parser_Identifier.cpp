@@ -2,6 +2,7 @@
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"

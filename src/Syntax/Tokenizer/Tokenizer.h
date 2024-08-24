@@ -38,6 +38,13 @@ constexpr TokenFlags TOKEN_FLAGS[] =
 
 };
 
+struct TokenizerState
+{
+    TokenParse     token;
+    SourceLocation location;
+    char*          buffer = nullptr;
+};
+
 struct Tokenizer
 {
     bool error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint = "") const;
@@ -91,7 +98,5 @@ struct Tokenizer
     bool           realAppendName = false;
     bool           idLetters[256] = {false};
 
-    TokenParse     savedToken;
-    SourceLocation savedLocation;
-    char*          savedCurBuffer = nullptr;
+    Vector<TokenizerState> savedState;
 };

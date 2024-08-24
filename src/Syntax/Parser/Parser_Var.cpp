@@ -387,22 +387,6 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
             Ast::removeFromParent(type);
-
-            // Ambiguous {
-            if (tokenParse.is(TokenId::SymLeftCurly) &&
-                tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) &&
-                !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) &&
-                type->is(AstNodeKind::TypeExpression))
-            {
-                const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
-                if (typeExpr->identifier)
-                {
-                    Diagnostic err{sourceFile, tokenParse, formErr(Err0011, typeExpr->identifier->token.cstr())};
-                    err.addNote(formNte(Nte0045, typeExpr->identifier->token.cstr()));
-                    err.addNote(toNte(Nte0039));
-                    return context->report(err);
-                }
-            }
         }
 
         // Value

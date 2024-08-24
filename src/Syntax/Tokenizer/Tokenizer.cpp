@@ -49,16 +49,20 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
 
 void Tokenizer::saveState(const TokenParse& token)
 {
-    savedToken     = token;
-    savedCurBuffer = curBuffer;
-    savedLocation  = location;
+    TokenizerState st;
+    st.token    = token;
+    st.location = location;
+    st.buffer   = curBuffer;
+    savedState.push_back(st);
 }
 
 void Tokenizer::restoreState(TokenParse& token)
 {
-    token     = savedToken;
-    curBuffer = savedCurBuffer;
-    location  = savedLocation;
+    const auto st = savedState.back();
+    savedState.pop_back();
+    token     = st.token;
+    location  = st.location;
+    curBuffer = st.buffer;
 }
 
 uint32_t Tokenizer::peekChar(unsigned& offset) const
