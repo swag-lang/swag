@@ -632,6 +632,18 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         // So we create an identifier, that will be matched with the type alias automatically
         // created in the function.
         SWAG_CHECK(eatToken());
+
+        // Ambiguous {
+        if (tokenParse.is(TokenId::SymLeftCurly) &&
+            tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) &&
+            !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+        {
+            Diagnostic err{sourceFile, tokenParse, formErr(Err0011, node->token.cstr())};
+            err.addNote(formNte(Nte0045, node->token.cstr()));
+            err.addNote(toNte(Nte0039));
+            return context->report(err);
+        }
+
         if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
         {
             node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node);
