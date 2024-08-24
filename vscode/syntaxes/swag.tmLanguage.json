@@ -210,7 +210,7 @@
     "compiler-modifiers": {
       "patterns": [
         {
-          "name": "keyword",
+          "name": "meta.preprocessor",
           "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|call|err|noerr)\\b"
         }
       ]
