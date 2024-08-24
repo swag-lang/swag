@@ -264,66 +264,6 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerWhere(AstNode* parent, AstNode** result)
-{
-    const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerWhere, this, parent);
-    *result         = node;
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-    node->semanticFct                      = Semantic::resolveCompilerWhereExpression;
-    parent->addAstFlag(AST_HAS_SELECT_IF);
-    node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-
-    SWAG_CHECK(eatToken());
-
-    // 'Call' mode
-    if (tokenParse.is(TokenId::SymLeftParen))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.token.is(g_LangSpec->name_call))
-        {
-            SWAG_CHECK(eatToken());
-            node->kind = AstNodeKind::CompilerWhereCall;
-        }
-        else
-        {
-            return error(tokenParse, formErr(Err0704, tokenParse.cstr()));
-        }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[where]] mode"));
-    }
-
-    // Not for the 3 special functions
-    if (parent->token.is(g_LangSpec->name_opDrop) ||
-        parent->token.is(g_LangSpec->name_opPostCopy) ||
-        parent->token.is(g_LangSpec->name_opPostMove))
-    {
-        return error(node, formErr(Err0361, parent->token.cstr()));
-    }
-
-    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
-    if (tokenParse.is(TokenId::SymLeftCurly))
-    {
-        AstNode* funcNode;
-        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::KwdWhere));
-
-        const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
-        const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
-        identifier->callParameters = Ast::newFuncCallParams(this, identifier);
-        idRef->inheritTokenLocation(node->token);
-        identifier->inheritTokenLocation(node->token);
-    }
-    else
-    {
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatSemiCol("[[check]] expression"));
-    }
-
-    return true;
-}
-
 bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerAst, this, parent);

@@ -5,7 +5,7 @@
     { "include": "#one-line-comment" },
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
-    { "include": "#visit-call" },
+    { "include": "#keyword-mode" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
     { "include": "#op" },
@@ -211,7 +211,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|call)\\b"
         }
       ]
     },    
@@ -275,10 +275,10 @@
         }
       ]
     },
-    "visit-call": {
+    "keyword-mode": {
       "patterns": [
         {
-          "match": "\\b(visit|defer|where)\\((\\w*)\\)",
+          "match": "\\b(visit|defer)\\((\\w*)\\)",
           "captures": {
             "1": {
               "name": "keyword.control"

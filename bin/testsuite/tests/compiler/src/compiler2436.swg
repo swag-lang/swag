@@ -1,5 +1,5 @@
 func append(v: const [..] s32)
-    where(call)
+    where #call
     {
         @assert(@countof(v) == 3)
         return true

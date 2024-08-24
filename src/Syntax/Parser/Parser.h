@@ -61,6 +61,7 @@ constexpr ModifierFlags MODIFIER_UN_CONST      = 0x00000040;
 constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
 constexpr ModifierFlags MODIFIER_REF           = 0x00000100;
 constexpr ModifierFlags MODIFIER_CONST_REF     = 0x00000200;
+constexpr ModifierFlags MODIFIER_CALL          = 0x00000400;
 
 constexpr IdentifierFlags IDENTIFIER_NO_CALL_PARAMS  = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
@@ -141,7 +142,6 @@ struct Parser
     bool doCompilerError(AstNode* parent, AstNode** result);
     bool doCompilerWarning(AstNode* parent, AstNode** result);
     bool doCompilerAst(AstNode* parent, AstNode** result);
-    bool doCompilerWhere(AstNode* parent, AstNode** result);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result);
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);
@@ -236,6 +236,7 @@ struct Parser
     bool doWhile(AstNode* parent, AstNode** result);
     bool doFor(AstNode* parent, AstNode** result);
     bool doWhereIf(AstNode* node, AstNode** result);
+    bool doWhereConstraint(AstNode* parent, AstNode** result);
     bool doLoop(AstNode* parent, AstNode** result);
     bool doVisit(AstNode* parent, AstNode** result);
     bool doSwitch(AstNode* parent, AstNode** result);

@@ -370,8 +370,8 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
             article = "a";
             return "type";
 
-        case AstNodeKind::CompilerWhere:
-        case AstNodeKind::CompilerWhereCall:
+        case AstNodeKind::WhereConstraint:
+        case AstNodeKind::WhereCallConstraint:
             article = "a";
             return "constraint";
 

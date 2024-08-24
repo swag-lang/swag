@@ -30,14 +30,14 @@ impl Variant
     }
 
     mtd(TN) opEquals(other: TN)->bool
-        where(call) checkValidType(T, TN)
+        where #call checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer == other
     }
 
     mtd(TN) opCmp(other: TN)->s32
-        where(call) checkValidType(T, TN)
+        where #call checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer <=> other
@@ -83,7 +83,7 @@ impl Variant
 
     // Set the variant value
     mtd(TN) set(value: TN)
-        where(call) checkValidType(T, TN)
+        where #call checkValidType(T, TN)
     {
         // Drop previous value if necessary
         drop()
@@ -95,7 +95,7 @@ impl Variant
     // Get the variant value of the given type
     // Will assert if the current type does not match
     mtd(TN) get()->TN
-        where(call) checkValidType(T, TN)
+        where #call checkValidType(T, TN)
     {
         Debug.assert(type == TN, "requested type does not match the variant current type")
         return dref cast(*TN) buffer

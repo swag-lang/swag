@@ -167,7 +167,6 @@ void LanguageSpec::setupNames()
 
     name_err   = "err";
     name_noerr = "noerr";
-    name_call  = "call";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
@@ -323,6 +322,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#bit", TokenId::ModifierBit);
     keywords.add("#unconst", TokenId::ModifierUnconst);
     keywords.add("#back", TokenId::ModifierBack);
+    keywords.add("#call", TokenId::ModifierCall);
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
 

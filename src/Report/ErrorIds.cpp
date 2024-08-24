@@ -847,7 +847,7 @@ void initErrors()
     SWAG_ERROR(Err0701, "unexpected visit name                             $ cannot use a visit specialization name for [[%s]]                                                                                        $ it is only valid to visit a struct");
     SWAG_ERROR(Err0702, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
     SWAG_ERROR(Err0703, "unknown [[defer]] mode                            $ cannot recognize [[%s]] as a valid [[defer]] mode                                                                                        $ the acceptable modes are [[err]] and [[noerr]]");
-    SWAG_ERROR(Err0704, "unknown [[where]] mode                            $ cannot recognize [[%s]] as a valid [[where]] mode                                                                                        $ the only acceptable mode is [[call]]");
+    SWAG_ERROR(Err0704, nullptr);
     SWAG_ERROR(Err0705, "unknown attribute                                 $ cannot find the attribute [[%s]]                                                                                                         $ ");
     SWAG_ERROR(Err0706, "unknown compiler instruction                      $ cannot recognize [[%s]] as a valid compiler instruction                                                                                  $ a compiler instruction starts with the symbol [['#']]");
     SWAG_ERROR(Err0707, "unknown dependency                                $ cannot find the module dependency [[%s]]                                                                                                 $ ");

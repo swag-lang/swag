@@ -9,6 +9,72 @@
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
+bool Parser::doWhereIf(AstNode* node, AstNode** result)
+{
+    const auto newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
+
+    ParserPushScope scoped(this, newScope);
+    AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
+    statement->allocateExtension(ExtensionKind::Semantic);
+    statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+    statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_IS_WHERE);
+    *result         = statement;
+    newScope->owner = statement;
+
+    const auto nodeIf   = Ast::newNode<AstIf>(AstNodeKind::If, this, statement);
+    nodeIf->semanticFct = Semantic::resolveIf;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doExpression(nodeIf, EXPR_FLAG_NONE, &nodeIf->boolExpression));
+    return true;
+}
+
+bool Parser::doWhereConstraint(AstNode* parent, AstNode** result)
+{
+    const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::WhereConstraint, this, parent);
+    *result         = node;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveWhereConstraintExpression;
+    parent->addAstFlag(AST_HAS_SELECT_IF);
+    node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+
+    SWAG_CHECK(eatToken());
+
+    ModifierFlags mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
+    if (mdfFlags.has(MODIFIER_CALL))
+        node->kind = AstNodeKind::WhereCallConstraint;
+
+    // Not for the 3 special functions
+    if (parent->token.is(g_LangSpec->name_opDrop) ||
+        parent->token.is(g_LangSpec->name_opPostCopy) ||
+        parent->token.is(g_LangSpec->name_opPostMove))
+    {
+        return error(node, formErr(Err0361, parent->token.cstr()));
+    }
+
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
+    if (tokenParse.is(TokenId::SymLeftCurly))
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::KwdWhere));
+
+        const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
+        const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
+        identifier->callParameters = Ast::newFuncCallParams(this, identifier);
+        idRef->inheritTokenLocation(node->token);
+        identifier->inheritTokenLocation(node->token);
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+        SWAG_CHECK(eatSemiCol("[[where]] expression"));
+    }
+
+    return true;
+}
+
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstIf>(AstNodeKind::If, this, parent);
@@ -248,26 +314,6 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     Ast::addChildBack(node, node->boolExpression);
 
     SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
-    return true;
-}
-
-bool Parser::doWhereIf(AstNode* node, AstNode** result)
-{
-    const auto newScope = Ast::newScope(node, "", ScopeKind::Statement, currentScope);
-
-    ParserPushScope scoped(this, newScope);
-    AstNode*        statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
-    statement->allocateExtension(ExtensionKind::Semantic);
-    statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
-    statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE | AstStatement::SPEC_FLAG_IS_WHERE);
-    *result         = statement;
-    newScope->owner = statement;
-
-    const auto nodeIf   = Ast::newNode<AstIf>(AstNodeKind::If, this, statement);
-    nodeIf->semanticFct = Semantic::resolveIf;
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(doExpression(nodeIf, EXPR_FLAG_NONE, &nodeIf->boolExpression));
     return true;
 }
 
@@ -589,7 +635,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveBreak;
     *result           = node;
     SWAG_CHECK(eatToken());
-    
+
     if (!Tokenizer::isStartOfNewStatement(tokenParse))
     {
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0648)));

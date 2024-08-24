@@ -125,7 +125,7 @@ The `where` clause can also be applied to generic structs. If the condition is n
 
 /**
 # Multiple Evaluations
-By utilizing the `where(call)` mode, the `where` clause is evaluated for **each** function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time.
+By utilizing the `where #call` mode, the `where` clause is evaluated for **each** function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time.
 */
 
 #test
@@ -133,18 +133,17 @@ By utilizing the `where(call)` mode, the `where` clause is evaluated for **each*
     {
         // Function to ensure that `y` is not zero at compile time.
         func div(x, y: s32)->s32                        // Division function with compile-time check
-            where(call)
+            where #call
             {
                 // Verify if `y` is a compile-time constant.
                 if !@isconstexpr(y):
                     return true                         // Allow if `y` is not constant
                 if y == 0:
-                    @compilererror("Division by zero",  // Error for division by zero
-                        @location(y))
+                    @compilererror("Division by zero", @location(y))
                 return true                             // Allow otherwise
             }
         {
-            return x / y                                // Perform the division
+            return x / y
         }
 
         // Valid division.
@@ -159,7 +158,7 @@ By utilizing the `where(call)` mode, the `where` clause is evaluated for **each*
         // Function with different implementations based on whether `x` is known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32                         // Overload for constexpr `x`
-            where(call) @isconstexpr(x)
+            where #call @isconstexpr(x)
         {
             return 555                                  // Return 555 if `x` is constexpr
         }
@@ -167,16 +166,16 @@ By utilizing the `where(call)` mode, the `where` clause is evaluated for **each*
         // Overload for the case where `x` is not known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32                         // Overload for non-constexpr `x`
-            where(call) !@isconstexpr(x)
+            where #call !@isconstexpr(x)
         {
             return 666                                  // Return 666 if `x` is not constexpr
         }
 
         // Will call the first version because `x` is a literal.
-        @assert(first(0) == 555)                        // Assert that 555 is returned
+        @assert(first(0) == 555)
 
         // Will call the second version because `x` is a variable.
         var a: s32
-        @assert(first(a) == 666)                        // Assert that 666 is returned
+        @assert(first(a) == 666)
     }
 }

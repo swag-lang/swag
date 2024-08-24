@@ -195,7 +195,6 @@ struct LanguageSpec
 
     Utf8 name_err;
     Utf8 name_noerr;
-    Utf8 name_call;
 
     Utf8 name_boundcheck;
     Utf8 name_overflow;

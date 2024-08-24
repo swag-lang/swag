@@ -294,7 +294,7 @@ namespace Semantic
     bool resolveCompilerPrint(SemanticContext* context);
     bool resolveCompilerRun(SemanticContext* context);
     bool resolveCompilerSpecialValue(SemanticContext* context);
-    bool resolveCompilerWhereExpression(SemanticContext* context);
+    bool resolveWhereConstraintExpression(SemanticContext* context);
     bool resolveCompilerWarning(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);
