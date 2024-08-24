@@ -143,7 +143,7 @@ providing flexibility depending on the needs of your application.
     var cpt = 0
 
     // Call the variant `opVisitReverse` to iterate over the fields in reverse order.
-    visit(Reverse) v, i in myStruct
+    visit<Reverse> v, i in myStruct
     {
         switch i
         {

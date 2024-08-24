@@ -39,7 +39,7 @@ func day2B()
     var cde = 0
     visit l in lines
     {
-        visit(Bytes) c in l
+        visit<Bytes> c in l
         {
             switch c
             {

@@ -9,7 +9,7 @@ func(ptr: bool) opVisitToto(x: string, stmt: code)
 /*
 #test
 {
-    visit(Toto) "toto"
+    visit<Toto> "toto"
     {
 
     }

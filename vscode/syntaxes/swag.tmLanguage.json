@@ -5,7 +5,7 @@
     { "include": "#one-line-comment" },
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
-    { "include": "#visit-mode" },
+    { "include": "#keyword-mode" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
     { "include": "#op" },
@@ -211,7 +211,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|call|err|noerr)\\b"
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
         }
       ]
     },    
@@ -275,10 +275,10 @@
         }
       ]
     },
-    "visit-mode": {
+    "keyword-mode": {
       "patterns": [
         {
-          "match": "\\b(visit)\\((\\w*)\\)",
+          "match": "\\b(visit|break|defer|where|cast)\\((\\w*)\\)",
           "captures": {
             "1": {
               "name": "keyword.control"

@@ -330,14 +330,14 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Specialized name
-    if (tokenParse.is(TokenId::SymLeftParen))
+    if (tokenParse.is(TokenId::SymLower))
     {
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0277)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the visit specialization name"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the visit specialization name"));
     }
 
     // Reverse loop

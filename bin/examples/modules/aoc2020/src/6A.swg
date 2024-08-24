@@ -51,7 +51,7 @@ func day6A()
     var total: u64
     visit l in lines
     {
-        visit(Bytes) c in l:
+        visit<Bytes> c in l:
             map.add(c)
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {

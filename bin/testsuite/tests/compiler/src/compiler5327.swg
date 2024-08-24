@@ -26,7 +26,7 @@ impl S
     {
     }
 
-    visit(Bytes) #back c in s
+    visit<Bytes> #back c in s
     {
     }
 }

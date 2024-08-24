@@ -34,7 +34,7 @@ func day8A()
     var best0  = Swag.S32.Max
     var total  = 0
 
-    visit(Bytes) c in lines[0]
+    visit<Bytes> c in lines[0]
     {
         count[c - `0`] += 1
         x = (x + 1) % 25
