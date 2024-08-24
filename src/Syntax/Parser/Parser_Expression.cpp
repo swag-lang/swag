@@ -628,7 +628,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_ERR), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_ERR), error(tokenParse, formErr(Err0036, "#err", "#noerr")));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_ERR), error(tokenParse, formErr(Err0036, "#noerr", "#err")));
             mdfFlags.add(MODIFIER_NO_ERR);
             SWAG_CHECK(eatToken());
             continue;
@@ -671,7 +671,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0036, "#bit", "#over")));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0036, "#over", "#bit")));
             mdfFlags.add(MODIFIER_OVERFLOW);
             SWAG_CHECK(eatToken());
             continue;
