@@ -44,7 +44,10 @@ bool Parser::doWhereConstraint(AstNode* parent, AstNode** result)
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
     if (mdfFlags.has(MODIFIER_CALL))
+    {
+        SWAG_VERIFY(parent->isNot(AstNodeKind::StructDecl), error(node->token, toErr(Err0360)));
         node->kind = AstNodeKind::WhereCallConstraint;
+    }
 
     // Not for the 3 special functions
     if (parent->token.is(g_LangSpec->name_opDrop) ||
