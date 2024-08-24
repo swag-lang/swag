@@ -238,7 +238,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
         }
 
-        if(!Tokenizer::isStartOfNewStatement(tokenParse))
+        if (!Tokenizer::isStartOfNewStatement(tokenParse))
         {
             if (tokenParse.is(TokenId::SymLeftParen))
             {
@@ -305,7 +305,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
             break;
     }
 
-    while (tokenParse.is(TokenId::SymDot) && !tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    while (tokenParse.is(TokenId::SymDot) && !Tokenizer::isStartOfNewStatement(tokenParse))
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));

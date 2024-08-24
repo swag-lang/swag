@@ -1695,14 +1695,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
     if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::SymColon))
         return true;
 
-    if (tokenParse.is(TokenId::SymSemiColon) ||
-        tokenParse.is(TokenId::EndOfFile) ||
-        tokenParse.is(TokenId::SymAsterisk) ||
-        tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE))
+    if (Tokenizer::isStartOfNewStatement(tokenParse))
     {
         SWAG_CHECK(eatSemiCol("left expression"));
         return true;
     }
+
+    if (tokenParse.is(TokenId::SymAsterisk) && getNextToken().is(TokenId::SymSlash))
+        return error(tokenParse, formErr(Err0289, "left expression"));
 
     if (!leftAlone)
         return error(tokenParse, formErr(Err0452, "left affectation"));

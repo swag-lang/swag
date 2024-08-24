@@ -122,25 +122,10 @@ bool Parser::eatSemiCol(const char* msg)
     SWAG_ASSERT(msg);
 
     if (!Tokenizer::isStartOfNewStatement(tokenParse))
-    {
-        if (tokenParse.is(TokenId::SymAsterisk))
-        {
-            const auto st = tokenParse;
-            eatToken();
-            if (tokenParse.is(TokenId::SymSlash))
-            {
-                tokenParse.token.startLocation = st.token.startLocation;
-                return error(tokenParse, formErr(Err0289, msg));
-            }
-
-            tokenParse = st;
-        }
-
         return error(tokenParse, formErr(Err0452, msg));
-    }
-
     if (tokenParse.is(TokenId::SymSemiColon))
         SWAG_CHECK(eatToken());
+    
     return true;
 }
 
