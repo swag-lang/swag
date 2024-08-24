@@ -190,11 +190,11 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         }
     }
 
-    // Function call parameters or struct initialization values
     if (!identifierFlags.has(IDENTIFIER_NO_CALL_PARAMS))
     {
         if (!Tokenizer::isStartOfNewStatement(tokenParse))
         {
+            // Function call parameters
             if (tokenParse.is(TokenId::SymLeftParen))
             {
                 if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
@@ -206,6 +206,8 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doFuncCallArguments(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
+
+            // Struct initialization values
             else if (!tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE) && tokenParse.is(TokenId::SymLeftCurly))
             {
                 SWAG_CHECK(eatToken());

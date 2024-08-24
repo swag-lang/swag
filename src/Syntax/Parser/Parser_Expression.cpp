@@ -1722,7 +1722,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
                 err.addNote(formNte(Nte0081, id->token.cstr(), tokenParse.cstr()));
-            else if (nextToken.is(TokenId::SymSemiColon) || nextToken.flags.has(TOKEN_PARSE_EOL_BEFORE))
+            else if (Tokenizer::isStartOfNewStatement(nextToken))
                 err.addNote(formNte(Nte0069, tokenParse.cstr(), id->token.cstr()));
             else
                 err.addNote(leftNode, toNte(Nte0209));
