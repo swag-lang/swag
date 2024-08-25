@@ -1,8 +1,8 @@
-/*#global testerror "Err0704"
+#global testerror "Err0704"
 
 //#[Swag.Macro]
 func toto(x: string)
-    where(titi)
+    where<titi>
     {
         let y = x
         @print(y)
@@ -15,4 +15,4 @@ func toto(x: string)
 {
     var x = "val"
     toto(x)
-}*/
+}

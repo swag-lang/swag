@@ -328,6 +328,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
         SWAG_CHECK(doWhereConstraint(structNode, &structNode->whereExpression));
+        SWAG_VERIFY(structNode->whereExpression->isNot(AstNodeKind::WhereCallConstraint), error(structNode->whereExpression->token, toErr(Err0360)));
     }
 
     // Content of struct

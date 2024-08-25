@@ -1,5 +1,5 @@
 func append(v: ...)
-    where #call
+    where<call>
     {
         @assert(@countof(v) == 2)
         return true

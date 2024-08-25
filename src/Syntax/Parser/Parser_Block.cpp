@@ -41,12 +41,23 @@ bool Parser::doWhereConstraint(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    ModifierFlags mdfFlags = 0;
-    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
-    if (mdfFlags.has(MODIFIER_CALL))
+    // where mode
+    if (tokenParse.is(TokenId::SymLower))
     {
-        SWAG_VERIFY(parent->isNot(AstNodeKind::StructDecl), error(node->token, toErr(Err0360)));
-        node->kind = AstNodeKind::WhereCallConstraint;
+        const auto startLoc = tokenParse.token.startLocation;
+        SWAG_CHECK(eatToken());
+
+        if (tokenParse.is(g_LangSpec->name_call))
+        {
+            SWAG_CHECK(eatToken());
+            node->kind = AstNodeKind::WhereCallConstraint;
+        }
+        else
+        {
+            return error(tokenParse, formErr(Err0704, tokenParse.cstr()));
+        }
+
+        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[where]] mode"));
     }
 
     // Not for the 3 special functions
@@ -576,7 +587,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    // Defer kind
+    // Defer mode
     if (tokenParse.is(TokenId::SymLower))
     {
         const auto startLoc = tokenParse.token.startLocation;

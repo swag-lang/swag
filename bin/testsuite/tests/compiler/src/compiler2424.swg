@@ -1,5 +1,5 @@
 func print(f: f32)
-    where #call
+    where<call>
     {
         @assert(@isconstexpr(f))
         return true

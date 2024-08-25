@@ -1,7 +1,7 @@
 //var G = 0
 
 func append(buf: *void, fmt: string, values: ...)
-    where #call
+    where<call>
     {
         if !@isconstexpr(fmt): return true
         var cpt = @countof(values)

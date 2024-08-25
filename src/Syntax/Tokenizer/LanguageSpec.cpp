@@ -164,8 +164,8 @@ void LanguageSpec::setupNames()
     name_back     = "#back";
     name_ref      = "#ref";
     name_constref = "#constref";
-    name_call     = "#call";
-
+    
+    name_call  = "call";
     name_err   = "err";
     name_noerr = "noerr";
 
@@ -325,7 +325,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#back", TokenId::ModifierBack);
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
-    keywords.add("#call", TokenId::ModifierCall);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);
@@ -597,7 +596,6 @@ void LanguageSpec::setupModifiers()
     modifiers.add(name_back, MODIFIER_BACK);
     modifiers.add(name_ref, MODIFIER_REF);
     modifiers.add(name_constref, MODIFIER_CONST_REF);
-    modifiers.add(name_call, MODIFIER_CALL);
 }
 
 void LanguageSpec::setup()

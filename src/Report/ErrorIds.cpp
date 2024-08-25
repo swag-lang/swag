@@ -502,7 +502,7 @@ void initErrors()
     SWAG_ERROR(Err0357, "misplaced [[using]]                               $ cannot associate [[using]] with the type [[%s]]                                                                                          $ expected a namespace, a struct, an enum or a variable");
     SWAG_ERROR(Err0358, "misplaced [[using]] in interface                  $ cannot associate [[using]] with an interface function                                                                                    $ ");
     SWAG_ERROR(Err0359, "misplaced [[var]]                                 $ cannot use [[var]] in struct variable declarations                                                                                       $ a struct variable should be declared as [[fieldName: Type]] without [[var]]");
-    SWAG_ERROR(Err0360, "misplaced [[where #call]]                         $ cannot use a [[where #call]] constraint for structs                                                                                      $ call constraints are only valid for functions, so consider removing the [[#call]]");
+    SWAG_ERROR(Err0360, "misplaced [[where<call>]]                         $ cannot use a [[where<call>]] constraint on structs                                                                                       $ call constraints are only valid for functions; consider using [[where]] alone");
     SWAG_ERROR(Err0361, "misplaced [[where]]                               $ cannot use a [[where]] constraint on [[%s]]                                                                                              $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
     SWAG_ERROR(Err0766, "misplaced [[where]]                               $ cannot use a [[where]] clause in a [[switch]] without an expression                                                                      $ ");
     SWAG_ERROR(Err0362, "misplaced access specifier                        $ cannot make a global variable [[public]]                                                                                                 $ ");
@@ -847,7 +847,7 @@ void initErrors()
     SWAG_ERROR(Err0701, "unexpected visit name                             $ cannot use a visit specialization name for [[%s]]                                                                                        $ it is only valid to visit a struct");
     SWAG_ERROR(Err0702, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
     SWAG_ERROR(Err0703, "unknown [[defer]] mode                            $ cannot recognize [[%s]] as a valid [[defer]] mode                                                                                        $ the acceptable modes are [[err]] and [[noerr]]");
-    SWAG_ERROR(Err0704, nullptr);
+    SWAG_ERROR(Err0704, "unknown [[where]] mode                            $ cannot recognize [[%s]] as a valid [[where]] mode                                                                                        $ the only acceptable mode is [[call]]");
     SWAG_ERROR(Err0705, "unknown attribute                                 $ cannot find the attribute [[%s]]                                                                                                         $ ");
     SWAG_ERROR(Err0706, "unknown compiler instruction                      $ cannot recognize [[%s]] as a valid compiler instruction                                                                                  $ a compiler instruction starts with the symbol [['#']]");
     SWAG_ERROR(Err0707, "unknown dependency                                $ cannot find the module dependency [[%s]]                                                                                                 $ ");
@@ -1006,7 +1006,7 @@ void initErrors()
     SWAG_ERROR(Nte0090, "missing generic parameter [[%s]]");
     SWAG_ERROR(Nte0091, "missing parameter [[%s]] of type [[%s]]");
     SWAG_ERROR(Nte0092, "occurred during compile-time evaluation");
-    SWAG_ERROR(Nte0093, "occurred during the [[where #call]] check of the call to [[%s]]");
+    SWAG_ERROR(Nte0093, "occurred during the [[where<call>]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0094, "occurred during the [[where]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0095, "occurred during the [[where]] check of the struct [[%s]]");
     SWAG_ERROR(Nte0096, "occurred during the generic instantiation of [[%s]]");
