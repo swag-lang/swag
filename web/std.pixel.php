@@ -3921,7 +3921,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_visitPixels">visitPixels</a></span></td>
-<td>Macro to visit all pixels of the image in parallel chunks. </td>
+<td>Macro to foreach all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -5013,7 +5013,7 @@
 </tr>
 </table>
 </p>
-<p>Macro to visit all pixels of the image in parallel chunks. </p>
+<p>Macro to foreach all pixels of the image in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>Exported variables: </p>
@@ -10208,7 +10208,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

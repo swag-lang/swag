@@ -470,12 +470,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
 <span class="SLgc">elif</span>
-<span class="SLgc">for</span>
 <span class="SLgc">while</span>
 <span class="SLgc">switch</span>
 <span class="SLgc">defer</span>
-<span class="SLgc">loop</span>
-<span class="SLgc">visit</span>
+<span class="SLgc">for</span>
+<span class="SLgc">foreach</span>
 <span class="SLgc">break</span>
 <span class="SLgc">fallthrough</span>
 <span class="SLgc">return</span>
@@ -712,16 +711,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@trunc</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Modifiers </h4>
 <p>Modifiers can be applied to specific keywords or operators to alter their behavior. These modifiers allow developers to fine-tune operations, giving more control over how certain code constructs are executed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">#prom</span>
-<span class="SKwd">#over</span>
-<span class="SKwd">#nodrop</span>
-<span class="SKwd">#move</span>
-<span class="SKwd">#moveraw</span>
-<span class="SKwd">#bit</span>
-<span class="SKwd">#unconst</span>
-<span class="SKwd">#back</span>
-<span class="SKwd">#ref</span>
-<span class="SKwd">#constref</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SCmp">#prom</span>
+<span class="SCmp">#over</span>
+<span class="SCmp">#nodrop</span>
+<span class="SCmp">#move</span>
+<span class="SCmp">#moveraw</span>
+<span class="SCmp">#unconst</span>
+<span class="SCmp">#back</span>
+<span class="SCmp">#ref</span>
+<span class="SCmp">#constref</span></span></div>
 
 <h2 id="_003_000_fundamentals_swg">Fundamentals</h2>
 <h3 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Basic types</h3><h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Signed Integers </h4>
@@ -1528,8 +1526,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take  care. In that case, you can use the <span class="code-inline"> #prom</span> modifier on the operation, which will promote the type  to at least 32 bits. The operation will be done accordingly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
-    <span class="SCmp">#assert</span> <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span> <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
+    <span class="SCmp">#assert</span> <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span> <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
 }</span></div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
 <h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Operator Precedence </h4>
@@ -1584,26 +1582,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Bitcast </h4>
-<p>The <span class="code-inline">#bit</span> modifier enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a <b>bitcast</b>, is only valid when the source and destination types share the same size. </p>
+<p>The <span class="code-inline">bit</span> cast mode enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a <b>bitcast</b>, is only valid when the source and destination types share the same size. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
+    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">0x3f800000</span>)                   <span class="SCmt">// 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex</span>
 
     <span class="SCmt">// Casting back to the original type should yield the original value</span>
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
 }</span></div>
 <p>This example demonstrates the reverse operation, where an integer representing a bit pattern is reinterpreted as a floating-point number. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> rawBits: <span class="STpe">u32</span> = <span class="SNum">0x40490FDB</span>              <span class="SCmt">// Hexadecimal representation of the float 3.1415927</span>
-    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SKwd">#bit</span> rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
+    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">f32</span>) rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
     <span class="SItr">@assert</span>(pi == <span class="SNum">3.1415927</span>)                   <span class="SCmt">// This now represents the value of pi as a floating-point number</span>
 
     <span class="SCmt">// Verifying that casting back to the original bit pattern restores the initial value</span>
-    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span>(<span class="STpe">u32</span>) <span class="SKwd">#bit</span> pi
+    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) pi
     <span class="SItr">@assert</span>(backToBits == <span class="SNum">0x40490FDB</span>)
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Implicit Casts </h4>
@@ -1653,7 +1651,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
     <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
-    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
+    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
     <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                          <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
 
     <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
@@ -1661,7 +1659,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
 
     <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
-    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>(<span class="STpe">s16</span>) <span class="SKwd">#over</span> u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
+    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s16</span>) u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
     <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                      <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
 
     <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
@@ -2437,32 +2435,32 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Visiting Enum Values </h4>
 <p>Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum. </p>
-<p>The two primary mechanisms for iterating over enum values are the <span class="code-inline">loop</span> construct and the <span class="code-inline">visit</span> statement. </p>
+<p>The two primary mechanisms for iterating over enum values are the <span class="code-inline">for</span> construct and the <span class="code-inline">foreach</span> statement. </p>
 <h5 id="_004_000_data_structures_swg__004_004_enum_swg">Looping Over Enum Values </h5>
-<p>The <span class="code-inline">loop</span> construct allows you to iterate over all values in an enum. </p>
+<p>The <span class="code-inline">for</span> construct allows you to iterate over all values in an enum. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
 
     <span class="SCmt">// Counting Enum Values</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SCst">RGB</span>:                      <span class="SCmt">// Iterate over all enum values using 'loop'</span>
+    <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SCst">RGB</span>:                      <span class="SCmt">// Iterate over all enum values using 'for'</span>
         cpt += <span class="SNum">1</span>                          <span class="SCmt">// Increment counter for each value</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)                     <span class="SCmt">// Assert that the enum has exactly 3 values</span>
 
     <span class="SCmt">// Note that '@countof(RGB)' will give you the exact same result</span>
     <span class="SItr">@assert</span>(cpt == <span class="SItr">@countof</span>(<span class="SCst">RGB</span>))
 }</span></div>
-<p>The <span class="code-inline">loop idx in RGB:</span> statement is a powerful construct that allows you to iterate over all values in the <span class="code-inline">RGB</span> enum. During each iteration, <span class="code-inline">idx</span> holds the current enum value, which can be used within the loop body. In the example above, the loop simply counts the number of values in the enum, asserting that the total is 3. </p>
+<p>The <span class="code-inline">for idx in RGB:</span> statement is a powerful construct that allows you to iterate over all values in the <span class="code-inline">RGB</span> enum. During each iteration, <span class="code-inline">idx</span> holds the current enum value, which can be used within the for body. In the example above, the for simply counts the number of values in the enum, asserting that the total is 3. </p>
 <p>This method is useful when you need to apply the same operation to each enum value, such as populating a list, checking conditions, or performing calculations. </p>
 <h5 id="_004_000_data_structures_swg__004_004_enum_swg">Visiting Enum Values </h5>
-<p>The <span class="code-inline">visit</span> statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value. </p>
+<p>The <span class="code-inline">foreach</span> statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }                  <span class="SCmt">// Define a simple enum with three values: R, G, and B</span>
 
     <span class="SCmt">// Performing Actions Based on Enum Values</span>
-    <span class="SLgc">visit</span> val <span class="SLgc">in</span> <span class="SCst">RGB</span>                      <span class="SCmt">// Use 'visit' to iterate over each value in the enum</span>
+    <span class="SLgc">foreach</span> val <span class="SLgc">in</span> <span class="SCst">RGB</span>                      <span class="SCmt">// Use 'foreach' to iterate over each value in the enum</span>
     {
         <span class="SLgc">switch</span> val                        <span class="SCmt">// A switch statement to perform actions based on the enum value</span>
         {
@@ -2481,7 +2479,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     }
 }</span></div>
-<p>The <span class="code-inline">visit val in RGB</span> statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the <span class="code-inline">val</span> variable, which can then be used in a <span class="code-inline">switch</span> statement (or other logic) to perform specific actions based on the value. </p>
+<p>The <span class="code-inline">foreach val in RGB</span> statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the <span class="code-inline">val</span> variable, which can then be used in a <span class="code-inline">switch</span> statement (or other logic) to perform specific actions based on the value. </p>
 <p>In the provided example, the <span class="code-inline">switch</span> statement checks the value of <span class="code-inline">val</span> and executes different blocks of code depending on whether <span class="code-inline">val</span> is <span class="code-inline">R</span>, <span class="code-inline">G</span>, or <span class="code-inline">B</span>. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same. </p>
 
 <h3 id="_004_000_data_structures_swg__004_005_impl_swg">Impl</h3><h4 id="_004_000_data_structures_swg__004_005_impl_swg">Utilizing the <span class="code-inline">impl</span> Keyword with Enums in Swag </h4>
@@ -2687,7 +2685,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// Here, we reassign 'myRef' to point to 'y' instead of 'x'.</span>
     <span class="SCmt">// The value of 'x' remains unchanged.</span>
-    myRef = <span class="SKwd">#ref</span> &y                  <span class="SCmt">// Reassign reference to point to 'y'</span>
+    myRef = <span class="SCmp">#ref</span> &y                  <span class="SCmt">// Reassign reference to point to 'y'</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)           <span class="SCmt">// Ensure the reference now points to 'y' (value 1000)</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_008_references_swg">Passing References to Functions </h4>
@@ -2852,7 +2850,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h2 id="_005_000_control_flow_swg">Control flow</h2>
 <h3 id="_005_000_control_flow_swg__005_001_if_swg">If</h3><h4 id="_005_000_control_flow_swg__005_001_if_swg">Basic Usage of <span class="code-inline">if</span> </h4>
 <p>A basic test with an <span class="code-inline">if</span> statement. </p>
-<p>In Swag, curly braces <span class="code-inline">{}</span> are optional for control structures like <span class="code-inline">if</span>. However, if you choose to omit them, you must use a colon <span class="code-inline">:</span>. This syntax rule also applies to other control structures such as <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">loop</span>. </p>
+<p>In Swag, curly braces <span class="code-inline">{}</span> are optional for control structures like <span class="code-inline">if</span>. However, if you choose to omit them, you must use a colon <span class="code-inline">:</span>. This syntax rule also applies to other control structures such as <span class="code-inline">while</span> and <span class="code-inline">for</span>. </p>
 <p>Unlike in C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. Parentheses can be used for clarity or grouping, but they are not mandatory. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2942,23 +2940,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute since the initial test fails</span>
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_002_loop_swg">Loop</h3><h4 id="_005_000_control_flow_swg__005_002_loop_swg">Introduction to <span class="code-inline">loop</span> </h4>
-<p>The <span class="code-inline">loop</span> construct in Swag is a powerful tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the <span class="code-inline">loop</span> construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the <span class="code-inline">where</span> clause. </p>
+<h3 id="_005_000_control_flow_swg__005_002_loop_swg">Loop</h3><h4 id="_005_000_control_flow_swg__005_002_loop_swg">Introduction to <span class="code-inline">for</span> </h4>
+<p>The <span class="code-inline">for</span> construct in Swag is a tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the <span class="code-inline">for</span> construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the <span class="code-inline">where</span> clause. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Basic Usage </h4>
-<p>The <span class="code-inline">loop</span> expression dictates the number of iterations and is evaluated only <b>once</b> before the loop begins. This value must be a <b>positive integer</b>. </p>
+<p>The <span class="code-inline">for</span> expression dictates the number of iterations and is evaluated only <b>once</b> before the for begins. This value must be a <b>positive integer</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>:                         <span class="SCmt">// Executes the loop 10 times</span>
+    <span class="SLgc">for</span> <span class="SNum">10</span>:                          <span class="SCmt">// Executes the for 10 times</span>
         cpt += <span class="SNum">1</span>                     <span class="SCmt">// Increment the counter on each iteration</span>
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)               <span class="SCmt">// Assert that the loop executed exactly 10 times</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)               <span class="SCmt">// Assert that the for executed exactly 10 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Using <span class="code-inline">#index</span> </h4>
-<p>Within a loop, the compiler automatically provides the <span class="code-inline">#index</span> keyword, which holds the current iteration index, starting from 0. </p>
+<p>Within a for, the compiler automatically provides the <span class="code-inline">#index</span> keyword, which holds the current iteration index, starting from 0. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
-    <span class="SLgc">loop</span> <span class="SNum">5</span>                            <span class="SCmt">// Loop 5 times</span>
+    <span class="SLgc">for</span> <span class="SNum">5</span>                             <span class="SCmt">// Loop 5 times</span>
     {
         cpt += <span class="SItr">#index</span>                 <span class="SCmt">// Add the current index value to 'cpt' in each iteration</span>
     }
@@ -2966,13 +2964,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Assert that 'cpt' equals the sum of the indices</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Naming the Loop Index </h4>
-<p>Assigning a name to the loop index can improve code readability and clarify the loop's intent. </p>
+<p>Assigning a name to the <span class="code-inline">for</span> index can improve code readability and clarify the for's intent. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt  = <span class="SNum">0</span>
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>
 
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                       <span class="SCmt">// The loop index is named 'i'</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                        <span class="SCmt">// The `for` index is named 'i'</span>
     {
         cpt += i                      <span class="SCmt">// Use the named index 'i'</span>
         cpt1 += <span class="SItr">#index</span>                <span class="SCmt">// '#index' is still accessible and returns the same value as 'i'</span>
@@ -2982,36 +2980,36 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt1 == cpt)              <span class="SCmt">// Confirm that 'cpt1' and 'cpt' are equal</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Looping Over Arrays and Slices </h4>
-<p>The <span class="code-inline">loop</span> construct is versatile and can iterate over any collection type that supports the <span class="code-inline">@countof</span> intrinsic, such as arrays, slices, and strings. </p>
+<p>The <span class="code-inline">for</span> construct is versatile and can iterate over any collection type that supports the <span class="code-inline">@countof</span> intrinsic, such as arrays, slices, and strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>]        <span class="SCmt">// Define an array with 4 elements</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>        <span class="SCmt">// Verify the array has 4 elements</span>
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> arr:                         <span class="SCmt">// Loop over the array's elements</span>
+    <span class="SLgc">for</span> arr:                          <span class="SCmt">// Loop over the array's elements</span>
         cpt += arr[<span class="SItr">#index</span>]            <span class="SCmt">// Add the current element's value to 'cpt'</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>) <span class="SCmt">// Verify that 'cpt' equals the sum of the array elements</span>
 }</span></div>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> When looping over a string, the loop will iterate over each byte, <b>not</b> over runes. For handling runes (characters that may be encoded in multiple bytes), consider using the Std.Core module. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> When looping over a string, the for will iterate over each byte, <b>not</b> over runes. For handling runes (characters that may be encoded in multiple bytes), consider using the Std.Core module. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SStr">"⻘"</span>:                        <span class="SCmt">// Loop over each byte in the string "⻘"</span>
+    <span class="SLgc">for</span> <span class="SStr">"⻘"</span>:                        <span class="SCmt">// Loop over each byte in the string "⻘"</span>
         cpt += <span class="SNum">1</span>                     <span class="SCmt">// Increment the counter for each byte</span>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)                <span class="SCmt">// Assert that the character '⻘' consists of 3 bytes</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Reverse Looping </h4>
-<p>To iterate in reverse order, append the <span class="code-inline">#back</span> modifier to the <span class="code-inline">loop</span> statement. </p>
+<p>To iterate in reverse order, append the <span class="code-inline">#back</span> modifier to the <span class="code-inline">for</span> statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop in reverse order, starting from index 2 down to 0</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">3</span>
+    <span class="SLgc">for</span> <span class="SCmp">#back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span>:
             <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)     <span class="SCmt">// First iteration, index should be 2</span>
@@ -3023,101 +3021,101 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         cpt += <span class="SNum">1</span>
     }
 }</span></div>
-<h4 id="_005_000_control_flow_swg__005_002_loop_swg">Break and Continue </h4>
-<p>The <span class="code-inline">break</span> and <span class="code-inline">continue</span> keywords provide control over the loop's execution flow. <span class="code-inline">break</span> exits the loop early, while <span class="code-inline">continue</span> skips the remainder of the current iteration and proceeds with the next. </p>
+<h4 id="_005_000_control_flow_swg__005_002_loop_swg">break in and Continue </h4>
+<p>The <span class="code-inline">break</span> and <span class="code-inline">continue</span> keywords provide control over the for's execution flow. <span class="code-inline">break</span> exits the for early, while <span class="code-inline">continue</span> skips the remainder of the current iteration and proceeds with the next. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Exiting Early with <span class="code-inline">break</span> </h4>
-<p>The <span class="code-inline">break</span> keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met. </p>
+<p>The <span class="code-inline">break</span> keyword allows you to exit the for before completing all iterations, useful for optimizing performance or when a specific condition is met. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                     <span class="SCmt">// Loop 10 times with index named 'x'</span>
+    <span class="SLgc">for</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                     <span class="SCmt">// Loop 10 times with index named 'x'</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
-            <span class="SLgc">break</span>                    <span class="SCmt">// Exit the loop when 'x' equals 5</span>
+            <span class="SLgc">break</span>                   <span class="SCmt">// Exit the for when 'x' equals 5</span>
         cpt += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)                <span class="SCmt">// Confirm that the loop executed 5 times</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">5</span>)               <span class="SCmt">// Confirm that the for executed 5 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Skipping Iterations with <span class="code-inline">continue</span> </h4>
-<p>The <span class="code-inline">continue</span> keyword skips the rest of the current loop iteration and jumps to the next, which is useful when certain conditions should bypass processing. </p>
+<p>The <span class="code-inline">continue</span> keyword skips the rest of the current for iteration and jumps to the next, which is useful when certain conditions should bypass processing. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                     <span class="SCmt">// Loop 10 times with index named 'x'</span>
+    <span class="SLgc">for</span> x <span class="SLgc">in</span> <span class="SNum">10</span>                      <span class="SCmt">// Loop 10 times with index named 'x'</span>
     {
         <span class="SLgc">if</span> x == <span class="SNum">5</span>:
             <span class="SLgc">continue</span>                 <span class="SCmt">// Skip the iteration when 'x' equals 5</span>
         cpt += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)                <span class="SCmt">// Confirm that the loop executed 9 times, skipping the 5th iteration</span>
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)                <span class="SCmt">// Confirm that the for executed 9 times, skipping the 5th iteration</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Ranges </h4>
-<p>The <span class="code-inline">loop</span> construct supports iteration over a <b>range</b> of signed values, enabling flexible iteration over specified intervals. </p>
+<p>The <span class="code-inline">for</span> construct supports iteration over a <b>range</b> of signed values, enabling flexible iteration over specified intervals. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Looping Over a Range with <span class="code-inline">to</span> </h4>
-<p>The <span class="code-inline">to</span> keyword defines a loop that iterates from one value to another, inclusive. The start value must be less than or equal to the end value. </p>
+<p>The <span class="code-inline">to</span> keyword defines a for that iterates from one value to another, inclusive. The start value must be less than or equal to the end value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
     <span class="SKwd">var</span> sum   = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>                <span class="SCmt">// Loop from -1 to 1, inclusive</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>                 <span class="SCmt">// Loop from -1 to 1, inclusive</span>
     {
         count += <span class="SNum">1</span>                   <span class="SCmt">// Count the number of iterations</span>
         sum += i                     <span class="SCmt">// Sum the current index value</span>
     }
 
     <span class="SItr">@assert</span>(sum == <span class="SNum">0</span>)                <span class="SCmt">// Verify that the sum is 0 (-1 + 0 + 1)</span>
-    <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)              <span class="SCmt">// Confirm that the loop executed 3 times</span>
+    <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)              <span class="SCmt">// Confirm that the for executed 3 times</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Excluding the Last Value with <span class="code-inline">until</span> </h4>
 <p>The <span class="code-inline">until</span> keyword enables iteration up to, but not including, the end value. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>              <span class="SCmt">// Loop from 1 up to, but excluding, 3</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>              <span class="SCmt">// Loop from 1 up to, but excluding, 3</span>
     {
-        cpt += i                     <span class="SCmt">// Add the current index value to 'cpt'</span>
+        cpt += i                    <span class="SCmt">// Add the current index value to 'cpt'</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span> + <span class="SNum">2</span>)            <span class="SCmt">// Verify that 'cpt' equals the sum of 1 and 2</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Reverse Range Looping </h4>
-<p>When using ranges, you can iterate in reverse order by adding the <span class="code-inline">#back</span> modifier after the loop statement. </p>
+<p>When using ranges, you can iterate in reverse order by adding the <span class="code-inline">#back</span> modifier after the for statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>                <span class="SCmt">// Loop from 5 down to 0, inclusive</span>
+    <span class="SLgc">for</span> <span class="SCmp">#back</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>                <span class="SCmt">// Loop from 5 down to 0, inclusive</span>
     {
     }
 
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>               <span class="SCmt">// Loop from 1 down to -1, inclusive</span>
+    <span class="SLgc">for</span> <span class="SCmp">#back</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>               <span class="SCmt">// Loop from 1 down to -1, inclusive</span>
     {
     }
 
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>            <span class="SCmt">// Loop from 1 down to -2, excluding 2</span>
+    <span class="SLgc">for</span> <span class="SCmp">#back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>            <span class="SCmt">// Loop from 1 down to -2, excluding 2</span>
     {
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Infinite Loop </h4>
-<p>A <span class="code-inline">loop</span> without an expression but with a block of code creates an infinite loop, functionally equivalent to <span class="code-inline">while true {}</span>. Infinite loops are often controlled with <span class="code-inline">break</span> statements. </p>
+<p>A <span class="code-inline">for</span> without an expression but with a block of code creates an infinite for, functionally equivalent to <span class="code-inline">while true {}</span>. Infinite loops are often controlled with <span class="code-inline">break</span> statements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">loop</span>
+    <span class="SLgc">for</span>
     {
-        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:              <span class="SCmt">// Use `#index` to break the loop after 4 iterations</span>
+        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:              <span class="SCmt">// Use `#index` to break the for after 4 iterations</span>
             <span class="SLgc">break</span>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Using <span class="code-inline">where</span> Clause </h4>
-<p>The <span class="code-inline">where</span> clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria. </p>
+<p>The <span class="code-inline">where</span> clause provides conditional filtering within a for, allowing specific iterations to execute based on defined criteria. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Basic <span class="code-inline">where</span> Clause </h4>
-<p>The <span class="code-inline">where</span> clause is appended directly after the <span class="code-inline">loop</span> statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed. </p>
+<p>The <span class="code-inline">where</span> clause is appended directly after the <span class="code-inline">for</span> statement, applying a condition to the for's index or value. Only iterations that satisfy this condition are executed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the range from 0 to 9, but only process even indices.</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SNum">10</span> <span class="SLgc">where</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         result += i                  <span class="SCmt">// Sum only even indices</span>
     }
@@ -3132,7 +3130,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> sumOfEvens = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the array, summing only the even numbers.</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         sumOfEvens += arr[i]          <span class="SCmt">// Add the even element values to 'sumOfEvens'</span>
     }
@@ -3140,14 +3138,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(sumOfEvens == <span class="SNum">10</span> + <span class="SNum">30</span> + <span class="SNum">50</span>) <span class="SCmt">// Verify that 'sumOfEvens' equals the sum of even numbers</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Complex Conditions with <span class="code-inline">where</span> </h4>
-<p>The <span class="code-inline">where</span> clause supports combining multiple logical expressions, allowing for complex filtering conditions directly within the loop. </p>
+<p>The <span class="code-inline">where</span> clause supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">15</span>, <span class="SNum">20</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">35</span>]
     <span class="SKwd">var</span> filteredSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the array, summing only even numbers greater than 15.</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">and</span> arr[i] &gt; <span class="SNum">15</span>
     {
         filteredSum += arr[i]         <span class="SCmt">// Add the element values that meet the condition</span>
     }
@@ -3155,13 +3153,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(filteredSum == <span class="SNum">20</span> + <span class="SNum">30</span>)   <span class="SCmt">// Verify that 'filteredSum' equals the sum of 20 and 30</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg"><span class="code-inline">where</span> with Ranges </h4>
-<p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, providing precise control over which range values are processed in the loop. </p>
+<p>The <span class="code-inline">where</span> clause can also be applied to loops over ranges, providing precise control over which range values are processed in the for. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> sumOfPositiveEvens = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the range from -5 to 5, but process only positive even numbers.</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> -<span class="SNum">5</span> <span class="SLgc">to</span> <span class="SNum">5</span> <span class="SLgc">where</span> i &gt; <span class="SNum">0</span> <span class="SLgc">and</span> i % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         sumOfPositiveEvens += i       <span class="SCmt">// Add the positive even values to 'sumOfPositiveEvens'</span>
     }
@@ -3176,7 +3174,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> reversedSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop through the array in reverse order, summing only even values.</span>
-    <span class="SLgc">loop</span> <span class="SKwd">#back</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">for</span> <span class="SCmp">#back</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         reversedSum += arr[i]         <span class="SCmt">// Add the even values to 'reversedSum'</span>
     }
@@ -3184,14 +3182,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>) <span class="SCmt">// Verify the sum of even values in reverse</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Complex Logical Expressions with <span class="code-inline">where</span> </h4>
-<p>The <span class="code-inline">where</span> clause in Swag allows for complex logical expressions, enabling intricate filtering criteria directly within the loop construct. </p>
+<p>The <span class="code-inline">where</span> clause in Swag allows for complex logical expressions, enabling intricate filtering criteria directly within the for construct. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">10</span>, <span class="SNum">25</span>, <span class="SNum">30</span>, <span class="SNum">45</span>, <span class="SNum">50</span>, <span class="SNum">65</span>]
     <span class="SKwd">var</span> complexSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop over the array, summing elements that are either even or greater than 40.</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span> <span class="SLgc">or</span> arr[i] &gt; <span class="SNum">40</span>
     {
         complexSum += arr[i]          <span class="SCmt">// Add the values that meet the complex condition to 'complexSum'</span>
     }
@@ -3200,12 +3198,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_003_for_swg">For</h3><h4 id="_005_000_control_flow_swg__005_003_for_swg">Introduction to <span class="code-inline">for</span> Loops </h4>
-<p>In Swag, the <span class="code-inline">for</span> loop offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a <i>start statement</i>, a <i>test expression</i>, and an <i>ending statement</i>. This provides fine-grained control over the loop's execution, making it a powerful tool for various iteration scenarios. </p>
+<p>In Swag, the <span class="code-inline">for</span> for offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a <i>variable declaration statement</i>, a <i>test expression</i>, and an <i>ending statement</i>. This provides fine-grained control over the for's execution, making it a powerful tool for various iteration scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     
-    <span class="SCmt">// A standard 'for' loop with initialization, condition, and increment.</span>
+    <span class="SCmt">// A standard 'for' for with initialization, condition, and increment.</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>:
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
@@ -3218,31 +3216,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         cpt += <span class="SNum">1</span>
     }
     <span class="SItr">@assert</span>(cpt == <span class="SNum">20</span>)
-
-    <span class="SCmt">// Using statement blocks for initialization or increment provides additional flexibility.</span>
-    <span class="SLgc">for</span> { <span class="SKwd">var</span> i = <span class="SNum">0</span>; cpt = <span class="SNum">0</span>; }
-        i &lt; <span class="SNum">10</span>
-        i += <span class="SNum">1</span>
-    {
-        cpt += <span class="SNum">1</span>
-    }
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
-
-    <span class="SLgc">for</span> { <span class="SKwd">var</span> i = <span class="SNum">0</span>; cpt = <span class="SNum">0</span>; }
-        i &lt; <span class="SNum">10</span>
-        { i += <span class="SNum">2</span>; i -= <span class="SNum">1</span>; }
-    {
-        cpt += <span class="SNum">1</span>
-    }
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Accessing Loop Index with <span class="code-inline">#index</span> </h4>
-<p>Similar to other looping constructs like <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, and <span class="code-inline">while</span>, the <span class="code-inline">for</span> loop in Swag provides access to the <span class="code-inline">#index</span> keyword. This keyword represents the <b>current loop index</b> and is particularly useful when you need to keep track of the iteration count separately from the loop variable. </p>
+<p>Similar to other looping constructs like <span class="code-inline">for</span>, <span class="code-inline">foreach</span>, and <span class="code-inline">while</span>, the <span class="code-inline">for</span> for in Swag provides access to the <span class="code-inline">#index</span> keyword. This keyword represents the <b>current for index</b> and is particularly useful when you need to keep track of the iteration count separately from the for variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
     
-    <span class="SCmt">// Using `#index` to accumulate the loop indices.</span>
+    <span class="SCmt">// Using `#index` to accumulate the for indices.</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>:
         cpt += <span class="SItr">#index</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
@@ -3253,7 +3234,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt1 == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Using <span class="code-inline">break</span> and <span class="code-inline">continue</span> in <span class="code-inline">for</span> Loops </h4>
-<p>In Swag, <span class="code-inline">break</span> and <span class="code-inline">continue</span> work within <span class="code-inline">for</span> loops just as they do in other loop structures. Use <span class="code-inline">break</span> to exit the loop prematurely, effectively terminating the loop when a specific condition is met. The <span class="code-inline">continue</span> statement, on the other hand, skips the remainder of the current loop iteration and jumps to the next iteration. </p>
+<p>In Swag, <span class="code-inline">break</span> and <span class="code-inline">continue</span> work within <span class="code-inline">for</span> loops just as they do in other for structures. Use <span class="code-inline">break</span> to exit the for prematurely, effectively terminating the for when a specific condition is met. The <span class="code-inline">continue</span> statement, on the other hand, skips the remainder of the current for iteration and jumps to the next iteration. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
@@ -3261,7 +3242,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>
     {
         <span class="SLgc">if</span> i == <span class="SNum">5</span>:
-            <span class="SLgc">break</span>  <span class="SCmt">// Exit the loop when 'i' equals 5</span>
+            <span class="SLgc">break</span>  <span class="SCmt">// Exit the for when 'i' equals 5</span>
         sum += i
     }
     
@@ -3278,25 +3259,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(sum == <span class="SNum">1</span>+<span class="SNum">3</span>+<span class="SNum">5</span>+<span class="SNum">7</span>+<span class="SNum">9</span>)  <span class="SCmt">// Sum is 25</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Nested <span class="code-inline">for</span> Loops </h4>
-<p>Swag supports nested <span class="code-inline">for</span> loops, which are useful for more complex iteration patterns. In nested loops, the <span class="code-inline">#index</span> keyword refers to the current index of the innermost loop. </p>
+<p>Swag supports nested <span class="code-inline">for</span> loops, which are useful for more complex iteration patterns. In nested loops, the <span class="code-inline">#index</span> keyword refers to the current index of the innermost for. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">u64</span>
     
-    <span class="SCmt">// Outer loop</span>
+    <span class="SCmt">// Outer for</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">5</span>; i += <span class="SNum">1</span>
     {
-        <span class="SCmt">// Inner loop</span>
+        <span class="SCmt">// Inner for</span>
         <span class="SLgc">for</span> <span class="SKwd">var</span> j = <span class="SNum">0</span>; j &lt; <span class="SNum">5</span>; j += <span class="SNum">1</span>
         {
-            result += <span class="SItr">#index</span>  <span class="SCmt">// Adds the index of the inner loop</span>
+            result += <span class="SItr">#index</span>  <span class="SCmt">// Adds the index of the inner for</span>
         }
     }
 
-    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> * <span class="SNum">5</span>)  <span class="SCmt">// Each inner loop runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5</span>
+    <span class="SItr">@assert</span>(result == <span class="SNum">10</span> * <span class="SNum">5</span>)  <span class="SCmt">// Each inner for runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Iterating Over Arrays with <span class="code-inline">for</span> </h4>
-<p>The <span class="code-inline">for</span> loop can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection. </p>
+<p>The <span class="code-inline">for</span> for can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]
@@ -3664,10 +3645,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_005_000_control_flow_swg__005_006_break_swg">Break</h3><h4 id="_005_000_control_flow_swg__005_006_break_swg">Introduction to <span class="code-inline">break</span> in Swag </h4>
-<p>The <span class="code-inline">break</span> statement is a powerful control structure in Swag, allowing you to exit from <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span> constructs. Understanding how and when to use <span class="code-inline">break</span> is essential for effective flow control in your programs. </p>
+<p>The <span class="code-inline">break</span> statement is a control structure in Swag, allowing you to exit from <span class="code-inline">for</span>, <span class="code-inline">foreach</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span> constructs. Understanding how and when to use <span class="code-inline">break</span> is essential for effective flow control in your programs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">loop</span> <span class="SNum">10</span>:
+    <span class="SLgc">for</span> <span class="SNum">10</span>:
         <span class="SLgc">break</span>                 <span class="SCmt">// Immediately exits the loop, no further iterations occur</span>
 
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>:
@@ -3681,9 +3662,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
+    <span class="SLgc">for</span> <span class="SNum">10</span>
     {
-        <span class="SLgc">loop</span> <span class="SNum">10</span>
+        <span class="SLgc">for</span> <span class="SNum">10</span>
         {
             <span class="SLgc">break</span>             <span class="SCmt">// Exits the inner loop only, allowing the outer loop to continue</span>
         }
@@ -3703,13 +3684,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Defining a scope named 'BigScope'</span>
     <span class="SCmp">#scope</span> <span class="SCst">BigScope</span>
     {
-        <span class="SLgc">loop</span> <span class="SNum">10</span>
+        <span class="SLgc">for</span> <span class="SNum">10</span>
         {
             cpt += <span class="SNum">1</span>
-            <span class="SLgc">break</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Exits the entire 'BigScope' scope after incrementing `cpt`</span>
+            <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Exits the entire 'BigScope' scope after incrementing `cpt`</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break statement above</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break in statement above</span>
     }
 
     <span class="SCmt">// Execution resumes after 'BigScope'</span>
@@ -3762,25 +3743,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmp">#scope</span> <span class="SCst">Up</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
+    <span class="SLgc">for</span> <span class="SNum">10</span>
     {
-        <span class="SLgc">loop</span> <span class="SNum">10</span>
+        <span class="SLgc">for</span> <span class="SNum">10</span>
         {
             <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">5</span>:
-                <span class="SLgc">break</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
+                <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break statement above</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break in statement above</span>
     }
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_007_visit_swg">Visit</h3><h4 id="_005_000_control_flow_swg__005_007_visit_swg">Introduction to <span class="code-inline">visit</span> </h4>
-<p>The <span class="code-inline">visit</span> statement is designed to iterate over all elements within a collection. It provides a streamlined  and efficient way to process each item in a collection, which can be an array, slice, or string. </p>
+<h3 id="_005_000_control_flow_swg__005_007_visit_swg">Visit</h3><h4 id="_005_000_control_flow_swg__005_007_visit_swg">Introduction to <span class="code-inline">foreach</span> </h4>
+<p>The <span class="code-inline">foreach</span> statement is designed to iterate over all elements within a collection. It provides a streamlined  and efficient way to process each item in a collection, which can be an array, slice, or string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Iterating through each byte in the string "ABC".</span>
     <span class="SCmt">// The current byte will be stored in the variable 'value'.</span>
-    <span class="SLgc">visit</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
+    <span class="SLgc">foreach</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is available to store the loop index.</span>
         <span class="SKwd">let</span> a = <span class="SItr">#index</span>                                     <span class="SCmt">// Index of the current iteration</span>
@@ -3799,7 +3780,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Both the <b>value</b> and the loop <b>index</b> can be named explicitly. This enhances code readability,  especially in cases involving nested loops or complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">visit</span> value, index <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
+    <span class="SLgc">foreach</span> value, index <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SKwd">let</span> a = index                                      <span class="SCmt">// The current loop index</span>
         <span class="SLgc">switch</span> a
@@ -3817,7 +3798,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Both the <b>value</b> and the <b>index</b> are optional. If names are not explicitly provided,  the default aliases <span class="code-inline">#alias0</span> for the value and <span class="code-inline">#alias1</span> for the index can be used. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">visit</span> <span class="SStr">"ABC"</span>
+    <span class="SLgc">foreach</span> <span class="SStr">"ABC"</span>
     {
         <span class="SKwd">let</span> a = <span class="SItr">#alias1</span>                                    <span class="SCmt">// Default alias for the index</span>
         <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)                               <span class="SCmt">// Ensure alias matches the index</span>
@@ -3838,7 +3819,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SCmt">// Visiting each byte in the string "ABC" in reverse order.</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> <span class="SKwd">#back</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
+    <span class="SLgc">foreach</span> <span class="SCmp">#back</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' still stores the loop index, even in reverse order.</span>
         <span class="SLgc">switch</span> cpt
@@ -3858,37 +3839,37 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Visiting Arrays and Slices </h4>
-<p>The <span class="code-inline">visit</span> statement can be used to iterate over arrays or slices,  enabling straightforward processing of each element. </p>
+<p>The <span class="code-inline">foreach</span> statement can be used to iterate over arrays or slices,  enabling straightforward processing of each element. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]                               <span class="SCmt">// Define an array of integers</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:                                     <span class="SCmt">// Iterate over each element in the array</span>
+    <span class="SLgc">foreach</span> it <span class="SLgc">in</span> array:                                   <span class="SCmt">// Iterate over each element in the array</span>
         result += it                                       <span class="SCmt">// Accumulate the values</span>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span>)                        <span class="SCmt">// Ensure the sum matches the expected result</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Multi-dimensional Arrays </h4>
-<p><span class="code-inline">visit</span> supports multi-dimensional arrays, facilitating the processing of complex data structures. </p>
+<p><span class="code-inline">foreach</span> supports multi-dimensional arrays, facilitating the processing of complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]           <span class="SCmt">// Define a 2x2 array</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it <span class="SLgc">in</span> array:                                     <span class="SCmt">// Iterate over each element in the 2D array</span>
+    <span class="SLgc">foreach</span> it <span class="SLgc">in</span> array:                                   <span class="SCmt">// Iterate over each element in the 2D array</span>
         result += it                                       <span class="SCmt">// Accumulate the values</span>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>)                   <span class="SCmt">// Ensure the sum matches the expected result</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Modifying Elements with <span class="code-inline">&</span> </h4>
-<p>By prefixing the value name with <span class="code-inline">&</span>, <span class="code-inline">visit</span> allows you to visit elements by reference,  enabling in-place modification of the elements. </p>
+<p>By prefixing the value name with <span class="code-inline">&</span>, <span class="code-inline">foreach</span> allows you to foreach elements by reference,  enabling in-place modification of the elements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">1</span>, <span class="SNum">2</span>], [<span class="SNum">3</span>, <span class="SNum">4</span>]]               <span class="SCmt">// Define a 2x2 array</span>
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> &it <span class="SLgc">in</span> array
+    <span class="SLgc">foreach</span> &it <span class="SLgc">in</span> array
     {
         result += <span class="SKwd">dref</span> it                                  <span class="SCmt">// Accumulate the values</span>
         <span class="SKwd">dref</span> it = <span class="SNum">555</span>                                      <span class="SCmt">// Modify each element in place</span>
@@ -3902,28 +3883,28 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>, <span class="SNum">1</span>] == <span class="SNum">555</span>)                            <span class="SCmt">// Verify the fourth element is modified</span>
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_007_visit_swg">Filtering with <span class="code-inline">where</span> </h4>
-<p>The <span class="code-inline">where</span> clause can be used with <span class="code-inline">visit</span> to filter the elements processed based on specific conditions. This approach is efficient for conditionally applying logic to only the elements that meet certain criteria. </p>
+<p>The <span class="code-inline">where</span> clause can be used with <span class="code-inline">foreach</span> to filter the elements processed based on specific conditions. This approach is efficient for conditionally applying logic to only the elements that meet certain criteria. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]                       <span class="SCmt">// Define an array of integers</span>
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
     <span class="SCmt">// Process only even values using `where`.</span>
-    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
+    <span class="SLgc">foreach</span> value <span class="SLgc">in</span> array <span class="SLgc">where</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:
         result += value                                    <span class="SCmt">// Accumulate only even values</span>
 
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 
-    <span class="SCmt">// Equivalent using an if statement inside the `visit` loop:</span>
+    <span class="SCmt">// Equivalent using an if statement inside the `foreach` loop:</span>
     result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array:
+    <span class="SLgc">foreach</span> value <span class="SLgc">in</span> array:
         <span class="SLgc">if</span> value & <span class="SNum">1</span> == <span class="SNum">0</span>:                                 <span class="SCmt">// Check if the value is even</span>
             result += value                                <span class="SCmt">// Accumulate even values</span>
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 
     <span class="SCmt">// Equivalent using `continue` to skip odd values:</span>
     result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> value <span class="SLgc">in</span> array
+    <span class="SLgc">foreach</span> value <span class="SLgc">in</span> array
     {
         <span class="SLgc">if</span> (value & <span class="SNum">1</span>) != <span class="SNum">0</span>:                               <span class="SCmt">// Skip odd values</span>
             <span class="SLgc">continue</span>
@@ -4141,7 +4122,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// The 'typeinfo' of a struct contains a 'methods' field, which is an array of method pointers</span>
     <span class="SKwd">let</span> t = <span class="SCst">MyStruct</span>
-    <span class="SLgc">visit</span> p <span class="SLgc">in</span> t.methods
+    <span class="SLgc">foreach</span> p <span class="SLgc">in</span> t.methods
     {
         <span class="SCmt">// The 'value' field of 'methods' contains the function pointer, which we cast to the correct type</span>
         <span class="SLgc">switch</span> p.name
@@ -4189,7 +4170,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Access a value by its index. The index is of type OneType, and it returns a WhateverType.</span>
     <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
 
-    <span class="SCmt">// Called when @countof is used, typically in a 'loop' block, to return the count of elements</span>
+    <span class="SCmt">// Called when @countof is used, typically in a 'for' block, to return the count of elements</span>
     <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called when @dataof is used, returns a pointer to the underlying data of type WhateverType</span>
@@ -4265,7 +4246,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Called in a 'visit' block to iterate over the struct's elements. </span>
+    <span class="SCmt">// Called in a 'foreach' block to iterate over the struct's elements. </span>
     <span class="SCmt">// Multiple versions can be defined by adding a name after 'opVisit'.</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
@@ -4402,7 +4383,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// Loop through the struct 'v', with the loop running as many times as 'opCount' returns</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> v:
+    <span class="SLgc">for</span> v:
         cpt += <span class="SNum">1</span>  <span class="SCmt">// Increment the counter each iteration</span>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">4</span>)  <span class="SCmt">// Ensure the loop ran 4 times, as specified by 'opCount'</span>
@@ -4457,7 +4438,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// 3. 'opPostMove' on 'a' is invoked to finalize the move operation.</span>
     <span class="SCmt">// 4. 'b' is reinitialized to default values (666) if 'opDrop' exists.</span>
 
-    a = <span class="SKwd">#move</span> b
+    a = <span class="SCmp">#move</span> b
     <span class="SItr">@assert</span>(a.x == <span class="SNum">102</span>)       <span class="SCmt">// +2 due to 'opPostMove'.</span>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">202</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">302</span>)
@@ -4468,15 +4449,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// The `#nodrop` modifier bypasses the initial 'opDrop' invocation.</span>
     <span class="SCmt">// Use this when 'a' is in an undefined state and does not require cleanup.</span>
 
-    a = <span class="SKwd">#nodrop</span> b                <span class="SCmt">// Copy 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
-    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#move</span> b          <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
+    a = <span class="SCmp">#nodrop</span> b                <span class="SCmt">// Copy 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
+    a = <span class="SCmp">#nodrop</span> <span class="SCmp">#move</span> b          <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
 
     <span class="SCmt">// The `#moveraw` modifier prevents the reinitialization of 'b' after the move.</span>
     <span class="SCmt">// This approach is risky and should be employed only when certain that 'b' won't be dropped or </span>
     <span class="SCmt">// when reinitialization is handled manually.</span>
 
-    a = <span class="SKwd">#moveraw</span> b               <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
-    a = <span class="SKwd">#nodrop</span> <span class="SKwd">#moveraw</span> b       <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first and without resetting 'b'.</span>
+    a = <span class="SCmp">#moveraw</span> b               <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
+    a = <span class="SCmp">#nodrop</span> <span class="SCmp">#moveraw</span> b       <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first and without resetting 'b'.</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_006_post_copy_and_move_swg">Move Semantics in Functions </h4>
 <p>Move semantics can be explicitly indicated in function parameters by utilizing <span class="code-inline">&&</span> instead of <span class="code-inline">&</span>. </p>
@@ -4488,7 +4469,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: &&<span class="SCst">Vector3</span>)
     {
-        assignTo = <span class="SKwd">#move</span> from  <span class="SCmt">// Move 'from' into 'assignTo'.</span>
+        assignTo = <span class="SCmp">#move</span> from  <span class="SCmt">// Move 'from' into 'assignTo'.</span>
     }
 
     <span class="SCmt">// This variant of 'assign' performs a copy instead of a move.</span>
@@ -4542,7 +4523,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SCmp">#error</span> <span class="SStr">"Reverse visiting is not supported in this example."</span>
 
         <span class="SCmt">// Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.</span>
-        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
         {
             <span class="SCmt">// The `#macro` directive ensures that the code is injected into the caller's scope.</span>
             <span class="SCmp">#macro</span>
@@ -4571,7 +4552,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_007_visit_swg">Iterating Over Struct Fields </h4>
-<p>This example demonstrates one way to use <span class="code-inline">opVisit</span> for iterating over the fields of a struct. The same approach can be extended to visit more complex data structures. </p>
+<p>This example demonstrates one way to use <span class="code-inline">opVisit</span> for iterating over the fields of a struct. The same approach can be extended to foreach more complex data structures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
@@ -4580,7 +4561,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Visit each field of `MyStruct` in declaration order.</span>
     <span class="SCmt">// `v` corresponds to the value (i.e., #alias0).</span>
     <span class="SCmt">// `i` corresponds to the index (i.e., #alias1).</span>
-    <span class="SLgc">visit</span> v, i <span class="SLgc">in</span> myStruct
+    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4598,14 +4579,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
 <h4 id="_006_000_structs_swg__006_007_visit_swg">Extending <span class="code-inline">opVisit</span>: Reverse Order Iteration </h4>
-<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures.  For instance, you may want to visit the fields in reverse order. </p>
+<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures.  For instance, you may want to foreach the fields in reverse order. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// In this version, we visit the fields in reverse order.</span>
-        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
+        <span class="SCmt">// In this version, we foreach the fields in reverse order.</span>
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
         {
             <span class="SCmp">#macro</span>
             {
@@ -4627,14 +4608,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_007_visit_swg">Reverse Order Iteration </h4>
-<p>The <span class="code-inline">opVisitReverse</span> variant allows us to visit the struct's fields in reverse order,  providing flexibility depending on the needs of your application. </p>
+<p>The <span class="code-inline">opVisitReverse</span> variant allows us to foreach the struct's fields in reverse order,  providing flexibility depending on the needs of your application. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Call the variant `opVisitReverse` to iterate over the fields in reverse order.</span>
-    <span class="SLgc">visit</span>(<span class="SCst">Reverse</span>) v, i <span class="SLgc">in</span> myStruct
+    <span class="SLgc">foreach</span>&lt;<span class="SCst">Reverse</span>&gt; v, i <span class="SLgc">in</span> myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4652,7 +4633,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
 <h4 id="_006_000_structs_swg__006_007_visit_swg">Visiting Elements in Dynamic Arrays </h4>
-<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to visit elements in dynamic arrays, buffers,  or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data  structure the struct holds. </p>
+<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to foreach elements in dynamic arrays, buffers,  or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data  structure the struct holds. </p>
 <p>For example, consider a struct with a slice: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
 {
@@ -4665,7 +4646,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
     {
-        <span class="SLgc">loop</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
         {
             <span class="SCmp">#macro</span>
             {
@@ -4682,14 +4663,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_007_visit_swg">Iterating Over a Dynamic Array </h4>
-<p>This example shows how to visit each element in a dynamic array (slice) and perform  operations such as summing the elements. </p>
+<p>This example shows how to foreach each element in a dynamic array (slice) and perform  operations such as summing the elements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arrStruct = <span class="SCst">SliceStruct</span>{}
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
 
     <span class="SCmt">// Visit each element in the dynamic array buffer.</span>
-    <span class="SLgc">visit</span> v, i <span class="SLgc">in</span> arrStruct
+    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> arrStruct
     {
         sum += v
     }
@@ -5259,7 +5240,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     fct = <span class="SKwd">closure</span>|x|(toAdd)
     {
         <span class="SKwd">var</span> res = <span class="SNum">0</span>                  <span class="SCmt">// Initialize a result variable 'res' to accumulate the sum.</span>
-        <span class="SLgc">visit</span> v <span class="SLgc">in</span> x:                <span class="SCmt">// Iterate over the captured array 'x' and sum its elements.</span>
+        <span class="SLgc">foreach</span> v <span class="SLgc">in</span> x:                <span class="SCmt">// Iterate over the captured array 'x' and sum its elements.</span>
             res += v
         res += toAdd                 <span class="SCmt">// Add the 'toAdd' parameter to the sum.</span>
         <span class="SLgc">return</span> res
@@ -5565,20 +5546,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Define a label `Up` for the scope that will allow us to break out of the outermost loop</span>
         <span class="SCmp">#scope</span> <span class="SCst">Up</span>                              
         
-        <span class="SCmt">// Outer loop: this will run `count` times</span>
-        <span class="SLgc">loop</span> count
+        <span class="SCmt">// Outer for: this will run `count` times</span>
+        <span class="SLgc">for</span> count
         {
-            <span class="SCmt">// Inner loop: also runs `count` times</span>
-            <span class="SLgc">loop</span> count
+            <span class="SCmt">// Inner for: also runs `count` times</span>
+            <span class="SLgc">for</span> count
             {
                 <span class="SCmp">#macro</span>
                 {
                     <span class="SCmt">// Injects the user code `what` here.</span>
                     <span class="SCmt">// The `#mixin` directive replaces certain parts of the user code:</span>
-                    <span class="SCmt">// - `break` in the user code is replaced with `break Up`, meaning it will break </span>
-                    <span class="SCmt">//   out of the `Up` scope (i.e., the outer loop).</span>
+                    <span class="SCmt">// - `break` in the user code is replaced with `break in Up`, meaning it will break </span>
+                    <span class="SCmt">//   out of the `Up` scope (i.e., the outer `for`).</span>
                     <span class="SCmt">// - You can similarly redefine `continue` if needed.</span>
-                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Up</span>; }
+                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Up</span>; }
                 }
             }
         }
@@ -5593,12 +5574,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         a += <span class="SNum">1</span>
         <span class="SLgc">if</span> a == <span class="SNum">10</span>:
-            <span class="SCmt">// This `break` statement is replaced by `break Up` due to the macro,</span>
-            <span class="SCmt">// meaning it will exit the outermost loop, not just the inner loop.</span>
+            <span class="SCmt">// This `break` statement is replaced by `break in Up` due to the macro,</span>
+            <span class="SCmt">// meaning it will exit the outermost `for`, not just the inner `for`.</span>
             <span class="SLgc">break</span>  
     }
 
-    <span class="SCmt">// Assertion to check if `a` is indeed 10 after the loop exits</span>
+    <span class="SCmt">// Assertion to check if `a` is indeed 10 after the `for` exits</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">10</span>)  <span class="SCmt">// Verifies that the loop exited when `a` reached 10</span>
 }</span></div>
 <h5 id="_007_000_functions_swg__007_005_macro_swg">Another example: </h5>
@@ -5611,17 +5592,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// break or continue from the outermost loop</span>
         <span class="SCmp">#scope</span> <span class="SCst">Outer</span>
 
-        <span class="SCmt">// Outer loop: this will run `count` times</span>
-        <span class="SLgc">loop</span> count
+        <span class="SCmt">// Outer for: this will run `count` times</span>
+        <span class="SLgc">for</span> count
         {
-            <span class="SCmt">// Inner loop: also runs `count` times</span>
-            <span class="SLgc">loop</span> count
+            <span class="SCmt">// Inner for: also runs `count` times</span>
+            <span class="SLgc">for</span> count
             {
                 <span class="SCmp">#macro</span>
                 {
-                    <span class="SCmt">// `break` in the user code is replaced with `break Outer`, exiting the outer loop.</span>
+                    <span class="SCmt">// `break` in the user code is replaced with `break in Outer`, exiting the outer loop.</span>
                     <span class="SCmt">// `continue` is replaced with `break`, skipping to the next iteration of the inner loop.</span>
-                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SCst">Outer</span>; <span class="SLgc">continue</span> = <span class="SLgc">break</span>; }
+                    <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Outer</span>; <span class="SLgc">continue</span> = <span class="SLgc">break</span>; }
                 }
             }
         }
@@ -5770,7 +5751,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SCmt">// Variadic parameters can be iterated as they are slices.</span>
         <span class="SKwd">var</span> total = <span class="SNum">0</span>
-        <span class="SLgc">visit</span> v <span class="SLgc">in</span> params:
+        <span class="SLgc">foreach</span> v <span class="SLgc">in</span> params:
             total += v
         <span class="SLgc">return</span> total
     }
@@ -5789,7 +5770,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">logMessage</span>(prefix: <span class="STpe">string</span>, messages: ...)
     {
         <span class="SCmt">// Print each message with the given prefix.</span>
-        <span class="SLgc">visit</span> msg <span class="SLgc">in</span> messages
+        <span class="SLgc">foreach</span> msg <span class="SLgc">in</span> messages
         {
             <span class="SItr">@print</span>(prefix, <span class="SStr">" =&gt; "</span>, <span class="SKwd">cast</span>(<span class="STpe">string</span>) msg)
         }
@@ -5805,7 +5786,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SKwd">var</span> sum = <span class="SNum">0</span>
         
-        <span class="SLgc">visit</span> p <span class="SLgc">in</span> params
+        <span class="SLgc">foreach</span> p <span class="SLgc">in</span> params
         {
             <span class="SLgc">switch</span> <span class="SItr">@kindof</span>(p)
             {
@@ -6048,7 +6029,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SCmt">// Using `retval = undefined` avoids clearing the array, improving performance.</span>
         <span class="SKwd">var</span> result: <span class="SKwd">retval</span> = <span class="SKwd">undefined</span>             <span class="SCmt">// 'retval' here is an array of 255 integers.</span>
-        <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SNum">255</span>:                             <span class="SCmt">// Loop through each index in the array.</span>
+        <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SNum">255</span>:                              <span class="SCmt">// Loop through each index in the array.</span>
             result[i] = i                          <span class="SCmt">// Assign the index value to each array element.</span>
         <span class="SLgc">return</span> result                              <span class="SCmt">// Return the fully populated array.</span>
     }
@@ -6599,7 +6580,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">where</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>                      <span class="SCmt">// Restricting `T` to `s32` or `s64`</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
+        <span class="SLgc">foreach</span> it <span class="SLgc">in</span> x:
             total += it                                 <span class="SCmt">// Accumulate the values</span>
         <span class="SLgc">return</span> total                                    <span class="SCmt">// Return the sum</span>
     }
@@ -6650,7 +6631,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>                                 <span class="SCmt">// Initialize total with type `T`</span>
-        <span class="SLgc">visit</span> it <span class="SLgc">in</span> x:
+        <span class="SLgc">foreach</span> it <span class="SLgc">in</span> x:
             total += it                                 <span class="SCmt">// Accumulate the values</span>
         <span class="SLgc">return</span> total                                    <span class="SCmt">// Return the sum</span>
     }
@@ -6694,24 +6675,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// var v: Point's32</span>
 }</span></div>
 <h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Multiple Evaluations </h4>
-<p>By utilizing the <span class="code-inline">where(call)</span> mode, the <span class="code-inline">where</span> clause is evaluated for <b>each</b> function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
+<p>By utilizing the <span class="code-inline">where&lt;call&gt;</span> mode, the <span class="code-inline">where</span> clause is evaluated for <b>each</b> function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
         <span class="SCmt">// Function to ensure that `y` is not zero at compile time.</span>
         <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                        <span class="SCmt">// Division function with compile-time check</span>
-            <span class="SLgc">where</span>(call)
+            <span class="SLgc">where</span>&lt;call&gt;
             {
                 <span class="SCmt">// Verify if `y` is a compile-time constant.</span>
                 <span class="SLgc">if</span> !<span class="SItr">@isconstexpr</span>(y):
                     <span class="SLgc">return</span> <span class="SKwd">true</span>                         <span class="SCmt">// Allow if `y` is not constant</span>
                 <span class="SLgc">if</span> y == <span class="SNum">0</span>:
-                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>,  <span class="SCmt">// Error for division by zero</span>
-                        <span class="SItr">@location</span>(y))
+                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>, <span class="SItr">@location</span>(y))
                 <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Allow otherwise</span>
             }
         {
-            <span class="SLgc">return</span> x / y                                <span class="SCmt">// Perform the division</span>
+            <span class="SLgc">return</span> x / y
         }
 
         <span class="SCmt">// Valid division.</span>
@@ -6726,7 +6706,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Function with different implementations based on whether `x` is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for constexpr `x`</span>
-            <span class="SLgc">where</span>(call) <span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span>&lt;call&gt; <span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>                                  <span class="SCmt">// Return 555 if `x` is constexpr</span>
         }
@@ -6734,17 +6714,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Overload for the case where `x` is not known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for non-constexpr `x`</span>
-            <span class="SLgc">where</span>(call) !<span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span>&lt;call&gt; !<span class="SItr">@isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>                                  <span class="SCmt">// Return 666 if `x` is not constexpr</span>
         }
 
         <span class="SCmt">// Will call the first version because `x` is a literal.</span>
-        <span class="SItr">@assert</span>(<span class="SFct">first</span>(<span class="SNum">0</span>) == <span class="SNum">555</span>)                        <span class="SCmt">// Assert that 555 is returned</span>
+        <span class="SItr">@assert</span>(<span class="SFct">first</span>(<span class="SNum">0</span>) == <span class="SNum">555</span>)
 
         <span class="SCmt">// Will call the second version because `x` is a variable.</span>
         <span class="SKwd">var</span> a: <span class="STpe">s32</span>
-        <span class="SItr">@assert</span>(<span class="SFct">first</span>(a) == <span class="SNum">666</span>)                        <span class="SCmt">// Assert that 666 is returned</span>
+        <span class="SItr">@assert</span>(<span class="SFct">first</span>(a) == <span class="SNum">666</span>)
     }
 }</span></div>
 
@@ -7032,7 +7012,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
+    <span class="SLgc">for</span> <span class="SNum">10</span>
     {
         <span class="SLgc">defer</span> <span class="SCst">G</span> += <span class="SNum">1</span>   <span class="SCmt">// Ensure G is incremented each loop iteration, even if the loop is exited early.</span>
 
@@ -7063,7 +7043,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
 
     <span class="SKwd">var</span> resource = <span class="SKwd">false</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
+    <span class="SLgc">for</span> <span class="SNum">10</span>
     {
         resource = <span class="SFct">createResource</span>()
         <span class="SLgc">defer</span>
@@ -7073,7 +7053,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">2</span>:
-            <span class="SLgc">break</span>      <span class="SCmt">// Exit loop early, defer block still ensures resource release.</span>
+            <span class="SLgc">break</span>      <span class="SCmt">// Exit for early, defer block still ensures resource release.</span>
     }
 
     <span class="SItr">@assert</span>(!resource.<span class="SFct">isResourceCreated</span>())   <span class="SCmt">// Ensure the resource is no longer created post-loop.</span>
@@ -7586,10 +7566,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 </div>
 <h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Using <span class="code-inline">defer</span> for Controlled Cleanup </h4>
 <p>The <span class="code-inline">defer</span> statement schedules a block of code to be executed when the function exits, whether it's through a normal return or due to an error being thrown. Since throwing an error is functionally similar to returning, <span class="code-inline">defer</span> behaves consistently in both cases. </p>
-<p><span class="code-inline">defer</span> can be customized with specific modes (<span class="code-inline">err</span> or <span class="code-inline">noerr</span>) to control its execution based on the function's exit state: </p>
+<p><span class="code-inline">defer</span> can be customized with specific modes (<span class="code-inline">#err</span> or <span class="code-inline">#noerr</span>) to control its execution based on the function's exit state: </p>
 <table class="table-markdown">
-<tr><td> <span class="code-inline">defer(err)</span>   </td><td> Executes only when an error is raised via <span class="code-inline">throw</span>.</td></tr>
-<tr><td> <span class="code-inline">defer(noerr)</span> </td><td> Executes only when the function returns normally without errors.</td></tr>
+<tr><td> <span class="code-inline">defer&lt;err&gt;</span>   </td><td> Executes only when an error is raised via <span class="code-inline">throw</span>.</td></tr>
+<tr><td> <span class="code-inline">defer&lt;noerr&gt;</span> </td><td> Executes only when the function returns normally without errors.</td></tr>
 <tr><td> <span class="code-inline">defer</span>        </td><td> Executes regardless of how the function exits (either by returning normally or by throwing an error).</td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>  <span class="SCmt">// A global variable to track the execution of defer statements</span>
@@ -7604,10 +7584,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
     <span class="SCmt">// Schedules this block to execute only if an error is raised.</span>
-    <span class="SLgc">defer</span>(err) g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increment if an error occurs</span>
+    <span class="SLgc">defer</span>&lt;err&gt; g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increment if an error occurs</span>
 
     <span class="SCmt">// Schedules this block to execute only if the function exits without an error.</span>
-    <span class="SLgc">defer</span>(noerr) g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increment if no error occurs</span>
+    <span class="SLgc">defer</span>&lt;noerr&gt; g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increment if no error occurs</span>
 
     <span class="SCmt">// Schedules this block to execute regardless of whether an error occurs.</span>
     <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span>  <span class="SCmt">// Increment regardless of error state</span>
@@ -7621,12 +7601,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Test case where an error is raised</span>
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)  <span class="SCmt">// Execute the function with error condition</span>
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Expect g_Defer to be 4 (1 + 3) since only 'defer(err)' and the general 'defer' executed</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Expect g_Defer to be 4 (1 + 3) since only 'defer&lt;err&gt;' and the general 'defer' executed</span>
 
     <span class="SCmt">// Test case where no error is raised</span>
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Execute the function without error condition</span>
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)  <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer(noerr)' and the general 'defer' executed</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)   <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer&lt;noerr&gt;' and the general 'defer' executed</span>
 }</span></div>
 
 <h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety</h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
@@ -7650,7 +7630,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
-    x += <span class="SKwd">#over</span> <span class="SNum">1</span>                                  <span class="SCmt">// This will wrap around without causing a panic</span>
+    x += <span class="SCmp">#over</span> <span class="SNum">1</span>                                  <span class="SCmt">// This will wrap around without causing a panic</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Global Overflow Safety Control </h5>
@@ -7666,7 +7646,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>For operations involving 8-bit or 16-bit integers, you can use the <span class="code-inline">#prom</span> modifier to promote the  operation to 32-bit, thereby avoiding overflow by widening the operand types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SKwd">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
+    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)                             <span class="SCmt">// Assert that the result is 256</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
 }</span></div>
@@ -7679,13 +7659,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be </span>
                                                   <span class="SCmt">// represented as s8</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>(<span class="STpe">s8</span>) <span class="SKwd">#over</span> x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
                                                   <span class="SCmt">// cast</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)                             <span class="SCmt">// Assert that y1 is -1 after wrapping</span>
 
     <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>                                <span class="SCmt">// Initialize x2 with the minimum value for s8</span>
     <span class="SCmt">// var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative</span>
-    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>(<span class="STpe">u8</span>) <span class="SKwd">#over</span> x2                    <span class="SCmt">// Use #over to bypass safety checks</span>
+    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">u8</span>) x2                    <span class="SCmt">// Use #over to bypass safety checks</span>
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)                            <span class="SCmt">// Assert that y2 is 255 after wrapping</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Disabling Overflow Safety Globally </h5>
@@ -7874,7 +7854,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">arraySum</span>(arr: <span class="SKwd">const</span> [..] <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> val <span class="SLgc">in</span> arr:
+    <span class="SLgc">foreach</span> val <span class="SLgc">in</span> arr:
         sum += val
     <span class="SLgc">return</span> sum
 }
@@ -7931,7 +7911,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...) -&gt; <span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
-    <span class="SLgc">visit</span> v <span class="SLgc">in</span> values:
+    <span class="SLgc">foreach</span> v <span class="SLgc">in</span> values:
         result += v
     <span class="SLgc">return</span> result
 }
@@ -7950,7 +7930,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SKwd">var</span> value = <span class="SNum">1</span>'<span class="STpe">f32</span>
-    <span class="SLgc">loop</span> i <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="SCst">G</span>)
+    <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="SCst">G</span>)
     {
         <span class="SCst">G</span>[i] = value
         value *= <span class="SNum">2</span>
@@ -7973,7 +7953,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> <span class="SCst">Value</span> = <span class="SFct">#run</span>
     {
         <span class="SKwd">var</span> result: <span class="STpe">f32</span>
-        <span class="SLgc">loop</span> <span class="SNum">10</span>:
+        <span class="SLgc">for</span> <span class="SNum">10</span>:
             result += <span class="SNum">1</span>
         <span class="SLgc">return</span> result <span class="SCmt">// The inferred type of 'Value' will be 'f32'.</span>
     }
@@ -7986,7 +7966,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
     {
         <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
-        <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr:
+        <span class="SLgc">for</span> i <span class="SLgc">in</span> arr:
             arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
         <span class="SLgc">return</span> arr
     }
@@ -8263,9 +8243,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// We get the type of the generic parameter 'T'</span>
         <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
 
-        <span class="SCmt">// Then we visit all the fields, assuming the type is a struct (or this will not compile).</span>
+        <span class="SCmt">// Then we foreach all the fields, assuming the type is a struct (or this will not compile).</span>
         <span class="SCmt">// For each original field, we create one with the same name, but with a `bool` type.</span>
-        <span class="SLgc">visit</span> f <span class="SLgc">in</span> typeof.fields:
+        <span class="SLgc">foreach</span> f <span class="SLgc">in</span> typeof.fields:
             str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
 
         <span class="SCmt">// Then we return the constructed source code.</span>
@@ -8335,7 +8315,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     builderInit.<span class="SFct">appendString</span>(<span class="SStr">"public func glInitExtensions()\n{\n"</span>);
 
     <span class="SCmt">// Visit all functions we have registered, i.e., all functions with the `Ogl.Extension` attribute.</span>
-    <span class="SLgc">visit</span> e <span class="SLgc">in</span> g_Functions
+    <span class="SLgc">foreach</span> e <span class="SLgc">in</span> g_Functions
     {
         <span class="SKwd">let</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">TypeInfoFunc</span>) e.type
 
@@ -8344,7 +8324,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
         <span class="SCmt">// Make a wrapper function</span>
         builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"public func %("</span>, e.name)
-        <span class="SLgc">visit</span> p, i <span class="SLgc">in</span> typeFunc.parameters
+        <span class="SLgc">foreach</span> p, i <span class="SLgc">in</span> typeFunc.parameters
         {
             <span class="SLgc">if</span> i != <span class="SNum">0</span> builderVars.<span class="SFct">appendString</span>(<span class="SStr">", "</span>)
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"p%: %"</span>, i, p.pointedType.name)
@@ -8355,7 +8335,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">else</span>
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">")-&gt;%\n{\n"</span>, typeFunc.returnType.name)
         builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"\treturn ext_%("</span>, e.name)
-        <span class="SLgc">visit</span> p, i <span class="SLgc">in</span> typeFunc.parameters
+        <span class="SLgc">foreach</span> p, i <span class="SLgc">in</span> typeFunc.parameters
         {
             <span class="SLgc">if</span> i != <span class="SNum">0</span> builderVars.<span class="SFct">appendString</span>(<span class="SStr">", "</span>)
             builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"p%"</span>, i)
@@ -8722,7 +8702,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

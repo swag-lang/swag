@@ -342,9 +342,9 @@
     }
 
     <span class="SCmt">// Draw pipes.</span>
-    <span class="SCmt">// 'visit' loop on all the pipes stored in the dynamic array, and returns each value</span>
+    <span class="SCmt">// 'foreach' for on all the pipes stored in the dynamic array, and returns each value</span>
     <span class="SCmt">// as a pointer/reference.</span>
-    <span class="SLgc">visit</span> pipe <span class="SLgc">in</span> g_Pipes
+    <span class="SLgc">foreach</span> pipe <span class="SLgc">in</span> g_Pipes
     {
         painter.<span class="SFct">drawTexture</span>(pipe.rectUp, g_PipeTextureU)
         painter.<span class="SFct">drawTexture</span>(pipe.rectDown, g_PipeTextureD)
@@ -435,7 +435,7 @@
     <span class="SCmt">// Move each pipe, and test collisions against the bird</span>
     <span class="SLgc">if</span> g_Start
     {
-        <span class="SLgc">visit</span> &pipe <span class="SLgc">in</span> g_Pipes
+        <span class="SLgc">foreach</span> &pipe <span class="SLgc">in</span> g_Pipes
         {
             pipe.rectUp.x -= <span class="SCst">SpeedHorz</span> * g_Dt
             pipe.rectDown.x -= <span class="SCst">SpeedHorz</span> * g_Dt
@@ -558,7 +558,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

@@ -11253,7 +11253,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Jobs_parallelFor">parallelFor</a></span></td>
-<td>Do a for loop in parallel chunks. </td>
+<td>Do a for for in parallel chunks. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Jobs_parallelVisit">parallelVisit</a></span></td>
@@ -11438,10 +11438,10 @@
 </tr>
 </table>
 </p>
-<p>Do a for loop in parallel chunks. </p>
+<p>Do a for for in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p>Exposed variables: - #alias0: current loop index - #alias1: userData as passed to the macro </p>
+<p>Exposed variables: - #alias0: current for index - #alias1: userData as passed to the macro </p>
 <p>
 <table class="api-item">
 <tr>
@@ -18311,7 +18311,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 <span id="Core_Random_Mt64_nextU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Mt64.</span><span class="api-item-title-strong">nextU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25185,7 +25185,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_String_opVisit">opVisit</a></span></td>
-<td>Default visit, by bytes. </td>
+<td>Default foreach, by bytes. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_String_opVisitBytes">opVisitBytes</a></span></td>
@@ -25626,7 +25626,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Default visit, by bytes. </p>
+<p>Default foreach, by bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
@@ -28905,7 +28905,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_visitRunes">visitRunes</a></span></td>
-<td>Macro to visit the unicode characters of the utf8 sequence. </td>
+<td>Macro to foreach the unicode characters of the utf8 sequence. </td>
 </tr>
 </table>
 <p>
@@ -29247,7 +29247,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Macro to visit the unicode characters of the utf8 sequence. </p>
+<p>Macro to foreach the unicode characters of the utf8 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="STpe">code</span>)</span></div>
 <ul>
@@ -29367,7 +29367,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

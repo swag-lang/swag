@@ -1393,12 +1393,12 @@
 <tr>
 <td>loopLength</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span></span></td>
-<td>Length of the desired loop region in samples, or 0 to loop the entire buffer. </td>
+<td>Length of the desired for region in samples, or 0 to for the entire buffer. </td>
 </tr>
 <tr>
 <td>loopCount</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span></span></td>
-<td>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </td>
+<td>Number of times to repeat the for region, or XAUDIO2_LOOP_INFINITE to for forever. </td>
 </tr>
 <tr>
 <td>pContext</td>
@@ -1752,7 +1752,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XAudio2Create</span>(ppXAudio2: **<span class="SCst"><a href="#XAudio2_IXAudio2">IXAudio2</a></span>, flags: <span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, processor: <span class="SCst"><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></span> = <span class="SCst"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></div>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

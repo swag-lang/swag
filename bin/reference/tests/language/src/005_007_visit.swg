@@ -112,7 +112,7 @@ enabling straightforward processing of each element.
     var array = [10, 20, 30]                               // Define an array of integers
 
     var result = 0
-    foreach it in array:                                     // Iterate over each element in the array
+    foreach it in array:                                   // Iterate over each element in the array
         result += it                                       // Accumulate the values
 
     @assert(result == 10 + 20 + 30)                        // Ensure the sum matches the expected result
@@ -128,7 +128,7 @@ enabling straightforward processing of each element.
     var array: [2, 2] s32 = [[10, 20], [30, 40]]           // Define a 2x2 array
 
     var result = 0
-    foreach it in array:                                     // Iterate over each element in the 2D array
+    foreach it in array:                                   // Iterate over each element in the 2D array
         result += it                                       // Accumulate the values
 
     @assert(result == 10 + 20 + 30 + 40)                   // Ensure the sum matches the expected result

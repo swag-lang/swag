@@ -1451,7 +1451,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_exitModal">exitModal</a></span></td>
-<td>End current modal loop. </td>
+<td>End current modal for. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon</a></span></td>
@@ -1519,7 +1519,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_registerFrameEvent">registerFrameEvent</a></span></td>
-<td>Register a window to receive a FrameEvent each running loop. </td>
+<td>Register a window to receive a FrameEvent each running for. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_registerHookEvents">registerHookEvents</a></span></td>
@@ -1563,7 +1563,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent</a></span></td>
-<td>Unregister a window that receives a FrameEvent each running loop. </td>
+<td>Unregister a window that receives a FrameEvent each running for. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents</a></span></td>
@@ -1652,7 +1652,7 @@
 </tr>
 </table>
 </p>
-<p>End current modal loop. </p>
+<p>End current modal for. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exitModal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, exitId: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></div>
 <p>
 <table class="api-item">
@@ -1879,7 +1879,7 @@
 </tr>
 </table>
 </p>
-<p>Register a window to receive a FrameEvent each running loop. </p>
+<p>Register a window to receive a FrameEvent each running for. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFrameEvent</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -2020,7 +2020,7 @@
 </tr>
 </table>
 </p>
-<p>Unregister a window that receives a FrameEvent each running loop. </p>
+<p>Unregister a window that receives a FrameEvent each running for. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unregisterFrameEvent</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -13116,7 +13116,7 @@
 <span id="Gui_RichEditLexerSwag_IRichEditLexer_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IRichEditLexer.</span><span class="api-item-title-strong">compute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L435" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L433" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13128,7 +13128,7 @@
 <span id="Gui_RichEditLexerSwag_IRichEditLexer_insertRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IRichEditLexer.</span><span class="api-item-title-strong">insertRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L403" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L401" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21369,7 +21369,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

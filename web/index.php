@@ -172,7 +172,7 @@
     {
         <span class="SKwd">var</span> str = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
         <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
-        <span class="SLgc">visit</span> f <span class="SLgc">in</span> typeof.fields
+        visit f <span class="SLgc">in</span> typeof.fields
             str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
         <span class="SLgc">return</span> str.<span class="SFct">toString</span>()
     }
@@ -183,7 +183,7 @@
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
         {
             <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
-            <span class="SLgc">loop</span> i <span class="SLgc">in</span> arr
+            loop i <span class="SLgc">in</span> arr
                 arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
             <span class="SLgc">return</span> arr
         }
@@ -206,7 +206,7 @@
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages of this web site and all the related documentations have been generated with Swag, as the compiler can also produce HTML based on markdown files and source code. </p>
 </div>
 <div class="swag-watermark">
-Generated on 23-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

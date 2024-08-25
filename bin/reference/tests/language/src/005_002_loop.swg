@@ -10,7 +10,7 @@ The `for` expression dictates the number of iterations and is evaluated only **o
 #test
 {
     var cpt = 0
-    for 10:                         // Executes the for 10 times
+    for 10:                          // Executes the for 10 times
         cpt += 1                     // Increment the counter on each iteration
     @assert(cpt == 10)               // Assert that the for executed exactly 10 times
 }
@@ -22,7 +22,7 @@ Within a for, the compiler automatically provides the `#index` keyword, which ho
 #test
 {
     var cpt = 0'u64
-    for 5                            // Loop 5 times
+    for 5                             // Loop 5 times
     {
         cpt += #index                 // Add the current index value to 'cpt' in each iteration
     }
@@ -39,7 +39,7 @@ Assigning a name to the `for` index can improve code readability and clarify the
     var cpt  = 0
     var cpt1 = 0
 
-    for i in 5                       // The `for` index is named 'i'
+    for i in 5                        // The `for` index is named 'i'
     {
         cpt += i                      // Use the named index 'i'
         cpt1 += #index                // '#index' is still accessible and returns the same value as 'i'
@@ -59,7 +59,7 @@ The `for` construct is versatile and can iterate over any collection type that s
     #assert @countof(arr) == 4        // Verify the array has 4 elements
 
     var cpt = 0
-    for arr:                         // Loop over the array's elements
+    for arr:                          // Loop over the array's elements
         cpt += arr[#index]            // Add the current element's value to 'cpt'
     @assert(cpt == 10 + 20 + 30 + 40) // Verify that 'cpt' equals the sum of the array elements
 }
@@ -114,11 +114,11 @@ The `break` keyword allows you to exit the for before completing all iterations,
     for x in 10                     // Loop 10 times with index named 'x'
     {
         if x == 5:
-            break                    // Exit the for when 'x' equals 5
+            break                   // Exit the for when 'x' equals 5
         cpt += 1
     }
 
-    @assert(cpt == 5)                // Confirm that the for executed 5 times
+    @assert(cpt == 5)               // Confirm that the for executed 5 times
 }
 
 /**
@@ -128,7 +128,7 @@ The `continue` keyword skips the rest of the current for iteration and jumps to 
 #test
 {
     var cpt = 0
-    for x in 10                     // Loop 10 times with index named 'x'
+    for x in 10                      // Loop 10 times with index named 'x'
     {
         if x == 5:
             continue                 // Skip the iteration when 'x' equals 5
@@ -151,7 +151,7 @@ The `to` keyword defines a for that iterates from one value to another, inclusiv
 {
     var count = 0
     var sum   = 0
-    for i in -1 to 1                // Loop from -1 to 1, inclusive
+    for i in -1 to 1                 // Loop from -1 to 1, inclusive
     {
         count += 1                   // Count the number of iterations
         sum += i                     // Sum the current index value
@@ -170,7 +170,7 @@ The `until` keyword enables iteration up to, but not including, the end value.
     var cpt = 0
     for i in 1 until 3              // Loop from 1 up to, but excluding, 3
     {
-        cpt += i                     // Add the current index value to 'cpt'
+        cpt += i                    // Add the current index value to 'cpt'
     }
 
     @assert(cpt == 1 + 2)            // Verify that 'cpt' equals the sum of 1 and 2
