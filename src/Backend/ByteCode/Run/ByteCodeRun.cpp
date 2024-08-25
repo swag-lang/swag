@@ -2505,7 +2505,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         case ByteCodeOp::IntrinsicCompilerError:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atcompilererror);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_compilererror);
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->b.u32].u64);
             context->push(registersRC[ip->a.u32].u64);
@@ -2514,7 +2514,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         case ByteCodeOp::IntrinsicCompilerWarning:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atcompilerwarning);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_compilerwarning);
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->b.u32].u64);
             context->push(registersRC[ip->a.u32].u64);
@@ -2535,7 +2535,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         case ByteCodeOp::IntrinsicPanic:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atpanic);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_panic);
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->b.u32].u64);
             context->push(registersRC[ip->a.u32].u64);
@@ -2745,7 +2745,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         case ByteCodeOp::IntrinsicItfTableOf:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atitftableof);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_itftableof);
             context->push(registersRC[ip->b.u32].pointer);
             context->push(registersRC[ip->a.u32].pointer);
             localCall(context, bc, 2, ip->c.u32);
@@ -2927,25 +2927,25 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         case ByteCodeOp::IntrinsicDbgAlloc:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atdbgalloc);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_dbgalloc);
             localCall(context, bc, 0, ip->a.u32);
             break;
         }
         case ByteCodeOp::IntrinsicSysAlloc:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atsysalloc);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_sysalloc);
             localCall(context, bc, 0, ip->a.u32);
             break;
         }
         case ByteCodeOp::IntrinsicRtFlags:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atrtflags);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_rtflags);
             localCall(context, bc, 0, ip->a.u32);
             break;
         }
         case ByteCodeOp::IntrinsicStringCmp:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atstrcmp);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_strcmp);
             context->push(registersRC[ip->d.u32].u64);
             context->push(registersRC[ip->c.u32].pointer);
             context->push(registersRC[ip->b.u32].u64);
@@ -2955,7 +2955,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         case ByteCodeOp::IntrinsicTypeCmp:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_attypecmp);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_typecmp);
             context->push(registersRC[ip->c.u32].u64);
             context->push(registersRC[ip->b.u32].pointer);
             context->push(registersRC[ip->a.u32].pointer);

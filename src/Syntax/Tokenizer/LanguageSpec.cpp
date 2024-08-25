@@ -197,24 +197,24 @@ void LanguageSpec::setupNames()
     name_nozero   = "nozero";
     name_toplevel = "toplevel";
 
-    name_sharpalias        = "#alias";
-    name_sharpmix          = "#mix";
-    name_atdrop            = "@drop";
-    name_atpostCopy        = "@postCopy";
-    name_atpostMove        = "@postMove";
-    name_atargs            = "@args";
-    name_atpanic           = "@panic";
-    name_atcompilererror   = "@compilererror";
-    name_atcompilerwarning = "@compilerwarning";
-    name_atitftableof      = "@itftableof";
-    name_atstrcmp          = "@stringcmp";
-    name_attypecmp         = "@typecmp";
-    name_atdbgalloc        = "@dbgalloc";
-    name_atsysalloc        = "@sysalloc";
-    name_atrtflags         = "@rtflags";
-    name_aterr             = "@err";
+    name_sharp_alias = "#alias";
+    name_sharp_mix   = "#mix";
+    name_sharp_self  = "#self";
 
-    name_sharpself = "#self";
+    name_at_drop            = "@drop";
+    name_at_postCopy        = "@postCopy";
+    name_at_postMove        = "@postMove";
+    name_at_args            = "@args";
+    name_at_panic           = "@panic";
+    name_at_compilererror   = "@compilererror";
+    name_at_compilerwarning = "@compilerwarning";
+    name_at_itftableof      = "@itftableof";
+    name_at_strcmp          = "@stringcmp";
+    name_at_typecmp         = "@typecmp";
+    name_at_dbgalloc        = "@dbgalloc";
+    name_at_sysalloc        = "@sysalloc";
+    name_at_rtflags         = "@rtflags";
+    name_at_err             = "@err";
 
     name_memcpy  = "memcpy";
     name_memset  = "memset";

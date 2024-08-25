@@ -213,7 +213,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     }
 
     // #self
-    if (identifier->token.is(g_LangSpec->name_sharpself))
+    if (identifier->token.is(g_LangSpec->name_sharp_self))
     {
         SWAG_CHECK(matchSharpSelf(context, symbolsMatch, identifierRef, identifier));
         return true;

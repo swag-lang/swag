@@ -1722,14 +1722,14 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     switch (tokenParse.token.id)
     {
         case TokenId::IntrinsicDrop:
-            node->token.text = g_LangSpec->name_atdrop;
+            node->token.text = g_LangSpec->name_at_drop;
             break;
         case TokenId::IntrinsicPostCopy:
-            node->token.text = g_LangSpec->name_atpostCopy;
+            node->token.text = g_LangSpec->name_at_postCopy;
             node->kind       = AstNodeKind::PostCopy;
             break;
         case TokenId::IntrinsicPostMove:
-            node->token.text = g_LangSpec->name_atpostMove;
+            node->token.text = g_LangSpec->name_at_postMove;
             node->kind       = AstNodeKind::PostMove;
             break;
     }

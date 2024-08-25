@@ -839,31 +839,31 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicDbgAlloc:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_atdbgalloc, allocR, allocT, {}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_dbgalloc, allocR, allocT, {}, {});
                 builder.CreateStore(TO_PTR_I8(result), GEP64_PTR_PTR_I8(allocR, ip->a.u32));
                 break;
             }
             case ByteCodeOp::IntrinsicSysAlloc:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_atsysalloc, allocR, allocT, {}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_sysalloc, allocR, allocT, {}, {});
                 builder.CreateStore(TO_PTR_I8(result), GEP64_PTR_PTR_I8(allocR, ip->a.u32));
                 break;
             }
             case ByteCodeOp::IntrinsicRtFlags:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_rtflags, allocR, allocT, {}, {});
                 builder.CreateStore(result, GEP64(allocR, ip->a.u32));
                 break;
             }
             case ByteCodeOp::IntrinsicStringCmp:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_strcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
                 builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
                 break;
             }
             case ByteCodeOp::IntrinsicTypeCmp:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_typecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
                 break;
             }
@@ -974,7 +974,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicItfTableOf:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_itftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
                 builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
                 break;
             }
@@ -4472,7 +4472,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicPanic:
-                emitCall(buildParameters, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+                emitCall(buildParameters, g_LangSpec->name_at_panic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
 
             case ByteCodeOp::Unreachable:
@@ -4559,7 +4559,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicArguments:
-                emitCall(buildParameters, g_LangSpec->name_atargs, allocR, allocT, {}, {});
+                emitCall(buildParameters, g_LangSpec->name_at_args, allocR, allocT, {}, {});
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
                 break;
 
@@ -4622,7 +4622,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitCall(buildParameters, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
                 break;
             case ByteCodeOp::IntrinsicGetErr:
-                emitCall(buildParameters, g_LangSpec->name_aterr, allocR, allocT, {}, {});
+                emitCall(buildParameters, g_LangSpec->name_at_err, allocR, allocT, {}, {});
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
                 break;
             case ByteCodeOp::InternalSetErr:

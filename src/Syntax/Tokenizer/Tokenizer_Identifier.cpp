@@ -39,13 +39,13 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
 
     if (tokenParse.token.text[0] == '#')
     {
-        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpalias))
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharp_alias))
         {
             tokenParse.token.id = TokenId::Identifier;
             return true;
         }
 
-        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharpmix))
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharp_mix))
         {
             tokenParse.token.id = TokenId::Identifier;
             return true;

@@ -630,7 +630,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 {
     // Check #mix
-    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharpmix) == 0)
+    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharp_mix) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -648,7 +648,7 @@ bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
     }
 
     // Check #alias
-    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharpalias) == 0)
+    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharp_alias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)

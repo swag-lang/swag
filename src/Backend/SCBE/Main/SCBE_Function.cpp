@@ -2269,19 +2269,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
-                emitInternalCall(pp, g_LangSpec->name_atdbgalloc, {}, REG_OFFSET(ip->a.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_dbgalloc, {}, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSysAlloc:
-                emitInternalCall(pp, g_LangSpec->name_atsysalloc, {}, REG_OFFSET(ip->a.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_sysalloc, {}, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicRtFlags:
-                emitInternalCall(pp, g_LangSpec->name_atrtflags, {}, REG_OFFSET(ip->a.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_rtflags, {}, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicStringCmp:
-                emitInternalCall(pp, g_LangSpec->name_atstrcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, REG_OFFSET(ip->d.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_strcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, REG_OFFSET(ip->d.u32));
                 break;
             case ByteCodeOp::IntrinsicTypeCmp:
-                emitInternalCall(pp, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, REG_OFFSET(ip->d.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_typecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, REG_OFFSET(ip->d.u32));
                 break;
 
                 /////////////////////////////////////
@@ -3548,7 +3548,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicArguments:
                 SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-                emitInternalCall(pp, g_LangSpec->name_atargs, {}, REG_OFFSET(ip->a.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_args, {}, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicModules:
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
@@ -3594,16 +3594,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore32Immediate(0, 0, RAX);
                 break;
             case ByteCodeOp::IntrinsicCompilerError:
-                emitInternalCall(pp, g_LangSpec->name_atcompilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
+                emitInternalCall(pp, g_LangSpec->name_at_compilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
                 break;
             case ByteCodeOp::IntrinsicCompilerWarning:
-                emitInternalCall(pp, g_LangSpec->name_atcompilerwarning, {ip->a.u32, ip->b.u32, ip->c.u32});
+                emitInternalCall(pp, g_LangSpec->name_at_compilerwarning, {ip->a.u32, ip->b.u32, ip->c.u32});
                 break;
             case ByteCodeOp::IntrinsicPanic:
-                emitInternalCall(pp, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32});
+                emitInternalCall(pp, g_LangSpec->name_at_panic, {ip->a.u32, ip->b.u32, ip->c.u32});
                 break;
             case ByteCodeOp::IntrinsicItfTableOf:
-                emitInternalCall(pp, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, REG_OFFSET(ip->c.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_itftableof, {ip->a.u32, ip->b.u32}, REG_OFFSET(ip->c.u32));
                 break;
 
                 /////////////////////////////////////
@@ -4833,7 +4833,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::IntrinsicGetErr:
                 SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-                emitInternalCall(pp, g_LangSpec->name_aterr, {}, REG_OFFSET(ip->a.u32));
+                emitInternalCall(pp, g_LangSpec->name_at_err, {}, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::InternalSetErr:
                 emitInternalCall(pp, g_LangSpec->name_priv_seterr, {ip->a.u32, ip->b.u32});

@@ -225,24 +225,24 @@ struct LanguageSpec
     Utf8 name_nozero;
     Utf8 name_toplevel;
 
-    Utf8 name_sharpalias;
-    Utf8 name_sharpmix;
-    Utf8 name_atdrop;
-    Utf8 name_atpostCopy;
-    Utf8 name_atpostMove;
-    Utf8 name_atargs;
-    Utf8 name_atpanic;
-    Utf8 name_atcompilererror;
-    Utf8 name_atcompilerwarning;
-    Utf8 name_atitftableof;
-    Utf8 name_atstrcmp;
-    Utf8 name_attypecmp;
-    Utf8 name_atdbgalloc;
-    Utf8 name_atsysalloc;
-    Utf8 name_atrtflags;
-    Utf8 name_aterr;
+    Utf8 name_sharp_alias;
+    Utf8 name_sharp_mix;
+    Utf8 name_at_drop;
+    Utf8 name_at_postCopy;
+    Utf8 name_at_postMove;
+    Utf8 name_at_args;
+    Utf8 name_at_panic;
+    Utf8 name_at_compilererror;
+    Utf8 name_at_compilerwarning;
+    Utf8 name_at_itftableof;
+    Utf8 name_at_strcmp;
+    Utf8 name_at_typecmp;
+    Utf8 name_at_dbgalloc;
+    Utf8 name_at_sysalloc;
+    Utf8 name_at_rtflags;
+    Utf8 name_at_err;
 
-    Utf8 name_sharpself;
+    Utf8 name_sharp_self;
 
     Utf8 name_powf;
     Utf8 name_atan2f;

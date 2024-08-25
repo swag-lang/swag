@@ -132,7 +132,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
-        if (overSym->name.find(g_LangSpec->name_sharpalias) == 0)
+        if (overSym->name.find(g_LangSpec->name_sharp_alias) == 0)
         {
             for (uint32_t j = 0; j < countMatches; j++)
             {

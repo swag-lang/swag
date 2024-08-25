@@ -32,9 +32,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     if (node->token.text.length() >= 4)
     {
         // #mix must be of the form #mixNUM
-        if (node->token.text.find(g_LangSpec->name_sharpmix) == 0)
+        if (node->token.text.find(g_LangSpec->name_sharp_mix) == 0)
         {
-            if (node->token.is(g_LangSpec->name_sharpmix))
+            if (node->token.is(g_LangSpec->name_sharp_mix))
                 return error(node->token, toErr(Err0426));
 
             const char* pz  = node->token.text.buffer + 4;
@@ -58,9 +58,9 @@ bool Parser::checkIsValidVarName(AstNode* node) const
         }
 
         // #alias must be of the form #aliasNUM
-        if (node->token.text.find(g_LangSpec->name_sharpalias) == 0)
+        if (node->token.text.find(g_LangSpec->name_sharp_alias) == 0)
         {
-            if (node->token.is(g_LangSpec->name_sharpalias))
+            if (node->token.is(g_LangSpec->name_sharp_alias))
                 return error(node->token, toErr(Err0417));
 
             const char* pz  = node->token.text.buffer + 6;
