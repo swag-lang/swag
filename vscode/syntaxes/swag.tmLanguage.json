@@ -5,7 +5,7 @@
     { "include": "#one-line-comment" },
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
-    { "include": "#keyword-mode" },
+    { "include": "#keywords-mode" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
     { "include": "#op" },
@@ -275,10 +275,10 @@
         }
       ]
     },
-    "keyword-mode": {
+    "keywords-mode": {
       "patterns": [
         {
-          "match": "\\b(visit|break|defer|where|cast)\\((\\w*)\\)",
+          "match": "\\b(visit|break|defer|where|cast)\\<(\\w*)\\>",
           "captures": {
             "1": {
               "name": "keyword.control"
