@@ -5,19 +5,19 @@ The `for` construct in Swag is a tool for iteration, allowing developers to repe
 
 /**
 # Basic Usage
-The `for` expression dictates the number of iterations and is evaluated only **once** before the for begins. This value must be a **positive integer**.
+The `for` expression dictates the number of iterations and is evaluated only **once** before the loop begins. This value must be a **positive integer**.
 */
 #test
 {
     var cpt = 0
-    for 10:                          // Executes the for 10 times
+    for 10:                          // Executes the loop 10 times
         cpt += 1                     // Increment the counter on each iteration
-    @assert(cpt == 10)               // Assert that the for executed exactly 10 times
+    @assert(cpt == 10)               // Assert that the loop executed exactly 10 times
 }
 
 /**
 # Using `#index`
-Within a for, the compiler automatically provides the `#index` keyword, which holds the current iteration index, starting from 0.
+Within a `for`, the compiler automatically provides the `#index` keyword, which holds the current iteration index, starting from 0.
 */
 #test
 {
@@ -46,7 +46,7 @@ Assigning a name to the `for` index can improve code readability and clarify the
     }
 
     @assert(cpt == 0 + 1 + 2 + 3 + 4) // Confirm that 'cpt' equals the sum of indices
-    @assert(cpt1 == cpt)              // Confirm that 'cpt1' and 'cpt' are equal
+    @assert(cpt1 == cpt)
 }
 
 /**
@@ -100,13 +100,13 @@ To iterate in reverse order, append the `#back` modifier to the `for` statement.
 }
 
 /**
-# break in and Continue
-The `break` and `continue` keywords provide control over the for's execution flow. `break` exits the for early, while `continue` skips the remainder of the current iteration and proceeds with the next.
+# `break` and `continue`
+The `break` and `continue` keywords provide control over the for's execution flow. `break` exits the loop early, while `continue` skips the remainder of the current iteration and proceeds with the next.
 */
 
 /**
 # Exiting Early with `break`
-The `break` keyword allows you to exit the for before completing all iterations, useful for optimizing performance or when a specific condition is met.
+The `break` keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met.
 */
 #test
 {
@@ -114,11 +114,11 @@ The `break` keyword allows you to exit the for before completing all iterations,
     for x in 10                     // Loop 10 times with index named 'x'
     {
         if x == 5:
-            break                   // Exit the for when 'x' equals 5
+            break                   // Exit the loop when 'x' equals 5
         cpt += 1
     }
 
-    @assert(cpt == 5)               // Confirm that the for executed 5 times
+    @assert(cpt == 5)               // Confirm that the loop executed 5 times
 }
 
 /**
@@ -135,7 +135,7 @@ The `continue` keyword skips the rest of the current for iteration and jumps to 
         cpt += 1
     }
 
-    @assert(cpt == 9)                // Confirm that the for executed 9 times, skipping the 5th iteration
+    @assert(cpt == 9)                // Confirm that the loop executed 9 times, skipping the 5th iteration
 }
 
 /**
@@ -145,7 +145,10 @@ The `for` construct supports iteration over a **range** of signed values, enabli
 
 /**
 # Looping Over a Range with `to`
-The `to` keyword defines a for that iterates from one value to another, inclusive. The start value must be less than or equal to the end value.
+The `to` keyword defines a loop that iterates from one value to another, inclusive. 
+
+> WARNING:
+> The start value must be less than or equal to the end value.
 */
 #test
 {
@@ -158,7 +161,7 @@ The `to` keyword defines a for that iterates from one value to another, inclusiv
     }
 
     @assert(sum == 0)                // Verify that the sum is 0 (-1 + 0 + 1)
-    @assert(count == 3)              // Confirm that the for executed 3 times
+    @assert(count == 3)              // Confirm that the loop executed 3 times
 }
 
 /**
@@ -178,7 +181,7 @@ The `until` keyword enables iteration up to, but not including, the end value.
 
 /**
 # Reverse Range Looping
-When using ranges, you can iterate in reverse order by adding the `#back` modifier after the for statement.
+When using ranges, you can also iterate in reverse order by adding the `#back` modifier after the for statement.
 */
 #test
 {
@@ -197,7 +200,7 @@ When using ranges, you can iterate in reverse order by adding the `#back` modifi
 
 /**
 # Infinite Loop
-A `for` without an expression but with a block of code creates an infinite for, functionally equivalent to `while true {}`. Infinite loops are often controlled with `break` statements.
+A `for` without an expression but with a block of code creates an infinite loop, functionally equivalent to `while true {}`. Infinite loops are often controlled with `break` statements.
 */
 #test
 {
@@ -210,12 +213,12 @@ A `for` without an expression but with a block of code creates an infinite for, 
 
 /**
 # Using `where` Clause
-The `where` clause provides conditional filtering within a for, allowing specific iterations to execute based on defined criteria.
+The `where` clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria.
 */
 
 /**
 # Basic `where` Clause
-The `where` clause is appended directly after the `for` statement, applying a condition to the for's index or value. Only iterations that satisfy this condition are executed.
+The `where` clause is appended directly after the `for` statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed.
 */
 #test
 {
@@ -224,7 +227,7 @@ The `where` clause is appended directly after the `for` statement, applying a co
     // Loop over the range from 0 to 9, but only process even indices.
     for i in 10 where i % 2 == 0
     {
-        result += i                  // Sum only even indices
+        result += i                      // Sum only even indices
     }
 
     @assert(result == 0 + 2 + 4 + 6 + 8) // Verify that 'result' equals the sum of even indices
@@ -250,7 +253,7 @@ When looping over arrays, the `where` clause can filter elements based on their 
 
 /**
 # Complex Conditions with `where`
-The `where` clause supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for.
+The `where` supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for.
 */
 #test
 {
@@ -258,7 +261,8 @@ The `where` clause supports combining multiple logical expressions, allowing for
     var filteredSum = 0
 
     // Loop over the array, summing only even numbers greater than 15.
-    for i in arr where arr[i] % 2 == 0 and arr[i] > 15
+    for i in arr 
+        where arr[i] % 2 == 0 and arr[i] > 15
     {
         filteredSum += arr[i]         // Add the element values that meet the condition
     }
@@ -266,9 +270,23 @@ The `where` clause supports combining multiple logical expressions, allowing for
     @assert(filteredSum == 20 + 30)   // Verify that 'filteredSum' equals the sum of 20 and 30
 }
 
+#test
+{
+    var arr = [10, 25, 30, 45, 50, 65]
+    var complexSum = 0
+
+    // Loop over the array, summing elements that are either even or greater than 40.
+    for i in arr where arr[i] % 2 == 0 or arr[i] > 40
+    {
+        complexSum += arr[i]          // Add the values that meet the complex condition to 'complexSum'
+    }
+
+    @assert(complexSum == 10 + 30 + 45 + 50 + 65) // Verify that 'complexSum' equals the sum of matching values
+}
+
 /**
 # `where` with Ranges
-The `where` clause can also be applied to loops over ranges, providing precise control over which range values are processed in the for.
+The `where` clause can also be applied to loops over ranges, providing precise control over which range values are processed in the `for`.
 */
 #test
 {
@@ -299,22 +317,4 @@ You can combine the `#back` modifier with the `where` clause to filter values wh
     }
 
     @assert(reversedSum == 50 + 40 + 30 + 20 + 10) // Verify the sum of even values in reverse
-}
-
-/**
-# Complex Logical Expressions with `where`
-The `where` clause in Swag allows for complex logical expressions, enabling intricate filtering criteria directly within the for construct.
-*/
-#test
-{
-    var arr = [10, 25, 30, 45, 50, 65]
-    var complexSum = 0
-
-    // Loop over the array, summing elements that are either even or greater than 40.
-    for i in arr where arr[i] % 2 == 0 or arr[i] > 40
-    {
-        complexSum += arr[i]          // Add the values that meet the complex condition to 'complexSum'
-    }
-
-    @assert(complexSum == 10 + 30 + 45 + 50 + 65) // Verify that 'complexSum' equals the sum of matching values
 }

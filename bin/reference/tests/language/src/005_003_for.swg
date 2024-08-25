@@ -1,13 +1,13 @@
 /**
 # Introduction to `for` Loops
 
-In Swag, the `for` for offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *variable declaration statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the for's execution, making it a powerful tool for various iteration scenarios.
+The `for` loop also offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *variable declaration statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the for's execution, making it a powerful tool for various iteration scenarios.
 */
 #test
 {
     var cpt = 0
     
-    // A standard 'for' for with initialization, condition, and increment.
+    // A standard 'for' loop with initialization, condition, and increment.
     for var i = 0; i < 10; i += 1:
         cpt += 1
     @assert(cpt == 10)
@@ -25,7 +25,7 @@ In Swag, the `for` for offers a versatile way to iterate over a range of values.
 /**
 # Accessing Loop Index with `#index`
 
-Similar to other looping constructs like `for`, `foreach`, and `while`, the `for` for in Swag provides access to the `#index` keyword. This keyword represents the **current for index** and is particularly useful when you need to keep track of the iteration count separately from the for variable.
+Similar to other looping constructs like `for`, `foreach`, and `while`, the `for` loop in Swag provides access to the `#index` keyword. This keyword represents the **current for index** and is particularly useful when you need to keep track of the iteration count separately from the for variable.
 */
 #test
 {
@@ -45,7 +45,7 @@ Similar to other looping constructs like `for`, `foreach`, and `while`, the `for
 /**
 # Using `break` and `continue` in `for` Loops
 
-In Swag, `break` and `continue` work within `for` loops just as they do in other for structures. Use `break` to exit the for prematurely, effectively terminating the for when a specific condition is met. The `continue` statement, on the other hand, skips the remainder of the current for iteration and jumps to the next iteration.
+In Swag, `break` and `continue` work within `for` loops just as they do in other for structures. Use `break` to exit the loop prematurely, effectively terminating the loop when a specific condition is met. The `continue` statement, on the other hand, skips the remainder of the current for iteration and jumps to the next iteration.
 */
 #test
 {
@@ -96,7 +96,7 @@ Swag supports nested `for` loops, which are useful for more complex iteration pa
 /**
 # Iterating Over Arrays with `for`
 
-The `for` for can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection.
+The `for` for can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection (but we'll see later that `foreach` is better).
 */
 #test
 {

@@ -1,7 +1,7 @@
 /**
 # Introduction to `foreach`
 The `foreach` statement is designed to iterate over all elements within a collection. It provides a streamlined 
-and efficient way to process each item in a collection, which can be an array, slice, or string.
+and efficient way to process each item in a collection, which can be an array, slice, string and even a struct.
 */
 
 #test
@@ -72,8 +72,8 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
 }
 
 /**
-# Reverse Order with `back`
-To iterate over elements in reverse order, use the `back` modifier. This is particularly useful 
+# Reverse Order with `#back`
+To iterate over elements in reverse order, use the `#back` modifier. This is particularly useful 
 when processing a collection from the last element to the first.
 */
 
@@ -136,7 +136,7 @@ enabling straightforward processing of each element.
 
 /**
 # Modifying Elements with `&`
-By prefixing the value name with `&`, `foreach` allows you to foreach elements by reference, 
+By prefixing the value name with `&`, `foreach` allows you to visit elements by address, 
 enabling in-place modification of the elements.
 */
 
