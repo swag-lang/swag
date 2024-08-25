@@ -237,21 +237,22 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 {
     concat->addString("cast");
 
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
+    {
+        concat->addChar('<');
+        concat->addString(g_LangSpec->name_overflow);
+        concat->addChar('>');
+    }
+    else if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
+    {
+        concat->addChar('<');
+        concat->addString(g_LangSpec->name_bit);
+        concat->addChar('>');
+    }    
+
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addChar(')');
-
-    if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
-    {
-        concat->addBlank();
-        concat->addString(g_LangSpec->name_over);
-    }
-    
-    if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
-    {
-        concat->addBlank();
-        concat->addString(g_LangSpec->name_bit);
-    }
     
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {

@@ -75,7 +75,7 @@ impl ICodec for CodecPcmToPcm16
                 {
                     let input  = cast(^f32) src
                     let sample = input[0] * 32768.0
-                    let intS   = Math.clamp(cast(s32) #over sample, -32768, 32767)
+                    let intS   = Math.clamp(cast<overflow>(s32) sample, -32768, 32767)
                     dst[0] = cast(s16) intS
                 }
                 #else:

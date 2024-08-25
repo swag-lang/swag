@@ -11,11 +11,11 @@
     @assert(~a64 == 0xFFFF_FFFF_FFFF_FFFF)
 
     let sa8: s8 = 0
-    @assert(cast(u8) #bit ~sa8 == 0xFF)
+    @assert(cast<bit>(u8) ~sa8 == 0xFF)
     let sa16: s16 = 0
-    @assert(cast(u16) #bit ~sa16 == 0xFFFF)
+    @assert(cast<bit>(u16) ~sa16 == 0xFFFF)
     let sa32: s32 = 0
-    @assert(cast(u32) #bit ~sa32 == 0xFFFF_FFFF)
+    @assert(cast<bit>(u32) ~sa32 == 0xFFFF_FFFF)
     let sa64: s64 = 0
-    @assert(cast(u64) #bit ~sa64 == 0xFFFF_FFFF_FFFF_FFFF)
+    @assert(cast<bit>(u64) ~sa64 == 0xFFFF_FFFF_FFFF_FFFF)
 }

@@ -958,7 +958,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	if man == 0
     {
 		if neg:
-			result.f = cast(f64) #bit 0x8000000000000000 // Negative zero.
+			result.f = cast<bit>(f64) 0x8000000000000000 // Negative zero.
 		return result
 	}
 
@@ -1023,7 +1023,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
 	if neg:
 		retBits |= 0x8000000000000000
-	result.f = cast(f64) #bit retBits
+	result.f = cast<bit>(f64) retBits
     result.ok = true
     return result
 }

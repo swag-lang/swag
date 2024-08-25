@@ -1,7 +1,7 @@
 #test
 {
     let x = 1.0
-    let y = cast(u32) #bit x
+    let y = cast<bit>(u32) x
     @assert(y == 0x3f800000)
 
     typealias TT = s32

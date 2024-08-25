@@ -28,17 +28,17 @@ Explicit casting is necessary when you need to convert a value from one type to 
 
 /**
 # Bitcast
-The `#bit` modifier enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a **bitcast**, is only valid when the source and destination types share the same size.
+The `bit` cast mode enables bit-level reinterpretation of a value's type without altering the underlying bit pattern. This operation, known as a **bitcast**, is only valid when the source and destination types share the same size.
 */
 #test
 {
     let x: f32 = 1.0
-    let y: u32 = cast(u32) #bit x              // Reinterpret the bits of 'x' as a 'u32'
+    let y: u32 = cast<bit>(u32) x              // Reinterpret the bits of 'x' as a 'u32'
     @assert(y == 0x3f800000)                   // 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex
 
     // Casting back to the original type should yield the original value
-    #assert cast(u32) #bit 1.0 == 0x3f800000
-    #assert cast(f32) #bit 0x3f800000 == 1.0   // Reinterpreting the bits back to 'f32' gives 1.0
+    #assert cast<bit>(u32) 1.0 == 0x3f800000
+    #assert cast<bit>(f32) 0x3f800000 == 1.0   // Reinterpreting the bits back to 'f32' gives 1.0
 }
 
 /**
@@ -47,11 +47,11 @@ This example demonstrates the reverse operation, where an integer representing a
 #test
 {
     let rawBits: u32 = 0x40490FDB              // Hexadecimal representation of the float 3.1415927
-    let pi: f32      = cast(f32) #bit rawBits  // Interpret the bit pattern as a floating-point number
+    let pi: f32      = cast<bit>(f32) rawBits  // Interpret the bit pattern as a floating-point number
     @assert(pi == 3.1415927)                   // This now represents the value of pi as a floating-point number
 
     // Verifying that casting back to the original bit pattern restores the initial value
-    let backToBits: u32 = cast(u32) #bit pi
+    let backToBits: u32 = cast<bit>(u32) pi
     @assert(backToBits == 0x40490FDB)
 }
 
@@ -110,7 +110,7 @@ Additionally, the `#over` modifier can be used in explicit casts to indicate tha
 
     // To perform this cast, an explicit cast is required:
     let z0: s16 = 256
-    let z1: s8 = cast(s8) #over z0            // Explicit cast needed to convert from s16 to s8
+    let z1: s8 = cast<overflow>(s8) z0            // Explicit cast needed to convert from s16 to s8
     @assert(z1 == 0)                          // This may cause data loss as 256 cannot be represented in s8 (max is 127)
 
     // Implicit cast from unsigned to signed type where the value is out of range
@@ -118,7 +118,7 @@ Additionally, the `#over` modifier can be used in explicit casts to indicate tha
     // let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss
 
     // To perform this cast, an explicit cast is required, with the risk of data loss:
-    let s_val: s16 = cast(s16) #over u_val    // This could result in an unexpected negative value
+    let s_val: s16 = cast<overflow>(s16) u_val    // This could result in an unexpected negative value
     @assert(s_val == -1)                      // 65535 in u16 becomes -1 in s16 due to overflow
 
     // Implicit cast from f64 to f32, which can lose precision

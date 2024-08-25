@@ -159,12 +159,12 @@ void LanguageSpec::setupNames()
     name_nodrop   = "#nodrop";
     name_move     = "#move";
     name_moveraw  = "#moveraw";
-    name_bit      = "#bit";
     name_unconst  = "#unconst";
     name_back     = "#back";
     name_ref      = "#ref";
     name_constref = "#constref";
-    
+
+    name_bit   = "bit";
     name_call  = "call";
     name_err   = "err";
     name_noerr = "noerr";
@@ -320,7 +320,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#nodrop", TokenId::ModifierNoDrop);
     keywords.add("#move", TokenId::ModifierMove);
     keywords.add("#moveraw", TokenId::ModifierMoveRaw);
-    keywords.add("#bit", TokenId::ModifierBit);
     keywords.add("#unconst", TokenId::ModifierUnconst);
     keywords.add("#back", TokenId::ModifierBack);
     keywords.add("#ref", TokenId::ModifierRef);
@@ -591,7 +590,6 @@ void LanguageSpec::setupModifiers()
     modifiers.add(name_nodrop, MODIFIER_NO_LEFT_DROP);
     modifiers.add(name_move, MODIFIER_MOVE);
     modifiers.add(name_moveraw, MODIFIER_MOVE_RAW);
-    modifiers.add(name_bit, MODIFIER_BIT);
     modifiers.add(name_unconst, MODIFIER_UN_CONST);
     modifiers.add(name_back, MODIFIER_BACK);
     modifiers.add(name_ref, MODIFIER_REF);

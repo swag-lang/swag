@@ -4,7 +4,7 @@ using Swag
 typealias float_t  = f32
 typealias double_t = f64
 
-const NAN       = cast(f64) #bit ~0'u64
+const NAN       = cast<bit>(f64) ~0'u64
 const INFINITY  = 1e5000'f32
 const HUGE_VALF = INFINITY
 const HUGE_VAL  = cast(f64) INFINITY
@@ -148,7 +148,7 @@ const FP_SUBNORMAL = 4
 #[Inline]
 func fpclassify(x: f64)->s32
 {
-    let u = cast(u64) #bit x
+    let u = cast<bit>(u64) x
     let e = (u >> 52) & 0x7ff
     switch e
     {
@@ -164,7 +164,7 @@ func fpclassify(x: f64)->s32
 #[Inline]
 func fpclassifyf(x: f32)->s32
 {
-    let u = cast(u32) #bit x
+    let u = cast<bit>(u32) x
     let e = (u >> 23) & 0xff
     switch e
     {
@@ -179,8 +179,8 @@ func fpclassifyf(x: f32)->s32
 
 #[Inline, Overload]
 {
-    func signbit(x: f32) => cast(s32) (cast(u32) #bit x >> 31)
-    func signbit(x: f64) => cast(s32) (cast(u64) #bit x >> 63)
+    func signbit(x: f32) => cast(s32) (cast<bit>(u32) x >> 31)
+    func signbit(x: f64) => cast(s32) (cast<bit>(u64) x >> 63)
 
     func isunordered(x, y: f32) => isnan(x) or isnan(y)
     func isunordered(x, y: f64) => isnan(x) or isnan(y)

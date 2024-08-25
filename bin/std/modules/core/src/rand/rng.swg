@@ -28,7 +28,7 @@ impl Rng
         #if @defined(T.seedU64):
             return rng.seedU64(seed)
         #else:
-            return rng.seedU32(cast(u32) #over seed)
+            return rng.seedU32(cast<overflow>(u32) seed)
     }
 
     // Returns an unsigned 32 bits random value
@@ -41,7 +41,7 @@ impl Rng
         #if @defined(T.nextU32):
             return rng.nextU32()
         #else:
-            return cast(u32) #over rng.nextU64()
+            return cast<overflow>(u32) rng.nextU64()
     }
 
     // Returns an unsigned 64 bits random value
@@ -67,14 +67,14 @@ impl Rng
     #[Swag.Inline, Swag.Overload]
     mtd nextS32()->s32
     {
-        return cast(s32) #bit nextU32()
+        return cast<bit>(s32) nextU32()
     }
 
     // Returns a signed 64 bits random value
     #[Swag.Inline, Swag.Overload]
     mtd nextS64()->s64
     {
-        return cast(s64) #bit nextU64()
+        return cast<bit>(s64) nextU64()
     }
 
     // Range is [0..1[, so 1.0 will never be returned

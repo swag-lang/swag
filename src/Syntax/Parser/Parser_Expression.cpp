@@ -621,7 +621,6 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0036, "#over", "#bit")));
             mdfFlags.add(MODIFIER_OVERFLOW);
             SWAG_CHECK(eatToken());
             continue;
@@ -690,23 +689,6 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_BACK), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
             mdfFlags.add(MODIFIER_BACK);
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
-        if (tokenParse.is(TokenId::ModifierBit))
-        {
-            switch (opId)
-            {
-                case TokenId::KwdCast:
-                    break;
-                default:
-                    return error(tokenParse, formErr(Err0681, tokenParse.cstr(), forNode.cstr()));
-            }
-
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0041, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(tokenParse, formErr(Err0036, "#bit", "#over")));
-            mdfFlags.add(MODIFIER_BIT);
             SWAG_CHECK(eatToken());
             continue;
         }

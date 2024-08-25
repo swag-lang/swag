@@ -55,7 +55,7 @@ public
     func isSymbol(c: rune)->bool
     {
         if isLatin1(c):
-            return Latin1.isSymbol(cast(u8) #bit c)
+            return Latin1.isSymbol(cast<bit>(u8) c)
         return isInTable(TableSymbol, c)
     }
 
@@ -337,7 +337,7 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->
                 return result
             }
 
-            result.mappedRune   = r + #over cast(rune) #bit delta
+            result.mappedRune   = r + #over cast<bit>(rune) delta
             result.foundMapping = true
             return result
         }

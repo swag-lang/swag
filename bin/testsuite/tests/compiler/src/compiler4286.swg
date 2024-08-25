@@ -1,6 +1,6 @@
-#global testerror "Err0036"
+/*#global testerror "Err0036"
 
 #test
 {
-    var x = cast(s32) #bit #over 5
-}
+    var x = cast<bit>(s32) #over 5
+}*/

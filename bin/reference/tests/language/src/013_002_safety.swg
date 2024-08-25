@@ -84,13 +84,13 @@ between different integer types.
     // var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be 
                                                   // represented as s8
 
-    let y1 = cast(s8) #over x1                    // Use #over to bypass safety checks and allow this 
+    let y1 = cast<overflow>(s8) x1                    // Use #over to bypass safety checks and allow this 
                                                   // cast
     @assert(y1 == -1)                             // Assert that y1 is -1 after wrapping
 
     let x2 = -1's8                                // Initialize x2 with the minimum value for s8
     // var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative
-    let y2 = cast(u8) #over x2                    // Use #over to bypass safety checks
+    let y2 = cast<overflow>(u8) x2                    // Use #over to bypass safety checks
     @assert(y2 == 255)                            // Assert that y2 is 255 after wrapping
 }
 

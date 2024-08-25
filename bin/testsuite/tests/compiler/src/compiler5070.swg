@@ -2,5 +2,5 @@
 
 #test
 {
-    let b = cast([2] u32) #bit 1'u8
+    let b = cast<bit>([2] u32) 1'u8
 }
