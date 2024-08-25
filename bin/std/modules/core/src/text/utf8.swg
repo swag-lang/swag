@@ -810,7 +810,7 @@ func visitRunes(buffer: const [..] u8, stmt: code)
                 let #alias0 = #up c
                 let #alias1 = #up charIdx
                 let #alias2 = #up byteIdx
-                #mixin #up stmt where { continue = break Inside; }
+                #mixin #up stmt where { continue = break in Inside; }
             }
         }
 

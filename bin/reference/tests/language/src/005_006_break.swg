@@ -49,10 +49,10 @@ Swag allows you to define named scopes using the `#scope` keyword. The `break` s
         loop 10
         {
             cpt += 1
-            break BigScope    // Exits the entire 'BigScope' scope after incrementing `cpt`
+            break in BigScope    // Exits the entire 'BigScope' scope after incrementing `cpt`
         }
 
-        @assert(false)        // This assertion is never reached due to the break statement above
+        @assert(false)        // This assertion is never reached due to the break in statement above
     }
 
     // Execution resumes after 'BigScope'
@@ -119,9 +119,9 @@ A scope in Swag can also be followed by a simple statement rather than a block, 
         loop 10
         {
             if #index == 5:
-                break Up      // Exits to the 'Up' scope when the inner loop index equals 5
+                break in Up      // Exits to the 'Up' scope when the inner loop index equals 5
         }
 
-        @assert(false)        // This assertion is never reached due to the break statement above
+        @assert(false)        // This assertion is never reached due to the break in statement above
     }
 }

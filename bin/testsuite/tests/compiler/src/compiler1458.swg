@@ -30,7 +30,7 @@ impl S
     {
         cpt += 1
         //@print("aa\n")
-        break up
+        break in up
     }
 
     @assert(cpt == 1)

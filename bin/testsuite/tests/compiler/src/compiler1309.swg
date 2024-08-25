@@ -8,7 +8,7 @@
         {
             loop 20
             {
-                break Outer
+                break in Outer
             }
 
             error = true

@@ -116,7 +116,7 @@ func day5B()
                     let v0 = Math.max(range.start, conv.src)
                     let v1 = Math.min(range.end, conv.srcE)
                     newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})
-                    break Done
+                    break in Done
                 }
 
                 newRanges.add(range)

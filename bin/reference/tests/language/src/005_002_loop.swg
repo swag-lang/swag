@@ -100,7 +100,7 @@ To iterate in reverse order, append the `#back` modifier to the `loop` statement
 }
 
 /**
-# Break and Continue
+# break in and Continue
 The `break` and `continue` keywords provide control over the loop's execution flow. `break` exits the loop early, while `continue` skips the remainder of the current iteration and proceeds with the next.
 */
 

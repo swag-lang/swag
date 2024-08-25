@@ -6,7 +6,7 @@
     {
         defer cpt = 1
         loop 10:
-            break outer
+            break in outer
         @assert(false)
     }
 

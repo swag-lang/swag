@@ -18,7 +18,7 @@ func titi(stmt: code)
     {
         loop 5
         {
-            #mixin stmt where { break = break Up; }
+            #mixin stmt where { break = break in Up; }
         }
     }
 }

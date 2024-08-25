@@ -135,7 +135,7 @@ impl HashTable
                         let #alias1 = #up table[#index].value
                 }
 
-                #mixin #up stmt where { break = break Up; continue = break Down; }
+                #mixin #up stmt where { break = break in Up; continue = break in Down; }
             }
 
             remain -= 1

@@ -187,10 +187,10 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // Injects the user code `what` here.
                     // The `#mixin` directive replaces certain parts of the user code:
-                    // - `break` in the user code is replaced with `break Up`, meaning it will break 
+                    // - `break` in the user code is replaced with `break in Up`, meaning it will break 
                     //   out of the `Up` scope (i.e., the outer loop).
                     // - You can similarly redefine `continue` if needed.
-                    #mixin #up what where { break = break Up; }
+                    #mixin #up what where { break = break in Up; }
                 }
             }
         }
@@ -205,7 +205,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     {
         a += 1
         if a == 10:
-            // This `break` statement is replaced by `break Up` due to the macro,
+            // This `break` statement is replaced by `break in Up` due to the macro,
             // meaning it will exit the outermost loop, not just the inner loop.
             break  
     }
@@ -234,9 +234,9 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
             {
                 #macro
                 {
-                    // `break` in the user code is replaced with `break Outer`, exiting the outer loop.
+                    // `break` in the user code is replaced with `break in Outer`, exiting the outer loop.
                     // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
-                    #mixin #up what where { break = break Outer; continue = break; }
+                    #mixin #up what where { break = break in Outer; continue = break; }
                 }
             }
         }

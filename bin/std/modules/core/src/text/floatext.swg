@@ -227,7 +227,7 @@ impl FloatExt
             case exp1 > expMax:
                 i -= 1
             default:
-                break Loop
+                break in Loop
             }
         }
 

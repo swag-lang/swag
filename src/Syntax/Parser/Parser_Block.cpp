@@ -650,8 +650,9 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     *result           = node;
     SWAG_CHECK(eatToken());
 
-    if (!Tokenizer::isStartOfNewStatement(tokenParse))
+    if (tokenParse.is(TokenId::KwdIn))
     {
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0648)));
         node->label = tokenParse.token;
         FormatAst::inheritFormatAfter(this, node, &tokenParse);

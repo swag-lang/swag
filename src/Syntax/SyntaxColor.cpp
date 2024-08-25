@@ -667,7 +667,6 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     case TokenId::KwdCast:
                     case TokenId::KwdWhere:
                     case TokenId::KwdVisit:
-                    case TokenId::KwdBreak:
                     case TokenId::KwdDefer:
                         if (c == '<')
                         {

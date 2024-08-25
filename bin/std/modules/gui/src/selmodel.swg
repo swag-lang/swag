@@ -90,7 +90,7 @@ impl SelModel
                 {
                     let #alias0 = #up i
                     let #alias1 = #index
-                    #mixin #up stmt where { break = break Up; }
+                    #mixin #up stmt where { break = break in Up; }
                 }
             }
         }

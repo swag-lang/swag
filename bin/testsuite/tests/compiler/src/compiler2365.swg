@@ -7,7 +7,7 @@ public func macro2365(stmt: code)
         #scope down
         #macro
         {
-            #mixin #up stmt where { break = break up; continue = break down; }
+            #mixin #up stmt where { break = break in up; continue = break in down; }
         }
 
         #up g += 1

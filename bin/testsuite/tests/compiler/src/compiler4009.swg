@@ -3,5 +3,5 @@
 #test
 {
     loop 4:
-        break TOTO
+        break in TOTO
 }

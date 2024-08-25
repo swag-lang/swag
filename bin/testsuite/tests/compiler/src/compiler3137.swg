@@ -10,12 +10,12 @@
                 loop 10
                 {
                     x += 1
-                    break A
+                    break in A
                 }
             }
 
             x += 1
-            break A
+            break in A
         }
     }
 
