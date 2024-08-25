@@ -187,15 +187,16 @@ struct LanguageSpec
     Utf8 name_nodrop;
     Utf8 name_move;
     Utf8 name_moveraw;
-    Utf8 name_bit;
     Utf8 name_unconst;
     Utf8 name_back;
     Utf8 name_ref;
     Utf8 name_constref;
+    
     Utf8 name_call;
-
     Utf8 name_err;
     Utf8 name_noerr;
+    Utf8 name_bit;
+    Utf8 name_unsafe;    
 
     Utf8 name_boundcheck;
     Utf8 name_overflow;

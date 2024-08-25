@@ -97,7 +97,7 @@ Let's explore some examples to illustrate these rules.
 ## Examples Where Implicit Casts Are Not Allowed
 There are cases where implicit casts are not permitted due to the risk of data loss or precision issues. In such situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks.
 
-Additionally, the `#over` modifier can be used in explicit casts to indicate that the value may lose some precision without raising an error.
+Additionally, the cast mode `unsafe` can be used in explicit casts to indicate that the value may lose some precision without raising an error.
 */
 #test
 {
@@ -106,24 +106,24 @@ Additionally, the `#over` modifier can be used in explicit casts to indicate tha
     // Uncommenting the following lines would cause an error:
 
     // let z0: s16 = 100
-    // let z1: s8 = z0                         // Error: Implicit cast from 's16' to 's8' is not allowed
+    // let z1: s8 = z0                          // Error: Implicit cast from 's16' to 's8' is not allowed
 
     // To perform this cast, an explicit cast is required:
     let z0: s16 = 256
-    let z1: s8 = cast<overflow>(s8) z0            // Explicit cast needed to convert from s16 to s8
-    @assert(z1 == 0)                          // This may cause data loss as 256 cannot be represented in s8 (max is 127)
+    let z1: s8 = cast<unsafe>(s8) z0            // Explicit cast needed to convert from s16 to s8
+    @assert(z1 == 0)                            // This may cause data loss as 256 cannot be represented in s8 (max is 127)
 
     // Implicit cast from unsigned to signed type where the value is out of range
     let u_val: u16 = 65535
-    // let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss
+    // let s_val: s16 = u_val                   // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss
 
     // To perform this cast, an explicit cast is required, with the risk of data loss:
-    let s_val: s16 = cast<overflow>(s16) u_val    // This could result in an unexpected negative value
-    @assert(s_val == -1)                      // 65535 in u16 becomes -1 in s16 due to overflow
+    let s_val: s16 = cast<unsafe>(s16) u_val    // This could result in an unexpected negative value
+    @assert(s_val == -1)                        // 65535 in u16 becomes -1 in s16 due to overflow
 
     // Implicit cast from f64 to f32, which can lose precision
     let large_float: f64 = 1.23456789012345611111
-    // let smaller_float: f32 = large_float    // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss
+    // let smaller_float: f32 = large_float     // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss
 
     // Explicit cast is required when converting from f64 to f32
     let smaller_float: f32 = cast(f32) large_float

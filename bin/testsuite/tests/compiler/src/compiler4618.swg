@@ -5,7 +5,7 @@
 #test
 {
     const x = -1'f32
-    let y = cast<overflow>(u64) x
+    let y = cast<unsafe>(u64) x
 }
 
 /*

@@ -311,7 +311,7 @@
           }
         },        
         {
-          "match": "\\b(cast)\\<(bit|overflow)\\>",
+          "match": "\\b(cast)\\<(bit|unsafe)\\>",
           "captures": {
             "1": {
               "name": "keyword"

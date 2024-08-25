@@ -723,7 +723,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     CastFlags castFlags = CAST_FLAG_EXPLICIT | CAST_FLAG_ACCEPT_PENDING;
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
         castFlags.add(CAST_FLAG_FORCE_UN_CONST);
-    if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_UNSAFE))
         castFlags.add(CAST_FLAG_CAN_OVERFLOW);
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
     YIELD();

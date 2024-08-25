@@ -237,10 +237,10 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 {
     concat->addString("cast");
 
-    if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
+    if (node->hasSpecFlag(AstCast::SPEC_FLAG_UNSAFE))
     {
         concat->addChar('<');
-        concat->addString(g_LangSpec->name_overflow);
+        concat->addString(g_LangSpec->name_unsafe);
         concat->addChar('>');
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))

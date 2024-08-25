@@ -907,7 +907,7 @@ void initErrors()
     SWAG_ERROR(Err0764, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
     SWAG_ERROR(Err0765, "unexpected embedded instruction                   $ expected an embedded instruction, found $$TKN$$ instead                                                                                  $ ");
     SWAG_ERROR(Err0767, "expected replacement block                        $ expected [[{]] to start the [[#mixin]] replacement block, found $$TKN$$ instead                                                          $ ");
-    SWAG_ERROR(Err0768, nullptr);
+    SWAG_ERROR(Err0768, "unknown [[cast]] mode                             $ cannot recognize [[%s]] as a valid [[cast]] mode                                                                                         $ the only acceptable mode are [[bit]] and [[unsafe]]");
     SWAG_ERROR(Err0769, nullptr);
     SWAG_ERROR(Err0770, nullptr);
 

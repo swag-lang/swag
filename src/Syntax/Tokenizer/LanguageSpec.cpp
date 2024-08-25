@@ -164,10 +164,11 @@ void LanguageSpec::setupNames()
     name_ref      = "#ref";
     name_constref = "#constref";
 
-    name_bit   = "bit";
-    name_call  = "call";
-    name_err   = "err";
-    name_noerr = "noerr";
+    name_call   = "call";
+    name_err    = "err";
+    name_noerr  = "noerr";
+    name_bit    = "bit";
+    name_unsafe = "unsafe";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";

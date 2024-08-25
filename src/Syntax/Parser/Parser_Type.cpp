@@ -654,15 +654,15 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
             node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
             node->semanticFct = Semantic::resolveExplicitBitCast;
         }
-        else if (tokenParse.is(g_LangSpec->name_overflow))
+        else if (tokenParse.is(g_LangSpec->name_unsafe))
         {
             SWAG_CHECK(eatToken());
-            node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
+            node->addSpecFlag(AstCast::SPEC_FLAG_UNSAFE);
             node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
         else
         {
-            return error(tokenParse, formErr(Err0703, tokenParse.cstr()));
+            return error(tokenParse, formErr(Err0768, tokenParse.cstr()));
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[cast]] mode"));
