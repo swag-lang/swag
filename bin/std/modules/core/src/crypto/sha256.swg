@@ -1,5 +1,5 @@
 #global namespace Hash
-#global #[Swag.Overflow(true)]
+#global #[Swag.AllowOverflow(true)]
 
 public struct Sha256
 {

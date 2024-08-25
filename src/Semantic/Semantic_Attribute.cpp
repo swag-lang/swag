@@ -588,9 +588,9 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.is(g_LangSpec->name_Overflow))
+            else if (child->token.is(g_LangSpec->name_AllowOverflow))
             {
-                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Overflow, g_LangSpec->name_value);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_AllowOverflow, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 flags.remove(ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
                 if (attrParam->value.reg.b)

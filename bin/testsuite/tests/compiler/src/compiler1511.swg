@@ -2,7 +2,7 @@
 #test
 {
     let index: u32 = 65
-    #[Swag.Overflow(true)]
+    #[Swag.AllowOverflow(true)]
     let val = index >> 3
     let bit = index - (val << 3)
     let shift: u8 = cast(u8) (1 << bit)

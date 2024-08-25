@@ -6,7 +6,7 @@
 */
 
 #global namespace Compress
-#global #[Swag.Overflow(true)]
+#global #[Swag.AllowOverflow(true)]
 using Core.Errors
 
 private

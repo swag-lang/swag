@@ -5,7 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global #[Swag.Overflow(true)]
+#global #[Swag.AllowOverflow(true)]
 
 struct ErrInvalid{}
 

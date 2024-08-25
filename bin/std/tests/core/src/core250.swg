@@ -1,4 +1,4 @@
-#global #[Swag.Overflow(true)]
+#global #[Swag.AllowOverflow(true)]
 using Core, Core.StrConv
 
 struct Test

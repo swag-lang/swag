@@ -47,10 +47,10 @@ operation to bypass the safety check.
 /**
 ## Global Overflow Safety Control
 
-To disable overflow safety checks globally within a scope, use `#[Swag.Overflow(true)]`. This 
+To disable overflow safety checks globally within a scope, use `#[Swag.AllowOverflow(true)]`. This 
 prevents overflows from causing panics for all operations in the scope.
 */
-#[Swag.Overflow(true)]
+#[Swag.AllowOverflow(true)]
 #test
 {
     var x = 255'u8                                // Initialize x with the maximum value for u8
@@ -100,7 +100,7 @@ between different integer types.
 Safety checks for overflow can be globally disabled, allowing operations that would typically 
 panic due to overflow to proceed normally.
 */
-#[Swag.Overflow(true)]
+#[Swag.AllowOverflow(true)]
 #test
 {
     var x = 255'u8                                // Initialize x with the maximum value for u8
