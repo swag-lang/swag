@@ -380,7 +380,7 @@ void GenDoc::collectScopes(Scope* root)
 
     const auto count = collect.size();
 
-    for (const auto c : root->childScopes)
+    for (const auto c : root->childrenScopes)
         collectScopes(c);
 
     if (root->is(ScopeKind::Namespace))

@@ -74,7 +74,7 @@ struct Scope
     SymTable                symTable;
     Utf8                    name;
     Utf8                    fullname;
-    VectorNative<Scope*>    childScopes;
+    VectorNative<Scope*>    childrenScopes;
     DependentJobs           dependentJobs;
     VectorNative<AstDefer*> deferredNodes;
     VectorNative<AstNode*>  doneDefer;

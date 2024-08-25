@@ -23,7 +23,7 @@
             <Item Name="[name]">name</Item>
             <Item Name="[parent]">parentScope</Item>
             <Item Name="[owner]">owner</Item>
-            <Item Name="[childs]">childScopes</Item>
+            <Item Name="[children]">childrenScopes</Item>
         </Expand>
     </Type>
 
@@ -32,7 +32,7 @@
         <Expand>
             <Item Name="[kind]">kind</Item>
             <Item Name="[name]">token.text</Item>
-            <Item Name="[childs]">childs</Item>
+            <Item Name="[children]">children</Item>
             <Item Name="[ownerScope]">ownerScope</Item>
             <Item Name="[typeinfo]">typeInfo</Item>
             <Item Name="[parent]">parent</Item>

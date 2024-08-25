@@ -106,7 +106,7 @@ bool FormatAst::outputScopeContent(FormatContext& context, Module* module, const
 bool FormatAst::outputScopeContentAndChildren(FormatContext& context, Module* module, const Scope* scope)
 {
     SWAG_CHECK(outputScopeContent(context, module, scope));
-    for (const auto oneScope : scope->childScopes)
+    for (const auto oneScope : scope->childrenScopes)
         SWAG_CHECK(outputScope(context, module, oneScope));
     return true;
 }
@@ -194,7 +194,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
 
         context.indent++;
         SWAG_CHECK(outputScopeContent(context, module, scope));
-        for (const auto oneScope : scope->childScopes)
+        for (const auto oneScope : scope->childrenScopes)
         {
             if (oneScope->is(ScopeKind::Impl))
                 continue;
@@ -206,7 +206,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
         concat->addChar('}');
         concat->addEol();
 
-        for (const auto oneScope : scope->childScopes)
+        for (const auto oneScope : scope->childrenScopes)
         {
             if (oneScope->isNot(ScopeKind::Impl))
                 continue;

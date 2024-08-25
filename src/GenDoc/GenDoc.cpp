@@ -177,12 +177,12 @@ Utf8 GenDoc::findReference(const Utf8& name)
     if (it != collectInvert.end())
         return form("<a href=\"#%s\">%s</a>", toRef(it->second).cstr(), name.cstr());
 
-    Vector<Utf8> tkns;
-    Utf8::tokenize(name, '.', tkns);
-    if (tkns.size() <= 1)
+    Vector<Utf8> tokens;
+    Utf8::tokenize(name, '.', tokens);
+    if (tokens.size() <= 1)
         return "";
 
-    if (tkns[0] == "Swag")
+    if (tokens[0] == "Swag")
     {
         return form("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).cstr(), name.cstr());
     }

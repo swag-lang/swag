@@ -577,12 +577,12 @@ namespace
         // Sub scopes
         // Must be sorted, from first to last. We use the byte index of the first instruction in the block
         /////////////////////////////////
-        if (scope->childScopes.size() > 1)
+        if (scope->childrenScopes.size() > 1)
         {
-            std::ranges::sort(scope->childScopes, [](const Scope* n1, const Scope* n2) { return n1->backendStart < n2->backendStart; });
+            std::ranges::sort(scope->childrenScopes, [](const Scope* n1, const Scope* n2) { return n1->backendStart < n2->backendStart; });
         }
 
-        for (const auto c : scope->childScopes)
+        for (const auto c : scope->childrenScopes)
             emitScope(pp, f, c);
 
         // End

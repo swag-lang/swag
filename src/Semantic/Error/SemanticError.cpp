@@ -72,7 +72,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
                 err->remarks.push_back(msg);
             }
 
-            for (const auto s : identifierRef->startScope->childScopes)
+            for (const auto s : identifierRef->startScope->childrenScopes)
             {
                 if (s->is(ScopeKind::Impl) && s->symTable.find(node->token.text))
                 {

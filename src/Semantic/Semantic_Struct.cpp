@@ -50,7 +50,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
         ScopedLock lk3(node->structScope->mutex);
 
         node->structScope->parentScope->removeChildNoLock(node->structScope);
-        for (const auto s : node->structScope->childScopes)
+        for (const auto s : node->structScope->childrenScopes)
         {
             s->parentScope->removeChildNoLock(s);
             structDecl->scope->addChildNoLock(s);

@@ -164,11 +164,11 @@ bool Scope::isParentOf(const Scope* child)
 
 void Scope::removeChildNoLock(Scope* child)
 {
-    SWAG_ASSERT(childScopes[child->indexInParent] == child);
-    childScopes[child->indexInParent]                = childScopes.back();
-    childScopes[child->indexInParent]->indexInParent = child->indexInParent;
+    SWAG_ASSERT(childrenScopes[child->indexInParent] == child);
+    childrenScopes[child->indexInParent]                = childrenScopes.back();
+    childrenScopes[child->indexInParent]->indexInParent = child->indexInParent;
     child->indexInParent                             = UINT32_MAX;
-    childScopes.count--;
+    childrenScopes.count--;
 }
 
 bool Scope::isSameOrParentOf(const Scope* child) const
@@ -187,8 +187,8 @@ void Scope::addChildNoLock(Scope* child)
 {
     if (!child)
         return;
-    child->indexInParent = childScopes.size();
-    childScopes.push_back(child);
+    child->indexInParent = childrenScopes.size();
+    childrenScopes.push_back(child);
     child->parentScope = this;
 }
 
@@ -212,7 +212,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
     // Do not create a scope if a scope with the same name already exists
     if (matchName)
     {
-        for (const auto child : childScopes)
+        for (const auto child : childrenScopes)
         {
             if (child->name == scopeName)
             {

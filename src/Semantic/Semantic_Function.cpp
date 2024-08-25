@@ -1834,7 +1834,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     Scope* newScope = identifier->ownerScope;
     if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
     {
-        newScope          = Ast::newScope(inlineNode, form("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        newScope          = Ast::newScope(inlineNode, form("__inline%d", identifier->ownerScope->childrenScopes.size()), ScopeKind::Inline, identifier->ownerScope);
         inlineNode->scope = newScope;
     }
 
