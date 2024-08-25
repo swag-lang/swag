@@ -63,14 +63,14 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
     // Semantic will pass only if the interface has been registered in the struct, and not solved.
     // So we can reach that point and the interface is not done yet.
     // :WaitInterfaceReg
-    if (node->castedTypeInfo)
+    if (node->typeInfoCast)
     {
-        Semantic::waitAllStructInterfaces(context->baseJob, node->castedTypeInfo);
+        Semantic::waitAllStructInterfaces(context->baseJob, node->typeInfoCast);
         YIELD();
     }
 
     node->resultRegisterRc = front->resultRegisterRc;
-    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->typeInfoCast));
     return true;
 }
 
@@ -98,7 +98,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         // Implicit cast
         if (!returnExpression->hasSemFlag(SEMFLAG_CAST1))
         {
-            SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
+            SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->typeInfoCast));
             YIELD();
             returnExpression->addSemFlag(SEMFLAG_CAST1);
         }

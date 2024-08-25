@@ -302,8 +302,8 @@ bool TypeInfoSlice::isSame(const TypeInfo* to, CastFlags castFlags) const
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto castedFrom = castTypeInfo<TypeInfoSlice>(to, to->kind);
-    return pointedType->isSame(castedFrom->pointedType, castFlags);
+    const auto castFrom = castTypeInfo<TypeInfoSlice>(to, to->kind);
+    return pointedType->isSame(castFrom->pointedType, castFlags);
 }
 
 void TypeInfoList::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)

@@ -343,7 +343,7 @@ bool ByteCodeGen::emitIfAfterExpr(ByteCodeGenContext* context)
     const auto node   = context->node;
     const auto ifNode = castAst<AstIf>(node->parent, AstNodeKind::If);
 
-    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->typeInfoCast));
     YIELD();
 
     ifNode->seekJumpExpression = context->bc->numInstructions;
@@ -472,7 +472,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             node->resultRegisterRc = loopNode->lastChild()->resultRegisterRc;
     }
 
-    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->typeInfoCast));
     SWAG_ASSERT(context->result == ContextResult::Done);
 
     // To store the 'index' of the loop
@@ -570,9 +570,9 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         return true;
     }
 
-    SWAG_CHECK(emitCast(context, rangeNode->expressionLow, rangeNode->expressionLow->typeInfo, rangeNode->expressionLow->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, rangeNode->expressionLow, rangeNode->expressionLow->typeInfo, rangeNode->expressionLow->typeInfoCast));
     SWAG_ASSERT(context->result == ContextResult::Done);
-    SWAG_CHECK(emitCast(context, rangeNode->expressionUp, rangeNode->expressionUp->typeInfo, rangeNode->expressionUp->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, rangeNode->expressionUp, rangeNode->expressionUp->typeInfo, rangeNode->expressionUp->typeInfoCast));
     SWAG_ASSERT(context->result == ContextResult::Done);
 
     emitSafetyRange(context, rangeNode);
@@ -679,7 +679,7 @@ bool ByteCodeGen::emitWhileBeforeExpr(ByteCodeGenContext* context)
 bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
 {
     const auto node = context->node;
-    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->typeInfoCast));
     SWAG_ASSERT(context->result == ContextResult::Done);
 
     const auto whileNode          = castAst<AstWhile>(node->parent, AstNodeKind::While);

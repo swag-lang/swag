@@ -684,11 +684,11 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             if (makePtrL->typeInfo->isPointerRef() && !toType->isPointerRef())
             {
                 setUnRef(makePtrL);
-                if (makePtrL->castedTypeInfo)
+                if (makePtrL->typeInfoCast)
                 {
-                    const auto fromCast = TypeManager::concreteType(makePtrL->castedTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                    const auto fromCast = TypeManager::concreteType(makePtrL->typeInfoCast, CONCRETE_FUNC | CONCRETE_ALIAS);
                     if (fromCast->isPointerRef())
-                        makePtrL->castedTypeInfo = fromCast->getFinalType();
+                        makePtrL->typeInfoCast = fromCast->getFinalType();
                 }
             }
 

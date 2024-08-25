@@ -692,7 +692,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
         const auto typeList = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
         node->typeInfo      = typeList->subTypes[0]->typeInfo;
 
-        // Need to be sure that the expression list can be casted to the equivalent array
+        // Need to be sure that the expression list can be cast to the equivalent array
         const auto typeArr   = makeType<TypeInfoArray>();
         typeArr->count       = typeList->subTypes.size();
         typeArr->pointedType = typeList->subTypes[0]->typeInfo;

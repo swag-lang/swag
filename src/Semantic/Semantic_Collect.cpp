@@ -36,7 +36,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
     if (typeInfo->isAny())
     {
         const auto ptrAny = reinterpret_cast<SwagAny*>(ptrDest);
-        if (assignment && !assignment->castedTypeInfo)
+        if (assignment && !assignment->typeInfoCast)
         {
             const auto valueAny           = static_cast<SwagAny*>(value->getStorageAddr());
             *ptrAny                       = *valueAny;
@@ -45,7 +45,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
             value->storageSegment->addInitPtr(storageOffset + 8, storageOffsetType, value->storageSegment->kind);
         }
-        else if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
+        else if (assignment && assignment->typeInfoCast && assignment->typeInfoCast->isPointerNull())
         {
             ptrAny->type  = nullptr;
             ptrAny->value = nullptr;
@@ -55,7 +55,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             // Store value in constant storageSegment
             const auto constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
             uint32_t   storageOffsetValue;
-            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
+            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfoCast, assignment));
 
             // Then reference that value and the concrete type info
             // Pointer to the value
@@ -79,7 +79,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         const auto ptrSlice   = reinterpret_cast<SwagSlice*>(ptrDest);
         const auto assignType = assignment ? TypeManager::concreteType(assignment->typeInfo) : nullptr;
 
-        if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
+        if (assignment && assignment->typeInfoCast && assignment->typeInfoCast->isPointerNull())
         {
             ptrSlice->buffer = nullptr;
             ptrSlice->count  = 0;
@@ -494,14 +494,14 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     }
 
     // :SliceLiteral
-    else if (node->assignment && typeInfo->isSlice() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isArray())
+    else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray())
     {
         uint32_t storageOffsetValues;
-        SWAG_CHECK(collectAssignment(context, storageSegment, storageOffsetValues, node, node->assignment->castedTypeInfo));
+        SWAG_CHECK(collectAssignment(context, storageSegment, storageOffsetValues, node, node->assignment->typeInfoCast));
 
         SwagSlice* slice;
         storageOffset        = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
-        const auto typeArray = castTypeInfo<TypeInfoArray>(node->assignment->castedTypeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(node->assignment->typeInfoCast, TypeInfoKind::Array);
         slice->buffer        = storageSegment->address(storageOffsetValues);
         storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
         slice->count = typeArray->totalCount;
@@ -515,7 +515,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         assignNode->computedValue()->storageOffset  = storageOffset;
         assignNode->computedValue()->storageSegment = storageSegment;
     }
-    else if (node->assignment && typeInfo->isInterface() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isPointerNull())
+    else if (node->assignment && typeInfo->isInterface() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isPointerNull())
     {
         SwagInterface* itr;
         storageOffset = storageSegment->reserve(sizeof(SwagInterface), reinterpret_cast<uint8_t**>(&itr));
@@ -562,7 +562,7 @@ bool Semantic::collectConstantSlice(SemanticContext* context, AstNode* assignNod
         slice->buffer       = storageSegment->address(storageOffsetValues);
         slice->count        = typeList->subTypes.size();
     }
-    else if (assignType->isPointerNull() || (assignNode && assignNode->castedTypeInfo && assignNode->castedTypeInfo->isPointerNull()))
+    else if (assignType->isPointerNull() || (assignNode && assignNode->typeInfoCast && assignNode->typeInfoCast->isPointerNull()))
     {
         SwagSlice* slice;
         storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));

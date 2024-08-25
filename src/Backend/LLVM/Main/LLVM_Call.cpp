@@ -417,7 +417,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
             builder.CreateStore(allocR1, r0);
         }
 
-        // This can be casted to an integer
+        // This can be cast to an integer
         else if (sizeOf)
         {
             auto r0 = GEP64(allocR, rDest);

@@ -185,7 +185,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
     // Mul+add
     // Must be float, without a dynamic cast
-    if (leftTypeInfo->isNativeFloat() && !left->castedTypeInfo && !node->castedTypeInfo)
+    if (leftTypeInfo->isNativeFloat() && !left->typeInfoCast && !node->typeInfoCast)
     {
         if (left->is(AstNodeKind::FactorOp) && left->token.is(TokenId::SymAsterisk))
         {

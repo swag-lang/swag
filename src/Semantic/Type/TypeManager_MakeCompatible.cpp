@@ -50,18 +50,18 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         return true;
 
     // Be sure to keep the TYPEINFO_SPREAD flag from the original type
-    if (fromNode->castedTypeInfo && fromNode->castedTypeInfo->hasFlag(TYPEINFO_SPREAD))
+    if (fromNode->typeInfoCast && fromNode->typeInfoCast->hasFlag(TYPEINFO_SPREAD))
     {
         fromNode->typeInfo = fromNode->typeInfo->clone();
         fromNode->typeInfo->addFlag(TYPEINFO_SPREAD);
     }
 
     // auto cast
-    if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
+    if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->typeInfoCast)
     {
         if (!castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfoCast = fromNode->typeInfo;
             fromNode->typeInfo       = toType;
         }
     }
@@ -185,7 +185,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->isUndefined() || toType->isUndefined())
         return true;
 
-    // Everything can be casted to or from type 'any'
+    // Everything can be cast to or from type 'any'
     if (toType->isAny() || fromType->isAny())
         return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 

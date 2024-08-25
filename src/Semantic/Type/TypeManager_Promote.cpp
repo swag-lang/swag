@@ -118,7 +118,7 @@ bool TypeManager::promoteLeft(SemanticContext*, AstNode* left, AstNode* right)
     left->typeInfo = newLeftTypeInfo;
     if (!left->hasFlagComputedValue())
     {
-        left->castedTypeInfo = leftTypeInfo;
+        left->typeInfoCast = leftTypeInfo;
         return true;
     }
 

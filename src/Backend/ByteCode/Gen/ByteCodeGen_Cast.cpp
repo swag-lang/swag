@@ -794,7 +794,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         }
 
         exprNode->typeInfo       = typeInfo;
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -806,7 +806,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         truncRegisterRC(context, exprNode->resultRegisterRc, 1);
         node->resultRegisterRc   = exprNode->resultRegisterRc;
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
 
         if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
         {
@@ -827,7 +827,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         truncRegisterRC(context, exprNode->resultRegisterRc, 1);
         node->resultRegisterRc   = exprNode->resultRegisterRc;
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -837,7 +837,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
             node->resultRegisterRc   = exprNode->resultRegisterRc;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfoCast = nullptr;
             return true;
         }
 
@@ -845,7 +845,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
             node->resultRegisterRc   = exprNode->resultRegisterRc;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfoCast = nullptr;
             return true;
         }
     }
@@ -858,7 +858,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
             node->resultRegisterRc   = exprNode->resultRegisterRc;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfoCast = nullptr;
 
             if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
             {
@@ -880,7 +880,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
             node->resultRegisterRc   = exprNode->resultRegisterRc;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfoCast = nullptr;
             return true;
         }
 
@@ -889,7 +889,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
             node->resultRegisterRc   = exprNode->resultRegisterRc;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfoCast = nullptr;
             return true;
         }
     }
@@ -898,7 +898,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         SWAG_CHECK(emitCastToSlice(context, exprNode, typeInfo, fromTypeInfo));
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -906,7 +906,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         SWAG_CHECK(emitCastToInterface(context, exprNode, typeInfo, fromTypeInfo));
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -915,7 +915,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     {
         node->resultRegisterRc   = exprNode->resultRegisterRc;
         exprNode->typeInfo       = typeInfo;
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -973,7 +973,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
     node->resultRegisterRc   = exprNode->resultRegisterRc;
     exprNode->typeInfo       = typeInfo;
-    exprNode->castedTypeInfo = nullptr;
+    exprNode->typeInfoCast = nullptr;
     return true;
 }
 
@@ -991,7 +991,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 
     // Then we cast again if necessary to the requested final type that can have been
     // changed (type promotion for example)
-    if (node->toCastTypeInfo != node->typeInfo && node->toCastTypeInfo != node->castedTypeInfo)
+    if (node->toCastTypeInfo != node->typeInfo && node->toCastTypeInfo != node->typeInfoCast)
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->toCastTypeInfo));
         YIELD();
@@ -1009,7 +1009,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
     if (node->parent->is(AstNodeKind::FuncCallParam))
     {
         node->resultRegisterRc   = exprNode->resultRegisterRc;
-        exprNode->castedTypeInfo = nullptr;
+        exprNode->typeInfoCast = nullptr;
         return true;
     }
 
@@ -1017,7 +1017,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
     const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CAST_FLAG_AUTO));
     YIELD();
-    node->castedTypeInfo = nullptr;
+    node->typeInfoCast = nullptr;
 
     return true;
 }

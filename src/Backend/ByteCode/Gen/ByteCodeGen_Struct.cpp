@@ -1384,7 +1384,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         numToInit = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->typeInfoCast));
         YIELD();
         node->count->addSemFlag(SEMFLAG_CAST1);
     }
@@ -1649,7 +1649,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         numToDo = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->typeInfoCast));
         YIELD();
         node->count->addSemFlag(SEMFLAG_CAST1);
     }

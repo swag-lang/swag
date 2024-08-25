@@ -222,7 +222,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }

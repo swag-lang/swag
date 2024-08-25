@@ -14,7 +14,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->typeInfoCast));
         YIELD();
         node->access->addSemFlag(SEMFLAG_CAST1);
     }
@@ -46,7 +46,7 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->typeInfoCast));
         YIELD();
         node->access->addSemFlag(SEMFLAG_CAST1);
     }
@@ -69,7 +69,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->typeInfoCast));
         YIELD();
         node->access->addSemFlag(SEMFLAG_CAST1);
     }
@@ -99,7 +99,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->typeInfoCast));
         YIELD();
         node->access->addSemFlag(SEMFLAG_CAST1);
     }
@@ -256,11 +256,11 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
-    const auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
+    const auto castInfo = node->array->typeInfoCast ? node->array->typeInfoCast : nullptr;
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST3))
     {
-        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->typeInfoCast));
         YIELD();
         node->access->addSemFlag(SEMFLAG_CAST3);
     }
@@ -542,14 +542,14 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 
     if (!node->lowerBound->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->typeInfoCast));
         YIELD();
         node->lowerBound->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->upperBound->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->typeInfoCast));
         YIELD();
         node->upperBound->addSemFlag(SEMFLAG_CAST1);
     }

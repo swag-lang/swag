@@ -537,7 +537,7 @@ struct AstNode
     AstFuncDecl* ownerFct;
 
     TypeInfo* typeInfo;
-    TypeInfo* castedTypeInfo;
+    TypeInfo* typeInfoCast;
 
     std::atomic<SymbolName*>     symbolName;
     std::atomic<SymbolOverload*> symbolOverload;

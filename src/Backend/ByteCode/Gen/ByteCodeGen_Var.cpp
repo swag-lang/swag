@@ -128,7 +128,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 node->addSemFlag(SEMFLAG_PRE_CAST);
             }
 
-            SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
+            SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->typeInfoCast));
             YIELD();
 
             if (!mustDropLeft)

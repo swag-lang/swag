@@ -510,7 +510,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     const auto binNode = castAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
-    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->typeInfoCast));
     YIELD();
     binNode->addSemFlag(SEMFLAG_CAST1);
 
@@ -580,7 +580,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     const auto binNode = castAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
-    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->typeInfoCast));
     YIELD();
     binNode->addSemFlag(SEMFLAG_CAST1);
 
@@ -638,14 +638,14 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
-        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST2);
     }
@@ -708,7 +708,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
                 node->resultRegisterRc = r2;
             }
 
-            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+            auto typeInfoExpr = node->typeInfoCast ? node->typeInfoCast : node->typeInfo;
             typeInfoExpr      = TypeManager::concretePtrRefType(typeInfoExpr);
 
             switch (node->token.id)
@@ -761,7 +761,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST3))
     {
-        SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST3);
     }
@@ -817,7 +817,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     {
         for (const auto c : allParams->children)
         {
-            SWAG_CHECK(emitCast(context, c, c->typeInfo, c->castedTypeInfo));
+            SWAG_CHECK(emitCast(context, c, c->typeInfo, c->typeInfoCast));
             SWAG_ASSERT(context->result == ContextResult::Done);
         }
     }

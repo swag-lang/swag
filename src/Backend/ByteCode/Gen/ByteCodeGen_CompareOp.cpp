@@ -832,14 +832,14 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->firstChild(), TypeManager::concreteType(node->firstChild()->typeInfo), node->firstChild()->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
-        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST2);
     }

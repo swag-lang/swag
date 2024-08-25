@@ -73,7 +73,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         addSemFlag(from->semFlags.mask(SEMFLAG_USER_CAST));
         addSemFlag(from->semFlags.mask(SEMFLAG_FROM_REF));
         addSemFlag(from->semFlags.mask(SEMFLAG_FROM_PTR_REF));
-        castedTypeInfo = from->castedTypeInfo;
+        typeInfoCast = from->typeInfoCast;
     }
 
     symbolName     = from->symbolName.load();

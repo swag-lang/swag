@@ -107,79 +107,79 @@ namespace Ast
 template<typename T>
 T* castAst(AstNode* ptr, [[maybe_unused]] AstNodeKind kind)
 {
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && casted->kind == kind);
-    return casted;
+    T* cast = static_cast<T*>(ptr);
+    SWAG_ASSERT(cast && cast->kind == kind);
+    return cast;
 }
 
 template<typename T>
 T* castAst(AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2)
 {
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
-    return casted;
+    T* cast = static_cast<T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2));
+    return cast;
 }
 
 template<typename T>
 T* castAst(AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2, [[maybe_unused]] AstNodeKind kind3)
 {
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3));
-    return casted;
+    T* cast = static_cast<T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2 || cast->kind == kind3));
+    return cast;
 }
 
 template<typename T>
 T* castAst(AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2, [[maybe_unused]] AstNodeKind kind3, [[maybe_unused]] AstNodeKind kind4)
 {
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3 || casted->kind == kind4));
-    return casted;
+    T* cast = static_cast<T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2 || cast->kind == kind3 || cast->kind == kind4));
+    return cast;
 }
 
 template<typename T>
 const T* castAst(const AstNode* ptr, [[maybe_unused]] AstNodeKind kind)
 {
-    const T* casted = static_cast<const T*>(ptr);
-    SWAG_ASSERT(casted && casted->kind == kind);
-    return casted;
+    const T* cast = static_cast<const T*>(ptr);
+    SWAG_ASSERT(cast && cast->kind == kind);
+    return cast;
 }
 
 template<typename T>
 const T* castAst(const AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2)
 {
-    const T* casted = static_cast<const T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
-    return casted;
+    const T* cast = static_cast<const T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2));
+    return cast;
 }
 
 template<typename T>
 const T* castAst(const AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2, [[maybe_unused]] AstNodeKind kind3)
 {
-    const T* casted = static_cast<const T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3));
-    return casted;
+    const T* cast = static_cast<const T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2 || cast->kind == kind3));
+    return cast;
 }
 
 template<typename T>
 const T* castAst(const AstNode* ptr, [[maybe_unused]] AstNodeKind kind1, [[maybe_unused]] AstNodeKind kind2, [[maybe_unused]] AstNodeKind kind3, [[maybe_unused]] AstNodeKind kind4)
 {
-    const T* casted = static_cast<const T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3 || casted->kind == kind4));
-    return casted;
+    const T* cast = static_cast<const T*>(ptr);
+    SWAG_ASSERT(cast && (cast->kind == kind1 || cast->kind == kind2 || cast->kind == kind3 || cast->kind == kind4));
+    return cast;
 }
 
 template<typename T>
 T* castAst(AstNode* ptr)
 {
-    T* casted = static_cast<T*>(ptr);
-    return casted;
+    T* cast = static_cast<T*>(ptr);
+    return cast;
 }
 
 template<typename T>
 const T* castAst(const AstNode* ptr)
 {
-    const T* casted = static_cast<const T*>(ptr);
-    return casted;
+    const T* cast = static_cast<const T*>(ptr);
+    return cast;
 }
 
 extern std::atomic<uint32_t> g_UniqueID;

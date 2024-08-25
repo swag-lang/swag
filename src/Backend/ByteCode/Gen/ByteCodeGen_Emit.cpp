@@ -17,7 +17,7 @@ bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
         freeRegisterRC(context, child);
     else
     {
-        SWAG_CHECK(emitCast(context, child, TypeManager::concreteType(child->typeInfo), child->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, child, TypeManager::concreteType(child->typeInfo), child->typeInfoCast));
         node->resultRegisterRc = child->resultRegisterRc;
     }
 

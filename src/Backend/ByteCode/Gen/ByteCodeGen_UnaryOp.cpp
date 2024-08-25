@@ -88,13 +88,13 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            const auto typeInfoExpr = front->castedTypeInfo ? front->castedTypeInfo : front->typeInfo;
+            const auto typeInfoExpr = front->typeInfoCast ? front->typeInfoCast : front->typeInfo;
 
             switch (node->token.id)
             {
                 case TokenId::SymExclam:
                 {
-                    SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
+                    SWAG_CHECK(emitCast(context, node, front->typeInfo, front->typeInfoCast));
                     SWAG_ASSERT(context->result == ContextResult::Done);
                     const auto rt = reserveRegisterRC(context);
                     EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRc);
@@ -120,7 +120,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node, node->typeInfo, node->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }

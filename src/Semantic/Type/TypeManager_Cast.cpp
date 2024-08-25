@@ -29,7 +29,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
         if (!castFlags.has(CAST_FLAG_JUST_CHECK))
         {
             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfoCast = fromType;
             return true;
         }
     }
@@ -52,7 +52,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -72,7 +72,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -93,7 +93,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -113,7 +113,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -132,7 +132,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -151,7 +151,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -170,7 +170,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                         else
                         {
                             fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
-                            fromNode->castedTypeInfo = fromType;
+                            fromNode->typeInfoCast = fromType;
                         }
                     }
                 }
@@ -2187,8 +2187,8 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK) && !fromNode->hasFlagComputedValue())
         {
             fromNode->typeInfo = toType;
-            if (!fromNode->castedTypeInfo)
-                fromNode->castedTypeInfo = fromType;
+            if (!fromNode->typeInfoCast)
+                fromNode->typeInfoCast = fromType;
         }
     }
 
@@ -2217,7 +2217,7 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromType;
+                    fromNode->typeInfoCast = fromType;
                     fromNode->typeInfo       = toType;
                 }
 
@@ -2396,7 +2396,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
             if (fromNode->hasFlagComputedValue())
                 fromNode->computedValue()->text.release();
             fromNode->typeInfo       = toType;
-            fromNode->castedTypeInfo = g_TypeMgr->typeInfoNull;
+            fromNode->typeInfoCast = g_TypeMgr->typeInfoNull;
         }
 
         return true;
@@ -2413,7 +2413,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo       = g_TypeMgr->typeInfoString;
                 }
 
@@ -2430,7 +2430,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo       = g_TypeMgr->typeInfoString;
                 }
 
@@ -2451,7 +2451,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
                 fromNode->typeInfo       = toType;
-                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfoCast = fromType;
             }
 
             return true;
@@ -2472,7 +2472,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                     Semantic::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
                 }
 
-                toNode->castedTypeInfo = toType;
+                toNode->typeInfoCast = toType;
                 toNode->typeInfo       = fromType;
                 SWAG_CHECK(toNode->addAnyType(context, fromType));
             }
@@ -2493,9 +2493,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfoCast = fromType;
             fromNode->typeInfo       = toType;
-            SWAG_CHECK(fromNode->addAnyType(context, fromNode->castedTypeInfo));
+            SWAG_CHECK(fromNode->addAnyType(context, fromNode->typeInfoCast));
         }
     }
     else if (fromType->isAny())
@@ -2545,7 +2545,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
                     fromNode->typeInfo       = newTypeInfo;
-                    fromNode->castedTypeInfo = nullptr;
+                    fromNode->typeInfoCast = nullptr;
                     SWAG_CHECK(Semantic::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue()->storageSegment, static_cast<uint8_t*>(any->value)));
                 }
 
@@ -2566,7 +2566,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfoCast = fromType;
             fromNode->typeInfo       = toType;
             SWAG_CHECK(fromNode->addAnyType(context, toType));
         }
@@ -2606,7 +2606,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         fromNode->allocateExtension(ExtensionKind::Misc);
                         fromNode->extMisc()->castOffset = it.offset;
-                        fromNode->castedTypeInfo        = fromNode->typeInfo;
+                        fromNode->typeInfoCast        = fromNode->typeInfo;
                         fromNode->typeInfo              = toType;
                     }
 
@@ -2620,7 +2620,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = it.offset;
-                fromNode->castedTypeInfo        = fromNode->typeInfo;
+                fromNode->typeInfoCast        = fromNode->typeInfo;
                 fromNode->typeInfo              = toType;
                 continue;
             }
@@ -2780,7 +2780,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
-            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfoCast = fromNode->typeInfo;
             fromNode->typeInfo       = toType;
         }
 
@@ -2822,7 +2822,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = itfRef.fieldOffset;
                 fromNode->addExtraPointer(ExtraPointerKind::CastItf, itfRef.itf);
-                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfoCast = fromType;
                 fromNode->typeInfo       = toTypeItf;
             }
 
@@ -2882,7 +2882,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfoCast = fromType;
             fromNode->typeInfo       = toTypeItf;
         }
 
@@ -2955,7 +2955,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfoCast = fromType;
                 fromNode->typeInfo       = toType;
             }
 
@@ -3059,7 +3059,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toType;
             }
 
@@ -3077,7 +3077,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toType;
             }
 
@@ -3096,7 +3096,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK) && !toTypePointer->isSelf())
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo       = toType;
                 }
 
@@ -3117,7 +3117,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfoCast = fromType;
                 fromNode->typeInfo       = toType;
             }
 
@@ -3141,7 +3141,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo       = toType;
                 }
 
@@ -3157,7 +3157,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toType;
             }
 
@@ -3225,7 +3225,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeLambda;
             }
 
@@ -3245,7 +3245,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeLambda;
             }
 
@@ -3282,7 +3282,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
+                    fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo       = toTypeSlice;
                 }
 
@@ -3298,7 +3298,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeSlice;
 
                 // Need to make a slice literal from the string
@@ -3324,7 +3324,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfoCast = fromNode->typeInfo;
             fromNode->typeInfo       = toTypeSlice;
         }
 
@@ -3336,7 +3336,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         {
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfoCast = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeSlice;
             }
 

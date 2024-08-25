@@ -757,19 +757,19 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
     // Revert the implicit cast information
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
-    // (we cannot use castedTypeInfo from node, because an explicit cast result could be cast itself with an implicit cast)
-    if (exprNode->castedTypeInfo)
+    // (we cannot use typeInfoCast from node, because an explicit cast result could be cast itself with an implicit cast)
+    if (exprNode->typeInfoCast)
     {
         if (!node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
         {
-            exprNode->typeInfo       = exprNode->castedTypeInfo;
-            exprNode->castedTypeInfo = nullptr;
+            exprNode->typeInfo       = exprNode->typeInfoCast;
+            exprNode->typeInfoCast = nullptr;
         }
 
         // In case of a computed value, we need to remember the type we come from to make
         // last minutes cast in emitLiteral
         else
-            node->castedTypeInfo = exprNode->castedTypeInfo;
+            node->typeInfoCast = exprNode->typeInfoCast;
     }
 
     return true;

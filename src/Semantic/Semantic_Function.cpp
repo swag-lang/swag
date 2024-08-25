@@ -1237,7 +1237,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
     if (node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
-        node->castedTypeInfo = child->castedTypeInfo;
+        node->typeInfoCast = child->typeInfoCast;
 
     if (checkForConcrete && !node->hasAstFlag(AST_OP_AFFECT_CAST))
     {
@@ -1620,9 +1620,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
     {
         if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)
         {
-            SWAG_ASSERT(child->castedTypeInfo);
+            SWAG_ASSERT(child->typeInfoCast);
             child->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
-            child->castedTypeInfo = nullptr;
+            child->typeInfoCast = nullptr;
 
             const auto varNode = Ast::newVarDecl(form("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node);
             varNode->addAstFlag(AST_GENERATED);

@@ -539,36 +539,36 @@ template<typename T>
 T* castTypeInfo(TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
-    T* casted = static_cast<T*>(ptr->getConstAlias());
-    SWAG_ASSERT(casted->kind == kind);
-    return casted;
+    T* cast = static_cast<T*>(ptr->getConstAlias());
+    SWAG_ASSERT(cast->kind == kind);
+    return cast;
 }
 
 template<typename T>
 T* castTypeInfo(TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind1, [[maybe_unused]] TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
-    T* casted = static_cast<T*>(ptr->getConstAlias());
-    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
-    return casted;
+    T* cast = static_cast<T*>(ptr->getConstAlias());
+    SWAG_ASSERT(cast->kind == kind1 || cast->kind == kind2);
+    return cast;
 }
 
 template<typename T>
 const T* castTypeInfo(const TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
-    const T* casted = static_cast<const T*>(ptr->getConstAlias());
-    SWAG_ASSERT(casted->kind == kind);
-    return casted;
+    const T* cast = static_cast<const T*>(ptr->getConstAlias());
+    SWAG_ASSERT(cast->kind == kind);
+    return cast;
 }
 
 template<typename T>
 const T* castTypeInfo(const TypeInfo* ptr, [[maybe_unused]] TypeInfoKind kind1, [[maybe_unused]] TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
-    const T* casted = static_cast<const T*>(ptr->getConstAlias());
-    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
-    return casted;
+    const T* cast = static_cast<const T*>(ptr->getConstAlias());
+    SWAG_ASSERT(cast->kind == kind1 || cast->kind == kind2);
+    return cast;
 }
 
 template<typename T>

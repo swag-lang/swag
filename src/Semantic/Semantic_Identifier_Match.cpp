@@ -208,11 +208,11 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             else if (oneMatch.solvedCastFlags[i].has(CAST_RESULT_FROM_REF))
             {
                 setUnRef(nodeCall);
-                if (nodeCall->castedTypeInfo)
+                if (nodeCall->typeInfoCast)
                 {
-                    const auto fromCast = TypeManager::concreteType(nodeCall->castedTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                    const auto fromCast = TypeManager::concreteType(nodeCall->typeInfoCast, CONCRETE_FUNC | CONCRETE_ALIAS);
                     if (fromCast->isPointerRef())
-                        nodeCall->castedTypeInfo = fromCast->getFinalType();
+                        nodeCall->typeInfoCast = fromCast->getFinalType();
                 }
             }
             else if (toType->isConstPointerRef() &&
@@ -358,9 +358,9 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         {
             if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)
             {
-                SWAG_ASSERT(nodeCall->castedTypeInfo);
+                SWAG_ASSERT(nodeCall->typeInfoCast);
                 nodeCall->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
-                nodeCall->castedTypeInfo = nullptr;
+                nodeCall->typeInfoCast = nullptr;
 
                 const auto varNode = Ast::newVarDecl(form(R"(__10tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->inheritTokenLocation(nodeCall->token);

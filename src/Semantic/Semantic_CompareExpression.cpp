@@ -33,7 +33,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         {
             // Can only be compared to null
             // :ComparedToNull
-            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
+            SWAG_ASSERT(right->typeInfoCast && right->typeInfoCast->isPointerNull());
             const auto slice             = static_cast<SwagSlice*>(left->computedValue()->getStorageAddr());
             node->computedValue()->reg.b = !slice->buffer;
             return true;
@@ -43,7 +43,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         {
             // Can only be compared to null
             // :ComparedToNull
-            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
+            SWAG_ASSERT(right->typeInfoCast && right->typeInfoCast->isPointerNull());
             const auto slice             = static_cast<SwagInterface*>(left->computedValue()->getStorageAddr());
             node->computedValue()->reg.b = !slice->itable;
             return true;
@@ -61,10 +61,10 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
                 anyType = static_cast<SwagAny*>(left->computedValue()->getStorageAddr())->type;
 
             // Can only be compared to null
-            if (right->castedTypeInfo)
+            if (right->typeInfoCast)
             {
                 // :ComparedToNull
-                SWAG_ASSERT(right->castedTypeInfo->isPointerNull());
+                SWAG_ASSERT(right->typeInfoCast->isPointerNull());
                 node->computedValue()->reg.b = !anyType;
             }
             else

@@ -21,7 +21,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 
     if (!child0->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, child0, typeInfo, child0->typeInfoCast));
         YIELD();
         child0->addSemFlag(SEMFLAG_CAST1);
     }
@@ -78,7 +78,7 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
     const auto binNode = castAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
 
     // We need to cast right now, in case the shortcut is activated
-    SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->typeInfoCast));
     YIELD();
     binNode->addSemFlag(SEMFLAG_CAST1);
 
@@ -259,7 +259,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             inst->addFlag(BCI_IMM_B);
 
             const auto saveR = context->node->resultRegisterRc;
-            SWAG_CHECK(emitCast(context, child, child->typeInfo, child->castedTypeInfo));
+            SWAG_CHECK(emitCast(context, child, child->typeInfo, child->typeInfoCast));
             context->node->resultRegisterRc = saveR;
 
             emitAffectEqual(context, r0, child->resultRegisterRc, child->typeInfo, child);
@@ -322,7 +322,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const TypeInfo* toType, RegisterList& regList)
 {
-    auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+    auto typeInfo = node->typeInfoCast ? node->typeInfoCast : node->typeInfo;
     typeInfo      = TypeManager::concreteType(typeInfo);
 
     AstIdentifierRef* identifierRef = nullptr;
@@ -352,9 +352,9 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     if (typeInfo->isAny())
     {
         // If we need a cast to an any, then first resolve literal with its real type
-        if (node->castedTypeInfo)
+        if (node->typeInfoCast)
         {
-            typeInfo = node->castedTypeInfo;
+            typeInfo = node->typeInfoCast;
         }
 
         // Otherwise we dereference the any in 2 registers
@@ -368,7 +368,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     }
 
     // We have null
-    if (node->castedTypeInfo && node->castedTypeInfo->isPointerNull())
+    if (node->typeInfoCast && node->typeInfoCast->isPointerNull())
     {
         // We want a string or a slice
         if (node->typeInfo->nativeType == NativeTypeKind::String ||
@@ -472,14 +472,14 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     {
         emitMakeSegPointer(context, node->computedValue()->storageSegment, node->computedValue()->storageOffset, regList[0]);
     }
-    else if (typeInfo->isPointer() && node->castedTypeInfo && node->castedTypeInfo->isString())
+    else if (typeInfo->isPointer() && node->typeInfoCast && node->typeInfoCast->isString())
     {
         const auto storageSegment = Semantic::getConstantSegFromContext(node);
         const auto storageOffset  = storageSegment->addString(node->computedValue()->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
     }
-    else if (typeInfo->isSlice() && node->castedTypeInfo && node->castedTypeInfo->isString())
+    else if (typeInfo->isSlice() && node->typeInfoCast && node->typeInfoCast->isString())
     {
         reserveLinearRegisterRC2(context, regList);
         const auto storageSegment = Semantic::getConstantSegFromContext(node);
@@ -513,11 +513,11 @@ bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     SWAG_CHECK(emitLiteral(context));
-    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->typeInfoCast));
     SWAG_ASSERT(context->result == ContextResult::Done);
 
     // To be sure that cast is treated once
-    node->castedTypeInfo = nullptr;
+    node->typeInfoCast = nullptr;
 
     return true;
 }

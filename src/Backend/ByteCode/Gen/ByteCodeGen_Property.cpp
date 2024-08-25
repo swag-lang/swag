@@ -37,7 +37,7 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
     const auto ptrNode   = node->firstChild();
     const auto countNode = node->lastChild();
 
-    SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->typeInfoCast));
     reserveRegisterRC(context, node->resultRegisterRc, 2);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], ptrNode->resultRegisterRc);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], countNode->resultRegisterRc);

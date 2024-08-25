@@ -803,7 +803,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
-        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->secondChild(), TypeManager::concreteType(node->secondChild()->typeInfo), node->secondChild()->typeInfoCast));
         YIELD();
         node->addSemFlag(SEMFLAG_CAST1);
     }
