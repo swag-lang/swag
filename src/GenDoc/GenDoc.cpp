@@ -717,7 +717,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
-        // [[reference]] to create an html link to the current document
+        // [[reference]] to create a html link to the current document
         if (*pz == '[' && pz[1] == '[' && !inCodeMode)
         {
             Utf8 name, link;
@@ -738,7 +738,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
-        // [reference] to create an html link to the current document
+        // [reference] to create a html link to the current document
         if (*pz == '[' && pz[1] != '[' && !inCodeMode)
         {
             Utf8 name, link;
@@ -1054,9 +1054,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                         break;
                     }
 
-                    while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
+                    while (!alignStr.empty() && (alignStr[0] == '-' || alignStr[0] == ':'))
                         alignStr.remove(0, 1);
-                    if (alignStr.length())
+                    if (!alignStr.empty())
                     {
                         hasHeader = false;
                         break;
