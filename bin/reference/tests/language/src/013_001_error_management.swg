@@ -239,8 +239,8 @@ The `defer` statement schedules a block of code to be executed when the function
 
 `defer` can be customized with specific modes (`#err` or `#noerr`) to control its execution based on the function's exit state:
 
-| `defer #err`   | Executes only when an error is raised via `throw`.
-| `defer #noerr` | Executes only when the function returns normally without errors.
+| `defer<err>`   | Executes only when an error is raised via `throw`.
+| `defer<noerr>` | Executes only when the function returns normally without errors.
 | `defer`        | Executes regardless of how the function exits (either by returning normally or by throwing an error).
 */
 var g_Defer = 0  // A global variable to track the execution of defer statements
@@ -255,10 +255,10 @@ func raiseError() throw
 func testDefer(err: bool) throw
 {
     // Schedules this block to execute only if an error is raised.
-    defer #err g_Defer += 1  // Increment if an error occurs
+    defer<err> g_Defer += 1  // Increment if an error occurs
 
     // Schedules this block to execute only if the function exits without an error.
-    defer #noerr g_Defer += 2  // Increment if no error occurs
+    defer<noerr> g_Defer += 2  // Increment if no error occurs
 
     // Schedules this block to execute regardless of whether an error occurs.
     defer g_Defer += 3  // Increment regardless of error state
@@ -272,10 +272,10 @@ func testDefer(err: bool) throw
     // Test case where an error is raised
     g_Defer = 0
     catch testDefer(true)  // Execute the function with error condition
-    @assert(g_Defer == 4)  // Expect g_Defer to be 4 (1 + 3) since only 'defer(err)' and the general 'defer' executed
+    @assert(g_Defer == 4)  // Expect g_Defer to be 4 (1 + 3) since only 'defer<err>' and the general 'defer' executed
 
     // Test case where no error is raised
     g_Defer = 0
     catch testDefer(false)  // Execute the function without error condition
-    @assert(g_Defer == 5)  // Expect g_Defer to be 5 (2 + 3) since only 'defer(noerr)' and the general 'defer' executed
+    @assert(g_Defer == 5)   // Expect g_Defer to be 5 (2 + 3) since only 'defer<noerr>' and the general 'defer' executed
 }

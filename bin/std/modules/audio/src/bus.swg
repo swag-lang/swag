@@ -15,7 +15,7 @@ public impl Bus
     func create(numChannels: u32, parent: *Bus = null)->*Bus throw
     {
         let bus = Memory.new'Bus()
-        defer #err Memory.delete(bus)
+        defer<err> Memory.delete(bus)
         createNative(bus, numChannels, parent)
 
         Sync.scopedLock(&g_Driver.mutexBuses)

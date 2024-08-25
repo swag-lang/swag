@@ -62,8 +62,6 @@ constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
 constexpr ModifierFlags MODIFIER_REF           = 0x00000100;
 constexpr ModifierFlags MODIFIER_CONST_REF     = 0x00000200;
 constexpr ModifierFlags MODIFIER_CALL          = 0x00000400;
-constexpr ModifierFlags MODIFIER_ERR           = 0x00000800;
-constexpr ModifierFlags MODIFIER_NO_ERR        = 0x00001000;
 
 constexpr IdentifierFlags IDENTIFIER_NO_CALL_PARAMS  = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
