@@ -1,7 +1,7 @@
 #global testerror "Err0434"
 #test
 {
-    loop i 5
+    for i 5
     {
 
     }

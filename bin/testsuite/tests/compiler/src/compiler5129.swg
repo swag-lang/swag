@@ -2,7 +2,7 @@
 
 #test
 {
-    loop 5'u64 to 0'u64
+    for 5'u64 to 0'u64
     {
     }
 }

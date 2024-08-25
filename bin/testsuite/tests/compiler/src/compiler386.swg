@@ -5,7 +5,7 @@
 #test
 {
 	var cpt = 0;
-	loop("toto")
+	for("toto")
 	{
 		cpt += 1;
 	}

@@ -176,7 +176,7 @@ func day5A()
     {
         var seed = s
 
-        loop i in 7
+        for i in 7
         {
             visit r in convert[i]
             {

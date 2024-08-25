@@ -4,10 +4,10 @@
 {
 	var error = false
     #scope Outer
-    loop x in 10
+    for x in 10
     {
         #scope Outer
-        loop 20
+        for 20
         {
             break in Outer
         }

@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    loop 0:
+    for 0:
         @print("toto")
 }

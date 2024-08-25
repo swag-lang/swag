@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	loop(1)
+	for(1)
 	{
 		var a = 0
 		defer @assert(a == 1)

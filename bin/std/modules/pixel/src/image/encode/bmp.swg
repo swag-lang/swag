@@ -32,9 +32,9 @@ public impl IImageEncoder for Encoder
 
         if image.pf == .RGBA8
         {
-            loop y in header.biHeight
+            for y in header.biHeight
             {
-                loop x in header.biWidth
+                for x in header.biWidth
                 {
                     result.addNative(psrc[2])
                     result.addNative(psrc[1])
@@ -46,9 +46,9 @@ public impl IImageEncoder for Encoder
         }
         elif image.pf == .RGB8
         {
-            loop y in header.biHeight
+            for y in header.biHeight
             {
-                loop x in header.biWidth
+                for x in header.biWidth
                 {
                     result.addNative(psrc[2])
                     result.addNative(psrc[1])
@@ -58,7 +58,7 @@ public impl IImageEncoder for Encoder
 
                 if align
                 {
-                    loop 4 - align:
+                    for 4 - align:
                         result.addNative(0'u8)
                 }
             }
@@ -69,12 +69,12 @@ public impl IImageEncoder for Encoder
         }
         else
         {
-            loop y in header.biHeight
+            for y in header.biHeight
             {
                 result.addBytes(@mkslice(psrc, header.biWidth * 3))
                 psrc += header.biWidth * 3
 
-                loop 4 - align:
+                for 4 - align:
                     result.addNative(0'u8)
             }
         }

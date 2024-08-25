@@ -58,9 +58,9 @@ public impl Adler32
 
             while i + NMax <= countof
             {
-                loop rounds in n
+                for rounds in n
                 {
-                    loop j in 16
+                    for j in 16
                     {
                         s1 += input[i + j]
                         s2 += s1
@@ -77,7 +77,7 @@ public impl Adler32
             {
                 while i + 16 <= countof
                 {
-                    loop j in 16
+                    for j in 16
                     {
                         s1 += input[i + j]
                         s2 += s1

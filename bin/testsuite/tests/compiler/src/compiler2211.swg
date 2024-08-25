@@ -16,7 +16,7 @@ impl A
 //#[Swag.PrintBc]
 #test
 {
-    loop 4
+    for 4
     {
         if #index == 0:
             continue // should not drop x !

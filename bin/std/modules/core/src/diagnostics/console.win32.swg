@@ -109,7 +109,7 @@ public func prompt()->String
     var dwRead: DWORD
 
     let h = GetStdHandle(STD_INPUT_HANDLE)
-    loop
+    for
     {
         if !ReadFile(h, &buffer[0], BufSize, &dwRead, null):
             break

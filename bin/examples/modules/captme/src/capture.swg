@@ -312,7 +312,7 @@ impl Capture
 
         // Select added forms
         selection.clear()
-        loop i in undo.oldForms:
+        for i in undo.oldForms:
             selection.add(countBefore + i)
 
         selectionHasChanged()
@@ -1171,7 +1171,7 @@ impl Capture
     {
         if !forms.count:
             return Swag.U64.Max
-        loop #back i in forms
+        for #back i in forms
         {
             let f = forms[i]
             let b = cast(*BaseForm) @dataof(f)

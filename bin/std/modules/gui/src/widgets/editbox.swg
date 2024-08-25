@@ -694,7 +694,7 @@ internal impl EditBox
             let sizeX      = Painter.measureString(text, fontR).width
             var lastWidth  = 0'f32
             var diff       = 0'f32
-            loop idx in 1 until text.length
+            for idx in 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
                 let met = Painter.measureString(str, fontR).width
@@ -717,7 +717,7 @@ internal impl EditBox
             x -= getTextMarginLeft()
             var lastWidth = 0'f32
             var diff      = 0'f32
-            loop idx in 1 until text.length
+            for idx in 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
                 let met = Painter.measureString(str, fontR).width
@@ -769,7 +769,7 @@ internal impl EditBox
             return sel
 
         let test = !Latin1.isSpace(text.buffer[s])
-        loop
+        for
         {
             let ns = moveCaretLeft(s)
             if ns == s:

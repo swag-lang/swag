@@ -82,14 +82,14 @@ func day10B()
                 arr.add({{cast(f32) x, cast(f32) y}})
     tot.resize(arr.count)
 
-    loop i in arr
+    for i in arr
     {
         let v0 = arr[i].pos
-        loop j in i + 1 until arr.count
+        for j in i + 1 until arr.count
         {
             let v1  = arr[j].pos
             var hit = false
-            loop k in arr
+            for k in arr
             {
                 if k == i or k == j:
                     continue
@@ -130,7 +130,7 @@ func day10B()
     })
 
     var total, index = 0'u64
-    loop
+    for
     {
         total += 1
 

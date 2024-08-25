@@ -15,7 +15,7 @@ impl ArrayPtr
 
     mtd opPostCopy()
     {
-        loop i in count
+        for i in count
         {
             let newPtr = Memory.new'T(allocator)
             dref newPtr = dref buffer[i]

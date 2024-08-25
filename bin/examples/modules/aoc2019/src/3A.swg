@@ -82,7 +82,7 @@ func day3A0()
             }
 
             let val = assume StrConv.toS32(v[1..])
-            loop val
+            for val
             {
                 x = x + dx
                 y = y + dy
@@ -139,9 +139,9 @@ func day3A1()
     let t1 = trace(lines[1])
 
     var best = Swag.S32.Max
-    loop i in t1.count - 1
+    for i in t1.count - 1
     {
-        loop j in t0.count - 1
+        for j in t0.count - 1
         {
             let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()

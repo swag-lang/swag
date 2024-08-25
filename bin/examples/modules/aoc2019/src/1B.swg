@@ -22,7 +22,7 @@ func day1B()
     visit l in lines
     {
         var fuel = assume StrConv.toS32(l)
-        loop
+        for
         {
             fuel = (fuel / 3) - 2
             if fuel <= 0:

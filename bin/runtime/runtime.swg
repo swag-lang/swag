@@ -48,7 +48,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     {
         let type1S = cast(const *TypeInfoStruct) type1
         let type2S = cast(const *TypeInfoStruct) type2
-        loop i in type1S.fields
+        for i in type1S.fields
         {
             let field1 = type1S.fields[i]
             let field2 = type2S.fields[i]
@@ -69,7 +69,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 #[Safety("", false)]
 func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
 {
-    loop i in structType.interfaces
+    for i in structType.interfaces
     {
         if @stringcmp(structType.interfaces[i].name, itfType.fullname):
             return structType.interfaces[i].value
@@ -179,7 +179,7 @@ func __dropGlobalVariables()
     visit g in @gvtd()
     {
         var ptr = cast(^u8) g.ptr
-        loop x in g.count
+        for x in g.count
         {
             g.opDrop(ptr)
             ptr += g.sizeOf

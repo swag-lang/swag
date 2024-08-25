@@ -211,13 +211,13 @@ impl MainWnd
             }
 
             // Compute colors at the start and at the end of the column, to interpolate
-            loop x in undo.newImg.width
+            for x in undo.newImg.width
             {
                 var col1, col2: Color
                 var pt = Math.Point{cast(f32) x, 0}
                 var y1 = cast(s32) (br.bottom() - capture.backImagePos.y)
                 y1 = undo.newImg.height - y1
-                loop i in undo.newImg.height
+                for i in undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y1) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
@@ -232,7 +232,7 @@ impl MainWnd
 
                 var y2 = cast(s32) (br.y - capture.backImagePos.y)
                 y2 = undo.newImg.height - y2
-                loop i in undo.newImg.height
+                for i in undo.newImg.height
                 {
                     pt.y = cast(f32) (capture.backImg.height - y2) + capture.backImagePos.y
                     if br.contains(pt) and f.isInside(pt)
@@ -352,7 +352,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        loop i in startCount until capture.forms.count:
+        for i in startCount until capture.forms.count:
             capture.selection.add(i)
     }
 }

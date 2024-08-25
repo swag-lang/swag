@@ -7,7 +7,7 @@ using Core
     var ptr   = @dataof(str)
     var count = @countof(str)
     var cpt   = 0
-    loop
+    for
     {
         let sl = @mkslice(ptr, cast(u64) count)
         let (c, eat) = Core.Utf8.decodeRune(sl)

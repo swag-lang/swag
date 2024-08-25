@@ -143,7 +143,7 @@ impl FontFamily
 
         if logFont.face.lfWidth == 0
         {
-            loop i in @countof(FontFamilyStyle)
+            for i in @countof(FontFamilyStyle)
             {
                 logFont = enumerate.faces[i]
                 if logFont.face.lfWidth != 0:

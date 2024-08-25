@@ -86,7 +86,7 @@ impl RichEditCtrl
         Debug.assert(undoCounter != 0)
         undoCounter -= 1
 
-        loop i in toUndo.count
+        for i in toUndo.count
         {
             let undo = toUndo[i]
             undo.serial             = serialUndo
@@ -119,7 +119,7 @@ impl RichEditCtrl
         var undo   = undoMgr[currentUndo]
         let serial = undo.serial
 
-        loop
+        for
         {
             if undo.type == .Delete
             {
@@ -173,7 +173,7 @@ impl RichEditCtrl
         let serial = undo.serial
         currentUndo += 1
 
-        loop
+        for
         {
             if undo.type == .Delete
             {

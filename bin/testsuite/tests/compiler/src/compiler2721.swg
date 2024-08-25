@@ -2,7 +2,7 @@
 func toto()->{a,b: s64}
 {
     var result: retval
-    loop 5
+    for 5
     {
         result.item0 = #index
         result.item1 = #index + 1

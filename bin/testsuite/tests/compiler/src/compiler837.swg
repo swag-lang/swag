@@ -3,7 +3,7 @@
 
 #test
 {
-	loop 10
+	for 10
 	{
 		break
 		var a = 0

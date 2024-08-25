@@ -43,7 +43,7 @@ func day4A()
             visit c in l[idx + 1..idx + 5]
             {
                 var max, maxi = 0'u64
-                loop i in count where count[i] > max
+                for i in count where count[i] > max
                 {
                     max  = count[i]
                     maxi = i

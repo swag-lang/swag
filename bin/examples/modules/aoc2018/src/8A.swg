@@ -49,9 +49,9 @@ func day8A() assume
         let nm    = n[start + 1]
         start += 2
 
-        loop nc:
+        for nc:
             start = read(n, start)
-        loop i in nm:
+        for i in nm:
             total += n[start + i]
         return start + nm
     }

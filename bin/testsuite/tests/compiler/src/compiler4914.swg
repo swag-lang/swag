@@ -3,7 +3,7 @@
 #[Swag.Mixin]
 func toto(stmt: code)
 {
-    loop 5
+    for 5
     {
         #mixin stmt
         {

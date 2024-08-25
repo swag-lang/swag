@@ -151,7 +151,7 @@ private
 // Precalculate YCbCr tables
 #run
 {
-    loop r in 256
+    for r in 256
     {
         TabYR[r]  = cast(s32) (65536 * 0.299 + 0.5) * r
         TabCbR[r] = cast(s32) (65536 * -0.16874 + 0.5) * r
@@ -230,7 +230,7 @@ impl Encoder
         let pdst = bufferRGB.buffer
         var pref = image.pixels.buffer
 
-        loop nrline in imageY
+        for nrline in imageY
         {
             switch image.bpp
             {
@@ -239,7 +239,7 @@ impl Encoder
                 pref += imageX * 3'u64
 
             case 32:
-                loop column in imageX
+                for column in imageX
                 {
                     pdst[column + nrline * xDiv8].b = pref[0]
                     pdst[column + nrline * xDiv8].g = pref[1]
@@ -280,7 +280,7 @@ impl Encoder
 
     mtd setQuantTable(basicTable: const ^u8, newTable: ^u8)
     {
-        loop i in 64
+        for i in 64
         {
             var temp = (cast(s32) basicTable[i] * scaleFactor + 50) / 100
             temp                = Math.clamp(temp, 1, 255)
@@ -307,21 +307,21 @@ impl Encoder
         dhtInfo.infoHTCbDC = 1
         dhtInfo.infoHTCbAC = 0x11
 
-        loop i in 16:
+        for i in 16:
             dhtInfo.nrcodesYDC[i] = StdDcLuminanceNrCodes[i + 1]
-        loop i in 12:
+        for i in 12:
             dhtInfo.valuesYDC[i] = StdDcLuminanceValues[i]
-        loop i in 16:
+        for i in 16:
             dhtInfo.nrcodesYAC[i] = StdAcLuminanceNrCodes[i + 1]
-        loop i in 162:
+        for i in 162:
             dhtInfo.valuesYAC[i] = StdAcLuminanceValues[i]
-        loop i in 16:
+        for i in 16:
             dhtInfo.nrcodesCbDC[i] = StdDcChrominanceNrCodes[i + 1]
-        loop i in 12:
+        for i in 12:
             dhtInfo.valuesCbDC[i] = StdDcChrominanceValues[i]
-        loop i in 16:
+        for i in 16:
             dhtInfo.nrcodesCbAC[i] = StdAcChrominanceNrCodes[i + 1]
-        loop i in 162:
+        for i in 162:
             dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
@@ -329,7 +329,7 @@ impl Encoder
     {
         var codevalue  = 0'u16
         var posInTable = 0
-        loop k in 1 to 16
+        for k in 1 to 16
         {
             for var j = 1; j <= nrCodes[k]; j += 1
             {
@@ -360,16 +360,16 @@ impl Encoder
 
         var nrlower = 1
         var nrupper = 2
-        loop cat in 1 to 15
+        for cat in 1 to 15
         {
-            loop nr in nrlower until nrupper
+            for nr in nrlower until nrupper
             {
                 category[nr]       = cast(u8) cat
                 bitcode[nr].length = cast(u8) cat
                 bitcode[nr].value  = cast(u16) nr
             }
 
-            loop nr in -(nrupper - 1) to -nrlower
+            for nr in -(nrupper - 1) to -nrlower
             {
                 let nof = cast<bit>(u64) cast(s64) nr
                 category[nof]       = cast(u8) cat
@@ -386,9 +386,9 @@ impl Encoder
     {
         const AanSf: [8] f64 = [1.0, 1.387039845, 1.306562965, 1.175875602, 1.0, 0.785694958, 0.541196100, 0.275899379]
         var i        = 0
-        loop row in 8
+        for row in 8
         {
-            loop col in 8
+            for col in 8
             {
                 fdtblY[i]  = cast(f32) (1.0 / (cast(f64) dqtInfo.tableY[ZigZag[i]] * AanSf[row] * AanSf[col] * 8.0))
                 fdtblCb[i] = cast(f32) (1.0 / (cast(f64) dqtInfo.tableCb[ZigZag[i]] * AanSf[row] * AanSf[col] * 8.0))
@@ -538,9 +538,9 @@ impl Encoder
         var location = cast(s32) ypos * imageX + xpos
         let pdst     = bufferRGB.buffer
 
-        loop y in 8
+        for y in 8
         {
-            loop x in 8
+            for x in 8
             {
                 let r = pdst[location].r
                 let g = pdst[location].g
@@ -559,11 +559,11 @@ impl Encoder
     func quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
     {
         var dataFloat: [64] f32
-        loop i in 64:
+        for i in 64:
             dataFloat[i] = data[i]
 
         var dataptr = &dataFloat
-        loop #back ctr in 0 to 7
+        for #back ctr in 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[7]
             let tmp7 = dataptr[0] - dataptr[7]
@@ -608,7 +608,7 @@ impl Encoder
 
         dataptr = dataFloat
 
-        loop #back ctr in 0 to 7
+        for #back ctr in 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[56]
             let tmp7 = dataptr[0] - dataptr[56]
@@ -651,7 +651,7 @@ impl Encoder
             dataptr += 1
         }
 
-        loop i in 64
+        for i in 64
         {
             let temp = dataFloat[i] * fdtbl[i]
             outData[i] = cast(s16) (cast(s16) (temp + 16384.5) - 16384)
@@ -665,7 +665,7 @@ impl Encoder
 
         quantization(componentDU, fdtbl, duDct)
 
-        loop i in 64:
+        for i in 64:
             du[ZigZag[i]] = duDct[i]
         let diff = du[0] - dref dC
         dref dC = du[0]
@@ -698,7 +698,7 @@ impl Encoder
             var nrzeroes = i - startpos
             if nrzeroes >= 16
             {
-                loop nrmarker in 1 to nrzeroes / 16:
+                for nrmarker in 1 to nrzeroes / 16:
                     writeBits(m16Zeroes)
                 nrzeroes = nrzeroes % 16
             }

@@ -189,7 +189,7 @@ internal impl Application
         }
 
         // Detect changes
-        loop i in mouse.previousState.pressed
+        for i in mouse.previousState.pressed
         {
             let lastP = mouse.previousState.pressed[i]
             let curP  = mouse.currentState.pressed[i]
@@ -245,7 +245,7 @@ internal impl Application
         let modifiers = keyb.getPressedModifiers()
 
         // Detect changes
-        loop i in keyb.previousState.pressed
+        for i in keyb.previousState.pressed
         {
             let lastP = keyb.previousState.pressed[i]
             let curP  = keyb.currentState.pressed[i]
@@ -290,7 +290,7 @@ internal impl Application
 
     mtd sendPostedEvents()
     {
-        // Need to make a copy, in case the posted event triggers a modal loop
+        // Need to make a copy, in case the posted event triggers a modal for
         mutexPostedEvents.lock()
         var copy = postedEvents
         postedEvents.clear()
@@ -751,14 +751,14 @@ impl Application
         }
     }
 
-    // Register a window to receive a FrameEvent each running loop
+    // Register a window to receive a FrameEvent each running for
     mtd registerFrameEvent(target: *Wnd)
     {
         Debug.assert(!frameEvents.contains(target))
         frameEvents.add(target)
     }
 
-    // Unregister a window that receives a FrameEvent each running loop
+    // Unregister a window that receives a FrameEvent each running for
     mtd unregisterFrameEvent(target: *Wnd)
     {
         frameEvents.remove(target)
@@ -816,7 +816,7 @@ impl Application
         return quitCode
     }
 
-    // End current modal loop
+    // End current modal for
     mtd exitModal(exitId: string = "")
     {
         endModal     = true

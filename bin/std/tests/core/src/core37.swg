@@ -7,7 +7,7 @@ using Core.Input
     k.clear()
     @assert(!k.isButtonPressed(MouseButton.Middle))
 
-    //loop
+    //for
     while false
     {
         k.update()

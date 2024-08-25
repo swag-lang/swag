@@ -48,7 +48,7 @@ impl Properties
             self.editPopup = frame
 
             var pal: Array'Color
-            loop i in 9:
+            for i in 9:
                 pal.add(Color.getBlendKeepAlpha(Argb.White, Argb.Black, i / 8.0))
 
             var flags = ColorPickerFlags.All

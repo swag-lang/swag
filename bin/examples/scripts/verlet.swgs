@@ -68,7 +68,7 @@ func solveCollisions()
 func simulate(dt: f32)
 {
     const Steps = 8
-    loop Steps
+    for Steps
     {
         visit &v in g_Objs
         {

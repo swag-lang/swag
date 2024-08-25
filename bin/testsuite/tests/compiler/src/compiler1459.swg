@@ -8,9 +8,9 @@ impl S
     func(ptr: bool, back: bool) opVisitBytes(using self, stmt: code)
     {
         #scope up
-        loop 5
+        for 5
         {
-            loop 5
+            for 5
             {
                 #macro
                 {

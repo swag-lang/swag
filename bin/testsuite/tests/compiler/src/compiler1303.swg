@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto(x: code)
 {
-    loop 10
+    for 10
     {
         #macro
         {

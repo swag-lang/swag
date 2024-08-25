@@ -112,7 +112,7 @@ impl City32
         f = Math.ror(f, 19)
         f = f * 5 + 0xe6546b64
 
-        loop (len - 1) / 20
+        for (len - 1) / 20
         {
             a0 = Math.ror(fetch(s) * C1, 17) * C2
             a1 = fetch(s + 4)

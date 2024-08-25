@@ -8,7 +8,7 @@ func(T) isSorted(values: const [..] T)->bool
 {
     var countof = @countof(values)
 
-    loop i in countof - 1
+    for i in countof - 1
     {
         @print(cast(s64) cast(s32) values[i])
         variadic(cast(s32) values[i])

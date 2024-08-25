@@ -3,7 +3,7 @@
 func toto()->s32
 {
     let a = 0
-    loop
+    for
     {
         if a:
             return 1

@@ -100,10 +100,10 @@ func day7A()
 
     var phase = [0, 1, 2, 3, 4]
     var total = 0
-    loop
+    for
     {
         var input, cpt = 0
-        loop amp in 5
+        for amp in 5
         {
             input = run(op, [phase[cpt], input])
             cpt += 1

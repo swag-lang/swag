@@ -44,7 +44,7 @@ func day6B()
     {
         var cpt = 0
         let dx  = dists[idx]
-        loop i in t
+        for i in t
         {
             let travel = (t - i) * i
             if travel > dx:

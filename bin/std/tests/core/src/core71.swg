@@ -7,9 +7,9 @@ using Core
     {
         var str: String
         str += "var x = 0\n"
-        str += "loop 10\n"
+        str += "for 10\n"
         str += "x += 1\n"
-        str += "loop 10\n"
+        str += "for 10\n"
         str += "x += 1\n"
         return cast(string) str
     }

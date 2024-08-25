@@ -53,7 +53,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         if h == INVALID_HANDLE_VALUE:
             continue
 
-        loop
+        for
         {
             var filename = Utf8.fromUtf16(@mkslice(dataof, Utf16.lengthZeroTerminated(dataof)))
 
@@ -171,7 +171,7 @@ func getVolumes()->Array'String throw
     if h == INVALID_HANDLE_VALUE:
         return result
 
-    loop
+    for
     {
         var ret: DWORD
         catch GetVolumePathNamesForVolumeNameA(volName, driveName, MAX_PATH, &ret)

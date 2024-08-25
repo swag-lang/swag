@@ -10,7 +10,7 @@ enum DockStyle
 
 func toto(x: DockStyle)
 {
-    loop 2
+    for 2
     {
         switch x
         {

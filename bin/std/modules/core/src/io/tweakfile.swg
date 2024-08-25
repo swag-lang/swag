@@ -134,7 +134,7 @@ impl TweakFile
             var toDo = 0'u64
             var refr = refs[toDo]
 
-            loop
+            for
             {
                 var restart = false
                 for var j = 0; j < refs.count; j += 1

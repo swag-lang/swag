@@ -43,7 +43,7 @@ func day3A0()
     #[Swag.Mixin, Swag.CalleeReturn]
     func mix()
     {
-        loop l
+        for l
         {
             x += dx
             y += dy
@@ -57,7 +57,7 @@ func day3A0()
         }
     }
 
-    loop
+    for
     {
         l += 1
         dx = 1
@@ -86,7 +86,7 @@ func day3A1()
 
     const D = 312051
 
-    loop
+    for
     {
         const O = [{1, 1, 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
         visit v in O
@@ -94,7 +94,7 @@ func day3A1()
             l += v.item0
             dx = v.item1
             dy = v.item2
-            loop l
+            for l
             {
                 x += dx
                 y += dy

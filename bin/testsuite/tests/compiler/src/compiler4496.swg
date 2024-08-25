@@ -5,7 +5,7 @@ typealias Vec4 = [8] f32
 func toto(x: Vec4, t: Vec4)
 {
     let y: Vec4 = [1,2,3,4,1,2,3,4]
-    loop i in 8:
+    for i in 8:
         t[i] = x[i] * y[i];
 }
 

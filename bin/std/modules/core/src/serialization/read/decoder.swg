@@ -228,7 +228,7 @@ impl Decoder
                 return
 
             var bufArr = cast(^u8) data
-            loop count
+            for count
             {
                 readValue(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
@@ -331,7 +331,7 @@ impl IDecoder for Decoder
         if !treated
         {
             var ptr = data
-            loop Math.min(cpt, count)
+            for Math.min(cpt, count)
             {
                 serializer.beginValue()
                 dref ptr = serializer.readNative'u8()

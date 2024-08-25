@@ -290,7 +290,7 @@ impl Vector2
         var c     = false
         var verti = poly.buffer + i
         var vertj = poly.buffer + j
-        loop poly.count
+        for poly.count
         {
             if ((verti.y > pt.y) != (vertj.y > pt.y)) and
                (pt.x < (vertj.x - verti.x) * (pt.y - verti.y) / (vertj.y - verti.y) + verti.x)

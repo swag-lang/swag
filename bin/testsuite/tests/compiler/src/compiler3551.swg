@@ -7,7 +7,7 @@ func toto(x: s32)
 //#[Swag.Optim("", false)]
 #test
 {
-    loop i in 0
+    for i in 0
     {
         toto(i)
     }

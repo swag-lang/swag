@@ -279,7 +279,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
     // Now we can figure out the minimum number of digits required.
     // Walk along until d has distinguished itself from upper and lower.
     var ui = 0
-    loop
+    for
     {
         // lower, d, and upper may have the decimal points at different
         // places. In this case upper is the longest, so we iterate from

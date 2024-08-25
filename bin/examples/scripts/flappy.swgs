@@ -287,7 +287,7 @@ func paint(painter: *Painter)
     }
 
     // Draw pipes.
-    // 'visit' loop on all the pipes stored in the dynamic array, and returns each value
+    // 'visit' for on all the pipes stored in the dynamic array, and returns each value
     // as a pointer/reference.
     visit pipe in g_Pipes
     {

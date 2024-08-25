@@ -877,11 +877,11 @@ impl RenderOgl
         setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
-        loop i in 16:
+        for i in 16:
             glEnableVertexAttribArray(cast(GLuint) i)
         visit cmd, cmdIdx in dc.commandBuffer:
             executeCommand(dc, cmd, cmdIdx, width, height)
-        loop i in 16:
+        for i in 16:
             glDisableVertexAttribArray(cast(GLuint) i)
     }
 

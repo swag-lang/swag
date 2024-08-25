@@ -20,7 +20,7 @@ impl BB
     {
         func titi()
         {
-            loop 2
+            for 2
             {
                 #macro
                 {

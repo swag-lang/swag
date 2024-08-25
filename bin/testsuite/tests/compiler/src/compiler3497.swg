@@ -9,7 +9,7 @@ impl A
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         @assert(x == 666)
-        loop 4
+        for 4
         {
             #mixin stmt
         }

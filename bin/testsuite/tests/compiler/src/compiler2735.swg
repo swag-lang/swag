@@ -10,7 +10,7 @@ func titi() throw
 func toto() throw
 {
     defer G = 1
-    loop
+    for
     {
         try titi()
     }

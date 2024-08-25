@@ -2,7 +2,7 @@
 func toto(stmt: code)
 {
     #scope up
-    loop 10
+    for 10
     {
         #macro
         {
@@ -16,7 +16,7 @@ func toto(stmt: code)
     var cpt = 0
     toto()
     {
-        loop 4
+        for 4
         {
             cpt += 1
             break

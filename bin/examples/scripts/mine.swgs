@@ -42,13 +42,13 @@ func fillGrid()
     }
 
     // Count neighbours for each cell
-    loop i in GridSize
+    for i in GridSize
     {
-        loop j in GridSize
+        for j in GridSize
         {
-            loop ii in -1 to 1
+            for ii in -1 to 1
             {
-                loop jj in -1 to 1
+                for jj in -1 to 1
                 {
                     let ti = i + ii
                     let tj = j + jj
@@ -78,9 +78,9 @@ func floodFill(x, y: s32)
         if g_Grid[pt.x, pt.y].score:
             continue
 
-        loop ii in -1 to 1
+        for ii in -1 to 1
         {
-            loop jj in -1 to 1
+            for jj in -1 to 1
             {
                 let ti = pt.x + ii
                 let tj = pt.y + jj
@@ -165,7 +165,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.fillRect(bk, Argb.White)
 
         // Paint grid
-        loop i in GridSize
+        for i in GridSize
         {
             let x = CellSize + (i * CellSize)
             let w = CellSize * GridSize
@@ -175,9 +175,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         // Paint content
         painter.setParams(.Antialiased)
-        loop i in GridSize
+        for i in GridSize
         {
-            loop j in GridSize
+            for j in GridSize
             {
                 let x    = CellSize + (i * CellSize)
                 let y    = CellSize + (j * CellSize)

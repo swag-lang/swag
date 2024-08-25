@@ -292,7 +292,7 @@ impl IWnd for ListView
                 startSelIdx = endSelIdx
             }
 
-            loop i in startSelIdx to endSelIdx:
+            for i in startSelIdx to endSelIdx:
                 list.selectLine(i, true)
             list.focusIndex = endSelIdx
             list.ensureVisibleLine(list.focusIndex)
@@ -464,7 +464,7 @@ impl IWnd for ListView
                 let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 let idx0     = Math.min(startIdx, idx)
                 let idx1     = Math.max(startIdx, idx)
-                loop i in idx0 to idx1
+                for i in idx0 to idx1
                 {
                     let idxLine = list.isVirtual ? i : list.lines[i].index
                     list.selModel.select(idxLine, true)
@@ -517,7 +517,7 @@ impl IWnd for ListView
         if list.isVirtual
         {
             Debug.assert(list.sigVirtualFill != null)
-            loop i in firstIdx to lastIdx
+            for i in firstIdx to lastIdx
             {
                 var line: ListLine
                 list.sigVirtualFill(&line, i)
@@ -530,7 +530,7 @@ impl IWnd for ListView
         }
         else
         {
-            loop i in firstIdx to lastIdx
+            for i in firstIdx to lastIdx
             {
                 let line = list.lines[i]
                 paintLine(bc, i, line, rect)
@@ -544,7 +544,7 @@ impl IWnd for ListView
         if list.header and list.listFlags.has(.VertLines)
         {
             rect = getClientRectPadding()
-            loop idx in 1 until list.header.items.count
+            for idx in 1 until list.header.items.count
             {
                 var x = getXPos(list.header.items[idx].column)
                 x -= scrollPos.x
@@ -909,7 +909,7 @@ impl ListCtrl
         if selectionMode == .None or lineCount == 0:
             return
 
-        loop i in start to end
+        for i in start to end
         {
             let idxLine = isVirtual ? i : lines[i].index
             selModel.select(idxLine, select)

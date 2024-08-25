@@ -219,7 +219,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
 
         let sl       = cast(const [..] u8) valueData
         var bufSlice = @dataof(sl)
-        loop @countof(sl)
+        for @countof(sl)
         {
             if #index:
                 buf.addBytes(", ")
@@ -239,7 +239,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
         var bufArr = cast(const ^u8) valueData
 
         buf.addBytes("[")
-        loop ptrArr.count
+        for ptrArr.count
         {
             if #index:
                 buf.addBytes(", ")
@@ -419,7 +419,7 @@ func convertInt(buf: *ConcatBuffer, value: any, fmt: ConvertFormatInt)
         }
     }
 
-    loop bits
+    for bits
     {
         let c = Tbl[value64 % fmt.base]
         tmp[cpt] = c

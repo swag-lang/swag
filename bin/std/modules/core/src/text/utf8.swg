@@ -115,7 +115,7 @@ func decodeLastRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
     }
 
     var eat = 1'u32
-    loop
+    for
     {
         c = dref ptr
         if c >> 6 != 2:
@@ -605,7 +605,7 @@ func lastIndexOfAny(src: const [..] u8, what: const [..] rune)->u64
     let dataof = @dataof(src)
 
     var byteIdx = length
-    loop
+    for
     {
         let sl = @mkslice(dataof, byteIdx)
         let (c, eat) = decodeLastRune(sl)
@@ -631,7 +631,7 @@ func lastIndexOfAny(src: const [..] u8, what: const [..] u8)->u64
 
     var scan    = @dataof(src) + length
     var byteIdx = length
-    loop
+    for
     {
         scan, byteIdx -= 1
         if Slice.contains(what, dref scan):
@@ -655,7 +655,7 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
 
     var idx    = length - lengthStr
     var dataof = @dataof(src) + idx
-    loop
+    for
     {
         let res = compare(@mkslice(dataof, lengthStr), what, comparisonType)
         if res == 0:
@@ -750,7 +750,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var result: s32
         var c1, c2: rune
         var eat1, eat2: u32
-        loop
+        for
         {
             (c1, eat1) = decodeRune(@mkslice(data, length))
             (c2, eat2) = decodeRune(@mkslice(otherData, otherLength))

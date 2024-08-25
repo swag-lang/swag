@@ -16,6 +16,6 @@ func entry(th: Threading.Thread)
         catch t.init(&entry)
     visit &t in th:
         catch t.start()
-    loop i in N:
+    for i in N:
         Threading.wait(&th[i])
 }

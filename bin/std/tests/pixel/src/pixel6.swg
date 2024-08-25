@@ -33,6 +33,6 @@ func entry(th: Thread)
         validImgs += 1
     }
 
-    loop i in validImgs:
+    for i in validImgs:
         ths[i].wait()
 }

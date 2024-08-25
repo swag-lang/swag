@@ -196,7 +196,7 @@ impl PropWnd
 
         let curSel = cast(*FormShape) getSelectedBaseForm()
 
-        loop i in @countof(FormShapeKind)
+        for i in @countof(FormShapeKind)
         {
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
@@ -246,7 +246,7 @@ impl PropWnd
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
 
-        loop i in @countof(FormStepKind)
+        for i in @countof(FormStepKind)
         {
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i

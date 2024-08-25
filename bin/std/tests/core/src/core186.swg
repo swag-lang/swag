@@ -8,7 +8,7 @@ var mutex: Sync.Mutex
 func entry(th: Threading.Thread)
 {
     mutex.lock()
-    loop ITER:
+    for ITER:
         G += 1
     mutex.unlock()
 }

@@ -3,7 +3,7 @@
 {
 	var cpt = 0;
 
-	loop(10.0)
+	for(10.0)
 	{
 		cpt += 1;
 	}

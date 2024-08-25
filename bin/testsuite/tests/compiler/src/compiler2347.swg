@@ -2,7 +2,7 @@ var G = 0
 
 func toto()
 {
-    loop x in 10
+    for x in 10
     {
         if x == 1:
             return

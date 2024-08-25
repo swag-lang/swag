@@ -164,7 +164,7 @@ impl IWnd for SplitterCtrl
         let rects   = getThemeRects()
         let colors  = getThemeColors()
 
-        loop idx in items.count - 1
+        for idx in items.count - 1
         {
             if !items[idx].visible:
                 continue
@@ -324,7 +324,7 @@ internal impl SplitterCtrl
         var result: retval = getClientRectPadding()
 
         let barSize = getThemeMetrics().splitView_BarSize
-        loop i in 0 to idx
+        for i in 0 to idx
         {
             if isVertical()
             {
@@ -363,7 +363,7 @@ internal impl SplitterCtrl
         let scanLeft = idx == items.count - 1
         var i        = cast(s32) idx
 
-        loop
+        for
         {
             if scanLeft and i == 0:
                 break

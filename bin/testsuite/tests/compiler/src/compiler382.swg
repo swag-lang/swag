@@ -6,7 +6,7 @@
 {
 	var cpt = 0;
 	let b = 10'u32;
-	loop(b)
+	for(b)
 	{
 		cpt += 1;
 	}

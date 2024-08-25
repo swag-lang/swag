@@ -117,7 +117,7 @@ public impl Painter
             else
             {
                 var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
-                loop i in count
+                for i in count
                 {
                     let v0   = polygon.getPoint(i)
                     let v1   = polygon.getPoint((i + 1) % count)

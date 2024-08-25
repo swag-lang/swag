@@ -71,7 +71,7 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 	var c: rune
 	var ptr: const ^u8 = @dataof(str)
 	var cpt = 0
-	loop
+	for
 	{
 		(ptr, c) = getChar(ptr)
 		if !c:

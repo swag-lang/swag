@@ -121,7 +121,7 @@ impl Polygon
         var copy: Array'Vector2
         copy.reserve(points.count)
 
-        loop i in points.count:
+        for i in points.count:
             copy.add(getPoint(i, value))
 
         points = #move copy

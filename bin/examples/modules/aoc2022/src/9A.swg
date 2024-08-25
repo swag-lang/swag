@@ -269,7 +269,7 @@ func day9A()
             incy += 1
         }
 
-        loop cpt
+        for cpt
         {
             H.x += incx
             H.y += incy

@@ -71,14 +71,14 @@ func day5A()
         Core.orderMinMax(&y0, &y1)
 
         if x0 != x1:
-            loop x in x0 to x1
+            for x in x0 to x1
             {
                 let c = #ref (m.buffer + (x + y0 * W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }
         elif y0 != y1:
-            loop y in y0 to y1
+            for y in y0 to y1
             {
                 let c = #ref (m.buffer + (x0 + y * W))
                 total += (c == 1 ? 1 : 0)

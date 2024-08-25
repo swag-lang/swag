@@ -153,7 +153,7 @@ public impl Sha256
         let buf = @dataof(buffer)
         let len = cast(u32) @countof(buffer)
 
-        loop i in len
+        for i in len
         {
             data[datalen] = buf[i]
             datalen += 1

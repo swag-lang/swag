@@ -51,7 +51,7 @@ func day6B() assume
         let cx    = assume StrConv.toS32(Latin1.trim(split[0])) + W / 2
         let cy    = assume StrConv.toS32(Latin1.trim(split[1])) + W / 2
 
-        loop i in W * W
+        for i in W * W
         {
             let x = i % W
             let y = i / W

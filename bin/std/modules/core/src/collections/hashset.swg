@@ -52,7 +52,7 @@ impl HashSet
         let newTable = cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
         {
-            loop i in capacity
+            for i in capacity
             {
                 newTable[i].hash = table[i].hash
                 newTable[i].key  = #nodrop table[i].key
@@ -74,7 +74,7 @@ impl HashSet
 
         var remain = count
         #scope Up
-        loop capacity
+        for capacity
         {
             if table[#index].hash < HASH_FIRST:
                 continue
@@ -119,7 +119,7 @@ impl HashSet
         // Need to drop every structs
         #if Reflection.hasDrop(@typeof(K))
         {
-            loop i in capacity
+            for i in capacity
             {
                 if table[i].hash >= HASH_DELETED:
                     @drop(&table[i].key)
@@ -162,7 +162,7 @@ impl HashSet
         // Copy the last table to the new table, removing deleted entries
         let oldCapacity = capacity
         capacity = reqCapacity
-        loop i in oldCapacity
+        for i in oldCapacity
         {
             let h = oldTable[i].hash
             if h >= HASH_FIRST
@@ -342,7 +342,7 @@ impl HashSet
         // Drop the key and the value if necessary
         if count or deleted
         {
-            loop i in capacity
+            for i in capacity
             {
                 let hashval = table[i].hash
                 if hashval >= HASH_DELETED:

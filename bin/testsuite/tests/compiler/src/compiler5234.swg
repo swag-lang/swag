@@ -5,7 +5,7 @@ var x: [2] s32
 #test
 {
     var cpt, cpt1 = 0
-    loop x
+    for x
     {
         visit c in x
         {

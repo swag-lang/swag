@@ -10,7 +10,7 @@ func toto(stmt: code)
         #mixin stmt
     }
 
-    loop 10: titi()
+    for 10: titi()
 }
 
 //#[Swag.PrintBc]

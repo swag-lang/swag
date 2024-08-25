@@ -9,7 +9,7 @@ impl AA
     func toto(using self)
     {
         ppp += 1
-        loop
+        for
         {
             var value = 0
         }

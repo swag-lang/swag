@@ -1,7 +1,7 @@
 #[Swag.Macro]
 public func parse58(stmt: code)
 {
-    loop
+    for
     {
         #macro
         {

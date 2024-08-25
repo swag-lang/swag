@@ -18,7 +18,7 @@ struct Point
 	let t = cast(const *TypeInfoStruct) @typeof(Point)
 	@assert(@countof(t.fields) == 2)
 
-	loop t.fields
+	for t.fields
 	{
 		let p = cast(const *TypeValue) t.fields[#index]
 		@assert(p.name == (#index == 0 ? "x" : "y"))

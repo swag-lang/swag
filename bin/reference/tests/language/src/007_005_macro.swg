@@ -177,18 +177,18 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         // Define a label `Up` for the scope that will allow us to break out of the outermost loop
         #scope Up                              
         
-        // Outer loop: this will run `count` times
-        loop count
+        // Outer for: this will run `count` times
+        for count
         {
-            // Inner loop: also runs `count` times
-            loop count
+            // Inner for: also runs `count` times
+            for count
             {
                 #macro
                 {
                     // Injects the user code `what` here.
                     // The `#mixin` directive replaces certain parts of the user code:
                     // - `break` in the user code is replaced with `break in Up`, meaning it will break 
-                    //   out of the `Up` scope (i.e., the outer loop).
+                    //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
                     #mixin #up what where { break = break in Up; }
                 }
@@ -206,11 +206,11 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         a += 1
         if a == 10:
             // This `break` statement is replaced by `break in Up` due to the macro,
-            // meaning it will exit the outermost loop, not just the inner loop.
+            // meaning it will exit the outermost `for`, not just the inner `for`.
             break  
     }
 
-    // Assertion to check if `a` is indeed 10 after the loop exits
+    // Assertion to check if `a` is indeed 10 after the `for` exits
     @assert(a == 10)  // Verifies that the loop exited when `a` reached 10
 }
 
@@ -226,11 +226,11 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         // break or continue from the outermost loop
         #scope Outer
 
-        // Outer loop: this will run `count` times
-        loop count
+        // Outer for: this will run `count` times
+        for count
         {
-            // Inner loop: also runs `count` times
-            loop count
+            // Inner for: also runs `count` times
+            for count
             {
                 #macro
                 {

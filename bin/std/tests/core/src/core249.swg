@@ -3,7 +3,7 @@ using Core
 #test
 {
     var arr: Array'u32
-    loop i in 10'u32:
+    for i in 10'u32:
         arr.add(i)
 
     let result = Slice.findLinear(arr.toSlice(), 5'u32)

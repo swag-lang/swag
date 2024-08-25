@@ -217,7 +217,7 @@ impl FloatExt
         let approxExp10 = ((expMin + expMax) / 2 - exp) * 28 / 93              // log(10)/log(2) is close to 93/28.
         var i           = (approxExp10 - firstPowerOfTen) / stepPowerOfTen
         #scope Loop
-        loop
+        for
         {
             let exp1 = exp + powersOfTen[i].exp + 64
             switch
@@ -279,7 +279,7 @@ impl FloatExt
         var pow10         = 1'u64     // the power of ten by which f was scaled.
 
         var pow = 1'u64
-        loop i in 20
+        for i in 20
         {
             if pow > cast(u64) integer
             {
@@ -498,7 +498,7 @@ impl FloatExt
         // Count integral digits: there are at most 10.
         var integerDigits: s64
         var pow            = 1'u64
-        loop i in 20
+        for i in 20
         {
             if pow > cast(u64) integer
             {
@@ -509,7 +509,7 @@ impl FloatExt
             pow *= 10
         }
 
-        loop i in integerDigits
+        for i in integerDigits
         {
             pow = uint64pow10[integerDigits - i - 1]
             let digit = integer / cast(u32) pow
@@ -537,7 +537,7 @@ impl FloatExt
         // overflow. The choice of minExp implies that fraction is less than 2^60.
         var digit:     s64
         var multiplier = 1'u64
-        loop
+        for
         {
             fraction *= 10
             multiplier *= 10

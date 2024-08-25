@@ -2,7 +2,7 @@
 public func macro2365(stmt: code)
 {
     #scope up
-    loop 10
+    for 10
     {
         #scope down
         #macro

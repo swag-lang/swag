@@ -73,7 +73,7 @@ impl RichEditCtrl
                 var rankBeg, rankEnd: u64
                 if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
-                    loop i in rankEnd - rankBeg
+                    for i in rankEnd - rankBeg
                     {
                         result.text.add(lines[li].chars[rankBeg + i])
                         result.styles.add(lines[li].styles[rankBeg + i])
@@ -213,7 +213,7 @@ impl RichEditCtrl
         elif c == `\t` and (richEdFlags & .TabToSpaces)
         {
             let line = lines[cp.lineIndex]
-            loop tabSize
+            for tabSize
             {
                 let posIns = Math.min(cp.charPosInLine, line.length())
                 line.insertRune(posIns, ` `, txtStyle)
@@ -240,7 +240,7 @@ impl RichEditCtrl
 
         if !selRect
         {
-            loop i in #self.runes
+            for i in #self.runes
             {
                 let c = #self.runes[i]
                 let s = #self.styles[i]
@@ -253,7 +253,7 @@ impl RichEditCtrl
             var posInLine = cp.charPosInLine
 
             var rankBeg, rankEnd: u64
-            loop
+            for
             {
                 let line = lines[lineIndex]
                 if rankEnd == runes.count or runes[rankEnd] == `\n`
@@ -300,7 +300,7 @@ impl RichEditCtrl
             newLine(cp.lineIndex)
 
         var str = text
-        loop
+        for
         {
             let (c, eat) = Utf8.decodeRune(str)
             if !eat:
@@ -614,7 +614,7 @@ public impl RichEditCtrl
         {
             var sb = getBegSelection()
             var se = getEndSelection()
-            loop caretI in sb.lineIndex to se.lineIndex
+            for caretI in sb.lineIndex to se.lineIndex
             {
                 var cp = se
                 cp.lineIndex = caretI

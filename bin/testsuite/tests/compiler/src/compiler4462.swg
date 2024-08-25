@@ -95,10 +95,10 @@ func energy(bodies: ^Planet)->f64
 
 func advance(bodies: [..] Planet, dt: f64, steps: u64)
 {
-    loop s in steps
+    for s in steps
     {
         for var i = 0; i < 5; i += 1
-        //loop i in 3
+        //for i in 3
         //visit &bi, j in  bodies[..@countof(bodies)-2]
         {
             let bi = &bodies[i]

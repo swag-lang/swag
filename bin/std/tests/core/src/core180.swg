@@ -6,7 +6,7 @@ const ITER = 50000
 
 func entry(th: Thread)
 {
-    loop ITER
+    for ITER
     {
         Atomic.add(&G, 1)
     }

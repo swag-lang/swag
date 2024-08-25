@@ -5,7 +5,7 @@
     #scope outer
     {
         defer cpt = 1
-        loop 10:
+        for 10:
             break in outer
         @assert(false)
     }

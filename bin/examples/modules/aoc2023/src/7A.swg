@@ -73,7 +73,7 @@ private func sort()
         if a.value != b.value:
             return a.value <=> b.value
 
-        loop i in a.val
+        for i in a.val
         {
             let it0 = map.find(a.val[i])
             let it1 = map.find(b.val[i])

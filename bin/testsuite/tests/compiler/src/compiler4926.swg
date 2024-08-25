@@ -2,5 +2,5 @@
 
 #test
 {
-    loop a in {}
+    for a in {}
 }

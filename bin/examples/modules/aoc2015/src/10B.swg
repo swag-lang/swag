@@ -10,7 +10,7 @@ using Core
 func day10B()
 {
     var l: String = "1113122113"
-    loop 50
+    for 50
     {
         var str: String
         var i    = 0

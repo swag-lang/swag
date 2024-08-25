@@ -447,13 +447,13 @@ In most cases, the simplified `.Value` syntax also works when passing enum value
 
 Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum.
 
-The two primary mechanisms for iterating over enum values are the `loop` construct and the `visit` statement.
+The two primary mechanisms for iterating over enum values are the `for` construct and the `visit` statement.
 */
 
 /**
 ## Looping Over Enum Values
 
-The `loop` construct allows you to iterate over all values in an enum.
+The `for` construct allows you to iterate over all values in an enum.
 */
 #test
 {
@@ -461,7 +461,7 @@ The `loop` construct allows you to iterate over all values in an enum.
 
     // Counting Enum Values
     var cpt = 0
-    loop idx in RGB:                      // Iterate over all enum values using 'loop'
+    for idx in RGB:                      // Iterate over all enum values using 'for'
         cpt += 1                          // Increment counter for each value
     @assert(cpt == 3)                     // Assert that the enum has exactly 3 values
 
@@ -470,7 +470,7 @@ The `loop` construct allows you to iterate over all values in an enum.
 }
 
 /**
-The `loop idx in RGB:` statement is a powerful construct that allows you to iterate over all values in the `RGB` enum. During each iteration, `idx` holds the current enum value, which can be used within the loop body. In the example above, the loop simply counts the number of values in the enum, asserting that the total is 3.
+The `for idx in RGB:` statement is a powerful construct that allows you to iterate over all values in the `RGB` enum. During each iteration, `idx` holds the current enum value, which can be used within the for body. In the example above, the for simply counts the number of values in the enum, asserting that the total is 3.
 
 This method is useful when you need to apply the same operation to each enum value, such as populating a list, checking conditions, or performing calculations.
 */

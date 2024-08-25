@@ -22,7 +22,7 @@ func T(param: *s32)
 func F(param: [..] s32, b: func(*s32))
 {
 	let data = @dataof(param)
-	loop(param)
+	for(param)
 	{
 		b(data + #index)
 	}

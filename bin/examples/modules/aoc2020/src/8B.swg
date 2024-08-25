@@ -4,7 +4,7 @@ Your flight to the major airline hub reaches cruising altitude without incident.
 
 Their handheld game console won't turn on! They ask if you can take a look.
 
-You narrow the problem down to a strange infinite loop in the boot code (your puzzle input) of the device. You should be able to fix it, but first you need to be able to run the code in isolation.
+You narrow the problem down to a strange infinite for in the boot code (your puzzle input) of the device. You should be able to fix it, but first you need to be able to run the code in isolation.
 
 The boot code is represented as a text file with one instruction per line of text. Each instruction consists of an operation (acc, jmp, or nop) and an argument (a signed number like +4 or -20).
 
@@ -35,7 +35,7 @@ jmp -4  | 5
 acc +6  |
 First, the nop +0 does nothing. Then, the accumulator is increased from 0 to 1 (acc +1) and jmp +4 sets the next instruction to the other acc +1 near the bottom. After it increases the accumulator from 1 to 2, jmp -4 executes, setting the next instruction to the only acc +3. It sets the accumulator to 5, and jmp -3 causes the program to continue back at the first acc +1.
 
-This is an infinite loop: with this sequence of jumps, the program will run forever. The moment the program tries to run any instruction a second time, you know it will never terminate.
+This is an infinite for: with this sequence of jumps, the program will run forever. The moment the program tries to run any instruction a second time, you know it will never terminate.
 
 Immediately before the program would run an instruction a second time, the value in the accumulator is 5.
 
@@ -50,7 +50,7 @@ func day8B()
     let all      = assume File.readAllLines(dataPath)
 
     var fix = 0
-    loop
+    for
     {
         let lines = all
 

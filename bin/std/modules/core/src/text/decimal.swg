@@ -494,7 +494,7 @@ impl Decimal
 
         // Zero is always a special case.
         var overflow = false
-        loop
+        for
         {
             if nd == 0
             {

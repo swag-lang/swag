@@ -2,7 +2,7 @@
 #test
 {
     var cpt = 0
-    loop
+    for
     {
         if #index == 4:
             break

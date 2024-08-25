@@ -2,7 +2,7 @@ using Core
 
 func cc(sl: const [..] u8, val: s32)
 {
-    loop @countof(sl)
+    for @countof(sl)
     {
     }
 }

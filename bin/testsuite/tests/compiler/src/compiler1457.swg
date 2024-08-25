@@ -3,9 +3,9 @@
     var cpt = 0
     #scope up
     {
-        loop 5
+        for 5
         {
-            loop 5
+            for 5
             {
                 cpt += 1
                 break in up

@@ -3,10 +3,10 @@
 #test
 {
 	var cpt = 0
-	loop i in 2
+	for i in 2
 	{
 		cpt += i
-		loop j in 4
+		for j in 4
 		{
 			cpt += j
 		}

@@ -6,7 +6,7 @@
 {
 	var cpt = 0;
 	let l = "titi";
-	loop(l)
+	for(l)
 	{
 		cpt += 1;
 	}

@@ -88,14 +88,14 @@ private
                 sizes[v] += 1
             sizes[0] = 0
 
-            loop i in 1 to 16
+            for i in 1 to 16
             {
                 if sizes[i] > (1 << i):
                     throw InvalidFormatError{"bad huffman sizes"}
             }
 
             var k, cde = 0'u16
-            loop i in 1 to 15
+            for i in 1 to 15
             {
                 nextCode[i]    = cde
                 firstCode[i]   = cde
@@ -185,7 +185,7 @@ impl Inflate
     mtd parseBlock(repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
         let startBufCount = dest.count
-        loop
+        for
         {
             var value = try decode(repeatHt)
             if value < 256
@@ -235,7 +235,7 @@ impl Inflate
             else
             {
                 // Copy an already decoded sequence of bytes, and repeat the last one
-                loop length
+                for length
                 {
                     let b = dest.buffer[dest.count - distance]
                     dest.add(b)
@@ -258,7 +258,7 @@ impl Inflate
 
         Debug.assert(windowSize > 0)
 
-        loop
+        for
         {
             let final = stream.readBits(1)
             let type  = stream.readBits(2)
@@ -291,7 +291,7 @@ impl Inflate
                 let hlit  = stream.readBitsNoRefill(5) + 257
                 let hdist = stream.readBitsNoRefill(5) + 1
                 let hclen = stream.readBitsNoRefill(4) + 4
-                loop i in hclen
+                for i in hclen
                 {
                     let s = cast(u8) stream.readBits(3)
                     codeLengthSizes[LengthDezigzag[i]] = s

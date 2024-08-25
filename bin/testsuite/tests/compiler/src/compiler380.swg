@@ -7,7 +7,7 @@
 	let toto = "1234";
 
 	var cpt = 0;
-	loop(@countof(toto)):
+	for(@countof(toto)):
 		cpt += 1;
 
 	@assert(cpt == 4);

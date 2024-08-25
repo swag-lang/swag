@@ -21,7 +21,7 @@ impl Point
 {
 	G = 0
 
-	loop(10)
+	for(10)
 	{
 		var pt: Point{10}
 	}

@@ -42,7 +42,7 @@ func day1B()
             dx = -dx
         }
 
-        loop n
+        for n
         {
             pos.x += dx
             pos.y += dy

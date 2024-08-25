@@ -1,6 +1,6 @@
 /*
 --- Day 6: Memory Reallocation ---
-A debugger program here is having an issue: it is trying to repair a memory reallocation routine, but it keeps getting stuck in an infinite loop.
+A debugger program here is having an issue: it is trying to repair a memory reallocation routine, but it keeps getting stuck in an infinite for.
 
 In this area, there are sixteen memory banks; each memory bank can hold any number of blocks. The goal of the reallocation routine is to balance the blocks between the memory banks.
 
@@ -16,7 +16,7 @@ Next, the second bank is chosen because it contains the most blocks (four). Beca
 Now, there is a tie between the first and fourth memory banks, both of which have three blocks. The first bank wins the tie, and its three blocks are distributed evenly over the other three banks, leaving it with none: 0 2 3 4.
 The fourth bank is chosen, and its four blocks are distributed such that each of the four banks receives one: 1 3 4 1.
 The third bank is chosen, and the same thing happens: 2 4 1 2.
-At this point, we've reached a state we've seen before: 2 4 1 2 was already seen. The infinite loop is detected after the fifth block redistribution cycle, and so the answer in this example is 5.
+At this point, we've reached a state we've seen before: 2 4 1 2 was already seen. The infinite for is detected after the fifth block redistribution cycle, and so the answer in this example is 5.
 
 Given the initial block counts in your puzzle input, how many redistribution cycles must be completed before a configuration is produced that has been seen before?
 */
@@ -31,7 +31,7 @@ func day6A()
 
     var set:  HashSet'String
     var total = 0
-    loop
+    for
     {
         var best, besti: u64
         visit v, i in blocks
@@ -52,7 +52,7 @@ func day6A()
         }
 
         var val: String
-        loop i in blocks.count:
+        for i in blocks.count:
             val += Format.toString("%.", blocks[i])
 
         total += 1

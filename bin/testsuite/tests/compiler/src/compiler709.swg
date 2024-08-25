@@ -2,9 +2,9 @@
 //#[Swag.PrintBc]
 #test
 {
-	loop i in 2
+	for i in 2
 	{
-		loop i in 2
+		for i in 2
 		{
             @print(i)
 		}

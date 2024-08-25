@@ -40,7 +40,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            loop count:
+            for count:
                 buffer[#index] = #nodrop oldBuffer[#index]
         }
         #else
@@ -112,7 +112,7 @@ impl Array
         grow(countof)
         #if Reflection.hasPostCopy(T)
         {
-            loop i in countof:
+            for i in countof:
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -137,7 +137,7 @@ impl Array
         #else:
             var scan = buffer - 1
 
-        loop count
+        for count
         {
             #if back:
                 scan -= 1
@@ -320,7 +320,7 @@ impl Array
     {
         #if Reflection.hasDrop(T)
         {
-            loop count:
+            for count:
                 @drop(buffer + #index)
         }
 
@@ -330,7 +330,7 @@ impl Array
     // Fill the array with the given value
     mtd fill(value: T)
     {
-        loop i in count:
+        for i in count:
             buffer[i] = value
     }
 
@@ -530,7 +530,7 @@ impl Array
         #if Reflection.hasPostCopy(T)
         {
             var destPtr = buffer + oldCount
-            loop sliceCount
+            for sliceCount
             {
                 dref destPtr = #nodrop values[#index]
                 destPtr += 1
@@ -566,7 +566,7 @@ impl Array
         }
         #else
         {
-            loop i in count - num
+            for i in count - num
             {
                 buffer[index + i] = #moveraw buffer[index + num + i]
             }
@@ -609,7 +609,7 @@ impl Array
 
         #if Reflection.hasDrop(T)
         {
-            loop idx in numValues:
+            for idx in numValues:
                 @drop(buffer + index + idx)
         }
 
@@ -619,7 +619,7 @@ impl Array
         #if Reflection.hasPostMove(T)
         {
             var idx = index
-            loop count - index
+            for count - index
             {
                 buffer[idx] = #nodrop #moveraw buffer[idx + numValues]
                 idx += 1
@@ -722,7 +722,7 @@ impl StrConv.IConvert for Array
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        loop i in count
+        for i in count
         {
             if i:
                 buf.addBytes(", ")

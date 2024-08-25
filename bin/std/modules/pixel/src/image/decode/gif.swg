@@ -111,7 +111,7 @@ impl Decoder
 
     mtd discardSubBlocks() throw
     {
-        loop
+        for
         {
             let size = readU8()
             if !size:
@@ -196,7 +196,7 @@ impl Decoder
         table.bulk     = Math.max(1 << (keySize + 1), 0x100's32)
         table.nentries = (1 << keySize) + 2
         table.entries.resize(table.bulk)
-        loop key in 1 << keySize:
+        for key in 1 << keySize:
             table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
 
@@ -322,7 +322,7 @@ impl Decoder
                 keySize += 1
             entry  = table.entries.buffer[key]
             strLen = entry.length
-            loop i in strLen
+            for i in strLen
             {
                 let p = frmOff + entry.length - 1
                 let x = p % fw
@@ -383,9 +383,9 @@ impl Decoder
 
         if pf.hasAlpha()
         {
-            loop #back j in 0 until fh
+            for #back j in 0 until fh
             {
-                loop k in cast(u32) fw
+                for k in cast(u32) fw
                 {
                     let index = frame[(fy + j) * cast(u32) width + (fx + k)]
                     let color = &palette.colors[index * 3'u32]
@@ -401,9 +401,9 @@ impl Decoder
         }
         else
         {
-            loop #back j in 0 until fh
+            for #back j in 0 until fh
             {
-                loop k in fw
+                for k in fw
                 {
                     let index = frame[(fy + j) * width + (fx + k)]
                     let color = &palette.colors[index * 3]
@@ -494,7 +494,7 @@ public impl Decoder
             let bgcolor = &palette.colors[bgIndex * 3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
-                loop i in size:
+                for i in size:
                     Memory.copy(&canvas[i * 3], bgcolor, 3)
             }
         }

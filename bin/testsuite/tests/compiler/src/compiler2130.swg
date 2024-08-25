@@ -2,7 +2,7 @@
 
 #test
 {
-    loop __a in "to"
+    for __a in "to"
     {
 
     }

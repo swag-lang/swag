@@ -28,7 +28,7 @@ func is_munchausen(number: s32)->bool
 func set_cache()
 {
     cache[0] = 0
-    loop i in 1 to 9:
+    for i in 1 to 9:
         cache[i] = cast(s32) Math.pow(cast(f32) i, cast(f32) i)
 }
 
@@ -37,7 +37,7 @@ func set_cache()
 {
     Time.Stopwatch.scopeMeasure()
     set_cache()
-    loop i in MAX
+    for i in MAX
     {
         if is_munchausen(i):
             Console.printf("%\n", i)

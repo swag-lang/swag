@@ -84,7 +84,7 @@ func day7A()
     var folder:  String
     var folders: HashTable'(String, s32)
 
-    loop i in lines
+    for i in lines
     {
         let l = #ref lines[i]
         if l[0] == `$`:
@@ -107,7 +107,7 @@ func day7A()
         default:
             let size = assume StrConv.toS32(cmd[0])
             var tmp  = folder
-            loop
+            for
             {
                 folders.findOrAdd(tmp).value += size
                 if !tmp.length:

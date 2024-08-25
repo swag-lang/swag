@@ -646,10 +646,10 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
             break;
 
         case TokenId::KwdFor:
-            SWAG_CHECK(doFor(parent, result));
-            break;
-        case TokenId::KwdLoop:
-            SWAG_CHECK(doLoop(parent, result));
+            if (getNextToken().is(TokenId::KwdVar))
+                SWAG_CHECK(doFor(parent, result));
+            else
+                SWAG_CHECK(doLoop(parent, result));
             break;
         case TokenId::KwdVisit:
             SWAG_CHECK(doVisit(parent, result));
@@ -728,9 +728,8 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdIf:
         case TokenId::KwdWhile:
         case TokenId::KwdFor:
-        case TokenId::KwdSwitch:
-        case TokenId::KwdLoop:
         case TokenId::KwdVisit:
+        case TokenId::KwdSwitch:
         case TokenId::KwdTry:
         case TokenId::KwdCatch:
         case TokenId::KwdTryCatch:

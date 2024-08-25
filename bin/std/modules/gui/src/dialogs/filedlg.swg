@@ -89,10 +89,10 @@ internal impl FileDlg
         comboPathStr.clear()
 
         var all = Tokenize.split(curFolder.toString(), `/`'rune)
-        loop #back i in all
+        for #back i in all
         {
             var str: String
-            loop j in i + 1
+            for j in i + 1
             {
                 str += all[j]
                 str += `/`'u8

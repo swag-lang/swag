@@ -226,7 +226,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     {
         var scan    = @dataof(buffer)
         let countof = @countof(buffer)
-        loop countof / offset
+        for countof / offset
         {
             #macro
             {
@@ -278,9 +278,9 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         waitJob(j)
 }
 
-// Do a for loop in parallel chunks.
+// Do a for for in parallel chunks.
 // Exposed variables:
-// - #alias0: current loop index
+// - #alias0: current for index
 // - #alias1: userData as passed to the macro
 #[Swag.Macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
@@ -297,7 +297,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     func visitFor(startIndex, endIndex: u32, userData: *void)
     {
         var curIndex = startIndex
-        loop (endIndex - startIndex) + 1
+        for (endIndex - startIndex) + 1
         {
             #macro
             {

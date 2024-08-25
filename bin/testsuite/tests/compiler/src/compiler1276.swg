@@ -8,6 +8,6 @@
 #[Swag.Mixin]
 func toto()
 {
-    loop 10:
+    for 10:
         b += 1
 }

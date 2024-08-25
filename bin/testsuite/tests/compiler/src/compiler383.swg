@@ -5,7 +5,7 @@
 #test
 {
 	var cpt: u64 = 0;
-	loop(5)
+	for(5)
 	{
 		cpt += #index;
 	}

@@ -249,7 +249,7 @@ impl RegExp
         let end     = @dataof(str) + @countof(str)
         clearMatch()
 
-        loop
+        for
         {
             let val = internalGrep(res)
             if !val:
@@ -382,7 +382,7 @@ impl RegExp
         if pstack1.isEmpty() and grepTerm.node:
             pstack1.add(grepTerm)
 
-        loop
+        for
         {
             while !pstack1.isEmpty()
             {
@@ -494,7 +494,7 @@ impl RegExp
         }
 
         // Backreference
-        loop 9
+        for 9
         {
             backward(out, RuneGroup1 + #index, curState)
         }

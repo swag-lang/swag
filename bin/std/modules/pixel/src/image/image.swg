@@ -50,7 +50,7 @@ impl Image
     func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
         var scan = pixels.buffer
-        loop width * height
+        for width * height
         {
             #macro
             {

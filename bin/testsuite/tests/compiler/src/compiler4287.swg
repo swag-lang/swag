@@ -3,7 +3,7 @@ var G = 0
 #[Swag.Macro]
 func parse(stmt: code)
 {
-    loop
+    for
     {
         G += 1
         if G == 5:

@@ -13,7 +13,7 @@ impl Image
         func(PF: PixelFormat) fillFirstLine()
         {
             var pix = pixels.buffer
-            loop x in width
+            for x in width
             {
                 setPixelRGBA8'PF(pix, color.r, color.g, color.b, color.a)
                 pix += bpp8

@@ -22,11 +22,11 @@ impl A
     {
         var x: A
         defer cpt += 1
-        loop 10
+        for 10
         {
             var y: A
             defer cpt += 1
-            loop 10
+            for 10
             {
                 var z: A
                 defer cpt += 1

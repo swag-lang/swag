@@ -2,7 +2,7 @@
 {
     var result = 0
 
-    loop i in 10 where i % 2 == 0
+    for i in 10 where i % 2 == 0
     {
         result += i
     }

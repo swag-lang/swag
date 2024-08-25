@@ -69,7 +69,7 @@ namespace ResizeTools
         res.windowSize = windowSize
         res.lineLength = lineLength
         res.row.resize(cast(u64) lineLength)
-        loop i in lineLength:
+        for i in lineLength:
             res.row[i].weights.resize(cast(u64) windowSize)
         return res
     }
@@ -184,7 +184,7 @@ namespace ResizeTools
         var res: retval
         res = allocContributions(lineSize, windowSize)
 
-        loop u in lineSize
+        for u in lineSize
         {
             let center = u / scale
 
@@ -232,7 +232,7 @@ namespace ResizeTools
             // Normalize weight of neighboring points
             if totalWeight != 0
             {
-                loop src in (right - left) + 1:
+                for src in (right - left) + 1:
                     res.row[u].weights[src] /= totalWeight
             }
 
@@ -254,7 +254,7 @@ namespace ResizeTools
         func(BPP: u8) doIt()
         {
             let crow0 = contrib.row.buffer
-            loop x in imgDst.width
+            for x in imgDst.width
             {
                 let crow  = crow0 + x
                 let left  = crow.left
@@ -265,7 +265,7 @@ namespace ResizeTools
                 var dr, dg, db: f64
                 var pw  = crow.weights.buffer
                 var ptr = srcRow + left * bpp8
-                loop (right - left) + 1
+                for (right - left) + 1
                 {
                     let f = dref pw
                     db += f * ptr[0]
@@ -310,7 +310,7 @@ namespace ResizeTools
         func(BPP: u8) doIt()
         {
             let crow0 = contrib.row.buffer
-            loop y in imgDst.height
+            for y in imgDst.height
             {
                 let crow  = crow0 + y
                 let left  = crow.left
@@ -321,7 +321,7 @@ namespace ResizeTools
                 var dr, dg, db: f64
                 var pw  = crow.weights.buffer
                 var ptr = srcCol + left * w8Src
-                loop (right - left) + 1
+                for (right - left) + 1
                 {
                     let f = dref pw
                     db += f * ptr[0]

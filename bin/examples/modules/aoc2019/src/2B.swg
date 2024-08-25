@@ -32,7 +32,7 @@ func day2B()
 
     var op = prg
     var x, y = 0
-    loop
+    for
     {
         op[1] = x
         op[2] = y

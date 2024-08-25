@@ -39,7 +39,7 @@ impl Theme
 
         var d = dstRect
         var s = subRect.rect
-        loop i in 9
+        for i in 9
         {
             switch i
             {

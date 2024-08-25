@@ -3,9 +3,9 @@ func toto(stmt: code)
 {
     #scope up
     {
-        loop 5
+        for 5
         {
-            loop 5
+            for 5
             {
                 //@print("aa\n")
                 cpt += 1

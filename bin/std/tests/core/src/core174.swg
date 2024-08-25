@@ -16,7 +16,7 @@ struct ST
     y[2] = 0
     let dataof = cast(const ^u8) y
 
-    loop 20
+    for 20
     {
         x.str = @mkstring(dataof, 2)
         result.add(x)

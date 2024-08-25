@@ -27,7 +27,7 @@ func day4B() assume
         elif Utf8.contains(l, "falls asleep"):
             startSleep = curMin
         elif Utf8.contains(l, "wakes up"):
-            loop i in startSleep until curMin:
+            for i in startSleep until curMin:
                 count[i].findOrAdd(curGuard).value += 1
     }
 

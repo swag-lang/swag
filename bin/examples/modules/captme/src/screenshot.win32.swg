@@ -92,7 +92,7 @@ private
         if !g_Hit:
             return null
 
-        loop
+        for
         {
             var pt1 = pt
             ScreenToClient(g_Hit, &pt1)

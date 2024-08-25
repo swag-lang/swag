@@ -2,7 +2,7 @@
 func(N: s32) toto()->s32
 {
 	var cpt = 0
-	loop(N)
+	for(N)
 	{
 		//@print("toto\n")
 		cpt += 1

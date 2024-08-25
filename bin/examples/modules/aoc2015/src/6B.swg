@@ -39,9 +39,9 @@ func day6B()
         let x1   = assume StrConv.toU64(nums[2])
         let y1   = assume StrConv.toU64(nums[3])
 
-        loop x in x0 to x1
+        for x in x0 to x1
         {
-            loop y in y0 to y1
+            for y in y0 to y1
             {
                 if l[6] == `n`:
                     lights.ref2(x, y, 1000) += 1

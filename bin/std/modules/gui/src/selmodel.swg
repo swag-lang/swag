@@ -84,7 +84,7 @@ impl SelModel
         #scope Up
         visit &r in selection
         {
-            loop i in r.start to r.end
+            for i in r.start to r.end
             {
                 #macro
                 {

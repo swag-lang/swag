@@ -2,7 +2,7 @@
 # Basic Usage of `if`
 A basic test with an `if` statement.
 
-In Swag, curly braces `{}` are optional for control structures like `if`. However, if you choose to omit them, you must use a colon `:`. This syntax rule also applies to other control structures such as `while`, `for`, and `loop`.
+In Swag, curly braces `{}` are optional for control structures like `if`. However, if you choose to omit them, you must use a colon `:`. This syntax rule also applies to other control structures such as `while` and `for`.
 
 Unlike in C/C++, the condition in an `if` statement does not need to be enclosed in parentheses. Parentheses can be used for clarity or grouping, but they are not mandatory.
 */

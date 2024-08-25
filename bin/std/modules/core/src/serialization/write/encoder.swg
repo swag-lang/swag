@@ -197,7 +197,7 @@ impl Encoder
                 if !treated
                 {
                     var bufArr = cast(const ^u8) ptrArr.buffer
-                    loop i in ptrArr.count
+                    for i in ptrArr.count
                     {
                         writeValue(bufArr, valueType)
                         bufArr += valueType.sizeof
@@ -249,7 +249,7 @@ impl Encoder
                 return
 
             var bufArr = cast(const ^u8) data
-            loop typeArr.count
+            for typeArr.count
             {
                 writeValue(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
@@ -328,7 +328,7 @@ impl IEncoder for Encoder
         if !treated
         {
             var ptr = data
-            loop count
+            for count
             {
                 serializer.beginValue()
                 serializer.writeNative(dref ptr)

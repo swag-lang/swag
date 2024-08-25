@@ -1,7 +1,7 @@
 func minMax(array: const [..] s32) -> {min: s32, max: s32}
 {
     var currentMin, currentMax = array[0]
-    loop array
+    for array
 	{
 		let value = array[#index]
         if value < currentMin:

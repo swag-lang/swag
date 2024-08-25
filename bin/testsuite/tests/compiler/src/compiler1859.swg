@@ -799,7 +799,7 @@ func aaa(ptr: *s64)
         }
 
         {
-            loop 4
+            for 4
                 print(cast(s64) #index)
         }
 
@@ -1223,7 +1223,7 @@ func aaa(ptr: *s64)
                 print("b")
         }
 
-        loop 5 print("g")
+        for 5 print("g")
 
         {
             let x = -6's8

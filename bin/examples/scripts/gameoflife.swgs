@@ -35,9 +35,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case Create:
         // Initial population
-        loop i in 1 until GridSize - 1
+        for i in 1 until GridSize - 1
         {
-            loop j in 1 until GridSize - 1
+            for j in 1 until GridSize - 1
             {
                 g_Grid[g_CurGen, i, j] = Random.shared().nextBool()
             }
@@ -51,15 +51,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         // Compute next generation, except if user is painting
         if !leftPressed and !rightPressed
         {
-            loop i in 1 until GridSize - 1
+            for i in 1 until GridSize - 1
             {
-                loop j in 1 until GridSize - 1
+                for j in 1 until GridSize - 1
                 {
                     // Count cell neighbours
                     var cpt = 0
-                    loop x in -1 to 1
+                    for x in -1 to 1
                     {
-                        loop y in -1 to 1
+                        for y in -1 to 1
                         {
                             if x == 0 and y == 0:
                                 continue
@@ -82,7 +82,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         // Paint grid
         painter.clear(Argb.White)
-        loop i in 1 until GridSize - 1
+        for i in 1 until GridSize - 1
         {
             let x = i * cellSize
             let w = Math.min(wnd.position.width, wnd.position.height) - (2 * cellSize)
@@ -91,9 +91,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
         // Paint generation
-        loop i in 1 to GridSize - 1
+        for i in 1 to GridSize - 1
         {
-            loop j in 1 to GridSize - 1
+            for j in 1 to GridSize - 1
             {
                 if g_Grid[g_CurGen, i, j]
                 {

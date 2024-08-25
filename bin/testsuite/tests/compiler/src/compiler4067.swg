@@ -4,7 +4,7 @@
     var toto = [10, 20]
     var r = &toto
     var x = 0
-    loop r
+    for r
     {
         x += 1
     }

@@ -26,7 +26,7 @@ impl A
 {
     {
         var a: A
-        loop 2
+        for 2
         {
             var x = [a]
         }

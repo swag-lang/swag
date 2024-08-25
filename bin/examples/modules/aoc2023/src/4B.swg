@@ -69,7 +69,7 @@ func day4B()
     var total = 0'u64
     visit c, i in cards
     {
-        loop x in c.win
+        for x in c.win
         {
             cards[i + x + 1].num += c.num
         }

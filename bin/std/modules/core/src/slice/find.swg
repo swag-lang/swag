@@ -48,7 +48,7 @@ func(T) findSlice(values, value: const [..] T)->u32
     if @countof(value) > @countof(values):
         return Swag.U32.Max
 
-    loop it0 in 0 to @countof(values) - @countof(value)
+    for it0 in 0 to @countof(values) - @countof(value)
     {
         var ok = true
         visit c, it1 in value
@@ -90,7 +90,7 @@ func(T) equals(dst, src: const [..] T)->bool
 {
     if @countof(dst) != @countof(src):
         return false
-    loop i in dst where dst[i] != src[i]:
+    for i in dst where dst[i] != src[i]:
         return false
     return true
 }

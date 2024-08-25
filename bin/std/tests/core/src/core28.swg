@@ -4,7 +4,7 @@ func Visit(str: const [..] u8, user: code)
 {
     var ptr   = @dataof(str)
     var count = @countof(str)
-    loop
+    for
     {
         let slice = @mkslice(ptr, cast(u64) count)
         let (c, eat) = Core.Utf8.decodeRune(slice)

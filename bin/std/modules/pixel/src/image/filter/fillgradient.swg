@@ -13,7 +13,7 @@ impl Image
         func(PF: PixelFormat) doIt()
         {
             var pix = pixels.buffer
-            loop x in width
+            for x in width
             {
                 let factor0 = x / cast(f32) width
                 let b       = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)

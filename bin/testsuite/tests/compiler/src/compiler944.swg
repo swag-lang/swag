@@ -4,7 +4,7 @@ func toto(x: f32, y: ...)
 	@assert(x == 1.0)
 
 	var result = 0
-	loop @countof(y)
+	for @countof(y)
 	{
 		let p = y[#index]
 		let ptr = cast(*s32) @dataof(p)

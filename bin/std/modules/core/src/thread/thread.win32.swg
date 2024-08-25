@@ -21,7 +21,7 @@ func wait(threads: *Thread...)
     while total > 0
     {
         let toTreat = Math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
-        loop i in toTreat
+        for i in toTreat
         {
             Debug.assert(threads[i].isValid())
             handles[i] = threads[i].handle

@@ -627,7 +627,7 @@ internal impl Properties
             let numItemsBefore = items.count
 
             var newData = data
-            loop i in typeArr.count
+            for i in typeArr.count
             {
                 var subValue: Swag.TypeValue
                 subValue.name        = Format.toString("%", i).toString()

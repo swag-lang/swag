@@ -87,7 +87,7 @@ func day9A()
         while hasNoZero
         {
             hasNoZero = false
-            loop i in 0 until values.count - 1
+            for i in 0 until values.count - 1
             {
                 values[i] = values[i + 1] - values[i]
                 hasNoZero = values[i] or hasNoZero

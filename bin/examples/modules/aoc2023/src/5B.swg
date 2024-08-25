@@ -95,7 +95,7 @@ func day5B()
     for var x = 0; x < seeds.count; x += 2:
         ranges.add({seeds[x], seeds[x] + seeds[x + 1] - 1})
 
-    loop i in 7
+    for i in 7
     {
         var newRanges: Array'{ start, end: u64 }
         for var idx = 0; idx < ranges.count; idx += 1

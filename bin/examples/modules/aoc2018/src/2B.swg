@@ -31,7 +31,7 @@ func day2B()
                 continue
             var diff    = 0
             var result: String
-            loop k in b
+            for k in b
             {
                 if b[k] != a[k]:
                     diff += 1

@@ -6,7 +6,7 @@
 {
 	var cpt = 0;
 
-	loop(10)
+	for(10)
 	{
 		cpt += 1;
 	}

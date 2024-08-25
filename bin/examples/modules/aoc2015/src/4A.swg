@@ -15,7 +15,7 @@ using Core
 
 func day4A()
 {
-    loop
+    for
     {
         let str = Format.toString("yzbqklnj%", #index)
         let v   = Hash.Md5.compute(str)

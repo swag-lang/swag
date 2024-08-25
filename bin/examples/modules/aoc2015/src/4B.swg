@@ -33,7 +33,7 @@ func day4B()
             let oneJob = cast(*ForJob) jobData
             var index  = oneJob.start
             let offset = Jobs.getNumWorkers()
-            loop
+            for
             {
                 // Another job is better than us, just quit
                 if Atomic.get(&best) < index:

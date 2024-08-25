@@ -2,9 +2,9 @@ var g_RedImg: s32
 func addAliens()
 {
     const DIST = 50  // DIST should be a numeric value, not a string
-    loop xc in 10
+    for xc in 10
     {
-        loop yc in 6
+        for yc in 6
         {
             let x = (xc * DIST) + 40
             let y = 140 + yc * DIST

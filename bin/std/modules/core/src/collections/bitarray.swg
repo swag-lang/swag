@@ -78,7 +78,7 @@ public impl BitArray
         if count != other.count:
             return false
 
-        loop Math.max(count >> 5, 1)
+        for Math.max(count >> 5, 1)
         {
             if buffer[#index] != other.buffer[#index]:
                 return false
@@ -102,10 +102,10 @@ public impl BitArray
         var countBits     = 0'u64
 
         #scope Up
-        loop idx in Math.max(count >> 5, 1)
+        for idx in Math.max(count >> 5, 1)
         {
             var shift: u32 = 1
-            loop Math.min(remainingBits, 32)
+            for Math.min(remainingBits, 32)
             {
                 #scope Down
                 #macro
@@ -200,7 +200,7 @@ public impl BitArray
     {
         if !count:
             return
-        loop Math.max(count >> 5, 1):
+        for Math.max(count >> 5, 1):
             buffer[#index] = ~buffer[#index]
     }
 
@@ -212,7 +212,7 @@ public impl BitArray
         Debug.assert(count == other.count)
         if !count:
             return
-        loop Math.max(count >> 5, 1):
+        for Math.max(count >> 5, 1):
             buffer[#index] &= other.buffer[#index]
     }
 
@@ -224,7 +224,7 @@ public impl BitArray
         Debug.assert(count == other.count)
         if !count:
             return
-        loop Math.max(count >> 5, 1):
+        for Math.max(count >> 5, 1):
             buffer[#index] |= other.buffer[#index]
     }
 
@@ -236,7 +236,7 @@ public impl BitArray
         Debug.assert(count == other.count)
         if !count:
             return
-        loop Math.max(count >> 5, 1):
+        for Math.max(count >> 5, 1):
             buffer[#index] ^= other.buffer[#index]
     }
 }

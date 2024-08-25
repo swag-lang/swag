@@ -92,7 +92,7 @@ func initGame()
 
 func initCells()
 {
-    loop i in 96'u8
+    for i in 96'u8
     {
         let x = i % 12
         let y = i / 12
@@ -111,7 +111,7 @@ func initCells()
 
     const FirstLine = [PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
 
-    loop x in 8
+    for x in 8
     {
         g_Board[x + 2].piece          = FirstLine[x]
         g_Board[x + 2 + 12].piece     = .Pawn
@@ -132,7 +132,7 @@ func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
 
 func getKingCell(board: ^Cell, color: ContentEnum)->s8
 {
-    loop i in 96's8 where board[i].content == color and board[i].piece == .King:
+    for i in 96's8 where board[i].content == color and board[i].piece == .King:
         return i
     return -1
 }
@@ -356,7 +356,7 @@ func doMove(board: ^Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell
 
-    loop i in 96:
+    for i in 96:
         result[i] = board[i]
 
     result[toP].piece     = result[fromP].piece
@@ -409,7 +409,7 @@ func paintBoard(evt: *Event)
     var rect = Math.Rectangle{b, b + s, CellSize, b}
     var str: String = "A"
 
-    loop column in 8
+    for column in 8
     {
         str.buffer[0] = cast(u8) (65 + column)
         rs.set(str)
@@ -418,7 +418,7 @@ func paintBoard(evt: *Event)
     }
 
     rect = Math.Rectangle{0, b, b, CellSize}
-    loop row in 8
+    for row in 8
     {
         str.buffer[0] = cast(u8) (56 - row)
         rs.set(str)
@@ -426,7 +426,7 @@ func paintBoard(evt: *Event)
         rect.y += CellSize
     }
 
-    loop i in 96's8:
+    for i in 96's8:
         paintCell(painter, i)
 
     if g_Game.selectedCell != -1
@@ -577,7 +577,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     let rdr = surface.app.getRenderer()
     var y   = 0
-    loop i in 2
+    for i in 2
     {
         using Res
         piecesTexture[i, cast(s8) PiecesEnum.King - 1]   = rdr.addImage(img.toCrop(0, y, 128, 128))

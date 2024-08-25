@@ -264,7 +264,7 @@ impl Painter
         }
 
         var v1 = startPos
-        loop i in 1 until sharedRoundTmp.count
+        for i in 1 until sharedRoundTmp.count
         {
             let v2    = sharedRoundTmp[i].pos
             let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
@@ -497,7 +497,7 @@ impl Painter
         }
 
         patternTotalLen = 0
-        loop i in patternCount:
+        for i in patternCount:
             patternTotalLen += Math.max(pattern[i], 0.01)
         patternTotalLen *= pen.size
 
@@ -535,7 +535,7 @@ impl Painter
         // True when we are "drawing" blanks
         var blankPatternIdx = patternIndex & 1 ? true : false
 
-        loop
+        for
         {
             var lengthInPattern = remainingPatternLen
 
@@ -646,7 +646,7 @@ impl Painter
         // (because of cap styles)
         if path.polygon.points.count > 2
         {
-            loop i in 1 until path.polygon.points.count - 1
+            for i in 1 until path.polygon.points.count - 1
             {
                 var p = path.polygon.getPoint(i, cxt.offsetPath)
                 drawLine(cxt, p)

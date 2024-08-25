@@ -10,7 +10,7 @@ const LEN     = 25'u64
     var password: String
 
     password.reserve(LEN)
-    loop LEN
+    for LEN
     {
         let idx = rng.nextS32(0, @countof(CHARSET))
         password += CHARSET[idx]

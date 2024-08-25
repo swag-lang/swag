@@ -34,7 +34,7 @@ func clearStructArray(arrayPtr: *void, valueType: typeinfo)
         if valueTypeStruct.opDrop
         {
             var scan = arr.buffer
-            loop x in arr.count
+            for x in arr.count
             {
                 valueTypeStruct.opDrop(scan)
                 scan += valueTypeStruct.sizeof
@@ -65,7 +65,7 @@ func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
         Memory.copy(arr.buffer + (index * sizeValue), arr.buffer + (index + 1) * sizeValue, countMove * sizeValue)
         if valueTypeStruct and Reflection.hasPostMove(valueTypeStruct)
         {
-            loop i in index until arr.count - 1:
+            for i in index until arr.count - 1:
                 valueTypeStruct.opPostMove(arr.buffer + (i * sizeValue))
         }
     }
@@ -102,7 +102,7 @@ func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
         if hasPostMove(valueType)
         {
             var buf = newBuffer
-            loop arr.count
+            for arr.count
             {
                 valueTypeStruct.opPostMove(buf)
                 buf += sizeValue

@@ -2,7 +2,7 @@
 //#[Swag.PrintBc]
 func isPrime(n: s32)->s32
 {
-    loop i in 2 to n/2
+    for i in 2 to n/2
     {
         if !(n % i)
         {
@@ -19,7 +19,7 @@ func isPrime(n: s32)->s32
 {
     //Time.Stopwatch.scopeMeasure()
     var numPrimes = 0
-    loop i in 4 to 25//0000
+    for i in 4 to 25//0000
     {
         numPrimes += isPrime(i)
     }

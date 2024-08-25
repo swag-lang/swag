@@ -64,7 +64,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
     if ignoreCase
     {
         #[Swag.Safety("boundcheck", false)]
-        loop i in minLen
+        for i in minLen
         {
             var c1 = src[i]
             var c2 = dst[i]
@@ -102,7 +102,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         var csrc = @countof(src)
         var cdst = @countof(dst)
         var ai, bi = 0
-        loop
+        for
         {
             let ca = !csrc ? 0 : src[ai]
             let cb = !cdst ? 0 : dst[bi]
@@ -134,7 +134,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         var csrc = @countof(src)
         var cdst = @countof(dst)
         var ai, bi = 0
-        loop
+        for
         {
             let ca = !csrc ? 0 : src[ai]
             let cb = !cdst ? 0 : dst[bi]
@@ -175,7 +175,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
     var cdst = @countof(dst)
 
     var ai, bi = 0
-    loop
+    for
     {
         var ca = !csrc ? 0 : src[ai]
         var cb = !cdst ? 0 : dst[bi]

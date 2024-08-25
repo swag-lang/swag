@@ -16,7 +16,7 @@ impl Properties
 
         // Reconstruct all items (add the end)
         var newData = arrData.buffer
-        loop i in arrData.count
+        for i in arrData.count
         {
             var subValue: Swag.TypeValue
             subValue.name        = Format.toString("%", i).toString()
@@ -27,7 +27,7 @@ impl Properties
 
         // Move all newly reconstructed items at the right place
         let numAddedChilds = cast(u32) (items.count - countItemsBefore)
-        loop i in numAddedChilds
+        for i in numAddedChilds
         {
             items.insertAt(insertItemIdx + i, items[items.count - numAddedChilds + i])
             edView.childs.insertAt(insertItemIdx + i, edView.childs[edView.childs.count - numAddedChilds + i])
@@ -37,7 +37,7 @@ impl Properties
         edView.childs.count -= numAddedChilds
 
         // Remove all old items and childs
-        loop i in item.numChilds
+        for i in item.numChilds
         {
             items.deletePtr(items[itemIdx + 1])
             items.removeAtOrdered(itemIdx + 1)
@@ -46,7 +46,7 @@ impl Properties
 
         // Update state of all newly added items
         item.numChilds = numAddedChilds
-        loop i in item.numChilds:
+        for i in item.numChilds:
             updateItemState(self.items[itemIdx + i + 1])
     }
 
@@ -106,7 +106,7 @@ impl Properties
 
         item.userData0 = cast(*void) arrData.count
 
-        loop i in arrData.count
+        for i in arrData.count
         {
             var subValue: Swag.TypeValue
             subValue.name        = Format.toString("%", i).toString()

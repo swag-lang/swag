@@ -10,7 +10,7 @@ var G1 = 1
     let firstIdx = G
     let lastIdx = G1
 
-    loop i in firstIdx to lastIdx
+    for i in firstIdx to lastIdx
     {
         //@print(firstIdx, " ", lastIdx, " ", i, "\n")
         @assert(i <= 1)

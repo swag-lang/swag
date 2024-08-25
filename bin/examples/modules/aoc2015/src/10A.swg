@@ -21,7 +21,7 @@ using Core
 func day10A()
 {
     var l: String = "1113122113"
-    loop 40
+    for 40
     {
         var str: String
         var i    = 0

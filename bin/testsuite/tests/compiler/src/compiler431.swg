@@ -11,7 +11,7 @@ func len(buffer: const [..] u8)
 {
 	var result = 0
 	var total = 0
-	loop buffer
+	for buffer
 	{
 		result += 1
 		total += cast(s32) buffer[#index]

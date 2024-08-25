@@ -3,7 +3,7 @@ func toto(stmt: code)
 {
     #scope Up
     {
-        loop 10
+        for 10
         {
             #mixin stmt where { break = @assert(false); }
         }
@@ -14,9 +14,9 @@ func toto(stmt: code)
 func titi(stmt: code)
 {
     #scope Up
-    loop 5
+    for 5
     {
-        loop 5
+        for 5
         {
             #mixin stmt where { break = break in Up; }
         }

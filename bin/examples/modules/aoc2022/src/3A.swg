@@ -42,7 +42,7 @@ func day3A()
     visit l in lines
     {
         let div = l.length / 2
-        loop i in div
+        for i in div
         {
             let c = l[i]
             let f = Slice.findLinear(cast(const [..] u8) l[div..], c)

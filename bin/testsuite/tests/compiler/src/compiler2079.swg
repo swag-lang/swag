@@ -10,7 +10,7 @@ struct AA
 #test
 {
     var t: AA
-    loop t.x
+    for t.x
     {
         if #index > 10:
             break;

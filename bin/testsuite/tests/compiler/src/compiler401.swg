@@ -59,7 +59,7 @@ func Hash(buffer: const [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 {
 	var crc = previous
     #[Swag.Overflow(true)]
-	loop(buffer)
+	for(buffer)
 	{
 		var i = (crc >> 56) ^ buffer[#index]
 		crc = Table[(crc >> 56) ^ buffer[#index]] ^ (crc << 8)

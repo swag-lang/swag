@@ -219,7 +219,7 @@ impl Decoder
         bitsLeft = 16
         getBits1(16)
         getBits1(16)
-        loop i in MaxBlocksPerRow:
+        for i in MaxBlocksPerRow:
             blockMaxZagSet[i] = 64
 
         locateSofMarker()
@@ -244,14 +244,14 @@ impl Decoder
         {
             var pdest = buf
             pdest += (imageSizeY - 1) * imageSizeX * 3
-            loop
+            for
             {
                 if decode(&scanLineOfs, &scanLineLen):
                     break
 
                 var pdest1 = pdest
                 var psrc   = cast(^u8) scanLineOfs
-                loop imageSizeX
+                for imageSizeX
                 {
                     pdest1[0] = dref psrc
                     pdest1[1] = dref psrc
@@ -269,7 +269,7 @@ impl Decoder
         {
             var pdest = buf
             pdest += (imageSizeY - 1) * imageSizeX * 3
-            loop
+            for
             {
                 if decode(&scanLineOfs, &scanLineLen):
                     break
@@ -291,11 +291,11 @@ impl Decoder
         var blockMcuX: [MaxComponents] s32
 
         var rowBlock = 0'u32
-        loop mcusPerRow
+        for mcusPerRow
         {
             var blockMcuOfsX = 0
             var blockMcuOfsY = 0
-            loop mcuBlock in blocksPerMcu
+            for mcuBlock in blocksPerMcu
             {
                 let componentId = mcuOrg[mcuBlock]
 
@@ -346,7 +346,7 @@ impl Decoder
             blockMcuY[compList[0]] += 1
         else
         {
-            loop componentNum in compsInScan
+            for componentNum in compsInScan
             {
                 let componentId = compList[componentNum]
                 blockMcuY[componentId] += compSampV[componentId]
@@ -398,7 +398,7 @@ impl Decoder
         if symbol < 0
         {
             getBits2(8)
-            loop
+            for
             {
                 symbol = ph.tree[~symbol + (1 - getBits2(1))]
                 if symbol >= 0:
@@ -416,12 +416,12 @@ impl Decoder
     mtd decodeNextRow() throw
     {
         var rowBlock = 0
-        loop mcusPerRow
+        for mcusPerRow
         {
             if restartInterval and (restartsLeft == 0):
                 restartProcess()
 
-            loop mcuBlock in blocksPerMcu
+            for mcuBlock in blocksPerMcu
             {
                 let componentId = mcuOrg[mcuBlock]
                 var p           = blockSeg[rowBlock]
@@ -529,7 +529,7 @@ impl Decoder
         var pdstPtr = buf
         var dataPtr = data
 
-        loop #back rowctr in 0 to 7
+        for #back rowctr in 0 to 7
         {
             // Original code:
             // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
@@ -610,7 +610,7 @@ impl Decoder
 
         dataPtr = data
 
-        loop #back rowctr in 0 to 7
+        for #back rowctr in 0 to 7
         {
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
@@ -712,7 +712,7 @@ impl Decoder
         var psrcPtr = blockSeg[0]
         var pdstPtr = pSampleBuf
 
-        loop maxBlocksPerRow
+        for maxBlocksPerRow
         {
             Memory.copy(tempBlock, psrcPtr, 64'u64 * @sizeof(s16))
             idct(tempBlock, pdstPtr)
@@ -796,7 +796,7 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d   = scanLine0.buffer
         var s   = pSampleBuf + row * 8
-        loop #back i in 1 to maxMcusPerRow
+        for #back i in 1 to maxMcusPerRow
         {
             d[0] = s[0]
             d[1] = s[1]
@@ -817,9 +817,9 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d   = scanLine0.buffer
         var s   = pSampleBuf + row * 8
-        loop #back i in 1 to maxMcusPerRow
+        for #back i in 1 to maxMcusPerRow
         {
-            loop j in 8
+            for j in 8
             {
                 let y  = cast(s32) s[j]
                 let cb = s[64 + j]
@@ -848,9 +848,9 @@ impl Decoder
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
         var c = pSampleBuf + 64 * 2 + (row >> 1) * 8
-        loop #back i in 1 to maxMcusPerRow
+        for #back i in 1 to maxMcusPerRow
         {
-            loop j in 8
+            for j in 8
             {
                 let cb = c[0 + j]
                 let cr = c[64 + j]
@@ -882,11 +882,11 @@ impl Decoder
         var y   = pSampleBuf + row * 8
         var c   = pSampleBuf + 2 * 64 + row * 8
 
-        loop #back i in 1 to maxMcusPerRow
+        for #back i in 1 to maxMcusPerRow
         {
-            loop l in 2
+            for l in 2
             {
-                loop j in 4
+                for j in 4
                 {
                     let cb = c[0]
                     let cr = c[64]
@@ -930,9 +930,9 @@ impl Decoder
             y = pSampleBuf + 64 * 2 + (row & 7) * 8
         var c = pSampleBuf + 64 * 4 + (row >> 1) * 8
 
-        loop #back i in 1 to maxMcusPerRow
+        for #back i in 1 to maxMcusPerRow
         {
-            loop l in 2
+            for l in 2
             {
                 for var j = 0; j < 8; j += 2
                 {
@@ -1046,7 +1046,7 @@ impl Decoder
             throw InvalidFormatError{"assertion error"}
 
         quantBuf.resize(cast(u64) maxBlocksPerRow * 64 * @sizeof(s16) + 8)
-        loop i in maxBlocksPerRow
+        for i in maxBlocksPerRow
         {
             blockSeg[i]       = cast(^s16) (quantBuf.buffer + i * 64 * @sizeof(s16))
             blockMaxZagSet[i] = 64
@@ -1068,7 +1068,7 @@ impl Decoder
         fix[2] = cast(s32) -((0.71414 / 2) * (1 << 16) + 0.5)
         fix[3] = cast(s32) -((0.34414 / 2) * (1 << 16) + 0.5)
 
-        loop i in 256
+        for i in 256
         {
             let k = (i * 2) - 256
             crr[i] = (fix[0] * k + (1 << (16 - 1))) >> 16
@@ -1125,7 +1125,7 @@ impl Decoder
 
     mtd checkQuantTables() throw
     {
-        loop i in compsInScan
+        for i in compsInScan
         {
             if quant[compQuant[compList[i]]].count == 0:
                 throw InvalidFormatError{"undefined quant table"}
@@ -1138,7 +1138,7 @@ impl Decoder
         var huffCode: [257] u32
 
         var p = 0
-        loop l in 1 to 16
+        for l in 1 to 16
         {
             for var i = 1; i <= huffNum[idx].buffer[l]; i += 1
             {
@@ -1226,7 +1226,7 @@ impl Decoder
 
     mtd checkHuffTables() throw
     {
-        loop i in compsInScan
+        for i in compsInScan
         {
             if (spectralStart == 0) and (huffNum[compDcTab[compList[i]]].count == 0):
                 throw InvalidFormatError{"undefined huff table"}
@@ -1235,7 +1235,7 @@ impl Decoder
                 throw InvalidFormatError{"undefined huff table"}
         }
 
-        loop i in MaxHuffTables
+        for i in MaxHuffTables
         {
             if huffNum[i].count
             {
@@ -1243,7 +1243,7 @@ impl Decoder
             }
         }
 
-        loop i in blocksPerMcu
+        for i in blocksPerMcu
         {
             dcHuffSeg[i] = &h[compDcTab[mcuOrg[i]]]
             acHuffSeg[i] = &h[compAcTab[mcuOrg[i]]]
@@ -1256,13 +1256,13 @@ impl Decoder
         var maxSampH = 1
         var maxSampV = 1
 
-        loop cid in compsInFrame
+        for cid in compsInFrame
         {
             maxSampH = Math.max(maxSampH, compSampH[cid])
             maxSampV = Math.max(maxSampV, compSampV[cid])
         }
 
-        loop cid in compsInFrame
+        for cid in compsInFrame
         {
             compBlocksH[cid] = ((((imageSizeX * compSampH[cid]) + (maxSampH - 1)) / maxSampH) + 7) / 8
             compBlocksV[cid] = ((((imageSizeY * compSampV[cid]) + (maxSampV - 1)) / maxSampV) + 7) / 8
@@ -1287,7 +1287,7 @@ impl Decoder
         else
         {
             blocksPerMcu = 0
-            loop cNum in compsInScan
+            for cNum in compsInScan
             {
                 let cid        = compList[cNum]
                 var num_blocks = compSampH[cid] * compSampV[cid]
@@ -1423,7 +1423,7 @@ impl Decoder
                     }
                 }
 
-                loop
+                for
                 {
                     var thisCoef = p + Zag[k]
                     if dref thisCoef != 0
@@ -1493,10 +1493,10 @@ impl Decoder
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32
 
-        loop mcusPerCol
+        for mcusPerCol
         {
             Memory.clear(blockMcutX, @sizeof(blockMcutX))
-            loop mcusPerRow
+            for mcusPerRow
             {
                 var blockMcuOfsX = 0
                 var blockMcuOfsY = 0
@@ -1504,7 +1504,7 @@ impl Decoder
                 if restartInterval and (restartsLeft == 0):
                     restartProcess()
 
-                loop mcuBlock in blocksPerMcu
+                for mcuBlock in blocksPerMcu
                 {
                     let componentId = mcuOrg[mcuBlock]
                     fn(self, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
@@ -1534,7 +1534,7 @@ impl Decoder
                 blockMcutY[compList[0]] += 1
             else
             {
-                loop n in compsInScan
+                for n in compsInScan
                 {
                     let componentId = compList[n]
                     blockMcutY[componentId] += compSampV[componentId]
@@ -1548,13 +1548,13 @@ impl Decoder
         if compsInFrame == 4:
             throw UnsupportedFormatError{"unsupported color space"}
 
-        loop i in compsInFrame
+        for i in compsInFrame
         {
             dcCoeffs[i] = coeffBufOpen(maxMcusPerRow * compSampH[i], maxMcusPerCol * compSampV[i], 1, 1)
             acCoeffs[i] = coeffBufOpen(maxMcusPerRow * compSampH[i], maxMcusPerCol * compSampV[i], 8, 8)
         }
 
-        loop
+        for
         {
             let res = initScan()
             if !res:
@@ -1604,7 +1604,7 @@ impl Decoder
         }
 
         compsInScan = compsInFrame
-        loop i in compsInFrame:
+        for i in compsInFrame:
             compList[i] = i
         calcMcuBlockOrder()
     }
@@ -1756,7 +1756,7 @@ impl Decoder
     #[Discardable]
     mtd processMarkers()->Marker throw
     {
-        loop
+        for
         {
             let c = nextMarker()
             switch c
@@ -1811,7 +1811,7 @@ impl Decoder
             var index = getBits1(8)
             var count = 0
             huffNumt[0] = 0
-            loop i in 1 to 16
+            for i in 1 to 16
             {
                 huffNumt[i] = cast(u8) getBits1(8)
                 count += huffNumt[i]
@@ -1819,7 +1819,7 @@ impl Decoder
 
             if count > 255:
                 throw InvalidFormatError{"bad dht counts"}
-            loop i in count
+            for i in count
             {
                 huffValt[i] = cast(u8) getBits1(8)
             }
@@ -1859,7 +1859,7 @@ impl Decoder
                 throw InvalidFormatError{"bad dqt table"}
 
             quant[n].resize(64)
-            loop i in 64
+            for i in 64
             {
                 var temp = getBits1(8)
                 if prec:
@@ -1903,7 +1903,7 @@ impl Decoder
         if left != (compsInFrame * 3 + 8):
             throw InvalidFormatError{"bad sof length"}
 
-        loop i in compsInFrame
+        for i in compsInFrame
         {
             compIdent[i] = getBits1(8)
             compSampH[i] = getBits1(4)
@@ -1922,7 +1922,7 @@ impl Decoder
         if (left != (n * 2 + 3)) or (n < 1) or (n > MaxCompsInScan):
             throw InvalidFormatError{"bad sos length"}
 
-        loop i in n
+        for i in n
         {
             let cc = getBits1(8)
             let c  = getBits1(8)
@@ -1981,7 +1981,7 @@ impl Decoder
         if (lastRune == 0xFF) and (thisChar == Marker.M_SOI):
             return
         var bytesLeft = 512
-        loop
+        for
         {
             bytesLeft -= 1
             if bytesLeft == 0:
@@ -2018,7 +2018,7 @@ impl Decoder
     func memset16(p: ^void, c: u16, n: u32)
     {
         var ps = cast(^u16) p
-        loop n
+        for n
         {
             dref ps = c
             ps += 1
@@ -2032,7 +2032,7 @@ impl Decoder
         if eofReached:
             return
 
-        loop
+        for
         {
             var size = InBufSize - inBufLeft
             if size + streamSeek > streamLen

@@ -28,9 +28,9 @@ func day6B() assume
     }
 
     var best: [8] u32 = Swag.U32.Max
-    loop c0 in 8
+    for c0 in 8
     {
-        loop c1 in 26
+        for c1 in 26
         {
             let v = freq[c0, c1]
             if v and v < best[c0]

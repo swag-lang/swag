@@ -142,7 +142,7 @@ func day10B() assume
     var cycle, x = 1
 
     var crt: String
-    loop 40 * 6:
+    for 40 * 6:
         crt.append(" ")
 
     visit l in lines
@@ -156,9 +156,9 @@ func day10B() assume
     }
 
     /*var i = 0
-    loop 6
+    for 6
     {
-        loop 40
+        for 40
         {
             Console.print(cast(rune) crt[i])
             i += 1

@@ -1,6 +1,6 @@
 #test
 {
-    loop 5
+    for 5
     {
         #if false
         {

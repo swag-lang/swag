@@ -1,10 +1,10 @@
 /*
 --- Part Two ---
-Out of curiosity, the debugger would also like to know the size of the loop: starting from a state that has already been seen, how many block redistribution cycles must be performed before that same state is seen again?
+Out of curiosity, the debugger would also like to know the size of the for: starting from a state that has already been seen, how many block redistribution cycles must be performed before that same state is seen again?
 
 In the example above, 2 4 1 2 is seen again after four cycles, and so the answer in that example would be 4.
 
-How many cycles are in the infinite loop that arises from the configuration in your puzzle input?
+How many cycles are in the infinite for that arises from the configuration in your puzzle input?
 */
 
 using Core
@@ -17,7 +17,7 @@ func day6B()
 
     var set:  HashTable'(String, u64)
     var total = 0'u64
-    loop
+    for
     {
         var best, besti: u64
         visit v, i in blocks
@@ -38,7 +38,7 @@ func day6B()
         }
 
         var val: String
-        loop i in blocks.count:
+        for i in blocks.count:
             val += Format.toString("%.", blocks[i])
 
         total += 1

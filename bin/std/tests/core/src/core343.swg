@@ -3,7 +3,7 @@ using Core
 #test
 {
     var arr: Array'u8
-    loop i in 100:
+    for i in 100:
         arr.add(cast(u8) i)
 
     var comp: Compress.Deflate

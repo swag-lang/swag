@@ -26,7 +26,7 @@ func day6B()
     var len  = 0
 
     const LEN = 14
-    loop i in str
+    for i in str
     {
         arr[str[i]] += 1
         len += cast(s32) (arr[str[i]] == 1)

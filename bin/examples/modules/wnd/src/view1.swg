@@ -8,7 +8,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     list.iconSize      = 16
 
     var str: String
-    loop i in maxItems
+    for i in maxItems
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
@@ -33,7 +33,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     list.iconSize                     = 16
 
     var str: String
-    loop i in 50
+    for i in 50
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)

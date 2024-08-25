@@ -429,7 +429,7 @@ impl Painter
 
             if l.end > l.start
             {
-                loop idx in l.start until l.end
+                for idx in l.start until l.end
                 {
                     let c = &text.chunks[idx]
                     c.pos.x = x1

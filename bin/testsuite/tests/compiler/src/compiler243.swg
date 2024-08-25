@@ -7,7 +7,7 @@ func toto()
 	while a < 10
 	{
 		a += 1
-		loop
+		for
 		{
 			break
 		}

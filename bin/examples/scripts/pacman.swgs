@@ -466,7 +466,7 @@ impl Ghost
      * SCATTER movement AI attempts to force all ghosts to disperse from one another
      * Each ghost is set to target a point outside the map (one in each of the four corners) based on their colour
      *
-     * If left in SCATTER mode, this will cause each to loop around a small section of the map in a different corner
+     * If left in SCATTER mode, this will cause each to for around a small section of the map in a different corner
      * SCATTER mode is not normally enabled long enough for this to occur, instead just forcing ghosts to separate
      */
     mtd aiScatter()
@@ -563,7 +563,7 @@ impl Ghost
      */
     mtd aiFrightened()
     {
-        loop
+        for
         {
             // Choose random direction from UP, RIGHT, DOWN or LEFT
             let newDir = cast(Direction) ((Random.shared().nextU32() % cast(u32) Direction.LEFT) + 1)
@@ -1299,10 +1299,10 @@ func drawMap()
     g_Painter.drawTexture(0, 0, 224, 248, g_MapTex)
 
     // Content
-    loop x in 28
+    for x in 28
     {
         g_Painter.pushTransform()
-        loop y in 31
+        for y in 31
         {
             // Determine size of big pills to draw depending on ticks
             let bigPill = cast(s32) Math.floor((g_Ticks % 40) / 20.0)
@@ -1337,7 +1337,7 @@ func drawNumberAsSprite(number: s32)
     g_Painter.pushTransform()
 
     let str = Format.toString("%", number)
-    loop #back i in str
+    for #back i in str
     {
         switch str[i]
         {
@@ -1404,7 +1404,7 @@ func drawLives()
     g_Painter.pushTransform()
     translateMapOrigin()
     translateMapCoords(1, 31.5)
-    loop i in g_Lives
+    for i in g_Lives
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_LifeTex)
         translateMapCoords(2, 0)
@@ -1417,7 +1417,7 @@ func drawFruits()
     g_Painter.pushTransform()
     translateMapOrigin()
     translateMapCoords(25, 31.5)
-    loop i in g_Fruits
+    for i in g_Fruits
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[i])
         translateMapCoords(-2, 0)
@@ -1428,7 +1428,7 @@ func drawFruits()
 func drawCharacters()
 {
     g_PacMan.draw()
-    loop i in 4:
+    for i in 4:
         g_Ghosts[i].draw()
 }
 
@@ -1515,13 +1515,13 @@ func display()
 
     case FRUIT:
         drawPlayScreen()
-        loop i in 4:
+        for i in 4:
             g_Ghosts[i].draw()
         g_PacMan.drawFruitScore()
 
     case EAT:
         drawPlayScreen()
-        loop i in 4:
+        for i in 4:
             g_Ghosts[i].drawEaten()
 
     case PAUSE:
@@ -1841,7 +1841,7 @@ func drawFruit(x, y: s32)
  */
 func spawnFruit()
 {
-    loop
+    for
     {
         let x = cast(s32) Random.shared().nextU32(0, 27) + 1     // Generate random X within the map (excluding outer walls)
         let y = cast(s32) Random.shared().nextU32(0, 10) + 1     // Generate random Y within the lower third of the map (excluding outer walls)
@@ -1863,9 +1863,9 @@ func spawnFruit()
  */
 func resetMap()
 {
-    loop x in 28
+    for x in 28
     {
-        loop y in 31
+        for y in 31
         {
             switch getTile(x, y)
             {
@@ -1883,9 +1883,9 @@ func resetMap()
  */
 func resetFruit()
 {
-    loop x in 28
+    for x in 28
     {
-        loop y in 31
+        for y in 31
         {
             // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
             if getTile(x, y) == .F:

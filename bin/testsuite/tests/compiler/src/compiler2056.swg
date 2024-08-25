@@ -5,7 +5,7 @@ func swag_runtime_itoa(result: ^u8, value: s64)->*u8
 
     var ptr = result
     var orgValue = value
-    loop
+    for
     {
         let tmpValue = orgValue
         orgValue /= 10

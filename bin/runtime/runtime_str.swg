@@ -21,7 +21,7 @@ func __itoa(result: ^u8, value: s64)->^u8
 
     var ptr      = result
     var orgValue = value
-    loop
+    for
     {
         let tmpValue = orgValue
         orgValue /= 10
@@ -61,7 +61,7 @@ func __utoa(result: ^u8, value: u64)->^u8
 
     var ptr      = result
     var orgValue = value
-    loop
+    for
     {
         let tmpValue = orgValue
         orgValue /= 10

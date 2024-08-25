@@ -56,7 +56,7 @@ func process(intro: *Node)->*Node
     tree.print()
 
     var totalDepth = 0
-    loop i in 200_000:
+    for i in 200_000:
         totalDepth += intro.calcTotalDepth()
 
     //Console.printf("Total depth: %", totalDepth)

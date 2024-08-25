@@ -83,7 +83,7 @@ public impl TextReader
                 return false
         }
 
-        loop
+        for
         {
             var ptr  = buffer.buffer + byteSeek
             let ptrB = ptr

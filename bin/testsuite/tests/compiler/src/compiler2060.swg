@@ -18,7 +18,7 @@ impl ITF for AA
 
 func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
 {
-    //loop i in structType.interfaces
+    //for i in structType.interfaces
     return structType.interfaces[0].value
     /*{
         if @stringcmp(@dataof(structType.interfaces[i].name),

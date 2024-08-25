@@ -3,7 +3,7 @@ func toto(stmt: code)
 {
     #scope Up
     {
-        loop 10
+        for 10
         {
             #mixin stmt where { break = @assert(false); }
         }
@@ -13,7 +13,7 @@ func toto(stmt: code)
 #[Swag.Macro]
 func titi(stmt: code)
 {
-    loop 5
+    for 5
     {
         #mixin stmt
     }

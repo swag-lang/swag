@@ -726,10 +726,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     Utf8 visitBack;
     if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-    {
-        visitBack += " ";
         visitBack += g_LangSpec->name_back;
-    }
 
     // Multi dimensional array
     if (typeInfo->isArray() && castTypeInfo<TypeInfoArray>(typeInfo)->pointedType->isArray())
@@ -747,7 +744,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 2;
         content += "{ ";
         content += form(R"(let __addr%u = cast(%s ^%s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.cstr(), id);
-        content += form(R"(loop%s %u { )", visitBack.cstr(), typeArray->totalCount);
+        content += form(R"(for %s %u { )", visitBack.cstr(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -787,7 +784,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 1;
         content += "{ ";
-        content += form(R"(loop%s %u { )", visitBack.cstr(), typeArray->totalCount);
+        content += form(R"(for %s %u { )", visitBack.cstr(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -826,7 +823,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
-        content += form(R"(loop%s __tmp%u { )", visitBack.cstr(), id);
+        content += form(R"(for %s __tmp%u { )", visitBack.cstr(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += "let ";
@@ -862,7 +859,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += form(R"(let __addr%u = @dataof(__tmp%u); )", id, id);
-        content += form(R"(loop%s __tmp%u { )", visitBack.cstr(), id);
+        content += form(R"(for %s __tmp%u { )", visitBack.cstr(), id);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             content += R"(let )";
@@ -891,7 +888,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(err);
         }
 
-        content += form(R"({ loop%s %s { )", visitBack.cstr(), result.cstr());
+        content += form(R"({ for %s %s { )", visitBack.cstr(), result.cstr());
         firstAliasVar = 0;
         content += R"(let )";
         content += alias0Name;
@@ -914,7 +911,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         content += form(R"({ let __addr%u = @typeof(%s); )", id, result.cstr());
-        content += form(R"(loop%s %d { )", visitBack.cstr(), typeEnum->values.size());
+        content += form(R"(for %s %d { )", visitBack.cstr(), typeEnum->values.size());
         firstAliasVar = 1;
         content += R"(let )";
         content += alias0Name;

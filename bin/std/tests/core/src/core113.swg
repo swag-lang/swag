@@ -4,7 +4,7 @@ using Core
 {
     var arr: Array'u32
 
-    loop 10:
+    for 10:
         arr.add(cast(u32) #index)
     arr.insertAt(1, 100)
     @assert(arr[0] == 0)

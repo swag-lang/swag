@@ -3,7 +3,7 @@
 #[Swag.Safety("", true)]
 func toto(x, y: s32)
 {
-    loop x to y
+    for x to y
     {
     }
 }

@@ -58,7 +58,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             throw UnsupportedFormatError{Errors.mkString(Format.toString("unsupported enum type [[%]]", enumType.rawType.name))}
         let enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
-        loop
+        for
         {
             one = Tokenize.eatSpaces(one)
             let id = parseIdentifier(one)

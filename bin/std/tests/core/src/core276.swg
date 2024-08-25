@@ -4,7 +4,7 @@ struct(N: s32) Vector
     #ast
     {
         var sb = StrConv.StringBuilder{}
-        loop i in N
+        for i in N
         {
             sb.appendFormat("%", cast(rune) (`a`'u32 + i))
             if i != N - 1:

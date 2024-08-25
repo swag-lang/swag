@@ -1,7 +1,7 @@
 #test
 {
     let cpt = 4
-    loop cpt
+    for cpt
     {
         #scope up
         {

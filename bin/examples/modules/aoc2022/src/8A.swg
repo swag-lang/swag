@@ -60,7 +60,7 @@ func day8A()
             if l[col] <= maxLeft:
                 hidden += 1
             else:
-                loop x in 0 until col
+                for x in 0 until col
                 {
                     if l[x] >= l[col]
                     {
@@ -70,7 +70,7 @@ func day8A()
                 }
             maxLeft = Math.max(maxLeft, l[col])
 
-            loop x in col + 1 to l.length - 1
+            for x in col + 1 to l.length - 1
             {
                 if l[x] >= l[col]
                 {
@@ -79,7 +79,7 @@ func day8A()
                 }
             }
 
-            loop y in 0 until line
+            for y in 0 until line
             {
                 if lines[y][col] >= l[col]
                 {
@@ -88,7 +88,7 @@ func day8A()
                 }
             }
 
-            loop y in line + 1 to lines.count - 1
+            for y in line + 1 to lines.count - 1
             {
                 if lines[y][col] >= l[col]
                 {

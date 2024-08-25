@@ -2,7 +2,7 @@
 #test
 {
     var a = #run {
-        loop 1:
+        for 1:
             return 66.0
         return
     }

@@ -65,7 +65,7 @@ at compile time, ensuring that the array is fully prepared before runtime.
 #run
 {
     var value = 1'f32
-    loop i in @countof(G)
+    for i in @countof(G)
     {
         G[i] = value
         value *= 2
@@ -103,7 +103,7 @@ of the block is inferred from the `return` statement within it.
     const Value = #run
     {
         var result: f32
-        loop 10:
+        for 10:
             result += 1
         return result // The inferred type of 'Value' will be 'f32'.
     }
@@ -119,7 +119,7 @@ This technique can also be utilized to initialize a static array.
     const PowerOfTwo: [N] s32 = #run
     {
         var arr: [N] s32
-        loop i in arr:
+        for i in arr:
             arr[i] = 1 << cast(u32) i
         return arr
     }

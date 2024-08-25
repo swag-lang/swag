@@ -53,7 +53,7 @@ impl Drop
 
     mtd construct()
     {
-        loop i in circleDetail
+        for i in circleDetail
         {
             let angle = map(cast(f32) i, 0.0, cast(f32) circleDetail, 0, ConstF32.TwoPi)
             var v     = Vector2{cos(angle), sin(angle)}

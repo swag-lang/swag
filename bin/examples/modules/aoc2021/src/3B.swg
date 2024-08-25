@@ -37,7 +37,7 @@ private var lines: Array'String
 func calc(a, b: u8)->u64
 {
     var scan = lines
-    loop c in scan[0]
+    for c in scan[0]
     {
         var count = 0
         visit l in scan:

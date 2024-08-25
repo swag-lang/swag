@@ -62,7 +62,7 @@ impl Offset
         newNode.contour.add(path.buffer[0])
 
         var j, k: s32
-        loop i in 1 to highI
+        for i in 1 to highI
         {
             if newNode.contour.buffer[j] != path.buffer[i]
             {
@@ -132,7 +132,7 @@ impl Offset
         var a  = 0'f64
         var j  = size - 1
         var pJ = poly[j]
-        loop i in size
+        for i in size
         {
             var pI = poly[i]
             a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
@@ -246,7 +246,7 @@ impl Offset
                 {
                     var x = -1.0'f64
                     var y = -1.0'f64
-                    loop j in 4
+                    for j in 4
                     {
                         let r1 = cround(srcPoly[0].x + x * delta)
                         let r2 = cround(srcPoly[0].y + y * delta)
@@ -267,12 +267,12 @@ impl Offset
             // Build normals
             normals.clear()
             normals.reserve(cast(u64) len)
-            loop j in len - 1:
+            for j in len - 1:
                 normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
             normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
 
             var k = len - 1
-            loop j in len:
+            for j in len:
                 offsetPoint(j, &k, node.jointype)
             destPolys.add(destPoly)
         }
@@ -372,7 +372,7 @@ impl Offset
 
         var x = kN.x
         var y = kN.y
-        loop i in steps
+        for i in steps
         {
             let r1 = cround(jP.x + x * deltaVal)
             let r2 = cround(jP.y + y * deltaVal)

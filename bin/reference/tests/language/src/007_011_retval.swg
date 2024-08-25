@@ -61,7 +61,7 @@ applications where minimizing overhead is crucial.
     {
         // Using `retval = undefined` avoids clearing the array, improving performance.
         var result: retval = undefined             // 'retval' here is an array of 255 integers.
-        loop i in 255:                             // Loop through each index in the array.
+        for i in 255:                              // Loop through each index in the array.
             result[i] = i                          // Assign the index value to each array element.
         return result                              // Return the fully populated array.
     }

@@ -23,7 +23,7 @@ impl AA
                 let ts  = @typeof(T)
 
                 sb.appendString("fn(")
-                loop i in @countof(ts.parameters)
+                for i in @countof(ts.parameters)
                 {
                     if i:
                         sb.appendString(",")

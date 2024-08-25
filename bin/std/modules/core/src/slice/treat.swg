@@ -5,7 +5,7 @@
 #[Swag.Inline]
 func(T) modify(values: [..] T, cb: closure(*T))
 {
-    loop i in values:
+    for i in values:
         cb(&values[i])
 }
 
@@ -25,7 +25,7 @@ func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
 {
     var result = values[0]
-    loop i in 1 to @countof(values) - 1:
+    for i in 1 to @countof(values) - 1:
         result = cb(result, values[i])
     return result
 }
@@ -39,7 +39,7 @@ func(T) min(values: const [..] T)->{ value: T, index: u64 }
         return result
 
     var index = 0'u64
-    loop i in 1 to @countof(values) - 1
+    for i in 1 to @countof(values) - 1
     {
         if values[i] < result.value
         {
@@ -60,7 +60,7 @@ func(T) max(values: const [..] T)->{ value: T, index: u64 }
         return result
 
     var index = 0'u64
-    loop i in 1 to @countof(values) - 1
+    for i in 1 to @countof(values) - 1
     {
         if values[i] > result.value
         {

@@ -59,7 +59,7 @@ bool FormatAst::outputWhile(FormatContext& context, AstNode* node)
 bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 {
     const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
-    concat->addString("loop");
+    concat->addString("for");
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
     {
         concat->addBlank();

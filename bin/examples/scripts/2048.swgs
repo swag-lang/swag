@@ -47,9 +47,9 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
     painter.fillRoundRect(rectBack, RoundCorners, RoundCorners, Color.fromRgb(187, 173, 160))
 
     const CellSizeW = CellSize - (2 * Margin)
-    loop x in 4
+    for x in 4
     {
-        loop y in 4
+        for y in 4
         {
             let xi = rectGrid.x + (x * CellSize) + Margin
             let yi = rectGrid.y + (y * CellSize) + Margin
@@ -101,7 +101,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
 
 func randValue()
 {
-    loop
+    for
     {
         let x = Random.shared().nextS32(0, CellCount)
         let y = Random.shared().nextS32(0, CellCount)
@@ -236,7 +236,7 @@ func keyboard(wnd: *Wnd)
             if c.val == 0:
                 continue
 
-            loop i in 1 to CellCount
+            for i in 1 to CellCount
             {
                 if g_MoveDirX != 0
                 {

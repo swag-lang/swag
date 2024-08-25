@@ -18,7 +18,7 @@ func toto(stmt: code)
 {
     if true:
         return
-    loop 4
+    for 4
     {
         #macro
         {

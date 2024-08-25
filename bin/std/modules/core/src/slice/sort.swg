@@ -27,7 +27,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
     var end    = count - 1
     var buffer = @dataof(values)
 
-    loop
+    for
     {
         // If range is too small, simple sort
         if end - begin <= 10
@@ -39,7 +39,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
         let pivot = begin
         var low   = begin
         var high  = end
-        loop
+        for
         {
             while low < high and cb(buffer[low], buffer[pivot]) <= 0:
                 low += 1
@@ -119,7 +119,7 @@ func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
     let countof = @countof(values)
-    loop i in countof - 1
+    for i in countof - 1
     {
         if cb(values[i], values[i + 1]) > 0:
             return false

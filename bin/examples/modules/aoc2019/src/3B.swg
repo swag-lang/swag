@@ -64,10 +64,10 @@ func day3B()
 
     var best = Swag.F32.Max
     var di   = 0'f32
-    loop i in t1.count - 1
+    for i in t1.count - 1
     {
         var dj = 0'f32
-        loop j in t0.count - 1
+        for j in t0.count - 1
         {
             let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()

@@ -17,7 +17,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
     var end = count - 1
     var buffer = @dataof(values)
 
-    loop
+    for
     {
         // If range is too small, simple sort
         if end - begin <= 10
@@ -31,7 +31,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 
         var low = begin
         var high = end
-        loop
+        for
         {
             while low < high and cb(buffer[low], buffer[end]) <= 0:
                 low += 1
@@ -86,6 +86,6 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 #test
 {
     var arr: [12] s32
-    loop @countof(arr): arr[#index] = cast(s32) #index
+    for @countof(arr): arr[#index] = cast(s32) #index
     quick(arr, func(x, y) => y <=> x)
 }

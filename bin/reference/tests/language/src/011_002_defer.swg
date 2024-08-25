@@ -44,7 +44,7 @@ cleanup or ensuring that certain conditions are met, regardless of how the code 
 #test
 {
     var G = 0
-    loop 10
+    for 10
     {
         defer G += 1   // Ensure G is incremented each loop iteration, even if the loop is exited early.
 
@@ -86,7 +86,7 @@ early exit.
     func isResourceCreated(b: bool)       => b
 
     var resource = false
-    loop 10
+    for 10
     {
         resource = createResource()
         defer
@@ -96,7 +96,7 @@ early exit.
         }
 
         if #index == 2:
-            break      // Exit loop early, defer block still ensures resource release.
+            break      // Exit for early, defer block still ensures resource release.
     }
 
     @assert(!resource.isResourceCreated())   // Ensure the resource is no longer created post-loop.

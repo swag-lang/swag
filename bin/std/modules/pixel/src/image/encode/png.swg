@@ -278,7 +278,7 @@ impl Encoder
             subimage[0].height = ihdr.height
         }
 
-        loop i in 6
+        for i in 6
         {
             if subimage[i].width == 0 or subimage[i].height == 0:
                 continue
@@ -325,7 +325,7 @@ impl Encoder
             let row_uc = row
             Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
 
-            loop k in subimage[pass].width
+            for k in subimage[pass].width
             {
                 let ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
@@ -348,7 +348,7 @@ impl Encoder
             return encodeScanLine(scanline)
         }
 
-        loop k in subimage[pass].width
+        for k in subimage[pass].width
         {
             let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
             Memory.copy(scanline + k * pixelSize, row + ioffset, pixelSize)
@@ -365,7 +365,7 @@ impl Encoder
         let chl = cast(s32) encodeFlags.filterChoice
         if !(chl & (chl - 1))
         {
-            loop i in 5
+            for i in 5
             {
                 if chl == 1 << (i + 3):
                     return acast i
@@ -377,7 +377,7 @@ impl Encoder
         var filterScores = [Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max]
 
         var sum: s32
-        loop i in 5
+        for i in 5
         {
             let flag = 1 << (i + 3)
             if !(chl & flag):
@@ -417,7 +417,7 @@ impl Encoder
         var sum: s32
         var a, b, c: s32
 
-        loop i in size
+        for i in size
         {
             if i >= bytesPerPixel
             {
@@ -457,7 +457,7 @@ impl Encoder
 
     mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
     {
-        loop i in size
+        for i in size
         {
             var a, b, c: s32
             if i >= bytesPerPixel
@@ -642,7 +642,7 @@ public impl IImageEncoder for Encoder
         if userOptions.filtering and userOptions.compressionLevel != .NoCompression:
             encodeFlags.filterChoice = .All
 
-        loop
+        for
         {
             let ioffset = (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
             if encodeRow(image.pixels.buffer + ioffset):

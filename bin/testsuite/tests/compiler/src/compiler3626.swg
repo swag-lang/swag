@@ -9,7 +9,7 @@ var g: [4] AA
 
 #test
 {
-    loop i in @countof(g)
+    for i in @countof(g)
     {
         @assert(g[i].b)
         @assert(g[i].c == 666)

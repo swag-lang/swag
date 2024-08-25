@@ -2,9 +2,9 @@
 #test
 {
     var error = false
-    #scope outer loop x in 10
+    #scope outer for x in 10
     {
-        loop 20
+        for 20
         {
             break in outer
         }

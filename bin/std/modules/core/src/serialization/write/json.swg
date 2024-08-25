@@ -34,7 +34,7 @@ impl JSon
     {
         if !options.saveBlanks:
             return
-        loop indent * options.indentLevel:
+        for indent * options.indentLevel:
             output.addNative(` `'u8)
     }
 

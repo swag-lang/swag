@@ -23,7 +23,7 @@ using Core
         var cpt = 0
         var res = "XXXabababXXXaabXXXabbb"
         let end = @dataof(res) + @countof(res)
-        loop
+        for
         {
             let val = r.grep(res)
             if !val:

@@ -338,14 +338,14 @@ func bigLoop()
 {
     if Env.hasArg("swag.test")
     {
-        loop i in MAX_IMAGES
+        for i in MAX_IMAGES
         {
             g_ImageIdx = i
             loadImg()
             display()
         }
 
-        loop j in MAX_EFFECTS
+        for j in MAX_EFFECTS
         {
             g_ImageIdx  = 0
             g_EffectIdx = j
@@ -357,7 +357,7 @@ func bigLoop()
     }
 
     var keyb: Input.Keyboard
-    loop
+    for
     {
         var msg: MSG
         @getcontext().tempAllocator.freeAll()

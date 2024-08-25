@@ -10,7 +10,7 @@ impl Image
             return
 
         var convArr: [256] u8 = undefined
-        loop i in 256:
+        for i in 256:
             convArr[i] = cast(u8) (255 - i)
 
         let f = &convArr[0]

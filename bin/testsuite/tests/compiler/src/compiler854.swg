@@ -5,7 +5,7 @@ var cpt: s32 = 0
 #test
 {
 	cpt = 0
-	loop(10)
+	for(10)
 	{
 		defer cpt -= 1
 		{

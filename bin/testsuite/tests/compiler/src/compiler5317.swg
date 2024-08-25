@@ -4,7 +4,7 @@
 {
     const C = [1, 2, 3, 4]
     var v = 0
-    loop i in 4
+    for i in 4
     {
         v += C[i]
     }

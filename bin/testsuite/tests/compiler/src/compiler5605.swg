@@ -3,7 +3,7 @@
 
 #test
 {
-    loop 5:
+    for 5:
         if #index == 0:
             @assert(true)
 }

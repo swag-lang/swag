@@ -11,7 +11,7 @@ impl Image
 
         let level    = cast(s32) (Math.clamp(factor, -1, 1) * 255)
         var convArr: [256] u8 = undefined
-        loop i in 256:
+        for i in 256:
             convArr[i] = cast(u8) Math.clamp(i + level, 0, 255)
 
         let f = &convArr[0]

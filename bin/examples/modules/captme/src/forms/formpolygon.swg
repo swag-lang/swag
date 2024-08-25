@@ -198,7 +198,7 @@ impl IForm for FormPolygon
         if backColor.a == 0
         {
             var v = Math.Vector2{pt.x, pt.y}
-            loop i in paintPoints
+            for i in paintPoints
             {
                 let ni = (i + 1) % paintPoints.count
                 let p0 = Math.Vector2{paintPoints[i].x, paintPoints[i].y}
@@ -235,7 +235,7 @@ impl IForm for FormPolygon
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i in 1 until paintPoints.count:
+        for i in 1 until paintPoints.count:
             linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         linePath.close()
 

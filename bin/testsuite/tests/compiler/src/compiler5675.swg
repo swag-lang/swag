@@ -1,7 +1,7 @@
 #test
 {
     #scope Up
-    loop 5
+    for 5
     {
         break in Up
     }

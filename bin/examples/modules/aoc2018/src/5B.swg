@@ -31,7 +31,7 @@ func day5B0() assume
     var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
-    loop x in 26
+    for x in 26
     {
         var line = read
         var idx  = 0

@@ -2,7 +2,7 @@ func toto(x: ...) => 666
 
 #test
 {
-    loop 10
+    for 10
     {
         var x = toto(1)
     }

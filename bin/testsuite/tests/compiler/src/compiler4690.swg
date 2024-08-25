@@ -8,7 +8,7 @@ enum TOTO
 func fromName(name: string)
 {
     const t = @typeof(TOTO)
-    loop t.values
+    for t.values
     {
         if t.values[#index].name == name
         {

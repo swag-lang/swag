@@ -182,7 +182,7 @@ public func fromUtf8(src: const [..] u8)->Array'rune
 public func makeUpper(buffer: [..] rune)
 {
     var p = @dataof(buffer)
-    loop @countof(buffer)
+    for @countof(buffer)
     {
         dref p = toUpper(dref p)
         p += 1
@@ -193,7 +193,7 @@ public func makeUpper(buffer: [..] rune)
 public func makeLower(buffer: [..] rune)
 {
     var p = @dataof(buffer)
-    loop @countof(buffer)
+    for @countof(buffer)
     {
         dref p = toLower(dref p)
         p += 1
@@ -224,7 +224,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
     if ignoreCase
     {
         #[Swag.Safety("boundcheck", false)]
-        loop i in minLen
+        for i in minLen
         {
             let c1 = toLower(src[i])
             let c2 = toLower(dst[i])

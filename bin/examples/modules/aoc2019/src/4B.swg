@@ -15,18 +15,18 @@ using Core
 func day4B()
 {
     var total = 0
-    loop x in 246515 to 739105
+    for x in 246515 to 739105
     {
         var div  = 100_000
         var str: [6] u8 = undefined
-        loop i in 6
+        for i in 6
         {
             str[i] = cast(u8) ((x / div) % 10)
             div /= 10
         }
 
         var ok = false
-        loop i in 5
+        for i in 5
         {
             if str[i] > str[i + 1]
             {

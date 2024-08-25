@@ -2,7 +2,7 @@
 #test
 {
     var g = 0
-    loop #back i in -4  to -1
+    for #back i in -4  to -1
     {
         //@print(i)
         g += i

@@ -59,7 +59,7 @@ impl Decoder
                     break
                 }
 
-                loop num
+                for num
                 {
                     switch bpp
                     {

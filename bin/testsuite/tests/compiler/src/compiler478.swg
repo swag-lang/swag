@@ -17,7 +17,7 @@ func T(param: *s32)
 func F(param: [3] s32, b: (*s32))
 {
 	var data = @dataof(param)
-	loop(param)
+	for(param)
 	{
 		b(data + #index)
 	}

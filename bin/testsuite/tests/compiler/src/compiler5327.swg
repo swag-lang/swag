@@ -5,7 +5,7 @@ impl S
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisitBytes(stmt: code)
     {
-        loop 4
+        for 4
         {
             let #alias0 = #index
             #mixin stmt

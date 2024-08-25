@@ -6,11 +6,10 @@ Special keywords are predefined, reserved identifiers that have specific meaning
 if
 else
 elif
-for
 while
 switch
 defer
-loop
+for
 visit
 break
 fallthrough

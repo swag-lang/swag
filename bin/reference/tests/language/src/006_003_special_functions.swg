@@ -30,7 +30,7 @@ impl Struct
     // Access a value by its index. The index is of type OneType, and it returns a WhateverType.
     func opIndex(using self, index: OneType)->WhateverType { return true; }
 
-    // Called when @countof is used, typically in a 'loop' block, to return the count of elements
+    // Called when @countof is used, typically in a 'for' block, to return the count of elements
     func opCount(using self)->u64 { return 0; }
 
     // Called when @dataof is used, returns a pointer to the underlying data of type WhateverType

@@ -5,7 +5,7 @@ impl Array
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        loop 7:
+        for 7:
         #mixin stmt
     }
 

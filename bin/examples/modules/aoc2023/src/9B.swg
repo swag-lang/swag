@@ -43,7 +43,7 @@ func day9B()
         {
             recom = false
             var newValues: Array's64
-            loop i in 0 until values.count - 1
+            for i in 0 until values.count - 1
             {
                 let v = values[i + 1] - values[i]
                 recom = v or recom

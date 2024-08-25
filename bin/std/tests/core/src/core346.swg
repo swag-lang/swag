@@ -5,7 +5,7 @@ using Core
     var arr: Array'u8
 
     let rng = Random.shared()
-    loop 1000
+    for 1000
     {
         let v = cast(u8) (rng.nextU32() % 256)
         arr.add(v)

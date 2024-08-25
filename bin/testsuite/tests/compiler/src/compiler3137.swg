@@ -3,11 +3,11 @@
     var x = 0
     #scope A
     {
-        loop 10
+        for 10
         {
             #scope A
             {
-                loop 10
+                for 10
                 {
                     x += 1
                     break in A

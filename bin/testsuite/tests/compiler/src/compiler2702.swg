@@ -6,7 +6,7 @@ func doIt(fn: func())
 
 #test
 {
-    loop 2
+    for 2
     {
         doIt(func() { break; })
     }

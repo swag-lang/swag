@@ -28,7 +28,7 @@ This allows you to use the struct in a loop context, where the loop will execute
 
     // Loop through the struct 'v', with the loop running as many times as 'opCount' returns
     var cpt = 0
-    loop v:
+    for v:
         cpt += 1  // Increment the counter each iteration
 
     @assert(cpt == 4)  // Ensure the loop ran 4 times, as specified by 'opCount'

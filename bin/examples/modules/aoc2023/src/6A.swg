@@ -66,7 +66,7 @@ func day6A()
     visit t, idx in times
     {
         var cpt = 0
-        loop i in t
+        for i in t
         {
             let travel = (t - i) * i
             if travel > dists[idx]:

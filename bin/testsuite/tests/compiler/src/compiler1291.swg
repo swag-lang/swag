@@ -2,7 +2,7 @@
 func Visit(user: code)
 {
     var c: rune
-	loop 10
+	for 10
 	{
         c = 100
 		#macro

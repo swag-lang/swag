@@ -36,7 +36,7 @@ impl MyStruct
             #error "Reverse visiting is not supported in this example."
 
         // Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.
-        loop idx in 3
+        for idx in 3
         {
             // The `#macro` directive ensures that the code is injected into the caller's scope.
             #macro
@@ -109,7 +109,7 @@ impl MyStruct
     mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)
     {
         // In this version, we visit the fields in reverse order.
-        loop idx in 3
+        for idx in 3
         {
             #macro
             {
@@ -186,7 +186,7 @@ impl SliceStruct
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(self, stmt: code)
     {
-        loop idx in @countof(self.buffer)
+        for idx in @countof(self.buffer)
         {
             #macro
             {

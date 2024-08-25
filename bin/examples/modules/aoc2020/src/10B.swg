@@ -72,7 +72,7 @@ func day10B() assume
             return it.value
 
         var total = 0'u64
-        loop j in i + 1 until input.count
+        for j in i + 1 until input.count
         {
             if input[j] - input[i] <= 3:
                 total += count(j, input, storage)

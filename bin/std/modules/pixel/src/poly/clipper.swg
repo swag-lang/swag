@@ -228,7 +228,7 @@ impl Transform
         rangeTest(pg.buffer[highI])
         initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
         initEdge(&edges[highI], &edges[0], &edges[highI - 1], pg.buffer[highI])
-        loop #back i in 1 until highI
+        for #back i in 1 until highI
         {
             rangeTest(pg.buffer[i])
             initEdge(&edges[i], &edges[i + 1], &edges[i - 1], pg.buffer[i])
@@ -238,7 +238,7 @@ impl Transform
 
         // 2. Remove duplicate vertices, and (when closed) collinear edges ...
         var e, eLoopStop = eStart
-        loop
+        for
         {
             if e.curr == e.next.curr
             {
@@ -275,7 +275,7 @@ impl Transform
 
         // 3. Do second stage of edge initialization ...
         e = eStart
-        loop
+        for
         {
             initEdge2(e, polyType)
             e = e.next
@@ -294,7 +294,7 @@ impl Transform
 
         var leftBoundIsForward: bool
         var eMin:               *Edge
-        loop
+        for
         {
             e = findNextLocMin(e)
             if e == eMin:
@@ -465,7 +465,7 @@ impl Transform
     func findNextLocMin(edge: *Edge)->*Edge
     {
         var e = edge
-        loop
+        for
         {
             while e.bot != e.prev.bot or e.curr == e.top:
                 e = e.next
@@ -778,7 +778,7 @@ impl Transform
         }
 
         var op1: *OutPt
-        loop
+        for
         {
             let isLastHorz = (horzEdge == eLastHorz)
             var e          = getNextInAEL(horzEdge, dir)
@@ -1086,7 +1086,7 @@ impl Transform
             if !op or outrec.isOpen:
                 continue
 
-            loop
+            for
             {
                 var op2 = op.next
                 while op2 != outrec.pts
@@ -1174,7 +1174,7 @@ impl Transform
         let preserveCol = preserveCollinear or strictSimple
 
         var lastOK: *OutPt
-        loop
+        for
         {
             if pp.prev == pp or pp.prev == pp.next
             {
@@ -1510,7 +1510,7 @@ impl Transform
     func updateOutPtIdxs(outrec: *OutRec)
     {
         var op = outrec.pts
-        loop
+        for
         {
             op.idx = outrec.idx
             op     = op.prev
@@ -1524,7 +1524,7 @@ impl Transform
         var op      = outPoints
         var result  = 0
         let startOp = op
-        loop
+        for
         {
             if op.next.pt.y == pt.y
             {
@@ -1571,7 +1571,7 @@ impl Transform
     func poly2ContainsPoly1(outPt1, outPt2: *OutPt)->bool
     {
         var op = outPt1
-        loop
+        for
         {
             let res = pointInPolygon(op.pt, outPt2)
             if res >= 0:
@@ -1956,7 +1956,7 @@ impl Transform
     {
         copyAELToSEL()
         intersectList.sort()
-        loop i in intersectList
+        for i in intersectList
         {
             if !edgesAdjacent(intersectList[i])
             {
@@ -2557,7 +2557,7 @@ impl Transform
             return 0
 
         var a = 0'f64
-        loop
+        for
         {
             a += cast(f64) (op.prev.pt.x + op.pt.x) * cast(f64) (op.prev.pt.y - op.pt.y)
             op = op.next
@@ -2669,7 +2669,7 @@ impl Transform
             return
 
         var pp1 = pp
-        loop
+        for
         {
             let pp2 = pp1.next
             pp1.next = pp1.prev
@@ -3019,7 +3019,7 @@ impl Transform
             //if any output polygons share an edge, they'll need joining later ...
             if op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
             {
-                loop i in ghostJoinList.count
+                for i in ghostJoinList.count
                 {
                     let jr = ghostJoinList[i]
                     if horzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x):
@@ -3069,7 +3069,7 @@ impl Transform
 
         var result = 0
         var p      = pts
-        loop
+        for
         {
             result += 1
             p = p.next
@@ -3083,7 +3083,7 @@ impl Transform
     mtd buildResult(polys: *ClipperPaths)
     {
         polys.reserve(polyOuts.count)
-        loop i in polyOuts
+        for i in polyOuts
         {
             if !polyOuts[i].pts:
                 continue
@@ -3095,7 +3095,7 @@ impl Transform
 
             var pg: ClipperPath
             pg.reserve(cast(u64) cnt)
-            loop cnt
+            for cnt
             {
                 pg.add(p.pt)
                 p = p.prev
@@ -3107,7 +3107,7 @@ impl Transform
 
     mtd disposeAllOutRecs()
     {
-        loop i in polyOuts:
+        for i in polyOuts:
             disposeOutRec(i)
         polyOuts.clear()
     }
@@ -3153,7 +3153,7 @@ impl Transform
         {
             result.bottom = Math.max(result.bottom, minimaList[lm].leftBound.bot.y)
             var e = minimaList[lm].leftBound
-            loop
+            for
             {
                 let bottomE = e
                 while e.nextInLML

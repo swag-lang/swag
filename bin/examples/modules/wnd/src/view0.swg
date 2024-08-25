@@ -329,7 +329,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         tab.setForm(TabForm.Round)
         tab.barLayout = .Fixed
 
-        loop 5
+        for 5
         {
             let view0 = Wnd.create'Wnd(tab)
             let n     = Format.toString("Tab%", #index == 0 ? 1568 : #index)

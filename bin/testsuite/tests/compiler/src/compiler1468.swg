@@ -2,7 +2,7 @@
 func toto()
 {
     //for var v = 0; v <= 5; v += 1
-    loop 5
+    for 5
     {
         var xx = 666
         //@assert(v != 666)

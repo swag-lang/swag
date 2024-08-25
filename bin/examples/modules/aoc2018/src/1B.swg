@@ -2,7 +2,7 @@
 --- Part Two ---
 You notice that the device repeats the same frequency change list over and over. To calibrate the device, you need to find the first frequency it reaches twice.
 
-For example, using the same list of changes above, the device would loop as follows:
+For example, using the same list of changes above, the device would for as follows:
 
 Current frequency  0, change of +1; resulting frequency  1.
 Current frequency  1, change of -2; resulting frequency -1.
@@ -35,7 +35,7 @@ func day1B()
 
     var total = 0's64
     var done: HashSet's64
-    loop
+    for
     {
         visit v in values
         {

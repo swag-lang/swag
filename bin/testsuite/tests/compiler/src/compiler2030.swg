@@ -11,7 +11,7 @@ func(T) dec(x: *T)
 //#[Swag.PrintBc]
 func(T) map(values: [..] T, cb: func(*T))
 {
-    loop values:
+    for values:
         cb(&values[#index])
 }
 

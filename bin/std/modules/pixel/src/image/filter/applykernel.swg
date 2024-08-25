@@ -62,9 +62,9 @@ impl Image
                 var p     = px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
                 let kfull = (kernelSize * 2) + 1
                 let koff  = cast(u64) (w8 - (kfull * b8))
-                loop kfull
+                for kfull
                 {
-                    loop kfull
+                    for kfull
                     {
                         let ks0 = dref ks
                         bs += cast(s32) p[0] * ks0

@@ -8,7 +8,7 @@ const ITER = 100000
 
 func entry(th: Threading.Thread)
 {
-    loop ITER:
+    for ITER:
         G += 1
     @assert(G == ITER)
 }

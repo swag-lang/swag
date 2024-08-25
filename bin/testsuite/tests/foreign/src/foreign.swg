@@ -200,7 +200,7 @@ public namespace tcf
 public func tcf_join(titi: string, values: s64...)
 {
     @assert(titi == "titi")
-    loop i in values
+    for i in values
     {
         //@print(values[i])
         //@print(" ")
@@ -218,7 +218,7 @@ public func tcf_join(titi: string, values: s64...)
 public func tcf_join8(titi: string, values: s8...)
 {
     @assert(titi == "titi")
-    loop i in values
+    for i in values
     {
         //@print(values[i])
         //@print(" ")
@@ -236,7 +236,7 @@ public func tcf_join8(titi: string, values: s8...)
 public func tcf_join16(titi: string, values: s16...)
 {
     @assert(titi == "titi")
-    loop i in values
+    for i in values
     {
         //@print(values[i])
         //@print(" ")
@@ -254,7 +254,7 @@ public func tcf_join16(titi: string, values: s16...)
 public func tcf_join32(titi: string, values: s32...)
 {
     @assert(titi == "titi")
-    loop i in values
+    for i in values
     {
         //@print(values[i])
         //@print(" ")

@@ -29,7 +29,7 @@ impl ITF1 for AA
 
 func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->const *void
 {
-    loop i in structType.interfaces
+    for i in structType.interfaces
     {
         if @stringcmp(structType.interfaces[i].name, itfType.fullname)
         {

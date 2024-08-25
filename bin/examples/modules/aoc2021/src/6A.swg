@@ -62,9 +62,9 @@ func day6A()
     visit v in str:
         values.add(assume StrConv.toS32(v))
 
-    loop day in 80
+    for day in 80
     {
-        loop f in values
+        for f in values
         {
             if values[f] == 0
             {

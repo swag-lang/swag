@@ -303,7 +303,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rectPepper.y = rect.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT / 2)
         rectPepper.width, rectPepper.height = PEPPER_SIZE
 
-        loop i in fi.rank
+        for i in fi.rank
         {
             dc.drawTexture(rectPepper, g_Pepper)
             rectPepper.x -= PEPPER_SIZE * 0.5

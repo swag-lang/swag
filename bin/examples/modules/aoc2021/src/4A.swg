@@ -73,7 +73,7 @@ func day4A()
         var card: Array'u64
         var maxCol, maxLine: [5] u64
 
-        loop y in line to line + 4
+        for y in line to line + 4
         {
             visit v, x in Tokenize.split(lines[y], ` `'u8)
             {
@@ -87,7 +87,7 @@ func day4A()
         }
 
         var score = Swag.U64.Max
-        loop i in 5:
+        for i in 5:
             score = Math.min(score, maxCol[i], maxLine[i])
 
         if score < bestScore

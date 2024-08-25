@@ -77,7 +77,7 @@ func day6A() assume
 
     visit c, who in coords
     {
-        loop i in W * W
+        for i in W * W
         {
             let x = i % W
             let y = i / W

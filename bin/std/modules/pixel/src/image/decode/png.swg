@@ -209,7 +209,7 @@ impl Decoder
         if header.bitDepth == 1
         {
             let mul = paletteCount ? 1 : 255
-            loop height
+            for height
             {
                 var dest = orgDest
                 orgDest += rowStrideOut
@@ -254,7 +254,7 @@ impl Decoder
         elif header.bitDepth == 2
         {
             let mul = paletteCount ? 1 : 85
-            loop height
+            for height
             {
                 var dest = orgDest
                 orgDest += rowStrideOut
@@ -287,7 +287,7 @@ impl Decoder
         elif header.bitDepth == 4
         {
             let mul = paletteCount ? 1 : 17
-            loop height
+            for height
             {
                 var dest = orgDest
                 orgDest += rowStrideOut
@@ -335,7 +335,7 @@ impl Decoder
         var up = tmpRow.buffer
 
         let nk = rowStrideIn - inChannels
-        loop height
+        for height
         {
             let filter = cast(RowFilter) src[0]
             src += 1
@@ -347,34 +347,34 @@ impl Decoder
                 Memory.copy(destOff, src, rowStrideIn)
 
             case Sub:
-                loop i in inChannels:
+                for i in inChannels:
                     destOff[i] = src[i]
-                loop k in nk:
+                for k in nk:
                     destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over destOff[k])
 
             case Up:
-                loop k in rowStrideIn:
+                for k in rowStrideIn:
                     destOff[k] = cast<bit>(u8) (src[k] + #over up[k])
 
             case Average:
-                loop i in inChannels
+                for i in inChannels
                 {
                     let avg = up[i] >> 1
                     destOff[i] = cast<bit>(u8) (src[i] + #over avg)
                 }
-                loop k in nk
+                for k in nk
                 {
                     let avg = cast(u8) ((cast(u16) up[inChannels + k] + cast(u16) destOff[k]) >> 1)
                     destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over avg)
                 }
 
             case Paeth:
-                loop i in inChannels
+                for i in inChannels
                 {
                     let paeth = cast(u32) filterPaeth(0, up[i], 0)
                     destOff[i] = cast<bit>(u8) (src[i] + paeth)
                 }
-                loop k in nk
+                for k in nk
                 {
                     let paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
                     destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over paeth)
@@ -411,7 +411,7 @@ impl Decoder
     {
         var tmpArr: Array'u8
         var input   = dcmpBuf.buffer
-        loop p in 7
+        for p in 7
         {
             let x = (header.width - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
             let y = (header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
@@ -424,15 +424,15 @@ impl Decoder
             defilter(cast(u32) x, cast(u32) y, input, tmpArr.buffer)
 
             var t = tmpArr.buffer
-            loop j in y
+            for j in y
             {
-                loop i in x
+                for i in x
                 {
                     let out_y   = header.height - ((j * Adam7SpacingY[p]) + Adam7OrigY[p]) - 1
                     let out_x   = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     var out_off = out_y * header.width * inChannels
                     out_off += out_x * inChannels
-                    loop z in inChannels:
+                    for z in inChannels:
                         dstPixels[out_off + z] = t[z]
                     t += inChannels
                 }

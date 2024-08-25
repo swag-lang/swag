@@ -44,20 +44,20 @@ func day6A0()
     {
         if r0.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)):
-                loop y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)):
+            for x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)):
+                for y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)):
                     lights.add((x << 32) | y)
         }
         elif r1.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)):
-                loop y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)):
+            for x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)):
+                for y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)):
                     lights.remove((x << 32) | y)
         }
         elif r2.match(l)
         {
-            loop x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)):
-                loop y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)):
+            for x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)):
+                for y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)):
                     if lights.contains((x << 32) | y):
                         lights.remove((x << 32) | y)
                     else:
@@ -90,9 +90,9 @@ func day6A1()
         let x1   = assume StrConv.toU64(nums[2])
         let y1   = assume StrConv.toU64(nums[3])
 
-        loop x in x0 to x1
+        for x in x0 to x1
         {
-            loop y in y0 to y1
+            for y in y0 to y1
             {
                 if l[6] == `n`:
                     lights.ref2(x, y, 1000) = true
@@ -133,9 +133,9 @@ func day6A2()
         let x1   = assume StrConv.toU64(nums[2])
         let y1   = assume StrConv.toU64(nums[3])
 
-        loop x in x0 to x1
+        for x in x0 to x1
         {
-            loop y in y0 to y1
+            for y in y0 to y1
             {
                 let coord = x + (y * 1000)
                 if l[6] == `n`:

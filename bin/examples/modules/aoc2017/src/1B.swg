@@ -22,7 +22,7 @@ func day1B()
     let text     = assume File.readAllText(dataPath)
 
     var total = 0
-    loop i in text
+    for i in text
     {
         if text[i] == text[(i + (text.length / 2)) % text.length]:
             total += text[i] - `0`

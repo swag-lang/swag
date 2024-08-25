@@ -25,7 +25,7 @@ func day3B()
     visit s, slope in [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
     {
         var x, y, count: u32
-        loop
+        for
         {
             y += s.item1
             if y >= lines.count:

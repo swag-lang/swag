@@ -1,6 +1,6 @@
 #test
 {
-    loop i in 4
+    for i in 4
     {
         switch i
         {

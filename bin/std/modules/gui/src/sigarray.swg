@@ -48,7 +48,7 @@ impl SigArray
                 let ts  = @typeof(T)
 
                 sb.appendString("fn(")
-                loop i in ts.parameters
+                for i in ts.parameters
                 {
                     if i:
                         sb.appendString(",")

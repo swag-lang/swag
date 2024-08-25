@@ -41,7 +41,7 @@ func day3A()
     let lines    = assume File.readAllLines(dataPath)
 
     var gamma, epsilon: u32
-    loop c in lines[0]
+    for c in lines[0]
     {
         gamma, epsilon <<= 1
 

@@ -8,7 +8,7 @@ func set()
 #test
 {
     var x = 0
-    loop 10
+    for 10
     {
         #run
         {

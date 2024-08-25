@@ -68,7 +68,7 @@ func day7B() assume
     }
 
     var total = 0
-    loop
+    for
     {
         total += 1
 

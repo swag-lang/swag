@@ -182,7 +182,7 @@ public impl Font
         var buffer = atlas.datas.buffer + x + (atlas.width * (atlas.height - 1))
         buffer -= (y * atlas.width)
         var src = bmp.buffer
-        loop j in bmp.rows
+        for j in bmp.rows
         {
             Memory.copy(buffer, src, cast(u64) bmp.width)
             src += bmp.pitch

@@ -20,7 +20,7 @@ func day6B()
         state[assume StrConv.toS32(v)] += 1
 
     var total: u64
-    loop 256
+    for 256
     {
         var oldState = state
         Memory.clear(&state[0], @sizeof(state))

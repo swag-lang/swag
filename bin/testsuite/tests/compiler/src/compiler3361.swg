@@ -7,7 +7,7 @@ struct A
 #[Swag.Macro]
 func toto(x: s32, stmt: code)
 {
-    loop x
+    for x
     {
         #macro
         {

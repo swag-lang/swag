@@ -240,7 +240,7 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
     var stage:  Stage = FindRiff
     var header: ChunkHeader
 
-    loop
+    for
     {
         let seek = stream.getPosition()
         if seek & 1:

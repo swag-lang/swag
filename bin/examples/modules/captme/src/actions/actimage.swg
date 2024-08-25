@@ -309,11 +309,11 @@ impl MainWnd
         }
 
         #scope Left
-        loop x in capture.backImg.width
+        for x in capture.backImg.width
         {
             if x + capture.backImagePos.x < 0:
                 continue
-            loop y in capture.backImg.height
+            for y in capture.backImg.height
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -325,11 +325,11 @@ impl MainWnd
         }
 
         #scope Right
-        loop x in capture.backImg.width - 1 to 0
+        for x in capture.backImg.width - 1 to 0
         {
             if x + capture.backImagePos.x >= capture.width:
                 continue
-            loop y in capture.backImg.height
+            for y in capture.backImg.height
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -341,11 +341,11 @@ impl MainWnd
         }
 
         #scope Up
-        loop y in capture.backImg.height
+        for y in capture.backImg.height
         {
             if y + capture.backImagePos.y < 0:
                 continue
-            loop x in capture.backImg.width
+            for x in capture.backImg.width
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a
@@ -357,11 +357,11 @@ impl MainWnd
         }
 
         #scope Down
-        loop y in capture.backImg.height - 1 to 0
+        for y in capture.backImg.height - 1 to 0
         {
             if y + capture.backImagePos.y >= capture.height:
                 continue
-            loop x in capture.backImg.width
+            for x in capture.backImg.width
             {
                 var col = capture.backImg.getPixelColor(x, y)
                 if col.a

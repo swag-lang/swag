@@ -4,7 +4,7 @@ using Core, Core.Random
 {
     var rng: Mt64
     rng.seedU64(cast(u64) Time.nowMilliseconds())
-    loop 10
+    for 10
     {
         var x = rng.nextU64()
         //@print(x, "\n")
@@ -16,7 +16,7 @@ using Core, Core.Random
     s[2] = cast(u64) 3
     s[3] = cast(u64) 4
     rng.seedU64(s)
-    loop 10
+    for 10
     {
         var x = rng.nextU64()
         //@print(x, "\n")

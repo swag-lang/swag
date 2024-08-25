@@ -2,7 +2,7 @@
 
 #test
 {
-    loop 5 to 0
+    for 5 to 0
     {
     }
 }

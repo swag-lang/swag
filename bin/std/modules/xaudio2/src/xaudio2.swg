@@ -175,8 +175,8 @@ struct XAUDIO2_BUFFER
     playBegin:      UINT32          // First sample in this buffer to be played.
     playLength:     UINT32          // Length of the region to be played in samples, or 0 to play the whole buffer.
     loopBegin:      UINT32          // First sample of the region to be looped.
-    loopLength:     UINT32          // Length of the desired loop region in samples, or 0 to loop the entire buffer.
-    loopCount:      UINT32          // Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever.
+    loopLength:     UINT32          // Length of the desired for region in samples, or 0 to for the entire buffer.
+    loopCount:      UINT32          // Number of times to repeat the for region, or XAUDIO2_LOOP_INFINITE to for forever.
     pContext:       *void           // Context value to be passed back in callbacks.
 }
 

@@ -7,7 +7,7 @@ func toto()
 
     #macro
     {
-        loop 10: #up cpt += 1
+        for 10: #up cpt += 1
     }
 
     @assert(cpt == 10)

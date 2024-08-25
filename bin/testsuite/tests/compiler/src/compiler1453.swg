@@ -9,7 +9,7 @@ impl S
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(using self, stmt: s32)
     {
-        loop 10
+        for 10
         {
             #macro
             {

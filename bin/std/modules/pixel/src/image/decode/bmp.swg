@@ -141,7 +141,7 @@ public impl IImageDecoder for Decoder
                 var src  = dataof
                 let dstW = cast(u64) result.width * result.bpp8
                 let srcW = dstW + c
-                loop result.height
+                for result.height
                 {
                     Memory.copy(dst, src, dstW)
                     dst += dstW

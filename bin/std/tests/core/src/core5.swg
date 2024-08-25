@@ -4,7 +4,7 @@ using Core.Random
 #test
 {
     var rng: Rng
-    loop 100
+    for 100
     {
         let v = rng.nextS32(10, 50)
         //@print(cast(s64) v)

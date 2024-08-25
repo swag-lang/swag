@@ -13,10 +13,10 @@ impl A
     func(ptr: bool) toto(using self, stmt: code)
     {
         #assert ptr == true
-        loop idx in titi's32(1, 1)
+        for idx in titi's32(1, 1)
         {
             let shift: u32 = 0
-            loop 1
+            for 1
             {
                 #macro
                 {

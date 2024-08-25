@@ -13,7 +13,7 @@ impl X
 //#[Swag.PrintBc]
 #test
 {
-    loop i in 1
+    for i in 1
     {
         var x: X
 

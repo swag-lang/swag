@@ -42,7 +42,7 @@ var toTreatCpt: u32
     let itf = @compiler()
     itf.compileString("func GG() => 1234")
 
-    loop toTreatCpt
+    for toTreatCpt
     {
         //@print(toTreat[#index])
         //@print("\n")

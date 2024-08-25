@@ -2,7 +2,7 @@
 func toto()
 {
     var x = 0
-    loop
+    for
     {
         x += 1
     }

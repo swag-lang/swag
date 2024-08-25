@@ -12,7 +12,7 @@ impl A
             return
 
         //@print(cast(s64) myTruc)
-        loop myTruc
+        for myTruc
         {
         }
     }

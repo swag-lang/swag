@@ -225,7 +225,7 @@ impl String
         #else:
             var scan = buffer - 1
 
-        loop length
+        for length
         {
             #if back:
                 scan -= 1
@@ -431,7 +431,7 @@ impl String
         var tmp: [4] u8
         let eat  = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
-        loop i in eat:
+        for i in eat:
             buffer[length + i] = tmp[i]
         length += eat
         buffer[length] = 0
@@ -456,7 +456,7 @@ impl String
     func join(values: string...)->String
     {
         var result: String
-        loop values:
+        for values:
             result += values[#index]
         return result
     }
@@ -466,7 +466,7 @@ impl String
     func joinWith(separator: string, values: string...)->String
     {
         var result: String
-        loop values
+        for values
         {
             if separator and #index:
                 result += separator
@@ -532,7 +532,7 @@ impl String
             return
 
         var ptr = buffer
-        loop
+        for
         {
             let sl = @mkslice(ptr, length)
             let (c, eat) = Utf8.decodeRune(sl)
@@ -552,7 +552,7 @@ impl String
         if !length:
             return
 
-        loop
+        for
         {
             let sl = @mkslice(buffer, length)
             let (c, eat) = Utf8.decodeLastRune(sl)

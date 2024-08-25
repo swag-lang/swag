@@ -89,7 +89,7 @@ impl StaticArray
 
         #if Reflection.hasPostCopy(T)
         {
-            loop i in countof:
+            for i in countof:
                 buffer[i] = #nodrop dataof[i]
         }
         #else
@@ -114,7 +114,7 @@ impl StaticArray
         #else:
             var scan = &buffer[0] - 1
 
-        loop count
+        for count
         {
             #if back:
                 scan -= 1
@@ -183,7 +183,7 @@ impl StaticArray
     {
         #if Reflection.hasDrop(T)
         {
-            loop count:
+            for count:
                 @drop(&buffer[0] + #index)
         }
 
@@ -381,7 +381,7 @@ impl StaticArray
         #if Reflection.hasPostCopy(T)
         {
             var destPtr = &buffer[0] + oldCount
-            loop sliceCount
+            for sliceCount
             {
                 dref destPtr = #nodrop values[#index]
                 destPtr += 1
@@ -407,7 +407,7 @@ impl StaticArray
         }
         #else
         {
-            loop i in count - num
+            for i in count - num
             {
                 buffer[index + i] = #moveraw buffer[index + num + i]
             }
@@ -450,7 +450,7 @@ impl StaticArray
 
         #if Reflection.hasDrop(T)
         {
-            loop idx in numValues:
+            for idx in numValues:
                 @drop(&buffer[0] + index + idx)
         }
 
@@ -460,7 +460,7 @@ impl StaticArray
         #if Reflection.hasPostMove(T)
         {
             var idx = index
-            loop count - index
+            for count - index
             {
                 buffer[idx] = #nodrop #moveraw buffer[idx + numValues]
                 idx += 1

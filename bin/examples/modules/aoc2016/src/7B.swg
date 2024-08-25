@@ -34,7 +34,7 @@ func day7B() assume
                 inside += it
         }
 
-        loop i in 0 until @countof(outside) - 2
+        for i in 0 until @countof(outside) - 2
         {
             if outside[i] == outside[i + 2] and
                outside[i] != outside[i + 1] and

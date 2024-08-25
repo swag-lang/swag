@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    loop 4
+    for 4
     {
         var str = "toto"
     }

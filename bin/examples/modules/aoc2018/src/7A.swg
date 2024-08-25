@@ -62,7 +62,7 @@ func day7A() assume
     }
 
     var result: String
-    loop
+    for
     {
         result.append(first)
         if first == last:

@@ -10,19 +10,19 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     tree.iconSize      = 16
 
     var str: String
-    loop i in maxItems
+    for i in maxItems
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
         let line = tree.createLine(str, icon)
 
-        loop j in maxItems / 2
+        for j in maxItems / 2
         {
             Format.replaceString(&str, "sub item %", j)
             var icon1 = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
             let line1 = tree.createLine(str, icon1, parentLine: line)
 
-            loop k in maxItems / 3
+            for k in maxItems / 3
             {
                 Format.replaceString(&str, "sub sub item %", k)
                 discard tree.createLine(str, parentLine: line1)
@@ -47,7 +47,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     tree.header.getItem(2).iconMargin = true
 
     var str: String
-    loop i in 50
+    for i in 50
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
@@ -58,7 +58,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
         line.setItem(1, str)
         line.setItem(2, str, icon)
 
-        loop j in 25
+        for j in 25
         {
             Format.replaceString(&str, "sub line %", j)
             let line1 = tree.createLine(str, parentLine: line)
@@ -66,7 +66,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
             line1.setItem(1, str)
             line1.setItem(2, str, icon)
 
-            loop k in 10
+            for k in 10
             {
                 Format.replaceString(&str, "XX %", k)
                 let line2 = tree.createLine(str, parentLine: line1)

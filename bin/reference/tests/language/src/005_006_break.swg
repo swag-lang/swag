@@ -1,10 +1,10 @@
 /**
 # Introduction to `break` in Swag
-The `break` statement is a powerful control structure in Swag, allowing you to exit from `loop`, `visit`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
+The `break` statement is a control structure in Swag, allowing you to exit from `for`, `visit`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
 */
 #test
 {
-    loop 10:
+    for 10:
         break                 // Immediately exits the loop, no further iterations occur
 
     for var i = 0; i < 10; i += 1:
@@ -21,9 +21,9 @@ By default, the `break` statement exits only the innermost loop or control struc
 #test
 {
     var cpt = 0
-    loop 10
+    for 10
     {
-        loop 10
+        for 10
         {
             break             // Exits the inner loop only, allowing the outer loop to continue
         }
@@ -46,7 +46,7 @@ Swag allows you to define named scopes using the `#scope` keyword. The `break` s
     // Defining a scope named 'BigScope'
     #scope BigScope
     {
-        loop 10
+        for 10
         {
             cpt += 1
             break in BigScope    // Exits the entire 'BigScope' scope after incrementing `cpt`
@@ -114,9 +114,9 @@ A scope in Swag can also be followed by a simple statement rather than a block, 
 #test
 {
     #scope Up
-    loop 10
+    for 10
     {
-        loop 10
+        for 10
         {
             if #index == 5:
                 break in Up      // Exits to the 'Up' scope when the inner loop index equals 5

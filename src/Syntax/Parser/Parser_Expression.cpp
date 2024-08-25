@@ -680,7 +680,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-                case TokenId::KwdLoop:
+                case TokenId::KwdFor:
                 case TokenId::KwdVisit:
                     break;
                 default:
