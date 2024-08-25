@@ -177,6 +177,11 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         hint = toNte(Nte0017);
         msg  = toErr(Err0560);
     }
+    else if (toType->isStruct() && fromType->isInterface())
+    {
+        hint = Diagnostic::isType(fromType);
+        msg  = toErr(Err0769);
+    }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
