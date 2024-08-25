@@ -183,7 +183,7 @@ func hasExtension(fullname: string)->bool
 func combine(fullnames: string...)->String
 {
     var result: retval
-    visit one in fullnames
+    foreach one in fullnames
     {
         if @countof(one) == 0:
             continue

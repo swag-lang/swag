@@ -57,7 +57,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
         }
     }
 
-    visit &c in g_Cells
+    foreach &c in g_Cells
     {
         var color: Color
 
@@ -123,7 +123,7 @@ func animate(wnd: *Wnd)
 
     let wasMoving = g_IsMoving
     g_IsMoving = false
-    visit &c in g_Cells
+    foreach &c in g_Cells
     {
         // End of scale
         if Math.isEqualEpsilon(c.z, c.zd, 0.01):
@@ -176,7 +176,7 @@ func animate(wnd: *Wnd)
 
 func cellAt(x, y: s32, me: *Cell = null)->*Cell
 {
-    visit &c in g_Cells
+    foreach &c in g_Cells
     {
         if c == me:
             continue
@@ -190,7 +190,7 @@ func cellAt(x, y: s32, me: *Cell = null)->*Cell
 func canMoveTo(val, x, y: s32)->bool
 {
     var cpt = 0
-    visit c in g_Cells
+    foreach c in g_Cells
     {
         if (c.val and c.moving and c.xd == x and c.yd == y) or
            (c.val and !c.moving and c.x == x and c.y == y)
@@ -231,7 +231,7 @@ func keyboard(wnd: *Wnd)
     while recom
     {
         recom = false
-        visit c in g_Cells
+        foreach c in g_Cells
         {
             if c.val == 0:
                 continue
@@ -265,7 +265,7 @@ func keyboard(wnd: *Wnd)
             }
         }
 
-        visit c in g_Cells
+        foreach c in g_Cells
         {
             if !c.val:
                 continue

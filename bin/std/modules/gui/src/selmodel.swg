@@ -10,7 +10,7 @@ impl SelModel
 {
     mtd getSelectedRangeIndex(idx: u32)->u32
     {
-        visit &r, i in selection
+        foreach &r, i in selection
         {
             if idx >= r.start and idx <= r.end:
                 return cast(u32) i
@@ -42,7 +42,7 @@ impl SelModel
         if select
         {
             // Prepend/Append to an existing range
-            visit &r, i in selection
+            foreach &r, i in selection
             {
                 if r.start and idx == r.start - 1
                 {
@@ -82,7 +82,7 @@ impl SelModel
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         #scope Up
-        visit &r in selection
+        foreach &r in selection
         {
             for i in r.start to r.end
             {

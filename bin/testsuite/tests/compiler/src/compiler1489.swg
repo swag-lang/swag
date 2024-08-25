@@ -24,10 +24,10 @@ impl S
     G = 0
 
     var x: S
-    visit x {}
+    foreach x {}
     @assert(G == 2)
-    visit x {}
+    foreach x {}
     @assert(G == 4)
-    visit &xxx in x {}
+    foreach &xxx in x {}
     @assert(G == 5)
 }

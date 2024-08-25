@@ -3,7 +3,7 @@
     enum Enum { A; B; C; }
 
     var a = 0
-    visit it, idx in @typeof(Enum).values
+    foreach it, idx in @typeof(Enum).values
     {
         a += 1
         switch idx

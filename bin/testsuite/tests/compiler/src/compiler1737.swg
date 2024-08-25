@@ -2,7 +2,7 @@
 #test
 {
     var a = 0'u32
-    visit "ABC"
+    foreach "ABC"
     {
         switch #index
         {

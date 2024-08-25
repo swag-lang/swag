@@ -14,7 +14,7 @@ func day8B() assume
     var regs:  HashTable'(string, s32)
     var total: s32
 
-    visit l in lines
+    foreach l in lines
     {
         @assert(re.match(l))
         var v0 = StrConv.toS32(re[3])

@@ -19,7 +19,7 @@ func toto() throw
 #test
 {
     var x: AA
-    visit x
+    foreach x
     {
         try toto()
     }

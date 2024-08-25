@@ -192,7 +192,7 @@ impl IForm for FormLine
         painter.end()
 
         var pos = Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
-        visit cmd in painter.commandBuffer
+        foreach cmd in painter.commandBuffer
         {
             if cmd.id != .DrawTriangles:
                 continue

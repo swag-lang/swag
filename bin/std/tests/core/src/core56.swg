@@ -5,7 +5,7 @@ using Core
 #test
 {
     var x: BitArray = [true, false, true, false]
-    visit &ptr in x
+    foreach &ptr in x
     {
         @print("XX\n")
     }

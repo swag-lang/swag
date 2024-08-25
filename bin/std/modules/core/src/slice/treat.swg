@@ -14,7 +14,7 @@ func(T) modify(values: [..] T, cb: closure(*T))
 func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 {
     var result: retval
-    visit v in values:
+    foreach v in values:
         result.add(cb(v))
     return result
 }
@@ -75,7 +75,7 @@ func(T) max(values: const [..] T)->{ value: T, index: u64 }
 // Returns true if 'cb' returns true for all values
 func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
-    visit v in values
+    foreach v in values
     {
         if !cb(v):
             return false
@@ -87,7 +87,7 @@ func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
 // Returns true if 'cb' returns true for at least one value
 func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
-    visit v in values
+    foreach v in values
     {
         if cb(v):
             return true
@@ -99,7 +99,7 @@ func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
 // Returns true if 'cb' returns false for all values
 func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
 {
-    visit v in values
+    foreach v in values
     {
         if cb(v):
             return false

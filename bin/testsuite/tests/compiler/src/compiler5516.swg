@@ -2,5 +2,5 @@
 
 #test
 {
-    visit toto's32 in "tto" {}
+    foreach toto's32 in "tto" {}
 }

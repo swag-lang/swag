@@ -4,7 +4,7 @@ using Core
 {
     var str: String = "ABC"
     var cpt  = 0
-    visit<Bytes> #back v in str
+    foreach<Bytes> #back v in str
     {
         if cpt == 0:
             @assert(v == `C`)

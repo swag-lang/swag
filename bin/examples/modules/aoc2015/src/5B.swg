@@ -23,7 +23,7 @@ func day5B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l in lines
+    foreach l in lines
     {
         var dbl0, dbl1 = 0
         for i in l.length - 2

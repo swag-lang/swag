@@ -10,7 +10,7 @@ const File = """
     let lines = Tokenize.split(File, `\n`'u8)
     var sb:   StrConv.StringBuilder
 
-    visit l in lines
+    foreach l in lines
     {
         let parts = Tokenize.split(l, `:`'u8)
         if parts.count != 2:

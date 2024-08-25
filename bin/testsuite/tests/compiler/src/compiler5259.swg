@@ -11,7 +11,7 @@ impl A {
 #test
 {
     var x: A
-    visit x
+    foreach x
     {
 
     }

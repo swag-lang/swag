@@ -1,7 +1,7 @@
 #global testerror "Err0716"
 #test
 {
-    visit x in toto
+    foreach x in toto
     {
     }
 }

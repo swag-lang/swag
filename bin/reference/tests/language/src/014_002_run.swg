@@ -31,7 +31,7 @@ is a system function, a function from an external module, or a user-defined func
 func sum(values: s32...) -> s32
 {
     var result = 0's32
-    visit v in values:
+    foreach v in values:
         result += v
     return result
 }

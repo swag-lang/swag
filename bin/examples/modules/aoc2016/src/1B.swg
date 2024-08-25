@@ -1,10 +1,10 @@
 /*
 --- Part Two ---
-Then, you notice the instructions continue on the back of the Recruiting Document. Easter Bunny HQ is actually at the first location you visit twice.
+Then, you notice the instructions continue on the back of the Recruiting Document. Easter Bunny HQ is actually at the first location you foreach twice.
 
-For example, if your instructions are R8, R4, R4, R8, the first location you visit twice is 4 blocks away, due East.
+For example, if your instructions are R8, R4, R4, R8, the first location you foreach twice is 4 blocks away, due East.
 
-How many blocks away is the first location you visit twice?
+How many blocks away is the first location you foreach twice?
 */
 
 using Core
@@ -28,7 +28,7 @@ func day1B()
 
     var pos: Pos
 
-    visit it in split
+    foreach it in split
     {
         let v = Latin1.trim(it)
         let n = assume StrConv.toS32(v[1..])

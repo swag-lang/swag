@@ -10,7 +10,7 @@ while
 switch
 defer
 for
-visit
+foreach
 break
 fallthrough
 return

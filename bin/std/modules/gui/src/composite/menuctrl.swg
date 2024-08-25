@@ -79,7 +79,7 @@ public impl IWnd for MenuCtrl
         var colorText:      Color
         var colorRightText: Color
 
-        visit i, idx in items
+        foreach i, idx in items
         {
             if i.hidden:
                 continue
@@ -159,7 +159,7 @@ public impl IWnd for MenuCtrl
         var colorRightText: Color
 
         var lastIsSeparator = true
-        visit i, idx in items
+        foreach i, idx in items
         {
             if i.hidden:
                 continue
@@ -393,7 +393,7 @@ impl MenuCtrl
 
     mtd resetAnim()
     {
-        visit i in items
+        foreach i in items
         {
             i.aniSel.reset()
             i.aniText.reset()
@@ -403,7 +403,7 @@ impl MenuCtrl
 
     public mtd updateState()
     {
-        visit i in items
+        foreach i in items
         {
             var evt = sendComputeCommandStateEvent(i.id)
             if evt.setFlags & .Disabled:
@@ -518,7 +518,7 @@ impl MenuCtrl
         let metrics    = getThemeMetrics()
         var clientRect = getClientRect()
         let sl         = metrics.menuBar_SpaceBetween
-        visit i, idx in items
+        foreach i, idx in items
         {
             var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
             if rect.contains(pos):
@@ -534,7 +534,7 @@ impl MenuCtrl
         let metrics    = getThemeMetrics()
         var clientRect = getClientRect()
         let sl         = metrics.menuPopup_SpaceLines
-        visit i, idx in items
+        foreach i, idx in items
         {
             var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
             if rect.contains(pos):
@@ -560,7 +560,7 @@ impl MenuCtrl
         var rsf:  Pixel.RichStringFormat
         rsf.font = getFont()
 
-        visit i, idx in items
+        foreach i, idx in items
         {
             if i.hidden:
                 continue
@@ -590,7 +590,7 @@ impl MenuCtrl
         rsf.font = getFont()
 
         var lastIsSeparator = true
-        visit i, idx in items
+        foreach i, idx in items
         {
             if i.hidden:
                 continue

@@ -223,7 +223,7 @@ impl Encoder
                 return
 
             // Generic structure save
-            visit field in structType.fields
+            foreach field in structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize):
                     continue

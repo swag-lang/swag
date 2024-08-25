@@ -178,7 +178,7 @@ impl RichString
     {
         if !hasUrl:
             return null
-        visit &c in chunks
+        foreach &c in chunks
         {
             if !c.isUrl:
                 continue

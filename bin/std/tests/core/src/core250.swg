@@ -60,7 +60,7 @@ const tests: [] Test = [
 
 #test
 {
-    visit c in tests
+    foreach c in tests
     {
         switch c.base
         {
@@ -76,7 +76,7 @@ const tests: [] Test = [
         }
     }
 
-    visit c in tests
+    foreach c in tests
     {
         switch c.base
         {

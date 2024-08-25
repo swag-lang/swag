@@ -22,7 +22,7 @@ impl S
 #test
 {
     var x: S
-    visit i, j in x
+    foreach i, j in x
     {
         @print("AAA\n")
     }

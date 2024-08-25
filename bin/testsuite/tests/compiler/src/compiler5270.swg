@@ -11,7 +11,7 @@
 @print(y[0])
 @print(y[1])*/
 
-    visit i in [x, x+1]
+    foreach i in [x, x+1]
     {
         t += i
     }

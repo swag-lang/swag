@@ -43,7 +43,7 @@ func day3B()
     for
     {
         const O = [{dl: 1, dx: 1, dy: 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
-        visit v in O
+        foreach v in O
         {
             l += v.dl
             for l

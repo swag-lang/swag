@@ -8,7 +8,7 @@ enum X: const [4] u8
 {
     let ptr = @typeof(X)
     var cpt = 0
-    visit p in ptr.values
+    foreach p in ptr.values
     {
         let ptr1 = cast(const*u8) p.value
         cpt += dref ptr1

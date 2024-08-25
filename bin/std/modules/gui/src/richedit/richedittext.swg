@@ -392,7 +392,7 @@ public impl RichEditCtrl
     mtd clear()
     {
         clearUndo()
-        visit l in lines:
+        foreach l in lines:
             freeLines.add(l)
         lines.clear()
         countVisibleLines    = 0
@@ -807,7 +807,7 @@ public impl RichEditCtrl
         result.h += cast(f32) ((lines.count - 1) * lineSpacing)
 
         let fontR = getFont().getFont(styles[0].fontMode)
-        visit l in lines
+        foreach l in lines
         {
             let arr     = Painter.getGlyphs(l.chars, fontR)
             let measure = Painter.measureString(arr)

@@ -87,7 +87,7 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
 bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
 {
     const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
-    concat->addString("visit");
+    concat->addString("foreach");
     if (!visitNode->extraNameToken.text.empty())
     {
         concat->addChar('<');

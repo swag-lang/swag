@@ -87,7 +87,7 @@ code generation process.
     builderInit.appendString("public func glInitExtensions()\n{\n");
 
     // Visit all functions we have registered, i.e., all functions with the `Ogl.Extension` attribute.
-    visit e in g_Functions
+    foreach e in g_Functions
     {
         let typeFunc = cast(const *TypeInfoFunc) e.type
 
@@ -96,7 +96,7 @@ code generation process.
 
         // Make a wrapper function
         builderVars.appendFormat("public func %(", e.name)
-        visit p, i in typeFunc.parameters
+        foreach p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%: %", i, p.pointedType.name)
@@ -107,7 +107,7 @@ code generation process.
         else
             builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
         builderVars.appendFormat("\treturn ext_%(", e.name)
-        visit p, i in typeFunc.parameters
+        foreach p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%", i)

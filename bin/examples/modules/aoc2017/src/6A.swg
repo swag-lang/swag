@@ -34,7 +34,7 @@ func day6A()
     for
     {
         var best, besti: u64
-        visit v, i in blocks
+        foreach v, i in blocks
         {
             if v > best
             {

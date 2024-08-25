@@ -43,7 +43,7 @@ func day5B()
     let lines    = assume File.readAllLines(dataPath)
 
     var mode = Mode.Invalid
-    visit l in lines
+    foreach l in lines
     {
         if l.isEmpty():
             continue
@@ -77,7 +77,7 @@ func day5B()
         {
             let tokens = Tokenize.split(l, `:`'u8)
             let values = Tokenize.split(tokens[1], ` `'u8)
-            visit v in values:
+            foreach v in values:
                 seeds.add(assume StrConv.toU64(v))
             continue
         }
@@ -103,7 +103,7 @@ func day5B()
             let range = ranges[idx]
             #scope Done
             {
-                visit conv in convert[i]
+                foreach conv in convert[i]
                 {
                     if range.start > conv.srcE or range.end < conv.src:
                         continue
@@ -127,7 +127,7 @@ func day5B()
     }
 
     var total = Swag.U64.Max
-    visit r in ranges:
+    foreach r in ranges:
         total = Math.min(total, r.start)
 
     //Console.print("total: ", total)

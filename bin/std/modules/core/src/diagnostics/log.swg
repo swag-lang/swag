@@ -147,7 +147,7 @@ impl Log
 
         // Otherwise call all writers
         var str = buf.toString()
-        visit w in writers
+        foreach w in writers
         {
             w.print(str)
         }

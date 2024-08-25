@@ -92,7 +92,7 @@ func day10A() assume
     vals.sort()
 
     var cpt1, cpt3, prev = 0's64
-    visit v in vals
+    foreach v in vals
     {
         if v - prev == 1:
             cpt1 += 1

@@ -38,7 +38,7 @@ impl HashTable
 
     mtd opAffect(slice: const [..] { k: K, v: V })
     {
-        visit v in slice:
+        foreach v in slice:
             add(v.k, v.v)
     }
 
@@ -472,7 +472,7 @@ impl StrConv.IConvert for HashTable
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        visit k, v in dref self
+        foreach k, v in dref self
         {
             if #index:
                 buf.addBytes(", ")

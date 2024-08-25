@@ -22,11 +22,11 @@ impl S
 #test
 {
     var s: S
-    visit c in s
+    foreach c in s
     {
     }
 
-    visit<Bytes> #back c in s
+    foreach<Bytes> #back c in s
     {
     }
 }

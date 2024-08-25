@@ -5,7 +5,7 @@
 {
     var array: [2, 2] s32 = [[1, 2], [3, 4]]
 
-    visit &it in array
+    foreach &it in array
     {
         it[0] = 0
     }

@@ -10,7 +10,7 @@ struct(T) AA
         var idx = 0'u64
 
         let ptr = @typeof(T)
-        visit it in ptr.fields
+        foreach it in ptr.fields
         {
             @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))
             idx += @countof(it.name)

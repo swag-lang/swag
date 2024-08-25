@@ -116,7 +116,7 @@ impl ListLine
     // Get an item by index
     mtd getItem(column: u32)->*ListItem
     {
-        visit item in items
+        foreach item in items
         {
             if item.column == column:
                 return item
@@ -129,7 +129,7 @@ impl ListLine
     #[Swag.Discardable]
     mtd setItem(column: u32, name: string, icon: Icon = {})->*ListItem
     {
-        visit item in items
+        foreach item in items
         {
             if item.column == column
             {
@@ -189,7 +189,7 @@ impl IWnd for ListView
         case Space:
             if focusLine.canCheck
             {
-                visit l in list.selModel
+                foreach l in list.selModel
                 {
                     let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck:
@@ -209,7 +209,7 @@ impl IWnd for ListView
         case Enter:
             if focusLine.canCheck
             {
-                visit l in list.selModel
+                foreach l in list.selModel
                 {
                     let idx = list.idxLineToIdxList.find(l).value
                     if !list.lines[idx].canCheck:
@@ -407,7 +407,7 @@ impl IWnd for ListView
                         let checked = !list.checkModel.isSelected(idxLine)
                         if list.selModel.isSelected(idxLine)
                         {
-                            visit l in list.selModel:
+                            foreach l in list.selModel:
                                 list.checkModel.select(l, checked)
                         }
                         else:
@@ -626,7 +626,7 @@ internal impl ListView
         }
 
         var format: RichStringFormat
-        visit item, idxItem in line.items
+        foreach item, idxItem in line.items
         {
             var colorFg: Color = undefined
             if item.colorFg.a and !isSelected:
@@ -1084,7 +1084,7 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty():
             return result
 
-        visit i in selModel
+        foreach i in selModel
         {
             let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
@@ -1100,7 +1100,7 @@ impl ListCtrl
         if isVirtual or checkModel.isEmpty():
             return result
 
-        visit i in checkModel
+        foreach i in checkModel
         {
             let idx = idxLineToIdxList.find(i).value
             result.add(lines[idx])
@@ -1123,7 +1123,7 @@ impl ListCtrl
     internal mtd mapIndexes()
     {
         idxLineToIdxList.clear()
-        visit l, idx in lines:
+        foreach l, idx in lines:
             idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
@@ -1228,7 +1228,7 @@ impl ListCtrl
         {
             let toI       = tmp.popBack()
             let idxInsert = idxLineToIdxList.find(toI.index).value
-            visit l, i in toI.lines
+            foreach l, i in toI.lines
             {
                 l.index = cptIdxLine
                 cptIdxLine += 1
@@ -1264,7 +1264,7 @@ impl ListCtrl
         while tmp.count
         {
             let toI = tmp.popBack()
-            visit l in toI.lines
+            foreach l in toI.lines
             {
                 removeCount += 1
                 if l.expanded:
@@ -1296,14 +1296,14 @@ impl ListCtrl
     {
         func collapseRec(sl: [..] *ListLine)
         {
-            visit l in sl
+            foreach l in sl
             {
                 l.expanded = false
                 collapseRec(l.lines.toSlice())
             }
         }
 
-        visit l in lines
+        foreach l in lines
         {
             if l.expanded:
                 collapse(l)

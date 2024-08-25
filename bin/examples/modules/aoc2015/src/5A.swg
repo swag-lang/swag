@@ -33,7 +33,7 @@ func day5A0()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l in lines
+    foreach l in lines
     {
         if Utf8.indexOf(l, "ab") != Swag.U64.Max:
             continue
@@ -72,7 +72,7 @@ func day5A1()
     var r0    = assume Parser.RegExp.create("ab|cd|pq|xy")
     var r1    = assume Parser.RegExp.create("[aeiou]")
     var r2    = assume Parser.RegExp.create(#"([a-z])\1"#)
-    visit l in lines
+    foreach l in lines
     {
         if r0.grep(l):
             continue

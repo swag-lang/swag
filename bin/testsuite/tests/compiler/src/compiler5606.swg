@@ -3,7 +3,7 @@
 
 #test
 {
-    visit "5":
+    foreach "5":
         if #index == 0:
             @assert(true)
 }

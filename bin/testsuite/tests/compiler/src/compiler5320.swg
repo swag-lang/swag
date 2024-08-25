@@ -16,7 +16,7 @@ impl Array
 func(T, R) map(values: const [..] T, cb: func(T)->R)->Array'R
 {
     var result: retval
-    visit v in values:
+    foreach v in values:
         result.add(cb(v))
     return result
 }

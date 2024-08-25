@@ -12,7 +12,7 @@ typealias WalkAction = closure(const &Node, s32)
 func walk(tree: const &Node, action: WalkAction, depth = 0)
 {
     action(tree, depth)
-    visit kid in tree.kids
+    foreach kid in tree.kids
     {
         walk(kid, action, depth + 1)
     }

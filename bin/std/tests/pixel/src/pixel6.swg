@@ -22,7 +22,7 @@ func entry(th: Thread)
     ths.resize(files.count)
 
     var validImgs = 0
-    visit f in files
+    foreach f in files
     {
         if !Image.canLoad(f.fullname):
             continue

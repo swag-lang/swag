@@ -53,7 +53,7 @@ func day5A()
     const W = 1000'u64
     m.resize(W * W)
 
-    visit l in lines
+    foreach l in lines
     {
         assume
         {

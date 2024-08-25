@@ -31,7 +31,7 @@ func day6B()
     lights.resize(1000 * 1000)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
-    visit l in lines
+    foreach l in lines
     {
         let nums = r.grepAll(l)
         let x0   = assume StrConv.toU64(nums[0])
@@ -54,7 +54,7 @@ func day6B()
     }
 
     var total: s64
-    visit v in lights:
+    foreach v in lights:
         total += v
 
     //Console.print("total: ", total)

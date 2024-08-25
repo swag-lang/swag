@@ -106,7 +106,7 @@ The summation is performed during the compilation, optimizing runtime performanc
 func arraySum(arr: const [..] s32) -> s32
 {
     var sum = 0
-    visit val in arr:
+    foreach val in arr:
         sum += val
     return sum
 }

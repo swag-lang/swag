@@ -104,18 +104,18 @@ func day7A()
     map.add(`3`, 1)
     map.add(`2`, 0)
 
-    visit l in lines
+    foreach l in lines
     {
         let first = Tokenize.split(l, ` `'u8)
 
         var card: Card
-        visit c in first[0]
+        foreach c in first[0]
         {
             let it = map.find(c)
             card.count[it.value] += 1
         }
 
-        visit c in card.count
+        foreach c in card.count
         {
             card.countV[c] += 1
         }
@@ -144,7 +144,7 @@ func day7A()
     sort()
 
     var total: u64
-    visit c, idx in cards:
+    foreach c, idx in cards:
         total += (idx + 1) * c.bid
 
     //Console.print("total: ", total)

@@ -17,7 +17,7 @@ impl S
 #test
 {
     var x: S
-    visit x
+    foreach x
     {
         @assert(false)
     }

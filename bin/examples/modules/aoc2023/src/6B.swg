@@ -31,16 +31,16 @@ func day6B()
     var dists: Array'u64
 
     var str0, str1: String
-    visit v in val0:
+    foreach v in val0:
         str0 += v
-    visit v in val1:
+    foreach v in val1:
         str1 += v
 
     times.add(assume StrConv.toU64(str0))
     dists.add(assume StrConv.toU64(str1))
 
     var total: u64 = 1
-    visit t, idx in times
+    foreach t, idx in times
     {
         var cpt = 0
         let dx  = dists[idx]

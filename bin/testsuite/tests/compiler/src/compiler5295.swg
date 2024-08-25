@@ -22,9 +22,9 @@ impl Array
 {
     var arr: Array
     var g = 0
-    visit arr
+    foreach arr
     {
-        visit arr[1..]
+        foreach arr[1..]
         {
             g += 1
             break

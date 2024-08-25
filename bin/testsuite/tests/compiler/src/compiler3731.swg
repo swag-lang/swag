@@ -3,9 +3,9 @@
     const X = [1, 2, 3]
 
     var cpt = 0
-    visit x in X
+    foreach x in X
     {
-        visit y in X
+        foreach y in X
         {
             cpt += x
             continue

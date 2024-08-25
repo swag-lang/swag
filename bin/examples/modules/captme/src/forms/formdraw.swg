@@ -74,7 +74,7 @@ impl IForm for FormDraw
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        visit &pt in points
+        foreach &pt in points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -89,7 +89,7 @@ impl IForm for FormDraw
         let fx = newSizeX / rect.width
         let fy = newSizeY / rect.height
 
-        visit &pt in points
+        foreach &pt in points
         {
             pt.x -= rect.x
             pt.y -= rect.y
@@ -102,7 +102,7 @@ impl IForm for FormDraw
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        visit &pt in points
+        foreach &pt in points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -127,7 +127,7 @@ impl IForm for FormDraw
         var y0    = Swag.F32.Max
         var x1    = 0'f32
         var y1    = 0'f32
-        visit &pt in points
+        foreach &pt in points
         {
             x0 = Math.min(x0, pt.x - bSize)
             y0 = Math.min(y0, pt.y - bSize)
@@ -147,7 +147,7 @@ impl IForm for FormDraw
         var rect = boundRect()
 
         paintPoints.clear()
-        visit pt in points
+        foreach pt in points
         {
             let x0 = (pt.x * z) - (rect.x * z) + paintPos.x
             let x1 = (pt.y * z) - (rect.y * z) + paintPos.y

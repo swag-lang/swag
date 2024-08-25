@@ -40,11 +40,11 @@ func calc(a, b: u8)->u64
     for c in scan[0]
     {
         var count = 0
-        visit l in scan:
+        foreach l in scan:
             count += cast(s32) (l[c] == `1`)
 
         var next: Array'String
-        visit l in scan
+        foreach l in scan
         {
             let v = count >= scan.count - count ? a : b
             if l[c] == v:

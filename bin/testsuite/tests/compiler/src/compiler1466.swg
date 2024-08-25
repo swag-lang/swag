@@ -30,7 +30,7 @@ impl S
     var x: S
     var cpt = 0
     var cpt1 = 0
-    visit i in x
+    foreach i in x
     {
         cpt +=  i
         cpt1 += cast(s32) #alias1

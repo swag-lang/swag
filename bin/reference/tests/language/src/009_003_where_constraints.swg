@@ -12,7 +12,7 @@ When the `where` expression evaluates to `false`, the function will not be consi
         where T == s32 or T == s64                      // Restricting `T` to `s32` or `s64`
     {
         var total = 0'T
-        visit it in x:
+        foreach it in x:
             total += it                                 // Accumulate the values
         return total                                    // Return the sum
     }
@@ -71,7 +71,7 @@ The `where` clause can also take the form of a block returning a `bool` value. T
         }
     {
         var total = 0'T                                 // Initialize total with type `T`
-        visit it in x:
+        foreach it in x:
             total += it                                 // Accumulate the values
         return total                                    // Return the sum
     }

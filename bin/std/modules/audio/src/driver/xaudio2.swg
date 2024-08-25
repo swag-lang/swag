@@ -295,7 +295,7 @@ public impl Voice
 
         if count
         {
-            visit bus, i in buses
+            foreach bus, i in buses
             {
                 Debug.assert(bus != null)
                 sfxSend[i].pOutputVoice = acast bus.handle

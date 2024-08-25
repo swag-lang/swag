@@ -26,7 +26,7 @@ func day5B0()
 
     var here: [128, 8] bool
 
-    visit l in lines
+    foreach l in lines
     {
         var row0 = 0
         var row1 = 127
@@ -80,7 +80,7 @@ func day5B1()
     let lines    = assume File.readAllLines(dataPath)
 
     var seats: Array's32
-    visit l in lines
+    foreach l in lines
     {
         var row0 = 0
         var row1 = 127

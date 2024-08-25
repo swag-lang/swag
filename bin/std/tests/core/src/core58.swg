@@ -8,7 +8,7 @@ using Core
     var y: BitArray
     y.reserve(4, false)
 
-    visit val, idx in x
+    foreach val, idx in x
     {
         y[idx] = val
     }

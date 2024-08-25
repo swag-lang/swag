@@ -7,7 +7,7 @@
 
     var cpt = 0
     var cpt1 = 0
-    visit xxx, yyy in arr
+    foreach xxx, yyy in arr
     {
         cpt += cast(s32) xxx
         cpt1 += yyy

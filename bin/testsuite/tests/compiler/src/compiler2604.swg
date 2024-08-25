@@ -13,7 +13,7 @@ namespace tt
 {
     {
         using tt
-        visit "toto"
+        foreach "toto"
         {
 
         }

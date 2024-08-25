@@ -2,7 +2,7 @@
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {
-    visit &f in files
+    foreach &f in files
     {
         var idx = 0'u64
         for

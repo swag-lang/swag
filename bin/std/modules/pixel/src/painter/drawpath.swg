@@ -720,7 +720,7 @@ public impl Painter
             return
         if mode == .Separate
         {
-            visit p in pathList.paths:
+            foreach p in pathList.paths:
                 drawPath(p, pen)
             return
         }
@@ -737,7 +737,7 @@ public impl Painter
         startOverlapMode(pen)
 
         var cxt: Context
-        visit p in pathList.paths
+        foreach p in pathList.paths
         {
             cxt.path = p
             cxt.pen  = &pen

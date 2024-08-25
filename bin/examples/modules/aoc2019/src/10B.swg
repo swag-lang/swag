@@ -76,8 +76,8 @@ func day10B()
     var arr: Array'Pos
     var tot: Array's32
 
-    visit l, y in lines:
-        visit c, x in l:
+    foreach l, y in lines:
+        foreach c, x in l:
             if c == `#`:
                 arr.add({{cast(f32) x, cast(f32) y}})
     tot.resize(arr.count)
@@ -114,7 +114,7 @@ func day10B()
     arr.removeAt(idxStart)
 
     // Precompute angle between 0 and 2Pi, and distance to the start position
-    visit &it in arr
+    foreach &it in arr
     {
         let v = it.pos - posStart
         it.angle = v.angle0To2Pi({0, -1})

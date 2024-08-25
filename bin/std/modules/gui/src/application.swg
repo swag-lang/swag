@@ -54,7 +54,7 @@ internal impl Application
     mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
         // Global hook events
-        visit hook in hookOnEvent:
+        foreach hook in hookOnEvent:
             hook.itf.onHookEvent(event)
 
         if event.kind == .Quit
@@ -320,7 +320,7 @@ internal impl Application
     {
         if inModalLoop:
             return
-        visit w in postDestroy:
+        foreach w in postDestroy:
             destroyWnd(w)
         postDestroy.clear()
     }
@@ -328,7 +328,7 @@ internal impl Application
     // Update UI state of all surfaces
     mtd updateCommandState()
     {
-        visit s in surfaces:
+        foreach s in surfaces:
             s.wnd.updateCommandState()
     }
 
@@ -357,7 +357,7 @@ internal impl Application
             keybFocusWnd = null
 
         // Be sure there's no timer for that window
-        visit t in timers
+        foreach t in timers
         {
             if t.target == wnd and !t.toDelete
             {
@@ -371,7 +371,7 @@ internal impl Application
         hookOnEvent.remove(wnd)
 
         // Be sure there's no posted event for that window
-        visit e in postedEvents
+        foreach e in postedEvents
         {
             if e.target == wnd:
                 e.target = null
@@ -381,7 +381,7 @@ internal impl Application
     mtd sendTimerEvents()
     {
         duringTimerEvents = true
-        visit t in timers
+        foreach t in timers
         {
             if t.toDelete:
                 continue
@@ -401,12 +401,12 @@ internal impl Application
         duringTimerEvents = false
 
         // Add new registered timers
-        visit t in timersToAdd:
+        foreach t in timersToAdd:
             timers.add(t)
         timersToAdd.clear()
 
         // Remove some timers
-        visit t in timersToDelete
+        foreach t in timersToDelete
         {
             t.toDelete = false
             deleteTimer(t)
@@ -417,7 +417,7 @@ internal impl Application
 
     mtd sendFrameEvents()
     {
-        visit t in frameEvents
+        foreach t in frameEvents
         {
             var evt = FrameEvent{}
             t.sendEvent(&evt)
@@ -428,7 +428,7 @@ internal impl Application
     {
         if inModalLoop:
             return
-        visit p in toDelete:
+        foreach p in toDelete:
             Memory.delete(p.item0, p.item1)
         toDelete.clear()
     }
@@ -451,7 +451,7 @@ internal impl Application
         sendPostedEvents()
         sendDestroyEvents()
 
-        visit s in surfaces:
+        foreach s in surfaces:
             s.paint()
 
         deletePointers()
@@ -464,7 +464,7 @@ internal impl Application
         inModalLoop += 1
         defer inModalLoop -= 1
 
-        visit s in surfaces
+        foreach s in surfaces
         {
             if s != surface:
                 s.disable()
@@ -494,7 +494,7 @@ internal impl Application
         }
         else
         {
-            visit s, idx in surfaces
+            foreach s, idx in surfaces
             {
                 if s != surface
                 {
@@ -516,10 +516,10 @@ impl Application
 {
     mtd opDrop()
     {
-        visit it in surfaces:
+        foreach it in surfaces:
             it.destroy()
         sendDestroyEvents()
-        visit it in postedEvents:
+        foreach it in postedEvents:
             toDelete.add({it, it.type})
         deletePointers()
         theme.freeDefault()
@@ -605,7 +605,7 @@ impl Application
     internal mtd serializeState(ser: *Serializer) throw
     {
         ser.beginSection(.Unordered)
-        visit s in surfaces:
+        foreach s in surfaces:
             s.serializeState(ser)
         ser.endSection()
     }
@@ -689,7 +689,7 @@ impl Application
         if isActivated == activated:
             return
         isActivated = activated
-        visit s in modalSurfaces:
+        foreach s in modalSurfaces:
             s.bringToTop()
         invalidate()
     }
@@ -697,7 +697,7 @@ impl Application
     // Force all surfaces to be painted
     mtd invalidate()
     {
-        visit s in surfaces:
+        foreach s in surfaces:
             s.invalidate()
     }
 
@@ -803,7 +803,7 @@ impl Application
     #[Swag.Discardable]
     mtd run()->s32
     {
-        visit s in surfaces
+        foreach s in surfaces
         {
             var evt = FrameEvent{}
             evt.firstFrame = true
@@ -830,7 +830,7 @@ impl Application
     #[Swag.Overload]
     mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd) throw
     {
-        visit &c in hotKeys
+        foreach &c in hotKeys
         {
             if c.mdf == mdf and c.key == key
             {
@@ -847,7 +847,7 @@ impl Application
     // Get the id associated with a shortcut. null if none
     mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{ id: WndId, wnd: *Wnd }
     {
-        visit c in hotKeys
+        foreach c in hotKeys
         {
             if c.mdf == mdf and c.key == key:
                 return {c.id, c.target}
@@ -860,7 +860,7 @@ impl Application
     mtd getHotKeyShortcutNameFor(wndId: WndId)->String
     {
         var result: retval
-        visit c in hotKeys
+        foreach c in hotKeys
         {
             if c.id == wndId
             {

@@ -1,7 +1,7 @@
 #global testerror "Err0277"
 #test
 {
-    visit<0> x: toto
+    foreach<0> x: toto
     {
     }
 }

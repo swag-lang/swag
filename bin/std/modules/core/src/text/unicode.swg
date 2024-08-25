@@ -274,7 +274,7 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     const LinearLimit = 18
     if @countof(ranges) <= LinearLimit or r <= 255
     {
-        visit &range in ranges
+        foreach &range in ranges
         {
             if r < range.lo:
                 return false

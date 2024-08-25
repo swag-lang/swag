@@ -31,7 +31,7 @@ struct(T) B
 {
     var v:  B's32
     var cpt = 0
-    visit v
+    foreach v
     {
         cpt += 1
     }

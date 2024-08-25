@@ -32,7 +32,7 @@ func day8A() assume
     var regs:  HashTable'(string, s32)
     var total: s32
 
-    visit l in lines
+    foreach l in lines
     {
         @assert(re.match(l))
         var v0 = StrConv.toS32(re[3])
@@ -66,7 +66,7 @@ func day8A() assume
             regs.find(re[1]).value += v0
     }
 
-    visit k, v in regs:
+    foreach k, v in regs:
         total = Math.max(total, v)
     @assert(total == 4066)
 }

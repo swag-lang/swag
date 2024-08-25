@@ -78,7 +78,7 @@ impl Painter
         var result: retval
         result.allocator = @getcontext().tempAllocator
         result.reserve(@countof(text))
-        visit c in text
+        foreach c in text
         {
             result.add(font.getGlyphDesc(c))
         }
@@ -111,7 +111,7 @@ impl Painter
         var result: retval
         result.ascent  = Swag.F32.NegInf
         result.descent = Swag.F32.NegInf
-        visit refr in text
+        foreach refr in text
         {
             result.ascent  = Math.max(result.ascent, refr.shiftY)
             result.descent = Math.max(result.descent, refr.height - refr.shiftY)
@@ -196,7 +196,7 @@ impl Painter
 
         if zoom == 1
         {
-            visit refr in arr
+            foreach refr in arr
             {
                 setTextureFont(font, refr.atlasIndex)
 
@@ -223,7 +223,7 @@ impl Painter
         }
         else
         {
-            visit refr in arr
+            foreach refr in arr
             {
                 setTextureFont(font, refr.atlasIndex)
 
@@ -275,7 +275,7 @@ impl Painter
         var startLine    = 0
         var lastWasSpace = false
 
-        visit &c, idx in text.chunks
+        foreach &c, idx in text.chunks
         {
             // Attributes
             let fs = c.hasFontStyle ? c.fontStyle : format.fontStyle
@@ -409,7 +409,7 @@ impl Painter
             y -= (format.font.regular.ascent - lines[0].measure.ascent)
 
         // Layout
-        visit &l, idxLine in lines
+        foreach &l, idxLine in lines
         {
             var x1 = x
             let y1 = y
@@ -471,7 +471,7 @@ impl Painter
 
         // Draw
         var brush = format.brush
-        visit &c in text.chunks
+        foreach &c in text.chunks
         {
             if c.isEol:
                 continue

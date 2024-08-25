@@ -6,7 +6,7 @@
     //@print(cast(s64) @countof(arr))
 
     var cpt = 0
-    visit &xxx in arr
+    foreach &xxx in arr
     {
         cpt += cast(s32) dref xxx
     }

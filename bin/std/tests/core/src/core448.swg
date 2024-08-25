@@ -4,7 +4,7 @@ using Core
 {
     var s:  String = "abcd"
     var s1: String
-    visit s
+    foreach s
     {
         s1 += #alias0
     }

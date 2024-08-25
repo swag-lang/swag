@@ -145,7 +145,7 @@ func day10B() assume
     for 40 * 6:
         crt.append(" ")
 
-    visit l in lines
+    foreach l in lines
     {
         toCheck()
         if l != "noop"

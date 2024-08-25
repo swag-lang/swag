@@ -104,7 +104,7 @@ impl Application
         if hWnd == null:
             return null
 
-        visit s in surfaces
+        foreach s in surfaces
         {
             if s.native.hWnd == hWnd
             {

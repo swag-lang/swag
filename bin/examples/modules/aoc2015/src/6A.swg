@@ -40,7 +40,7 @@ func day6A0()
     var r1 = assume Parser.RegExp.create(#"turn off (\d+),(\d+) through (\d+),(\d+)"#)
     var r2 = assume Parser.RegExp.create(#"toggle (\d+),(\d+) through (\d+),(\d+)"#)
 
-    visit l in lines
+    foreach l in lines
     {
         if r0.match(l)
         {
@@ -82,7 +82,7 @@ func day6A1()
     lights.resize(1000 * 1000)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
-    visit l in lines
+    foreach l in lines
     {
         let nums = r.grepAll(l)
         let x0   = assume StrConv.toU64(nums[0])
@@ -105,7 +105,7 @@ func day6A1()
     }
 
     var total: u64
-    visit v in lights:
+    foreach v in lights:
         total += cast(s32) v
 
     //Console.print("total: ", total)
@@ -125,7 +125,7 @@ func day6A2()
     lights.reserve(1000 * 1000'u64, false)
 
     var r = assume Parser.RegExp.create(#"\d+"#)
-    visit l in lines
+    foreach l in lines
     {
         let nums = r.grepAll(l)
         let x0   = assume StrConv.toU64(nums[0])
@@ -149,7 +149,7 @@ func day6A2()
     }
 
     var total: u64
-    visit v in lights:
+    foreach v in lights:
         total += cast(s32) v
 
     //Console.print("total: ", total)

@@ -122,7 +122,7 @@ var caseTest: [] CaseT = [
 
 #test
 {
-    visit &c in caseTest
+    foreach &c in caseTest
     {
         switch c.cas
         {

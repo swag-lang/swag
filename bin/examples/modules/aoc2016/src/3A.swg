@@ -21,7 +21,7 @@ func day3A()
         let lines    = File.readAllLines(dataPath)
 
         var total = 0
-        visit l in lines
+        foreach l in lines
         {
             let split = Tokenize.split(l, ` `'u8)
             let v     = [StrConv.toS32(split[0]), StrConv.toS32(split[1]), StrConv.toS32(split[2])]

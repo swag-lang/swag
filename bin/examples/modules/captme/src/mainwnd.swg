@@ -464,7 +464,7 @@ impl MainWnd
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
 
-            visit m, idx in monitors
+            foreach m, idx in monitors
             {
                 switch idx
                 {
@@ -592,19 +592,19 @@ impl MainWnd
     {
         var icons: Array'(*IconButton)
 
-        visit c in topBar.childs
+        foreach c in topBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
 
-        visit c in editToolBar.childs
+        foreach c in editToolBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
 
-        visit c in icons
+        foreach c in icons
         {
             if editorOptions.showToolBarLabels
             {

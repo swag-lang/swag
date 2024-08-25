@@ -17,7 +17,7 @@ var g_Time:       u64
 func paintSnake(painter: *Painter)
 {
     var scale = 0.52
-    visit p in g_Snake
+    foreach p in g_Snake
     {
         let x = p.x * ElemSize
         let y = p.y * ElemSize
@@ -61,7 +61,7 @@ func updateCollisions()->bool
     }
 
     // Collision with tail
-    visit p in g_Snake
+    foreach p in g_Snake
     {
         if head.x == p.x and p.y == head.y
         {
@@ -128,7 +128,7 @@ func generateApplePos()
         error        = false
         g_ApplePos.x = Random.shared().nextS32(1, cast(s32) (g_Rect.width / ElemSize))
         g_ApplePos.y = Random.shared().nextS32(1, cast(s32) (g_Rect.height / ElemSize))
-        visit p in g_Snake
+        foreach p in g_Snake
         {
             if p.x == g_ApplePos.x and p.y == g_ApplePos.y
             {

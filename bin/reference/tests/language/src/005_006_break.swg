@@ -1,6 +1,6 @@
 /**
 # Introduction to `break` in Swag
-The `break` statement is a control structure in Swag, allowing you to exit from `for`, `visit`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
+The `break` statement is a control structure in Swag, allowing you to exit from `for`, `foreach`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
 */
 #test
 {

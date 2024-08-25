@@ -5,7 +5,7 @@ var count = 1
 #test
 {
     var a: Array's32
-    visit x in a
+    foreach x in a
     {
     }
 }

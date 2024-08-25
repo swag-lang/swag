@@ -2,10 +2,10 @@
 {
     var cpt1 = 0'u64
     var cpt2 = 0'u64
-    visit i in "toto"
+    foreach i in "toto"
     {
         cpt1 += #alias1
-        visit j in "titi"
+        foreach j in "titi"
         {
             cpt2 += #alias1
         }

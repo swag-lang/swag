@@ -123,7 +123,7 @@ var atoftests: [] atofTest = [
 #test
 {
     var cb: ConcatBuffer
-    visit t in atoftests
+    foreach t in atoftests
     {
         var v = catch Atod.parse(t.inT)
         @assert(@err() == null or t.error)

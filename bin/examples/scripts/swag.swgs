@@ -61,11 +61,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Create:
         var pl: LinePathList
         assume wnd.getTheme().res.defaultTypeFaceR.getStringOutline(&pl, "Swag", 200)
-        visit path in pl.paths
+        foreach path in pl.paths
         {
             path.flatten()
             path.polygon.normalizeDist(10)
-            visit &el in path.polygon.points
+            foreach &el in path.polygon.points
             {
                 var c: C
                 c.pos, c.target = {el.x + 160, el.y + 260}
@@ -82,7 +82,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         painter.fillRect(rect, Argb.Black)
 
-        visit &p in g_Points
+        foreach &p in g_Points
         {
             p.update(wnd)
             var v = p.target - p.pos

@@ -187,7 +187,7 @@ impl Decoder
             if treated:
                 return
 
-            visit field in structType.fields
+            foreach field in structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize):
                     continue

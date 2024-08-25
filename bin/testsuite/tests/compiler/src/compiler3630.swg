@@ -11,7 +11,7 @@ impl Wnd
 {
     mtd toto()
     {
-        visit &c in childs
+        foreach &c in childs
         {
             switch c.x
             {

@@ -2,5 +2,5 @@
 
 #test
 {
-    visit toto() in "tto" {}
+    foreach toto() in "tto" {}
 }

@@ -89,7 +89,7 @@ func evaluateSolution(soluce: *Solution)
 func pickToMate(other: *Solution = null)->*Solution
 {
     var rnd = g_Rng.nextF32(0, g_TotalWeight)
-    visit child in g_Gen[g_CurGen].all
+    foreach child in g_Gen[g_CurGen].all
     {
         if rnd <= child.weight and child != other:
             return child
@@ -162,7 +162,7 @@ func genGo()->*u8
 
     // Compute stuff for selection
     g_TotalWeight = 0'f32
-    visit child in g_Gen[g_CurGen].all
+    foreach child in g_Gen[g_CurGen].all
     {
         child.weight = 1 - child.score
         g_TotalWeight += child.weight
@@ -257,7 +257,7 @@ func genGo()->*u8
         return x.score <=> y.score
     })
 
-    visit child, idx in g_Gen[nextGenIdx].all
+    foreach child, idx in g_Gen[nextGenIdx].all
     {
         mutate(child, acast idx)
         evaluateSolution(child)

@@ -1,7 +1,7 @@
 #test
 {
     var t = 0
-    visit i in [4, 5]
+    foreach i in [4, 5]
     {
         t += i
     }

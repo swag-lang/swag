@@ -106,7 +106,7 @@ impl Struct
     #[Swag.Overload]
     func(op: string) opIndexAssign(using self, index: OneType, value: AnotherType) {}
 
-    // Called in a 'visit' block to iterate over the struct's elements. 
+    // Called in a 'foreach' block to iterate over the struct's elements. 
     // Multiple versions can be defined by adding a name after 'opVisit'.
     #[Swag.Macro]
     {

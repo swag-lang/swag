@@ -21,7 +21,7 @@ func day8B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total0, total1: s64
-    visit l in lines
+    foreach l in lines
     {
         var i = 0
         while i < l.length

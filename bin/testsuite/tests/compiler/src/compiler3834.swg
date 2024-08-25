@@ -7,7 +7,7 @@ impl A {
 #test
 {
     var x: A
-    visit c in x.toString()
+    foreach c in x.toString()
     {
     }
 }

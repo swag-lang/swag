@@ -20,7 +20,7 @@ var g_HashTypeFace: HashTable'(String, *TypeFace)
 
 #drop
 {
-    visit k, v in g_HashTypeFace:
+    foreach k, v in g_HashTypeFace:
         Memory.delete(v)
     g_HashTypeFace.free()
 }

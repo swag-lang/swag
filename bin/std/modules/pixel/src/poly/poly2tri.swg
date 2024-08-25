@@ -113,11 +113,11 @@ impl Result
 
     mtd release()
     {
-        visit t in points:
+        foreach t in points:
             Memory.delete(t)
-        visit t in edges:
+        foreach t in edges:
             Memory.delete(t)
-        visit t in triangles:
+        foreach t in triangles:
             Memory.delete(t)
         points.clear()
         edges.clear()
@@ -622,13 +622,13 @@ impl Tessellate
         deleteNode(afTail)
         head, tail, afHead, afMiddle, afTail = null
 
-        visit p in points:
+        foreach p in points:
             deletePoint(p)
-        visit p in edges:
+        foreach p in edges:
             deleteEdge(p)
-        visit p in triangles:
+        foreach p in triangles:
             deleteTriangle(p)
-        visit p in nodes:
+        foreach p in nodes:
             deleteNode(p)
 
         points.clear()
@@ -641,7 +641,7 @@ impl Tessellate
     // Clear cache
     mtd clearCache()
     {
-        visit p in freeNodes:
+        foreach p in freeNodes:
             Memory.delete(p)
         freeNodes.clear()
     }
@@ -680,7 +680,7 @@ impl Tessellate
     {
         mtd initEdges(polyline: [..] *Point)
         {
-            visit pt, i in polyline
+            foreach pt, i in polyline
             {
                 let nexti = (i + 1) % @countof(polyline)
                 let edge  = newEdge()
@@ -733,7 +733,7 @@ impl Tessellate
         {
             let point = points[i]
             let node  = pointEvent(point)
-            visit e in point.edges:
+            foreach e in point.edges:
                 addEdgeEvent2(e, node)
         }
     }
@@ -1444,7 +1444,7 @@ impl Tessellate
         }
 
         // Remove neighbors which are not part of the mesh
-        visit i in triIndices
+        foreach i in triIndices
         {
             let tri = triangles[i]
             for e in 3
@@ -1460,7 +1460,7 @@ impl Tessellate
     {
         var xmin, xmax = points[0].x
         var ymin, ymax = points[0].y
-        visit p in points
+        foreach p in points
         {
             xmax = Math.max(xmax, p.x)
             xmin = Math.min(xmin, p.x)

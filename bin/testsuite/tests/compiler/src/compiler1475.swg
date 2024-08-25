@@ -1,7 +1,7 @@
 /*#test
 {
     var cpt = 0
-    visit c in 16
+    foreach c in 16
     {
         cpt += 1
     }
@@ -12,7 +12,7 @@
 #test
 {
     var cpt = 0
-    visit 16
+    foreach 16
     {
         cpt += 1
     }

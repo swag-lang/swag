@@ -10,7 +10,7 @@ using Core
 
     var cpt = 0
     var val = 0
-    visit v in list
+    foreach v in list
     {
         cpt += 1
         val += v
@@ -19,7 +19,7 @@ using Core
     @assert(cpt == 4)
     @assert(val == 6)
 
-    visit v in list
+    foreach v in list
     {
         cpt += 1
         break
@@ -28,7 +28,7 @@ using Core
     @assert(cpt == 5)
 
     cpt = 0
-    visit #back v in list
+    foreach #back v in list
     {
         cpt += 1
         continue

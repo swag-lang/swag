@@ -26,7 +26,7 @@ impl X
     let ptr = cast(const *TypeInfoStruct) @typeof(X)
     @assert(@countof(ptr.methods) == 1)
 
-    visit i in ptr.methods
+    foreach i in ptr.methods
     {
         @assert(i.name != "titi")
         let ptrFunc = cast(const *TypeInfoFunc) i.pointedType

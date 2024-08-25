@@ -18,7 +18,7 @@ func day4B()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit l in lines
+    foreach l in lines
     {
         var idx  = 0
         var str: String

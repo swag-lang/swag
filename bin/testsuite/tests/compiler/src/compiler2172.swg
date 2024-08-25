@@ -1,6 +1,6 @@
 func toto(x: string...)
 {
-    visit str, i in x
+    foreach str, i in x
     {
         switch i
         {

@@ -18,7 +18,7 @@ impl Variant
     func orFlags()->Swag.TypeInfoFlags
     {
         var res: Swag.TypeInfoFlags = Zero
-        visit p in T:
+        foreach p in T:
             res |= p.flags
         return res
     }

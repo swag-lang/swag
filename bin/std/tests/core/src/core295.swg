@@ -6,7 +6,7 @@ using Core
     for 65:
         h.add(#index)
 
-    visit v in h
+    foreach v in h
     {
         @assert(h.contains(v))
     }

@@ -4,7 +4,7 @@ using Core
 #test
 {
     var str: String = "A⻨C"
-    visit<Runes> c, ir, i in str
+    foreach<Runes> c, ir, i in str
     {
         switch i
         {

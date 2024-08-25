@@ -25,7 +25,7 @@ In Swag, the `for` for offers a versatile way to iterate over a range of values.
 /**
 # Accessing Loop Index with `#index`
 
-Similar to other looping constructs like `for`, `visit`, and `while`, the `for` for in Swag provides access to the `#index` keyword. This keyword represents the **current for index** and is particularly useful when you need to keep track of the iteration count separately from the for variable.
+Similar to other looping constructs like `for`, `foreach`, and `while`, the `for` for in Swag provides access to the `#index` keyword. This keyword represents the **current for index** and is particularly useful when you need to keep track of the iteration count separately from the for variable.
 */
 #test
 {

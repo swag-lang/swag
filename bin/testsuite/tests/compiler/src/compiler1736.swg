@@ -2,7 +2,7 @@
 #test
 {
     var a = 0'u64
-    visit "ABC"
+    foreach "ABC"
     {
         a += #index
     }

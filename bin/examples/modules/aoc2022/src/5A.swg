@@ -64,7 +64,7 @@ func day5A()
     catch r.compile(#"\d+"#)
 
     var moveMode = false
-    visit l in lines
+    foreach l in lines
     {
         if moveMode
         {
@@ -103,7 +103,7 @@ func day5A()
     }
 
     var total: String
-    visit s in stacks:
+    foreach s in stacks:
         total += s[0]
 
     //Console.print("total: ", total)

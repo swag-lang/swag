@@ -125,9 +125,9 @@ struct(T) IsSet
         // We get the type of the generic parameter 'T'
         let typeof = @typeof(T)
 
-        // Then we visit all the fields, assuming the type is a struct (or this will not compile).
+        // Then we foreach all the fields, assuming the type is a struct (or this will not compile).
         // For each original field, we create one with the same name, but with a `bool` type.
-        visit f in typeof.fields:
+        foreach f in typeof.fields:
             str.appendFormat("%: bool\n", f.name)
 
         // Then we return the constructed source code.

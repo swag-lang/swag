@@ -196,7 +196,7 @@ impl MainWnd
             btn.userData = cast(*void) id
             btn.sigChanged += func(btn)
             {
-                visit c in btn.parent.childs
+                foreach c in btn.parent.childs
                 {
                     if c.userData
                     {
@@ -225,7 +225,7 @@ impl MainWnd
         let res = dlg.doModal()
 
         g_KeepRatio = btnRatio.checked == .Checked
-        visit c in dlg.childs
+        foreach c in dlg.childs
         {
             if c.userData
             {
@@ -286,7 +286,7 @@ impl MainWnd
         var maxX = 0'f32
         var maxY = 0'f32
 
-        visit f, idx in capture.forms
+        foreach f, idx in capture.forms
         {
             var r = f.boundRect()
             if r.x > 0:

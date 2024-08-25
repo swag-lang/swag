@@ -428,7 +428,7 @@ Now, the tail (9) visits 36 positions (including s) at least once:
 .......#..........#.......
 ........#........#........
 .........########.........
-Simulate your complete series of motions on a larger rope with ten knots. How many positions does the tail of the rope visit at least once?
+Simulate your complete series of motions on a larger rope with ten knots. How many positions does the tail of the rope foreach at least once?
 */
 using Core
 
@@ -441,7 +441,7 @@ func day9B()
     var set:  HashSet'W
     var rope: [10] W
 
-    visit l in lines
+    foreach l in lines
     {
         let cmd = Tokenize.split(l, ` `'u8)
         let cpt = assume StrConv.toS32(cmd[1])

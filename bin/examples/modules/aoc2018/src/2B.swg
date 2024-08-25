@@ -23,9 +23,9 @@ func day2B()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit a, i in lines
+    foreach a, i in lines
     {
-        visit b, j in lines
+        foreach b, j in lines
         {
             if i == j:
                 continue

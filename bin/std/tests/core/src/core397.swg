@@ -9,8 +9,8 @@ using Core
 
     var h1 = h
 
-    visit k, v in h:
+    foreach k, v in h:
         @assert(v[0] == `s`'u8)
-    visit k, v in h1:
+    foreach k, v in h1:
         @assert(v[0] == `s`'u8)
 }

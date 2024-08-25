@@ -17,7 +17,7 @@ impl LinePathList
 
     mtd opPostCopy()
     {
-        visit p, i in paths
+        foreach p, i in paths
         {
             var ptr = Memory.new'LinePath()
             dref ptr = dref p
@@ -31,7 +31,7 @@ impl LinePathList
     // Remove all internal line paths
     mtd clear()
     {
-        visit p in paths:
+        foreach p in paths:
             Memory.delete(p)
         paths.clear()
     }
@@ -50,7 +50,7 @@ impl LinePathList
         // Flatten all path, and compute BV
         bvMin = Vector2.Max
         bvMax = Vector2.NegMax
-        visit p in paths
+        foreach p in paths
         {
             p.flatten(quality)
             bvMin = Vector2.min(bvMin, p.bvMin)
@@ -66,7 +66,7 @@ impl LinePathList
         if Math.isZeroEpsilon(value):
             return
 
-        visit p in paths
+        foreach p in paths
         {
             let v = p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
@@ -83,7 +83,7 @@ impl LinePathList
 
         var newList: LinePathList
 
-        visit p in paths
+        foreach p in paths
         {
             let v = p.polygon.isClockwise ? value : -value
 
@@ -103,7 +103,7 @@ impl LinePathList
     {
         var newList: LinePathList
 
-        visit p in paths
+        foreach p in paths
         {
             var res = p.polygon.getClean()
             newList.paths.add(res.paths.toSlice())

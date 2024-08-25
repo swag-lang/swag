@@ -135,7 +135,7 @@ internal impl Properties
     mtd hitTest(ptLoc: Math.Point)->*PropertiesItem
     {
         var pt = ptLoc + scrollWnd.getScrollPos()
-        visit item in items
+        foreach item in items
         {
             if !item.line.isVisible():
                 continue
@@ -693,7 +693,7 @@ internal impl Properties
             parentItem.ntfyItf = @mkinterface(addr, typeStruct, IPropertyNotify)
 
         var categItem: *PropertiesItem
-        visit value in typeStruct.fields
+        foreach value in typeStruct.fields
         {
             // Category
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
@@ -814,7 +814,7 @@ impl Properties
     // Refresh all displayed values.
     mtd refresh()
     {
-        visit it in items:
+        foreach it in items:
             refreshItem(it)
     }
 
@@ -910,7 +910,7 @@ impl Properties
     // Update the show/hide state of all content
     mtd updateStates()
     {
-        visit it in items:
+        foreach it in items:
             updateItemState(it)
         applyLayout()
         scrollWnd.view.sendResizeEvent()
@@ -923,7 +923,7 @@ impl Properties
             return
 
         gridColumnSize = Math.clamp(size, gridMarginColumn, cast(s32) position.width - gridMarginColumn - leftMargin - rightMargin)
-        visit item in items
+        foreach item in items
         {
             if !item.label:
                 continue

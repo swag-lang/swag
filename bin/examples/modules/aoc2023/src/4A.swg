@@ -8,7 +8,7 @@ The next thing you notice is an Elf sitting on the floor across the station in w
 
 "Oh! Hello!" The Elf excitedly runs over to you. "How may I be of service?" You ask about water sources.
 
-"I'm not sure; I just operate the gondola lift. That does sound like something we'd have, though - this is Island Island, after all! I bet the gardener would know. He's on a different island, though - er, the small kind surrounded by water, not the floating kind. We really need to come up with a better naming scheme. Tell you what: if you can help me with something quick, I'll let you borrow my boat and you can go visit the gardener. I got all these scratchcards as a gift, but I can't figure out what I've won."
+"I'm not sure; I just operate the gondola lift. That does sound like something we'd have, though - this is Island Island, after all! I bet the gardener would know. He's on a different island, though - er, the small kind surrounded by water, not the floating kind. We really need to come up with a better naming scheme. Tell you what: if you can help me with something quick, I'll let you borrow my boat and you can go foreach the gardener. I got all these scratchcards as a gift, but I can't figure out what I've won."
 
 The Elf leads you over to the pile of colorful cards. There, you discover dozens of scratchcards, all with their opaque covering already scratched off. Picking one up, it looks like each card has two lists of numbers separated by a vertical bar (|): a list of winning numbers and then a list of numbers you have. You organize the information into a table (your puzzle input).
 
@@ -42,7 +42,7 @@ func day4A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0'u64
-    visit l in lines
+    foreach l in lines
     {
         let first = Tokenize.split(l, `:`'u8)
         let game  = Tokenize.split(first[1], `|`'u8)
@@ -50,13 +50,13 @@ func day4A()
         let val1  = Tokenize.split(game[1], ` `'u8)
 
         var v0, v1: Array's32
-        visit v in val0:
+        foreach v in val0:
             v0.add(assume StrConv.toS32(v))
-        visit v in val1:
+        foreach v in val1:
             v1.add(assume StrConv.toS32(v))
 
         var score = 1
-        visit v in v1
+        foreach v in v1
         {
             if v0.contains(v):
                 score <<= 1

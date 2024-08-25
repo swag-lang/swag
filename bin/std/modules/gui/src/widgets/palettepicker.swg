@@ -28,7 +28,7 @@ impl IWnd for PalettePicker
 
         var x = clientRect.x
         var y = clientRect.y
-        visit c, i in pal
+        foreach c, i in pal
         {
             if hotIdx == i:
                 colorBorder = colors.palPicker_HotBorder

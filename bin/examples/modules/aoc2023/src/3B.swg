@@ -35,7 +35,7 @@ private var parts: Array'{ num, x, lx, y: s32 }
 
 private func hasSymbol(x, y: s32)->bool
 {
-    visit s in symbols
+    foreach s in symbols
     {
         if s.x == x and s.y == y:
             return true
@@ -49,7 +49,7 @@ func day3B()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    visit l, y in lines
+    foreach l, y in lines
     {
         for var x = 0; x < l.length; x += 1
         {
@@ -79,7 +79,7 @@ func day3B()
     }
 
     var total = 0'u64
-    visit n in nums
+    foreach n in nums
     {
         for var x = n.x; x <= n.lx; x += 1
         {
@@ -98,14 +98,14 @@ func day3B()
         }
     }
 
-    visit s in symbols
+    foreach s in symbols
     {
         if s.s != `*`:
             continue
 
         var gear = 1
         var cpt  = 0
-        visit n in nums
+        foreach n in nums
         {
             if n.y < s.y - 1 or n.y > s.y + 1:
                 continue

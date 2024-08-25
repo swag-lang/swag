@@ -15,7 +15,7 @@ impl AA
 
     mtd call(params: ...)
     {
-        visit fn in arr
+        foreach fn in arr
         {
             #ast
             {

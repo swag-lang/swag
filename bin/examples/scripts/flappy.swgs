@@ -287,9 +287,9 @@ func paint(painter: *Painter)
     }
 
     // Draw pipes.
-    // 'visit' for on all the pipes stored in the dynamic array, and returns each value
+    // 'foreach' for on all the pipes stored in the dynamic array, and returns each value
     // as a pointer/reference.
-    visit pipe in g_Pipes
+    foreach pipe in g_Pipes
     {
         painter.drawTexture(pipe.rectUp, g_PipeTextureU)
         painter.drawTexture(pipe.rectDown, g_PipeTextureD)
@@ -389,7 +389,7 @@ func move()
     // Move each pipe, and test collisions against the bird
     if g_Start
     {
-        visit &pipe in g_Pipes
+        foreach &pipe in g_Pipes
         {
             pipe.rectUp.x -= SpeedHorz * g_Dt
             pipe.rectDown.x -= SpeedHorz * g_Dt

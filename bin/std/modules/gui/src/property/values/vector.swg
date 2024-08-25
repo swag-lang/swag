@@ -8,7 +8,7 @@ impl Properties
         let line = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
-        visit v in typeStruct.fields
+        foreach v in typeStruct.fields
         {
             let dataField = cast(*f32) (data + v.offset)
 

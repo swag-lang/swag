@@ -15,14 +15,14 @@ func day1B()
     let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    visit v in lines:
+    foreach v in lines:
         arr.add(assume StrConv.toS32(v))
 
     arr.sort()
 
-    visit v0, i0 in arr
+    foreach v0, i0 in arr
     {
-        visit v1, i1 in arr[i0..]
+        foreach v1, i1 in arr[i0..]
         {
             let v2 = 2020 - (v0 + v1)
             if v2 < 0:

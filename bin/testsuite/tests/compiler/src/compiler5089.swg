@@ -2,7 +2,7 @@
 
 func toto(x: *s32)
 {
-    visit &a in x
+    foreach &a in x
     {
     }
 }

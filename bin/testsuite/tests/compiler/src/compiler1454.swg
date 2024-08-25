@@ -22,7 +22,7 @@ impl S
     var x: S
 
     var cpt = 0
-    visit x
+    foreach x
     {
         cpt += 1
     }

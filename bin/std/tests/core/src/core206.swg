@@ -61,7 +61,7 @@ const validTests: [] ValidTest = [
 
 #test
 {
-    visit &it in validTests
+    foreach &it in validTests
     {
         let res = Adler32.compute(it.inT)
         @assert(res == it.out)

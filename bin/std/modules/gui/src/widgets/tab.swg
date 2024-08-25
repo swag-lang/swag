@@ -322,7 +322,7 @@ internal impl Tab
     mtd showPopup(x, y: f32)
     {
         popup = PopupListCtrl.create(self)
-        visit item in views:
+        foreach item in views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         popup.sigSelected = closure|self|(list, idx)
@@ -378,7 +378,7 @@ internal impl Tab
         case Divide:
             var w = cast(f32) (rect.width / views.count)
             w = Math.max(w, itemMinWidth)
-            visit v in views
+            foreach v in views
             {
                 v.width = w
                 mostRightPos += w
@@ -386,14 +386,14 @@ internal impl Tab
 
         case Fixed:
             let w = Math.max(itemFixedLayoutWidth, itemMinWidth)
-            visit v in views
+            foreach v in views
             {
                 v.width = w
                 mostRightPos += w
             }
 
         case Auto:
-            visit v in views
+            foreach v in views
             {
                 var mes = Painter.measureString(v.item.name.raw, getFont().regular)
 

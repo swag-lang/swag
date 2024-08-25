@@ -39,7 +39,7 @@ func day3A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    visit l in lines
+    foreach l in lines
     {
         let div = l.length / 2
         for i in div

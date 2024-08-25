@@ -176,7 +176,7 @@ func __closeRuntime()
 
 func __dropGlobalVariables()
 {
-    visit g in @gvtd()
+    foreach g in @gvtd()
     {
         var ptr = cast(^u8) g.ptr
         for x in g.count

@@ -19,7 +19,7 @@ func toto()->A throw
 var G = 0
 #test
 {
-    visit assume toto()
+    foreach assume toto()
     {
         G += 1
     }

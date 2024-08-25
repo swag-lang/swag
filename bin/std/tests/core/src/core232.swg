@@ -11,7 +11,7 @@ using Core, Core.Directory
 
     let res   = assume enumerate(pth, options)
     var count = 0
-    visit p in res
+    foreach p in res
     {
         count += 1
         //Console.print("%\n", p.fullname)

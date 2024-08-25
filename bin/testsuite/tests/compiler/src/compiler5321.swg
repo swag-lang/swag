@@ -23,7 +23,7 @@ struct(T) B
 #test
 {
     var v: B's32
-    visit v
+    foreach v
     {
     }
 }

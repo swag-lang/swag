@@ -78,7 +78,7 @@ the struct is a Plain Old Data (POD) type.
     fct = closure|x|(toAdd)
     {
         var res = 0                  // Initialize a result variable 'res' to accumulate the sum.
-        visit v in x:                // Iterate over the captured array 'x' and sum its elements.
+        foreach v in x:                // Iterate over the captured array 'x' and sum its elements.
             res += v
         res += toAdd                 // Add the 'toAdd' parameter to the sum.
         return res

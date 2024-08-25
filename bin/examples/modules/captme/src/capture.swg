@@ -61,7 +61,7 @@ impl Capture
 {
     func freeForms(forms: Array'IForm)
     {
-        visit it in forms
+        foreach it in forms
         {
             let type = @kindof(it)
             Memory.delete(@dataof(it), type)
@@ -118,7 +118,7 @@ impl Capture
 
         if onlySel
         {
-            visit sel in selection
+            foreach sel in selection
             {
                 let f = forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
@@ -129,7 +129,7 @@ impl Capture
         }
         else
         {
-            visit f in forms
+            foreach f in forms
             {
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
@@ -191,7 +191,7 @@ impl Capture
         let capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
-        visit itf in capture.forms:
+        foreach itf in capture.forms:
             itf.setup(capture)
 
         return capture
@@ -212,7 +212,7 @@ impl Capture
         var arr: Array'IForm
 
         var imgDone = false
-        visit s in selection
+        foreach s in selection
         {
             let itf = forms[s]
 
@@ -277,7 +277,7 @@ impl Capture
 
         var boundRect: Math.Rectangle
 
-        visit &itf, idx in res
+        foreach &itf, idx in res
         {
             itf.setup(self)
             var bound = itf.boundRect()
@@ -300,7 +300,7 @@ impl Capture
         pt.x /= zoom
         pt.y /= zoom
 
-        visit itf in undo.oldForms
+        foreach itf in undo.oldForms
         {
             let dx = -boundRect.x + pt.x - (boundRect.width * 0.5)
             let dy = -boundRect.y + pt.y - (boundRect.height * 0.5)
@@ -553,11 +553,11 @@ impl Capture
 
         // Shapes
         let app = editView.getApp()
-        visit f in forms:
+        foreach f in forms:
             paintForm(app, painter, rect, f, zoom)
 
         // Gizmos
-        visit f, i in forms
+        foreach f, i in forms
         {
             var flags = FormFlags.Zero
             if i == hotForm:
@@ -647,7 +647,7 @@ impl Capture
             return editForm.boundRect()
 
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
-        visit s in selection
+        foreach s in selection
         {
             let f = forms[s]
             let r = f.boundRect()
@@ -688,7 +688,7 @@ impl Capture
         arrY.add(height)
         arrY.add(height / 2)
 
-        visit f, i in forms
+        foreach f, i in forms
         {
             let autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
             let form    = cast(*BaseForm) @dataof(f)
@@ -710,7 +710,7 @@ impl Capture
 
             case FormPolygon:
                 let form2 = cast(*FormPolygon) form
-                visit pt, idx in form2.points
+                foreach pt, idx in form2.points
                 {
                     if !autoSel or idx != idxPt
                     {
@@ -745,7 +745,7 @@ impl Capture
 
         if x
         {
-            visit ax in arrX
+            foreach ax in arrX
             {
                 let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbX = Math.abs(p.x - ax)
@@ -759,7 +759,7 @@ impl Capture
 
         if y
         {
-            visit ay in arrY
+            foreach ay in arrY
             {
                 let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbY = Math.abs(p.y - ay)
@@ -1031,7 +1031,7 @@ impl Capture
 
             r.set(movingStart, movingEnd)
 
-            visit f, idx in forms
+            foreach f, idx in forms
             {
                 let b = cast(*BaseForm) @dataof(f)
                 if b.paintPos.intersectWith(r) and !selection.contains(idx):

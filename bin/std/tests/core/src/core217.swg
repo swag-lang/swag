@@ -6,14 +6,14 @@ using Core
     var str: String = "toto"
 
     var cpt = 0
-    visit<Runes> str
+    foreach<Runes> str
     {
         break
     }
 
     @assert(cpt == 0)
 
-    visit<Runes> str
+    foreach<Runes> str
     {
         cpt += 1
         continue

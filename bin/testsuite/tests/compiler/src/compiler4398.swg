@@ -4,7 +4,7 @@ struct A { x, y: s32; }
 {
     var arr: [4] A
     let slice = arr[..]
-    visit v in slice
+    foreach v in slice
     {
         v = A{1, 2}
     }

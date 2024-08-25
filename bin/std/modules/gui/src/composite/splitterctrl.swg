@@ -110,7 +110,7 @@ impl IWnd for SplitterCtrl
         var y       = client.y
         let barSize = getThemeMetrics().splitView_BarSize
 
-        visit item in items
+        foreach item in items
         {
             if !item.visible:
                 continue
@@ -208,7 +208,7 @@ internal impl SplitterCtrl
             // Compute the current total sizes of panes
             var countNotPreserve, countPreserve = 0
             var totalSize = 0'f32
-            visit item, idx in items
+            foreach item, idx in items
             {
                 if !item.visible:
                     continue
@@ -230,7 +230,7 @@ internal impl SplitterCtrl
             if countNotPreserve
             {
                 let diff = cast(f32) Math.round(dispatch / countNotPreserve)
-                visit item, idx in items
+                foreach item, idx in items
                 {
                     if item.tryPreserveSize:
                         continue
@@ -254,7 +254,7 @@ internal impl SplitterCtrl
             if countPreserve
             {
                 let diff = cast(f32) Math.round(dispatch / countPreserve)
-                visit item, idx in items
+                foreach item, idx in items
                 {
                     if !item.tryPreserveSize:
                         continue
@@ -275,7 +275,7 @@ internal impl SplitterCtrl
             }
         }
 
-        visit item, idx in items
+        foreach item, idx in items
         {
             if !item.visible:
                 continue
@@ -293,7 +293,7 @@ internal impl SplitterCtrl
         var y       = client.y
         let barSize = getThemeMetrics().splitView_BarSize
 
-        visit item, idx in items
+        foreach item, idx in items
         {
             if !item.visible:
                 continue

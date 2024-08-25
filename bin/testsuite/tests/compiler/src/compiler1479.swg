@@ -8,7 +8,7 @@
     //@print(cast(s64) @countof(arr))
 
     //var cpt = 0
-    visit<Toto> xxx in arr
+    foreach<Toto> xxx in arr
     {
         @print(cast(s64) xxx)
         //cpt += cast(s32) xxx

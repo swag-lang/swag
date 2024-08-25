@@ -113,7 +113,7 @@ internal impl FileDlg
         var l = treeCtrl.createLine("Shortcuts")
         l.separator = true
 
-        visit v in dlgOptions.shortcuts
+        foreach v in dlgOptions.shortcuts
         {
             var c  = Env.getSpecialDirectory(v.item0)
             var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
@@ -127,7 +127,7 @@ internal impl FileDlg
         l.separator = true
 
         var volumes = catch Directory.getDrives()
-        visit v in volumes
+        foreach v in volumes
         {
             v.removeBack()
             var ic = getApp().getDirectoryIcon(v, true)
@@ -165,7 +165,7 @@ internal impl FileDlg
         var filter = dlgOptions.filters[cast(u64) item.userData0]
         var tokens = Tokenize.split(filter.item1, `;`'rune)
 
-        visit &fi in curList
+        foreach &fi in curList
         {
             let fname = Path.getFileName(fi.fullname)
 
@@ -174,7 +174,7 @@ internal impl FileDlg
             if !fi.isDirectory() and @countof(filter.item1)
             {
                 show = false
-                visit t in tokens
+                foreach t in tokens
                 {
                     if Path.isExtension(fname, t)
                     {
@@ -335,7 +335,7 @@ impl FileDlg
             {
                 var sel  = list.getSelectedLines()
                 var txt: String
-                visit l in sel
+                foreach l in sel
                 {
                     let fi = cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
@@ -430,7 +430,7 @@ impl FileDlg
             if opt.mode == .SelectFolder:
                 .addItem("Folders")
             else:
-                visit f, idx in opt.filters:
+                foreach f, idx in opt.filters:
                     .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
@@ -506,7 +506,7 @@ impl FileDlg
         var fi   = dlgOptions.filters[cast(u64) item.userData0]
 
         var tokens = Tokenize.split(editFile.text, `;`'rune)
-        visit t in tokens
+        foreach t in tokens
         {
             // Be sure this is a valid file/folder name
             var t1 = String.from(t)

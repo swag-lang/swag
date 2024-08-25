@@ -2,5 +2,5 @@
 
 #test
 {
-    visit #os in "tto" {}
+    foreach #os in "tto" {}
 }

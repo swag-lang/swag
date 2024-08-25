@@ -11,7 +11,7 @@
         //@assert(ptr[0] == 1)
 
         /*var result = 0
-        visit it in array
+        foreach it in array
         {
             result += it
         }

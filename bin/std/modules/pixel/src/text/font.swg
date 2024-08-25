@@ -48,7 +48,7 @@ internal var g_HashFont: HashTable'(String, *Font)
 
 #drop
 {
-    visit k, v in g_HashFont:
+    foreach k, v in g_HashFont:
         Memory.delete(v)
     g_HashFont.free()
 }
@@ -59,7 +59,7 @@ public impl Font
 
     mtd opDrop()
     {
-        visit k, v in unicodeRef:
+        foreach k, v in unicodeRef:
             Memory.delete(v)
     }
 

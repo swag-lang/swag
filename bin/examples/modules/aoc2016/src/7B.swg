@@ -21,12 +21,12 @@ func day7B() assume
     let lines    = File.readAllLines(dataPath)
 
     var total = 0
-    visit l in lines
+    foreach l in lines
     {
         l.replace("]", "[")
 
         var outside, inside: String
-        visit it, i in Tokenize.split(l, `[`'u8)
+        foreach it, i in Tokenize.split(l, `[`'u8)
         {
             if !(i & 1):
                 outside += it

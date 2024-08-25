@@ -9,7 +9,7 @@ func isValidPathName(fullname: string)->bool
     if @countof(fullname) == 0:
         return false
 
-    visit c in fullname
+    foreach c in fullname
     {
         if c < 32:
             return false
@@ -35,7 +35,7 @@ func isValidFileName(fullname: string)->bool
 {
     if @countof(fullname) == 0:
         return false
-    visit c in fullname
+    foreach c in fullname
     {
         if c < 32:
             return false

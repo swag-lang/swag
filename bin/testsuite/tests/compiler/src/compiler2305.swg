@@ -1,6 +1,6 @@
 func combine(fullnames: string...)
 {
-    visit one in fullnames
+    foreach one in fullnames
     {
         @print(one)
     }

@@ -70,7 +70,7 @@ func simulate(dt: f32)
     const Steps = 8
     for Steps
     {
-        visit &v in g_Objs
+        foreach &v in g_Objs
         {
             v.accelerate({0, 4000})
             v.applyConstraint()
@@ -78,7 +78,7 @@ func simulate(dt: f32)
 
         solveCollisions()
 
-        visit &v in g_Objs
+        foreach &v in g_Objs
         {
             v.updatePosition(dt / Steps)
         }
@@ -119,7 +119,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         simulate(dt)
 
-        visit v in g_Objs:
+        foreach v in g_Objs:
             painter.fillCircle(v.positionCurrent.x, v.positionCurrent.y, v.radius, v.color)
 
         wnd.invalidate()

@@ -50,7 +50,7 @@ func day8A() assume
     var screen, nscreen: [W, H] bool
     var re: Parser.RegExp
 
-    visit l in lines
+    foreach l in lines
     {
         nscreen = screen
         switch

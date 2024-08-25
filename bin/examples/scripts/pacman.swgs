@@ -1577,7 +1577,7 @@ func soundState()
     }
 
     var soundState = SoundState.SIREN
-    visit g in g_Ghosts
+    foreach g in g_Ghosts
     {
         if g.ai == .DEAD
         {
@@ -1660,7 +1660,7 @@ func checkCollisions()
     // If score is increased by 50, a big pill has been eaten - set ghosts to FRIGHTENED
     if scoreIncrement == 50
     {
-        visit g in g_Ghosts
+        foreach g in g_Ghosts
         {
             g.zeroTimeout()
             if g.ai == g_Wave or g.ai == .FRIGHTENED:
@@ -1698,7 +1698,7 @@ func checkCollisions()
         g_Ghosts[3].setAI(.LEAVE, false)
 
     // Check for ghost collisions
-    visit g in g_Ghosts
+    foreach g in g_Ghosts
     {
         if g.getX() == g_PacMan.getX() and g.getY() == g_PacMan.getY()
         {
@@ -1805,7 +1805,7 @@ func aiWave()
 
     // Update ghost AI to new wave only if they are in CHASE/SCATTER mode
     // Checked every frame to ensure ghost AI correctly reset following FRIGHTENED mode
-    visit g in g_Ghosts
+    foreach g in g_Ghosts
     {
         let ai = g.ai
         if (ai == .SCATTER or ai == .CHASE) and ai != g_Wave:
@@ -1908,7 +1908,7 @@ func resetLevel()
     g_Wave        = .SCATTER
     g_GhostsEaten = 0
     g_PacMan.reset()
-    visit g in g_Ghosts:
+    foreach g in g_Ghosts:
         g.reset()
     g_Mode         = .STARTLEVEL
     g_FruitSpawned = false
@@ -1973,7 +1973,7 @@ func gameLoop()
             checkCollisions()
             aiWave()
             // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
-            visit g in g_Ghosts:
+            foreach g in g_Ghosts:
                 g.move(g_Ghosts[0])
             // If no fruit is currently spawned, enough pills have been eaten,
             // The eaten fruit count doesn't exceed the level and a random quantifier is satisfied, spawn a fruit

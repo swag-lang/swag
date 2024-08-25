@@ -46,7 +46,7 @@ impl Drop
     mtd constructPath()
     {
         lp.start(vertices[0].x, vertices[0].y)
-        visit v in vertices:
+        foreach v in vertices:
             lp.lineTo(v.x, v.y)
         lp.close()
     }
@@ -68,7 +68,7 @@ impl Drop
     mtd marble(other: Drop)
     {
         let otherr = other.r * other.r
-        visit v in lp.polygon.points
+        foreach v in lp.polygon.points
         {
             var p    = v - other.center
             let root = sqrt(1 + (otherr / p.lengthSquared()))
@@ -93,7 +93,7 @@ func addInk(x, y, r: f32, col: Color)
         .construct()
     }
 
-    visit other in drops:
+    foreach other in drops:
         other.marble(drop)
     drops.add(drop)
 }
@@ -140,7 +140,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
             else
             {
-                visit other in drops:
+                foreach other in drops:
                     other.marble(dref drops.back())
             }
         }
@@ -149,7 +149,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             newDrop = true
         }
 
-        visit drop in drops:
+        foreach drop in drops:
             drop.show(painter)
 
         wnd.invalidate()

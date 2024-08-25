@@ -162,7 +162,7 @@ impl GizmoRect
                 if hotAnchor != Swag.U32.Max:
                     view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
-                visit c, i in anchors where c.contains(pos)
+                foreach c, i in anchors where c.contains(pos)
                 {
                     switch i
                     {
@@ -219,7 +219,7 @@ impl GizmoRect
         anchors[6] = {rect.horzCenter() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
         anchors[7] = {rect.right() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
 
-        visit c, i in anchors
+        foreach c, i in anchors
         {
             if roundShape
             {

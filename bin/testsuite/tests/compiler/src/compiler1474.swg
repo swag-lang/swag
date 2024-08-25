@@ -1,7 +1,7 @@
 #test
 {
     var cpt = 0
-    visit xxx in "toto"
+    foreach xxx in "toto"
     {
         cpt += cast(s32) xxx
     }

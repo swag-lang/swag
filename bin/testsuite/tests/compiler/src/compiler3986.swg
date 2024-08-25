@@ -13,7 +13,7 @@ impl AA
 
 func toto(x: const &AA)
 {
-    visit x
+    foreach x
     {
 
     }

@@ -601,7 +601,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     case TokenId::KwdSwitch:
                     case TokenId::KwdDefer:
                     case TokenId::KwdIn:
-                    case TokenId::KwdVisit:
+                    case TokenId::KwdForEach:
                     case TokenId::KwdBreak:
                     case TokenId::KwdFallThrough:
                     case TokenId::KwdUnreachable:
@@ -665,7 +665,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 {
                     case TokenId::KwdCast:
                     case TokenId::KwdWhere:
-                    case TokenId::KwdVisit:
+                    case TokenId::KwdForEach:
                     case TokenId::KwdDefer:
                         if (c == '<')
                         {

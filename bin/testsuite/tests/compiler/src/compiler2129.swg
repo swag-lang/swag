@@ -3,7 +3,7 @@
 
 #test
 {
-    visit __a in "to"
+    foreach __a in "to"
     {
 
     }

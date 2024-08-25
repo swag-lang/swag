@@ -235,7 +235,7 @@ impl IForm for FormText
             runes.clear()
 
             totalY = 0
-            visit t, idx in tokens
+            foreach t, idx in tokens
             {
                 let pathl  = &paths[idx * 2]
                 let pathl1 = &paths[(idx * 2) + 1]

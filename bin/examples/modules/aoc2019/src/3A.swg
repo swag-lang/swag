@@ -63,7 +63,7 @@ func day3A0()
     {
         var x, y = S / 2
         var dx, dy = 0
-        visit v in Tokenize.split(line, `,`'u8)
+        foreach v in Tokenize.split(line, `,`'u8)
         {
             switch v[0]
             {
@@ -116,7 +116,7 @@ func day3A1()
         var result: retval
         var pos:    Vector2
         result.add(pos)
-        visit v in Tokenize.split(line, `,`'u8)
+        foreach v in Tokenize.split(line, `,`'u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]

@@ -32,7 +32,7 @@ func wait(threads: *Thread...)
     }
 
     // Close all
-    visit th in threads
+    foreach th in threads
     {
         CloseHandle(th.handle)
         th.handle = null

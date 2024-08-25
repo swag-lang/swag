@@ -2,7 +2,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    visit "toto"
+    foreach "toto"
     {
         //@print("x")
     }

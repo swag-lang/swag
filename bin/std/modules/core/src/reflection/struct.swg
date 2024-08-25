@@ -22,7 +22,7 @@ func getMethod(type: typeinfo, name: string)->const *TypeValue
         return null
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.methods where it.name == name:
+    foreach it in typeStruct.methods where it.name == name:
         return it
     return null
 }
@@ -36,7 +36,7 @@ func getField(type: typeinfo, name: string)->const *TypeValue
         return null
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.fields where it.name == name:
+    foreach it in typeStruct.fields where it.name == name:
         return it
     return null
 }
@@ -134,7 +134,7 @@ func hasInterface(type: typeinfo, itf: typeinfo)->bool
         return false
 
     let typeStruct = cast(const *TypeInfoStruct) type
-    visit it in typeStruct.interfaces where it.name == itf.fullname:
+    foreach it in typeStruct.interfaces where it.name == itf.fullname:
         return true
     return false
 }

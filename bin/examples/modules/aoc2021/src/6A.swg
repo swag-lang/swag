@@ -59,7 +59,7 @@ func day6A()
 
     var values: Array's32
     let str     = Tokenize.split(lines[0], `,`'u8)
-    visit v in str:
+    foreach v in str:
         values.add(assume StrConv.toS32(v))
 
     for day in 80

@@ -29,7 +29,7 @@ struct(T) C
 #test
 {
     var v: C's32
-    visit v
+    foreach v
     {
     }
 }

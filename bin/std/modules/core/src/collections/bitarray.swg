@@ -68,7 +68,7 @@ public impl BitArray
         let len = @countof(what)
         reserve(len)
         buffer[len >> 5] = 0
-        visit value, index in what:
+        foreach value, index in what:
             set(index, value)
     }
 

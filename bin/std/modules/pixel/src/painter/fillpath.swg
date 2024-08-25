@@ -17,7 +17,7 @@ public impl Painter
         }
 
         // Paint
-        visit i in p.triangles.triIndices
+        foreach i in p.triangles.triIndices
         {
             let tri  = p.triangles.triangles[i]
             let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
@@ -165,7 +165,7 @@ public impl Painter
         // Everything in the cache ?
         var serial = 0
         var dirty  = false
-        visit p in pathList.paths
+        foreach p in pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
@@ -192,7 +192,7 @@ public impl Painter
         serial = 0
         flush  = null
 
-        visit p in pathList.paths
+        foreach p in pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
@@ -235,7 +235,7 @@ public impl Painter
         {
             path.polygon.isClockwise = true
             var res = path.polygon.getClean()
-            visit p in res.paths:
+            foreach p in res.paths:
                 fillPath(p, brush)
         }
     }

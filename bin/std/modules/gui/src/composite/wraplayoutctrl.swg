@@ -25,7 +25,7 @@ impl IWnd for WrapLayoutCtrl
 
         var x = padding.x
         var y = padding.y
-        visit c in childs
+        foreach c in childs
         {
             if c.wndFlags & .Hidden:
                 continue

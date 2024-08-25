@@ -31,7 +31,7 @@ func fillGrid()
     rng.seedNow()
 
     // Put a mine at random
-    visit &g in g_Grid
+    foreach &g in g_Grid
     {
         @init(g)
         if rng.nextU32(0, 100) < g_Density

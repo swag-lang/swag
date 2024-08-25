@@ -16,6 +16,6 @@ using Core
     var res1    = try decomp.decompress(res.toSlice())
 
     @assert(res1.count == 100)
-    visit v, i in res1:
+    foreach v, i in res1:
         @assert(v == 6)
 }

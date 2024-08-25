@@ -5,7 +5,7 @@ using Core
 {
     var arr: Array'String
     arr.add("toto")
-    visit v in arr
+    foreach v in arr
     {
         //Console.print("%\n", @typeof(v))
     }

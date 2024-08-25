@@ -22,7 +22,7 @@ func day3B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total: u64 = 1
-    visit s, slope in [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
+    foreach s, slope in [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
     {
         var x, y, count: u32
         for

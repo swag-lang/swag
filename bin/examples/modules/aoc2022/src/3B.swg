@@ -53,7 +53,7 @@ func day3B()
             idx += 1
         }
 
-        visit c in stack[0]
+        foreach c in stack[0]
         {
             let f1 = Slice.findLinear(stack[1].toSlice(), c)
             if f1 != Swag.U64.Max

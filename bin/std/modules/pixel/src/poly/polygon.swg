@@ -133,7 +133,7 @@ impl Polygon
         if !res.count:
             return
 
-        visit pt in res
+        foreach pt in res
         {
             var vec = Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
             add(vec)
@@ -170,7 +170,7 @@ impl Polygon
 
         // Register path
         var path: Clipper.ClipperPath
-        visit pt in points:
+        foreach pt in points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         off.addPath(path, joinType)
 
@@ -200,7 +200,7 @@ impl Polygon
         var res: Clipper.ClipperPaths
         offset(&res, value, joinStyle, toler)
 
-        visit p in res
+        foreach p in res
         {
             let np = result.newPath()
             np.isPolyOnly = true
@@ -224,7 +224,7 @@ impl Polygon
 
         // Register path
         var path: Clipper.ClipperPath
-        visit pt in points:
+        foreach pt in points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         trf.addPath(&path, .Subject)
 
@@ -253,7 +253,7 @@ impl Polygon
         var res: Clipper.ClipperPaths
         clean(&res)
 
-        visit p in res
+        foreach p in res
         {
             let np = result.newPath()
             np.isPolyOnly = true

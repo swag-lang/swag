@@ -39,7 +39,7 @@ impl A
 {
     var v: A
     var xx = 0
-    visit i in v
+    foreach i in v
     {
         xx += i
     }

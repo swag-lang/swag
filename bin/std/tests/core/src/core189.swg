@@ -63,6 +63,6 @@ var testDigit: [] rune = [
 {
     for c in 256'u32:
         @assert(Latin1.isLetter(cast(u8) c) == Unicode.isLetter(cast(rune) c))
-    visit c in testDigit:
+    foreach c in testDigit:
         @assert(Unicode.isDigit(c))
 }

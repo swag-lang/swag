@@ -11,7 +11,7 @@ func getField(type: typeinfo, name: string)->const* TypeValue
     if type.kind == TypeInfoKind.Struct
     {
         let typeStruct = cast(const* TypeInfoStruct) type
-        visit it in typeStruct.fields
+        foreach it in typeStruct.fields
         {
             if it.name == name:
                 return it

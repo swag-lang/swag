@@ -2,7 +2,7 @@
 
 #test
 {
-    visit a, b, c in "toto"
+    foreach a, b, c in "toto"
     {
 
     }

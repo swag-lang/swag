@@ -16,11 +16,11 @@ impl String
 #test
 {
     var a: String
-    visit a
+    foreach a
     {
-        visit a
+        foreach a
         {
-            visit a
+            foreach a
             {
             }
         }

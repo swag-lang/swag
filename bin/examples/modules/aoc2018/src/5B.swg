@@ -74,14 +74,14 @@ func day5B1() assume
     var read     = File.readAllText(dataPath)
 
     var best = Swag.U64.Max
-    visit x in "abcdefghijklmnopqrstuvwxyz"
+    foreach x in "abcdefghijklmnopqrstuvwxyz"
     {
         var line = read
         line.replace(cast(rune) x, "")
         line.replace(cast(rune) Latin1.toUpper(x), "")
 
         var result: String
-        visit c, i in line
+        foreach c, i in line
         {
             if i and result.back() ^ c == 32:
                 result.removeBack()

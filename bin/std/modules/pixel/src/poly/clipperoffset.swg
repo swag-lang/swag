@@ -42,7 +42,7 @@ impl Offset
 
     mtd clear()
     {
-        visit node in polyNodes.childs:
+        foreach node in polyNodes.childs:
             Memory.delete(node)
         polyNodes.childs.clear()
         lowest.x = -1
@@ -99,7 +99,7 @@ impl Offset
         doOffset(delta)
 
         var clpr: Transform
-        visit &p in destPolys:
+        foreach &p in destPolys:
             clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
@@ -153,7 +153,7 @@ impl Offset
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
         {
-            visit node in polyNodes.childs:
+            foreach node in polyNodes.childs:
                 Slice.reverse(node.contour.toSlice())
         }
     }
@@ -187,7 +187,7 @@ impl Offset
         if Math.isZeroEpsilon(delta)
         {
             destPolys.reserve(polyNodes.childs.count)
-            visit node in polyNodes.childs:
+            foreach node in polyNodes.childs:
                 destPolys.add(node.contour)
             return
         }
@@ -217,7 +217,7 @@ impl Offset
             sinVal = -sinVal
 
         destPolys.reserve(polyNodes.childs.count * 2)
-        visit node, i in polyNodes.childs
+        foreach node, i in polyNodes.childs
         {
             srcPoly = node.contour
 

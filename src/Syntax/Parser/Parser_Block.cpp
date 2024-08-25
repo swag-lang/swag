@@ -342,7 +342,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0277)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the visit specialization name"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[foreach]] specialization name"));
     }
 
     // Reverse loop
@@ -364,7 +364,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     if (tokenParse.is(TokenId::KwdIn) || tokenParse.is(TokenId::SymComma))
     {
-        SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
+        SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[foreach]] variable name"));
         SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
         node->aliasNames.push_back(node->expression->lastChild()->token);
         node->expression->release();
@@ -373,7 +373,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or [[in]] to specify the variable to visit"));
             SWAG_VERIFY(tokenParse.isNot(TokenId::KwdIn), error(prevTokenParse.token, toErr(Err0442)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
-            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[visit]] variable name"));
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[foreach]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
             node->aliasNames.push_back(node->expression->lastChild()->token);
             node->expression->release();

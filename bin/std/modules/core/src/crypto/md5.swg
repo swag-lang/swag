@@ -92,7 +92,7 @@ public impl Md5
         var result: retval
         result.reserve(33)
 
-        visit v in digest
+        foreach v in digest
         {
             result += CONV[v >> 4]
             result += CONV[v & 0x0F]

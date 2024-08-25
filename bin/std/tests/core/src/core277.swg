@@ -4,7 +4,7 @@ using Core
 func maxSize(T: const [..] typeinfo)->u64
 {
     var ms: u32 = 0
-    visit p in T:
+    foreach p in T:
         ms = @max(p.sizeof, ms)
     return ms
 }
@@ -21,7 +21,7 @@ impl AA
     func isIn(V: typeinfo)->bool
     {
         var ms: u64 = 0
-        visit p in T:
+        foreach p in T:
             if p == V:
                 return true
         return false

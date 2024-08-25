@@ -3,7 +3,7 @@
 #placeholder tt
 #test
 {
-    visit s in tt
+    foreach s in tt
     {
         @assert(s == #index)
     }

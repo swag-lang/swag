@@ -21,7 +21,7 @@ func day4B()
     let lines    = assume File.readAllLines(dataPath)
 
     var total: u64
-    visit l in lines
+    foreach l in lines
     {
         let pair  = Tokenize.split(l, `,`'u8)
         let pair0 = Tokenize.split(pair[0], `-`'u8)

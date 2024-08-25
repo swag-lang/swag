@@ -33,7 +33,7 @@ const validTests: [] ValidTest = [
 
 #test
 {
-    visit &it in validTests
+    foreach &it in validTests
     {
         @assert(decodeLastRune(it.inT).c == it.outT)
     }

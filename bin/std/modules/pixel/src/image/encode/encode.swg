@@ -31,7 +31,7 @@ public impl Image
     // Returns 'true' if the given filename has a corresponding encoder
     func canSave(fileName: string)->bool
     {
-        visit &encoder in encoders
+        foreach &encoder in encoders
         {
             if encoder.itf.canEncode(fileName):
                 return true
@@ -47,7 +47,7 @@ public impl Image
 
         // Find the encoder that can treat 'fileName'
         var found: *ImageEncoder
-        visit &encoder in encoders
+        foreach &encoder in encoders
         {
             if encoder.itf.canEncode(fileName)
             {

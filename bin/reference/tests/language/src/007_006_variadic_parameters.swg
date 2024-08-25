@@ -113,7 +113,7 @@ feature is handy when you have a collection of values that you want to pass as i
     {
         // Variadic parameters can be iterated as they are slices.
         var total = 0
-        visit v in params:
+        foreach v in params:
             total += v
         return total
     }
@@ -138,7 +138,7 @@ private func print()
     func logMessage(prefix: string, messages: ...)
     {
         // Print each message with the given prefix.
-        visit msg in messages
+        foreach msg in messages
         {
             @print(prefix, " => ", cast(string) msg)
         }
@@ -160,7 +160,7 @@ integers and concatenating strings.
     {
         var sum = 0
         
-        visit p in params
+        foreach p in params
         {
             switch @kindof(p)
             {

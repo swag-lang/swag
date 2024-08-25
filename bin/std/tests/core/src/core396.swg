@@ -6,7 +6,7 @@ using Core
     for i in 50:
         h.add(i, String.from("s"))
 
-    visit k, v in h
+    foreach k, v in h
     {
         @assert(v[0] == `s`'u8)
     }

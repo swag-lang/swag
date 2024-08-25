@@ -7,7 +7,7 @@ var x: [2] s32
     var cpt, cpt1 = 0
     for x
     {
-        visit c in x
+        foreach c in x
         {
             if #index == 0:
                 continue

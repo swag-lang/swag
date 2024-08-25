@@ -1,6 +1,6 @@
 /**
-# Introduction to `visit`
-The `visit` statement is designed to iterate over all elements within a collection. It provides a streamlined 
+# Introduction to `foreach`
+The `foreach` statement is designed to iterate over all elements within a collection. It provides a streamlined 
 and efficient way to process each item in a collection, which can be an array, slice, or string.
 */
 
@@ -8,7 +8,7 @@ and efficient way to process each item in a collection, which can be an array, s
 {
     // Iterating through each byte in the string "ABC".
     // The current byte will be stored in the variable 'value'.
-    visit value in "ABC"
+    foreach value in "ABC"
     {
         // '#index' is available to store the loop index.
         let a = #index                                     // Index of the current iteration
@@ -32,7 +32,7 @@ especially in cases involving nested loops or complex data structures.
 
 #test
 {
-    visit value, index in "ABC"
+    foreach value, index in "ABC"
     {
         let a = index                                      // The current loop index
         switch a
@@ -55,7 +55,7 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
 
 #test
 {
-    visit "ABC"
+    foreach "ABC"
     {
         let a = #alias1                                    // Default alias for the index
         @assert(a == #index)                               // Ensure alias matches the index
@@ -81,7 +81,7 @@ when processing a collection from the last element to the first.
 {
     // Visiting each byte in the string "ABC" in reverse order.
     var cpt = 0
-    visit #back value in "ABC"
+    foreach #back value in "ABC"
     {
         // '#index' still stores the loop index, even in reverse order.
         switch cpt
@@ -103,7 +103,7 @@ when processing a collection from the last element to the first.
 
 /**
 # Visiting Arrays and Slices
-The `visit` statement can be used to iterate over arrays or slices, 
+The `foreach` statement can be used to iterate over arrays or slices, 
 enabling straightforward processing of each element.
 */
 
@@ -112,7 +112,7 @@ enabling straightforward processing of each element.
     var array = [10, 20, 30]                               // Define an array of integers
 
     var result = 0
-    visit it in array:                                     // Iterate over each element in the array
+    foreach it in array:                                     // Iterate over each element in the array
         result += it                                       // Accumulate the values
 
     @assert(result == 10 + 20 + 30)                        // Ensure the sum matches the expected result
@@ -120,7 +120,7 @@ enabling straightforward processing of each element.
 
 /**
 # Multi-dimensional Arrays
-`visit` supports multi-dimensional arrays, facilitating the processing of complex data structures.
+`foreach` supports multi-dimensional arrays, facilitating the processing of complex data structures.
 */
 
 #test
@@ -128,7 +128,7 @@ enabling straightforward processing of each element.
     var array: [2, 2] s32 = [[10, 20], [30, 40]]           // Define a 2x2 array
 
     var result = 0
-    visit it in array:                                     // Iterate over each element in the 2D array
+    foreach it in array:                                     // Iterate over each element in the 2D array
         result += it                                       // Accumulate the values
 
     @assert(result == 10 + 20 + 30 + 40)                   // Ensure the sum matches the expected result
@@ -136,7 +136,7 @@ enabling straightforward processing of each element.
 
 /**
 # Modifying Elements with `&`
-By prefixing the value name with `&`, `visit` allows you to visit elements by reference, 
+By prefixing the value name with `&`, `foreach` allows you to foreach elements by reference, 
 enabling in-place modification of the elements.
 */
 
@@ -145,7 +145,7 @@ enabling in-place modification of the elements.
     var array: [2, 2] s32 = [[1, 2], [3, 4]]               // Define a 2x2 array
 
     var result = 0
-    visit &it in array
+    foreach &it in array
     {
         result += dref it                                  // Accumulate the values
         dref it = 555                                      // Modify each element in place
@@ -161,7 +161,7 @@ enabling in-place modification of the elements.
 
 /**
 # Filtering with `where`
-The `where` clause can be used with `visit` to filter the elements processed based on specific conditions.
+The `where` clause can be used with `foreach` to filter the elements processed based on specific conditions.
 This approach is efficient for conditionally applying logic to only the elements that meet certain criteria.
 */
 
@@ -171,21 +171,21 @@ This approach is efficient for conditionally applying logic to only the elements
     var result = 0
 
     // Process only even values using `where`.
-    visit value in array where value & 1 == 0:
+    foreach value in array where value & 1 == 0:
         result += value                                    // Accumulate only even values
 
     @assert(result == 6)                                   // Ensure the sum of even values is correct
 
-    // Equivalent using an if statement inside the `visit` loop:
+    // Equivalent using an if statement inside the `foreach` loop:
     result = 0
-    visit value in array:
+    foreach value in array:
         if value & 1 == 0:                                 // Check if the value is even
             result += value                                // Accumulate even values
     @assert(result == 6)                                   // Ensure the sum of even values is correct
 
     // Equivalent using `continue` to skip odd values:
     result = 0
-    visit value in array
+    foreach value in array
     {
         if (value & 1) != 0:                               // Skip odd values
             continue

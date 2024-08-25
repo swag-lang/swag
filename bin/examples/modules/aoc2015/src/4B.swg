@@ -52,7 +52,7 @@ func day4B()
             }
         }
 
-        visit &j in sliceJobs
+        foreach &j in sliceJobs
         {
             j.base.lambda = &jobEntry
             j.data        = j
@@ -61,7 +61,7 @@ func day4B()
         }
 
         var total: u64 = Swag.U64.Max
-        visit &j in sliceJobs
+        foreach &j in sliceJobs
         {
             Jobs.waitJob(j)
             total = Math.min(total, j.result)

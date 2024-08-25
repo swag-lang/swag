@@ -57,7 +57,7 @@ func day6A() assume
     var lines    = File.readAllLines(dataPath)
 
     var coords: Array'{ x, y: s32 }
-    visit l in lines
+    foreach l in lines
     {
         let split = Tokenize.split(l, `,`'u8)
         let vx    = assume StrConv.toS32(Latin1.trim(split[0]))
@@ -75,7 +75,7 @@ func day6A() assume
     count.resize(coords.count)
     borders.resize(coords.count)
 
-    visit c, who in coords
+    foreach c, who in coords
     {
         for i in W * W
         {
@@ -103,7 +103,7 @@ func day6A() assume
     }
 
     var total = 0
-    visit v in count:
+    foreach v in count:
         if !borders[#index]:
             total = Math.max(v, total)
 

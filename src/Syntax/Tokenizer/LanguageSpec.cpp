@@ -390,7 +390,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("while", TokenId::KwdWhile);
     keywords.add("switch", TokenId::KwdSwitch);
     keywords.add("defer", TokenId::KwdDefer);
-    keywords.add("visit", TokenId::KwdVisit);
+    keywords.add("foreach", TokenId::KwdForEach);
     keywords.add("break", TokenId::KwdBreak);
     keywords.add("fallthrough", TokenId::KwdFallThrough);
     keywords.add("return", TokenId::KwdReturn);

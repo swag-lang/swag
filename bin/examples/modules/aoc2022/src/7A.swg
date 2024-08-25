@@ -118,7 +118,7 @@ func day7A()
     }
 
     var total: u64
-    visit name, val in folders:
+    foreach name, val in folders:
         if val <= 100_000:
             total += val
 

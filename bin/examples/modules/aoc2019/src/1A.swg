@@ -28,7 +28,7 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
-    visit l in lines:
+    foreach l in lines:
         total += (assume StrConv.toS32(l) / 3) - 2
 
     //Console.print("total: ", total)

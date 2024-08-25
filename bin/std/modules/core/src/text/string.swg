@@ -108,7 +108,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] string)
     {
         #if op == "+=":
-            visit v in value:
+            foreach v in value:
                 append(v)
         #else:
             #error "invalid operator '" ++ op ++ "'"
@@ -118,7 +118,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] rune)
     {
         #if op == "+=":
-            visit v in value:
+            foreach v in value:
                 append(v)
         #else:
             #error "invalid operator '" ++ op ++ "'"
@@ -128,7 +128,7 @@ impl String
     mtd(op: string) opAssign(value: const [..] u8)
     {
         #if op == "+=":
-            visit v in value:
+            foreach v in value:
                 append(v)
         #else:
             #error "invalid operator '" ++ op ++ "'"
@@ -244,7 +244,7 @@ impl String
         }
     }
 
-    // Default visit, by bytes.
+    // Default foreach, by bytes.
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {

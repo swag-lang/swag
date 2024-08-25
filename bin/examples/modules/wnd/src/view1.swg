@@ -116,13 +116,13 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.sigCheckChanged += func(list)
         {
             let sl = list.getCheckedLines()
-            visit l in sl:
+            foreach l in sl:
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
         list.sigRightClick += func(list, pt)
         {
             let sel = list.getSelectedLines()
-            visit l in sel:
+            foreach l in sel:
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }
@@ -146,7 +146,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
         list.sigSelChanged += func(list)
         {
             let sel = list.getSelectedLines()
-            visit l in sel:
+            foreach l in sel:
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }

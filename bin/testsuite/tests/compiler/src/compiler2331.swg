@@ -19,7 +19,7 @@ impl AA
 #test
 {
     var v: AA
-    visit v
+    foreach v
     {
 
     }

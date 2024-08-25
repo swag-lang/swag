@@ -92,7 +92,7 @@ but with this annotation, they can be accessed programmatically.
 
     // The 'typeinfo' of a struct contains a 'methods' field, which is an array of method pointers
     let t = MyStruct
-    visit p in t.methods
+    foreach p in t.methods
     {
         // The 'value' field of 'methods' contains the function pointer, which we cast to the correct type
         switch p.name

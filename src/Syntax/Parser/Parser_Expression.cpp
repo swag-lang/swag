@@ -681,7 +681,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::KwdFor:
-                case TokenId::KwdVisit:
+                case TokenId::KwdForEach:
                     break;
                 default:
                     return error(tokenParse, formErr(Err0681, tokenParse.cstr(), forNode.cstr()));

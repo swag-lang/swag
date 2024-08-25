@@ -19,9 +19,9 @@ func day6B() assume
     var freq: [8, 26] u32
     var pwd:  String = "        "
 
-    visit l in lines
+    foreach l in lines
     {
-        visit c, i in l
+        foreach c, i in l
         {
             freq[i, c - `a`] += 1
         }

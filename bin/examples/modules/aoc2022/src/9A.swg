@@ -238,7 +238,7 @@ After simulating the rope, you can count up all of the positions the tail visite
 s###..
 So, there are 13 positions the tail visited at least once.
 
-Simulate your complete hypothetical series of motions. How many positions does the tail of the rope visit at least once?
+Simulate your complete hypothetical series of motions. How many positions does the tail of the rope foreach at least once?
 */
 using Core
 
@@ -251,7 +251,7 @@ func day9A()
     struct W { x, y: s32 }
     var H, T: W
 
-    visit l in lines
+    foreach l in lines
     {
         let cmd = Tokenize.split(l, ` `'u8)
         let cpt = assume StrConv.toS32(cmd[1])

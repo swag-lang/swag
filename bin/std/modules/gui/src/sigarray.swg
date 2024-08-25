@@ -40,7 +40,7 @@ impl SigArray
         // Be sure the call has the right number of arguments
         Debug.assert(@countof(params) == @countof(@typeof(T).parameters))
 
-        visit fn in arr
+        foreach fn in arr
         {
             #ast
             {

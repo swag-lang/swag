@@ -7,7 +7,7 @@ impl AA
     mtd isIn(V: typeinfo)->bool
     {
         var ms: u64 = 0
-        visit p in T:
+        foreach p in T:
             if p == V: return true
         return false
     }

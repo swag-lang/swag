@@ -19,7 +19,7 @@ impl MouseState
     {
         position = getMousePos()
 
-        visit v in MouseButton
+        foreach v in MouseButton
         {
             let b = pressed[v]
             pressed[v] = Mouse.isButtonPressed(v)

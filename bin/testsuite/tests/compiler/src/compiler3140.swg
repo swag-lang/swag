@@ -14,7 +14,7 @@ impl AA
 
 func toto(x: AA)
 {
-    visit v in x
+    foreach v in x
     {
     }
 }

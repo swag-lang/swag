@@ -12,7 +12,7 @@ func Visit(str: const [..] u8)
 #test
 {
 	let str = "abc"
-    visit str
+    foreach str
     {
     }
 }

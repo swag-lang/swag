@@ -51,7 +51,7 @@ const validTests: [] ValidTest = [
 
 #test
 {
-    visit &it in validTests
+    foreach &it in validTests
     {
         let res = Crc32.compute(it.in1)
         @assert(res == it.out1)

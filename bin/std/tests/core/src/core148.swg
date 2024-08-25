@@ -8,7 +8,7 @@ using Core, Core.Utf8, Core.Tokenize
     var sep = [` `'rune, ",", ".", ":", "\t"]
     var arr = x.splitAny(sep)
 
-    visit v in arr
+    foreach v in arr
     {
         //@print(v)
         //@print("\n")

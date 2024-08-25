@@ -81,9 +81,9 @@ func day4B0()
     let lines    = assume File.readAllLines(dataPath)
 
     var total, pass: u32
-    visit l in lines
+    foreach l in lines
     {
-        visit r in Tokenize.split(l, ` `'u8)
+        foreach r in Tokenize.split(l, ` `'u8)
         {
             let res1 = Tokenize.split(r, `:`'u8)
             switch res1[0]
@@ -170,9 +170,9 @@ func day4B1()
     map.add("pid", {pid_r, 64})
 
     var total, pass: u32
-    visit l in lines
+    foreach l in lines
     {
-        visit r in Tokenize.split(l, ` `'u8)
+        foreach r in Tokenize.split(l, ` `'u8)
         {
             let res1 = Tokenize.split(r, `:`'u8)
             let it   = map.find(res1[0])

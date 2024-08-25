@@ -142,7 +142,7 @@ impl IWnd for Header
         clientRect = getClientRectPadding()
         clientRect.offset(scrollPos)
         var x = padding.x
-        visit item, idx in items
+        foreach item, idx in items
         {
             paintItem(evt.bc, item, cast(u32) idx, x)
             x += item.width
@@ -262,7 +262,7 @@ internal impl Header
         var pos     = surfaceToLocal(surfacePos)
         pos += scrollPos.x
         var x = padding.x
-        visit item, idx in items
+        foreach item, idx in items
         {
             if pos.x >= x and pos.x < x + item.width:
                 return {cast(u32) idx, false}
@@ -318,7 +318,7 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        visit item in items
+        foreach item in items
         {
             if item.column == column:
                 return item
@@ -339,7 +339,7 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        visit item in items
+        foreach item in items
         {
             if item.column == column:
                 return item.width
@@ -362,7 +362,7 @@ impl Header
 
         var x = padding.x
         let m = getThemeMetrics().header_Separator
-        visit item, i in items
+        foreach item, i in items
         {
             if item.column == column:
                 return x

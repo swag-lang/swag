@@ -24,7 +24,7 @@ impl S
 {
     var x: S
 
-    visit x
+    foreach x
     {
         @print("toto\n")
     }

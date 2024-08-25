@@ -29,7 +29,7 @@ func day2B0()
     assume
     {
         var r = Parser.RegExp.create(#"(\d+)x(\d+)x(\d+)"#)
-        visit line in File.readAllLines(dataPath)
+        foreach line in File.readAllLines(dataPath)
         {
             discard r.match(line)
             var f: [3] s32
@@ -55,7 +55,7 @@ func day2B1()
     assume
     {
         var r = Parser.RegExp.create(#"(\d+)x(\d+)x(\d+)"#)
-        visit line in File.readAllLines(dataPath)
+        foreach line in File.readAllLines(dataPath)
         {
             discard r.match(line)
             let f = [StrConv.toS32(r.getCapture(1)), StrConv.toS32(r.getCapture(2)), StrConv.toS32(r.getCapture(3))]

@@ -16,7 +16,7 @@ const runecounttests: [] RuneCountTest = [
 
 #test
 {
-    visit it in runecounttests
+    foreach it in runecounttests
     {
         @assert(countRunes(it.inT) == it.outT)
     }

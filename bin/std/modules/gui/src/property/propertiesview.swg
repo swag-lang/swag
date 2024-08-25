@@ -18,7 +18,7 @@ impl IWnd for PropertiesView
         applyLayout()
 
         var lastItem: *PropertiesItem
-        visit item in ed.items
+        foreach item in ed.items
         {
             if item.label:
                 item.label.autoHeight()

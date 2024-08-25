@@ -107,7 +107,7 @@ func createView2(_tabView: *Tab, view: *Wnd)
         tree.sigSelChanged += func(tree)
         {
             var sel = tree.getSelectedLines()
-            visit l in sel:
+            foreach l in sel:
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }

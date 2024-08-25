@@ -8,7 +8,7 @@
     //@print(cast(s64) @countof(arr))
 
     var cpt = 0
-    visit &xxx in 5
+    foreach &xxx in 5
     {
         cpt += cast(s32) xxx
     }

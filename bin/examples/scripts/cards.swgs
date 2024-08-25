@@ -283,7 +283,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
         // Sub title
         var str: String
-        visit c in fi.subTitles
+        foreach c in fi.subTitles
         {
             if #index:
                 str += " \u2022 "
@@ -352,7 +352,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
     var pathImg = Path.combine(dataPath, "img")
     var lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
-    visit l in lines
+    foreach l in lines
     {
         var tokens  = Tokenize.split(l, `;`'rune, removeEmpty: false)
         var fi:     ImageInfo
@@ -387,7 +387,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     var pt: PaintImage
     pt.init(CARD_WIDTH, CARD_HEIGHT)
 
-    visit f in g_Files
+    foreach f in g_Files
     {
         g_File = f
 

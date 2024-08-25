@@ -15,7 +15,7 @@ var t: [] struct
 //#[Swag.PrintBc]
 #test
 {
-    visit &p in t
+    foreach &p in t
     {
         var res = decodeRune(p.r)
         @assert(res.c == p.w)

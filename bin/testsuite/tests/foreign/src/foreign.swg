@@ -371,7 +371,7 @@ public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s
 
 public func tcf_print(params: ...)
 {
-    visit c in params
+    foreach c in params
     {
         //@print(cast(string) c)
         @assert(cast(string) c == "this is a string")

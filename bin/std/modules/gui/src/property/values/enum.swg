@@ -49,7 +49,7 @@ impl Properties
             }
 
             var idxSel = 0'u64
-            visit v, idx in typeEnum.values
+            foreach v, idx in typeEnum.values
             {
                 switch typeEnum.rawType.sizeof
                 {
@@ -141,7 +141,7 @@ impl Properties
         let item = addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
 
-        visit v in typeEnum.values
+        foreach v in typeEnum.values
         {
             with let line = Wnd.create'Wnd(edView)
             {
@@ -226,7 +226,7 @@ impl Properties
 
         item.comboBox = ed
 
-        visit v, idx in typeEnum.values:
+        foreach v, idx in typeEnum.values:
             ed.addItem(v.name)
 
         refreshEnum(item)

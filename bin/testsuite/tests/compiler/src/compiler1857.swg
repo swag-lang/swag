@@ -5,7 +5,7 @@ var cpt = 0's64
 #[Compiler]
 func testInline(type: const* TypeInfoFunc)
 {
-    visit i in type.attributes
+    foreach i in type.attributes
     {
         if i.type == Swag.Inline
         {

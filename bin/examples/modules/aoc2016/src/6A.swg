@@ -45,9 +45,9 @@ func day6A0() assume
     var freq: [8, 26] u32
     var best: [8] { val: u8, freq: u32 }
 
-    visit l in lines
+    foreach l in lines
     {
-        visit c, i in l
+        foreach c, i in l
         {
             var v = freq[i, c - `a`]
             v += 1
@@ -62,7 +62,7 @@ func day6A0() assume
     }
 
     var pwd: String
-    visit v in best
+    foreach v in best
     {
         pwd += v.val
     }
@@ -79,9 +79,9 @@ func day6A1() assume
     var best: [8] u32
     var pwd:  String = "        "
 
-    visit l in lines
+    foreach l in lines
     {
-        visit c, i in l
+        foreach c, i in l
         {
             var v = #ref &freq[i, c - `a`]
             v += 1

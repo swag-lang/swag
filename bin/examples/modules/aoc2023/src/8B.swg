@@ -49,7 +49,7 @@ func day8B()
 
     var startNode: Array'u64
 
-    visit l, i in lines
+    foreach l, i in lines
     {
         if i == 0:
             instructions = l.toString()
@@ -63,7 +63,7 @@ func day8B()
     }
 
     nodes.resize(lines.count - 2)
-    visit l, i in lines
+    foreach l, i in lines
     {
         if i <= 1:
             continue

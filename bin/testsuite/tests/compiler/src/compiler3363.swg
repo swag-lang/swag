@@ -10,7 +10,7 @@ func toto()->[..] u8
 //#[Swag.PrintBc]
 #test
 {
-    visit i in toto()
+    foreach i in toto()
     {
     }
 

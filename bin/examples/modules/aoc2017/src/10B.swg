@@ -41,13 +41,13 @@ func day10B() assume
     var cur, skip = 0
     for 64
     {
-        visit n in nums
+        foreach n in nums
         {
             tmp.clear()
             for i in n:
                 tmp.add(arr[(cur + i) % 256])
             Slice.reverse(tmp.toSlice())
-            visit v, i in tmp:
+            foreach v, i in tmp:
                 arr[(cur + i) % 256] = v
             cur = (cur + n + skip) % 256
             skip += 1

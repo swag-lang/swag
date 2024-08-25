@@ -73,13 +73,13 @@ func day7B()
     map[`2`] = 1
     map[`J`] = 0
 
-    visit l in lines
+    foreach l in lines
     {
         let first = Tokenize.split(l, ` `'u8)
 
         var card:    Card
         var maxCount = 0
-        visit c in first[0]
+        foreach c in first[0]
         {
             let it = map[c]
             card.count[it] += 1
@@ -87,7 +87,7 @@ func day7B()
                 maxCount = Math.max(maxCount, card.count[it])
         }
 
-        visit c, i in card.count
+        foreach c, i in card.count
         {
             if c and i:
                 card.countV[c] += 1
@@ -120,7 +120,7 @@ func day7B()
     sort()
 
     var total: u64
-    visit c, idx in cards:
+    foreach c, idx in cards:
         total += (idx + 1) * c.bid
 
     //Console.print("total: ", total)

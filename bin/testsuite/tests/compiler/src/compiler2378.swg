@@ -13,7 +13,7 @@ struct AA
     @assert(ref.s == "toto")
     @assert(ref1.s == "toto")
 
-    /*visit v in arr
+    /*foreach v in arr
     {
 
     }*/

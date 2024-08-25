@@ -13,7 +13,7 @@ var t: [] struct
 //#[Swag.PrintBc]
 #test
 {
-    visit &p in t
+    foreach &p in t
     {
         var r = fromUnicode(p.inT)
         @assert(r.count == @countof(p.outT))

@@ -3,7 +3,7 @@ impl A
 {
     mtd opAffect(slice: const [..] {k: K, v: V})
     {
-        visit v in slice
+        foreach v in slice
         {
             @assert(v.k == 1)
             @assert(v.v == 2)

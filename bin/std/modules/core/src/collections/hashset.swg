@@ -37,7 +37,7 @@ impl HashSet
 
     mtd opAffect(slice: const [..] K)
     {
-        visit v in slice:
+        foreach v in slice:
             add(v)
     }
 
@@ -367,7 +367,7 @@ impl StrConv.IConvert for HashSet
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        visit k in dref self
+        foreach k in dref self
         {
             if #index:
                 buf.addBytes(", ")

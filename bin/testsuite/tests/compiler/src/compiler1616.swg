@@ -4,7 +4,7 @@
     var x = 10'u32
     var ptr = &x
 
-    /*visit c, i in :ptr
+    /*foreach c, i in :ptr
     {
     }*/
 }

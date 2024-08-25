@@ -61,7 +61,7 @@ func day7B()
 
     var total     = folders.find("").value
     let needSpace = 30_000_000 - (70_000_000 - total)
-    visit name, val in folders
+    foreach name, val in folders
     {
         if val >= needSpace and val < total:
             total = val

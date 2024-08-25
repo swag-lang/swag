@@ -69,7 +69,7 @@ impl MyStruct
 # Iterating Over Struct Fields
 
 This example demonstrates one way to use `opVisit` for iterating over the fields of a struct.
-The same approach can be extended to visit more complex data structures.
+The same approach can be extended to foreach more complex data structures.
 */
 #test
 {
@@ -79,7 +79,7 @@ The same approach can be extended to visit more complex data structures.
     // Visit each field of `MyStruct` in declaration order.
     // `v` corresponds to the value (i.e., #alias0).
     // `i` corresponds to the index (i.e., #alias1).
-    visit v, i in myStruct
+    foreach v, i in myStruct
     {
         switch i
         {
@@ -101,14 +101,14 @@ The same approach can be extended to visit more complex data structures.
 # Extending `opVisit`: Reverse Order Iteration
 
 You can also implement different versions of `opVisit` to handle other data structures. 
-For instance, you may want to visit the fields in reverse order.
+For instance, you may want to foreach the fields in reverse order.
 */
 impl MyStruct
 {
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)
     {
-        // In this version, we visit the fields in reverse order.
+        // In this version, we foreach the fields in reverse order.
         for idx in 3
         {
             #macro
@@ -134,7 +134,7 @@ impl MyStruct
 /**
 # Reverse Order Iteration
 
-The `opVisitReverse` variant allows us to visit the struct's fields in reverse order, 
+The `opVisitReverse` variant allows us to foreach the struct's fields in reverse order, 
 providing flexibility depending on the needs of your application.
 */
 #test
@@ -143,7 +143,7 @@ providing flexibility depending on the needs of your application.
     var cpt = 0
 
     // Call the variant `opVisitReverse` to iterate over the fields in reverse order.
-    visit<Reverse> v, i in myStruct
+    foreach<Reverse> v, i in myStruct
     {
         switch i
         {
@@ -164,7 +164,7 @@ providing flexibility depending on the needs of your application.
 /**
 # Visiting Elements in Dynamic Arrays
 
-Beyond struct fields, `opVisit` can be designed to visit elements in dynamic arrays, buffers, 
+Beyond struct fields, `opVisit` can be designed to foreach elements in dynamic arrays, buffers, 
 or other types of data. The flexibility of `opVisit` means it can adapt to whatever data 
 structure the struct holds.
 
@@ -206,7 +206,7 @@ impl SliceStruct
 /**
 # Iterating Over a Dynamic Array
 
-This example shows how to visit each element in a dynamic array (slice) and perform 
+This example shows how to foreach each element in a dynamic array (slice) and perform 
 operations such as summing the elements.
 */
 #test
@@ -215,7 +215,7 @@ operations such as summing the elements.
     var sum = 0
 
     // Visit each element in the dynamic array buffer.
-    visit v, i in arrStruct
+    foreach v, i in arrStruct
     {
         sum += v
     }

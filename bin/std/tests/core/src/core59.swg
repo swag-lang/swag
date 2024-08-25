@@ -13,7 +13,7 @@ func fromCapa(capa: u64)->BitArray
     var x: BitArray = [true, false, true, false]
     var y: BitArray = fromCapa(4)
 
-    visit val, idx in x
+    foreach val, idx in x
     {
         y[idx] = val
     }

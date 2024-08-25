@@ -12,6 +12,6 @@ func toto()->Array'u32
 //#[Swag.PrintBc]
 #test
 {
-    visit v in toto()[1..]:
+    foreach v in toto()[1..]:
         @assert(v > 0)
 }

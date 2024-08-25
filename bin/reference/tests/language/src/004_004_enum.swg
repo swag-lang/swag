@@ -447,7 +447,7 @@ In most cases, the simplified `.Value` syntax also works when passing enum value
 
 Using type reflection, Swag allows you to iterate over all the values of an enum. This feature is particularly useful when you need to perform operations across all enum values or when you want to dynamically generate behavior based on the values of an enum.
 
-The two primary mechanisms for iterating over enum values are the `for` construct and the `visit` statement.
+The two primary mechanisms for iterating over enum values are the `for` construct and the `foreach` statement.
 */
 
 /**
@@ -478,14 +478,14 @@ This method is useful when you need to apply the same operation to each enum val
 /**
 ## Visiting Enum Values
 
-The `visit` statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value.
+The `foreach` statement offers a more structured way to iterate over an enum and perform specific actions based on the current enum value.
 */
 #test
 {
     enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
 
     // Performing Actions Based on Enum Values
-    visit val in RGB                      // Use 'visit' to iterate over each value in the enum
+    foreach val in RGB                      // Use 'foreach' to iterate over each value in the enum
     {
         switch val                        // A switch statement to perform actions based on the enum value
         {
@@ -506,7 +506,7 @@ The `visit` statement offers a more structured way to iterate over an enum and p
 }
 
 /**
-The `visit val in RGB` statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the `val` variable, which can then be used in a `switch` statement (or other logic) to perform specific actions based on the value.
+The `foreach val in RGB` statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the `val` variable, which can then be used in a `switch` statement (or other logic) to perform specific actions based on the value.
 
 In the provided example, the `switch` statement checks the value of `val` and executes different blocks of code depending on whether `val` is `R`, `G`, or `B`. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same.
 */

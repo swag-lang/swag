@@ -4,7 +4,7 @@ struct(TTT) Soa
 {
     #ast
     {
-        visit p in @typeof(TTT).fields
+        foreach p in @typeof(TTT).fields
         {
             G += 1
         }
