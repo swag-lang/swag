@@ -278,7 +278,7 @@
     "keywords-mode": {
       "patterns": [
         {
-          "match": "\\b(visit|break)\\<(\\w+)\\>",
+          "match": "\\b(visit)\\<(\\w+)\\>",
           "captures": {
             "1": {
               "name": "keyword.control"
