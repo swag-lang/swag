@@ -1111,7 +1111,7 @@ bool Diagnostic::containsText(const Utf8& txt) const
     {
         if (n.containsNoCase(g_CommandLine.verboseErrorsFilter))
             return true;
-    }    
+    }
 
     return false;
 }

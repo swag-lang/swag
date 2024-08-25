@@ -22,10 +22,10 @@ bool FormatAst::outputIf(FormatContext& context, const Utf8& name, AstNode* node
         concat->addBlank();
         SWAG_CHECK(outputVarContent(context, varNode));
     }
-    
+
     SWAG_CHECK(outputNode(context, ifNode->boolExpression));
     SWAG_CHECK(outputDoStatement(context, ifNode->ifBlock));
-    
+
     if (ifNode->elseBlock)
     {
         if (ifNode->elseBlock->is(AstNodeKind::If))

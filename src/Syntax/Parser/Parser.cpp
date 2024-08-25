@@ -125,7 +125,7 @@ bool Parser::eatSemiCol(const char* msg)
         return error(tokenParse, formErr(Err0452, msg));
     if (tokenParse.is(TokenId::SymSemiColon))
         SWAG_CHECK(eatToken());
-    
+
     return true;
 }
 

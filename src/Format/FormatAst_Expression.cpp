@@ -105,7 +105,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
         concat->addBlank();
         concat->addString(g_LangSpec->name_over);
     }
-    
+
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
     {
         concat->addBlank();
@@ -248,12 +248,12 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
         concat->addChar('<');
         concat->addString(g_LangSpec->name_bit);
         concat->addChar('>');
-    }    
+    }
 
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));
     concat->addChar(')');
-    
+
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {
         concat->addBlank();

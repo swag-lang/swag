@@ -167,7 +167,7 @@ void Scope::removeChildNoLock(Scope* child)
     SWAG_ASSERT(childrenScopes[child->indexInParent] == child);
     childrenScopes[child->indexInParent]                = childrenScopes.back();
     childrenScopes[child->indexInParent]->indexInParent = child->indexInParent;
-    child->indexInParent                             = UINT32_MAX;
+    child->indexInParent                                = UINT32_MAX;
     childrenScopes.count--;
 }
 

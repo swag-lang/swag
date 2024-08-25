@@ -103,7 +103,7 @@ void initErrors()
     SWAG_ERROR(Saf0028, "safety violation $ truncation from [[%s]] to [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
     // Switch
     SWAG_ERROR(Saf0029, "safety violation $ unexpected switch value encountered $ [[#[Swag.Safety(\"switch\")]]] is true");
-    
+
     SWAG_ERROR(Saf0030, nullptr);
 
     /////////////////////////////////////////////////////////////////////

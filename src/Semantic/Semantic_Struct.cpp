@@ -696,7 +696,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
         SWAG_CHECK(solveWhereExpr(context, node));
         YIELD();
     }
-    
+
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
@@ -846,7 +846,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
         errorParam.errorNode      = structDecl->instantiatedFrom;
 
         SemanticError::errorWhereFailed(context, errorParam);
-        
+
         return context->report(*diagError[0], diagNote);
     }
 

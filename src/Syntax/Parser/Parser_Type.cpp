@@ -666,7 +666,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[cast]] mode"));
-    }    
+    }
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));

@@ -378,7 +378,7 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
         bool valid = true;
         for (const auto& c : p.first)
         {
-            if(!SWAG_IS_AL_NUM(c))
+            if (!SWAG_IS_AL_NUM(c))
             {
                 valid = false;
                 break;

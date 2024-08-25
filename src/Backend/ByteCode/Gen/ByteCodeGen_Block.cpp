@@ -953,7 +953,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         {
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
             jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
-        }        
+        }
     }
     else if (whereClause && !whereClause->computedValue()->reg.b)
     {
@@ -976,12 +976,12 @@ bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
     // For the default case, do nothing, fallback to the end of the switch
-    if(!blockNode->seekJumpNextCase)
+    if (!blockNode->seekJumpNextCase)
     {
         SWAG_ASSERT(blockNode->ownerCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT));
         return true;
     }
-    
+
     // Jump to exit the switch
     context->setNoLocation();
     auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);

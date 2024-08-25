@@ -123,7 +123,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
         err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, toNte(Nte0221));
     else
         err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0196));
-    
+
     return context->report(err);
 }
 

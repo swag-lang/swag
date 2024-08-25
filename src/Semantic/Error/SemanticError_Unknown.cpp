@@ -77,7 +77,7 @@ namespace
         else if (typeWhere->isInterface() && identifier->callParameters)
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0720, identifier->token.cstr(), typeWhere->getDisplayNameC())};
-        }        
+        }
         else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0705, identifier->token.cstr(), typeWhere->getDisplayNameC())};

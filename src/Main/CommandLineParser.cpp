@@ -458,7 +458,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                     result = false;
                     continue;
                 }
-                
+
                 *static_cast<Utf8*>(arg->buffer) = argument;
                 break;
             }
