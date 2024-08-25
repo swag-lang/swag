@@ -135,34 +135,15 @@ bool FormatAst::outputFor(FormatContext& context, AstNode* node)
     const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
     concat->addString("for");
 
-    if (forNode->preExpression && forNode->preExpression->is(AstNodeKind::Statement))
-    {
-        concat->addBlank();
-        concat->addChar('{');
-        concat->addBlank();
-
-        for (const auto c : forNode->preExpression->children)
-        {
-            SWAG_CHECK(outputNode(context, c));
-            concat->addChar(';');
-            concat->addBlank();
-        }
-
-        concat->addChar('}');
-        concat->addBlank();
-    }
-    else
-    {
-        concat->addBlank();
-        SWAG_CHECK(outputNode(context, forNode->preExpression));
-        concat->addChar(';');
-        concat->addBlank();
-    }
+    concat->addBlank();
+    SWAG_CHECK(outputChildrenMultiVar(context, forNode));
+    concat->addChar(';');
+    concat->addBlank();
 
     SWAG_CHECK(outputNode(context, forNode->boolExpression));
     concat->addChar(';');
     concat->addBlank();
-    SWAG_CHECK(outputNode(context, forNode->postExpression));
+    SWAG_CHECK(outputNode(context, forNode->postStatement));
 
     SWAG_CHECK(outputDoStatement(context, forNode->block));
     return true;

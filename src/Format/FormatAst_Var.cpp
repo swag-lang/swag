@@ -5,6 +5,36 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
+bool FormatAst::outputChildrenMultiVar(const FormatContext& context, AstNode* node)
+{
+    FormatContext cxt{context};
+    cxt.alignVarDecl = false;
+
+    bool first = true;
+    for (const auto child : node->children)
+    {
+        if (!child->is(AstNodeKind::VarDecl))
+            break;
+
+        if (first)
+        {
+            SWAG_CHECK(outputVar(cxt, child, 0, 0));
+            first = false;
+            continue;
+        }
+
+        if (!child->hasSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL))
+            break;
+
+        concat->addChar(',');
+        concat->addBlank();
+        const auto varNode = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        SWAG_CHECK(outputVarContent(cxt, varNode, 0, 0, 0));
+    }
+    
+    return true;
+}
+
 bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;

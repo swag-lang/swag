@@ -660,9 +660,9 @@ AstNode* AstFor::clone(CloneContext& context)
     newNode->cloneChildren(cloneContext, this);
     context.propagateResult(cloneContext);
 
-    newNode->preExpression  = findChildRef(preExpression, newNode);
+    newNode->preStatement   = findChildRef(preStatement, newNode);
     newNode->boolExpression = findChildRef(boolExpression, newNode);
-    newNode->postExpression = findChildRef(postExpression, newNode);
+    newNode->postStatement  = findChildRef(postStatement, newNode);
     newNode->block          = findChildRef(block, newNode);
 
     return newNode;

@@ -1,7 +1,7 @@
 /**
 # Introduction to `for` Loops
 
-In Swag, the `for` loop offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *start statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the loop's execution, making it a powerful tool for various iteration scenarios.
+In Swag, the `for` loop offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *variable declaration statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the loop's execution, making it a powerful tool for various iteration scenarios.
 */
 #test
 {
@@ -20,23 +20,6 @@ In Swag, the `for` loop offers a versatile way to iterate over a range of values
         cpt += 1
     }
     @assert(cpt == 20)
-
-    // Using statement blocks for initialization or increment provides additional flexibility.
-    for { var i = 0; cpt = 0; }
-        i < 10
-        i += 1
-    {
-        cpt += 1
-    }
-    @assert(cpt == 10)
-
-    for { var i = 0; cpt = 0; }
-        i < 10
-        { i += 2; i -= 1; }
-    {
-        cpt += 1
-    }
-    @assert(cpt == 10)
 }
 
 /**

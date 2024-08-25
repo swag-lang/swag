@@ -307,20 +307,14 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
     // Pre statement. Do not call doScopedCurlyStatement in order to avoid
     // creating a new scope in the case of for { var i = 0; var j = 0 } for example
-    if (tokenParse.is(TokenId::SymLeftCurly))
-        SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
-    else
-        SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
+    SWAG_CHECK(doVarDecl(node, &node->preStatement));
 
     // Boolean expression
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
     SWAG_CHECK(eatSemiCol("[[for]] boolean expression"));
 
-    // Post expression
-    if (tokenParse.is(TokenId::SymLeftCurly))
-        SWAG_CHECK(doCurlyStatement(node, &node->postExpression));
-    else
-        SWAG_CHECK(doEmbeddedInstruction(node, &node->postExpression));
+    // Post statement
+    SWAG_CHECK(doEmbeddedInstruction(node, &node->postStatement));
 
     // For optimisation purposes in the bytecode generation, we must generate postExpression first,
     // then the bool expression. So here we put the bool expression after the post one.

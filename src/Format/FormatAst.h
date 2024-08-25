@@ -143,6 +143,7 @@ struct FormatAst
     bool outputExpressionList(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
+    bool outputChildrenMultiVar(const FormatContext& context, AstNode* node);
     bool outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputVarName(FormatContext& context, const AstVarDecl* varNode) const;
     bool outputVarContent(FormatContext& context, AstNode* node, uint32_t startColumn = 0, uint32_t maxLenName = 0, uint32_t maxLenType = 0);

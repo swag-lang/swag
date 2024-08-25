@@ -62,7 +62,8 @@ public impl Mt64
             k -= 1
         }
 
-        for k = NN - 1; k != 0; k -= 1
+        k = NN - 1
+        while k != 0
         {
             mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 2862933555777941757)) - i
             i += 1
@@ -71,6 +72,7 @@ public impl Mt64
                 mt[0] = mt[NN - 1]
                 i     = 1
             }
+            k -= 1
         }
 
         mt[0] = 1'u64 << 63
@@ -83,11 +85,7 @@ public impl Mt64
         {
             let stateMid = mt[MID]
 
-            for { var i = 0; var j = MID; } i != MID - 1;
-            {
-                i += 1
-                j += 1
-            }
+            for var i = 0, j = MID; i != MID - 1; i, j += 1
             {
                 let x = (mt[i] & UM) | (mt[i + 1] & LM)
                 mt[i] = mt[i + MID] ^ (x >> 1) ^ ((mt[i + 1] & 1) * MATRIX_A)

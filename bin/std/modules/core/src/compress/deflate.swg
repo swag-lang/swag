@@ -524,7 +524,7 @@ impl Deflate
             Memory.clear(&d.huffCodeSizes[tableNum], @sizeof(d.huffCodeSizes[tableNum]))
             Memory.clear(&d.huffCodes[tableNum], @sizeof(d.huffCodes[tableNum]))
 
-            for { var i = 1; var j = numUsedSyms; } i <= codeSizeLimit; i += 1
+            for var i = 1, j = numUsedSyms; i <= codeSizeLimit; i += 1
             {
                 for var l = numCodes[i]; l > 0; l -= 1
                 {

@@ -830,9 +830,9 @@ struct AstFor : AstBreakable
     ~        AstFor();
     AstNode* clone(CloneContext& context);
 
-    AstNode* preExpression;
+    AstNode* preStatement;
     AstNode* boolExpression;
-    AstNode* postExpression;
+    AstNode* postStatement;
     AstNode* block;
     uint32_t seekJumpToExpression = 0;
 };

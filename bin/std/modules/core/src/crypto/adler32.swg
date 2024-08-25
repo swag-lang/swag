@@ -58,11 +58,9 @@ public impl Adler32
 
             while i + NMax <= countof
             {
-                var rounds = 0'u64
-                for ; rounds < n; rounds += 1
+                loop rounds in n
                 {
-                    var j = 0'u64
-                    for ; j < 16; j += 1
+                    loop j in 16
                     {
                         s1 += input[i + j]
                         s2 += s1
@@ -77,20 +75,22 @@ public impl Adler32
 
             if i < countof
             {
-                for ; i + 16 <= countof; i += 16
+                while i + 16 <= countof
                 {
-                    var j = 0'u64
-                    for ; j < 16; j += 1
+                    loop j in 16
                     {
                         s1 += input[i + j]
                         s2 += s1
                     }
+
+                    i += 16
                 }
 
-                for ; i < countof; i += 1
+                while i < countof
                 {
                     s1 += input[i]
                     s2 += s1
+                    i += 1
                 }
 
                 s1 %= Base

@@ -240,7 +240,7 @@ bool Semantic::resolveFor(SemanticContext* context)
     node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
     node->boolExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforeExpr);
     node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitForAfterExpr);
-    node->postExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforePost);
+    node->postStatement->setBcNotifyBefore(ByteCodeGen::emitForBeforePost);
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
     // :SpecPropagateReturn

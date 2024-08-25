@@ -112,8 +112,12 @@ func __failedAssume(loc: SourceCodeLocation)
             maxLen = @min(@countof(val.message), 128)
             if maxLen
             {
+                str[len] = ` `
+                len += 1
                 str[len] = `$`
                 len += 1
+                str[len] = ` `
+                len += 1                                
                 @memcpy(&str[len], @dataof(val.message), maxLen)
                 len += maxLen
             }
