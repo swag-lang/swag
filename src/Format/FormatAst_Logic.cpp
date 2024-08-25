@@ -90,9 +90,9 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
     concat->addString("visit");
     if (!visitNode->extraNameToken.text.empty())
     {
-        concat->addChar('(');
+        concat->addChar('<');
         concat->addString(visitNode->extraNameToken.text);
-        concat->addChar(')');
+        concat->addChar('>');
     }
 
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
