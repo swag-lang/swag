@@ -23,12 +23,11 @@ func toto(x: IEvent)
     switch x
     {
     case MouseEvent: 
-        let ptr = cast(*MouseEvent) x
-        @assert(ptr.x == 66)
-        g = 1
+        let ptr = cast(MouseEvent) &x
+        g = ptr.x
     }
 
-    @assert(g == 1)
+    @assert(g == 66)
 }
 
 #[Swag.Safety("", false)]

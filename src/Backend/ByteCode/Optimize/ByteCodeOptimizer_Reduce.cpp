@@ -3293,7 +3293,6 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
     }
 }
 
-#pragma optimize("", off)
 void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)

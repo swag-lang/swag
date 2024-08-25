@@ -702,6 +702,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     return true;
 }
 
+#pragma optimize("", off)
 bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
@@ -709,15 +710,28 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     const auto exprNode = node->secondChild();
 
     SWAG_CHECK(checkIsConcrete(context, exprNode));
-
-    // When we cast from a structure to an interface, we need to be sure that every interface are
-    // registered in the structure type, otherwise the cast can fail depending on the compile order
     exprNode->typeInfo      = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
     const auto exprTypeInfo = exprNode->typeInfo;
-    if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
+
+    // When we cast from a structure to an interface, we need to be sure that every interfaces are
+    // registered in the structure type, otherwise the cast can fail depending on the compile order
+    if (typeNode->typeInfo->isInterface())
     {
-        waitAllStructInterfaces(context->baseJob, exprTypeInfo);
-        YIELD();
+        if (exprTypeInfo->isStruct() || exprTypeInfo->isPointerTo(TypeInfoKind::Struct))
+        {
+            waitAllStructInterfaces(context->baseJob, exprTypeInfo);
+            YIELD();
+        }
+    }
+
+    // Same when casting back an interface to a pointer to struct
+    if (typeNode->typeInfo->isPointerTo(TypeInfoKind::Struct))
+    {
+        if (exprTypeInfo->isInterface())
+        {
+            waitAllStructInterfaces(context->baseJob, typeNode->typeInfo);
+            YIELD();
+        }
     }
 
     CastFlags castFlags = CAST_FLAG_EXPLICIT | CAST_FLAG_ACCEPT_PENDING;
