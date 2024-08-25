@@ -7,7 +7,7 @@ func toto(#[Toto] x: s32)
 {
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let t = @typeof(toto)

@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 func variadic(x: ...)
 {
     //@print(cast(s64) cast(u8) x[0])

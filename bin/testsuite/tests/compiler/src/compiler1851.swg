@@ -8,7 +8,7 @@ struct A
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x : A

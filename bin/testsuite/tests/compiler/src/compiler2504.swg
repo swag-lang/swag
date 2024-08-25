@@ -1,7 +1,7 @@
 #global skip // no more relative pointers (18 july 2021)
 //#global testerror
 
-//#[Swag.PrintBc, Swag.Optim("bc", false)]
+//#[Swag.PrintBc, Swag.Optimize("bc", false)]
 #test
 {
     var x: [2] *~8 s32

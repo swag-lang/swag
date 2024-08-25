@@ -6,7 +6,7 @@ func toto(v: closure(s32))
     v(5)
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     toto(func(x: s32) {

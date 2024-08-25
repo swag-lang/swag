@@ -8,7 +8,7 @@ struct P
 
 impl P
 {
-    //#[Swag.PrintBc]//, Swag.Optim("", false)]
+    //#[Swag.PrintBc]//, Swag.Optimize("", false)]
     mtd toto()
     {
         bvMin.set(Swag.F32.Max, Swag.F32.Max)

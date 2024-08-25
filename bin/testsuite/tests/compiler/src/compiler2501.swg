@@ -16,7 +16,7 @@ func toto()->Node
 }
 
 //#[PrintBc]
-#[Optim("bc",false)]
+#[Optimize("bc",false)]
 #test
 {
     var x = toto()

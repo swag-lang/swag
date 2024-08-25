@@ -1,6 +1,6 @@
 #global testerror "Err0436"
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var a, b = 666

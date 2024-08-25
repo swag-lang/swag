@@ -1,5 +1,5 @@
 #global testerror "Err0562"
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x: any

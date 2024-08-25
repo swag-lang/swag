@@ -2,7 +2,7 @@
 
 #[Swag.Safety("", true)]
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func toto(a: s8)
 {
     let b = -1's8

@@ -4,14 +4,14 @@ struct Game
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 func play(game: *Game)
 {
     //@breakpoint()
     dref game = update(game)
 }
 
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 func update(game: Game)->Game
 {

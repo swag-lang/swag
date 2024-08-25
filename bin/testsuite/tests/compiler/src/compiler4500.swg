@@ -18,7 +18,7 @@ impl BitArray
 
 #[Swag.NoInline]
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
     mtd reserve(maxBits: u64)
     {
         count = maxBits

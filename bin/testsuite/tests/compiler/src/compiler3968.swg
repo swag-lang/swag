@@ -19,7 +19,7 @@ func toto()->const &VV
     return &G
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     let x = #ref toto()

@@ -28,7 +28,7 @@ func toto()->Array'u32
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     foreach v in toto()[1..]:

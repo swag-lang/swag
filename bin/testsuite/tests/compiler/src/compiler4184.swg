@@ -1,7 +1,7 @@
 #global testerror "San0010"
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("sanity", true)]
 #[Swag.Safety("overflow", true)]
 #test

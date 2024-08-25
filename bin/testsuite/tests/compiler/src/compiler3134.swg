@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optim("", false), Swag.Safety("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
     let x = @runes("abcd")

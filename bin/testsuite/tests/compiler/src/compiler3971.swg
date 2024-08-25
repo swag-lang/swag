@@ -5,7 +5,7 @@ func toto()->&s32
     return &G
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x = #ref toto()

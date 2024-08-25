@@ -1,7 +1,7 @@
 #global testerror "Saf0026"
 
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     const x = Swag.F64.Max
@@ -10,7 +10,7 @@
 
 /*
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let x = -1'f64

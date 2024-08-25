@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func(T) way(x1, x2: T)
 {
     var s: s32

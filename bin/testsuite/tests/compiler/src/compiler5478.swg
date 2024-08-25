@@ -23,13 +23,13 @@ impl AA
 }
 
 #[Swag.Inline]
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 func toto()->[2] AA
 {
     return [AA.from(), AA.from()]
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x = toto()

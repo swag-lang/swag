@@ -5,7 +5,7 @@ func toto()->&s32
     return &g
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let t = 0

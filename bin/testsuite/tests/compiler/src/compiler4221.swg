@@ -25,7 +25,7 @@ var G: s32
 #[Swag.Inline]
 func toto()->I => &x
 
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 #test
 {

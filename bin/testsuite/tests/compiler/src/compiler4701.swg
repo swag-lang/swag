@@ -1,7 +1,7 @@
 var G = true
 var G1 = 0
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 func toto(val1, val2: s32)
 {

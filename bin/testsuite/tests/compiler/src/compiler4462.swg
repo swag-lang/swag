@@ -66,7 +66,7 @@ const solar_bodies: [] Planet = [
 ]
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 func energy(bodies: ^Planet)->f64
 {
     //return bodies.vx * bodies.vx + bodies.vy
@@ -158,7 +158,7 @@ func offset_momentum(bodies: [..] Planet) {
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     //Time.Stopwatch.scopeMeasure()

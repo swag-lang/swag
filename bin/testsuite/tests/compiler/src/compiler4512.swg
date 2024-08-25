@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let x = -1's8

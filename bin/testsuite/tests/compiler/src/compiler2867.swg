@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x: u8 = 0

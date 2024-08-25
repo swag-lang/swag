@@ -1,6 +1,6 @@
 //#global skip
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var a: {x, y: s32}

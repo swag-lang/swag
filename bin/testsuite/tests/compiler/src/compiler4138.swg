@@ -1,6 +1,6 @@
 #global testerror "Saf0009"
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("math", true)]
 #[Swag.Safety("nan", false)]
 func toto(y: f64)

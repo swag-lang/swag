@@ -7,7 +7,7 @@ struct(T) Array
 
 impl Array
 {
-    //#[Swag.PrintBc, Swag.Optim("", false)]
+    //#[Swag.PrintBc, Swag.Optimize("", false)]
 	func add(using self, value: const &T)
 	{
 		buffer[0] = value

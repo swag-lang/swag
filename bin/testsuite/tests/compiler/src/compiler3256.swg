@@ -11,7 +11,7 @@ func create(parent: *Rectangle, name: string, position: Rectangle, id: string = 
 {
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     create(id: "titi")

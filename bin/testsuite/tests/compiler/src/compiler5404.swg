@@ -26,7 +26,7 @@ impl A
     }
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 #test
 {

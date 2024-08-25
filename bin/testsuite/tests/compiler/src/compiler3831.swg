@@ -1,4 +1,4 @@
-#[Swag.Optim("", true)]
+#[Swag.Optimize("", true)]
 #test
 {
     {

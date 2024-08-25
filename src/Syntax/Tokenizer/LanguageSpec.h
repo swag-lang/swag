@@ -72,7 +72,7 @@ struct LanguageSpec
     Utf8 name_Align;
     Utf8 name_AllowOverflow;
     Utf8 name_Safety;
-    Utf8 name_Optim;
+    Utf8 name_Optimize;
     Utf8 name_Match;
     Utf8 name_Pack;
     Utf8 name_ExportType;
@@ -83,7 +83,7 @@ struct LanguageSpec
     Utf8 name_Swag_Align;
     Utf8 name_Swag_AllowOverflow;
     Utf8 name_Swag_Safety;
-    Utf8 name_Swag_Optim;
+    Utf8 name_Swag_Optimize;
     Utf8 name_Swag_Match;
     Utf8 name_Swag_Pack;
     Utf8 name_Swag_Foreign;

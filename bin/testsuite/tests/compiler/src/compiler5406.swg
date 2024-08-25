@@ -6,7 +6,7 @@ func toto()->&u64
     return &g
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 #test
 {

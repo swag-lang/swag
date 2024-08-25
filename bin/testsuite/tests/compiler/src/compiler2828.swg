@@ -8,7 +8,7 @@ func level0()
 
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func test(level: s64)
 {
     //@breakpoint()

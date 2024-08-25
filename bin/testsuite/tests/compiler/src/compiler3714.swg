@@ -2,7 +2,7 @@ struct(T) A
 {
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var a: A's32

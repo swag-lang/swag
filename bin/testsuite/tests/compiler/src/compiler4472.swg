@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x = 0's8
@@ -8,7 +8,7 @@
     @assert(x % y == 2)
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x = 0's16
@@ -18,7 +18,7 @@
     @assert(x % y == 2)
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x = 0'u8
@@ -28,7 +28,7 @@
     @assert(x % y == 2)
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var x = 0'u16

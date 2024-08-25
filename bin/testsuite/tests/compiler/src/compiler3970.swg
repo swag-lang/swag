@@ -11,7 +11,7 @@ func toto1()->&s32
     return &G1
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var y = #ref toto()

@@ -24,7 +24,7 @@ func toto()->A
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     var x = toto() + toto()

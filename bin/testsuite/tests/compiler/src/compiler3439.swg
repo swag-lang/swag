@@ -1,7 +1,7 @@
 var C: closure(s32)
 var G = 0
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     let a = 10

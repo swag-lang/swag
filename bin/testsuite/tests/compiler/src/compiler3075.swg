@@ -14,7 +14,7 @@ func toto(a, b: AA)->AA
 var x, y: AA
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", true)]
+#[Swag.Optimize("", true)]
 #test
 {
     x = AA{1, 1}

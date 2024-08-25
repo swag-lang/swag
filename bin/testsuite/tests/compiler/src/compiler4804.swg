@@ -1,6 +1,6 @@
 #global testerror "Saf0020"
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let x = -1's16

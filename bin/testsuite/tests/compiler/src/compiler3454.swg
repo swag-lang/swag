@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var a = [1, 2, 3, 4]

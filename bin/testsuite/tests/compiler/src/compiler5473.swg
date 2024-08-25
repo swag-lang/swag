@@ -4,7 +4,7 @@ struct A { r, g : s32; }
 typealias AL = A
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #[Swag.Inline]
 func toto()->AL
 {

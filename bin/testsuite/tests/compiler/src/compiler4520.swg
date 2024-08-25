@@ -4,7 +4,7 @@ typealias AL = A
 //typealias AL1 = AL
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 func toto()->AL
 {
     return {1, 2}

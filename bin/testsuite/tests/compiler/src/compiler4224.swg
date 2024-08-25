@@ -5,7 +5,7 @@ func titi() throw { throw Err{}; }
 #[Swag.Inline]
 func toto() throw = titi()
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     catch toto()

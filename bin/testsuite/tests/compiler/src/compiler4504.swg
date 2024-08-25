@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func toto(y: u32)
 {
     {

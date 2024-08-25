@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     var x = 0'u8

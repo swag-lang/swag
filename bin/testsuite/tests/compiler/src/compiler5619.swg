@@ -1,7 +1,7 @@
 #global testerror "Saf0027"
 
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func toto(a: s16)
 {
     let b = -1's16

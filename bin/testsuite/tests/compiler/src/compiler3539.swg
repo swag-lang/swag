@@ -33,7 +33,7 @@ struct Team
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     {

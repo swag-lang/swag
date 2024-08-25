@@ -5,7 +5,7 @@ func toto(x: s8)
     @assert(x == 11)
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let c = 1's8

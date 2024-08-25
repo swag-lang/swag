@@ -3,7 +3,7 @@ struct Vector2
     x: f32
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     let size = 10's32

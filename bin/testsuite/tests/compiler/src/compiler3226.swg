@@ -5,7 +5,7 @@ enum A
     A
 }
 
-//#[Swag.PrintBc]//, Swag.Optim("", false)]
+//#[Swag.PrintBc]//, Swag.Optimize("", false)]
 func toto(x: A)
 {
     var v = 0

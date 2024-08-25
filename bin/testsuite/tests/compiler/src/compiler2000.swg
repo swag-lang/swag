@@ -8,7 +8,7 @@ func swap(x, y: *s32)
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var xxx = 5

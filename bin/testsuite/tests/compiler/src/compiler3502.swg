@@ -34,7 +34,7 @@ struct B
     using b: A1
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var v: B

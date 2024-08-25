@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let a = true

@@ -7,7 +7,7 @@ struct V
 
 #[Swag.Safety("null", true)]
 #[Swag.Safety("sanity", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 #test
 {

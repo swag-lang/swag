@@ -1,5 +1,5 @@
 #[Swag.Safety("overflow", false)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     const x = Swag.F32.Max
@@ -8,7 +8,7 @@
 
 /*
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let x = -1'f64

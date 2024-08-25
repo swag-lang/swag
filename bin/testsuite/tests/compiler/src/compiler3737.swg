@@ -13,7 +13,7 @@ impl I for A
     mtd impl x(){}
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var v: *A

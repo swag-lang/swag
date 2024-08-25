@@ -1,6 +1,6 @@
 using test_foreign
 
-//#[Swag.PrintBc, Swag.Optim(false)]
+//#[Swag.PrintBc, Swag.Optimize(false)]
 #test
 {
     toto41()

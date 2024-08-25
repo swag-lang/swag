@@ -1,6 +1,6 @@
 const ZFAST_BITS = 9
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let j = 7'u32

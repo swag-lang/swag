@@ -1,5 +1,5 @@
 #global testerror "Err0433"
-#[Swag.Optim("", false]
+#[Swag.Optimize("", false]
 #test
 {
 }

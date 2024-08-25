@@ -12,7 +12,7 @@ impl String
     }
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #[Swag.Inline]
 func toto()->String
 {

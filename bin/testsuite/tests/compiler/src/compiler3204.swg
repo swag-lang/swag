@@ -29,7 +29,7 @@ impl I for BB
     mtd impl close()->s32 => 20
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x: BB

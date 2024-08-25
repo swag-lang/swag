@@ -1,7 +1,7 @@
 //#global skip
 var g = 6'u64
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 #test
 {

@@ -24,7 +24,7 @@ impl I for AA
     }
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x: BB

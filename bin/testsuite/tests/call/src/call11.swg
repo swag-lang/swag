@@ -10,7 +10,7 @@ func entry(param: ^void)->u32
     return 0
 }
 
-//#[Swag.PrintBc, Swag.Optim(false)]
+//#[Swag.PrintBc, Swag.Optimize(false)]
 #test
 {
     tcf_createThread(&entry, 666)

@@ -19,7 +19,7 @@ func toto(x: u64)->const &s32
     return &g
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var arr: A

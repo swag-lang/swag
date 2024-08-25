@@ -1,6 +1,6 @@
 #global testerror "Err0732"
 
-#[Swag.Optim("po", false)]
+#[Swag.Optimize("po", false)]
 func toto()
 {
 }

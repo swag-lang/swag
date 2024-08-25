@@ -27,7 +27,7 @@ func toto(a: &A's32, b: &s32)
     @assert(c == 6)
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 #test
 {

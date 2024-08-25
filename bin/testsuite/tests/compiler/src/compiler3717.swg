@@ -11,7 +11,7 @@ func read() throw
     READ += 1
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 func titi() throw
 {
     defer toto()

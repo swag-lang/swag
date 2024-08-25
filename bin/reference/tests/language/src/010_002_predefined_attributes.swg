@@ -143,10 +143,10 @@ attr Safety(what: string, value: bool)
 // | 'backend'    | Enable/Disable backend machine code optimization for the function (llvm only)
 // If 'what' is null or empty, every options will be affected.
 #[AttrUsage(AttributeUsage.Function | AttributeUsage.File), AttrMulti]
-attr Optim(what: string, value: bool)
+attr Optimize(what: string, value: bool)
 
 #[AttrUsage(AttributeUsage.All | AttributeUsage.File)]
-attr Overflow(value: bool)
+attr AllowOverflow(value: bool)
 
 // Warning behavior for [[Warning]] attribute
 enum WarningLevel: u8

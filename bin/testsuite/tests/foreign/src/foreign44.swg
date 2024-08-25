@@ -1,4 +1,4 @@
-#global #[Swag.Optim("", false)]
+#global #[Swag.Optimize("", false)]
 using Swag
 
 public struct TT44

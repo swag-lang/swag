@@ -41,7 +41,7 @@ void LanguageSpec::setupNames()
 
     name_AllowOverflow = "AllowOverflow";
     name_Safety        = "Safety";
-    name_Optim         = "Optim";
+    name_Optimize      = "Optimize";
     name_Match         = "Match";
     name_Pack          = "Pack";
     name_Align         = "Align";
@@ -59,7 +59,7 @@ void LanguageSpec::setupNames()
     name_Swag_Align         = "Swag.Align";
     name_Swag_AllowOverflow = "Swag.AllowOverflow";
     name_Swag_Safety        = "Swag.Safety";
-    name_Swag_Optim         = "Swag.Optim";
+    name_Swag_Optimize      = "Swag.Optimize";
     name_Swag_Match         = "Swag.Match";
     name_Swag_Pack          = "Swag.Pack";
     name_Swag_Foreign       = "Swag.Foreign";

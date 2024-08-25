@@ -2,7 +2,7 @@
 
 typealias A = string
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
 func toto(b: s32)
 {

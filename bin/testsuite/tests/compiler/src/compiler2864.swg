@@ -2,7 +2,7 @@
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #[Swag.Safety("math", true)]
 #test
 {

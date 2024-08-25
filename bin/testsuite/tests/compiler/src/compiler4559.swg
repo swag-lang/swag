@@ -2,7 +2,7 @@ const CellSize  = 128
 const Margin    = 4.0
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     let y = 2

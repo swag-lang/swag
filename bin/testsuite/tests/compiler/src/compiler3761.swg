@@ -1,6 +1,6 @@
 //#global skip
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     {

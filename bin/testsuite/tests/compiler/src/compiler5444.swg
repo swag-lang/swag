@@ -9,7 +9,7 @@ impl Vector2
     mtd(op: string) const opBinary(other: s32)->Vector2 => Self{x*other}
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var p1: Vector2{4}

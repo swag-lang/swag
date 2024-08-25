@@ -1,7 +1,7 @@
 #global testerror "Saf0021"
 
 #[Swag.Safety("", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func toto(a: s32)
 {
     let b: u8 = cast(u8) a

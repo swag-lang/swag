@@ -2,7 +2,7 @@ struct(T) A
 {
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 func toto(type: const *Swag.TypeInfoStruct)
 {
     @assert(type.fromGeneric == @typeof(A))

@@ -6,7 +6,7 @@ func toto() throw
     throw ErrToto{}
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x: func() throw

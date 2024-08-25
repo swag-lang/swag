@@ -21,13 +21,13 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-#[Swag.Optim("bytecode", true)]
+#[Swag.Optimize("bytecode", true)]
 func toto()
 {
     var v = cstr("toto")
 }
 
-#[Swag.Optim("bytecode", true)]
+#[Swag.Optimize("bytecode", true)]
 #test
 {
     toto()

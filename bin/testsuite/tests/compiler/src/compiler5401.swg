@@ -13,7 +13,7 @@ func titi()->const &s32
     return &g
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 //#[Swag.PrintBc]
 #test

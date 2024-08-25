@@ -1,7 +1,7 @@
 //#global skip
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 func toto(a, b: s32)->s32
 {
     switch a

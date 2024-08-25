@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func(T) toto(x, y: T, r: s32)
 {
     @assert(x <=> y == r)

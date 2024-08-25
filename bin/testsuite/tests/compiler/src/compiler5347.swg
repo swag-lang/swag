@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func(T) toto(x: T)->T
 {
     return @abs(x)

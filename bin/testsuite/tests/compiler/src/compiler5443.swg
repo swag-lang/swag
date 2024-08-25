@@ -10,7 +10,7 @@ impl Vector
     //mtd tt(other: Vector)->Vector => Self{x-other.x, y-other.y}
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var a = Vector{1, 1}

@@ -9,7 +9,7 @@ struct TT
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func C(x: any)
 {
     #[Swag.Safety("", true)]

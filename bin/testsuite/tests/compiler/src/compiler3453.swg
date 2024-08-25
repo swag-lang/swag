@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     let x: const [..] s32 = [1, 2]

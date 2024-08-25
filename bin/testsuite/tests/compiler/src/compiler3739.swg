@@ -1,6 +1,6 @@
 //#global testerror
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #[Swag.Safety("", false)]
 #test
 {

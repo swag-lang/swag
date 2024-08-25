@@ -2,7 +2,7 @@
 #global testerror "Err0514"
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let a = "toto"

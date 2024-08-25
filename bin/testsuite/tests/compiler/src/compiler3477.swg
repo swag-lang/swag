@@ -1,5 +1,5 @@
 //#global testerror
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     struct X {}

@@ -1,7 +1,7 @@
 #global testerror "Err0562"
 var G = 0
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var v: closure(s32) = func(x, y: s32) { G = x; }

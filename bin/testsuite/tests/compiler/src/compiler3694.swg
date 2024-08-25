@@ -27,7 +27,7 @@ func getDataFromHFONT()->Array throw
     return result
 }
 
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 func createFromHFONT() throw
 {

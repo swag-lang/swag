@@ -1,4 +1,4 @@
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func(T) toto(x, y: T)->T
 {
     return @min(x, y)

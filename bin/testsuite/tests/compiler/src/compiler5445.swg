@@ -11,7 +11,7 @@ impl Vector2
     mtd const tt(other: Vector2)->Vector2 { return Vector2{x - other.x}; }
 }
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 func toto(other: Vector2)
 {

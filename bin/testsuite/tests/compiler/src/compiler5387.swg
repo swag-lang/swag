@@ -13,7 +13,7 @@ impl A
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var str: [2] string

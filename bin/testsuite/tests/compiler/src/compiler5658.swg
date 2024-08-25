@@ -1,6 +1,6 @@
 //#global skip
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     let a = 1

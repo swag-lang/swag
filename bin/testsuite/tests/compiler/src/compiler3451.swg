@@ -3,7 +3,7 @@ struct Vector
     x, y: f32
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     let x = Vector{1, 2}

@@ -2,7 +2,7 @@
 #global testerror "Err0512"
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
 #test
 {

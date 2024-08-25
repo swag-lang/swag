@@ -4,7 +4,7 @@ struct A { r, g, b, d : s32; }
 typealias AL = A
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var a: AL = {1, 2, 3, 4}

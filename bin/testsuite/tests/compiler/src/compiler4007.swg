@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 func toto(a: s32)->bool
 {
     return acast (a & 1)

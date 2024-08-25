@@ -5,7 +5,7 @@ var g: [4] Fct
 var G: s32
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     g[0] = closure||(a) { G = a; }

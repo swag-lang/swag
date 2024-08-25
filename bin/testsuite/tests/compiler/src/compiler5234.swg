@@ -1,7 +1,7 @@
 var x: [2] s32
 
 //#[Swag.PrintBc]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #test
 {
     var cpt, cpt1 = 0

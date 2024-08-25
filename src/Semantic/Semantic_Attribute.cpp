@@ -472,12 +472,12 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
-            else if (child->token.is(g_LangSpec->name_Optim))
+            else if (child->token.is(g_LangSpec->name_Optimize))
             {
                 VectorNative<const OneAttribute*> allAttrs;
                 Vector<Utf8>                      what;
 
-                curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Optim);
+                curAttr->attributes.getAttributes(allAttrs, g_LangSpec->name_Swag_Optimize);
                 for (auto attr : allAttrs)
                 {
                     auto attrParam = attr->getParam(g_LangSpec->name_what);

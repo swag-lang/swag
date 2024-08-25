@@ -9,7 +9,7 @@ impl Vector
     mtd opDrop() {}
 }
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var x = Vector{1, 2}

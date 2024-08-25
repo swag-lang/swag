@@ -7,7 +7,7 @@ struct AA
     x: [2] *~32 s32
 }
 
-//#[Swag.PrintBc, Swag.Optim("bc", false)]
+//#[Swag.PrintBc, Swag.Optimize("bc", false)]
 #test
 {
     var v = [10, 20]

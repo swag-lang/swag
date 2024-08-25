@@ -1,6 +1,6 @@
 #global testerror "San0008"
 
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 #[Swag.Safety("sanity", true)]
 func toto(param: s32)
 {

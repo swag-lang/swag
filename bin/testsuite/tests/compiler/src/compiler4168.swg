@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #[Swag.Safety("sanity", true)]
-#[Swag.Optim("", false)]
+#[Swag.Optimize("", false)]
 func toto(x: s32)
 {
     var a: [4] s32

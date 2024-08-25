@@ -3,7 +3,7 @@ typealias Fct = closure(s32)
 var g: [4] Fct
 
 //#[Swag.PrintBc]
-//#[Swag.Optim("", false)]
+//#[Swag.Optimize("", false)]
 #test
 {
     var G: s32
