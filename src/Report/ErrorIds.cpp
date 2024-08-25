@@ -186,7 +186,7 @@ void initErrors()
     SWAG_ERROR(Err0044, "empty [[#mixin]] replacement block                $ cannot have an empty [[mixin]] block                                                                                                     $ consider adding some content to the block, or removing it");
     SWAG_ERROR(Err0045, "empty [[case]] statement                          $ cannot have an empty [[case]] statement                                                                                                  $ ");
     SWAG_ERROR(Err0046, "empty [[default]] statement                       $ cannot have an empty [[default]] statement                                                                                               $ ");
-    SWAG_ERROR(Err0047, "empty [[interface]]                               $ cannot have an empty interface declaration ([[%s]])                                                                                      $ ");
+    SWAG_ERROR(Err0047, nullptr);
     SWAG_ERROR(Err0048, "empty [[switch]]                                  $ cannot have an empty [[switch]] body                                                                                                     $ consider adding some cases, or removing it");
     SWAG_ERROR(Err0049, "empty array literal                               $ cannot use an array literal without at least one value                                                                                   $ ");
     SWAG_ERROR(Err0050, "empty attribute                                   $ cannot use an attribute without at least one value                                                                                       $ consider adding an attribute name");
