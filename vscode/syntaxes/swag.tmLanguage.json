@@ -278,16 +278,60 @@
     "keywords-mode": {
       "patterns": [
         {
-          "match": "\\b(visit|break|defer|where|cast)\\<(\\w*)\\>",
+          "match": "\\b(defer)\\<(err|noerr)\\>",
           "captures": {
             "1": {
               "name": "keyword.control"
             },
             "2": {
-              "name": "constant.character.escape"
+              "name": "meta.preprocessor"
             }
           }
-        }
+        },
+        {
+          "match": "\\b(where)\\<(call)\\>",
+          "captures": {
+            "1": {
+              "name": "keyword.control"
+            },
+            "2": {
+              "name": "meta.preprocessor"
+            }
+          }
+        },        
+        {
+          "match": "\\b(cast)\\<(bit|overflow)\\>",
+          "captures": {
+            "1": {
+              "name": "keyword"
+            },
+            "2": {
+              "name": "meta.preprocessor"
+            }
+          }
+        },   
+        {
+          "match": "\\b(defer|where)\\<(\\w*)\\>",
+          "captures": {
+            "1": {
+              "name": "keyword.control"
+            },
+            "2": {
+              "name": "invalid"
+            }
+          }
+        },             
+        {
+          "match": "\\b(cast)\\<(\\w*)\\>",
+          "captures": {
+            "1": {
+              "name": "keyword"
+            },
+            "2": {
+              "name": "invalid"
+            }
+          }
+        }        
       ]
     },
     "function-call": {

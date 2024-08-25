@@ -527,7 +527,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 continue;
-            }            
+            }
 
             auto it = g_LangSpec->keywords.find(identifier);
             if (it)
@@ -659,6 +659,38 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                             result += identifier;
                         }
 
+                        break;
+                }
+
+                switch (*it)
+                {
+                    case TokenId::KwdCast:
+                    case TokenId::KwdWhere:
+                    case TokenId::KwdVisit:
+                    case TokenId::KwdBreak:
+                    case TokenId::KwdDefer:
+                        if (c == '<')
+                        {
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                            result += "<";
+
+                            Utf8 kwdMode;
+                            pz = Utf8::decodeUtf8(pz, c, offset);
+                            while (SWAG_IS_ALPHA(c))
+                            {
+                                kwdMode += c;
+                                pz = Utf8::decodeUtf8(pz, c, offset);
+                            }
+
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
+                            result += kwdMode;
+                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                            if (c == '>')
+                            {
+                                result += ">";
+                                pz = Utf8::decodeUtf8(pz, c, offset);
+                            }
+                        }
                         break;
                 }
             }
