@@ -182,15 +182,15 @@ struct LanguageSpec
     Utf8 name_location;
     Utf8 name_version;
 
-    Utf8 name_prom;
-    Utf8 name_over;
-    Utf8 name_nodrop;
-    Utf8 name_move;
-    Utf8 name_moveraw;
-    Utf8 name_unconst;
-    Utf8 name_back;
-    Utf8 name_ref;
-    Utf8 name_constref;
+    Utf8 name_sharp_prom;
+    Utf8 name_sharp_over;
+    Utf8 name_sharp_nodrop;
+    Utf8 name_sharp_move;
+    Utf8 name_sharp_moveraw;
+    Utf8 name_sharp_unconst;
+    Utf8 name_sharp_back;
+    Utf8 name_sharp_ref;
+    Utf8 name_sharp_constref;
     
     Utf8 name_call;
     Utf8 name_err;

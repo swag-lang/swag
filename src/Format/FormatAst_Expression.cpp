@@ -103,13 +103,13 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_over);
+        concat->addString(g_LangSpec->name_sharp_over);
     }
 
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_prom);
+        concat->addString(g_LangSpec->name_sharp_prom);
     }
 
     addBlank(node->secondChild());
@@ -137,12 +137,12 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_over);
+        concat->addString(g_LangSpec->name_sharp_over);
     }
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_prom);
+        concat->addString(g_LangSpec->name_sharp_prom);
     }
 
     concat->addBlank();
@@ -257,7 +257,7 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_unconst);
+        concat->addString(g_LangSpec->name_sharp_unconst);
     }
 
     concat->addBlank();

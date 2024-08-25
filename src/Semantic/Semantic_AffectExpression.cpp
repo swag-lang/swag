@@ -274,13 +274,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_nodrop.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_nodrop.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_moveraw.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_moveraw.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_move.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0568, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_move.cstr(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any

@@ -154,15 +154,15 @@ void LanguageSpec::setupNames()
     name_location    = "location";
     name_version     = "version";
 
-    name_prom     = "#prom";
-    name_over     = "#over";
-    name_nodrop   = "#nodrop";
-    name_move     = "#move";
-    name_moveraw  = "#moveraw";
-    name_unconst  = "#unconst";
-    name_back     = "#back";
-    name_ref      = "#ref";
-    name_constref = "#constref";
+    name_sharp_prom     = "#prom";
+    name_sharp_over     = "#over";
+    name_sharp_nodrop   = "#nodrop";
+    name_sharp_move     = "#move";
+    name_sharp_moveraw  = "#moveraw";
+    name_sharp_unconst  = "#unconst";
+    name_sharp_back     = "#back";
+    name_sharp_ref      = "#ref";
+    name_sharp_constref = "#constref";
 
     name_call   = "call";
     name_err    = "err";
@@ -585,15 +585,15 @@ void LanguageSpec::setupAttributesFlags()
 
 void LanguageSpec::setupModifiers()
 {
-    modifiers.add(name_prom, MODIFIER_PROM);
-    modifiers.add(name_over, MODIFIER_OVERFLOW);
-    modifiers.add(name_nodrop, MODIFIER_NO_LEFT_DROP);
-    modifiers.add(name_move, MODIFIER_MOVE);
-    modifiers.add(name_moveraw, MODIFIER_MOVE_RAW);
-    modifiers.add(name_unconst, MODIFIER_UN_CONST);
-    modifiers.add(name_back, MODIFIER_BACK);
-    modifiers.add(name_ref, MODIFIER_REF);
-    modifiers.add(name_constref, MODIFIER_CONST_REF);
+    modifiers.add(name_sharp_prom, MODIFIER_PROM);
+    modifiers.add(name_sharp_over, MODIFIER_OVERFLOW);
+    modifiers.add(name_sharp_nodrop, MODIFIER_NO_LEFT_DROP);
+    modifiers.add(name_sharp_move, MODIFIER_MOVE);
+    modifiers.add(name_sharp_moveraw, MODIFIER_MOVE_RAW);
+    modifiers.add(name_sharp_unconst, MODIFIER_UN_CONST);
+    modifiers.add(name_sharp_back, MODIFIER_BACK);
+    modifiers.add(name_sharp_ref, MODIFIER_REF);
+    modifiers.add(name_sharp_constref, MODIFIER_CONST_REF);
 }
 
 void LanguageSpec::setup()
