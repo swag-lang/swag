@@ -1639,7 +1639,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h5 id="_003_000_fundamentals_swg__003_007_cast_swg">Examples Where Implicit Casts Are Not Allowed </h5>
 <p>There are cases where implicit casts are not permitted due to the risk of data loss or precision issues. In such situations, Swag requires an explicit cast to ensure that the developer is aware of and accepts the risks. </p>
-<p>Additionally, the <span class="code-inline">#over</span> modifier can be used in explicit casts to indicate that the value may lose some precision without raising an error. </p>
+<p>Additionally, the cast mode <span class="code-inline">unsafe</span> can be used in explicit casts to indicate that the value may lose some precision without raising an error. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Implicit cast from 16-bit signed integer (s16) to 8-bit signed integer (s8)</span>
@@ -1647,24 +1647,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Uncommenting the following lines would cause an error:</span>
 
     <span class="SCmt">// let z0: s16 = 100</span>
-    <span class="SCmt">// let z1: s8 = z0                         // Error: Implicit cast from 's16' to 's8' is not allowed</span>
+    <span class="SCmt">// let z1: s8 = z0                          // Error: Implicit cast from 's16' to 's8' is not allowed</span>
 
     <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
     <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
-    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
-    <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                          <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
+    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>&lt;unsafe&gt;(<span class="STpe">s8</span>) z0            <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
+    <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                            <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
 
     <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
     <span class="SKwd">let</span> u_val: <span class="STpe">u16</span> = <span class="SNum">65535</span>
-    <span class="SCmt">// let s_val: s16 = u_val                  // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
+    <span class="SCmt">// let s_val: s16 = u_val                   // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
 
     <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
-    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s16</span>) u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
-    <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                      <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
+    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>&lt;unsafe&gt;(<span class="STpe">s16</span>) u_val    <span class="SCmt">// This could result in an unexpected negative value</span>
+    <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                        <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
 
     <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
     <span class="SKwd">let</span> large_float: <span class="STpe">f64</span> = <span class="SNum">1.23456789012345611111</span>
-    <span class="SCmt">// let smaller_float: f32 = large_float    // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss</span>
+    <span class="SCmt">// let smaller_float: f32 = large_float     // Error: Implicit cast from 'f64' to 'f32' is not allowed due to precision loss</span>
 
     <span class="SCmt">// Explicit cast is required when converting from f64 to f32</span>
     <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
@@ -3538,21 +3538,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `color` is Blue.</span>
     }
 }</span></div>
-<h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switching on Type with <span class="code-inline">any</span> or <span class="code-inline">interface</span> </h4>
-<p>When using a <span class="code-inline">switch</span> statement with a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, Swag matches cases based on the underlying type of the variable. This behavior is akin to the <span class="code-inline">@kindof</span> intrinsic, which allows for dynamic type checking within a switch construct. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
-
-    <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
-    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
-    {
-    <span class="SLgc">case</span> <span class="STpe">string</span>: 
-        <span class="SLgc">break</span>           <span class="SCmt">// Executes if `x` is of type string.</span>
-    <span class="SLgc">default</span>:     
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `x` is not a string.</span>
-    }
-}</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Matching Ranges in a <span class="code-inline">switch</span> Statement </h4>
 <p>Swag supports matching a <b>range of values</b> in a <span class="code-inline">switch</span> statement, allowing you to group and handle multiple values that fall within a specific range efficiently. This is useful for concise and clear range-based logic within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -3627,6 +3612,67 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)   <span class="SCmt">// General fallback case; should not be executed.</span>
     }
 }</span></div>
+<h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switching on Type with <span class="code-inline">any</span> or <span class="code-inline">interface</span> </h4>
+<p>When using a <span class="code-inline">switch</span> statement with a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, Swag matches cases based on the underlying type of the variable. This behavior is akin to the <span class="code-inline">@kindof</span> intrinsic, which allows for dynamic type checking within a switch construct. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
+
+    <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
+    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
+    {
+    <span class="SLgc">case</span> <span class="STpe">string</span>: 
+        <span class="SLgc">break</span>           <span class="SCmt">// Executes if `x` is of type string.</span>
+    <span class="SLgc">default</span>:     
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Assertion fails if `x` is not a string.</span>
+    }
+}</span></div>
+<h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switch Statement with Type Guard and Variable Binding </h4>
+<p>You can use the <span class="code-inline">var</span> keyword after the case value to bind the matched value to a variable, which can then be used within the corresponding case block. Additionally, you can apply conditional checks directly within the case using the <span class="code-inline">where</span> clause to further refine the matching logic. </p>
+<p>The switch statement implicitly checks the type of the variable <span class="code-inline">x</span> using a type guard (<span class="code-inline">@kindof</span>), allowing for more precise case matching based on the variable's runtime type. </p>
+<p>Key Features: </p>
+<ol>
+<li>Type Guarding: The switch statement evaluates the type of <span class="code-inline">x</span>, allowing cases to be matched based on its type.</li>
+<li>Variable Binding: The matched value can be bound to a variable using the <span class="code-inline">var</span> keyword, making the value accessible within the case block.</li>
+<li>Conditional Matching: The <span class="code-inline">where</span> clause enables additional conditions to be checked during case matching.</li>
+</ol>
+<p>Example 1: </p>
+<p>The first example checks if <span class="code-inline">x</span> is a string. If it is, the value is bound to the variable <span class="code-inline">str</span>. The <span class="code-inline">@assert</span> function is then used to ensure that the value of <span class="code-inline">str</span> is equal to "value". </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
+
+    <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
+    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
+    {
+    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
+        <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)
+        <span class="SLgc">break</span>    
+
+    <span class="SLgc">default</span>:     
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)  
+    }
+}</span></div>
+<p>Example 2: </p>
+<p>The second example showcases conditional matching using the <span class="code-inline">where</span> clause. The switch statement evaluates  whether <span class="code-inline">x</span> is a string and checks additional conditions specified in each case. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
+
+    <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
+    {
+    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
+        <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)                     <span class="SCmt">// Asserts that `str` is equal to "value"</span>
+        <span class="SLgc">break</span>   
+
+    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
+        <span class="SItr">@assert</span>(str == <span class="SStr">"not_a_value"</span>)               <span class="SCmt">// Asserts that `str` is equal to "not_a_value"</span>
+        <span class="SLgc">break</span>     
+
+    <span class="SLgc">default</span>:     
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>) <span class="SCmt">// Asserts false if no case matches</span>
+    }
+}</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switch Without an Expression </h4>
 <p>A <span class="code-inline">switch</span> statement in Swag can operate without an expression, behaving like a series of <span class="code-inline">if/else</span> statements. Each <span class="code-inline">case</span> is evaluated sequentially, and the first one that evaluates to <span class="code-inline">true</span> is executed, allowing for more complex conditional logic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -3637,8 +3683,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Switch statement without an expression, behaving like an if-else chain.</span>
     <span class="SLgc">switch</span>
     {
-    <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value == <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if `value` is 6 or 7.</span>
+    <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value &gt; <span class="SNum">10</span>:
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if `value` is 6 or greater than 10.</span>
         <span class="SLgc">fallthrough</span>     <span class="SCmt">// Continues to the next case regardless.</span>
     <span class="SLgc">case</span> value1 == <span class="SStr">"true"</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)   <span class="SCmt">// Passes if `value1` is "true".</span>
@@ -6910,10 +6956,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmt">// | 'backend'    | Enable/Disable backend machine code optimization for the function (llvm only)</span>
 <span class="SCmt">// If 'what' is null or empty, every options will be affected.</span>
 <span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.File), AttrMulti]</span>
-<span class="SKwd">attr</span> <span class="SCst">Optim</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)
+<span class="SKwd">attr</span> <span class="SCst">Optimize</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)
 
 <span class="SAtr">#[AttrUsage(AttributeUsage.All | AttributeUsage.File)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Overflow</span>(value: <span class="STpe">bool</span>)
+<span class="SKwd">attr</span> <span class="SCst">AllowOverflow</span>(value: <span class="STpe">bool</span>)
 
 <span class="SCmt">// Warning behavior for [[Warning]] attribute</span>
 <span class="SKwd">enum</span> <span class="SCst">WarningLevel</span>: <span class="STpe">u8</span>
@@ -7637,8 +7683,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Global Overflow Safety Control </h5>
-<p>To disable overflow safety checks globally within a scope, use <span class="code-inline">#[Swag.Overflow(true)]</span>. This  prevents overflows from causing panics for all operations in the scope. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
+<p>To disable overflow safety checks globally within a scope, use <span class="code-inline">#[Swag.AllowOverflow(true)]</span>. This  prevents overflows from causing panics for all operations in the scope. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.AllowOverflow(true)]</span>
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
@@ -7662,18 +7708,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be </span>
                                                   <span class="SCmt">// represented as s8</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;unsafe&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
                                                   <span class="SCmt">// cast</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)                             <span class="SCmt">// Assert that y1 is -1 after wrapping</span>
 
     <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>                                <span class="SCmt">// Initialize x2 with the minimum value for s8</span>
     <span class="SCmt">// var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative</span>
-    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">u8</span>) x2                    <span class="SCmt">// Use #over to bypass safety checks</span>
+    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>&lt;unsafe&gt;(<span class="STpe">u8</span>) x2                    <span class="SCmt">// Use #over to bypass safety checks</span>
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)                            <span class="SCmt">// Assert that y2 is 255 after wrapping</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Disabling Overflow Safety Globally </h5>
 <p>Safety checks for overflow can be globally disabled, allowing operations that would typically  panic due to overflow to proceed normally. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.AllowOverflow(true)]</span>
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
@@ -8705,7 +8751,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 26-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

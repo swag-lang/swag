@@ -193,25 +193,6 @@ The `Swag.Complete` attribute ensures exhaustive handling of all possible cases 
 }
 
 /**
-# Switching on Type with `any` or `interface`
-When using a `switch` statement with a variable of type `any` or `interface`, Swag matches cases based on the underlying type of the variable. This behavior is akin to the `@kindof` intrinsic, which allows for dynamic type checking within a switch construct.
-*/
-
-#test
-{
-    let x: any = "value"
-
-    // Switch statement based on the underlying type of 'x'.
-    switch x    // Implicitly checks the type of `x` using `@kindof`.
-    {
-    case string: 
-        break           // Executes if `x` is of type string.
-    default:     
-        @assert(false)  // Assertion fails if `x` is not a string.
-    }
-}
-
-/**
 # Matching Ranges in a `switch` Statement
 Swag supports matching a **range of values** in a `switch` statement, allowing you to group and handle multiple values that fall within a specific range efficiently. This is useful for concise and clear range-based logic within your code.
 */
@@ -302,6 +283,91 @@ The `where` clause can also be applied to a `default` case, providing conditiona
 }
 
 /**
+# Switching on Type with `any` or `interface`
+When using a `switch` statement with a variable of type `any` or `interface`, Swag matches cases based on the underlying type of the variable. This behavior is akin to the `@kindof` intrinsic, which allows for dynamic type checking within a switch construct.
+*/
+
+#test
+{
+    let x: any = "value"
+
+    // Switch statement based on the underlying type of 'x'.
+    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    {
+    case string: 
+        break           // Executes if `x` is of type string.
+    default:     
+        @assert(false)  // Assertion fails if `x` is not a string.
+    }
+}
+
+/**
+# Switch Statement with Type Guard and Variable Binding
+
+You can use the 'var' keyword after the case value to bind the matched value to a variable, which can then be
+used within the corresponding case block. Additionally, you can apply conditional checks directly within the case
+using the `where` clause to further refine the matching logic.
+
+The switch statement implicitly checks the type of the variable `x` using a type guard (`@kindof`), allowing for
+more precise case matching based on the variable's runtime type.
+
+Key Features:
+
+1. Type Guarding: The switch statement evaluates the type of `x`, allowing cases to be matched based on its type.
+2. Variable Binding: The matched value can be bound to a variable using the `var` keyword, making the value accessible within the case block.
+3. Conditional Matching: The `where` clause enables additional conditions to be checked during case matching.
+*/
+
+/**
+Example 1:
+ 
+The first example checks if `x` is a string. If it is, the value is bound to the variable `str`.
+The `@assert` function is then used to ensure that the value of `str` is equal to "value".
+*/
+
+#test
+{
+    let x: any = "value"
+
+    // Switch statement based on the underlying type of 'x'.
+    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    {
+    case string var str:    // 'str' will contain the value if 'x' is a string
+        @assert(str == "value")
+        break    
+
+    default:     
+        @assert(false)  
+    }
+}
+
+/**
+Example 2:
+ 
+The second example showcases conditional matching using the `where` clause. The switch statement evaluates 
+whether `x` is a string and checks additional conditions specified in each case.
+*/
+
+#test
+{
+    let x: any = "value"
+
+    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    {
+    case string var str where str == "value":       // Matches if `x` is a string and equals "value"
+        @assert(str == "value")                     // Asserts that `str` is equal to "value"
+        break   
+
+    case string var str where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
+        @assert(str == "not_a_value")               // Asserts that `str` is equal to "not_a_value"
+        break     
+
+    default:     
+        @assert(false) // Asserts false if no case matches
+    }
+}
+
+/**
 # Switch Without an Expression
 A `switch` statement in Swag can operate without an expression, behaving like a series of `if/else` statements. Each `case` is evaluated sequentially, and the first one that evaluates to `true` is executed, allowing for more complex conditional logic.
 */
@@ -314,8 +380,8 @@ A `switch` statement in Swag can operate without an expression, behaving like a 
     // Switch statement without an expression, behaving like an if-else chain.
     switch
     {
-    case value == 6 or value == 7:
-        @assert(true)   // Passes if `value` is 6 or 7.
+    case value == 6 or value > 10:
+        @assert(true)   // Passes if `value` is 6 or greater than 10.
         fallthrough     // Continues to the next case regardless.
     case value1 == "true":
         @assert(true)   // Passes if `value1` is "true".

@@ -257,6 +257,7 @@
 <h4></h4>
 <ul>
 <li><a href="#Swag_Align">Align</a></li>
+<li><a href="#Swag_AllowOverflow">AllowOverflow</a></li>
 <li><a href="#Swag_AttrMulti">AttrMulti</a></li>
 <li><a href="#Swag_AttrUsage">AttrUsage</a></li>
 <li><a href="#Swag_CalleeReturn">CalleeReturn</a></li>
@@ -283,8 +284,7 @@
 <li><a href="#Swag_NotGeneric">NotGeneric</a></li>
 <li><a href="#Swag_Offset">Offset</a></li>
 <li><a href="#Swag_Opaque">Opaque</a></li>
-<li><a href="#Swag_Optim">Optim</a></li>
-<li><a href="#Swag_Overflow">Overflow</a></li>
+<li><a href="#Swag_Optimize">Optimize</a></li>
 <li><a href="#Swag_Overload">Overload</a></li>
 <li><a href="#Swag_Pack">Pack</a></li>
 <li><a href="#Swag_PrintBc">PrintBc</a></li>
@@ -1827,6 +1827,10 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Swag_AllowOverflow"><span class="SCst">AllowOverflow</span></a></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Swag_AttrMulti"><span class="SCst">AttrMulti</span></a></td>
 <td></td>
 </tr>
@@ -1931,12 +1935,8 @@
 <td>When exporting the following struct,: not export its content. </td>
 </tr>
 <tr>
-<td class="code-type"><a href="#Swag_Optim"><span class="SCst">Optim</span></a></td>
+<td class="code-type"><a href="#Swag_Optimize"><span class="SCst">Optimize</span></a></td>
 <td>Enable/Disable a given function optimization. </td>
-</tr>
-<tr>
-<td class="code-type"><a href="#Swag_Overflow"><span class="SCst">Overflow</span></a></td>
-<td></td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Overload"><span class="SCst">Overload</span></a></td>
@@ -2092,6 +2092,20 @@
 <li><span class="code-inline">address</span> must be the memory address to reallocate</li>
 </ul>
 <p>See <a href="#Swag_IAllocator">IAllocator</a> </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Swag_AllowOverflow"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AllowOverflow</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L169" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="api-additional-infos"><b>Usage</b>: all 
+</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AllowOverflow">AllowOverflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4014,7 +4028,7 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Swag_Optim"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Optim</span></span>
+<span id="Swag_Optimize"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Optimize</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L166" class="src">[src]</a></td>
@@ -4024,27 +4038,13 @@
 <p>Enable/Disable a given function optimization. </p>
 <div class="api-additional-infos"><b>Usage</b>: function multi 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optimize">Optimize</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>Options are: </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">bytecode</span>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
 <tr><td> <span class="code-inline">backend</span>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
 <p>If <span class="code-inline">what</span> is null or empty, every options will be affected. </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Swag_Overflow"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Overflow</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L169" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="api-additional-infos"><b>Usage</b>: all 
-</div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Overflow">Overflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5425,7 +5425,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 25-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 26-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
