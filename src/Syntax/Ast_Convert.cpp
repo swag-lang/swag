@@ -105,7 +105,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         {
             Diagnostic err{fromNode->children[maxCount], formErr(Err0559, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-            err.addNote(Diagnostic::note(errNode, toNte(Nte0203)));
+            err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
             return context->report(err);
         }
 
@@ -113,7 +113,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         {
             Diagnostic err{fromNode->lastChild(), formErr(Err0521, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-            err.addNote(Diagnostic::note(errNode, toNte(Nte0203)));
+            err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
             return context->report(err);
         }
     }
@@ -201,14 +201,14 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     {
         Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0559, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-        err.addNote(Diagnostic::note(errNode, toNte(Nte0203)));
+        err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
         return context->report(err);
     }
     if (countParams < maxCount)
     {
         Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0521, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-        err.addNote(Diagnostic::note(errNode, toNte(Nte0203)));
+        err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
         return context->report(err);
     }
 

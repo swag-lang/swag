@@ -267,9 +267,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         // Not empty
         if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0032));
-        if (tokenParse.is(TokenId::SymRightCurly))
             return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0031));
+        if (tokenParse.is(TokenId::SymRightCurly))
+            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
 
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
             SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));

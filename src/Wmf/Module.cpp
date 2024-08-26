@@ -707,14 +707,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
                 Diagnostic err{importNode, tokenLocation, formErr(Err0007, dep->name.cstr(), dep->location.cstr())};
-                err.addNote(dep->node, toNte(Nte0198));
+                err.addNote(dep->node, toNte(Nte0196));
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
                 Diagnostic err{importNode, tokenVersion, formErr(Err0009, dep->name.cstr(), dep->version.cstr())};
-                err.addNote(dep->node, toNte(Nte0198));
+                err.addNote(dep->node, toNte(Nte0196));
                 return Report::report(err);
             }
 
@@ -738,7 +738,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
         Diagnostic err{importNode, tokenVersion, toErr(Err0223)};
-        err.addNote(toNte(Nte0155));
+        err.addNote(toNte(Nte0152));
         return Report::report(err);
     }
 
@@ -769,7 +769,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         if (!Utf8::isNumber(splits[i]))
         {
             Diagnostic err{importNode, tokenVersion, toErr(Err0223)};
-            err.addNote(toErr(Nte0155));
+            err.addNote(toErr(Nte0152));
             return Report::report(err);
         }
 

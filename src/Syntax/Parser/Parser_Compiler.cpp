@@ -106,7 +106,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
         Diagnostic err{sourceFile, tokenParse, toErr(Err0452)};
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, formNte(Nte0113, parent->token.cstr()));
+        err.addNote(parent, parent->token, formNte(Nte0110, parent->token.cstr()));
         return context->report(err);
     }
 

@@ -57,7 +57,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             symbolName->is(SymbolKind::TypeAlias) ||
             symbolName->is(SymbolKind::Struct))
         {
-            err.addNote(node, node->kwdLoc, formNte(Nte0062, Naming::aKindName(symbolName->kind).cstr()));
+            err.addNote(node, node->kwdLoc, formNte(Nte0059, Naming::aKindName(symbolName->kind).cstr()));
         }
 
         return context->report(err);
@@ -652,14 +652,14 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic err{dependentVar, formErr(Err0022, dependentVar->typeInfo->getDisplayNameC())};
-                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0141));
-                err.addNote(toNte(Nte0043));
+                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0138));
+                err.addNote(toNte(Nte0041));
                 return context->report(err);
             }
 
             Diagnostic err{dep.node, formErr(Err0022, dependentVar->typeInfo->getDisplayNameC())};
-            err.addNote(dependentVar, toNte(Nte0180));
-            err.addNote(toNte(Nte0043));
+            err.addNote(dependentVar, toNte(Nte0178));
+            err.addNote(toNte(Nte0041));
             return context->report(err);
         }
 
@@ -879,7 +879,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             const auto firstNode = symbol->nodes.front();
             Diagnostic err{genericParameters, formErr(Err0677, Naming::aKindName(symbol->kind).cstr())};
-            err.addNote(node, node->token, formNte(Nte0130, node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
+            err.addNote(node, node->token, formNte(Nte0127, node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
         }

@@ -1627,7 +1627,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = toNte(Nte0038);
+                        context->internalPanicHint   = toNte(Nte0037);
                         callInternalPanic(context, ip, formErr(Err0111, over->node->token.cstr()));
                     }
                 }
@@ -1649,7 +1649,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         else if (module->bssCannotChange)
                         {
                             context->internalPanicSymbol = over;
-                            context->internalPanicHint   = toNte(Nte0038);
+                            context->internalPanicHint   = toNte(Nte0037);
                             callInternalPanic(context, ip, formErr(Err0111, over->node->token.cstr()));
                         }
                     }
@@ -4444,8 +4444,8 @@ namespace
 
             level   = DiagnosticLevel::Exception;
             userMsg = toErr(Err0074);
+            notes.push_back(Diagnostic::note(toNte(Nte0102)));
             notes.push_back(Diagnostic::note(toNte(Nte0105)));
-            notes.push_back(Diagnostic::note(toNte(Nte0108)));
         }
 
         // Message
@@ -4492,7 +4492,7 @@ namespace
             runContext->ip--;
 
         if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note(toNte(Nte0107)));
+            notes.push_back(Diagnostic::note(toNte(Nte0104)));
 
         Report::report(*err, notes, runContext);
 

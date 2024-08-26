@@ -344,12 +344,12 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         Diagnostic err{node, node->getTokenName(), formErr(Err0545, name.cstr())};
         if (appendMsg.empty())
         {
-            err.addNote(toNte(Nte0085));
+            err.addNote(toNte(Nte0082));
             return context->report(err);
         }
 
         err.addNote(node, node->getTokenName(), appendMsg);
-        err.addNote(toNte(Nte0085));
+        err.addNote(toNte(Nte0082));
         return context->report(err);
     }
 
@@ -407,7 +407,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
     if (results.size() > 1)
     {
         Diagnostic err{context->node, formErr(Err0026, name.cstr())};
-        err.addNote(context->node, formNte(Nte0158, name.cstr()));
+        err.addNote(context->node, formNte(Nte0155, name.cstr()));
         for (const auto& f : results)
             err.addNote(f.usingField->declNode, formNte(Nte0008, name.cstr(), f.parentStruct->getDisplayNameC()));
         return context->report(err);
@@ -507,9 +507,9 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic err{context->node, context->node->token, formErr(Err0233, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.hint = formNte(Nte0158, g_LangSpec->name_opAffectLiteral.cstr());
+            err.hint = formNte(Nte0155, g_LangSpec->name_opAffectLiteral.cstr());
             err.addNote(left->token, Diagnostic::isType(leftTypeInfo));
-            err.addNote(right->firstChild(), formNte(Nte0194, suffix.cstr()));
+            err.addNote(right->firstChild(), formNte(Nte0192, suffix.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode));
             return context->report(err);
         }
@@ -533,7 +533,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             Diagnostic err{right, formErr(Err0567, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             err.hint = Diagnostic::isType(rightTypeInfo);
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(context->node, context->node->token, formNte(Nte0158, g_LangSpec->name_opAffect.cstr()));
+            err.addNote(context->node, context->node->token, formNte(Nte0155, g_LangSpec->name_opAffect.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload()));
             return context->report(err);
         }
@@ -573,14 +573,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         if (!opConst)
         {
             Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0265, name.cstr(), leftType->getDisplayNameC())};
-            err.hint = formNte(Nte0158, name.cstr());
+            err.hint = formNte(Nte0155, name.cstr());
             err.addNote(left, Diagnostic::isType(leftType));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0266, name.cstr(), leftType->getDisplayNameC(), opConst)};
-        err.hint = formNte(Nte0158, name.cstr());
+        err.hint = formNte(Nte0155, name.cstr());
         err.addNote(left, Diagnostic::isType(leftType));
         err.addNote(note);
         return context->report(err);
@@ -622,7 +622,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0157, name.cstr(), leftType->getDisplayNameC()); }, true);
+        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0154, name.cstr(), leftType->getDisplayNameC()); }, true);
         const Diagnostic err(left, formErr(Err0086, name.cstr()));
         return context->report(err);
     }
@@ -650,7 +650,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
 
         {
-            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return formNte(Nte0157, name.cstr(), leftType->getDisplayNameC()); }, true);
+            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return formNte(Nte0154, name.cstr(), leftType->getDisplayNameC()); }, true);
             context->node = left->parent;
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
             context->node = node;

@@ -363,18 +363,18 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
-                err.addNote(toNte(Nte0083));
+                err.addNote(toNte(Nte0080));
 
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0186), "constant", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.cstr())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0186), "variable", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.cstr())));
             }
             else
             {
-                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0183), "declaration")));
+                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0181), "declaration")));
             }
 
             return context->report(err);

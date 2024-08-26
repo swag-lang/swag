@@ -47,7 +47,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0386, tokenAttr.cstr(), tokenParse.cstr())};
-            err.addNote(tokenParse.token, toNte(Nte0168));
+            err.addNote(tokenParse.token, toNte(Nte0166));
             return context->report(err);
         }
     }
@@ -190,7 +190,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                 default:
                 {
                     Diagnostic err{sourceFile, tokenParse, toErr(Err0432)};
-                    err.addNote(child, child->token, toNte(Nte0199));
+                    err.addNote(child, child->token, toNte(Nte0197));
                     return context->report(err);
                 }
             }
@@ -472,7 +472,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         if (tokenParse.isNot(TokenId::SymColon))
         {
             Diagnostic err{sourceFile, tokenParse, toErr(Err0452)};
-            err.addNote(parent, forToken, formNte(Nte0114, forToken.cstr()));
+            err.addNote(parent, forToken, formNte(Nte0111, forToken.cstr()));
             return context->report(err);
         }
 
@@ -495,7 +495,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         tokenParse.is(TokenId::SymRightSquare))
     {
         Diagnostic err{sourceFile, tokenParse, toErr(Err0672)};
-        err.addNote(statement, statement->token, toNte(Nte0064));
+        err.addNote(statement, statement->token, toNte(Nte0200));
         return context->report(err);
     }
 
@@ -910,7 +910,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0702)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
-                err.addNote(toNte(Nte0070));
+                err.addNote(toNte(Nte0067));
             return context->report(err);
         }
 

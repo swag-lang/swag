@@ -33,7 +33,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         tokenParse.token.endLocation = location;
         Diagnostic err{sourceFile, tokenParse, formErr(Err0667, tokenParse.cstr())};
         if (tokenParse.token.text == '#' && SWAG_IS_BLANK(*curBuffer))
-            err.addNote(toNte(Nte0054));
+            err.addNote(toNte(Nte0051));
         return errorContext->report(err);
     }
 

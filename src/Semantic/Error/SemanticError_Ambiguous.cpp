@@ -46,7 +46,7 @@ void SemanticError::ambiguousArguments(SemanticContext*, Diagnostic& err, Vector
             }
 
             const auto callParam = i < matches[0]->paramParameters.size() ? matches[0]->paramParameters[i].param : matches[0]->parameters[i];
-            const auto note      = Diagnostic::note(callParam, formNte(Nte0118, matches[0]->solvedParameters[i]->declNode->token.cstr(), toWhat.cstr()));
+            const auto note      = Diagnostic::note(callParam, formNte(Nte0115, matches[0]->solvedParameters[i]->declNode->token.cstr(), toWhat.cstr()));
             err.addNote(note);
             break;
         }
@@ -64,7 +64,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     bool first = true;
     for (const auto match : matches)
     {
-        auto couldBe = toNte(Nte0078);
+        auto couldBe = toNte(Nte0075);
         if (!first)
             couldBe = "or " + couldBe;
 
@@ -114,15 +114,15 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->isFromGeneric())
         {
-            couldBe = formNte(Nte0075, overload->typeInfo->getDisplayNameC());
+            couldBe = formNte(Nte0072, overload->typeInfo->getDisplayNameC());
         }
         else
         {
             const auto kindName = Naming::kindName(match->symbolOverload);
             if (here.contains(kindName))
-                couldBe = formNte(Nte0077, kindName.cstr());
+                couldBe = formNte(Nte0074, kindName.cstr());
             else
-                couldBe = formNte(Nte0076, kindName.cstr());
+                couldBe = formNte(Nte0073, kindName.cstr());
             here.insert(kindName);
         }
 
@@ -152,9 +152,9 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 
         const auto kindName = Naming::kindName(p1.symbol->kind);
         if (here.contains(kindName))
-            couldBe = formNte(Nte0077, kindName.cstr());
+            couldBe = formNte(Nte0074, kindName.cstr());
         else
-            couldBe = formNte(Nte0076, kindName.cstr());
+            couldBe = formNte(Nte0073, kindName.cstr());
         here.insert(kindName);
 
         if (!first)

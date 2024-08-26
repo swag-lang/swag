@@ -19,7 +19,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     {
         Diagnostic err{expression, expression->token, formErr(Err0047, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        err.hint          = formNte(Nte0158, userOp->symbol->name.cstr());
+        err.hint          = formNte(Nte0155, userOp->symbol->name.cstr());
         err.addNote(note);
         return context->report(err);
     }
@@ -239,7 +239,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 
     // Make the cast
     {
-        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, [] { return toNte(Nte0219); });
+        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, [] { return toNte(Nte0218); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
     }
 
@@ -399,7 +399,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
         Diagnostic err{node->expressionLow, formErr(Err0252, node->expressionLow->typeInfo->getDisplayNameC())};
-        err.addNote(toNte(Nte0068));
+        err.addNote(toNte(Nte0065));
         return context->report(err);
     }
 
