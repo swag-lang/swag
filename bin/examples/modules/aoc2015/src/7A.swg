@@ -56,6 +56,7 @@ using Core
     {
         foreach l in File.readAllLines(dataPath)
         {
+            l.replace("as", "_as")
             l.replace("is", "_is")
             l.replace("if", "_if")
             l.replace("do", "_do")

@@ -127,6 +127,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("discard", State.Keyword)
 
         mapWords.add("is", State.Error)
+        mapWords.add("as", State.Error)
         mapWords.add("not", State.Error)
         mapWords.add("do", State.Error)
 
