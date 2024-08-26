@@ -276,6 +276,7 @@ namespace Semantic
     bool resolveBoolExpression(SemanticContext* context);
     bool resolveBreak(SemanticContext* context);
     bool resolveCaptureFuncCallParams(SemanticContext* context);
+    bool resolveCaseBefore(SemanticContext* context);
     bool resolveCase(SemanticContext* context);
     bool resolveCatch(SemanticContext* context);
     bool resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);

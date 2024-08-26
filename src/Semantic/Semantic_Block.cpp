@@ -447,9 +447,26 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     return true;
 }
 
+bool Semantic::resolveCaseBefore(SemanticContext* context)
+{
+    const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    if (!caseNode->matchVarName.text.empty())
+    {
+        const auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->firstChild()->typeInfo);
+        if (!typeInfo->isInterface())
+        {
+            const Diagnostic err{context->sourceFile, caseNode->matchVarName, formErr(Err0771, caseNode->ownerSwitch->expression->typeInfo->getDisplayNameC())};
+            return context->report(err);
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::resolveCase(SemanticContext* context)
 {
     const auto caseNode = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+
     for (const auto oneExpression : caseNode->expressions)
     {
         oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);

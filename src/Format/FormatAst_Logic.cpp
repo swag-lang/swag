@@ -187,12 +187,12 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             }
         }
 
-        if (!c->matchVarName.empty())
+        if (!c->matchVarName.text.empty())
         {
             concat->addBlank();
             concat->addString("var");
             concat->addBlank();
-            concat->addString(c->matchVarName);
+            concat->addString(c->matchVarName.text);
         }
 
         auto block = c->block;

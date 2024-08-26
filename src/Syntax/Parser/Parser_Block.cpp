@@ -221,11 +221,13 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 // Match name. Only one value is possible
                 if (tokenParse.is(TokenId::KwdVar))
                 {
+                    caseNode->allocateExtension(ExtensionKind::Semantic);
+                    caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
                     SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0770)));
                     SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0769)));
                     SWAG_CHECK(eatToken());
                     SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
-                    caseNode->matchVarName = tokenParse.token.text;
+                    caseNode->matchVarName = tokenParse.token;
                     SWAG_CHECK(eatToken());
                     SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0768)));
                     caseNode->expressions.push_back(expression);
@@ -286,9 +288,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (tokenParse.is(TokenId::SymRightCurly))
             return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
 
-        if (!caseNode->matchVarName.empty())
+        if (!caseNode->matchVarName.text.empty())
         {
-            const auto varDecl  = Ast::newVarDecl(caseNode->matchVarName, this, statement);
+            const auto varDecl  = Ast::newVarDecl(caseNode->matchVarName.text, this, statement);
             const auto castNode = Ast::newNode<AstCast>(AstNodeKind::Cast, this, varDecl);
             varDecl->flags.add(AST_GENERATED);
             castNode->semanticFct = Semantic::resolveExplicitCast;

@@ -908,8 +908,13 @@ void initErrors()
     SWAG_ERROR(Err0766, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0767, "invalid variable name                             $ expected the match variable name, found $$TKN$$ instead                                                                                  $ ");
     SWAG_ERROR(Err0768, "missing [[:]]                                     $ expected [[:]] (or a [[where]] clause) to end the case value, found $$TKN$$ instead                                                                              $ ");
-    SWAG_ERROR(Err0769, "misplaced [[var]] match                           $ cannot have a match variable after multiple [[case]] values                                                                              $ the [[case]] should only contain one value");
-    SWAG_ERROR(Err0770, "misplaced [[var]] match                           $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
+    SWAG_ERROR(Err0769, "misplaced [[var]]                                 $ cannot declare a match variable after multiple [[case]] values                                                                           $ the [[case]] should only contain one value");
+    SWAG_ERROR(Err0770, "misplaced [[var]]                                 $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
+    SWAG_ERROR(Err0771, "misplaced match variable                          $ cannot declare a match variable in a [[switch]] expression of type [[%s]]                                                                $ the only supported type is [[interface]]");
+    SWAG_ERROR(Err0772, nullptr);
+    SWAG_ERROR(Err0773, nullptr);
+    SWAG_ERROR(Err0774, nullptr);
+    SWAG_ERROR(Err0775, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

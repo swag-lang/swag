@@ -881,7 +881,7 @@ struct AstSwitchCase : AstNode
 
     AstNode* clone(CloneContext& context);
 
-    Utf8                   matchVarName;
+    Token                  matchVarName;
     VectorNative<AstNode*> expressions;
     AstNode*               block;
     AstSwitch*             ownerSwitch;
