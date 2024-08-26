@@ -1,4 +1,4 @@
-#global testerror "Err0560"
+#global testerror "Err0564"
 var G = 0
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]

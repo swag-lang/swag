@@ -1,2 +1,2 @@
-#global testerror "Err0245"
+#global testerror "Err0272"
 let x: s32

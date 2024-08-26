@@ -21,7 +21,7 @@ var files: Array'OneFile
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {
-    visit &f in files
+    foreach &f in files
     {
         var idx = 0'u64
         for
@@ -51,7 +51,7 @@ func replace(dst, src: string, inSwg, inCpp: &s32)
 func addFiles(folder: string, extension: string)
 {
     let srcFiles = assume Directory.enumerateFiles(folder, extension, recurse: true)
-    visit f in srcFiles
+    foreach f in srcFiles
     {
         var of: OneFile
         of.name = f.fullname
@@ -71,14 +71,14 @@ func addFiles(folder: string, extension: string)
     var ids: HashTable'(string, s32)
 
     let lines = assume File.readAllLines("../src/report/errorids.cpp")
-    visit l in lines
+    foreach l in lines
     {
         l = Latin1.trim(l)
         if !l.startsWith("SWAG_ERROR("): 
             continue
         let what = l[11..13]
 
-        if what != "Nte": 
+        if what != "Err": 
             continue
 
         ids.findOrAdd(what).value += 1
@@ -96,7 +96,7 @@ func addFiles(folder: string, extension: string)
             Console.printf("UNTESTED: %\n", dst)
     }
 
-    visit f in files
+    foreach f in files
     {
         if !f.changed:
             continue

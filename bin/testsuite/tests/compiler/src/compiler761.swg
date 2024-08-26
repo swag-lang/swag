@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0178"
+#global testerror "Err0205"
 #test
 {
 	while(bool)

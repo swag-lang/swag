@@ -17,9 +17,9 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     *result                                   = enumNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0454)));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0453)));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0667)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0475)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0474)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0674)));
     enumNode->inheritTokenName(tokenParse.token);
     enumNode->tokenName = tokenParse.token;
     SWAG_CHECK(checkIsValidUserName(enumNode));
@@ -34,14 +34,14 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             if (newScope->owner->is(AstNodeKind::Impl))
             {
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic err{implNode, formErr(Err0298, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Enum).cstr())};
+                Diagnostic err{implNode, formErr(Err0319, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Enum).cstr())};
                 err.addNote(Diagnostic::hereIs(enumNode));
                 err.addNote(formNte(Nte0072, implNode->token.cstr()));
                 return context->report(err);
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
-            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0522, "symbol", "enum", enumNode->token.cstr(), asA.cstr())};
+            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0004, "symbol", "enum", enumNode->token.cstr(), asA.cstr())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), toNte(Nte0196));
             return context->report(err);
         }
@@ -161,7 +161,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 
 bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0666)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0673)));
 
     const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent);
     *result              = enumValue;

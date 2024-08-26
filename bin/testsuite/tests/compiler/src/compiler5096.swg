@@ -1,4 +1,4 @@
-#global testerror "Err0007"
+#global testerror "Err0025"
 
 interface I
 {

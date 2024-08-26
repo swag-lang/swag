@@ -1,3 +1,3 @@
-#global testerror "Err0654"
+#global testerror "Err0660"
 
 namealias 0 = 1

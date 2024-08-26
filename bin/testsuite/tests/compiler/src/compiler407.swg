@@ -1,5 +1,5 @@
 
-#global testerror "Err0429"
+#global testerror "Err0451"
 #test
 {
 	var c = cast(s32, bool) 0

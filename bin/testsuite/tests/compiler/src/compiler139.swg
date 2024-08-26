@@ -1,6 +1,6 @@
 
 ;
 
-#global testerror "Err0659";
+#global testerror "Err0665";
 attr toto(b: bool) -> var;
 #[toto(true)]

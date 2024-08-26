@@ -1,4 +1,4 @@
-#global testerror "Err0759"
+#global testerror "Err0765"
 #test
 {
     discard @cos(0)

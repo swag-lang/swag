@@ -1,4 +1,4 @@
-#global testerror "Err0323"
+#global testerror "Err0344"
 
 struct ErrTiti{}
 

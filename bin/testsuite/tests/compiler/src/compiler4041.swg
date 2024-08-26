@@ -1,4 +1,4 @@
-#global testerror "Err0633"
+#global testerror "Err0637"
 #test
 {
     var fct1: s32

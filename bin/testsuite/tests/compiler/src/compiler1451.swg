@@ -1,5 +1,5 @@
 
-#global testerror "Err0288"
+#global testerror "Err0309"
 
 struct S
 {

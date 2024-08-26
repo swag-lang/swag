@@ -1,4 +1,4 @@
-#global testerror "Err0522"
+#global testerror "Err0004"
 func toto()
 {
     var values = [[1], [2]]

@@ -1,4 +1,4 @@
-#global testerror "Err0532"
+#global testerror "Err0014"
 
 enum BasicErrors0: f32
 {

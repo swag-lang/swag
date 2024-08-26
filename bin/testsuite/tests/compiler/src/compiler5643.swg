@@ -1,4 +1,4 @@
-#global testerror "Err0479"
+#global testerror "Err0500"
 
 func sum(a, b: s32)->s32 
 {

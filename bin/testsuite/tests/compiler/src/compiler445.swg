@@ -1,4 +1,4 @@
-#global testerror "Err0724"
+#global testerror "Err0732"
 func F(a: s32, b: s32)
 {
 	var d: s32

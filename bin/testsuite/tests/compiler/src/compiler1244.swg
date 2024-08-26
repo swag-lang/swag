@@ -1,4 +1,4 @@
-#global testerror "Err0546"
+#global testerror "Err0549"
 
 const SmallSizeInternal = @sizeof(Utf8.size)
 struct Utf8

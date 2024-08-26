@@ -1,4 +1,4 @@
-#global testerror "Err0384"
+#global testerror "Err0406"
 
 using Swag
 

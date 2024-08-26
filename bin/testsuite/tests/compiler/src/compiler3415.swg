@@ -1,4 +1,4 @@
-#global testerror "Err0269"
+#global testerror "Err0296"
 #test
 {
     a,b,c,d,e,f,var g = 666'u64

@@ -1,4 +1,4 @@
-#global testerror "Err0618"
+#global testerror "Err0622"
 
 #[Swag.EnumIndex]
 enum TOTO : string

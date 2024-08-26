@@ -1,2 +1,2 @@
-#global testerror "Err0768"
+#global testerror "Err0708"
 var a = cast<toto>(s32) 0

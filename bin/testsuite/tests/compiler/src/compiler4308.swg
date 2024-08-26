@@ -1,4 +1,4 @@
-#global testerror "Err0699"
+#global testerror "Err0705"
 #test
 {
     var x: func(s32, bool)

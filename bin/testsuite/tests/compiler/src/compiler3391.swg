@@ -1,2 +1,2 @@
-#global testerror "Err0229"
+#global testerror "Err0256"
 func toto()->void {}

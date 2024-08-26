@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0059";
+#global testerror "Err0075";
 func len: (str: string)->bool
 {
 	return 0;

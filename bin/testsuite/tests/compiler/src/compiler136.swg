@@ -1,4 +1,4 @@
 #global testpass syntax;
 
-#global testerror "Err0261";
+#global testerror "Err0288";
 attr toto(b: ) -> var;

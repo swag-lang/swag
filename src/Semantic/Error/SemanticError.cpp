@@ -15,13 +15,13 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
 
     if (errorParam.destFuncDecl)
     {
-        errID     = Err0063;
+        errID     = Err0080;
         node      = errorParam.destFuncDecl;
         whereExpr = errorParam.destFuncDecl->whereExpression;
     }
     else
     {
-        errID     = Err0764;
+        errID     = Err0081;
         node      = errorParam.destStructDecl;
         whereExpr = errorParam.destStructDecl->whereExpression;
     }
@@ -86,7 +86,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, const AstNode* hintType)
 {
-    Utf8 text = formErr(Err0631, node->token.cstr(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0635, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -117,7 +117,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     else
         what = Naming::kindName(thisKind);
 
-    Diagnostic err{sourceFile, token, formErr(Err0522, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
+    Diagnostic err{sourceFile, token, formErr(Err0004, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
 
     if (otherSymbolDecl->isGeneratedSelf())
         err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, toNte(Nte0221));

@@ -1,4 +1,4 @@
-#global testerror "Err0248"
+#global testerror "Err0275"
 #test
 {
     (x, y) = {}

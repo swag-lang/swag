@@ -1,4 +1,4 @@
-#global testerror "Err0438"
+#global testerror "Err0461"
 interface I
 {
     mtd toto()->s32;

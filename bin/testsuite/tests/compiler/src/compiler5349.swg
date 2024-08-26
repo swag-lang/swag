@@ -1,4 +1,4 @@
-#global testerror "Err0594"
+#global testerror "Err0598"
 struct Arr {}
 
 func(T) toto(v: [..] T)
