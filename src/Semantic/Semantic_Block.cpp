@@ -453,9 +453,9 @@ bool Semantic::resolveCaseBefore(SemanticContext* context)
     if (!caseNode->matchVarName.text.empty())
     {
         const auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->firstChild()->typeInfo);
-        if (!typeInfo->isInterface())
+        if (!typeInfo->isInterface() && !typeInfo->isAny())
         {
-            const Diagnostic err{context->sourceFile, caseNode->matchVarName, formErr(Err0771, caseNode->ownerSwitch->expression->typeInfo->getDisplayNameC())};
+            const Diagnostic err{context->sourceFile, caseNode->matchVarName, formErr(Err0771, typeInfo->getDisplayNameC())};
             return context->report(err);
         }
     }

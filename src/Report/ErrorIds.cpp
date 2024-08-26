@@ -910,8 +910,8 @@ void initErrors()
     SWAG_ERROR(Err0768, "missing [[:]]                                     $ expected [[:]] (or a [[where]] clause) to end the case value, found $$TKN$$ instead                                                                              $ ");
     SWAG_ERROR(Err0769, "misplaced [[var]]                                 $ cannot declare a match variable after multiple [[case]] values                                                                           $ the [[case]] should only contain one value");
     SWAG_ERROR(Err0770, "misplaced [[var]]                                 $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
-    SWAG_ERROR(Err0771, "misplaced match variable                          $ cannot declare a match variable in a [[switch]] expression of type [[%s]]                                                                $ the only supported type is [[interface]]");
-    SWAG_ERROR(Err0772, nullptr);
+    SWAG_ERROR(Err0771, "misplaced match variable                          $ cannot declare a match variable in a [[switch]] expression of type [[%s]]                                                                $ the only supported type are [[interface]] and [[any]]");
+    SWAG_ERROR(Err0772, "misplaced [[var]]                                 $ cannot convert the [[case]] value to a variable                                                                                          $ ");
     SWAG_ERROR(Err0773, nullptr);
     SWAG_ERROR(Err0774, nullptr);
     SWAG_ERROR(Err0775, nullptr);
@@ -1139,7 +1139,7 @@ void initErrors()
     SWAG_ERROR(Nte0217, "this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]");
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) cannot have an explicit type");
-    SWAG_ERROR(Nte0220, nullptr);
+    SWAG_ERROR(Nte0220, "the [[case]] value should be an identifier or a type");
     SWAG_ERROR(Nte0221, nullptr);
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);

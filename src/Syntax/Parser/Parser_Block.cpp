@@ -288,6 +288,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (tokenParse.is(TokenId::SymRightCurly))
             return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
 
+        // Declare the match variable and make a cast
         if (!caseNode->matchVarName.text.empty())
         {
             const auto varDecl  = Ast::newVarDecl(caseNode->matchVarName.text, this, statement);
@@ -295,9 +296,26 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             varDecl->flags.add(AST_GENERATED);
             castNode->semanticFct = Semantic::resolveExplicitCast;
             varDecl->assignment   = castNode;
-            const auto castType   = Ast::newTypeExpression(this, castNode);
-            castType->typeFlags.add(TYPEFLAG_IS_PTR);
-            castType->identifier = Ast::newIdentifierRef(caseNode->expressions.front()->token.text, this, castType);
+            const auto front      = caseNode->expressions.front();
+            if (front->is(AstNodeKind::IdentifierRef))
+            {
+                const auto castType = Ast::newTypeExpression(this, castNode);
+                castType->typeFlags.add(TYPEFLAG_IS_PTR);
+                castType->identifier = Ast::newIdentifierRef(front->token.text, this, castType);
+            }
+            else if (front->is(AstNodeKind::TypeExpression))
+            {
+                CloneContext cxt;
+                cxt.parent = castNode;
+                front->clone(cxt);
+            }
+            else
+            {
+                Diagnostic err{sourceFile, caseNode->matchVarName, toErr(Err0772)};
+                err.addNote(front, toNte(Nte0220));
+                return context->report(err);
+            }
+
             Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
             Ast::removeFromParent(varDecl);
             Ast::addChildFront(statement, varDecl);
