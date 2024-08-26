@@ -187,7 +187,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             }
         }
 
-        if(!c->matchVarName.empty())
+        if (!c->matchVarName.empty())
         {
             concat->addBlank();
             concat->addString("var");
@@ -197,15 +197,14 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 
         auto block = c->block;
 
-        if (block->firstChild() &&
-            block->firstChild()->is(AstNodeKind::Statement) &&
-            block->firstChild()->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE))
+        const auto stmt = block->findChild(AstNodeKind::Statement);
+        if (stmt && stmt->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE))
         {
-            concat->addChar(' ');
+            concat->addBlank();
             concat->addString("where");
-            concat->addChar(' ');
+            concat->addBlank();
 
-            const AstIf* ifNode = castAst<AstIf>(block->firstChild()->firstChild(), AstNodeKind::If);
+            const AstIf* ifNode = castAst<AstIf>(stmt->firstChild(), AstNodeKind::If);
             SWAG_CHECK(outputNode(context, ifNode->boolExpression));
             block = ifNode->ifBlock;
         }

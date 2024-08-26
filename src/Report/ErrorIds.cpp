@@ -907,7 +907,7 @@ void initErrors()
     SWAG_ERROR(Err0765, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0766, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0767, "invalid variable name                             $ expected the match variable name, found $$TKN$$ instead                                                                                  $ ");
-    SWAG_ERROR(Err0768, "missing [[:]]                                     $ expected [[:]] to end the case value, found $$TKN$$ instead                                                                              $ ");
+    SWAG_ERROR(Err0768, "missing [[:]]                                     $ expected [[:]] (or a [[where]] clause) to end the case value, found $$TKN$$ instead                                                                              $ ");
     SWAG_ERROR(Err0769, "misplaced [[var]] match                           $ cannot have a match variable after multiple [[case]] values                                                                              $ the [[case]] should only contain one value");
     SWAG_ERROR(Err0770, nullptr);
 

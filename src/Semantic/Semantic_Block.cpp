@@ -534,7 +534,8 @@ bool Semantic::resolveCase(SemanticContext* context)
 
     if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE))
     {
-        const auto ifNode = castAst<AstIf>(caseNode->block->firstChild()->firstChild(), AstNodeKind::If);
+        const auto stmt   = caseNode->block->findChild(AstNodeKind::Statement);
+        const auto ifNode = castAst<AstIf>(stmt->firstChild(), AstNodeKind::If);
         ifNode->setPassThrough();
         ifNode->boolExpression->setBcNotifyAfter(nullptr, ByteCodeGen::emitIfAfterExpr);
         ifNode->ifBlock->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
