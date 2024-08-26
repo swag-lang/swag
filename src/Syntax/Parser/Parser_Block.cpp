@@ -217,9 +217,24 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             {
                 AstNode* expression;
                 SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
+
+                // Match name. Only one value is possible
+                if (tokenParse.is(TokenId::KwdVar))
+                {
+                    SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0769)));
+                    SWAG_CHECK(eatToken());
+                    SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
+                    caseNode->matchVarName = tokenParse.token.text;
+                    SWAG_CHECK(eatToken());
+                    SWAG_VERIFY(tokenParse.is(TokenId::SymColon), error(tokenParse, toErr(Err0768)));
+                    caseNode->expressions.push_back(expression);
+                    break;
+                }
+
                 if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
                 caseNode->expressions.push_back(expression);
+
                 if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0113)));
@@ -270,6 +285,19 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0031));
         if (tokenParse.is(TokenId::SymRightCurly))
             return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
+
+        if (!caseNode->matchVarName.empty())
+        {
+            const auto varDecl  = Ast::newVarDecl(caseNode->matchVarName, this, parentStmt);
+            const auto castNode = Ast::newNode<AstCast>(AstNodeKind::Cast, this, varDecl);
+            varDecl->flags.add(AST_GENERATED);
+            castNode->semanticFct = Semantic::resolveExplicitCast;
+            varDecl->assignment   = castNode;
+            const auto castType   = Ast::newTypeExpression(this, castNode);
+            castType->typeFlags.add(TYPEFLAG_IS_PTR);
+            castType->identifier = Ast::newIdentifierRef(caseNode->expressions.front()->token.text, this, castType);
+            Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
+        }
 
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
             SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));

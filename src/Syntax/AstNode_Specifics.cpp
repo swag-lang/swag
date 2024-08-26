@@ -732,9 +732,10 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstSwitchCase>();
     newNode->copyFrom(context, this);
 
-    newNode->block       = findChildRef(block, newNode);
-    newNode->ownerSwitch = castAst<AstSwitch>(context.parent, AstNodeKind::Switch);
-    newNode->caseIndex   = caseIndex;
+    newNode->block        = findChildRef(block, newNode);
+    newNode->ownerSwitch  = castAst<AstSwitch>(context.parent, AstNodeKind::Switch);
+    newNode->caseIndex    = caseIndex;
+    newNode->matchVarName = matchVarName;
     for (const auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
     return newNode;
