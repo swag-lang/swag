@@ -909,7 +909,7 @@ void initErrors()
     SWAG_ERROR(Err0767, "invalid variable name                             $ expected the match variable name, found $$TKN$$ instead                                                                                  $ ");
     SWAG_ERROR(Err0768, "missing [[:]]                                     $ expected [[:]] (or a [[where]] clause) to end the case value, found $$TKN$$ instead                                                                              $ ");
     SWAG_ERROR(Err0769, "misplaced [[var]] match                           $ cannot have a match variable after multiple [[case]] values                                                                              $ the [[case]] should only contain one value");
-    SWAG_ERROR(Err0770, nullptr);
+    SWAG_ERROR(Err0770, "misplaced [[var]] match                           $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

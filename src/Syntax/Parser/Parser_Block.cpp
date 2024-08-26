@@ -221,6 +221,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 // Match name. Only one value is possible
                 if (tokenParse.is(TokenId::KwdVar))
                 {
+                    SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0770)));
                     SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0769)));
                     SWAG_CHECK(eatToken());
                     SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
@@ -260,7 +261,6 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (tokenParse.is(TokenId::KwdWhere))
         {
             SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0382)));
-
             SWAG_CHECK(doWhereIf(statement, &dummyResult));
             const auto      nodeIf = castAst<AstIf>(statement->firstChild()->firstChild(), AstNodeKind::If);
             ParserPushScope scoped1(this, nodeIf->ownerScope);
