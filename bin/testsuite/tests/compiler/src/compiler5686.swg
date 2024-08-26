@@ -6,7 +6,7 @@
     var r = 0
     switch g
     {
-    case s32 var ptr1 where ptr1 == 66:
+    case var ptr1: s32 where ptr1 == 66:
         r = ptr1
     }
 

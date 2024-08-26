@@ -173,6 +173,16 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             beautifyBefore(context, c);
             concat->addString("case");
             concat->addBlank();
+
+            if (!c->matchVarName.text.empty())
+            {
+                concat->addString("var");
+                concat->addBlank();
+                concat->addString(c->matchVarName.text);
+                concat->addChar(':');
+                concat->addBlank();
+            }
+            
             bool first = true;
             for (const auto it : c->expressions)
             {
@@ -185,14 +195,6 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
                 SWAG_CHECK(outputNode(context, it));
                 first = false;
             }
-        }
-
-        if (!c->matchVarName.text.empty())
-        {
-            concat->addBlank();
-            concat->addString("var");
-            concat->addBlank();
-            concat->addString(c->matchVarName.text);
         }
 
         auto block = c->block;

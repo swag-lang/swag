@@ -212,6 +212,20 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             switchNode->cases.push_back(caseNode);
             caseNode->caseIndex = switchNode->cases.size() - 1;
 
+            if (tokenParse.is(TokenId::KwdVar))
+            {
+                caseNode->allocateExtension(ExtensionKind::Semantic);
+                caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
+                SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0770)));
+                SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0769)));
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
+                caseNode->matchVarName = tokenParse.token;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0768)));
+                SWAG_CHECK(eatToken());
+            }
+
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, formErr(Err0456, tokenParse.cstr())));
             while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdWhere))
             {
@@ -219,16 +233,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
 
                 // Match name. Only one value is possible
-                if (tokenParse.is(TokenId::KwdVar))
+                if (!caseNode->matchVarName.text.empty())
                 {
-                    caseNode->allocateExtension(ExtensionKind::Semantic);
-                    caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
-                    SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0770)));
-                    SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0769)));
-                    SWAG_CHECK(eatToken());
-                    SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
-                    caseNode->matchVarName = tokenParse.token;
-                    SWAG_CHECK(eatToken());
                     SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0768)));
                     caseNode->expressions.push_back(expression);
                     break;

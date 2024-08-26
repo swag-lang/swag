@@ -304,8 +304,7 @@ When using a `switch` statement with a variable of type `any` or `interface`, Sw
 /**
 # Switch Statement with Type Guard and Variable Binding
 
-You can use the 'var' keyword after the case value to bind the matched value to a variable, which can then be
-used within the corresponding case block. Additionally, you can apply conditional checks directly within the case
+You can declare a variable with the 'var' keyword before the case value to bind the matched value to a variable, which can then be used within the corresponding case block. Additionally, you can apply conditional checks directly within the case
 using the `where` clause to further refine the matching logic.
 
 The switch statement implicitly checks the type of the variable `x` using a type guard (`@kindof`), allowing for
@@ -332,7 +331,7 @@ The `@assert` function is then used to ensure that the value of `str` is equal t
     // Switch statement based on the underlying type of 'x'.
     switch x    // Implicitly checks the type of `x` using `@kindof`.
     {
-    case string var str:    // 'str' will contain the value if 'x' is a string
+    case var str: string:    // 'str' will contain the value if 'x' is a string
         @assert(str == "value")
         break    
 
@@ -354,11 +353,11 @@ whether `x` is a string and checks additional conditions specified in each case.
 
     switch x    // Implicitly checks the type of `x` using `@kindof`.
     {
-    case string var str where str == "value":       // Matches if `x` is a string and equals "value"
+    case var str: string where str == "value":       // Matches if `x` is a string and equals "value"
         @assert(str == "value")                     // Asserts that `str` is equal to "value"
         break   
 
-    case string var str where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
+    case var str: string where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
         @assert(str == "not_a_value")               // Asserts that `str` is equal to "not_a_value"
         break     
 
