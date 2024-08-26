@@ -37,8 +37,9 @@ func filter(file: File.FileInfo)->bool
 
 #main
 {
-    let dataPath = Path.getDirectoryName(Path.getDirectoryName(#file))
-    var binPath  = Path.combine(dataPath, "bin")
+    let toolsPath = "c:/perso/swag-lang/swag/tools"
+    let dataPath  = Path.getDirectoryName(toolsPath)
+    var binPath   = Path.combine(dataPath, "bin")
 
     // Enumerate list of files to release
     var options: Directory.EnumerationOptions
@@ -49,7 +50,7 @@ func filter(file: File.FileInfo)->bool
 
     // Generate list of files
     var allLines: Array'string
-    visit f in allFiles:
+    foreach f in allFiles:
         allLines.add(cast(string) f.fullname[9..])
 
     let me = try Directory.getCurrent()
@@ -62,7 +63,7 @@ func filter(file: File.FileInfo)->bool
     var name = Format.toString("swag-windows-x86-64-v%.%.%.zip", #swagversion, #swagrevision, #swagbuildnum)
     var cmd  = Format.toString("a % @list.txt", name)
     Console.print("7z.exe ", cmd, "\n")
-    try Env.doSyncProcess(Path.combine(Path.getDirectoryName(#file), "7z.exe"), cmd)
+    try Env.doSyncProcess(Path.combine(toolsPath, "7z.exe"), cmd)
 
     catch File.delete("list.txt")
     try Directory.setCurrent(me)
