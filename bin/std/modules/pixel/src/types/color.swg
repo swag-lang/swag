@@ -51,10 +51,10 @@ impl Color
     #[Inline]
     func setArgbf(self, a, r, g, b: f32)
     {
-        self.a = acast (Math.clamp(a, 0, 1) * 255)
-        self.r = acast (Math.clamp(r, 0, 1) * 255)
-        self.g = acast (Math.clamp(g, 0, 1) * 255)
-        self.b = acast (Math.clamp(b, 0, 1) * 255)
+        self.a = cast() (Math.clamp(a, 0, 1) * 255)
+        self.r = cast() (Math.clamp(r, 0, 1) * 255)
+        self.g = cast() (Math.clamp(g, 0, 1) * 255)
+        self.b = cast() (Math.clamp(b, 0, 1) * 255)
     }
 
     // Just set r, g and b components.
@@ -84,9 +84,9 @@ impl Color
     func setRgbf(self, r, g, b: f32)
     {
         self.a = 255
-        self.r = acast (Math.clamp(r, 0, 1) * 255)
-        self.g = acast (Math.clamp(g, 0, 1) * 255)
-        self.b = acast (Math.clamp(b, 0, 1) * 255)
+        self.r = cast() (Math.clamp(r, 0, 1) * 255)
+        self.g = cast() (Math.clamp(g, 0, 1) * 255)
+        self.b = cast() (Math.clamp(b, 0, 1) * 255)
     }
 
     // Retrieve all components as floating point values between 0 and 1
@@ -181,10 +181,10 @@ impl Color
     func fromAbgr(abgr: u32)->Color
     {
         var result: retval
-        result.a = acast (abgr >> 24)
-        result.b = acast ((abgr >> 16) & 0xFF)
-        result.g = acast ((abgr >> 8) & 0xFF)
-        result.r = acast (abgr & 0xFF)
+        result.a = cast() (abgr >> 24)
+        result.b = cast() ((abgr >> 16) & 0xFF)
+        result.g = cast() ((abgr >> 8) & 0xFF)
+        result.r = cast() (abgr & 0xFF)
         return result
     }
 

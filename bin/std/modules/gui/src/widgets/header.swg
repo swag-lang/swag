@@ -301,7 +301,7 @@ impl Header
         item.name   = tabName
         item.icon   = icon
         item.width  = width
-        item.column = acast items.count
+        item.column = cast() items.count
         items.add(item)
         return item
     }

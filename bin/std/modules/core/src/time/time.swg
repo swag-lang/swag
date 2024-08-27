@@ -61,10 +61,10 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 func ticksToTime(ticks: Ticks)->{ hour: u16, minute: u16, second: u16, millisecond: u16 }
 {
     var result: retval = undefined
-    result.hour        = acast ((ticks / TicksPerHour) % 24)
-    result.minute      = acast ((ticks / TicksPerMinute) % 60)
-    result.second      = acast ((ticks / TicksPerSecond) % 60)
-    result.millisecond = acast ((ticks / TicksPerMilliSecond) % 1000)
+    result.hour        = cast() ((ticks / TicksPerHour) % 24)
+    result.minute      = cast() ((ticks / TicksPerMinute) % 60)
+    result.second      = cast() ((ticks / TicksPerSecond) % 60)
+    result.millisecond = cast() ((ticks / TicksPerMilliSecond) % 1000)
     return result
 }
 
@@ -121,9 +121,9 @@ func ticksToDate(ticks: Ticks)->{ year: u16, month: u16, day: u16 }
         m += 1
 
     var result: retval = undefined
-    result.year  = acast (y400 * 400 + y100 * 100 + y4 * 4 + y1 + 1)
-    result.month = acast m
-    result.day   = acast (n - days[m - 1] + 1)
+    result.year  = cast() (y400 * 400 + y100 * 100 + y4 * 4 + y1 + 1)
+    result.month = cast() m
+    result.day   = cast() (n - days[m - 1] + 1)
     return result
 }
 
@@ -138,6 +138,6 @@ func daysInMonth(year, month: u16)->u16
 {
     Debug.assert(1 <= month and month <= 12)
     if isLeapYear(year):
-        return acast (DaysToMonth366[month] - DaysToMonth366[month - 1])
-    return acast (DaysToMonth365[month] - DaysToMonth365[month - 1])
+        return cast() (DaysToMonth366[month] - DaysToMonth366[month - 1])
+    return cast() (DaysToMonth365[month] - DaysToMonth365[month - 1])
 }

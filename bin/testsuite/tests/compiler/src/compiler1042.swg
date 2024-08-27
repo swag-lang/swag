@@ -7,7 +7,7 @@ func(T) new()->*T
 	context.allocator.req(&req)
 
 	@init(cast(*T) req.address, 1)
-	return acast req.address
+	return cast() req.address
 }
 
 struct Point

@@ -23,7 +23,7 @@ func __setErr(err: any)
     // We check that the contextual error allocator has been initialized.
     // In case an error is raised at a very very early stage (in #init)
     if !cxt.errorAllocator.capacity:
-        cxt.errorAllocator.setCapacity(acast __buildCfg.errorAllocatorCapacity, cxt.allocator)
+        cxt.errorAllocator.setCapacity(cast() __buildCfg.errorAllocatorCapacity, cxt.allocator)
 
     let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)

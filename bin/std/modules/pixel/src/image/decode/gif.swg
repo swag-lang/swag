@@ -116,7 +116,7 @@ impl Decoder
             let size = readU8()
             if !size:
                 break
-            seek(acast size)
+            seek(cast() size)
         }
     }
 
@@ -469,7 +469,7 @@ public impl Decoder
             throw UnsupportedFormatError{"no global color table"}
 
         // Color space's depth
-        depth = acast (((fdsz >> 4) & 7) + 1)
+        depth = cast() (((fdsz >> 4) & 7) + 1)
 
         // Ignore sort flag
         // GCT Size

@@ -10,7 +10,7 @@ func(T) map(values: [..] T, cb: func(T)->T)
 {
     var arr = [1,2,3,4]
     //map(arr, &inc's32)
-    map(acast arr, func(x) => x * x)
+    map(cast() arr, func(x) => x * x)
     @assert(arr[0] == 1)
     @assert(arr[1] == 4)
     @assert(arr[2] == 9)

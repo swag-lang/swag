@@ -88,7 +88,7 @@ private
         g_HitTest = pt
         g_Hit     = null
         g_Ignore  = hWnd
-        EnumWindows(acast &enumProc, 0)
+        EnumWindows(cast() &enumProc, 0)
         if !g_Hit:
             return null
 
@@ -215,7 +215,7 @@ private
             {
                 // Border
                 SetBkMode(g_MemDC, TRANSPARENT)
-                SelectObject(g_MemDC, acast g_PenRect)
+                SelectObject(g_MemDC, cast() g_PenRect)
                 SelectObject(g_MemDC, GetStockObject(NULL_BRUSH))
                 Rectangle(g_MemDC, x1, y1, x2, y2)
 
@@ -235,7 +235,7 @@ private
                     xx = x1 + 5
                     yy = y1 + 5
                 }
-                TextOutA(g_MemDC, xx, yy, @dataof(str), acast @countof(str))
+                TextOutA(g_MemDC, xx, yy, @dataof(str), cast() @countof(str))
             }
 
             // Blit result to window dc
@@ -256,7 +256,7 @@ private
         wc.hInstance     = GetModuleHandleW(null)
         wc.cbWndExtra    = @sizeof(*void)
         wc.style         = CS_HREDRAW | CS_VREDRAW
-        wc.lpfnWndProc   = acast @mkcallback(&winProc)
+        wc.lpfnWndProc   = cast() @mkcallback(&winProc)
         wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_CROSS))
         wc.lpszClassName = className
         catch RegisterClassW(wc)
@@ -295,7 +295,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     // Make a copy of the desktop
     g_MemDesktopDC     = CreateCompatibleDC(hDesktopDC)
     g_MemDesktopBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
-    SelectObject(g_MemDesktopDC, acast g_MemDesktopBitmap)
+    SelectObject(g_MemDesktopDC, cast() g_MemDesktopBitmap)
     BitBlt(g_MemDesktopDC, 0, 0, g_ScreenWidth, g_ScreenHeight, hDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
 
     if captureMode == .FullScreen
@@ -332,18 +332,18 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         // Make a grayscale copy of the desktop
         g_MemDesktop1DC     = CreateCompatibleDC(hDesktopDC)
         g_MemDesktop1Bitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
-        SelectObject(g_MemDesktop1DC, acast g_MemDesktop1Bitmap)
+        SelectObject(g_MemDesktop1DC, cast() g_MemDesktop1Bitmap)
         BitBlt(g_MemDesktop1DC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
         var img = Image.from(g_MemDesktop1Bitmap)
         img.grayScale()
         img.fade(Argb.Black, 0.6)
         img.flip()
-        SetBitmapBits(g_MemDesktop1Bitmap, acast img.size, img.pixels.buffer)
+        SetBitmapBits(g_MemDesktop1Bitmap, cast() img.size, img.pixels.buffer)
 
         // Create a working memdc
         g_MemDC     = CreateCompatibleDC(hDesktopDC)
         g_MemBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
-        SelectObject(g_MemDC, acast g_MemBitmap)
+        SelectObject(g_MemDC, cast() g_MemBitmap)
 
         g_RStartGrabX = 0
         g_RStartGrabY = 0
@@ -362,7 +362,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         }
 
         DeleteDC(g_MemDC)
-        DeleteObject(acast g_MemBitmap)
+        DeleteObject(cast() g_MemBitmap)
 
         catch DestroyWindow(hWnd)
         if !g_GrabDone:
@@ -376,21 +376,21 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     // Copy the portion of the screen we want
     let hCaptureDC     = CreateCompatibleDC(hDesktopDC)
     let hCaptureBitmap = CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
-    SelectObject(hCaptureDC, acast hCaptureBitmap)
+    SelectObject(hCaptureDC, cast() hCaptureBitmap)
     BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 
     // Transform that to an image
     var bmp: BITMAP
-    GetObjectA(acast hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
+    GetObjectA(cast() hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
     result = Image.create(bmp.bmWidth, bmp.bmHeight, .BGRA8)
     GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels.buffer)
     result.flip()
 
     ReleaseDC(hDesktopWnd, hDesktopDC)
     DeleteDC(hCaptureDC)
-    DeleteObject(acast hCaptureBitmap)
+    DeleteObject(cast() hCaptureBitmap)
     DeleteDC(g_MemDesktopDC)
-    DeleteObject(acast g_MemDesktopBitmap)
+    DeleteObject(cast() g_MemDesktopBitmap)
 
     return result
 }

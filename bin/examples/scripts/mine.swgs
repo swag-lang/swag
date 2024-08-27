@@ -120,7 +120,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let sli = SliderCtrl.create(wnd, "Density", {CellSize + 120, (CellSize * 2) + GridSize * CellSize, 250})
         sli.slider.setMinMax(1, 10)
         sli.edit.setInputU64(1, 10)
-        sli.slider.setValue(acast g_Density)
+        sli.slider.setValue(cast() g_Density)
         sli.slider.sigChanged += func(sli)
         {
             g_Density = cast(s32) sli.getValue()

@@ -1345,8 +1345,8 @@ impl RegExp
         {
             if uni32[i] == `|`
             {
-                uni32.insertAt(acast i, `)`'rune)
-                uni32.insertAt(acast (i + 2), `(`'rune)
+                uni32.insertAt(cast() i, `)`'rune)
+                uni32.insertAt(cast() (i + 2), `(`'rune)
 
                 var cpt0, cpt1, cpt2: s32
                 var iminus = i - 1
@@ -1379,7 +1379,7 @@ impl RegExp
                     iminus -= 1
                 }
 
-                uni32.insertAt(acast (iminus + 1), `(`'rune)
+                uni32.insertAt(cast() (iminus + 1), `(`'rune)
 
                 cpt0, cpt1, cpt2 = 0
                 var iplus = i + 4
@@ -1412,7 +1412,7 @@ impl RegExp
                     iplus += 1
                 }
 
-                uni32.insertAt(acast iplus, `)`'rune)
+                uni32.insertAt(cast() iplus, `)`'rune)
                 i += 4
             }
         }

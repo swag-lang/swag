@@ -3,12 +3,12 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 	var ptr = buffer
 	var c = cast(rune) dref ptr
 	if c == 0:
-		return {ptr, acast 0}
+		return {ptr, cast() 0}
 
 	ptr += 1
 	if ((c & 0x80) == 0)
 	{
-		return {ptr, acast c}
+		return {ptr, cast() c}
 	}
 
 	var wc: rune = undefined
@@ -61,7 +61,7 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 		return {ptr, wc}
 	}
 
-	return {ptr, acast 0}
+	return {ptr, cast() 0}
 }
 
 #test

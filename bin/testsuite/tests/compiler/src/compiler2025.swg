@@ -20,6 +20,6 @@ func(T) map(values: [..] T, cb: func(T)->T)
 #test
 {
     var arr: [4] AA'f32
-    map(acast arr, &inc)
+    map(cast() arr, &inc)
     @assert(arr[3].v == 666)
 }

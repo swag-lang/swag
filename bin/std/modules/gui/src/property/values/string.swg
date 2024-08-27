@@ -13,7 +13,7 @@ impl Properties
         let item = addItem(value, data, parentItem)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
-            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
             if kind == .Grid:
                 .dockStyle = .CenterKeepSizeVert
             else:
@@ -30,7 +30,7 @@ impl Properties
 
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {
-            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
             if kind == .Grid:
                 .dockStyle = .CenterKeepSizeVert
             else:

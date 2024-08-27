@@ -9,5 +9,5 @@ func(T) sort(values: [..] T)
 #test
 {
     var x: [] s32 = [1, 5, 2, 10]
-    sort(acast x)
+    sort(cast() x)
 }

@@ -3,5 +3,5 @@ func titi() {}
 
 #test
 {
-    toto(acast &titi)
+    toto(cast() &titi)
 }

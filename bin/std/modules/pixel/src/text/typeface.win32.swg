@@ -10,11 +10,11 @@ impl TypeFace
         let hdc = GetDC(null)
         defer ReleaseDC(null, hdc)
 
-        SelectObject(hdc, acast hf)
-        defer catch DeleteObject(acast hf)
+        SelectObject(hdc, cast() hf)
+        defer catch DeleteObject(cast() hf)
 
         let outFontBufferLen = GetFontData(hdc, 0, 0, null, 0)
-        result.resize(acast outFontBufferLen)
+        result.resize(cast() outFontBufferLen)
 
         discard GetFontData(hdc, 0, 0, result.buffer, cast(DWORD) result.count)
         return result

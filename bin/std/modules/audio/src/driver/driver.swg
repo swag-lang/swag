@@ -61,7 +61,7 @@ private func updateThreadProc(th: Threading.Thread)
             switch cmd.command
             {
             case Register:
-                voice.idxInList = acast driver.activeVoices.count
+                voice.idxInList = cast() driver.activeVoices.count
                 driver.activeVoices.add(voice)
 
             case Destroy:

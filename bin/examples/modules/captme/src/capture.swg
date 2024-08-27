@@ -304,7 +304,7 @@ impl Capture
         {
             let dx = -boundRect.x + pt.x - (boundRect.width * 0.5)
             let dy = -boundRect.y + pt.y - (boundRect.height * 0.5)
-            itf.moveForm(acast dx, acast dy)
+            itf.moveForm(cast() dx, cast() dy)
         }
 
         let countBefore = forms.count

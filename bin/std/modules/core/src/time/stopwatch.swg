@@ -53,7 +53,7 @@ public impl Stopwatch
     {
         let endTimeStamp       = nowPrecise()
         let elapsedTicksPeriod = endTimeStamp - startTimeStamp
-        return acast ((elapsedTicksPeriod * 1000) / preciseFrequency())
+        return cast() ((elapsedTicksPeriod * 1000) / preciseFrequency())
     }
 
     // Gets the current elapsed time in milliseconds since the start
@@ -61,19 +61,19 @@ public impl Stopwatch
     {
         let endTimeStamp       = nowPrecise()
         let elapsedTicksPeriod = endTimeStamp - startTimeStamp
-        return acast ((elapsedTicksPeriod * 1000000) / preciseFrequency())
+        return cast() ((elapsedTicksPeriod * 1000000) / preciseFrequency())
     }
 
     // Gets the total elapsed time in milliseconds, after a call to 'stop'
     mtd elapsedMilliseconds()->u32
     {
-        return acast ((elapsedTicks * 1000) / preciseFrequency())
+        return cast() ((elapsedTicks * 1000) / preciseFrequency())
     }
 
     // Gets the total elapsed time in microseconds, after a call to 'stop'
     mtd elapsedMicroseconds()->u32
     {
-        return acast ((elapsedTicks * 1000000) / preciseFrequency())
+        return cast() ((elapsedTicks * 1000000) / preciseFrequency())
     }
 
     // Measure until the end of the scope, and print the result in the console

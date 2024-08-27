@@ -368,7 +368,7 @@ impl Encoder
             for i in 5
             {
                 if chl == 1 << (i + 3):
-                    return acast i
+                    return cast() i
             }
         }
 
@@ -392,7 +392,7 @@ impl Encoder
             }
         }
 
-        return acast bestFilter
+        return cast() bestFilter
     }
 
     func paeth(a, b, c: s32)->u32

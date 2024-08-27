@@ -160,7 +160,7 @@ impl Properties
             with let slider = SliderCtrl.create(item.line, null)
             {
                 .labelSize = 0
-                .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
                 if kind == .Grid:
                     .dockStyle = .CenterKeepSizeVert
                 else:
@@ -175,9 +175,9 @@ impl Properties
             switch typeNative.nativeKind
             {
             case U8, U16, U32, U64:
-                slider.setMinMaxU64(acast minV, acast maxV)
+                slider.setMinMaxU64(cast() minV, cast() maxV)
             case S8, S16, S32, S64:
-                slider.setMinMaxS64(acast minV, acast maxV)
+                slider.setMinMaxS64(cast() minV, cast() maxV)
             case F32, F64:
                 slider.setMinMaxF32(minV, maxV)
             }
@@ -190,7 +190,7 @@ impl Properties
             {
                 if unit != null:
                     .unit = cast(string) unit
-                .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+                .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
                 if kind == .Grid:
                     .dockStyle = .CenterKeepSizeVert
                 else:
@@ -213,49 +213,49 @@ impl Properties
                 if !hasMinMax:
                     ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
                 else:
-                    ed.setInputU64(acast minV, acast maxV)
+                    ed.setInputU64(cast() minV, cast() maxV)
             case U16:
                 if !hasMinMax:
                     ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
                 else:
-                    ed.setInputU64(acast minV, acast maxV)
+                    ed.setInputU64(cast() minV, cast() maxV)
             case U32:
                 if !hasMinMax:
                     ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
                 else:
-                    ed.setInputU64(acast minV, acast maxV)
+                    ed.setInputU64(cast() minV, cast() maxV)
             case U64:
                 if !hasMinMax:
                     ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
                 else:
-                    ed.setInputU64(acast minV, acast maxV)
+                    ed.setInputU64(cast() minV, cast() maxV)
 
             case S8:
                 if !hasMinMax:
                     ed.setInputS64(Swag.S8.Min, Swag.S8.Max)
                 else:
-                    ed.setInputS64(acast minV, acast maxV)
+                    ed.setInputS64(cast() minV, cast() maxV)
             case S16:
                 if !hasMinMax:
                     ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
                 else:
-                    ed.setInputS64(acast minV, acast maxV)
+                    ed.setInputS64(cast() minV, cast() maxV)
             case S32:
                 if !hasMinMax:
                     ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
                 else:
-                    ed.setInputS64(acast minV, acast maxV)
+                    ed.setInputS64(cast() minV, cast() maxV)
             case S64:
                 if !hasMinMax:
                     ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
                 else:
-                    ed.setInputS64(acast minV, acast maxV)
+                    ed.setInputS64(cast() minV, cast() maxV)
 
             case F32, F64:
                 if !hasMinMax:
                     ed.setInputF64()
                 else:
-                    ed.setInputF64(acast minV, acast maxV)
+                    ed.setInputF64(cast() minV, cast() maxV)
             }
         }
 

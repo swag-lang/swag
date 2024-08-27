@@ -282,7 +282,7 @@ impl ColorPickerCtrl
             .editR.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseU32(ed.text)
-                v.color.r = acast Math.clamp(res.value, 0, 255)
+                v.color.r = cast() Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
@@ -291,7 +291,7 @@ impl ColorPickerCtrl
             .editG.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseU32(ed.text)
-                v.color.g = acast Math.clamp(res.value, 0, 255)
+                v.color.g = cast() Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
@@ -300,7 +300,7 @@ impl ColorPickerCtrl
             .editB.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseU32(ed.text)
-                v.color.b = acast Math.clamp(res.value, 0, 255)
+                v.color.b = cast() Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
@@ -309,7 +309,7 @@ impl ColorPickerCtrl
             .editA.sigLoseFocus += closure|v|(ed)
             {
                 var res = catch StrConv.parseU32(ed.text)
-                v.color.a = acast Math.clamp(res.value, 0, 255)
+                v.color.a = cast() Math.clamp(res.value, 0, 255)
                 v.pickAlpha.setColor(v.color)
                 v.updateEdits()
             }

@@ -82,7 +82,7 @@ func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
     for i in soluce.genes:
-        soluce.score += evaluateSolution(soluce.genes[i], acast i)
+        soluce.score += evaluateSolution(soluce.genes[i], cast() i)
     soluce.score /= g_NumGenes
 }
 
@@ -221,7 +221,7 @@ func genGo()->*u8
 
             for var idx = 0; idx < Math.min(50, holes.count); idx += 1
             {
-                let start  = g_Rng.nextU32(0, acast holes.count)
+                let start  = g_Rng.nextU32(0, cast() holes.count)
                 let hole   = holes[start]
                 let result = evaluateSolution(i, hole)
                 if result < bestRes
@@ -259,7 +259,7 @@ func genGo()->*u8
 
     foreach child, idx in g_Gen[nextGenIdx].all
     {
-        mutate(child, acast idx)
+        mutate(child, cast() idx)
         evaluateSolution(child)
     }
 

@@ -11,5 +11,5 @@ func toto(u: V)
 func toto1()
 {
     var x: U
-    toto(acast x)
+    toto(cast() x)
 }

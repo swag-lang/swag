@@ -32,7 +32,7 @@ impl Image
     #[Swag.Overload]
     public mtd crop(cropRect: Math.Rectangle)
     {
-        return crop(acast cropRect.x, acast cropRect.y, acast cropRect.width, acast cropRect.height)
+        return crop(cast() cropRect.x, cast() cropRect.y, cast() cropRect.width, cast() cropRect.height)
     }
 
     // Crop image
@@ -53,6 +53,6 @@ impl Image
     #[Swag.Overload]
     public mtd const toCrop(cropRect: Math.Rectangle)->Image
     {
-        return toCrop(acast cropRect.x, acast cropRect.y, acast cropRect.width, acast cropRect.height)
+        return toCrop(cast() cropRect.x, cast() cropRect.y, cast() cropRect.width, cast() cropRect.height)
     }
 }

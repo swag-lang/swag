@@ -49,7 +49,7 @@ func createWindow()->HWND
 {
     var wc: WNDCLASSA
     wc.style         = CS_OWNDC
-    wc.lpfnWndProc   = acast @mkcallback(&winProc)
+    wc.lpfnWndProc   = cast() @mkcallback(&winProc)
     wc.hInstance     = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
     assume RegisterClassA(wc)

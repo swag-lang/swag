@@ -10,6 +10,6 @@ func toto()->&u64
 #[Swag.Safety("", false)]
 #test
 {
-    let a: u32 = acast toto()
+    let a: u32 = cast() toto()
     @assert(a == 6)
 }

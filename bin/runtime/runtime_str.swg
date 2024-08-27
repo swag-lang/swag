@@ -177,7 +177,7 @@ func @print(params: ...)
         if ko.flags & TypeInfoFlags.PointerRef
         {
             let ptr = cast(const *TypeInfoPointer) ko
-            ko = acast ptr.pointedType
+            ko = cast() ptr.pointedType
             let val = cast(**u64) @dataof(v)
             v = @mkany(dref val, ko)
         }

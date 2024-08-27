@@ -589,7 +589,7 @@ impl QuickWnd
                 }
             }
 
-            btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
+            btnp.formItf.setBaseForm(cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
             Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             if @countof(title):

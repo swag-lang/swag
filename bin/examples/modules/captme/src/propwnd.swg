@@ -231,7 +231,7 @@ impl PropWnd
             btn0.sigPressed += closure|me, layout|(btn)
             {
                 var kind = cast(u64) btn.userData
-                me.pushTypedValue(acast kind, FormShape, @nameof(FormShape.kind), true)
+                me.pushTypedValue(cast() kind, FormShape, @nameof(FormShape.kind), true)
                 me.updateBtnState(layout)
             }
         }
@@ -278,7 +278,7 @@ impl PropWnd
             btn0.sigPressed += closure|me|(btn)
             {
                 var kind = cast(u64) btn.userData
-                me.pushTypedValue(acast kind, FormStep, @nameof(FormStep.kind), true)
+                me.pushTypedValue(cast() kind, FormStep, @nameof(FormStep.kind), true)
             }
         }
 
@@ -330,7 +330,7 @@ impl PropWnd
             btn0.sigPressed += closure|me, layout|(btn)
             {
                 var kind = cast(u64) btn.userData
-                me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.beginCap), true)
+                me.pushTypedValue(cast() kind, FormLine, @nameof(FormLine.beginCap), true)
                 me.updateBtnState(layout)
             }
         }
@@ -383,7 +383,7 @@ impl PropWnd
             btn0.sigPressed += closure|me, layout|(btn)
             {
                 var kind = cast(u64) btn.userData
-                me.pushTypedValue(acast kind, FormLine, @nameof(FormLine.endCap), true)
+                me.pushTypedValue(cast() kind, FormLine, @nameof(FormLine.endCap), true)
                 me.updateBtnState(layout)
             }
         }
@@ -435,7 +435,7 @@ impl PropWnd
             btn0.sigPressed += closure|me, layout|(btn)
             {
                 var kind = cast(u64) btn.userData
-                me.pushTypedValue(acast kind, BaseForm, @nameof(BaseForm.dashStyle), true, true)
+                me.pushTypedValue(cast() kind, BaseForm, @nameof(BaseForm.dashStyle), true, true)
                 me.updateBtnState(layout)
             }
         }
@@ -739,7 +739,7 @@ impl PropWnd
             .selectItem(cast(u32) curSel.typeIndex)
             .sigChanged += closure|self|(combo, val)
             {
-                self.pushTypedValue(acast val, FormStep, @nameof(FormStep.typeIndex), true)
+                self.pushTypedValue(cast() val, FormStep, @nameof(FormStep.typeIndex), true)
             }
         }
 
@@ -968,7 +968,7 @@ impl PropWnd
             return
         let curSel = cast(*FormLine) getSelectedBaseForm()
 
-        let ctrl = createSlider("Start Size", acast MinCapSize, acast MaxCapSize, curSel.startSize)
+        let ctrl = createSlider("Start Size", cast() MinCapSize, cast() MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), FormLine, @nameof(FormLine.startSize), true)
@@ -986,7 +986,7 @@ impl PropWnd
             return
 
         let curSel = cast(*FormLine) getSelectedBaseForm()
-        let ctrl   = createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
+        let ctrl   = createSlider("End Size", cast() MinCapSize, cast() MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), FormLine, @nameof(FormLine.endSize), true)
@@ -1007,7 +1007,7 @@ impl PropWnd
         if curSel.kind != .RoundRectangle:
             return
 
-        let ctrl = createSlider("Round", acast MinRoundSize, acast MaxRoundSize, curSel.roundSize)
+        let ctrl = createSlider("Round", cast() MinRoundSize, cast() MaxRoundSize, curSel.roundSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), FormShape, @nameof(FormShape.roundSize), true)
@@ -1042,7 +1042,7 @@ impl PropWnd
             minS = Math.max(minS, 1)
         }
 
-        let ctrl = createSlider(labl, acast minS, acast maxS, curSel.borderSize)
+        let ctrl = createSlider(labl, cast() minS, cast() maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, @nameof(BaseForm.borderSize), true, true)
@@ -1060,7 +1060,7 @@ impl PropWnd
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl   = createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
+        let ctrl   = createSlider("Size", cast() MinFontSize, cast() MaxFontSize, cast() curSel.fontSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), FormText, @nameof(FormText.fontSize), true)
@@ -1078,7 +1078,7 @@ impl PropWnd
             return
 
         let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl   = createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
+        let ctrl   = createSlider("Strengh", cast() MinBoldSize, cast() MaxBoldSize, cast() curSel.boldSize)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), FormText, @nameof(FormText.boldSize), true)
@@ -1095,7 +1095,7 @@ impl PropWnd
         if curSel.subKind == .PixSel:
             return
 
-        let ctrl = createSlider("Opacity", 0, 100, acast curSel.alpha)
+        let ctrl = createSlider("Opacity", 0, 100, cast() curSel.alpha)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast(u32) slider.getValue(), BaseForm, @nameof(BaseForm.alpha), true, true)
@@ -1151,7 +1151,7 @@ impl PropWnd
         if curSel.kind == .Image:
             return
 
-        let ctrl = createSlider("Strength", 0, 100, acast curSel.strength)
+        let ctrl = createSlider("Strength", 0, 100, cast() curSel.strength)
         ctrl.slider.sigStartChange += closure|self|(slider)
         {
             self.pushTypedValue(cast(u32) slider.getValue(), FormImage, @nameof(FormImage.strength), true)
@@ -1181,7 +1181,7 @@ impl PropWnd
             .sigChanged += closure|self|(combo, val)
             {
                 var v = val + 1
-                self.pushTypedValue(acast v, BaseForm, @nameof(BaseForm.joinStyle), true, true)
+                self.pushTypedValue(cast() v, BaseForm, @nameof(BaseForm.joinStyle), true, true)
             }
         }
     }
@@ -1202,7 +1202,7 @@ impl PropWnd
             .sigChanged += closure|self|(combo, val)
             {
                 var b = val == 1 ? true : false
-                self.pushTypedValue(acast b, BaseForm, @nameof(BaseForm.paintShadow), true, true)
+                self.pushTypedValue(cast() b, BaseForm, @nameof(BaseForm.paintShadow), true, true)
             }
         }
     }

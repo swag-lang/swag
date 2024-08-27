@@ -298,7 +298,7 @@ impl LibraryWnd
             {
                 fillLastYear()
                 lastLine           = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
-                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
+                lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLineYear       = lastLine
             }
 
@@ -306,8 +306,8 @@ impl LibraryWnd
             {
                 fillLastMonth()
                 lastLine           = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
-                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
-                lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
+                lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
+                lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
                 lastLineMonth      = lastLine
             }
 
@@ -315,9 +315,9 @@ impl LibraryWnd
             {
                 fillLastDay()
                 lastLine           = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
-                lastLine.userData0 = acast cast(u64) fi.lastWriteTime.year
-                lastLine.userData1 = acast cast(u64) fi.lastWriteTime.month
-                lastLine.userData2 = acast cast(u64) fi.lastWriteTime.day
+                lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
+                lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
+                lastLine.userData2 = cast() cast(u64) fi.lastWriteTime.day
                 lastLineDay        = lastLine
             }
 

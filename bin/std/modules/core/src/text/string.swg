@@ -164,7 +164,7 @@ impl String
     mtd opPostMove()
     {
         if buffer and capacity <= StringSmallSize:
-            buffer = acast &padding[0]
+            buffer = cast() &padding[0]
     }
 
     mtd opPostCopy()
@@ -173,7 +173,7 @@ impl String
             return
 
         if capacity <= StringSmallSize:
-            buffer = acast &padding[0]
+            buffer = cast() &padding[0]
         else
         {
             let oldBuffer = buffer
@@ -186,7 +186,7 @@ impl String
 
     mtd opDrop()
     {
-        if buffer != acast &padding[0]:
+        if buffer != cast() &padding[0]:
             Memory.free(buffer, capacity, allocator)
     }
 
@@ -284,7 +284,7 @@ impl String
     {
         if buffer:
             return
-        buffer = acast &padding[0]
+        buffer = cast() &padding[0]
     }
 
     // Replace all occurences of 'what' with 'by'
@@ -497,7 +497,7 @@ impl String
         if newCapacity <= StringSmallSize
         {
             // Free dynamic memory if this is not a small string
-            if buffer and buffer != acast &padding[0]
+            if buffer and buffer != cast() &padding[0]
             {
                 Memory.copy(&padding[0], buffer, Math.min(newCapacity, length + 1))
                 Memory.free(buffer, capacity, allocator)
@@ -505,14 +505,14 @@ impl String
 
             // This is a small string again
             capacity = StringSmallSize
-            buffer   = acast &padding[0]
+            buffer   = cast() &padding[0]
         }
 
         // We were in small size mode, and we are no more
-        elif buffer == acast &padding[0]
+        elif buffer == cast() &padding[0]
         {
             let oldBuffer = buffer
-            buffer = acast Memory.alloc(newCapacity, allocator)
+            buffer = cast() Memory.alloc(newCapacity, allocator)
             Memory.copy(buffer, oldBuffer, Math.min(newCapacity, length + 1))
             capacity = newCapacity
         }
@@ -520,7 +520,7 @@ impl String
         // We were in dynamic mode, so just realloc memory
         else
         {
-            buffer   = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
+            buffer   = cast() Memory.realloc(buffer, newCapacity, capacity, allocator)
             capacity = newCapacity
         }
     }

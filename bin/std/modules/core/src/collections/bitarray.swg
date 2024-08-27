@@ -23,7 +23,7 @@ impl BitArray
     {
         if allocator == null:
             allocator = @getcontext().allocator
-        buffer = acast Memory.realloc(buffer, newCapacity, capacity, allocator)
+        buffer = cast() Memory.realloc(buffer, newCapacity, capacity, allocator)
     }
 }
 

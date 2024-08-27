@@ -603,9 +603,9 @@ impl Decoder
                 src += x + y * image.width
                 let pal   = src[0]
                 let color = params.dec.palette[pal]
-                pix[0] = acast ((color >> 16) & 0xFF)
-                pix[1] = acast ((color >> 8) & 0xFF)
-                pix[2] = acast (color & 0xFF)
+                pix[0] = cast() ((color >> 16) & 0xFF)
+                pix[1] = cast() ((color >> 8) & 0xFF)
+                pix[2] = cast() (color & 0xFF)
                 if image.bpp == 32:
                     pix[3] = 255
             }
@@ -622,9 +622,9 @@ impl Decoder
                 src += x + y * image.width
                 let pal   = src[0]
                 let color = params.dec.palette[pal]
-                pix[0] = acast ((color >> 16) & 0xFF)
-                pix[1] = acast ((color >> 8) & 0xFF)
-                pix[2] = acast (color & 0xFF)
+                pix[0] = cast() ((color >> 16) & 0xFF)
+                pix[1] = cast() ((color >> 8) & 0xFF)
+                pix[2] = cast() (color & 0xFF)
                 pix[3] = pal < @countof(params.dec.chunkTRNS.datas) ? params.dec.chunkTRNS.datas[pal] : 255
             }
         }

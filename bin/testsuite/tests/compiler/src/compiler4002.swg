@@ -3,5 +3,5 @@
 {
     var x = 0
     var y = true
-    x = #move acast y
+    x = #move cast() y
 }

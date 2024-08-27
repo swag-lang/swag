@@ -23,8 +23,8 @@ func entry(param: ^void)->u32
 func create(lambda: ThreadProc, userParam: u64)
 {
     var paramBC: [2] *void
-    paramBC[0] = acast lambda
-    paramBC[1] = acast userParam
+    paramBC[0] = cast() lambda
+    paramBC[1] = cast() userParam
 
     var id = 0'u32
     let h = CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)

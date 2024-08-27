@@ -61,7 +61,7 @@ func(T) findSlice(values, value: const [..] T)->u32
         }
 
         if ok:
-            return acast it0
+            return cast() it0
     }
 
     return Swag.U32.Max

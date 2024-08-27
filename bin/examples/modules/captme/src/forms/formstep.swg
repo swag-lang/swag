@@ -199,7 +199,7 @@ impl IForm for FormStep
                 t = Format.toString("%", cast(rune) (`a`'rune + curIndex - 1))
             }
 
-            assume face.getStringOutline(&pathl, t, acast fSize)
+            assume face.getStringOutline(&pathl, t, cast() fSize)
             pathl.flatten(painter.curState.paintQuality)
             pathl.offset(1, JoinStyle.Round, 0.5)
             pathl.clean()

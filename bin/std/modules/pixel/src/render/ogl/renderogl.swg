@@ -20,15 +20,15 @@ internal
 
 #[Swag.Strict]
 typealias TextureHandle = u64
-const InvalidTextureHandle: TextureHandle = acast 0
+const InvalidTextureHandle: TextureHandle = cast() 0
 
 #[Swag.Strict]
 typealias RenderTargetHandle = u64
-const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
+const InvalidRenderTargetHandle: RenderTargetHandle = cast() 0
 
 #[Swag.Strict]
 typealias RenderTargetSurfaceHandle = u64
-const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
+const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = cast() 0
 
 #[Swag.NoCopy]
 struct RenderOgl
@@ -105,8 +105,8 @@ internal impl RenderOgl
             let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"))
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0)
-            shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"))
-            shaderBlur.radius = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"))
+            shaderBlur.axis   = cast() glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"))
+            shaderBlur.radius = cast() glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"))
         }
     }
 
@@ -385,7 +385,7 @@ impl RenderOgl
         curRT.paintAlpha = false
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
         if vp:
-            glViewport(acast vp.x, acast vp.y, acast vp.width, acast vp.height)
+            glViewport(cast() vp.x, cast() vp.y, cast() vp.width, cast() vp.height)
         else:
             glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
     }
@@ -447,7 +447,7 @@ impl RenderOgl
         result.colorBuffer.height = h
         result.colorBuffer.valid  = true
         result.colorBuffer.pf     = .RGBA8
-        result.depthStencil       = acast rbo
+        result.depthStencil       = cast() rbo
         return result
     }
 
@@ -458,13 +458,13 @@ impl RenderOgl
         if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid:
             return
 
-        var cb: GLuint = acast rt.colorBuffer.handle
+        var cb: GLuint = cast() rt.colorBuffer.handle
         glDeleteTextures(1, &cb)
 
-        var ds: GLuint = acast rt.depthStencil
+        var ds: GLuint = cast() rt.depthStencil
         glDeleteRenderbuffers(1, &ds)
 
-        var fb: GLuint = acast rt.handle
+        var fb: GLuint = cast() rt.handle
         glDeleteFramebuffers(1, &fb)
 
         rt.handle            = InvalidRenderTargetHandle
@@ -550,7 +550,7 @@ impl RenderOgl
     {
         var result: retval
         glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, acast texture.handle)
+        glBindTexture(GL_TEXTURE_2D, cast() texture.handle)
         result.resize(cast(u64) texture.getByteSize())
         let fmt = pixelFormatToNative(pf)
         glGetTexImage(GL_TEXTURE_2D, 0, fmt, GL_UNSIGNED_BYTE, result.buffer)
@@ -965,13 +965,13 @@ impl RenderOgl
 
         base.handle = cast(ShaderHandle) progID
 
-        base.mvp         = acast glGetUniformLocation(progID, @dataof("mvp"))
-        base.mdl         = acast glGetUniformLocation(progID, @dataof("mdl"))
-        base.boundRect   = acast glGetUniformLocation(progID, @dataof("boundRect"))
-        base.textureRect = acast glGetUniformLocation(progID, @dataof("textureRect"))
-        base.uvMode      = acast glGetUniformLocation(progID, @dataof("uvMode"))
-        base.copyMode    = acast glGetUniformLocation(progID, @dataof("copyMode"))
-        base.textureW    = acast glGetUniformLocation(progID, @dataof("textureW"))
-        base.textureH    = acast glGetUniformLocation(progID, @dataof("textureH"))
+        base.mvp         = cast() glGetUniformLocation(progID, @dataof("mvp"))
+        base.mdl         = cast() glGetUniformLocation(progID, @dataof("mdl"))
+        base.boundRect   = cast() glGetUniformLocation(progID, @dataof("boundRect"))
+        base.textureRect = cast() glGetUniformLocation(progID, @dataof("textureRect"))
+        base.uvMode      = cast() glGetUniformLocation(progID, @dataof("uvMode"))
+        base.copyMode    = cast() glGetUniformLocation(progID, @dataof("copyMode"))
+        base.textureW    = cast() glGetUniformLocation(progID, @dataof("textureW"))
+        base.textureH    = cast() glGetUniformLocation(progID, @dataof("textureH"))
     }
 }

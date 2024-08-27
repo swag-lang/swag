@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 func toto(a: s32)->bool
 {
-    return acast (a & 1)
+    return cast() (a & 1)
 }
 
 #test

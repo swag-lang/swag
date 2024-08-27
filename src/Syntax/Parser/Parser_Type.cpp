@@ -642,7 +642,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
 
-    // Defer mode
+    // Cast mode
     if (tokenParse.is(TokenId::SymLower))
     {
         const auto startLoc = tokenParse.token.startLocation;
@@ -670,7 +670,15 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
-    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
+
+    if (tokenParse.is(TokenId::SymRightParen))
+    {
+        node->kind        = AstNodeKind::AutoCast;
+        node->semanticFct = Semantic::resolveExplicitAutoCast;
+    }
+    else
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
+
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the [[cast]] type expression"));
 
     // Cast modifiers
@@ -682,17 +690,6 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
     }
 
-    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    return true;
-}
-
-bool Parser::doAutoCast(AstNode* parent, AstNode** result)
-{
-    const auto node   = Ast::newNode<AstCast>(AstNodeKind::AutoCast, this, parent);
-    *result           = node;
-    node->semanticFct = Semantic::resolveExplicitAutoCast;
-
-    SWAG_CHECK(eatToken());
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }

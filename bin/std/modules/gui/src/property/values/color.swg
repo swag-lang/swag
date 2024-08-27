@@ -9,7 +9,7 @@ impl Properties
         let line  = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
-        let width       = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+        let width       = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
         const MarginBtn = 4
         const WidthBtn  = 60
 

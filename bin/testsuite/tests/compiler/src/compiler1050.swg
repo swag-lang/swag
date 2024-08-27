@@ -6,7 +6,7 @@ func(T) new()->*T
 
 	@init(cast(*T) req.address, 1)("yes", "no")
 
-	return acast req.address
+	return cast() req.address
 }
 
 struct Point

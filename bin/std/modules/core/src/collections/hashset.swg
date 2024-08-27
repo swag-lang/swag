@@ -154,7 +154,7 @@ impl HashSet
 
         if allocator == null:
             allocator = @getcontext().allocator
-        table = acast Memory.alloc(newCapacityBytes, allocator)
+        table = cast() Memory.alloc(newCapacityBytes, allocator)
 
         // Be sure hash entry is 0
         Memory.clear(table, newCapacityBytes)

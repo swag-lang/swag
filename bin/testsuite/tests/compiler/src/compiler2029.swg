@@ -13,7 +13,7 @@ func(T) map(values: [..] T, cb: func(*T))
 #test
 {
     var arr: [4] f32
-    map(acast arr, &inc)
+    map(cast() arr, &inc)
     @assert(arr[0] == 1)
     @assert(arr[3] == 1)
 }

@@ -229,7 +229,6 @@ struct Parser
     bool doPrivate(AstNode* parent, AstNode** result);
     bool doUsing(AstNode* parent, AstNode** result, bool isGlobal);
     bool doCast(AstNode* parent, AstNode** result);
-    bool doAutoCast(AstNode* parent, AstNode** result);
     bool doIf(AstNode* parent, AstNode** result);
     bool doWhile(AstNode* parent, AstNode** result);
     bool doFor(AstNode* parent, AstNode** result);

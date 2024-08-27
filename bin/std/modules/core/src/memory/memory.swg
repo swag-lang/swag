@@ -56,7 +56,7 @@ func align(value: u64, alignment: u32)->u64
 #[Swag.Overload]
 func align(value: const ^void, alignment: u32)->const ^void
 {
-    return acast align(cast(u64) value, alignment)
+    return cast() align(cast(u64) value, alignment)
 }
 
 // Clear the temporary allocator

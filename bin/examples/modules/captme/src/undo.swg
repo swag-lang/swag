@@ -440,9 +440,9 @@ impl Undo
                 {
                     let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(acast dstIdx, form)
+                    capture.forms.insertAt(cast() dstIdx, form)
                     capture.selection.remove(srcIdx)
-                    capture.selection.add(acast dstIdx)
+                    capture.selection.add(cast() dstIdx)
                 }
 
                 dstIdx -= 1
@@ -458,9 +458,9 @@ impl Undo
                 {
                     let form = capture.forms[srcIdx]
                     capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(acast dstIdx, form)
+                    capture.forms.insertAt(cast() dstIdx, form)
                     capture.selection.remove(srcIdx)
-                    capture.selection.add(acast dstIdx)
+                    capture.selection.add(cast() dstIdx)
                 }
 
                 dstIdx += 1
@@ -574,7 +574,7 @@ impl Undo
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.fontName    = oldText[i]
-                b.fontStyle   = acast oldU32[i]
+                b.fontStyle   = cast() oldU32[i]
                 b.isDirtyFont = true
             }
 
@@ -585,7 +585,7 @@ impl Undo
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontStyle   = acast oldU32[i]
+                b.fontStyle   = cast() oldU32[i]
                 b.isDirtyFont = true
             }
 

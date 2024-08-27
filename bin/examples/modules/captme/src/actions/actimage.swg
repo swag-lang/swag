@@ -89,8 +89,8 @@ impl MainWnd
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {80, 15}, flags: .RightAlign)
         let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {80, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {120, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
@@ -165,8 +165,8 @@ impl MainWnd
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags: .RightAlign)
         let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {30, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
-        edit1.edit.setInputU64(acast Capture.MinSize, acast Capture.MaxSize)
+        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 

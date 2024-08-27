@@ -173,7 +173,7 @@ internal impl Surface
             wc.hInstance     = GetModuleHandleW(null)
             wc.cbWndExtra    = @sizeof(*void)
             wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
-            wc.lpfnWndProc   = acast @mkcallback(&winProc)
+            wc.lpfnWndProc   = cast() @mkcallback(&winProc)
             wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
             wc.hIcon         = hIcon
             wc.lpszClassName = className

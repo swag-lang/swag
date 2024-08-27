@@ -24,7 +24,7 @@ public func(T) toto2648(v: [..] T, stmt: code)
 #test
 {
     var v: [2] s32
-    toto2648(acast v)
+    toto2648(cast() v)
     {
 
     }

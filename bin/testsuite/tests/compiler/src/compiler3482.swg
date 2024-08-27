@@ -19,5 +19,5 @@ func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
         return 0
     }
 
-    insertionSort(acast x,&toto)
+    insertionSort(cast() x,&toto)
 }

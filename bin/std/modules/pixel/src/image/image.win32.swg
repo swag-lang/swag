@@ -16,8 +16,8 @@ impl Image
         bi.bmiHeader.biCompression = BI_RGB
 
         var ppvBits: *u8
-        let hbmp     = CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
-        defer<noerr> DeleteObject(acast hbmp)
+        let hbmp     = CreateDIBSection(null, &bi, cast() DIB_RGB_COLORS, &ppvBits, null, 0)
+        defer<noerr> DeleteObject(cast() hbmp)
 
         Memory.copy(ppvBits, pixels.buffer, cast(u64) width * height * bpp8)
 
@@ -39,9 +39,9 @@ impl Image
         result = from(ii.hbmColor)
 
         if ii.hbmMask != null:
-            DeleteObject(acast ii.hbmMask)
+            DeleteObject(cast() ii.hbmMask)
         if ii.hbmColor != null:
-            DeleteObject(acast ii.hbmColor)
+            DeleteObject(cast() ii.hbmColor)
 
         return result
     }
@@ -75,7 +75,7 @@ impl Image
         infos.bmiHeader.biPlanes      = bitmap.bmPlanes
         infos.bmiHeader.biBitCount    = bitmap.bmBitsPixel
         infos.bmiHeader.biCompression = BI_RGB
-        GetDIBits(dc, hbitmap, 0, acast bitmap.bmHeight, result.pixels.buffer, &infos, acast DIB_RGB_COLORS)
+        GetDIBits(dc, hbitmap, 0, cast() bitmap.bmHeight, result.pixels.buffer, &infos, cast() DIB_RGB_COLORS)
 
         return result
     }

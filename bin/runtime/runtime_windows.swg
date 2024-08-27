@@ -299,7 +299,7 @@ func __panicBox(msg, title: string)
 func __captureStack(skip: u32, wh: [..] *void)->u32
 {
     using __Win32RT
-    let nb = RtlCaptureStackBackTrace(skip + 1, acast @countof(wh), acast @dataof(wh), null)
+    let nb = RtlCaptureStackBackTrace(skip + 1, cast() @countof(wh), cast() @dataof(wh), null)
     return nb
 }
 
@@ -331,7 +331,7 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
     for i in wh
     {
         let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], &displacement, psym)
-        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], acast &displacement, &line)
+        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], cast() &displacement, &line)
         let fileName  = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine:
             continue

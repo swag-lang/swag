@@ -69,7 +69,7 @@ impl Properties
                     idxSel = idx
             }
 
-            item.comboBox.selectItem(acast idxSel)
+            item.comboBox.selectItem(cast() idxSel)
         }
     }
 
@@ -217,7 +217,7 @@ impl Properties
         let item = addItem(value, data, parentItem)
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
-            .maxSize.x = acast Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+            .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
             if kind == .Grid:
                 .dockStyle = .CenterKeepSizeVert
             else:

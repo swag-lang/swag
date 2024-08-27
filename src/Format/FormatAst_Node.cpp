@@ -452,7 +452,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::AutoCast:
-            concat->addString("acast");
+            concat->addString("cast()");
             concat->addBlank();
             SWAG_CHECK(outputNode(context, node->firstChild()));
             break;

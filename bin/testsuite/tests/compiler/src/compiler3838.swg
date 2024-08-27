@@ -6,5 +6,5 @@ func toto(a: *void)
 {
     struct A {}
     var a: A
-    toto(acast a)
+    toto(cast() a)
 }

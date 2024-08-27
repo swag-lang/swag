@@ -73,7 +73,7 @@ impl Application
             mdf |= .Control
         if msg.lParam & MOD_SHIFT:
             mdf |= .Shift
-        let key = Keyboard.virtualKeyToKey(acast (msg.lParam >> 16))
+        let key = Keyboard.virtualKeyToKey(cast() (msg.lParam >> 16))
 
         let (id, target) = getHotKeyShortcut(mdf, key)
         if id and target:

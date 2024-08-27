@@ -175,7 +175,7 @@ impl DateTime
                 let len = @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
-                    dayOfWeek = acast idx
+                    dayOfWeek = cast() idx
                     buf       = Tokenize.eatCount(buf, cast(u64) len)
                     result.eat += cast(u32) len
                     done = true

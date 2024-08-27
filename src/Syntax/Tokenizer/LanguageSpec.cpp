@@ -353,7 +353,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);
     keywords.add("cast", TokenId::KwdCast);
-    keywords.add("acast", TokenId::KwdAutoCast);
     keywords.add("dref", TokenId::KwdDeRef);
     keywords.add("retval", TokenId::KwdRetVal);
     keywords.add("try", TokenId::KwdTry);

@@ -5,6 +5,6 @@
 {
 	var a: f32
 	let b: s32 = 1
-	a = acast b
+	a = cast() b
 	@assert(a == 1)
 }

@@ -556,9 +556,6 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
         case TokenId::KwdCast:
             SWAG_CHECK(doCast(parent, result));
             return true;
-        case TokenId::KwdAutoCast:
-            SWAG_CHECK(doAutoCast(parent, result));
-            return true;
         case TokenId::SymMinus:
         case TokenId::SymExclam:
         case TokenId::SymTilde:

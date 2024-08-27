@@ -458,8 +458,8 @@ func createView0(tabView: *Tab, view: *Wnd)
         }
         img2.movie.sigFrameChanged += closure|slider|(movie)
         {
-            slider.setMinMax(0, acast movie.numFrames)
-            slider.setValue(acast movie.frameIndex)
+            slider.setMinMax(0, cast() movie.numFrames)
+            slider.setValue(cast() movie.frameIndex)
         }
         slider.sigChanged += closure|img2|(slider)
         {

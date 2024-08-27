@@ -248,14 +248,14 @@ impl IForm for FormText
                         var ftr: FormTextRune
 
                         // Back
-                        ftr.advance = assume face.getRuneOutline(&ftr.back, c, acast fSize, acast sSize)
+                        ftr.advance = assume face.getRuneOutline(&ftr.back, c, cast() fSize, cast() sSize)
                         ftr.back.flatten(painter.curState.paintQuality)
                         ftr.back.clean()
 
                         // Border
                         if !Math.isZeroEpsilon(bSize) and borderColor.a
                         {
-                            assume face.getRuneOutline(&ftr.border, c, acast fSize, acast sSize)
+                            assume face.getRuneOutline(&ftr.border, c, cast() fSize, cast() sSize)
                             ftr.border.flatten(painter.curState.paintQuality)
                             ftr.border.offset(bSize, joinStyle, 0.5)
                         }

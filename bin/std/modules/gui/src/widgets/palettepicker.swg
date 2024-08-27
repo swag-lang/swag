@@ -66,7 +66,7 @@ impl IWnd for PalettePicker
         {
             if palPos[i].contains(pos)
             {
-                newHotIdx = acast i
+                newHotIdx = cast() i
                 break
             }
         }

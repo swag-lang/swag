@@ -40,7 +40,7 @@ impl Array
 		request.address = self.buffer
 		context.allocator.req(&request)
 
-		self.buffer = acast newBuffer
+		self.buffer = cast() newBuffer
 	}
 
 	func add(using self, value: T)

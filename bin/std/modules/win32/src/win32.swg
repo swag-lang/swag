@@ -16,7 +16,7 @@ func throwWinError(errorMessageID: u32) throw
     if cxt.errorAllocator.capacity
     {
         const MaxLen = 128
-        let errorMsg = cast(^u8) cxt.errorAllocator.alloc(acast MaxLen)
+        let errorMsg = cast(^u8) cxt.errorAllocator.alloc(cast() MaxLen)
         let lang     = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
         var len      = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) errorMsg, cast(DWORD) MaxLen, null)
         if len

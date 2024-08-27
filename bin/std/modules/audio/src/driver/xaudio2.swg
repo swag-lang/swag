@@ -59,7 +59,7 @@ impl DriverNative
     {
         if masteringVoice
         {
-            masteringVoice.vtbl.destroyVoice(acast masteringVoice)
+            masteringVoice.vtbl.destroyVoice(cast() masteringVoice)
             masteringVoice = null
         }
 
@@ -83,7 +83,7 @@ impl Driver
     {
         if !masteringVoice:
             return
-        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
+        let hr = masteringVoice.vtbl.setVolume(cast() masteringVoice, volume, 0)
         if hr != S_OK:
             throw SystemError{"setOutputVolume", errorID: cast(u64) hr}
     }
@@ -93,7 +93,7 @@ impl Driver
         if !masteringVoice:
             return 0
         var volume: f32
-        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
+        masteringVoice.vtbl.getVolume(cast() masteringVoice, &volume)
         return volume
     }
 }
@@ -186,7 +186,7 @@ impl Voice
             flags |= XAUDIO2_VOICE_USEFILTER
         if !createFlags.has(.AcceptPitch):
             flags |= XAUDIO2_VOICE_NOPITCH
-        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, acast &wfx.format, flags, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, cast() &wfx.format, flags, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
         if hr != S_OK:
             throw SystemError{"createSourceVoice", errorID: cast(u64) hr}
     }
@@ -195,7 +195,7 @@ impl Voice
     {
         if !handle:
             return
-        handle.vtbl.destroyVoice(acast handle)
+        handle.vtbl.destroyVoice(cast() handle)
         handle = null
     }
 
@@ -214,7 +214,7 @@ impl Voice
 
             var buffer: XAUDIO2_BUFFER
             buffer.pAudioData = ptrBuffer
-            buffer.audioBytes = acast sizeBuffer
+            buffer.audioBytes = cast() sizeBuffer
             buffer.pContext   = self
             let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
             if hr != S_OK:
@@ -252,7 +252,7 @@ public impl Voice
         if !handle:
             return
         let v  = Math.clamp(volume, 0, 1)
-        let hr = handle.vtbl.setVolume(acast handle, v, batchID)
+        let hr = handle.vtbl.setVolume(cast() handle, v, batchID)
         if hr != S_OK:
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
@@ -263,7 +263,7 @@ public impl Voice
         if !handle:
             return 0
         var volume: f32
-        handle.vtbl.getVolume(acast handle, &volume)
+        handle.vtbl.getVolume(cast() handle, &volume)
         return volume
     }
 
@@ -298,15 +298,15 @@ public impl Voice
             foreach bus, i in buses
             {
                 Debug.assert(bus != null)
-                sfxSend[i].pOutputVoice = acast bus.handle
+                sfxSend[i].pOutputVoice = cast() bus.handle
             }
 
-            sfxSendList.sendCount = acast count
+            sfxSendList.sendCount = cast() count
             sfxSendList.pSends    = &sfxSend
             pSFXSEndList          = &sfxSendList
         }
 
-        let hr = handle.vtbl.setOutputVoices(acast handle, pSFXSEndList)
+        let hr = handle.vtbl.setOutputVoices(cast() handle, pSFXSEndList)
         if hr != S_OK:
             throw SystemError{"setOutputVoices", errorID: cast(u64) hr}
     }
@@ -331,7 +331,7 @@ impl Bus
             if parent.handle == null:
                 throw BadParameterError{"parent bus invalid"}
 
-            sfxSend.pOutputVoice  = acast parent.handle
+            sfxSend.pOutputVoice  = cast() parent.handle
             sfxSendList.sendCount = 1
             sfxSendList.pSends    = &sfxSend
             pSFXSEndList          = &sfxSendList
@@ -346,7 +346,7 @@ impl Bus
     {
         if !handle:
             return
-        handle.vtbl.destroyVoice(acast handle)
+        handle.vtbl.destroyVoice(cast() handle)
         handle = null
     }
 }
@@ -359,7 +359,7 @@ public impl Bus
         if !handle:
             return
         let v  = Math.clamp(volume, 0, 1)
-        let hr = handle.vtbl.setVolume(acast handle, v, batchID)
+        let hr = handle.vtbl.setVolume(cast() handle, v, batchID)
         if hr != S_OK:
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
@@ -370,7 +370,7 @@ public impl Bus
         if !handle:
             return 0
         var volume: f32
-        handle.vtbl.getVolume(acast handle, &volume)
+        handle.vtbl.getVolume(cast() handle, &volume)
         return volume
     }
 }

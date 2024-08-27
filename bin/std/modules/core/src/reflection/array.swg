@@ -54,7 +54,7 @@ func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
 
     var valueTypeStruct: const *TypeInfoStruct
     if isStruct(valueType):
-        valueTypeStruct = acast valueType
+        valueTypeStruct = cast() valueType
 
     Debug.assert(index < arr.count)
 
@@ -86,7 +86,7 @@ func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
 
     var valueTypeStruct: const *TypeInfoStruct
     if isStruct(valueType):
-        valueTypeStruct = acast valueType
+        valueTypeStruct = cast() valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
     // structures specials functions

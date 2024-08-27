@@ -163,21 +163,21 @@ impl Point
     // Perform a Math.round operation on all the coordinates
     mtd round()
     {
-        x = acast round(x)
-        y = acast round(y)
+        x = cast() round(x)
+        y = cast() round(y)
     }
 
     // Perform a Math.trunc operation on all the coordinates
     mtd trunc()
     {
-        x = acast trunc(x)
-        y = acast trunc(y)
+        x = cast() trunc(x)
+        y = cast() trunc(y)
     }
 
     // Perform a Math.ceil operation on all the coordinates
     mtd ceil()
     {
-        x = acast ceil(x)
-        y = acast ceil(y)
+        x = cast() ceil(x)
+        y = cast() ceil(y)
     }
 }
