@@ -18,7 +18,7 @@ func __concreteAlias(type1: typeinfo)->typeinfo
     return __concreteAlias(typeAlias.rawType)
 }
 
-func @cancast(toType, fromType: const *Swag.TypeInfoStruct)->bool
+func @is(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
     if @typecmp(toType, fromType, .Strict):
         return true

@@ -211,7 +211,7 @@ void LanguageSpec::setupNames()
     name_at_itftableof      = "@itftableof";
     name_at_strcmp          = "@stringcmp";
     name_at_typecmp         = "@typecmp";
-    name_at_cancast         = "@cancast";
+    name_at_is              = "@is";
     name_at_dbgalloc        = "@dbgalloc";
     name_at_sysalloc        = "@sysalloc";
     name_at_rtflags         = "@rtflags";
@@ -416,7 +416,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@location", TokenId::IntrinsicLocation);
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
-    keywords.add("@cancast", TokenId::IntrinsicCanCast);
+    keywords.add("@is", TokenId::IntrinsicIs);
     keywords.add("@getcontext", TokenId::IntrinsicGetContext);
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);
     keywords.add("@args", TokenId::IntrinsicArguments);

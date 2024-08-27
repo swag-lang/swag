@@ -517,12 +517,12 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, child2);
             break;
         }
-        case TokenId::IntrinsicCanCast:
+        case TokenId::IntrinsicIs:
         {
             auto child0            = callParams->firstChild();
             auto child1            = callParams->secondChild();
             node->resultRegisterRc = reserveRegisterRC(context);
-            EMIT_INST3(context, ByteCodeOp::IntrinsicCanCast, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicIs, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;

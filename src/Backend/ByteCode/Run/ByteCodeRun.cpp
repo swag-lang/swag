@@ -2962,9 +2962,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             localCall(context, bc, 3, ip->d.u32);
             break;
         }
-        case ByteCodeOp::IntrinsicCanCast:
+        case ByteCodeOp::IntrinsicIs:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_cancast);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_is);
             context->push(registersRC[ip->b.u32].pointer);
             context->push(registersRC[ip->a.u32].pointer);
             localCall(context, bc, 2, ip->c.u32);
