@@ -498,7 +498,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">using</span>
 <span class="SKwd">with</span>
 <span class="SKwd">cast</span>
-<span class="SKwd">acast</span>
+<span class="SKwd">cast</span>()
 <span class="SKwd">dref</span>
 <span class="SKwd">retval</span>
 <span class="SKwd">try</span>
@@ -1560,7 +1560,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_007_cast_swg">Cast</h3><h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Explicit Cast with <span class="code-inline">cast</span> </h4>
-<p>Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the <span class="code-inline">cast(type)</span> function, which transforms the value into the specified type. </p>
+<p>Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the <span class="code-inline">cast(type) value</span> function, which transforms the value into the specified type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// 'x' is initialized as a floating-point number (f32 by default)</span>
@@ -1572,12 +1572,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)                            <span class="SCmt">// The floating-point value 1.0 is cast to the integer value 1</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Automatic Cast with <span class="code-inline">acast</span> </h4>
-<p><span class="code-inline">acast</span> stands for <span class="code-inline">automatic cast</span>, allowing the compiler to automatically determine and perform the cast to match the type on the left-hand side of the assignment. </p>
+<h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Automatic Cast with <span class="code-inline">cast()</span> </h4>
+<p>A <span class="code-inline">cast()</span> without an expression stands for <span class="code-inline">automatic cast</span>, allowing the compiler to automatically determine and perform the cast to match the type on the left-hand side of the assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">acast</span> x                       <span class="SCmt">// Automatically cast 'x' to 's32'</span>
+    <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>() x                       <span class="SCmt">// Automatically cast 'x' to 's32'</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
@@ -3628,7 +3628,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_005_switch_swg">Switch Statement with Type Guard and Variable Binding </h4>
-<p>You can use the <span class="code-inline">var</span> keyword after the case value to bind the matched value to a variable, which can then be used within the corresponding case block. Additionally, you can apply conditional checks directly within the case using the <span class="code-inline">where</span> clause to further refine the matching logic. </p>
+<p>You can declare a variable with the <span class="code-inline">var</span> keyword before the case value to bind the matched value to a variable, which can then be used within the corresponding case block. Additionally, you can apply conditional checks directly within the case using the <span class="code-inline">where</span> clause to further refine the matching logic. </p>
 <p>The switch statement implicitly checks the type of the variable <span class="code-inline">x</span> using a type guard (<span class="code-inline">@kindof</span>), allowing for more precise case matching based on the variable's runtime type. </p>
 <p>Key Features: </p>
 <ol>
@@ -3645,7 +3645,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span>:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)
         <span class="SLgc">break</span>    
 
@@ -3661,11 +3661,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)                     <span class="SCmt">// Asserts that `str` is equal to "value"</span>
         <span class="SLgc">break</span>   
 
-    <span class="SLgc">case</span> <span class="STpe">string</span> <span class="SKwd">var</span> str <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"not_a_value"</span>)               <span class="SCmt">// Asserts that `str` is equal to "not_a_value"</span>
         <span class="SLgc">break</span>     
 
@@ -8751,7 +8751,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 26-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 27-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
