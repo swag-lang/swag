@@ -6,7 +6,7 @@
     var g = 0
     switch v
     {
-    case let fn: #type {x: s32, y: s32}:
+    case let fn: {x: s32, y: s32}:
         g = 1//@print(fn.x, " ", fn.y)
         break
     }

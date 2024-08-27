@@ -231,7 +231,10 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdWhere))
             {
                 AstNode* expression;
-                SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
+                if (!caseNode->matchVarName.text.empty())
+                    SWAG_CHECK(doTypeExpression(caseNode, EXPR_FLAG_NONE, &expression));
+                else
+                    SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
 
                 // Match name. Only one value is possible
                 if (!caseNode->matchVarName.text.empty())
@@ -308,24 +311,11 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             varDecl->assignment = castNode;
 
             const auto front = caseNode->expressions.front();
-            if (front->is(AstNodeKind::IdentifierRef))
-            {
-                const auto castType  = Ast::newTypeExpression(this, castNode);
-                castType->identifier = Ast::newIdentifierRef(front->token.text, this, castType);
-            }
-            else if (front->is(AstNodeKind::TypeExpression))
-            {
-                CloneContext cxt;
-                cxt.parent = castNode;
-                front->clone(cxt);
-            }
-            else
-            {
-                Diagnostic err{sourceFile, caseNode->matchVarName, toErr(Err0772)};
-                err.addNote(front, toNte(Nte0220));
-                return context->report(err);
-            }
-
+            SWAG_ASSERT(front->is(AstNodeKind::TypeExpression));
+            CloneContext cxt;
+            cxt.parent = castNode;
+            front->clone(cxt);
+            
             Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
             Ast::removeFromParent(varDecl);
             Ast::addChildFront(statement, varDecl);
