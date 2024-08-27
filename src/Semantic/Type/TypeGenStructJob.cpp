@@ -160,6 +160,33 @@ bool TypeGenStructJob::computeStruct()
         }
     }
 
+    // Fields with using
+    concreteType->usingFields.buffer = nullptr;
+    concreteType->usingFields.count  = 0;
+    if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE))
+    {
+        Vector<TypeInfoParam*> usingFields;
+        for (uint32_t param = 0; param < concreteType->fields.count; param++)
+        {
+            if (realType->fields[param]->flags.has(TYPEINFOPARAM_HAS_USING))
+                usingFields.push_back(realType->fields[param]);
+        }
+
+        concreteType->usingFields.count = usingFields.size();
+        if (concreteType->usingFields.count)
+        {
+            uint32_t   storageArray;
+            const auto count     = static_cast<uint32_t>(concreteType->usingFields.count * sizeof(ExportedTypeValue));
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->usingFields.buffer, storageArray);
+            const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
+            for (uint32_t param = 0; param < concreteType->usingFields.count; param++)
+            {
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, usingFields[param], genFlags));
+                storageArray += sizeof(ExportedTypeValue);
+            }
+        }
+    }
+
     // Methods
     concreteType->methods.buffer = nullptr;
     concreteType->methods.count  = 0;

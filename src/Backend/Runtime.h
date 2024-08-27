@@ -477,6 +477,7 @@ struct ExportedTypeInfoStruct
     ExportedTypeInfo* fromGeneric;
     SwagSlice         generics;
     SwagSlice         fields;
+    SwagSlice         usingFields;
     SwagSlice         methods;
     SwagSlice         interfaces;
     SwagSlice         attributes;

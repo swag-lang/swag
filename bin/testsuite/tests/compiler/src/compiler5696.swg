@@ -29,9 +29,9 @@ func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
     if @typecmp(toType, fromType, .Strict):
         return true
 
-    foreach ft in fromType.fields
+    foreach ft in fromType.usingFields
     {
-        if ft.flags & .HasUsing and can(toType, cast(const *Swag.TypeInfoStruct) ft.pointedType):
+        if can(toType, cast(const *Swag.TypeInfoStruct) ft.pointedType):
             return true
     }
 

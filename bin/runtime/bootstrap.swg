@@ -595,6 +595,7 @@ namespace Swag
         fromGeneric:     const *TypeInfo          // If it comes from a generic instantiation, this is the original generic struct
         generics:        const [..] TypeValue     // Generic parameters
         fields:          const [..] TypeValue     // All the fields
+        usingFields:     const [..] TypeValue     // All the fields marked with 'using'
         methods:         const [..] TypeValue     // All the methods, if exported
         interfaces:      const [..] TypeValue     // All the interfaces
         attributes:      const [..] Attribute     // All the attributes
