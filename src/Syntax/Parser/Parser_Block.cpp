@@ -298,16 +298,19 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         // Declare the match variable and make a cast
         if (!caseNode->matchVarName.text.empty())
         {
-            const auto varDecl  = Ast::newVarDecl(caseNode->matchVarName.text, this, statement);
-            const auto castNode = Ast::newNode<AstCast>(AstNodeKind::Cast, this, varDecl);
-            varDecl->flags.add(AST_GENERATED);
+            const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, statement);
+            varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_LET);
+            varDecl->addAstFlag(AST_GENERATED);
+
+            const auto castNode   = Ast::newNode<AstCast>(AstNodeKind::Cast, this, varDecl);
             castNode->semanticFct = Semantic::resolveExplicitCast;
-            varDecl->assignment   = castNode;
-            const auto front      = caseNode->expressions.front();
+            castNode->addSpecFlag(AstCast::SPEC_FLAG_PATTERN_MATCH);
+            varDecl->assignment = castNode;
+
+            const auto front = caseNode->expressions.front();
             if (front->is(AstNodeKind::IdentifierRef))
             {
-                const auto castType = Ast::newTypeExpression(this, castNode);
-                castType->typeFlags.add(TYPEFLAG_IS_PTR);
+                const auto castType  = Ast::newTypeExpression(this, castNode);
                 castType->identifier = Ast::newIdentifierRef(front->token.text, this, castType);
             }
             else if (front->is(AstNodeKind::TypeExpression))

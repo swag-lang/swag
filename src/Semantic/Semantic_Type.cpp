@@ -702,7 +702,6 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off)
 bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
@@ -734,16 +733,22 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
         }
     }
 
+    // A pattern matching will only cast to a value. So if we want to cast an interface to a struct, then
+    // in fact we want to cast an interface to a pointer to a struct
+    auto castTo = typeNode->typeInfo;
+    if (castTo->isStruct() && node->hasSpecFlag(AstCast::SPEC_FLAG_PATTERN_MATCH) && exprTypeInfo->isInterface())
+        castTo = g_TypeMgr->makePointerTo(castTo);
+
     CastFlags castFlags = CAST_FLAG_EXPLICIT | CAST_FLAG_ACCEPT_PENDING;
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
         castFlags.add(CAST_FLAG_FORCE_UN_CONST);
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_UNSAFE))
         castFlags.add(CAST_FLAG_CAN_OVERFLOW);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, castTo, nullptr, exprNode, castFlags));
     YIELD();
 
-    node->typeInfo       = typeNode->typeInfo;
-    node->toCastTypeInfo = typeNode->typeInfo;
+    node->typeInfo       = castTo;
+    node->toCastTypeInfo = castTo;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
     node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
@@ -762,7 +767,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     {
         if (!node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
         {
-            exprNode->typeInfo       = exprNode->typeInfoCast;
+            exprNode->typeInfo     = exprNode->typeInfoCast;
             exprNode->typeInfoCast = nullptr;
         }
 
