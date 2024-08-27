@@ -724,7 +724,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     }
 
     // Same when casting back an interface to a pointer to struct
-    if (typeNode->typeInfo->isPointerTo(TypeInfoKind::Struct))
+    if (typeNode->typeInfo->isStruct() || typeNode->typeInfo->isPointerTo(TypeInfoKind::Struct))
     {
         if (exprTypeInfo->isInterface())
         {
