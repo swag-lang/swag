@@ -78,7 +78,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|with|cast|acast|dref|moveref|retval|try|catch|trycatch|assume|throw|discard)\\b"
+          "match": "\\b(using|with|cast|dref|moveref|retval|try|catch|trycatch|assume|throw|discard)\\b"
         }
       ]
     },
