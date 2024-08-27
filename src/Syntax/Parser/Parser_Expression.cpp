@@ -569,7 +569,14 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
             node->token       = tokenParse.token;
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.token.isNot(prevTokenParse.token.id), error(tokenParse, formErr(Err0060, tokenParse.cstr())));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdDeRef), error(tokenParse, formErr(Err0203, prevTokenParse.cstr(), prevTokenParse.cstr())));
+
+            if (tokenParse.is(TokenId::KwdDeRef))
+            {
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0203, prevTokenParse.cstr())};
+                err.addNote(formNte(Nte0221, prevTokenParse.cstr()));
+                return context->report(err);
+            }
+            
             return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
         }
     }

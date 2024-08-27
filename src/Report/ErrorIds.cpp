@@ -342,7 +342,7 @@ void initErrors()
     SWAG_ERROR(Err0200, "invalid escape format                             $ expected 4 hexadecimal digits after the [['\\u']] escape code                                                                            $ ");
     SWAG_ERROR(Err0201, "invalid escape format                             $ expected 8 hexadecimal digits after the [['\\U']] escape code                                                                            $ ");
     SWAG_ERROR(Err0202, "invalid expression                                $ cannot use the compiler instruction [[%s]] as an expression                                                                              $ this compiler instruction can only be used as a statement");
-    SWAG_ERROR(Err0203, "invalid expression                                $ expected an expression after [[%s]], found $$TKN$$ instead                                                                               $ consider adding an [[(]] after [[%s]] to start an expression");
+    SWAG_ERROR(Err0203, "invalid expression                                $ expected an expression after [[%s]], found $$TKN$$ instead                                                                               $ ");
     SWAG_ERROR(Err0204, "invalid expression                                $ expected an expression, found $$TKN$$ instead                                                                                            $ ");
     SWAG_ERROR(Err0205, "invalid expression                                $ expected an expression, found a type instead                                                                                             $ ");
     SWAG_ERROR(Err0206, "invalid function call                             $ cannot call [[%s]] because the function is declared but not defined                                                                      $ ");
@@ -1140,7 +1140,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) cannot have an explicit type");
     SWAG_ERROR(Nte0220, "the [[case]] value should be an identifier or a type");
-    SWAG_ERROR(Nte0221, nullptr);
+    SWAG_ERROR(Nte0221, "consider adding an [[(]] after [[%s]] to start an expression");
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);
