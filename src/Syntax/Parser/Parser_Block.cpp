@@ -212,7 +212,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             switchNode->cases.push_back(caseNode);
             caseNode->caseIndex = switchNode->cases.size() - 1;
 
-            if (tokenParse.is(TokenId::KwdVar))
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, toErr(Err0773)));
+            if (tokenParse.is(TokenId::KwdLet))
             {
                 caseNode->allocateExtension(ExtensionKind::Semantic);
                 caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;

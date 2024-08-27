@@ -1,4 +1,4 @@
-//#global testerror "Err0768"
+#global testerror "Err0773"
 
 struct BaseEvent
 {
@@ -26,7 +26,7 @@ func toto(x: IEvent)
     var g = 0
     switch x
     {
-    case let ptr1: MouseEvent where ptr1.x == 66:
+    case var ptr1: MouseEvent where ptr1.x == 66:
         g = ptr1.x
     }
 
