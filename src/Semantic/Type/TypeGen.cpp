@@ -474,6 +474,12 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         }
     }
 
+    // Flags
+    if (param->flags.has(TYPEINFOPARAM_AUTO_NAME))
+        concreteType->flags |= static_cast<uint32_t>(ExportedTypeValueFlags::AutoName);
+    if (param->flags.has(TYPEINFOPARAM_HAS_USING))
+        concreteType->flags |= static_cast<uint32_t>(ExportedTypeValueFlags::HasUsing);
+
     return true;
 }
 

@@ -424,6 +424,13 @@ struct ExportedAttribute
     SwagSlice         params;
 };
 
+enum class ExportedTypeValueFlags : uint32_t
+{
+    Zero     = 0x00000000,
+    AutoName = 0x00000001,
+    HasUsing = 0x00000002,
+};
+
 struct ExportedTypeValue
 {
     SwagSlice         name;
@@ -432,6 +439,8 @@ struct ExportedTypeValue
     SwagSlice         attributes;
     uint32_t          offsetOf;
     uint32_t          crc32;
+    uint32_t          flags;
+    uint32_t          padding;
 };
 
 struct ExportedTypeInfoNative

@@ -533,6 +533,14 @@ namespace Swag
         params:     const [..] AttributeParam     // Attribute parameters
     }
 
+    #[EnumFlags]
+    enum TypeValueFlags
+    {
+        Zero = 0
+        AutoName
+        HasUsing
+    }
+
     // Represents a value, like a function parameter or an enum value
     struct TypeValue
     {
@@ -542,6 +550,8 @@ namespace Swag
         attributes:      const [..] Attribute     // Associated attributes
         offset:          u32                      // Offset, in bytes
         crc32:           u32                      // Unique crc32
+        flags:           TypeValueFlags           // Associated flags
+        padding:         u32
     }
 
     // Will be available for all types

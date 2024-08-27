@@ -54,9 +54,9 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
             let field2 = type2S.fields[i]
 
             var namesAreEqual = false
-            if @countof(field1.name) > 4 and field1.name[0..3] == "item":
+            if field1.flags & .AutoName:
                 namesAreEqual = true
-            if @countof(field2.name) > 4 and field2.name[0..3] == "item":
+            if field2.flags & .AutoName:
                 namesAreEqual = true
 
             if !namesAreEqual and field1.name != field2.name:
