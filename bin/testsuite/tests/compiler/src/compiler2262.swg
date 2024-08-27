@@ -1,4 +1,4 @@
-public struct Evt
+public struct Evt2262
 {
     Params: struct
     {
@@ -19,4 +19,4 @@ public struct Evt
     }
 }
 
-#assert @sizeof(Evt) == 20
+#assert @sizeof(Evt2262) == 20

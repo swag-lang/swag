@@ -340,9 +340,10 @@ namespace
         // A more specific cast message ?
         if (addSpecificCastErr)
         {
-            Utf8         castMsg, castHint;
-            Vector<Utf8> castRemarks;
-            TypeManager::getCastErrorMsg(castMsg, castHint, castRemarks, bi.castErrorToType, bi.castErrorFromType, callParamNode, bi.castErrorFlags, bi.castErrorType);
+            Utf8                      castMsg, castHint;
+            Vector<Utf8>              castRemarks;
+            Vector<const Diagnostic*> notes;
+            TypeManager::getCastErrorMsg(castMsg, castHint, castRemarks, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, notes);
             Diagnostic::removeErrorId(castMsg);
 
             if (!castMsg.empty())

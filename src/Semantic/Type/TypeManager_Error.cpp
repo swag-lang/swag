@@ -119,14 +119,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8&         msg,
-                                  Utf8&         hint,
-                                  Vector<Utf8>& remarks,
-                                  TypeInfo*     toType,
-                                  TypeInfo*     fromType,
-                                  AstNode* /*fromNode*/,
-                                  CastFlags     castFlags,
-                                  CastErrorType castError)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, CastFlags castFlags, CastErrorType castError, Vector<const Diagnostic*>& notes)
 {
     msg.clear();
     hint.clear();
@@ -154,12 +147,21 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
         if (fromType->isPointerTo(TypeInfoKind::Struct))
-        {
-            hint     = Diagnostic::isType(fromType);
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
-        }
 
         msg = formErr(Err0225, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        notes.push_back(Diagnostic::note(formNte(Nte0220, fromType->getDisplayNameC(), toType->getDisplayNameC())));
+    }
+    else if (toType->isPointerTo(TypeInfoKind::Struct) && fromType->isInterface())
+    {
+        msg    = formErr(Err0225, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        toType = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer)->pointedType;
+        notes.push_back(Diagnostic::note(formNte(Nte0220, toType->getDisplayNameC(), fromType->getDisplayNameC())));
+    }
+    else if (toType->isStruct() && fromType->isInterface())
+    {
+        hint = Diagnostic::isType(fromType);
+        msg  = toErr(Err0563);
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
@@ -177,11 +179,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         hint = toNte(Nte0017);
         msg  = toErr(Err0564);
     }
-    else if (toType->isStruct() && fromType->isInterface())
-    {
-        hint = Diagnostic::isType(fromType);
-        msg  = toErr(Err0563);
-    }
+
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
@@ -263,7 +261,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         Utf8                      hint, msg;
         Vector<const Diagnostic*> notes;
         Vector<Utf8>              remarks;
-        getCastErrorMsg(msg, hint, remarks, toType, fromType, fromNode, castFlags, castErrorType);
+        getCastErrorMsg(msg, hint, remarks, toType, fromType, castFlags, castErrorType, notes);
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
