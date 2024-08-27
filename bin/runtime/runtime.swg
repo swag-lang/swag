@@ -43,7 +43,6 @@ func __is(toType, fromType: const *Swag.TypeInfoStruct)->{yes: bool, offset: u32
     return {false, 0}
 }
 
-//#[Swag.PrintBc]
 func @is(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
     let (yes, ?) = __is(toType, fromType)

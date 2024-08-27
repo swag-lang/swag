@@ -2928,6 +2928,155 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
     }
 }
 
+void ByteCodeOptimizer::reduceStack2(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip[0].op == ByteCodeOp::SetAtStackPointer8 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer16 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer32 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer64)
+    {
+        if (ip->flags.has(BCI_IMM_B))
+            return;
+
+        auto tst = ip + 1;
+        while (tst->op != ByteCodeOp::End)
+        {
+            if (tst->flags.has(BCI_START_STMT))
+                return;
+
+            if (ip[0].op == ByteCodeOp::SetAtStackPointer64 && tst->op == ByteCodeOp::GetFromStack64)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    setNop(context, tst);
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer64 && tst->op == ByteCodeOp::GetFromStack32)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    SET_OP(tst, ByteCodeOp::ClearMaskU64);
+                    tst->b.u64 = 0xFFFFFFFF;
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer64 && tst->op == ByteCodeOp::GetFromStack16)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    SET_OP(tst, ByteCodeOp::ClearMaskU64);
+                    tst->b.u64 = 0xFFFF;
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer64 && tst->op == ByteCodeOp::GetFromStack8)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    SET_OP(tst, ByteCodeOp::ClearMaskU64);
+                    tst->b.u64 = 0xFF;
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer32 && tst->op == ByteCodeOp::GetFromStack32)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    setNop(context, tst);
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer16 && tst->op == ByteCodeOp::GetFromStack16)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    setNop(context, tst);
+                    return;
+                }
+            }
+            else if (ip[0].op == ByteCodeOp::SetAtStackPointer8 && tst->op == ByteCodeOp::GetFromStack8)
+            {
+                if (tst->a.u32 == ip->b.u32 && tst->b.u32 == ip->a.u32)
+                {
+                    setNop(context, tst);
+                    return;
+                }
+            }            
+            else
+            {
+                switch (tst->op)
+                {
+                    case ByteCodeOp::GetFromStack8:
+                    case ByteCodeOp::GetFromStack16:
+                    case ByteCodeOp::GetFromStack32:
+                    case ByteCodeOp::GetFromStack64:
+                    case ByteCodeOp::DeRef8:
+                    case ByteCodeOp::DeRef16:
+                    case ByteCodeOp::DeRef32:
+                    case ByteCodeOp::DeRef64:
+                    case ByteCodeOp::IncSPPostCall:
+                    case ByteCodeOp::MakeStackPointer:
+                    case ByteCodeOp::MakeConstantSegPointer:
+                    case ByteCodeOp::MakeBssSegPointer:
+                    case ByteCodeOp::MakeMutableSegPointer:
+                        break;
+                    default:
+                        return;
+                }
+
+                if (ByteCode::hasWriteRefToReg(tst, ip->b.u32))
+                    return;
+            }
+
+            tst++;
+        }
+    }
+}
+
+void ByteCodeOptimizer::reduceStack3(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip[0].op == ByteCodeOp::SetAtStackPointer8 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer16 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer32 ||
+        ip[0].op == ByteCodeOp::SetAtStackPointer64)
+    {
+        auto tst = ip + 1;
+        while (tst->op != ByteCodeOp::End)
+        {
+            if (tst->flags.has(BCI_START_STMT))
+                return;
+
+            switch (tst->op)
+            {
+                case ByteCodeOp::IncSPPostCall:
+                case ByteCodeOp::MakeStackPointer:
+                case ByteCodeOp::MakeConstantSegPointer:
+                case ByteCodeOp::MakeBssSegPointer:
+                case ByteCodeOp::MakeMutableSegPointer:
+                case ByteCodeOp::ClearMaskU32:
+                case ByteCodeOp::ClearMaskU64:
+                case ByteCodeOp::CopyRAtoRRRet:
+                case ByteCodeOp::CopyRAtoRR:
+                case ByteCodeOp::CopyRAtoRT:
+                case ByteCodeOp::ClearRA:
+                case ByteCodeOp::GetParam8:
+                case ByteCodeOp::GetParam16:
+                case ByteCodeOp::GetParam32:
+                case ByteCodeOp::GetParam64:
+                case ByteCodeOp::Ret:
+                    break;
+                default:
+                    return;
+            }
+
+            tst++;
+        }
+
+        setNop(context, ip);
+    }
+}
+
 void ByteCodeOptimizer::reduceStack1(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip[0].op)
@@ -6966,6 +7115,8 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceFunc(context, ip);
         reduceStack(context, ip);
         reduceStack1(context, ip);
+        reduceStack2(context, ip);
+        reduceStack3(context, ip);
         reduceIncPtr(context, ip);
         reduceSetAt(context, ip);
         reduceCast(context, ip);
