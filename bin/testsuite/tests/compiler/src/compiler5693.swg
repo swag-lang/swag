@@ -1,0 +1,15 @@
+//#global testerror "Saf0001"
+
+#[Swag.Safety("", true)]
+#test
+{
+    let v: any = {4, 5}
+
+    switch v
+    {
+    case let fn: {x: s32, y: s32}:
+        @assert(fn.x == 4)
+        @assert(fn.y == 5)
+        break
+    }
+}
