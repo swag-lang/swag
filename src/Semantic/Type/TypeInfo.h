@@ -464,6 +464,7 @@ struct TypeInfoStruct final : TypeInfo
     bool           canRawCopy() const;
     bool           isPlainOldData() const;
     void           flattenUsingFields();
+    void           collectUsingFields(VectorNative<TypeInfoParam*>& result);
 
     VectorNative<TypeInfoParam*>          genericParameters;
     VectorNative<TypeInfo*>               deducedGenericParameters;

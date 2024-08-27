@@ -990,6 +990,19 @@ void TypeInfoStruct::flattenUsingFields()
         flatten(flattenFields, p);
 }
 
+void TypeInfoStruct::collectUsingFields(VectorNative<TypeInfoParam*>& result)
+{
+    for (const auto p : fields)
+    {
+        if (p->flags.has(TYPEINFOPARAM_HAS_USING))
+        {
+            result.push_back(p);
+            const auto ptrStruct = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
+            ptrStruct->collectUsingFields(result);
+        }
+    }
+}
+
 TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);
