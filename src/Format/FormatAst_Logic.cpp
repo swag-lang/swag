@@ -176,7 +176,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 
             if (!c->matchVarName.text.empty())
             {
-                concat->addString("var");
+                concat->addString("let");
                 concat->addBlank();
                 concat->addString(c->matchVarName.text);
                 concat->addChar(':');
