@@ -25,8 +25,20 @@ func @cancast(toType, fromType: const *Swag.TypeInfoStruct)->bool
                 
     foreach ft in fromType.usingFields
     {
-        if ft.pointedType.kind == .Struct and @typecmp(toType, cast(const *Swag.TypeInfoStruct) ft.pointedType, .Strict):
-            return true
+        if ft.pointedType.kind == .Struct
+        {
+            let typeStruct = cast(const *Swag.TypeInfoStruct) ft.pointedType
+            if @typecmp(toType, typeStruct, .Strict):
+                return true
+        }
+        elif ft.pointedType.kind == .Pointer
+        {
+            let ptr = cast(const *Swag.TypeInfoPointer) ft.pointedType
+            let typeStruct = cast(const *Swag.TypeInfoStruct) ptr.pointedType
+            if @typecmp(toType, typeStruct, .Strict):
+                return true            
+        }
+
     }
 
     return false
