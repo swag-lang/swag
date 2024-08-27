@@ -345,6 +345,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::IntrinsicStrCmp:
         case TokenId::IntrinsicStringCmp:
         case TokenId::IntrinsicTypeCmp:
+        case TokenId::IntrinsicCanCast:
         case TokenId::IntrinsicAtomicAdd:
         case TokenId::IntrinsicAtomicAnd:
         case TokenId::IntrinsicAtomicOr:

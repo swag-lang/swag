@@ -789,6 +789,7 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicItfTableOf:
+                case ByteCodeOp::IntrinsicCanCast:
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     rc->kind = ValueKind::Unknown;
                     break;

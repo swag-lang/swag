@@ -209,6 +209,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @stringcmp
 @stringof
 @sysalloc
+@cancast
 @typecmp
 @typeof
 ```

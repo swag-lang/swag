@@ -994,11 +994,21 @@ void TypeInfoStruct::collectUsingFields(VectorNative<TypeInfoParam*>& result)
 {
     for (const auto p : fields)
     {
-        if (p->flags.has(TYPEINFOPARAM_HAS_USING))
+        if (!p->flags.has(TYPEINFOPARAM_HAS_USING))
+            continue;
+
+        if (p->typeInfo->isStruct())
         {
-            result.push_back(p);
             const auto ptrStruct = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             ptrStruct->collectUsingFields(result);
+            result.push_back(p);
+        }
+        else if (p->typeInfo->isPointerTo(TypeInfoKind::Struct))
+        {
+            const auto ptrPointer = castTypeInfo<TypeInfoPointer>(p->typeInfo, TypeInfoKind::Pointer);
+            const auto ptrStruct  = castTypeInfo<TypeInfoStruct>(ptrPointer->pointedType, TypeInfoKind::Struct);
+            ptrStruct->collectUsingFields(result);
+            result.push_back(p);
         }
     }
 }

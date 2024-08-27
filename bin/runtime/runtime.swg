@@ -18,6 +18,20 @@ func __concreteAlias(type1: typeinfo)->typeinfo
     return __concreteAlias(typeAlias.rawType)
 }
 
+func @cancast(toType, fromType: const *Swag.TypeInfoStruct)->bool
+{
+    if @typecmp(toType, fromType, .Strict):
+        return true
+                
+    foreach ft in fromType.usingFields
+    {
+        if ft.pointedType.kind == .Struct and @typecmp(toType, cast(const *Swag.TypeInfoStruct) ft.pointedType, .Strict):
+            return true
+    }
+
+    return false
+}
+
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
     if cast(const *u8) typeA == cast(const *u8) typeB:
