@@ -223,7 +223,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0767)));
                 caseNode->matchVarName = tokenParse.token;
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0768)));
+                SWAG_VERIFY(tokenParse.is(TokenId::KwdAs), error(tokenParse, toErr(Err0768)));
                 SWAG_CHECK(eatToken());
             }
 

@@ -331,7 +331,7 @@ The `@assert` function is then used to ensure that the value of `str` is equal t
     // Switch statement based on the underlying type of 'x'.
     switch x    // Implicitly checks the type of `x` using `@kindof`.
     {
-    case let str: string:    // 'str' will contain the value if 'x' is a string
+    case let str as string:    // 'str' will contain the value if 'x' is a string
         @assert(str == "value")
         break    
 
@@ -353,11 +353,11 @@ whether `x` is a string and checks additional conditions specified in each case.
 
     switch x    // Implicitly checks the type of `x` using `@kindof`.
     {
-    case let str: string where str == "value":       // Matches if `x` is a string and equals "value"
+    case let str as string where str == "value":       // Matches if `x` is a string and equals "value"
         @assert(str == "value")                     // Asserts that `str` is equal to "value"
         break   
 
-    case let str: string where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
+    case let str as string where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
         @assert(str == "not_a_value")               // Asserts that `str` is equal to "not_a_value"
         break     
 
