@@ -22,7 +22,7 @@ func __is(toType, fromType: const *Swag.TypeInfoStruct)->{offset: u32, yes: bool
 {
     if @typecmp(toType, fromType, .Strict):
         return {0, true}
-                
+
     foreach ft in fromType.usingFields
     {
         if ft.pointedType.kind == .Struct

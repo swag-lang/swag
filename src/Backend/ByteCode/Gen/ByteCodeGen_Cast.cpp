@@ -870,10 +870,18 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             return true;
         }
 
+        if(fromTypeInfo->isInterface())
+        {
+            emitSafetyCastInterface(context, exprNode, typeInfo);
+            truncRegisterRC(context, exprNode->resultRegisterRc, 1);
+            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            exprNode->typeInfoCast = nullptr;
+            return true;
+        }
+
         if (fromTypeInfo->isArray() ||
             fromTypeInfo->isPointer() ||
             fromTypeInfo->isStruct() ||
-            fromTypeInfo->isInterface() ||
             fromTypeInfo->isSlice() ||
             fromTypeInfo->isLambdaClosure() ||
             fromTypeInfo->numRegisters() == 1)

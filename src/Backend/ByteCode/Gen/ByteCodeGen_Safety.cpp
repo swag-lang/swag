@@ -507,6 +507,40 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
     freeRegisterRC(context, r1);
 }
 
+void ByteCodeGen::emitSafetyCastInterface(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType)
+{
+    if (!mustEmitSafety(context, SAFETY_ANY))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+
+    const auto r0 = reserveRegisterRC(context);
+    const auto r1 = reserveRegisterRC(context);
+    const auto r2 = reserveRegisterRC(context);
+
+    // :AnyTypeSegment
+    SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
+    const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
+    const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);
+    emitMakeSegPointer(context, anyTypeSegment, static_cast<uint32_t>(anyTypeOffset), r0);
+
+    // Be sure that interface is not null
+    emitSafetyNotZero(context, exprNode->resultRegisterRc[1], 64, safetyMsg(SafetyMsg::CastAnyNull, toType));
+
+    // Get the real type
+    const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, exprNode->resultRegisterRc[1], 0, r2);
+    inst->b.u64     = sizeof(void*);
+    inst->addFlag(BCI_IMM_B);
+    EMIT_INST2(context, ByteCodeOp::DeRef64, r2, r2);
+    
+    EMIT_INST3(context, ByteCodeOp::IntrinsicIs, r0, r2, r1);
+    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
+
+    freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
+    freeRegisterRC(context, r2);
+}
+
 void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
