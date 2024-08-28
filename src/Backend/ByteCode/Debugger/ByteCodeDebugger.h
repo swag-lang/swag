@@ -122,8 +122,8 @@ struct ByteCodeDebugger
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 
-    static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
-    static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent);
+    static void appendTypedValue(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent);
+    static void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 

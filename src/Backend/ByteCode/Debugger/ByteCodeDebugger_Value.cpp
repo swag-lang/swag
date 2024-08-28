@@ -232,7 +232,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     }
 }
 
-void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent)
+void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     auto typeInfo = res.type->getConcreteAlias();
     auto addr     = res.addr;
@@ -240,7 +240,13 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (!addr && res.value)
     {
         if (res.value->storageSegment && res.value->storageOffset != UINT32_MAX)
-            addr = res.value->storageSegment->address(res.value->storageOffset);
+        {
+            res.addr = res.value->storageSegment->address(res.value->storageOffset);
+            if (typeInfo->isStruct())
+                addr = res.addr;
+            else
+                addr = &res.addr;
+        }
         else if (typeInfo->isStruct())
             addr = res.value->reg.pointer;
         else
@@ -534,7 +540,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     str += "?";
 }
 
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, uint32_t level, uint32_t indent)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     SWAG_TRY
     {
