@@ -789,13 +789,13 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicItfTableOf:
-                case ByteCodeOp::IntrinsicIs:
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     rc->kind = ValueKind::Unknown;
                     break;
 
                 case ByteCodeOp::IntrinsicTypeCmp:
                 case ByteCodeOp::IntrinsicStringCmp:
+                case ByteCodeOp::IntrinsicIs:
                 case ByteCodeOp::IntrinsicAs:
                     SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
                     rd->kind = ValueKind::Unknown;

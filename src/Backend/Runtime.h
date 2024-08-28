@@ -567,6 +567,8 @@ static constexpr uint64_t SWAG_LAMBDA_BC_MARKER     = 1ULL << SWAG_LAMBDA_BC_MAR
 constexpr uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
 constexpr uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
 
+constexpr uint32_t SWAG_IS_FLAG_CAST_CHECK = 0x00000001;
+
 inline void setSlice(SwagSlice& slice, const char* value)
 {
     slice.buffer = static_cast<void*>(const_cast<char*>(value));

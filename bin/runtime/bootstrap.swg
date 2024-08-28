@@ -443,6 +443,13 @@ namespace Swag
         CastAny = 1
     }
 
+    #[EnumFlags]
+    enum IsFlags
+    {
+        Zero  = 0
+        CastCheck = 1
+    }    
+
     // The kind of the typeinfo.
     enum TypeInfoKind: u8
     {

@@ -869,8 +869,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             case ByteCodeOp::IntrinsicIs:
             {
-                auto result = emitCall(buildParameters, g_LangSpec->name_at_is, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
-                builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->c.u32));
+                auto result = emitCall(buildParameters, g_LangSpec->name_at_is, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+                builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
                 break;
             }
             case ByteCodeOp::IntrinsicAs:

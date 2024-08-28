@@ -18,7 +18,7 @@ func __concreteAlias(type1: typeinfo)->typeinfo
     return __concreteAlias(typeAlias.rawType)
 }
 
-func __is(toType, fromType: const *Swag.TypeInfoStruct)->{offset: u32, yes: bool}
+func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
 {
     if @typecmp(toType, fromType, .Strict):
         return {0, true}
@@ -43,7 +43,7 @@ func __is(toType, fromType: const *Swag.TypeInfoStruct)->{offset: u32, yes: bool
     return {0, false}
 }
 
-func @as(toType, fromType: const *Swag.TypeInfoStruct, ptr: *void)->*void
+func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->*void
 {
     let (offset, yes) = __is(toType, fromType)
     if !yes:
@@ -51,9 +51,11 @@ func @as(toType, fromType: const *Swag.TypeInfoStruct, ptr: *void)->*void
     return cast(^u8) ptr + offset
 }
 
-func @is(toType, fromType: const *Swag.TypeInfoStruct)->bool
+func @is(toType, fromType: const *TypeInfoStruct, isFlags: IsFlags)->bool
 {
-    let (?, yes) = __is(toType, fromType)
+    let (offset, yes) = __is(toType, fromType)
+    if offset and isFlags & .CastCheck:
+        return false
     return yes
 }
 

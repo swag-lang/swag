@@ -26,9 +26,9 @@ impl IEvent for Evt3 {}
 
 func toto(v: IEvent)
 {
-    @assert(@is(Evt1, @kindof(v)) == false)
-    @assert(@is(Evt2, @kindof(v)) == true)
-    @assert(@is(Evt3, @kindof(v)) == true)
+    @assert(@is(Evt1, @kindof(v), .Zero) == false)
+    @assert(@is(Evt2, @kindof(v), .Zero) == true)
+    @assert(@is(Evt3, @kindof(v), .Zero) == true)
 }
 
 #test

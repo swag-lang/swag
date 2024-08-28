@@ -504,6 +504,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
     const auto rflags = reserveRegisterRC(context);
     const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
     inst->b.u64       = SWAG_COMPARE_CAST_ANY;
+
     EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRc[1], rflags, r1);
     freeRegisterRC(context, rflags);
     emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
@@ -533,17 +534,22 @@ void ByteCodeGen::emitSafetyCastInterface(ByteCodeGenContext* context, const Ast
     emitSafetyNotZero(context, exprNode->resultRegisterRc[1], 64, safetyMsg(SafetyMsg::CastInterfaceNull, toType));
 
     // Get the real type
-    const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, exprNode->resultRegisterRc[1], 0, r2);
-    inst->b.u64     = sizeof(void*);
+    auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, exprNode->resultRegisterRc[1], 0, r2);
+    inst->b.u64 = sizeof(void*);
     inst->addFlag(BCI_IMM_B);
     EMIT_INST2(context, ByteCodeOp::DeRef64, r2, r2);
 
-    EMIT_INST3(context, ByteCodeOp::IntrinsicIs, r0, r2, r1);
+    const auto rflags = reserveRegisterRC(context);
+    inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+    inst->b.u64       = SWAG_IS_FLAG_CAST_CHECK;
+
+    EMIT_INST4(context, ByteCodeOp::IntrinsicIs, r0, r2, rflags, r1);
     emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastInterface, toType));
 
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);
     freeRegisterRC(context, r2);
+    freeRegisterRC(context, rflags);
 }
 
 void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* node)
