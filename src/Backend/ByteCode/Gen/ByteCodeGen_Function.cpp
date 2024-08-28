@@ -526,6 +526,18 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;
+        }
+        case TokenId::IntrinsicAs:
+        {
+            auto child0            = callParams->firstChild();
+            auto child1            = callParams->secondChild();
+            auto child2            = callParams->children[2];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAs, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            freeRegisterRC(context, child2);
+            break;
         }        
         case TokenId::IntrinsicRtFlags:
         {

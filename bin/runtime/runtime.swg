@@ -18,10 +18,10 @@ func __concreteAlias(type1: typeinfo)->typeinfo
     return __concreteAlias(typeAlias.rawType)
 }
 
-func __is(toType, fromType: const *Swag.TypeInfoStruct)->{yes: bool, offset: u32}
+func __is(toType, fromType: const *Swag.TypeInfoStruct)->{offset: u32, yes: bool}
 {
     if @typecmp(toType, fromType, .Strict):
-        return {true, 0}
+        return {0, true}
                 
     foreach ft in fromType.usingFields
     {
@@ -29,23 +29,28 @@ func __is(toType, fromType: const *Swag.TypeInfoStruct)->{yes: bool, offset: u32
         {
             let typeStruct = cast(const *Swag.TypeInfoStruct) ft.pointedType
             if @typecmp(toType, typeStruct, .Strict):
-                return {true, ft.offset}
+                return {ft.offset, true}
         }
         elif ft.pointedType.kind == .Pointer
         {
             let ptr = cast(const *Swag.TypeInfoPointer) ft.pointedType
             let typeStruct = cast(const *Swag.TypeInfoStruct) ptr.pointedType
             if @typecmp(toType, typeStruct, .Strict):
-                return {true, ft.offset}      
+                return {ft.offset, true}      
         }
     }    
 
-    return {false, 0}
+    return {0, false}
+}
+
+func @as(_toType, _fromType: const *Swag.TypeInfoStruct, _ptr: *void)->*void
+{
+    return _ptr
 }
 
 func @is(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
-    let (yes, ?) = __is(toType, fromType)
+    let (?, yes) = __is(toType, fromType)
     return yes
 }
 

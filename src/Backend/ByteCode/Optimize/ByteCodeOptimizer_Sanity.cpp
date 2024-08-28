@@ -796,6 +796,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicTypeCmp:
                 case ByteCodeOp::IntrinsicStringCmp:
+                case ByteCodeOp::IntrinsicAs:
                     SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));
                     rd->kind = ValueKind::Unknown;
                     break;

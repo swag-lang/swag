@@ -238,6 +238,7 @@ struct LanguageSpec
     Utf8 name_at_strcmp;
     Utf8 name_at_typecmp;
     Utf8 name_at_is;
+    Utf8 name_at_as;
     Utf8 name_at_dbgalloc;
     Utf8 name_at_sysalloc;
     Utf8 name_at_rtflags;

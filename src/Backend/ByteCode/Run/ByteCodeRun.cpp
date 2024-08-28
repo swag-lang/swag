@@ -2969,6 +2969,15 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->a.u32].pointer);
             localCall(context, bc, 2, ip->c.u32);
             break;
+        }
+        case ByteCodeOp::IntrinsicAs:
+        {
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_as);
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->b.u32].pointer);
+            context->push(registersRC[ip->a.u32].pointer);
+            localCall(context, bc, 3, ip->d.u32);
+            break;
         }        
         case ByteCodeOp::CloneString:
         {
