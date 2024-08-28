@@ -657,6 +657,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@stringcmp</span>
 <span class="SItr">@stringof</span>
 <span class="SItr">@sysalloc</span>
+<span class="SItr">@is</span>
 <span class="SItr">@typecmp</span>
 <span class="SItr">@typeof</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Intrinsics from libc </h4>
@@ -3645,7 +3646,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span>:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span>:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)
         <span class="SLgc">break</span>    
 
@@ -3661,11 +3662,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)                     <span class="SCmt">// Asserts that `str` is equal to "value"</span>
         <span class="SLgc">break</span>   
 
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str: <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"not_a_value"</span>)               <span class="SCmt">// Asserts that `str` is equal to "not_a_value"</span>
         <span class="SLgc">break</span>     
 
@@ -7728,8 +7729,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     x &gt;&gt;= <span class="SNum">1</span>                                       <span class="SCmt">// x becomes 127 after right shift</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">127</span>)                             <span class="SCmt">// Assert that x is 127</span>
 }</span></div>
-<h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg"><span class="code-inline">any</span> Type Safety </h4>
-<div class="code-block"><span class="SAtr">#[Swag.Safety("any", true)]</span></div>
+<h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Dynamic Cast Type Safety </h4>
+<div class="code-block"><span class="SAtr">#[Swag.Safety("dyncast", true)]</span></div>
 <p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid, ensuring type safety  when working with dynamic types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7738,6 +7739,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// var z = cast(s32) x                        // This is invalid and will cause a panic</span>
     <span class="SCmt">// @assert(z == 0)</span>
 }</span></div>
+<p>Swag will also panic if casting from an interface to a pointer to struct that cannot be performed. </p>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Array Bounds Checking </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></div>
 <p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a  slice, or a string. </p>
@@ -8751,7 +8753,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 27-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 28-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
