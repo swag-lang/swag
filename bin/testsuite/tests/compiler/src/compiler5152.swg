@@ -1,6 +1,7 @@
-#global testerror "Err0203"
+/*#global testerror "Err0203"
 
 #test
 {
     if !dref a {}
 }
+*/

@@ -1145,7 +1145,7 @@ void initErrors()
     SWAG_ERROR(Nte0218, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) cannot have an explicit type");
     SWAG_ERROR(Nte0220, "the [[%s]] does not implement the [[%s]]");
-    SWAG_ERROR(Nte0221, "consider adding an [[(]] after [[%s]] to start an expression");
+    SWAG_ERROR(Nte0221, nullptr);
     SWAG_ERROR(Nte0222, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);
