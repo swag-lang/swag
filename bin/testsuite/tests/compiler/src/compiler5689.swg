@@ -8,7 +8,7 @@
 
     switch v
     {
-    case let fn: Func:
+    case let fn as Func:
         @assert(fn() == 66)
     }
 }
