@@ -669,7 +669,7 @@ namespace
         {
             if (!OS::isDebuggerAttached())
             {
-                if (g_CommandLine.dbgDevMode)
+                if (g_CommandLine.dbgDevMode && !g_CommandLine.dbgCatch)
                 {
                     OS::errorBox("[Developer Mode]", "Error raised !");
                     return false;
