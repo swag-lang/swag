@@ -67,8 +67,9 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     // Any
-    SWAG_ERROR(Saf0001, "safety violation $ invalid attempt to cast from [[any]] to [[%s]] $ [[#[Swag.Safety(\"any\")]]] is true");
-    SWAG_ERROR(Saf0002, "safety violation $ invalid attempt to cast a null value to [[%s]] $ [[#[Swag.Safety(\"any\")]]] is true");
+    SWAG_ERROR(Saf0001, "safety violation $ invalid attempt to cast from [[any]] to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
+    SWAG_ERROR(Saf0002, "safety violation $ invalid attempt to cast a null value to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
+    SWAG_ERROR(Saf0030, "safety violation $ invalid attempt to cast from an interface to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
     // Bool
     SWAG_ERROR(Saf0003, "safety violation $ usage of an invalid boolean value $ [[#[Swag.Safety(\"bool\")]]] is true");
     // BoundCheck
@@ -104,7 +105,11 @@ void initErrors()
     // Switch
     SWAG_ERROR(Saf0029, "safety violation $ unexpected switch value encountered $ [[#[Swag.Safety(\"switch\")]]] is true");
 
-    SWAG_ERROR(Saf0030, nullptr);
+    SWAG_ERROR(Saf0031, nullptr);
+    SWAG_ERROR(Saf0032, nullptr);
+    SWAG_ERROR(Saf0033, nullptr);
+    SWAG_ERROR(Saf0034, nullptr);
+    SWAG_ERROR(Saf0035, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -880,7 +885,7 @@ void initErrors()
     SWAG_ERROR(Err0738, "unknown value location                            $ cannot recognize [[\"%s\"]] as a valid [[location]] value                                                                                $ the acceptable values are [[\"swag\"]] and [[\"disk\"]]");
     SWAG_ERROR(Err0739, "unknown value match                               $ cannot recognize [[\"%s\"]] as a valid [[#[Swag.Match]]] argument                                                                        $ the acceptable values are [[\"where\"]] and [[\"self\"]]");
     SWAG_ERROR(Err0740, "unknown value optim                               $ cannot recognize [[\"%s\"]] as a valid [[#[Swag.Optim]]] argument                                                                        $ the acceptable values are [[\"bytecode\"]] and [[\"backend\"]]");
-    SWAG_ERROR(Err0741, "unknown value safety                              $ cannot recognize [[\"%s\"]] as a valid safety value                                                                                      $ the acceptable values are [[\"boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null\"]]");
+    SWAG_ERROR(Err0741, "unknown value safety                              $ cannot recognize [[\"%s\"]] as a valid safety value                                                                                      $ the acceptable values are [[\"boundcheck|overflow|math|switch|unreachable|dyncast|bool|nan|sanity|null\"]]");
     SWAG_ERROR(Err0742, "unknown variable                                  $ cannot find the variable [[%s]]                                                                                                          $ ");
     SWAG_ERROR(Err0743, "unknown variable                                  $ cannot find the variable [[%s]] in [[%s]]                                                                                                $ ");
     SWAG_ERROR(Err0744, "unpack number mismatch                            $ cannot unpack [[%u]] variables because the tuple has [[%u]] fields                                                                       $ ");

@@ -1096,6 +1096,11 @@ SWAG_ERROR(Saf0028),
 SWAG_ERROR(Saf0029),
 SWAG_ERROR(Saf0015),
 SWAG_ERROR(Saf0030),
+SWAG_ERROR(Saf0031),
+SWAG_ERROR(Saf0032),
+SWAG_ERROR(Saf0033),
+SWAG_ERROR(Saf0034),
+SWAG_ERROR(Saf0035),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

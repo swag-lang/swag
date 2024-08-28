@@ -205,10 +205,11 @@ struct LanguageSpec
     Utf8 name_unreachable;
     Utf8 name_bool;
     Utf8 name_nan;
-    Utf8 name_any;
+    Utf8 name_dyncast;
     Utf8 name_sanity;
     Utf8 name_null;
 
+    Utf8 name_any;
     Utf8 name_name;
     Utf8 name_msg;
     Utf8 name_module;

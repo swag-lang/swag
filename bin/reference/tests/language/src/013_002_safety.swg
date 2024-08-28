@@ -111,9 +111,9 @@ panic due to overflow to proceed normally.
 }
 
 /**
-# `any` Type Safety
+# Dynamic Cast Type Safety
 ```swag
-#[Swag.Safety("any", true)]
+#[Swag.Safety("dyncast", true)]
 ```
 Swag will panic if a cast from the `any` type to another type is invalid, ensuring type safety 
 when working with dynamic types.
@@ -125,6 +125,10 @@ when working with dynamic types.
     // var z = cast(s32) x                        // This is invalid and will cause a panic
     // @assert(z == 0)
 }
+
+/**
+Swag will also panic if casting from an interface to a pointer to struct that cannot be performed.
+*/
 
 /**
 # Array Bounds Checking

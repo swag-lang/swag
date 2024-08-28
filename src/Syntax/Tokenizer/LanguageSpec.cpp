@@ -175,12 +175,13 @@ void LanguageSpec::setupNames()
     name_switch      = "switch";
     name_unreachable = "unreachable";
     name_math        = "math";
-    name_any         = "any";
     name_bool        = "bool";
     name_nan         = "nan";
     name_sanity      = "sanity";
     name_null        = "null";
+    name_dyncast     = "dyncast";
 
+    name_any      = "any";
     name_name     = "name";
     name_msg      = "msg";
     name_module   = "module";

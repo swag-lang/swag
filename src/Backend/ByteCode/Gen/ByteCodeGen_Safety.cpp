@@ -20,12 +20,17 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
         switch (msg)
         {
             case SafetyMsg::CastAnyNull:
+            case SafetyMsg::CastInterfaceNull:
                 SWAG_ASSERT(toType);
                 g_TypedMsg[m][i][j] = formErr(Saf0002, toType->name.cstr());
                 break;
             case SafetyMsg::CastAny:
                 SWAG_ASSERT(toType);
                 g_TypedMsg[m][i][j] = formErr(Saf0001, toType->name.cstr());
+                break;
+            case SafetyMsg::CastInterface:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = formErr(Saf0030, toType->name.cstr());
                 break;
             case SafetyMsg::NullCheck:
                 g_TypedMsg[m][0][0] = toErr(Saf0018);
@@ -480,7 +485,7 @@ void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_
 
 void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType)
 {
-    if (!mustEmitSafety(context, SAFETY_ANY))
+    if (!mustEmitSafety(context, SAFETY_DYN_CAST))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -509,7 +514,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
 
 void ByteCodeGen::emitSafetyCastInterface(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType)
 {
-    if (!mustEmitSafety(context, SAFETY_ANY))
+    if (!mustEmitSafety(context, SAFETY_DYN_CAST))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -525,16 +530,16 @@ void ByteCodeGen::emitSafetyCastInterface(ByteCodeGenContext* context, const Ast
     emitMakeSegPointer(context, anyTypeSegment, static_cast<uint32_t>(anyTypeOffset), r0);
 
     // Be sure that interface is not null
-    emitSafetyNotZero(context, exprNode->resultRegisterRc[1], 64, safetyMsg(SafetyMsg::CastAnyNull, toType));
+    emitSafetyNotZero(context, exprNode->resultRegisterRc[1], 64, safetyMsg(SafetyMsg::CastInterfaceNull, toType));
 
     // Get the real type
     const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, exprNode->resultRegisterRc[1], 0, r2);
     inst->b.u64     = sizeof(void*);
     inst->addFlag(BCI_IMM_B);
     EMIT_INST2(context, ByteCodeOp::DeRef64, r2, r2);
-    
+
     EMIT_INST3(context, ByteCodeOp::IntrinsicIs, r0, r2, r1);
-    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
+    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastInterface, toType));
 
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);

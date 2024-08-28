@@ -208,7 +208,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attri
     INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
     INHERIT_SAFETY(child, SAFETY_MATH);
-    INHERIT_SAFETY(child, SAFETY_ANY);
+    INHERIT_SAFETY(child, SAFETY_DYN_CAST);
     INHERIT_SAFETY(child, SAFETY_SWITCH);
     INHERIT_SAFETY(child, SAFETY_UNREACHABLE);
     INHERIT_SAFETY(child, SAFETY_BOOL);
@@ -455,7 +455,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUND_CHECK);
                         CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
                         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
-                        CHECK_SAFETY_NAME(name_any, SAFETY_ANY);
+                        CHECK_SAFETY_NAME(name_dyncast, SAFETY_DYN_CAST);
                         CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
                         CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
                         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);

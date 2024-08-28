@@ -80,6 +80,8 @@ enum class SafetyMsg
     ErrCheck,
     CastAnyNull,
     CastAny,
+    CastInterfaceNull,
+    CastInterface,
     Count,
 };
 
