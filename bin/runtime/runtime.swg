@@ -43,9 +43,12 @@ func __is(toType, fromType: const *Swag.TypeInfoStruct)->{offset: u32, yes: bool
     return {0, false}
 }
 
-func @as(_toType, _fromType: const *Swag.TypeInfoStruct, _ptr: *void)->*void
+func @as(toType, fromType: const *Swag.TypeInfoStruct, ptr: *void)->*void
 {
-    return _ptr
+    let (offset, yes) = __is(toType, fromType)
+    if !yes:
+        return null
+    return cast(^u8) ptr + offset
 }
 
 func @is(toType, fromType: const *Swag.TypeInfoStruct)->bool

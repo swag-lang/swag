@@ -163,8 +163,8 @@ bool TypeGenStructJob::computeStruct()
     // Fields with using
     concreteType->usingFields.buffer = nullptr;
     concreteType->usingFields.count  = 0;
-    
-    VectorNative<TypeInfoParam*> usingFields;
+
+    VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
     realType->collectUsingFields(usingFields);
     concreteType->usingFields.count = usingFields.size();
     if (concreteType->usingFields.count)
@@ -175,7 +175,7 @@ bool TypeGenStructJob::computeStruct()
         const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
         for (uint32_t param = 0; param < concreteType->usingFields.count; param++)
         {
-            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, usingFields[param], genFlags));
+            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, usingFields[param].first, genFlags, usingFields[param].second));
             storageArray += sizeof(ExportedTypeValue);
         }
     }

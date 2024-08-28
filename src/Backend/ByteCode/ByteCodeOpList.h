@@ -52,7 +52,7 @@ BYTECODE_OP(IntrinsicCompilerWarning, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_REA
 BYTECODE_OP(IntrinsicPanic, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@panic(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicIs, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = @is(_ra_, _rb_)")
-BYTECODE_OP(IntrinsicAs, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rd_ = @is(_ra_, _rb_, _rc_)")
+BYTECODE_OP(IntrinsicAs, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_WRITE_D, "_rd_ = @is(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicStringCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @stringcmp(_ra_, _rb_, _rc_, _rd_)")
 BYTECODE_OP(IntrinsicDbgAlloc, OPFLAG_WRITE_A, "_ra_ = @dbgalloc()")
 BYTECODE_OP(IntrinsicSysAlloc, OPFLAG_WRITE_A, "_ra_ = @sysalloc()")

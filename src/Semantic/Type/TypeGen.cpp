@@ -447,10 +447,14 @@ bool TypeGen::genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* 
     return true;
 }
 
-bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags)
+bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags, uint32_t offset)
 {
     const auto concreteType = static_cast<ExportedTypeValue*>(exportedTypeInfoValue);
-    concreteType->offsetOf  = param->offset;
+
+    if (offset != UINT32_MAX)
+        concreteType->offsetOf = offset;
+    else
+        concreteType->offsetOf = param->offset;
 
     SWAG_CHECK(genExportedString(context, &concreteType->name, param->name, storageSegment, OFFSET_OF(concreteType->name)));
     concreteType->crc32 = Crc32::compute(static_cast<const uint8_t*>(concreteType->name.buffer), static_cast<uint32_t>(concreteType->name.count));

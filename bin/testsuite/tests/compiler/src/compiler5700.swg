@@ -32,8 +32,11 @@ func toto(v: IEvent)
     //@assert(@is(Evt1, @kindof(v)) == false)
     //@assert(@is(Evt2, @kindof(v)) == true)
     //@assert(@is(Evt3, @kindof(v)) == true)
-    let ptr = cast(*Evt3) @as(Evt3, @kindof(v), @dataof(v))
+    let ptr = cast(*Evt2) @as(Evt2, @kindof(v), @dataof(v))
     @assert(ptr.x == 4)
+
+    let ptr1 = cast(*Evt1) @as(Evt1, @kindof(v), @dataof(v))
+    @assert(ptr1 == null)
 }
 
 #test

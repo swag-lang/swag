@@ -990,7 +990,7 @@ void TypeInfoStruct::flattenUsingFields()
         flatten(flattenFields, p);
 }
 
-void TypeInfoStruct::collectUsingFields(VectorNative<TypeInfoParam*>& result)
+void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, uint32_t>> &result, uint32_t offset)
 {
     for (const auto p : fields)
     {
@@ -1000,15 +1000,15 @@ void TypeInfoStruct::collectUsingFields(VectorNative<TypeInfoParam*>& result)
         if (p->typeInfo->isStruct())
         {
             const auto ptrStruct = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
-            ptrStruct->collectUsingFields(result);
-            result.push_back(p);
+            ptrStruct->collectUsingFields(result, offset + p->offset);
+            result.push_back({p, offset + p->offset});
         }
         else if (p->typeInfo->isPointerTo(TypeInfoKind::Struct))
         {
             const auto ptrPointer = castTypeInfo<TypeInfoPointer>(p->typeInfo, TypeInfoKind::Pointer);
             const auto ptrStruct  = castTypeInfo<TypeInfoStruct>(ptrPointer->pointedType, TypeInfoKind::Struct);
-            ptrStruct->collectUsingFields(result);
-            result.push_back(p);
+            ptrStruct->collectUsingFields(result, offset + p->offset);
+            result.push_back({p, offset + p->offset});
         }
     }
 }

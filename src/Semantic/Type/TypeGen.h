@@ -42,7 +42,7 @@ struct TypeGen
     void         release();
     bool         genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr, ExportedTypeInfo** result = nullptr);
     bool         genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr);
-    bool         genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags);
+    bool         genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags, uint32_t offset = UINT32_MAX);
     bool         genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** result, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags);
     static void* genExportedSlice(JobContext* context, uint32_t sizeOf, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
     static void* genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
