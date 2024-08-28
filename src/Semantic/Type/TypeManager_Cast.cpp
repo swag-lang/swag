@@ -2475,6 +2475,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 toNode->typeInfoCast = toType;
                 toNode->typeInfo       = fromType;
                 SWAG_CHECK(toNode->addAnyType(context, fromType));
+                YIELD();
             }
 
             return true;
@@ -2496,6 +2497,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->typeInfoCast = fromType;
             fromNode->typeInfo       = toType;
             SWAG_CHECK(fromNode->addAnyType(context, fromNode->typeInfoCast));
+            YIELD();
         }
     }
     else if (fromType->isAny())
@@ -2569,6 +2571,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             fromNode->typeInfoCast = fromType;
             fromNode->typeInfo       = toType;
             SWAG_CHECK(fromNode->addAnyType(context, toType));
+            YIELD();
         }
     }
 
