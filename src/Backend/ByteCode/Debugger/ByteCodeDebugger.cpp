@@ -483,8 +483,6 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
     line.trim();
     if (!line.empty())
     {
-        while (debugCmdHistory.size() != debugCmdHistoryIndex)
-            debugCmdHistory.pop_back();
         debugCmdHistory.push_back(line);
         debugCmdHistoryIndex = debugCmdHistory.size();
     }
