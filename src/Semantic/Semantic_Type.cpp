@@ -733,7 +733,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
             auto typeStruct = typeNode->typeInfo;
             if(typeNode->typeInfo->isPointer())
-                typeStruct = castTypeInfo<TypeInfoPointer>(typeNode->typeInfo, TypeInfoKind::Struct)->pointedType;
+                typeStruct = castTypeInfo<TypeInfoPointer>(typeNode->typeInfo, TypeInfoKind::Pointer)->pointedType;
             waitTypeCompleted(context->baseJob, typeStruct);
             YIELD();
             
