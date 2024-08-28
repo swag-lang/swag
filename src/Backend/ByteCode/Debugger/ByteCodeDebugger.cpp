@@ -898,7 +898,6 @@ bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                     replaceSegmentPointer(result, what, SegmentKind::Tls, err))
                 {
                     pz += what.length() + 1;
-
                     continue;
                 }
                 if (err)

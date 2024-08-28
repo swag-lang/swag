@@ -242,7 +242,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
             expr1.remove(0, 1);
         expr1.trim();
 
-        if (expr1.length())
+        if (!expr1.empty())
         {
             g_ByteCodeDebugger.evalExpr.push_back(expr);
             if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())

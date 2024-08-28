@@ -983,6 +983,8 @@ TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(const TypeInfoStruct* itf) con
 void TypeInfoStruct::flattenUsingFields()
 {
     ScopedLock lk(mutexCache);
+    SWAG_RACE_CONDITION_READ(raceFields);
+
     if (!flattenFields.empty())
         return;
     flattenFields.reserve(fields.size());
@@ -990,8 +992,11 @@ void TypeInfoStruct::flattenUsingFields()
         flatten(flattenFields, p);
 }
 
-void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, uint32_t>> &result, uint32_t offset)
+void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, uint32_t>>& result, uint32_t offset)
 {
+    ScopedLock lk(mutexCache);
+    SWAG_RACE_CONDITION_READ(raceFields);
+    
     for (const auto p : fields)
     {
         if (!p->flags.has(TYPEINFOPARAM_HAS_USING))

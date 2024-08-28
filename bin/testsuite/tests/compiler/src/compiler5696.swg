@@ -18,7 +18,10 @@ struct Evt3
     using base: Evt2
 }
 
-interface IEvent {}
+interface IEvent 
+{
+}
+
 impl IEvent for Evt {}
 impl IEvent for Evt1 {}
 impl IEvent for Evt2 {}
