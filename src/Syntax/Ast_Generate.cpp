@@ -166,6 +166,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         }
         else
         {
+            content += "self.";
             content += itfRef.fieldRef;
             content += ".";
             content += typeBaseInterface->name;
