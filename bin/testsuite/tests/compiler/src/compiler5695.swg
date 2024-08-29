@@ -39,7 +39,6 @@ func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
 
 func toto(v: IEvent)
 {
-    let ptr = cast(*Evt2) v
     @assert(can(Evt1, @kindof(v)) == true)
     @assert(can(Evt2, @kindof(v)) == false)
 }
