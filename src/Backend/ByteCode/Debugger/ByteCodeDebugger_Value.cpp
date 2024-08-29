@@ -525,20 +525,20 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
             case NativeTypeKind::U8:
                 result += form("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
-                resultForExpression = form("%u", *static_cast<uint8_t*>(addr));
+                resultForExpression = form("0x%x", *static_cast<uint8_t*>(addr));
                 return;
             case NativeTypeKind::U16:
                 result += form("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
-                resultForExpression = form("%u", *static_cast<uint16_t*>(addr));
+                resultForExpression = form("0x%x", *static_cast<uint16_t*>(addr));
                 return;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
                 result += form("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
-                resultForExpression += form("%u", *static_cast<uint32_t*>(addr));
+                resultForExpression += form("0x%x", *static_cast<uint32_t*>(addr));
                 return;
             case NativeTypeKind::U64:
                 result += form("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
-                resultForExpression += form("%llu", *static_cast<uint64_t*>(addr));
+                resultForExpression += form("0x%llx", *static_cast<uint64_t*>(addr));
                 return;
 
             case NativeTypeKind::F32:

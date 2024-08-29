@@ -382,7 +382,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
 bool Semantic::resolveInterface(SemanticContext* context)
 {
-    auto       node          = castAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
+    const auto node          = castAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
     const auto sourceFile    = context->sourceFile;
     const auto typeInterface = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
 

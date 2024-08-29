@@ -678,11 +678,6 @@ void ByteCodeDebugger::enterDebugger(const ByteCodeRunContext* context)
     {
         g_Log.print(form("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
         g_Log.print(form("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
-        module->constantSegment.makeLinear();
-        module->bssSegment.makeLinear();
-        module->mutableSegment.makeLinear();
-        module->compilerSegment.makeLinear();
-        module->tlsSegment.makeLinear();
     }
 
     for (int i = 0; i < LINE_W; i++)
@@ -822,12 +817,24 @@ bool ByteCodeDebugger::replaceSegmentPointer(Utf8& result, const Utf8& name, Seg
     if (!name.startsWith(segName))
         return false;
 
-    if (seg->buckets.empty())
-        result += form("0x%llx", 0);
-    else
-        result += form("0x%llx", seg->buckets[0].buffer);
+    auto cpy = name;
+    cpy.remove(0, segName.length());
+    uint32_t idx = cpy.empty() ? 0 : cpy.toInt();
 
-    return true;
+    for (const auto& b : seg->buckets)
+    {
+        if (!idx)
+        {
+            result += form("0x%llx", b.buffer);
+            return true;
+        }
+
+        idx--;
+    }
+
+    err = true;
+    printCmdError(form("no corresponding [[%s]] segment pointer", segName.cstr()));
+    return false;
 }
 
 bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
