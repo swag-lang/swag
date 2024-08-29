@@ -179,7 +179,8 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
                 concat->addString("let");
                 concat->addBlank();
                 concat->addString(c->matchVarName.text);
-                concat->addChar(':');
+                concat->addBlank();
+                concat->addString("as");
                 concat->addBlank();
             }
             
