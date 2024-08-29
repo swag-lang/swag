@@ -466,16 +466,19 @@ namespace
         const auto seg  = module->getSegment(kind);
         const auto name = seg->shortName;
 
-        uint32_t index = 0;
+        uint32_t index     = 0;
+        uint32_t lastIndex = 0;
         for (const auto& b : seg->buckets)
         {
-            g_Log.print(form("%s$%s%d%s = 0x%016llx (%d)\n",
+            g_Log.print(form("%s$%s%d%s = 0x%016llx (%d - %d)\n",
                              syntaxColorToVTS(SyntaxColor::SyntaxRegister).cstr(),
                              name,
                              index++,
                              Log::colorToVTS(LogColor::Default).cstr(),
                              b.buffer,
-                             b.size));
+                             lastIndex,
+                             lastIndex + b.count));
+            lastIndex += b.count;
         }
     }
 }
