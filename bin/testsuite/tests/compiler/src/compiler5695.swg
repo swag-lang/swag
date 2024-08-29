@@ -48,6 +48,5 @@ func toto(v: IEvent)
 {
     var a: Evt
     var b: Evt1{x: 10}
-
     toto(b)
 }

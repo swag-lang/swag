@@ -949,26 +949,33 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->hasFlagComputedValue() && arrayNode->access->hasFlagComputedValue())
             {
                 const auto storageSegment = arrayNode->array->computedValue()->storageSegment;
-                if (!storageSegment)
+                if (storageSegment)
+                {
+                    const auto storageOffset = arrayNode->array->computedValue()->storageOffset;
+                    SWAG_ASSERT(storageOffset != UINT32_MAX);
+
+                    const auto offset = arrayNode->access->computedValue()->reg.u32 * typePtr->pointedType->sizeOf;
+                    const auto ptr    = storageSegment->address(storageOffset + offset);
+                    if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+                    {
+                        if (typePtr->pointedType->isStruct())
+                        {
+                            arrayNode->setFlagsValueIsComputed();
+                            arrayNode->computedValue()->storageSegment = storageSegment;
+                            arrayNode->computedValue()->storageOffset  = storageOffset;
+                            arrayNode->typeInfo                        = typePtr->pointedType;
+                        }
+                    }
+                }
+                else if (!arrayNode->array->computedValue()->reg.pointer)
                 {
                     const Diagnostic err{arrayNode, toErr(Err0242)};
                     return context->report(err);
                 }
-
-                const auto storageOffset = arrayNode->array->computedValue()->storageOffset;
-                SWAG_ASSERT(storageOffset != UINT32_MAX);
-
-                const auto offset = arrayNode->access->computedValue()->reg.u32 * typePtr->pointedType->sizeOf;
-                const auto ptr    = storageSegment->address(storageOffset + offset);
-                if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+                else if (!context->forDebugger)
                 {
-                    if (typePtr->pointedType->isStruct())
-                    {
-                        arrayNode->setFlagsValueIsComputed();
-                        arrayNode->computedValue()->storageSegment = storageSegment;
-                        arrayNode->computedValue()->storageOffset  = storageOffset;
-                        arrayNode->typeInfo                        = typePtr->pointedType;
-                    }
+                    const Diagnostic err{arrayNode, toErr(Err0772)};
+                    return context->report(err);
                 }
             }
 

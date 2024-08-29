@@ -917,7 +917,7 @@ void initErrors()
     SWAG_ERROR(Err0770, "misplaced [[let]]                                 $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
     SWAG_ERROR(Err0771, "misplaced match variable                          $ cannot declare a match variable in a [[switch]] expression of type [[%s]]                                                                $ the only supported type are [[interface]] and [[any]]");
     SWAG_ERROR(Err0773, "misplaced [[var]]                                 $ cannot use [[var]] to declare a match variable                                                                                           $ consider using [[let]] instead");
-    SWAG_ERROR(Err0772, nullptr);
+    SWAG_ERROR(Err0772, "invalid dereference                               $ cannot dereference a constant address at compile time                                                                                    $ ");
     SWAG_ERROR(Err0774, nullptr);
     SWAG_ERROR(Err0775, nullptr);
 

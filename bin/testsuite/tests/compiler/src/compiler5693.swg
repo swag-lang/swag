@@ -12,4 +12,6 @@
         @assert(fn.y == 5)
         break
     }
+
+    @breakpoint()
 }
