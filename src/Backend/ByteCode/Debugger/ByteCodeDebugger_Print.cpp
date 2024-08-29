@@ -207,7 +207,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
     const auto concrete = res.type->getConcreteAlias();
     Utf8       str;
-    Utf8       strRes;
+    Utf8       result;
+    Utf8       resultForExpression;
 
     if (hasFormat)
     {
@@ -220,15 +221,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         if (!res.addr && res.value)
             res.addr = &res.value->reg;
 
-        appendLiteralValue(context, strRes, fmt, res.addr);
+        appendLiteralValue(context, result, fmt, res.addr);
     }
     else
     {
         str = getPrintValue("", res.type);
-        appendTypedValue(context, strRes, res, 0, 0);
+        appendTypedValue(context, result, resultForExpression, res, 0, 0);
     }
 
-    str += strRes;
+    if(resultForExpression.empty())
+        resultForExpression = result;
+
+    str += result;
 
     // Append to automatic expressions
     if (res.type)
@@ -246,7 +250,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         {
             g_ByteCodeDebugger.evalExpr.push_back(expr);
             if (res.type->isNativeIntegerOrRune() || res.type->isPointer() || res.type->isNativeFloat() || res.type->isBool())
-                g_ByteCodeDebugger.evalExprResult.push_back(strRes);
+                g_ByteCodeDebugger.evalExprResult.push_back(resultForExpression);
             else
                 g_ByteCodeDebugger.evalExprResult.push_back(expr);
             g_Log.setColor(LogColor::Gray);

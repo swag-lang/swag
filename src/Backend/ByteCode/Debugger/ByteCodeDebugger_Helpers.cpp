@@ -51,7 +51,8 @@ void ByteCodeDebugger::getPrintSymbols(ByteCodeRunContext* context, Vector<std::
             EvaluateResult res;
             res.type = over->typeInfo;
             res.addr = addrs[i];
-            appendTypedValue(context, value, res, 0, 0);
+            Utf8 valueLight;
+            appendTypedValue(context, value, valueLight, res, 0, 0);
             value.trimRightEol();
         }
 

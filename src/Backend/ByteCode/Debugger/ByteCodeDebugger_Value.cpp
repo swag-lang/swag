@@ -232,7 +232,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     }
 }
 
-void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent)
+void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& result, Utf8& resultForExpression, EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     auto typeInfo = res.type->getConcreteAlias();
     auto addr     = res.addr;
@@ -257,14 +257,16 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
-            str += "null";
+            result += "null";
         else
         {
-            str += form("0x%016llx ", ptr);
+            result += form("0x%016llx ", ptr);
+            resultForExpression += form("0x%016llx ", ptr);
             auto res1 = res;
             res1.type = TypeManager::concretePtrRef(typeInfo);
             res1.addr = *static_cast<void**>(res1.addr);
-            appendTypedValue(context, str, res1, level, indent + 1);
+            Utf8 dum;
+            appendTypedValue(context, result, dum, res1, level, indent + 1);
         }
 
         return;
@@ -275,7 +277,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         Register reg;
         auto     ptr = static_cast<uint8_t**>(addr)[0];
         reg.pointer  = ptr;
-        str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg, false);
+        result += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg, false);
         return;
     }
 
@@ -283,16 +285,16 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto ptr = static_cast<ExportedTypeInfo**>(addr)[0];
         if (!ptr)
-            str += "null";
+            result += "null";
         else
         {
-            str += form("0x%016llx", ptr);
-            str += " ";
+            result += form("0x%016llx", ptr);
+            result += " ";
             Utf8 str1;
             str1.setView(static_cast<const char*>(ptr->name.buffer), static_cast<uint32_t>(ptr->name.count));
-            str += Log::colorToVTS(LogColor::Type);
-            str += str1;
-            str += Log::colorToVTS(LogColor::Default);
+            result += Log::colorToVTS(LogColor::Type);
+            result += str1;
+            result += Log::colorToVTS(LogColor::Default);
         }
 
         return;
@@ -302,9 +304,9 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
-            str += "null";
+            result += "null";
         else
-            str += form("0x%016llx", ptr);
+            result += form("0x%016llx", ptr);
         return;
     }
 
@@ -312,24 +314,24 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
-            str += "null";
+            result += "null";
         else
         {
-            str += form("0x%016llx ", ptr);
+            result += form("0x%016llx ", ptr);
             if (ByteCode::isByteCodeLambda(ptr))
             {
-                str += "(bytecode) ";
+                result += "(bytecode) ";
                 auto bc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
-                str += Log::colorToVTS(LogColor::Name);
-                str += bc->name;
-                str += " ";
-                str += Log::colorToVTS(LogColor::Type);
-                str += bc->getCallType()->getDisplayNameC();
-                str += Log::colorToVTS(LogColor::Default);
+                result += Log::colorToVTS(LogColor::Name);
+                result += bc->name;
+                result += " ";
+                result += Log::colorToVTS(LogColor::Type);
+                result += bc->getCallType()->getDisplayNameC();
+                result += Log::colorToVTS(LogColor::Default);
             }
             else
             {
-                str += "(native) ";
+                result += "(native) ";
             }
         }
 
@@ -341,23 +343,24 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         if (!g_ByteCodeDebugger.printStruct && level)
         {
-            str += "<hidden>";
+            result += "<hidden>";
         }
         else
         {
-            str += "\n";
+            result += "\n";
             for (auto p : typeStruct->fields)
             {
                 for (uint32_t i = 0; i < indent + 1; i++)
-                    str += "   ";
-                str += getPrintValue(p->name, p->typeInfo);
-                str += " = ";
+                    result += "   ";
+                result += getPrintValue(p->name, p->typeInfo);
+                result += " = ";
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = static_cast<uint8_t*>(addr) + p->offset;
-                appendTypedValue(context, str, res1, level + 1, indent + 1);
-                if (str.back() != '\n')
-                    str += "\n";
+                Utf8 dum;
+                appendTypedValue(context, result, dum, res1, level + 1, indent + 1);
+                if (result.back() != '\n')
+                    result += "\n";
             }
         }
 
@@ -367,25 +370,26 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (typeInfo->isArray())
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        str += form("0x%016llx ", addr);
+        result += form("0x%016llx ", addr);
         if (!g_ByteCodeDebugger.printArray && level)
         {
-            str += "<hidden>";
+            result += "<hidden>";
         }
         else
         {
-            str += "\n";
+            result += "\n";
             for (uint32_t idx = 0; idx < typeArray->count; idx++)
             {
                 for (uint32_t i = 0; i < indent; i++)
-                    str += "   ";
-                str += form(" [%d] ", idx);
+                    result += "   ";
+                result += form(" [%d] ", idx);
                 EvaluateResult res1;
                 res1.type = typeArray->pointedType;
                 res1.addr = static_cast<uint8_t*>(addr) + static_cast<size_t>(idx * typeArray->pointedType->sizeOf);
-                appendTypedValue(context, str, res1, level + 1, indent + 1);
-                if (str.back() != '\n')
-                    str += "\n";
+                Utf8 dum;
+                appendTypedValue(context, result, dum, res1, level + 1, indent + 1);
+                if (result.back() != '\n')
+                    result += "\n";
             }
         }
 
@@ -398,29 +402,30 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         auto ptr       = static_cast<uint8_t**>(addr)[0];
         auto count     = static_cast<uint64_t*>(addr)[1];
         if (ptr == nullptr)
-            str += "null";
+            result += "null";
         else
         {
-            str += form("(0x%016llx ", ptr);
-            str += form("%llu) ", count);
+            result += form("(0x%016llx ", ptr);
+            result += form("%llu) ", count);
             if (!g_ByteCodeDebugger.printArray)
             {
-                str += "<hidden>";
+                result += "<hidden>";
             }
             else
             {
-                str += "\n";
+                result += "\n";
                 for (uint64_t idx = 0; idx < count; idx++)
                 {
                     for (uint32_t i = 0; i < indent; i++)
-                        str += "   ";
-                    str += form(" [%d] ", idx);
+                        result += "   ";
+                    result += form(" [%d] ", idx);
                     EvaluateResult res1;
                     res1.type = typeSlice->pointedType;
                     res1.addr = ptr + idx * typeSlice->pointedType->sizeOf;
-                    appendTypedValue(context, str, res1, level + 1, indent + 1);
-                    if (str.back() != '\n')
-                        str += "\n";
+                    Utf8 dum;
+                    appendTypedValue(context, result, dum, res1, level + 1, indent + 1);
+                    if (result.back() != '\n')
+                        result += "\n";
                 }
             }
         }
@@ -432,11 +437,11 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
-            str += "null";
+            result += "null";
         else
         {
-            str += form("(0x%016llx ", ptr);
-            str += form("0x%016llx)", static_cast<void**>(addr)[1]);
+            result += form("(0x%016llx ", ptr);
+            result += form("0x%016llx)", static_cast<void**>(addr)[1]);
         }
         return;
     }
@@ -449,17 +454,18 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 auto ptr = static_cast<uint8_t**>(addr)[0];
                 if (ptr == nullptr)
-                    str += "null";
+                    result += "null";
                 else
                 {
-                    str += form("(0x%016llx ", static_cast<void**>(addr)[0]);
-                    str += form("0x%016llx)", static_cast<void**>(addr)[1]);
+                    result += form("(0x%016llx ", static_cast<void**>(addr)[0]);
+                    result += form("0x%016llx)", static_cast<void**>(addr)[1]);
                     EvaluateResult res1;
                     res1.type = g_Workspace->swagScope.regTypeInfo;
                     res1.addr = static_cast<void**>(addr)[1];
-                    appendTypedValue(context, str, res1, level, indent + 1);
-                    if (str.back() != '\n')
-                        str += "\n";
+                    Utf8 dum;
+                    appendTypedValue(context, result, dum, res1, level, indent + 1);
+                    if (result.back() != '\n')
+                        result += "\n";
                 }
                 return;
             }
@@ -481,73 +487,84 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 }
 
                 if (!ptr)
-                    str += "null";
+                    result += "null";
                 else
                 {
                     Utf8 str1;
                     str1.resize(static_cast<uint32_t>(len));
                     std::copy_n(ptr, len, str1.buffer);
-                    str += "\"";
-                    str += str1;
-                    str += "\"";
+                    result += "\"";
+                    result += str1;
+                    result += "\"";
                 }
 
                 return;
             }
 
             case NativeTypeKind::Bool:
-                str += form("%s", *static_cast<bool*>(addr) ? "true" : "false");
+                result += form("%s", *static_cast<bool*>(addr) ? "true" : "false");
+                resultForExpression = form("%s", *static_cast<bool*>(addr) ? "true" : "false");
                 return;
 
             case NativeTypeKind::S8:
-                str += form("%d", *static_cast<int8_t*>(addr));
+                result += form("%d", *static_cast<int8_t*>(addr));
+                resultForExpression = form("%d", *static_cast<int8_t*>(addr));
                 return;
             case NativeTypeKind::S16:
-                str += form("%d", *static_cast<int16_t*>(addr));
+                result += form("%d", *static_cast<int16_t*>(addr));
+                resultForExpression = form("%d", *static_cast<int16_t*>(addr));
                 return;
             case NativeTypeKind::S32:
-                str += form("%d", *static_cast<int32_t*>(addr));
+                result += form("%d", *static_cast<int32_t*>(addr));
+                resultForExpression = form("%d", *static_cast<int32_t*>(addr));
                 return;
             case NativeTypeKind::S64:
-                str += form("%lld", *static_cast<int64_t*>(addr));
+                result += form("%lld", *static_cast<int64_t*>(addr));
+                resultForExpression = form("%lld", *static_cast<int64_t*>(addr));
                 return;
 
             case NativeTypeKind::U8:
-                str += form("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
+                result += form("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
+                resultForExpression = form("%u", *static_cast<uint8_t*>(addr));
                 return;
             case NativeTypeKind::U16:
-                str += form("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
+                result += form("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
+                resultForExpression = form("%u", *static_cast<uint16_t*>(addr));
                 return;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
-                str += form("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
+                result += form("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
+                resultForExpression += form("%u", *static_cast<uint32_t*>(addr));
                 return;
             case NativeTypeKind::U64:
-                str += form("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
+                result += form("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
+                resultForExpression += form("%llu", *static_cast<uint64_t*>(addr));
                 return;
 
             case NativeTypeKind::F32:
-                str += form("%f", *static_cast<float*>(addr));
+                result += form("%f", *static_cast<float*>(addr));
+                resultForExpression = form("%f", *static_cast<float*>(addr));
                 return;
             case NativeTypeKind::F64:
-                str += form("%lf", *static_cast<double*>(addr));
+                result += form("%lf", *static_cast<double*>(addr));
+                resultForExpression += form("%lf", *static_cast<double*>(addr));
                 return;
             default:
                 break;
         }
     }
 
-    str += "?";
+    result += "?";
 }
 
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, EvaluateResult& res, uint32_t level, uint32_t indent)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& result, Utf8& resultLight, EvaluateResult& res, uint32_t level, uint32_t indent)
 {
     SWAG_TRY
     {
-        appendTypedValueProtected(context, str, res, level, indent);
+        appendTypedValueProtected(context, result, resultLight, res, level, indent);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
-        str += "<error>";
+        result += "<error>";
     }
 }
