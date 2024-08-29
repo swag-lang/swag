@@ -106,6 +106,8 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     SWAG_ASSERT(typeParamItf->offset);
     auto itable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - 2 * sizeof(void*)));
 
+    ScopedLock lk(typeStruct->mutex);
+
     // :itableHeader
     // Interface type
     *itable = constSegment->address(first->computedValue()->storageOffset);
@@ -335,7 +337,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
     constexpr int  sizeOfHeader = 2 * sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve(numFctInterface * sizeof(void*) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
+    const uint32_t itableOffset = constSegment->reserve(numFctInterface * sizeof(void*) + sizeOfHeader + sizeof(void*), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader
