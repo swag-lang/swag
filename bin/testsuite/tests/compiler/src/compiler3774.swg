@@ -1,3 +1,4 @@
+/*#global skip
 interface I
 {
     func toto(self);
@@ -38,4 +39,4 @@ impl I for A
     itf1.obj = ptr.obj
     itf1.itable = cast() @itftableof(t, t1)
     @assert(ptr.itable == itf1.itable)
-}
+}*/

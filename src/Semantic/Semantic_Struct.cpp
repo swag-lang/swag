@@ -104,18 +104,12 @@ bool Semantic::resolveImplForType(SemanticContext* context)
 
     const auto constSegment = back->computedValue()->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
-    auto itable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - 2 * sizeof(void*)));
-
-    ScopedLock lk(typeStruct->mutex);
+    const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - sizeof(void*)));
+    const auto addr     = constSegment->address(back->computedValue()->storageOffset);
 
     // :itableHeader
-    // Interface type
-    *itable = constSegment->address(first->computedValue()->storageOffset);
-    constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), first->computedValue()->storageOffset, constSegment->kind);
-
-    // Concrete type
-    itable++;
-    *itable = constSegment->address(back->computedValue()->storageOffset);
+    ScopedLock lk(typeStruct->mutex);
+    *itfTable = addr;
     constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue()->storageOffset, constSegment->kind);
 
     return true;
