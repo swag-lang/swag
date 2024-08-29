@@ -486,6 +486,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         debugCmdHistory.push_back(line);
         debugCmdHistoryIndex = debugCmdHistory.size();
     }
+
     g_Log.writeEol();
     return line;
 }
@@ -651,6 +652,45 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     return !zapCurrentIp;
 }
 
+void ByteCodeDebugger::enterDebugger(const ByteCodeRunContext* context)
+{
+    g_Log.setColor(LogColor::Gray);
+
+    g_Log.writeEol();
+    for (int i = 0; i < LINE_W; i++)
+        g_Log.print(LogSymbol::HorizontalLine2);
+    g_Log.writeEol();
+
+    g_Log.write("entering bytecode debugger, type '?' for help\n");
+
+    for (int i = 0; i < LINE_W; i++)
+        g_Log.print(LogSymbol::HorizontalLine);
+    g_Log.writeEol();
+
+    g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.cstr()));
+
+    Module* module = nullptr;
+    if (context->bc->sourceFile)
+        module = context->bc->sourceFile->module;
+    if (!module && context->bc->node && context->bc->node->token.sourceFile)
+        module = context->bc->node->token.sourceFile->module;
+    if (module)
+    {
+        g_Log.print(form("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
+        g_Log.print(form("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
+        module->constantSegment.makeLinear();
+        module->bssSegment.makeLinear();
+        module->mutableSegment.makeLinear();
+        module->compilerSegment.makeLinear();
+        module->tlsSegment.makeLinear();
+    }
+
+    for (int i = 0; i < LINE_W; i++)
+        g_Log.print(LogSymbol::HorizontalLine2);
+    g_Log.writeEol();
+    g_Log.setColor(LogColor::Gray);
+}
+
 bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 {
     static std::mutex dbgMutex;
@@ -668,36 +708,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         if (firstOne)
         {
             firstOne = false;
-            g_Log.setColor(LogColor::Gray);
-
-            g_Log.writeEol();
-            for (int i = 0; i < LINE_W; i++)
-                g_Log.print(LogSymbol::HorizontalLine2);
-            g_Log.writeEol();
-
-            g_Log.write("entering bytecode debugger, type '?' for help\n");
-
-            for (int i = 0; i < LINE_W; i++)
-                g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.writeEol();
-
-            g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.cstr()));
-
-            const Module* module = nullptr;
-            if (context->bc->sourceFile)
-                module = context->bc->sourceFile->module;
-            if (!module && context->bc->node && context->bc->node->token.sourceFile)
-                module = context->bc->node->token.sourceFile->module;
-            if (module)
-            {
-                g_Log.print(form("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
-                g_Log.print(form("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
-            }
-
-            for (int i = 0; i < LINE_W; i++)
-                g_Log.print(LogSymbol::HorizontalLine2);
-            g_Log.writeEol();
-            g_Log.setColor(LogColor::Gray);
+            enterDebugger(context);
         }
 
         printMsgBkp("@breakpoint() hit");
@@ -811,24 +822,12 @@ bool ByteCodeDebugger::replaceSegmentPointer(Utf8& result, const Utf8& name, Seg
     if (!name.startsWith(segName))
         return false;
 
-    auto cpy = name;
-    cpy.remove(0, segName.length());
-    uint32_t idx = cpy.toInt();
+    if (seg->buckets.empty())
+        result += form("0x%llx", 0);
+    else
+        result += form("0x%llx", seg->buckets[0].buffer);
 
-    for (const auto& b : seg->buckets)
-    {
-        if (!idx)
-        {
-            result += form("0x%llx", b.buffer);
-            return true;
-        }
-
-        idx--;
-    }
-
-    err = true;
-    printCmdError(form("no corresponding [[%s]] segment pointer", segName.cstr()));
-    return false;
+    return true;
 }
 
 bool ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const

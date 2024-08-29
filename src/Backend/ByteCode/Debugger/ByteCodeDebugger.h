@@ -203,6 +203,7 @@ struct ByteCodeDebugger
     Utf8        completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;
     Utf8        getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift) const;
     bool        mustBreak(ByteCodeRunContext* context);
+    static void enterDebugger(const ByteCodeRunContext* context);
     bool        step(ByteCodeRunContext* context);
     static bool testNameFilter(const Utf8& name, const Utf8& filter, const Utf8& alternate);
 

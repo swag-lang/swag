@@ -594,7 +594,7 @@ void DataSegment::makeLinear()
     {
         std::copy_n(b.buffer, b.count, ptr);
         ptr += b.count;
-        Allocator::free(b.buffer, b.count);
+        Allocator::free(b.buffer, b.size);
     }
 
     buckets.clear();
