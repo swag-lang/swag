@@ -486,7 +486,6 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         debugCmdHistory.push_back(line);
         debugCmdHistoryIndex = debugCmdHistory.size();
     }
-
     g_Log.writeEol();
     return line;
 }
