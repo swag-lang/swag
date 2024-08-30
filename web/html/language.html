@@ -169,14 +169,15 @@
 <ul>
 <li><a href="#_006_000_structs_swg__006_001_declaration_swg">Declaration</a></li>
 <li><a href="#_006_000_structs_swg__006_002_impl_swg">Impl</a></li>
-<li><a href="#_006_000_structs_swg__006_003_special_functions_swg">Special functions</a></li>
-<li><a href="#_006_000_structs_swg__006_004_affectation_swg">Affectation</a></li>
-<li><a href="#_006_000_structs_swg__006_005_count_swg">Count</a></li>
-<li><a href="#_006_000_structs_swg__006_006_post_copy_and_move_swg">Post copy and move</a></li>
-<li><a href="#_006_000_structs_swg__006_007_visit_swg">Visit</a></li>
-<li><a href="#_006_000_structs_swg__006_008_offset_swg">Offset</a></li>
-<li><a href="#_006_000_structs_swg__006_009_packing_swg">Packing</a></li>
-<li><a href="#_006_000_structs_swg__006_010_interface_swg">Interface</a></li>
+<li><a href="#_006_000_structs_swg__006_003_offset_swg">Offset</a></li>
+<li><a href="#_006_000_structs_swg__006_004_packing_swg">Packing</a></li>
+<li><a href="#_006_000_structs_swg__006_005_special_functions_swg">Special functions</a></li>
+<li><a href="#_006_000_structs_swg__006_006_custom_assignment_swg">Custom assignment</a></li>
+<li><a href="#_006_000_structs_swg__006_007_custom_loop_swg">Custom loop</a></li>
+<li><a href="#_006_000_structs_swg__006_008_custom_iteration_swg">Custom iteration</a></li>
+<li><a href="#_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom copy and move</a></li>
+<li><a href="#_006_000_structs_swg__006_010_custom_literals_swg">Custom literals</a></li>
+<li><a href="#_006_000_structs_swg__006_011_interface_swg">Interface</a></li>
 </ul>
 <li><a href="#_007_000_functions_swg">Functions</a></li>
 <ul>
@@ -4193,7 +4194,162 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SFct">fnZ</span>(v) == <span class="SNum">20</span>)  <span class="SCmt">// Calling the function pointer 'fnZ', expected to return 20</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_003_special_functions_swg">Special functions</h3><p>A struct in Swag can define special operations within the <span class="code-inline">impl</span> block. These operations are predefined and recognized by the compiler. This enables the ability to <b>overload operators</b> and customize behavior when interacting with the struct. </p>
+<h3 id="_006_000_structs_swg__006_003_offset_swg">Offset</h3><h4 id="_006_000_structs_swg__006_003_offset_swg">Custom Field Layout with <span class="code-inline">Swag.Offset</span> </h4>
+<p>You can force the layout of a field within a struct using the <span class="code-inline">Swag.Offset</span> attribute.  This allows you to manually specify the memory offset of a field, which can be useful  for creating custom memory layouts, such as overlapping fields or sharing memory space  between different fields. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+    {
+        x: <span class="STpe">s32</span>
+
+        <span class="SCmt">// 'y' is located at the same offset as 'x', meaning they share the same memory space.</span>
+        <span class="SCmt">// This effectively creates an overlay, where changes to one field affect the other.</span>
+        <span class="SAtr">#[Swag.Offset("x")]</span>
+        y: <span class="STpe">s32</span>
+    }
+
+    <span class="SCmt">// Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">4</span>
+
+    <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}
+    v.x = <span class="SNum">666</span>
+
+    <span class="SCmt">// Since 'x' and 'y' share the same memory space, modifying 'x' also modifies 'y'.</span>
+    <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
+}</span></div>
+<h4 id="_006_000_structs_swg__006_003_offset_swg">Using <span class="code-inline">Swag.Offset</span> for Indexed Field Access </h4>
+<p>In this example, <span class="code-inline">Swag.Offset</span> is used to reference a group of fields by index,  enabling indexed access to multiple fields through a single array. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+    {
+        x, y, z: <span class="STpe">f32</span>
+
+        <span class="SCmt">// 'idx' is an array that references the same memory locations as 'x', 'y', and 'z'.</span>
+        <span class="SCmt">// This allows you to access 'x', 'y', and 'z' via indexed access through 'idx'.</span>
+        <span class="SAtr">#[Swag.Offset("x")]</span>
+        idx: [<span class="SNum">3</span>] <span class="STpe">f32</span>
+    }
+
+    <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
+    v.x = <span class="SNum">10</span>; v.y = <span class="SNum">20</span>; v.z = <span class="SNum">30</span>
+
+    <span class="SCmt">// Each index in 'idx' directly references 'x', 'y', and 'z'.</span>
+    <span class="SItr">@assert</span>(v.idx[<span class="SNum">0</span>] == v.x)
+    <span class="SItr">@assert</span>(v.idx[<span class="SNum">1</span>] == v.y)
+    <span class="SItr">@assert</span>(v.idx[<span class="SNum">2</span>] == v.z)
+}</span></div>
+
+<h3 id="_006_000_structs_swg__006_004_packing_swg">Packing</h3><h4 id="_006_000_structs_swg__006_004_packing_swg">Default Struct Packing </h4>
+<p>By default, Swag aligns struct fields similarly to the C programming language. Each field is aligned based on the size of its type, ensuring optimal memory access and usage. This default behavior can be explicitly specified using <span class="code-inline">#[Swag.Pack(0)]</span>, meaning no additional packing adjustments are applied. Below is an example illustrating this default alignment strategy. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: aligned to 1 byte (no padding needed)</span>
+        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
+        z:     <span class="STpe">s64</span>     <span class="SCmt">// offset 8: aligned to 8 bytes (no padding needed)</span>
+    }
+
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.y) == <span class="SNum">4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.z) == <span class="SNum">8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">16</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_004_packing_swg">Reducing Packing </h4>
+<p>Swag allows you to reduce the packing of struct fields using the <span class="code-inline">#[Swag.Pack]</span> attribute. This attribute specifies the alignment value to be applied to each field, enabling more compact struct representations. Below are examples demonstrating different levels of packing. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.Pack(1)]</span>
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte (no padding)</span>
+        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 1: 4 bytes (no padding)</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">5</span>
+
+    <span class="SAtr">#[Swag.Pack(2)]</span>
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
+        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 2: 4 bytes (1 byte of padding before y)</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">2</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">6</span>
+
+    <span class="SAtr">#[Swag.Pack(4)]</span>
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct3</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
+        y:     <span class="STpe">s64</span>     <span class="SCmt">// offset 4: 8 bytes (3 bytes of padding before y)</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct3</span>) == <span class="SNum">12</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_004_packing_swg">Struct Size and Alignment </h4>
+<p>The total size of a struct in Swag is always a multiple of the largest alignment value among its fields. This ensures that the struct remains correctly aligned when used within larger data structures or arrays. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
+    {
+        x:     <span class="STpe">s32</span>     <span class="SCmt">// 4 bytes</span>
+        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
+        <span class="SCmt">// 3 bytes of padding to align with s32 size</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_004_packing_swg">Enforcing Alignment with <span class="code-inline">Swag.Align</span> </h4>
+<p>Swag provides the <span class="code-inline">#[Swag.Align]</span> attribute to enforce specific alignment constraints on an entire struct. This attribute can be used to ensure that a struct's alignment meets specific hardware or performance requirements. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
+        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">2</span>
+
+    <span class="SAtr">#[Swag.Align(8)]</span>
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
+    {
+        x:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
+        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
+        <span class="SCmt">// 6 bytes of padding to align struct size to 8</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_004_packing_swg">Field-Specific Alignment </h4>
+<p>Swag allows setting specific alignment values for individual struct fields using the <span class="code-inline">#[Swag.Align]</span> attribute. This enables fine-grained control over memory layout, which can be crucial for certain low-level optimizations. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
+    {
+        x: <span class="STpe">bool</span>         <span class="SCmt">// offset 0: 1 byte</span>
+        <span class="SAtr">#[Swag.Align(8)]</span>
+        y: <span class="STpe">bool</span>         <span class="SCmt">// offset 8: aligned to 8 bytes (7 bytes of padding before y)</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">9</span>
+
+    <span class="SAtr">#[Swag.Align(8)]</span>
+    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
+    {
+        x: <span class="STpe">bool</span>         <span class="SCmt">// offset 0: 1 byte</span>
+        <span class="SAtr">#[Swag.Align(4)]</span>
+        y: <span class="STpe">bool</span>         <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
+        <span class="SCmt">// 3 bytes of padding to align struct size to 8</span>
+    }
+    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
+}</span></div>
+
+<h3 id="_006_000_structs_swg__006_005_special_functions_swg">Special functions</h3><p>A struct in Swag can define special operations within the <span class="code-inline">impl</span> block. These operations are predefined and recognized by the compiler. This enables the ability to <b>overload operators</b> and customize behavior when interacting with the struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Struct</span>
 {
     x, y: <span class="STpe">s32</span>   <span class="SCmt">// Define two properties, x and y, of type s32 (signed 32-bit integer)</span>
@@ -4306,7 +4462,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_004_affectation_swg">Affectation</h3><h4 id="_006_000_structs_swg__006_004_affectation_swg">Custom Assignment Behavior with <span class="code-inline">opAffect</span> </h4>
+<h3 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom assignment</h3><h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom Assignment Behavior with <span class="code-inline">opAffect</span> </h4>
 <p>The <span class="code-inline">opAffect</span> method in Swag allows you to define custom assignment behaviors for your struct using the <span class="code-inline">=</span> operator. By overloading <span class="code-inline">opAffect</span>, you can handle assignments of different types, enabling you to specify how your struct should  behave when different types of values are assigned. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Struct</span>
 {
@@ -4346,7 +4502,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(v1.x == <span class="SNum">0</span>)   <span class="SCmt">// 'x' is set to 0 (false)</span>
     <span class="SItr">@assert</span>(v1.y == <span class="SNum">0</span>)   <span class="SCmt">// 'y' is set to 0 (false)</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_004_affectation_swg">Optimizing Initialization with <span class="code-inline">Swag.Complete</span> </h4>
+<h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Optimizing Initialization with <span class="code-inline">Swag.Complete</span> </h4>
 <p>When <span class="code-inline">opAffect</span> fully initializes the struct, you can annotate it with <span class="code-inline">#[Swag.Complete]</span>. This prevents the struct from being initialized with default values before the assignment, enhancing performance by avoiding redundant assignments. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
@@ -4370,7 +4526,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>)    <span class="SCmt">// 'y' is directly set to 2</span>
     <span class="SItr">@assert</span>(v.z == <span class="SNum">2</span>)    <span class="SCmt">// 'z' is directly set to 2</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_004_affectation_swg">Handling Function Arguments and Automatic Conversion </h4>
+<h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Handling Function Arguments and Automatic Conversion </h4>
 <p>By default, function arguments do not automatically undergo conversion via <span class="code-inline">opAffect</span>. Explicit casting is necessary unless <span class="code-inline">Swag.Implicit</span> is used to allow automatic conversion. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4392,7 +4548,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// With `#[Swag.Implicit]`, casting is not required, and automatic conversion occurs</span>
     <span class="SFct">toto</span>(<span class="SNum">5</span>'<span class="STpe">u16</span>)  <span class="SCmt">// Implicitly calls `opAffect(u16)`</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_004_affectation_swg">Using <span class="code-inline">opAffect</span> in Constant Expressions </h4>
+<h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Using <span class="code-inline">opAffect</span> in Constant Expressions </h4>
 <p>To use <span class="code-inline">opAffect</span> in a context where the struct needs to be a constant, you can mark the method with <span class="code-inline">#[Swag.ConstExpr]</span>. This allows the struct to be initialized at compile-time via <span class="code-inline">opAffect</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Vector2</span>
 {
@@ -4414,8 +4570,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#assert</span> <span class="SCst">One</span>.x == <span class="SNum">1.0</span>
 <span class="SCmp">#assert</span> <span class="SCst">One</span>.y == <span class="SNum">1.0</span></span></div>
 
-<h3 id="_006_000_structs_swg__006_005_count_swg">Count</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span> {}</span></div>
-<h4 id="_006_000_structs_swg__006_005_count_swg">Implementing <span class="code-inline">opCount</span> for Iteration </h4>
+<h3 id="_006_000_structs_swg__006_007_custom_loop_swg">Custom loop</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span> {}</span></div>
+<h4 id="_006_000_structs_swg__006_007_custom_loop_swg">Implementing <span class="code-inline">opCount</span> for Iteration </h4>
 <p>The <span class="code-inline">opCount</span> method in Swag allows you to specify the number of iterations when looping over an instance of a struct. By defining this method, you can control how many times a loop executes, effectively treating the struct as an iterable object. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
@@ -4439,7 +4595,191 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">4</span>)  <span class="SCmt">// Ensure the loop ran 4 times, as specified by 'opCount'</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_006_post_copy_and_move_swg">Post copy and move</h3><p>Swag supports both copy and move semantics for structures. In this example, we demonstrate these concepts using a <span class="code-inline">Vector3</span> struct. Although a <span class="code-inline">Vector3</span> struct typically wouldn't require move semantics (as it doesn't involve heap allocation), this example serves to illustrate how these features are implemented and can be utilized within the Swag language. </p>
+<h3 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom iteration</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+{
+    x:     <span class="STpe">s32</span> = <span class="SNum">10</span>  <span class="SCmt">// Field 'x' initialized with default value 10</span>
+    y:     <span class="STpe">s32</span> = <span class="SNum">20</span>  <span class="SCmt">// Field 'y' initialized with default value 20</span>
+    z:     <span class="STpe">s32</span> = <span class="SNum">30</span>  <span class="SCmt">// Field 'z' initialized with default value 30</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Introduction to <span class="code-inline">opVisit</span> </h4>
+<p><span class="code-inline">opVisit</span> is a highly flexible macro used for iterating over the elements in a struct.  This macro is not confined to just the struct's fields; it can also be used to traverse  any data the struct contains, such as elements in dynamic arrays, internal buffers, or  complex object graphs. </p>
+<p>The <span class="code-inline">#[Swag.Macro]</span> attribute is mandatory when using <span class="code-inline">opVisit</span>. It defines the macro's  behavior, allowing it to be integrated seamlessly into the codebase. </p>
+<p><span class="code-inline">opVisit</span> is a generic function that accepts two compile-time boolean parameters: </p>
+<ul>
+<li><span class="code-inline">ptr</span>: When set to <span class="code-inline">true</span>, elements are visited by pointer (address), enabling reference-based operations.</li>
+<li><span class="code-inline">back</span>: When set to <span class="code-inline">true</span>, elements are visited in reverse order (from last to first).</li>
+</ul>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    {
+        <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based </span>
+        <span class="SCmt">// or reverse-order iterations.</span>
+
+        <span class="SCmp">#if</span> ptr:
+            <span class="SCmp">#error</span> <span class="SStr">"Visiting by pointer is not supported in this example."</span>
+
+        <span class="SCmp">#if</span> back:
+            <span class="SCmp">#error</span> <span class="SStr">"Reverse visiting is not supported in this example."</span>
+
+        <span class="SCmt">// Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.</span>
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
+        {
+            <span class="SCmt">// The `#macro` directive ensures that the code is injected into the caller's scope.</span>
+            <span class="SCmp">#macro</span>
+            {
+                <span class="SCmt">// `#alias0` is used to represent the current value being visited.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
+
+                <span class="SCmt">// Access the appropriate field based on the current `idx`.</span>
+                <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
+                {
+                <span class="SLgc">case</span> <span class="SNum">0</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x'</span>
+                <span class="SLgc">case</span> <span class="SNum">1</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y'</span>
+                <span class="SLgc">case</span> <span class="SNum">2</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z'</span>
+                }
+
+                <span class="SCmt">// `#alias1` holds the current index of the iteration.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+
+                <span class="SCmt">// Insert user-defined logic from the calling scope.</span>
+                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
+            }
+        }
+    }
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Iterating Over Struct Fields </h4>
+<p>This example demonstrates one way to use <span class="code-inline">opVisit</span> for iterating over the fields of a struct. The same approach can be extended to foreach more complex data structures. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+
+    <span class="SCmt">// Visit each field of `MyStruct` in declaration order.</span>
+    <span class="SCmt">// `v` corresponds to the value (i.e., #alias0).</span>
+    <span class="SCmt">// `i` corresponds to the index (i.e., #alias1).</span>
+    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> myStruct
+    {
+        <span class="SLgc">switch</span> i
+        {
+        <span class="SLgc">case</span> <span class="SNum">0</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">10</span>)
+        <span class="SLgc">case</span> <span class="SNum">1</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">20</span>)
+        <span class="SLgc">case</span> <span class="SNum">2</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">30</span>)
+        }
+
+        cpt += <span class="SNum">1</span>
+    }
+
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Extending <span class="code-inline">opVisit</span>: Reverse Order Iteration </h4>
+<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures.  For instance, you may want to foreach the fields in reverse order. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
+    {
+        <span class="SCmt">// In this version, we foreach the fields in reverse order.</span>
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
+        {
+            <span class="SCmp">#macro</span>
+            {
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
+                <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
+                {
+                <span class="SLgc">case</span> <span class="SNum">0</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z' in reverse order</span>
+                <span class="SLgc">case</span> <span class="SNum">1</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y' in reverse order</span>
+                <span class="SLgc">case</span> <span class="SNum">2</span>:
+                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x' in reverse order</span>
+                }
+
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
+            }
+        }
+    }
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Reverse Order Iteration </h4>
+<p>The <span class="code-inline">opVisitReverse</span> variant allows us to foreach the struct's fields in reverse order,  providing flexibility depending on the needs of your application. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+
+    <span class="SCmt">// Call the variant `opVisitReverse` to iterate over the fields in reverse order.</span>
+    <span class="SLgc">foreach</span>&lt;<span class="SCst">Reverse</span>&gt; v, i <span class="SLgc">in</span> myStruct
+    {
+        <span class="SLgc">switch</span> i
+        {
+        <span class="SLgc">case</span> <span class="SNum">0</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">30</span>)
+        <span class="SLgc">case</span> <span class="SNum">1</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">20</span>)
+        <span class="SLgc">case</span> <span class="SNum">2</span>:
+            <span class="SItr">@assert</span>(v == <span class="SNum">10</span>)
+        }
+
+        cpt += <span class="SNum">1</span>
+    }
+
+    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Visiting Elements in Dynamic Arrays </h4>
+<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to foreach elements in dynamic arrays, buffers,  or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data  structure the struct holds. </p>
+<p>For example, consider a struct with a slice: </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
+{
+    buffer: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]  <span class="SCmt">// A dynamic array (slice) initialized with values</span>
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom <span class="code-inline">opVisit</span> for Dynamic Arrays </h4>
+<p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than  the struct's fields. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    {
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
+        {
+            <span class="SCmp">#macro</span>
+            {
+                <span class="SCmt">// #alias0 represents the value of the current buffer element.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.buffer[<span class="SCmp">#up</span> idx]
+
+                <span class="SCmt">// #alias1 represents the current index.</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+
+                <span class="SCmt">// Insert the user-provided logic from the caller.</span>
+                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
+            }
+        }
+    }
+}</span></div>
+<h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Iterating Over a Dynamic Array </h4>
+<p>This example shows how to foreach each element in a dynamic array (slice) and perform  operations such as summing the elements. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> arrStruct = <span class="SCst">SliceStruct</span>{}
+    <span class="SKwd">var</span> sum = <span class="SNum">0</span>
+
+    <span class="SCmt">// Visit each element in the dynamic array buffer.</span>
+    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> arrStruct
+    {
+        sum += v
+    }
+
+    <span class="SItr">@assert</span>(sum == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span> + <span class="SNum">5</span>)  <span class="SCmt">// Ensuring the sum of the elements is correct</span>
+}</span></div>
+
+<h3 id="_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom copy and move</h3><p>Swag supports both copy and move semantics for structures. In this example, we demonstrate these concepts using a <span class="code-inline">Vector3</span> struct. Although a <span class="code-inline">Vector3</span> struct typically wouldn't require move semantics (as it doesn't involve heap allocation), this example serves to illustrate how these features are implemented and can be utilized within the Swag language. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Vector3</span>
 {
     x, y, z: <span class="STpe">s32</span> = <span class="SNum">666</span>
@@ -4509,7 +4849,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a = <span class="SCmp">#moveraw</span> b               <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
     a = <span class="SCmp">#nodrop</span> <span class="SCmp">#moveraw</span> b       <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first and without resetting 'b'.</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_006_post_copy_and_move_swg">Move Semantics in Functions </h4>
+<h4 id="_006_000_structs_swg__006_009_custom_copy_and_move_swg">Move Semantics in Functions </h4>
 <p>Move semantics can be explicitly indicated in function parameters by utilizing <span class="code-inline">&&</span> instead of <span class="code-inline">&</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4544,346 +4884,85 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a.x == <span class="SNum">666</span> <span class="SLgc">and</span> a.y == <span class="SNum">666</span> <span class="SLgc">and</span> a.z == <span class="SNum">666</span>)  <span class="SCmt">// 'a' is reset to default values post-move.</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_007_visit_swg">Visit</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+<h3 id="_006_000_structs_swg__006_010_custom_literals_swg">Custom literals</h3><h4 id="_006_000_structs_swg__006_010_custom_literals_swg">User-Defined Literals </h4>
+<p>User-defined literals allow you to extend the meaning of literals in the language, enabling the creation of custom types that can be initialized directly using literal values with specific suffixes. This feature is particularly useful for defining types like <span class="code-inline">Duration</span>, where different units of time (e.g., seconds, milliseconds, minutes) can be intuitively represented and manipulated. </p>
+<h4 id="_006_000_structs_swg__006_010_custom_literals_swg">Literal Suffixes </h4>
+<p>A literal suffix is a string of characters that immediately follows a numeric literal to specify a particular unit or type. For example, in <span class="code-inline">4'ms</span>, <span class="code-inline">'ms'</span> is the suffix indicating that the value is in milliseconds. </p>
+<p>To define user-defined literals, you typically provide: </p>
+<ol>
+<li>A structure representing the custom type (e.g., <span class="code-inline">Duration</span>).</li>
+<li>Methods that handle the conversion of the literal values based on the suffix provided.</li>
+</ol>
+<h4 id="_006_000_structs_swg__006_010_custom_literals_swg">Defining a Custom Type: <span class="code-inline">Duration</span> </h4>
+<p>The <span class="code-inline">Duration</span> type is a struct designed to represent time intervals, internally stored in seconds. The type allows initialization through various time units like seconds, milliseconds, minutes, and hours. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Represents a delay, expressed in seconds.</span>
+<span class="SKwd">struct</span> <span class="SCst">Duration</span>
 {
-    x:     <span class="STpe">s32</span> = <span class="SNum">10</span>  <span class="SCmt">// Field 'x' initialized with default value 10</span>
-    y:     <span class="STpe">s32</span> = <span class="SNum">20</span>  <span class="SCmt">// Field 'y' initialized with default value 20</span>
-    z:     <span class="STpe">s32</span> = <span class="SNum">30</span>  <span class="SCmt">// Field 'z' initialized with default value 30</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Introduction to <span class="code-inline">opVisit</span> </h4>
-<p><span class="code-inline">opVisit</span> is a highly flexible macro used for iterating over the elements in a struct.  This macro is not confined to just the struct's fields; it can also be used to traverse  any data the struct contains, such as elements in dynamic arrays, internal buffers, or  complex object graphs. </p>
-<p>The <span class="code-inline">#[Swag.Macro]</span> attribute is mandatory when using <span class="code-inline">opVisit</span>. It defines the macro's  behavior, allowing it to be integrated seamlessly into the codebase. </p>
-<p><span class="code-inline">opVisit</span> is a generic function that accepts two compile-time boolean parameters: </p>
-<ul>
-<li><span class="code-inline">ptr</span>: When set to <span class="code-inline">true</span>, elements are visited by pointer (address), enabling reference-based operations.</li>
-<li><span class="code-inline">back</span>: When set to <span class="code-inline">true</span>, elements are visited in reverse order (from last to first).</li>
-</ul>
-<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
+    timeInSeconds: <span class="STpe">f32</span> <span class="SCmt">// The duration in seconds</span>
+}
+
+<span class="SKwd">impl</span> <span class="SCst">Duration</span>
 {
-    <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SCmt">// Method to initialize Duration using milliseconds directly (without suffix)</span>
+    <span class="SAtr">#[Swag.ConstExpr, Swag.Implicit, Swag.Inline]</span>
+    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(valueMs: <span class="STpe">s32</span>)
     {
-        <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based </span>
-        <span class="SCmt">// or reverse-order iterations.</span>
-
-        <span class="SCmp">#if</span> ptr:
-            <span class="SCmp">#error</span> <span class="SStr">"Visiting by pointer is not supported in this example."</span>
-
-        <span class="SCmp">#if</span> back:
-            <span class="SCmp">#error</span> <span class="SStr">"Reverse visiting is not supported in this example."</span>
-
-        <span class="SCmt">// Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.</span>
-        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
-        {
-            <span class="SCmt">// The `#macro` directive ensures that the code is injected into the caller's scope.</span>
-            <span class="SCmp">#macro</span>
-            {
-                <span class="SCmt">// `#alias0` is used to represent the current value being visited.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
-
-                <span class="SCmt">// Access the appropriate field based on the current `idx`.</span>
-                <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
-                {
-                <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x'</span>
-                <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y'</span>
-                <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z'</span>
-                }
-
-                <span class="SCmt">// `#alias1` holds the current index of the iteration.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
-
-                <span class="SCmt">// Insert user-defined logic from the calling scope.</span>
-                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
-            }
-        }
+        timeInSeconds = valueMs / <span class="SNum">1000.0</span>
     }
 }</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Iterating Over Struct Fields </h4>
-<p>This example demonstrates one way to use <span class="code-inline">opVisit</span> for iterating over the fields of a struct. The same approach can be extended to foreach more complex data structures. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+<p>To convert a given value and suffix to another value, you will use the <span class="code-inline">opAffectLiteral</span> special function. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">Duration</span>
 {
-    <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
-    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-
-    <span class="SCmt">// Visit each field of `MyStruct` in declaration order.</span>
-    <span class="SCmt">// `v` corresponds to the value (i.e., #alias0).</span>
-    <span class="SCmt">// `i` corresponds to the index (i.e., #alias1).</span>
-    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> myStruct
+    <span class="SCmt">// Method to handle user-defined literals with a suffix (e.g., 5's, 500'ms)</span>
+    <span class="SAtr">#[Swag.ConstExpr, Swag.Implicit, Swag.Inline]</span>
+    <span class="SKwd">mtd</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(value: <span class="STpe">s32</span>)
     {
-        <span class="SLgc">switch</span> i
-        {
-        <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">10</span>)
-        <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">20</span>)
-        <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">30</span>)
-        }
+        <span class="SCmt">// This method is triggered when a literal with a suffix is used.</span>
+        <span class="SCmt">// The `suffix` parameter indicates the unit of the literal.</span>
+        <span class="SCmt">// The `value` parameter is the numeric part of the literal.</span>
 
-        cpt += <span class="SNum">1</span>
-    }
+        <span class="SCmt">// Check if the suffix is 's' (seconds)</span>
+        <span class="SCmp">#if</span> suffix == <span class="SStr">"s"</span>:
+            <span class="SCmt">// Directly assign the value as seconds</span>
+            timeInSeconds = value
 
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
-}</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Extending <span class="code-inline">opVisit</span>: Reverse Order Iteration </h4>
-<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures.  For instance, you may want to foreach the fields in reverse order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
-{
-    <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
-    {
-        <span class="SCmt">// In this version, we foreach the fields in reverse order.</span>
-        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
-        {
-            <span class="SCmp">#macro</span>
-            {
-                <span class="SKwd">var</span> <span class="SItr">#alias0</span>: <span class="STpe">s32</span> = <span class="SKwd">undefined</span>
-                <span class="SLgc">switch</span> <span class="SCmp">#up</span> idx
-                {
-                <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z' in reverse order</span>
-                <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y' in reverse order</span>
-                <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x' in reverse order</span>
-                }
+        <span class="SCmt">// Check if the suffix is 'ms' (milliseconds)</span>
+        <span class="SCmp">#elif</span> suffix == <span class="SStr">"ms"</span>:
+            <span class="SCmt">// Convert milliseconds to seconds and assign</span>
+            timeInSeconds = value / <span class="SNum">1000.0</span>
 
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
-                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
-            }
-        }
+        <span class="SCmt">// Check if the suffix is 'min' (minutes)</span>
+        <span class="SCmp">#elif</span> suffix == <span class="SStr">"min"</span>:
+            <span class="SCmt">// Convert minutes to seconds (1 min = 60 seconds)</span>
+            timeInSeconds = value * <span class="SNum">60.0</span>
+
+        <span class="SCmt">// Check if the suffix is 'h' (hours)</span>
+        <span class="SCmp">#elif</span> suffix == <span class="SStr">"h"</span>:
+            <span class="SCmt">// Convert hours to seconds (1 hour = 3600 seconds)</span>
+            timeInSeconds = value * <span class="SNum">3600.0</span>
+
+        <span class="SCmt">// Handle unsupported or invalid suffixes</span>
+        <span class="SCmp">#else</span>:
+            <span class="SCmt">// Raise a compile-time error if an invalid suffix is encountered</span>
+            <span class="SCmp">#error</span> <span class="SStr">"invalid duration literal suffix '"</span> ++ suffix ++ <span class="SStr">"'"</span>
     }
 }</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Reverse Order Iteration </h4>
-<p>The <span class="code-inline">opVisitReverse</span> variant allows us to foreach the struct's fields in reverse order,  providing flexibility depending on the needs of your application. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+<p>You can then use the suffix right after the literal value, as long as the type <span class="code-inline">Duration</span> is specified. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toto</span>(x: <span class="SCst">Duration</span>) {}
+
+<span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
-    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+    <span class="SKwd">let</span> delay1: <span class="SCst">Duration</span> = <span class="SNum">5</span>'s    <span class="SCmt">// Represents 5 seconds</span>
+    <span class="SKwd">let</span> delay2: <span class="SCst">Duration</span> = <span class="SNum">500</span>'ms <span class="SCmt">// Represents 500 milliseconds</span>
+    <span class="SKwd">let</span> delay3: <span class="SCst">Duration</span> = <span class="SNum">2</span>'min  <span class="SCmt">// Represents 2 minutes</span>
+    <span class="SKwd">let</span> delay4: <span class="SCst">Duration</span> = <span class="SNum">1</span>'h    <span class="SCmt">// Represents 1 hour</span>
 
-    <span class="SCmt">// Call the variant `opVisitReverse` to iterate over the fields in reverse order.</span>
-    <span class="SLgc">foreach</span>&lt;<span class="SCst">Reverse</span>&gt; v, i <span class="SLgc">in</span> myStruct
-    {
-        <span class="SLgc">switch</span> i
-        {
-        <span class="SLgc">case</span> <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">30</span>)
-        <span class="SLgc">case</span> <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">20</span>)
-        <span class="SLgc">case</span> <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(v == <span class="SNum">10</span>)
-        }
-
-        cpt += <span class="SNum">1</span>
-    }
-
-    <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
-}</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Visiting Elements in Dynamic Arrays </h4>
-<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to foreach elements in dynamic arrays, buffers,  or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data  structure the struct holds. </p>
-<p>For example, consider a struct with a slice: </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
-{
-    buffer: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]  <span class="SCmt">// A dynamic array (slice) initialized with values</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Custom <span class="code-inline">opVisit</span> for Dynamic Arrays </h4>
-<p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than  the struct's fields. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
-{
-    <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
-    {
-        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
-        {
-            <span class="SCmp">#macro</span>
-            {
-                <span class="SCmt">// #alias0 represents the value of the current buffer element.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.buffer[<span class="SCmp">#up</span> idx]
-
-                <span class="SCmt">// #alias1 represents the current index.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
-
-                <span class="SCmt">// Insert the user-provided logic from the caller.</span>
-                <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
-            }
-        }
-    }
-}</span></div>
-<h4 id="_006_000_structs_swg__006_007_visit_swg">Iterating Over a Dynamic Array </h4>
-<p>This example shows how to foreach each element in a dynamic array (slice) and perform  operations such as summing the elements. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">var</span> arrStruct = <span class="SCst">SliceStruct</span>{}
-    <span class="SKwd">var</span> sum = <span class="SNum">0</span>
-
-    <span class="SCmt">// Visit each element in the dynamic array buffer.</span>
-    <span class="SLgc">foreach</span> v, i <span class="SLgc">in</span> arrStruct
-    {
-        sum += v
-    }
-
-    <span class="SItr">@assert</span>(sum == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span> + <span class="SNum">5</span>)  <span class="SCmt">// Ensuring the sum of the elements is correct</span>
+    <span class="SCmt">// Use the `Duration` type in functions</span>
+    <span class="SFct">toto</span>(<span class="SNum">5</span>'ms)
+    <span class="SFct">toto</span>(<span class="SNum">100</span>'h)
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_008_offset_swg">Offset</h3><h4 id="_006_000_structs_swg__006_008_offset_swg">Custom Field Layout with <span class="code-inline">Swag.Offset</span> </h4>
-<p>You can force the layout of a field within a struct using the <span class="code-inline">Swag.Offset</span> attribute.  This allows you to manually specify the memory offset of a field, which can be useful  for creating custom memory layouts, such as overlapping fields or sharing memory space  between different fields. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
-    {
-        x: <span class="STpe">s32</span>
-
-        <span class="SCmt">// 'y' is located at the same offset as 'x', meaning they share the same memory space.</span>
-        <span class="SCmt">// This effectively creates an overlay, where changes to one field affect the other.</span>
-        <span class="SAtr">#[Swag.Offset("x")]</span>
-        y: <span class="STpe">s32</span>
-    }
-
-    <span class="SCmt">// Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">4</span>
-
-    <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}
-    v.x = <span class="SNum">666</span>
-
-    <span class="SCmt">// Since 'x' and 'y' share the same memory space, modifying 'x' also modifies 'y'.</span>
-    <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
-}</span></div>
-<h4 id="_006_000_structs_swg__006_008_offset_swg">Using <span class="code-inline">Swag.Offset</span> for Indexed Field Access </h4>
-<p>In this example, <span class="code-inline">Swag.Offset</span> is used to reference a group of fields by index,  enabling indexed access to multiple fields through a single array. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
-    {
-        x, y, z: <span class="STpe">f32</span>
-
-        <span class="SCmt">// 'idx' is an array that references the same memory locations as 'x', 'y', and 'z'.</span>
-        <span class="SCmt">// This allows you to access 'x', 'y', and 'z' via indexed access through 'idx'.</span>
-        <span class="SAtr">#[Swag.Offset("x")]</span>
-        idx: [<span class="SNum">3</span>] <span class="STpe">f32</span>
-    }
-
-    <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
-    v.x = <span class="SNum">10</span>; v.y = <span class="SNum">20</span>; v.z = <span class="SNum">30</span>
-
-    <span class="SCmt">// Each index in 'idx' directly references 'x', 'y', and 'z'.</span>
-    <span class="SItr">@assert</span>(v.idx[<span class="SNum">0</span>] == v.x)
-    <span class="SItr">@assert</span>(v.idx[<span class="SNum">1</span>] == v.y)
-    <span class="SItr">@assert</span>(v.idx[<span class="SNum">2</span>] == v.z)
-}</span></div>
-
-<h3 id="_006_000_structs_swg__006_009_packing_swg">Packing</h3><h4 id="_006_000_structs_swg__006_009_packing_swg">Default Struct Packing </h4>
-<p>By default, Swag aligns struct fields similarly to the C programming language. Each field is aligned based on the size of its type, ensuring optimal memory access and usage. This default behavior can be explicitly specified using <span class="code-inline">#[Swag.Pack(0)]</span>, meaning no additional packing adjustments are applied. Below is an example illustrating this default alignment strategy. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: aligned to 1 byte (no padding needed)</span>
-        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
-        z:     <span class="STpe">s64</span>     <span class="SCmt">// offset 8: aligned to 8 bytes (no padding needed)</span>
-    }
-
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.y) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.z) == <span class="SNum">8</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">16</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_009_packing_swg">Reducing Packing </h4>
-<p>Swag allows you to reduce the packing of struct fields using the <span class="code-inline">#[Swag.Pack]</span> attribute. This attribute specifies the alignment value to be applied to each field, enabling more compact struct representations. Below are examples demonstrating different levels of packing. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SAtr">#[Swag.Pack(1)]</span>
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte (no padding)</span>
-        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 1: 4 bytes (no padding)</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">5</span>
-
-    <span class="SAtr">#[Swag.Pack(2)]</span>
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
-        y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 2: 4 bytes (1 byte of padding before y)</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">2</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">6</span>
-
-    <span class="SAtr">#[Swag.Pack(4)]</span>
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct3</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
-        y:     <span class="STpe">s64</span>     <span class="SCmt">// offset 4: 8 bytes (3 bytes of padding before y)</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct3</span>) == <span class="SNum">12</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_009_packing_swg">Struct Size and Alignment </h4>
-<p>The total size of a struct in Swag is always a multiple of the largest alignment value among its fields. This ensures that the struct remains correctly aligned when used within larger data structures or arrays. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
-    {
-        x:     <span class="STpe">s32</span>     <span class="SCmt">// 4 bytes</span>
-        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
-        <span class="SCmt">// 3 bytes of padding to align with s32 size</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_009_packing_swg">Enforcing Alignment with <span class="code-inline">Swag.Align</span> </h4>
-<p>Swag provides the <span class="code-inline">#[Swag.Align]</span> attribute to enforce specific alignment constraints on an entire struct. This attribute can be used to ensure that a struct's alignment meets specific hardware or performance requirements. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
-        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">2</span>
-
-    <span class="SAtr">#[Swag.Align(8)]</span>
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
-    {
-        x:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
-        y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
-        <span class="SCmt">// 6 bytes of padding to align struct size to 8</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
-}</span></div>
-<h4 id="_006_000_structs_swg__006_009_packing_swg">Field-Specific Alignment </h4>
-<p>Swag allows setting specific alignment values for individual struct fields using the <span class="code-inline">#[Swag.Align]</span> attribute. This enables fine-grained control over memory layout, which can be crucial for certain low-level optimizations. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
-    {
-        x: <span class="STpe">bool</span>         <span class="SCmt">// offset 0: 1 byte</span>
-        <span class="SAtr">#[Swag.Align(8)]</span>
-        y: <span class="STpe">bool</span>         <span class="SCmt">// offset 8: aligned to 8 bytes (7 bytes of padding before y)</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">9</span>
-
-    <span class="SAtr">#[Swag.Align(8)]</span>
-    <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
-    {
-        x: <span class="STpe">bool</span>         <span class="SCmt">// offset 0: 1 byte</span>
-        <span class="SAtr">#[Swag.Align(4)]</span>
-        y: <span class="STpe">bool</span>         <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
-        <span class="SCmt">// 3 bytes of padding to align struct size to 8</span>
-    }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
-}</span></div>
-
-<h3 id="_006_000_structs_swg__006_010_interface_swg">Interface</h3><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
+<h3 id="_006_000_structs_swg__006_011_interface_swg">Interface</h3><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
 <p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. This allows for implementing an interface for a given struct without altering the struct's definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
@@ -4894,7 +4973,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     x, y, z: <span class="STpe">f32</span>  <span class="SCmt">// Represents the coordinates of a point in a 3D space</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Interface Declaration </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Interface Declaration </h4>
 <p>Here we declare an interface <span class="code-inline">IReset</span>, with two functions <span class="code-inline">set</span> and <span class="code-inline">reset</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">IReset</span>
 {
@@ -4904,7 +4983,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span>
     <span class="SKwd">mtd</span> <span class="SFct">reset</span>();
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Implementing an Interface </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Implementing an Interface </h4>
 <p>You can implement an interface for any given struct with <span class="code-inline">impl</span> and <span class="code-inline">for</span>. For example, here we implement interface <span class="code-inline">IReset</span> for struct <span class="code-inline">Point2</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">IReset</span> <span class="SLgc">for</span> <span class="SCst">Point2</span>
 {
@@ -4924,7 +5003,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Note that you can also declare 'normal' functions or methods in an 'impl' block.</span>
     <span class="SKwd">mtd</span> <span class="SFct">myOtherMethod</span>() {}   <span class="SCmt">// Example of an additional method</span>
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Implementing the Interface for Another Struct </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Implementing the Interface for Another Struct </h4>
 <p>Similarly, we implement the <span class="code-inline">IReset</span> interface for struct <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">IReset</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
 {
@@ -4940,7 +5019,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x, y, z = <span class="SNum">0</span>          <span class="SCmt">// Reset x, y, and z to 0</span>
     }
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Using the Interface </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Using the Interface </h4>
 <p>We can then use these interfaces on either <span class="code-inline">Point2</span> or <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4962,7 +5041,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     itf.<span class="SFct">reset</span>()
     <span class="SItr">@assert</span>(pt3.x == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.y == <span class="SNum">0</span> <span class="SLgc">and</span> pt3.z == <span class="SNum">0</span>)
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Accessing Interface Methods Directly </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Accessing Interface Methods Directly </h4>
 <p>You can also access all functions declared in an interface implementation block for a given struct with a normal call. They are located in a dedicated scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4975,7 +5054,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     pt3.<span class="SCst">IReset</span>.<span class="SFct">set</span>(<span class="SNum">10</span>)
     pt3.<span class="SCst">IReset</span>.<span class="SFct">reset</span>()
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Interface as a Type </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Interface as a Type </h4>
 <p>An interface is a real type, with a size equivalent to 2 pointers: a pointer to the <i>object</i> and a pointer to the <i>virtual table</i>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4997,7 +5076,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     itf = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt3
     <span class="SItr">@assert</span>(<span class="SItr">@dataof</span>(itf) == &pt3)
 }</span></div>
-<h4 id="_006_000_structs_swg__006_010_interface_swg">Default Implementation in Interfaces </h4>
+<h4 id="_006_000_structs_swg__006_011_interface_swg">Default Implementation in Interfaces </h4>
 <p>When you declare an interface, you can define a default implementation for each function.  If a struct does not redefine the function, then the default implementation will be called instead. </p>
 <p>Just declare a body in the interface function to provide a default implementation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">ITest</span>
@@ -8753,7 +8832,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 28-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 30-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
