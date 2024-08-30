@@ -91,6 +91,8 @@ struct Tokenizer
 
     SourceLocation location;
 
+    SourceLocation lastOpenLeftCurly;
+
     ErrorContext*  errorContext   = nullptr;
     char*          curBuffer      = nullptr;
     char*          endBuffer      = nullptr;

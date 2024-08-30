@@ -102,6 +102,14 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         }
     }
 
+    if (tokenizer.lastOpenLeftCurly.line)
+    {
+        err.addNote(sourceFile,
+                    tokenizer.lastOpenLeftCurly,
+                    tokenizer.lastOpenLeftCurly,
+                    formNte(Nte0221, Naming::tokenToName(Tokenizer::tokenRelated(id)).cstr()));
+    }
+
     return context->report(err);
 }
 
