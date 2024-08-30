@@ -121,6 +121,12 @@ namespace
                 break;
             }
         }
+
+        if (!callParameters && errorParam.destFuncDecl)
+        {
+            if(node->findParent(AstNodeKind::Return) || node->findParent(AstNodeKind::AffectOp))
+                err->addNote(formNte(Nte0222, errorParam.destFuncDecl->token.cstr()));
+        }
     }
 
     void errorNotEnoughGenericArguments(const SemanticContext* context, const ErrorParam& errorParam)

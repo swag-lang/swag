@@ -1146,7 +1146,7 @@ void initErrors()
     SWAG_ERROR(Nte0219, "unnamed parameters ([['?']]) cannot have an explicit type");
     SWAG_ERROR(Nte0220, "the [[%s]] does not implement the [[%s]]");
     SWAG_ERROR(Nte0221, "this is the last [[%s]]");
-    SWAG_ERROR(Nte0222, nullptr);
+    SWAG_ERROR(Nte0222, "consider using [[&%s]] if you want a function pointer for a lambda or a closure");
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);
     SWAG_ERROR(Nte0225, nullptr);
