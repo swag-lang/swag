@@ -34,7 +34,6 @@ undefined
 using
 with
 cast
-cast()
 dref
 retval
 try
