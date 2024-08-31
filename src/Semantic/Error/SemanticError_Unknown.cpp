@@ -70,11 +70,11 @@ namespace
             const Utf8 variant{identifier->token.text.buffer + g_LangSpec->name_opVisit.length()};
             err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0711, variant.cstr(), typeWhere->getDisplayNameC())};
         }
-        else if (typeWhere->isStruct() && identifier->callParameters)
+        else if (typeWhere->isStruct() && identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0731, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
-        else if (typeWhere->isInterface() && identifier->callParameters)
+        else if (typeWhere->isInterface() && identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0728, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
