@@ -1,7 +1,7 @@
-#global testerror "Saf0004"
+#global testerror "San0006"
 
 //#[Swag.PrintBc]
-#[Swag.Safety("sanity", false)]
+#[Swag.Safety("sanity", true)]
 #test
 {
     var x : string

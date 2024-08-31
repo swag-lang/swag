@@ -73,6 +73,7 @@ Swag allows you to combine `const` with pointers in different ways, depending on
 
 For cases where you need **pointer arithmetic** and want a pointer to **multiple values** (like an array or a memory block), you declare your pointer with `^` instead of `*`. This type of pointer is especially useful for iterating over a sequence of elements stored in contiguous memory locations.
 */
+#[Swag.Safety("sanity", false)]
 #test
 {
     var ptr: ^u8                        // Declaring a pointer to a memory block of 'u8' values

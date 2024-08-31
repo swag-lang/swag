@@ -1,10 +1,10 @@
-#global testerror "Saf0006"
+#global testerror "San0006"
 
 typealias A = string
 
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
-#[Swag.Safety("sanity", false)]
+#[Swag.Safety("sanity", true)]
 func toto(b: s32)
 {
     var x: A

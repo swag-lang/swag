@@ -1,4 +1,5 @@
 //#[Swag.PrintBc]
+#[Swag.Safety("sanity", false)]
 #test
 {
     var ptr: ^u8

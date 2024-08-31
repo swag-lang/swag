@@ -20,7 +20,7 @@ impl I for X
     case X:
         break
     default:
-        @print(@kindof(i).name)
+        //@print(@kindof(i).name)
         @assert(false)
     }
 }

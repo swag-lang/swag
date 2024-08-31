@@ -1224,6 +1224,7 @@ namespace
 
                 case ByteCodeOp::IncPointer64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                    SWAG_CHECK(checkNotNull(cxt, ra));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     *rc = *ra;
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
@@ -1234,6 +1235,7 @@ namespace
                     break;
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                    SWAG_CHECK(checkNotNull(cxt, ra));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     *rc = *ra;
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
@@ -1244,6 +1246,7 @@ namespace
                     break;
                 case ByteCodeOp::DecPointer64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                    SWAG_CHECK(checkNotNull(cxt, ra));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     *rc = *ra;
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));

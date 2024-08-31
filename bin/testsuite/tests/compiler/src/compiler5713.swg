@@ -1,12 +1,11 @@
-#global testerror "Saf0018"
+#global testerror "San0006"
 
 interface IEvent {}
 struct Mouse {}
 impl IEvent for Mouse {}
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true)]
-#[Swag.Safety("sanity", false)]
+#[Swag.Safety("sanity", true)]
 #test
 {
     var x: IEvent
