@@ -274,6 +274,9 @@ void LanguageSpec::setupBcKeywords()
 {
     bckeywords.insert("jump");
     bckeywords.insert("jumpdyn8");
+    bckeywords.insert("jumpdyn16");
+    bckeywords.insert("jumpdyn32");
+    bckeywords.insert("jumpdyn64");
     bckeywords.insert("pushparam");
     bckeywords.insert("push");
     bckeywords.insert("pop");
