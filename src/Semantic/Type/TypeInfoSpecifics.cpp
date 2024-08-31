@@ -39,6 +39,13 @@ bool TypeInfoNative::isSame(const TypeInfo* to, CastFlags castFlags) const
     return true;
 }
 
+Utf8 TypeInfoNamespace::getDisplayName()
+{
+    Utf8 str;
+    computeWhateverName(str, ComputeNameKind::DisplayName);
+    return form("namespace %s", str.cstr());
+}
+
 TypeInfo* TypeInfoNamespace::clone()
 {
     const auto newType = makeType<TypeInfoNamespace>();

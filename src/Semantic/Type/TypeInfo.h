@@ -282,6 +282,7 @@ struct TypeInfoNamespace final : TypeInfo
     {
     }
 
+    Utf8      getDisplayName() override;
     TypeInfo* clone() override;
 
     Scope* scope = nullptr;
