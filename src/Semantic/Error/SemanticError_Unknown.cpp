@@ -113,6 +113,7 @@ namespace
             case AstNodeKind::StructDecl:
             case AstNodeKind::InterfaceDecl:
             case AstNodeKind::EnumDecl:
+            case AstNodeKind::Namespace:
             {
                 const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
                 if (note)
