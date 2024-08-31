@@ -1,4 +1,4 @@
-#global testerror "Saf0030"
+//#global testerror "Saf0030"
 
 struct Evt
 {

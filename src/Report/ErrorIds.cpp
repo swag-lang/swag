@@ -69,7 +69,6 @@ void initErrors()
     // Any
     SWAG_ERROR(Saf0001, "safety violation $ invalid attempt to cast from [[any]] to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
     SWAG_ERROR(Saf0002, "safety violation $ invalid attempt to cast a null value to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
-    SWAG_ERROR(Saf0030, "safety violation $ invalid attempt to cast from an interface to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
     // Bool
     SWAG_ERROR(Saf0003, "safety violation $ usage of an invalid boolean value $ [[#[Swag.Safety(\"bool\")]]] is true");
     // BoundCheck
@@ -105,6 +104,7 @@ void initErrors()
     // Switch
     SWAG_ERROR(Saf0029, "safety violation $ unexpected switch value encountered $ [[#[Swag.Safety(\"switch\")]]] is true");
 
+    SWAG_ERROR(Saf0030, nullptr);
     SWAG_ERROR(Saf0031, nullptr);
     SWAG_ERROR(Saf0032, nullptr);
     SWAG_ERROR(Saf0033, nullptr);

@@ -793,7 +793,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             node->resultRegisterRc = exprNode->resultRegisterRc;
         }
 
-        exprNode->typeInfo       = typeInfo;
+        exprNode->typeInfo     = typeInfo;
         exprNode->typeInfoCast = nullptr;
         return true;
     }
@@ -805,7 +805,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
 
         truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-        node->resultRegisterRc   = exprNode->resultRegisterRc;
+        node->resultRegisterRc = exprNode->resultRegisterRc;
         exprNode->typeInfoCast = nullptr;
 
         if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
@@ -826,7 +826,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-        node->resultRegisterRc   = exprNode->resultRegisterRc;
+        node->resultRegisterRc = exprNode->resultRegisterRc;
         exprNode->typeInfoCast = nullptr;
         return true;
     }
@@ -836,7 +836,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         if (fromTypeInfo->isPointer())
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
             exprNode->typeInfoCast = nullptr;
             return true;
         }
@@ -844,7 +844,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         if (fromTypeInfo->isArray())
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
             exprNode->typeInfoCast = nullptr;
             return true;
         }
@@ -857,7 +857,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         if (fromTypeInfo->isStruct())
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
             exprNode->typeInfoCast = nullptr;
 
             if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
@@ -870,11 +870,31 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             return true;
         }
 
-        if(fromTypeInfo->isInterface())
+        if (fromTypeInfo->isInterface())
         {
-            emitSafetyCastInterface(context, exprNode, typeInfo);
+            const auto r0 = reserveRegisterRC(context);
+            //const auto r1 = reserveRegisterRC(context);
+            const auto r2 = reserveRegisterRC(context);
+
+            // :AnyTypeSegment
+            SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
+            const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
+            const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);
+            emitMakeSegPointer(context, anyTypeSegment, static_cast<uint32_t>(anyTypeOffset), r0);
+
+            // Get the real type
+            const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, exprNode->resultRegisterRc[1], 0, r2);
+            inst->b.u64     = sizeof(void*);
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, r2, r2);
+
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAs, r0, r2, exprNode->resultRegisterRc[0], exprNode->resultRegisterRc[0]);
+
+            freeRegisterRC(context, r0);
+            freeRegisterRC(context, r2);
+
             exprNode->typeInfoCast = nullptr;
             return true;
         }
@@ -887,7 +907,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             fromTypeInfo->numRegisters() == 1)
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
             exprNode->typeInfoCast = nullptr;
             return true;
         }
@@ -896,7 +916,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             fromTypeInfo->isAny())
         {
             truncRegisterRC(context, exprNode->resultRegisterRc, 1);
-            node->resultRegisterRc   = exprNode->resultRegisterRc;
+            node->resultRegisterRc = exprNode->resultRegisterRc;
             exprNode->typeInfoCast = nullptr;
             return true;
         }
@@ -921,8 +941,8 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     // Pass through
     if (typeInfo->isStruct())
     {
-        node->resultRegisterRc   = exprNode->resultRegisterRc;
-        exprNode->typeInfo       = typeInfo;
+        node->resultRegisterRc = exprNode->resultRegisterRc;
+        exprNode->typeInfo     = typeInfo;
         exprNode->typeInfoCast = nullptr;
         return true;
     }
@@ -979,8 +999,8 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             return Report::internalError(context->node, "emitCast, invalid cast type");
     }
 
-    node->resultRegisterRc   = exprNode->resultRegisterRc;
-    exprNode->typeInfo       = typeInfo;
+    node->resultRegisterRc = exprNode->resultRegisterRc;
+    exprNode->typeInfo     = typeInfo;
     exprNode->typeInfoCast = nullptr;
     return true;
 }
@@ -1016,7 +1036,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
     // Will be done by parent in case of a func call param
     if (node->parent->is(AstNodeKind::FuncCallParam))
     {
-        node->resultRegisterRc   = exprNode->resultRegisterRc;
+        node->resultRegisterRc = exprNode->resultRegisterRc;
         exprNode->typeInfoCast = nullptr;
         return true;
     }

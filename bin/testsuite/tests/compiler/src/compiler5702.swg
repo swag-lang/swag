@@ -1,5 +1,3 @@
-#global testerror "Saf0030"
-
 struct Evt
 {
     x: s32 = 4
@@ -33,7 +31,7 @@ impl IEvent for Evt3 {}
 func toto(v: IEvent)
 {
     let ptr0 = cast(*Evt1) v
-    @assert(ptr0.x == 4)
+    @assert(!ptr0)
 
 /*    let ptr = cast(*Evt2) @as(Evt2, @kindof(v), @dataof(v))
     @assert(ptr.x == 4)

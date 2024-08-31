@@ -21,6 +21,7 @@ impl IEvent for MouseEvent
 {
 }
 
+//#[Swag.PrintBc]
 func toto(x: IEvent)
 {
     var g = 0

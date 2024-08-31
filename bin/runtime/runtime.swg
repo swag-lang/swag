@@ -51,11 +51,9 @@ func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->*void
     return cast(^u8) ptr + offset
 }
 
-func @is(toType, fromType: const *TypeInfoStruct, isFlags: IsFlags)->bool
+func @is(toType, fromType: const *TypeInfoStruct)->bool
 {
-    let (offset, yes) = __is(toType, fromType)
-    if offset and isFlags & .CastCheck:
-        return false
+    let (?, yes) = __is(toType, fromType)
     return yes
 }
 
