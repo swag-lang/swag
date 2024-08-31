@@ -25,6 +25,7 @@ impl IEvent for MouseEvent
 func toto(x: IEvent)
 {
     var g = 0
+
     switch x
     {
     case let ptr1 as MouseEvent where ptr1.x == 66:

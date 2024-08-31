@@ -198,18 +198,12 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             }
         }
 
-        auto block = c->block;
-
-        const auto stmt = block->findChild(AstNodeKind::Statement);
-        if (stmt && stmt->hasSpecFlag(AstStatement::SPEC_FLAG_IS_WHERE))
+        if (c->whereClause)
         {
             concat->addBlank();
             concat->addString("where");
             concat->addBlank();
-
-            const AstIf* ifNode = castAst<AstIf>(stmt->firstChild(), AstNodeKind::If);
-            SWAG_CHECK(outputNode(context, ifNode->boolExpression));
-            block = ifNode->ifBlock;
+            SWAG_CHECK(outputNode(context, c->whereClause));
         }
 
         concat->addChar(':');
@@ -217,7 +211,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, block));
+        SWAG_CHECK(outputNode(context, c->block));
         concat->addEol();
         context.indent--;
     }

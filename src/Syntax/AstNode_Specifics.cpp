@@ -733,6 +733,7 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->block        = findChildRef(block, newNode);
+    newNode->whereClause  = findChildRef(whereClause, newNode);
     newNode->ownerSwitch  = castAst<AstSwitch>(context.parent, AstNodeKind::Switch);
     newNode->caseIndex    = caseIndex;
     newNode->matchVarName = matchVarName;

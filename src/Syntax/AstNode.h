@@ -877,13 +877,13 @@ struct AstSwitchCase : AstNode
     static constexpr SpecFlags SPEC_FLAG_IS_DEFAULT = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_IS_FALSE   = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_IS_TRUE    = 0x0004;
-    static constexpr SpecFlags SPEC_FLAG_HAS_WHERE  = 0x0008;
 
     AstNode* clone(CloneContext& context);
 
-    Token                  matchVarName;
     VectorNative<AstNode*> expressions;
+    Token                  matchVarName;
     AstNode*               block;
+    AstNode*               whereClause;
     AstSwitch*             ownerSwitch;
     uint32_t               caseIndex;
 };

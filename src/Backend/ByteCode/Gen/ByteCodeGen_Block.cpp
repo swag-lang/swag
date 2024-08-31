@@ -825,20 +825,9 @@ bool ByteCodeGen::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
-    const auto          node = context->node;
-    AstSwitchCaseBlock* blockNode;
-
-    AstNode* whereClause = nullptr;
-    if (node->is(AstNodeKind::SwitchCaseBlock))
-        blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
-    else
-    {
-        const auto ifNode = castAst<AstIf>(node->parent, AstNodeKind::If);
-        whereClause       = ifNode->boolExpression;
-        blockNode         = castAst<AstSwitchCaseBlock>(node->getParent(3), AstNodeKind::SwitchCaseBlock);
-    }
-
-    const auto caseNode = blockNode->ownerCase;
+    const auto node      = context->node;
+    const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
+    const auto caseNode  = blockNode->ownerCase;
 
     if (caseNode->ownerSwitch->expression)
         caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
@@ -850,10 +839,9 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         // Normal switch, with an expression
         if (caseNode->ownerSwitch->expression)
         {
-            for (const auto expr : caseNode->expressions)
+            if(!caseNode->whereClause || !caseNode->whereClause->hasComputedValue() || caseNode->whereClause->computedValue()->reg.b)
             {
-                // If the where clause if already known to be false, then no need to treat that case
-                if (!whereClause || !whereClause->hasComputedValue() || whereClause->computedValue()->reg.b)
+                for (const auto expr : caseNode->expressions)
                 {
                     RegisterList r0;
                     if (expr->is(AstNodeKind::Range))
@@ -884,23 +872,29 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                         SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
                     }
 
-                    if (whereClause && !whereClause->hasComputedValue())
-                    {
-                        auto inst   = EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r0);
-                        inst->b.u64 = 1;
-                        freeRegisterRC(context, r0);
+                    allJumps.push_back(context->bc->numInstructions);
+                    const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
+                    inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                    freeRegisterRC(context, r0);
+                }
 
-                        allJumps.push_back(context->bc->numInstructions);
-                        inst        = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
-                        inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-                    }
-                    else
+                if (caseNode->whereClause && !caseNode->whereClause->hasComputedValue())
+                {
+                    // No value is true, jump to the next case
+                    auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
+                    inst->b.u64 = 1;
+                    
+                    // Resolve all the case values to jump to the where clause if true
+                    for (const auto jumpIdx : allJumps)
                     {
-                        allJumps.push_back(context->bc->numInstructions);
-                        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
-                        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-                        freeRegisterRC(context, r0);
+                        ByteCodeInstruction* jump = context->bc->out + jumpIdx;
+                        jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
                     }
+
+                    allJumps.clear();
+                    allJumps.push_back(context->bc->numInstructions);
+                    inst        = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, caseNode->whereClause->resultRegisterRc[0]);
+                    inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
                 }
             }
         }
@@ -938,10 +932,10 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     }
 
     // default with a "where"
-    else if (whereClause && !whereClause->hasComputedValue())
+    else if (caseNode->whereClause && !caseNode->whereClause->hasComputedValue())
     {
         allJumps.push_back(context->bc->numInstructions);
-        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, whereClause->resultRegisterRc[0]);
+        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, caseNode->whereClause->resultRegisterRc[0]);
         inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
 
         // Jump to the next case
@@ -955,15 +949,15 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
         }
     }
-    else if (whereClause && !whereClause->computedValue()->reg.b)
+    else if (caseNode->whereClause && !caseNode->whereClause->computedValue()->reg.b)
     {
         // Jump to the next case
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
     }
 
-    if (whereClause)
-        freeRegisterRC(context, whereClause->resultRegisterRc);
+    if (caseNode->whereClause)
+        freeRegisterRC(context, caseNode->whereClause->resultRegisterRc);
     return true;
 }
 

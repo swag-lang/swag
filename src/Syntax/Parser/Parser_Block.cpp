@@ -255,53 +255,13 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             }
         }
 
-        // Content
-        const auto          newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
-        ParserPushScope     scoped(this, newScope);
-        ParserPushBreakable scopedBreakable(this, switchNode);
-
-        const auto statement  = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
-        AstNode*   parentStmt = statement;
-        statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
-        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->ownerCase                        = caseNode;
-        caseNode->block                             = statement;
-        newScope->owner                             = statement;
-
-        // where clause
-        if (tokenParse.is(TokenId::KwdWhere))
-        {
-            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0382)));
-            SWAG_CHECK(doWhereIf(statement, &dummyResult));
-            const auto      nodeIf = castAst<AstIf>(statement->firstChild()->firstChild(), AstNodeKind::If);
-            ParserPushScope scoped1(this, nodeIf->ownerScope);
-            nodeIf->ifBlock = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, nodeIf);
-            nodeIf->ifBlock->addSpecFlag(AstStatement::SPEC_FLAG_CURLY);
-            caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE);
-            parentStmt = nodeIf->ifBlock;
-        }
-        else if (isDefault)
-        {
-            SWAG_VERIFY(cptDefaultNoWhere == 0, error(caseNode->token, toErr(Err0011)));
-            cptDefaultNoWhere++;
-        }
-
-        if (!isDefault)
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
-        else
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
-
-        // Not empty
-        if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0031));
-        if (tokenParse.is(TokenId::SymRightCurly))
-            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
+        const auto      newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
+        ParserPushScope scoped(this, newScope);
 
         // Declare the match variable and make a cast
         if (!caseNode->matchVarName.text.empty())
         {
-            const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, statement);
+            const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, caseNode);
             varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_LET);
             varDecl->addAstFlag(AST_GENERATED);
 
@@ -315,11 +275,45 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             CloneContext cxt;
             cxt.parent = castNode;
             front->clone(cxt);
-            
+
             Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
-            Ast::removeFromParent(varDecl);
-            Ast::addChildFront(statement, varDecl);
         }
+
+        // where clause
+        if (tokenParse.is(TokenId::KwdWhere))
+        {
+            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0382)));
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doBoolExpression(caseNode, EXPR_FLAG_NONE, &caseNode->whereClause));
+        }
+        else if (isDefault)
+        {
+            SWAG_VERIFY(cptDefaultNoWhere == 0, error(caseNode->token, toErr(Err0011)));
+            cptDefaultNoWhere++;
+        }
+
+        // Content
+        ParserPushBreakable scopedBreakable(this, switchNode);
+
+        const auto statement  = Ast::newNode<AstSwitchCaseBlock>(AstNodeKind::SwitchCaseBlock, this, caseNode);
+        AstNode*   parentStmt = statement;
+        statement->allocateExtension(ExtensionKind::Semantic);
+        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
+        statement->ownerCase                        = caseNode;
+        caseNode->block                             = statement;
+        newScope->owner                             = statement;
+
+        if (!isDefault)
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
+        else
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
+
+        // Not empty
+        if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
+            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0031));
+        if (tokenParse.is(TokenId::SymRightCurly))
+            return error(prevToken, isDefault ? toErr(Err0063) : toErr(Err0062), toNte(Nte0030));
 
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
             SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));

@@ -335,7 +335,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        if (switchCase == valCase[idx] || (!switchCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE) && !valCase[idx]->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE)))
+                        if (switchCase == valCase[idx] || (!switchCase->whereClause && !valCase[idx]->whereClause))
                         {
                             Diagnostic err{expr, formErr(Err0020, expr->computedValue()->text.cstr())};
                             err.addNote(valExpression[idx], toNte(Nte0194));
@@ -358,7 +358,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        if (switchCase == valCase[idx] || (!switchCase->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE) && !valCase[idx]->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE)))
+                        if (switchCase == valCase[idx] || (!switchCase->whereClause && !valCase[idx]->whereClause))
                         {
                             const auto note = Diagnostic::note(valExpression[idx], toNte(Nte0194));
                             if (expr->isConstantGenTypeInfo())
@@ -549,19 +549,8 @@ bool Semantic::resolveCase(SemanticContext* context)
     if (!caseNode->expressions.empty())
         caseNode->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
 
-    if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_HAS_WHERE))
-    {
-        const auto stmt   = caseNode->block->findChild(AstNodeKind::Statement);
-        const auto ifNode = castAst<AstIf>(stmt->firstChild(), AstNodeKind::If);
-        ifNode->setPassThrough();
-        ifNode->boolExpression->setBcNotifyAfter(nullptr, ByteCodeGen::emitIfAfterExpr);
-        ifNode->ifBlock->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
-    }
-    else
-    {
-        SWAG_CHECK(SemanticError::warnWhereDoIf(context));
-        caseNode->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
-    }
+    SWAG_CHECK(SemanticError::warnWhereDoIf(context));
+    caseNode->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
 
     caseNode->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;
