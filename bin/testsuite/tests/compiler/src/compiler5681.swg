@@ -1,4 +1,4 @@
-#global testerror "Err0767"
+#global testerror "Err0298"
 
 struct BaseEvent
 {

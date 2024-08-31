@@ -1,5 +1,5 @@
 #global testpass syntax;
-#global testerror "Err0468";
+#global testerror "Err0475";
 
 #[toto]
 #[toto, titi]

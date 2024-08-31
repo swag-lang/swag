@@ -86,7 +86,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, const AstNode* hintType)
 {
-    Utf8 text = formErr(Err0635, node->token.cstr(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0642, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";

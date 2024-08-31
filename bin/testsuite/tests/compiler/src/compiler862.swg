@@ -1,4 +1,4 @@
-#global testerror "Err0517"
+#global testerror "Err0524"
 #test
 {
 	//var a: (x: s32)->s32 = { return x; }

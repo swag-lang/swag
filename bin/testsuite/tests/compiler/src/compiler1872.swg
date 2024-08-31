@@ -1,5 +1,5 @@
 
-#global testerror "Err0319"
+#global testerror "Err0321"
 
 impl TOTO
 {

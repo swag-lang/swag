@@ -78,7 +78,7 @@ func addFiles(folder: string, extension: string)
             continue
         let what = l[11..13]
 
-        if what != "Nte": 
+        if what != "Err": 
             continue
 
         ids.findOrAdd(what).value += 1

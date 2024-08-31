@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0430"
+#global testerror "Err0436"
 func opEquals()
 {
 }

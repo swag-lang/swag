@@ -1,4 +1,4 @@
-#global testerror "Err0559"
+#global testerror "Err0566"
 func(A, B) toto(x: {a: A, b: B})
 {
     @assert(x.item0 == 1)

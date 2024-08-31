@@ -1,4 +1,4 @@
-#global testerror "Err0320"
+#global testerror "Err0322"
 struct(T) A {}
 
 public struct String4726

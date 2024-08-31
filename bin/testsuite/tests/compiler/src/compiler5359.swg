@@ -1,3 +1,3 @@
-#global testerror "Err0664"
+#global testerror "Err0671"
 
 attr 0();

@@ -1,4 +1,4 @@
-#global testerror "Err0402"
+#global testerror "Err0407"
 func toto(x: s32) {}
 //func toto(x: s64) {}
 #[Swag.Strict]

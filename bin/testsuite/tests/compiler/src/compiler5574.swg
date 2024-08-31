@@ -1,4 +1,4 @@
-#global testerror "Err0697"
+#global testerror "Err0704"
 //const std = @import("std");
 
 public func main() !void {

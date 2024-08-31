@@ -1,4 +1,4 @@
-#global testerror "Err0685"
+#global testerror "Err0692"
 
 func main()->s32 {
     int intType;

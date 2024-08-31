@@ -1,4 +1,4 @@
-#global testerror "Err0450"
+#global testerror "Err0456"
 typealias Bool = bool
 typealias Int = s32
 

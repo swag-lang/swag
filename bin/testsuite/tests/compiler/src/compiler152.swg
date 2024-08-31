@@ -1,7 +1,7 @@
 
 ;
 
-#global testerror "Err0699";
+#global testerror "Err0706";
 func main ()
 {
 	return 1;

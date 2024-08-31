@@ -1,4 +1,4 @@
-//#global testerror "Err0598"
+//#global testerror "Err0605"
 struct Node {x: s32;}
 struct(T) Arr {}
 

@@ -1,4 +1,4 @@
-#global testerror "Err0566"
+#global testerror "Err0573"
 func toto(xx: bool)
 {
     var x: u32 = xx ? 1'u32 : -1'f32

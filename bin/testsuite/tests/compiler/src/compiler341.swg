@@ -1,4 +1,4 @@
-#global testerror "Err0613"
+#global testerror "Err0620"
 #test
 {
 	var a: [2, 2, 2] s32

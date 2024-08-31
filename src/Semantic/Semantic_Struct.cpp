@@ -199,7 +199,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             // Cannot have the same name as a function of the interface
             if (itfSymbol)
             {
-                Diagnostic err{childFct, childFct->tokenName, formErr(Err0461, childFct->token.text.cstr(), typeInterface->name.cstr())};
+                Diagnostic err{childFct, childFct->tokenName, formErr(Err0468, childFct->token.text.cstr(), typeInterface->name.cstr())};
                 err.hint = toNte(Nte0028);
                 err.addNote(toNte(Nte0019));
                 return context->report(err);
@@ -210,7 +210,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
         if (!itfSymbol)
         {
-            Diagnostic err{childFct, childFct->tokenName, formErr(Err0728, childFct->token.text.cstr(), typeInterface->getDisplayNameC())};
+            Diagnostic err{childFct, childFct->tokenName, formErr(Err0737, childFct->token.text.cstr(), typeInterface->getDisplayNameC())};
             if (childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
                 err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0126));
             err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
@@ -258,7 +258,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             {
                 case MatchResult::BadSignature:
                 {
-                    Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.addNote(childFct->parameters->children[bi.badSignatureNum2], formNte(Nte0100, childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
                     err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, formNte(Nte0139, typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                     return context->report(err);
@@ -266,7 +266,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 case MatchResult::MissingReturnType:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.hint = toNte(Nte0018);
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0128, typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
@@ -274,14 +274,14 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 case MatchResult::NoReturnType:
                 {
-                    Diagnostic err{childFct->returnType, formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{childFct->returnType, formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0129));
                     return context->report(err);
                 }
 
                 case MatchResult::MismatchReturnType:
                 {
-                    Diagnostic err{childFct->returnType, formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{childFct->returnType, formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.hint = Diagnostic::isType(childFct->returnType->typeInfo);
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0128, typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
@@ -289,7 +289,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 case MatchResult::MismatchThrow:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.hint          = toNte(Nte0097);
                     const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0186));
                     note->canBeMerged = false;
@@ -299,7 +299,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 default:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0323, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0325, child->token.cstr(), typeBaseInterface->name.cstr())};
                     const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0186));
                     note->canBeMerged = false;
                     err.addNote(note);
@@ -425,14 +425,14 @@ bool Semantic::resolveInterface(SemanticContext* context)
 
             if (typeLambda->parameters.empty())
             {
-                const Diagnostic err{varDecl->type, formErr(Err0227, child->token.cstr())};
+                const Diagnostic err{varDecl->type, formErr(Err0228, child->token.cstr())};
                 return context->report(err);
             }
 
             const auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, formErr(Err0226, firstParamType->getDisplayNameC())}));
+            SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, formErr(Err0227, firstParamType->getDisplayNameC())}));
             const auto firstParamPtr = castTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, formErr(Err0226, firstParamType->getDisplayNameC())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, formErr(Err0227, firstParamType->getDisplayNameC())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -442,14 +442,14 @@ bool Semantic::resolveInterface(SemanticContext* context)
 
         if (!node->hasAstFlag(AST_GENERIC))
         {
-            SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, formErr(Err0756, node->token.cstr(), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, formErr(Err0766, node->token.cstr(), child->typeInfo->getDisplayNameC())}));
         }
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
         {
             const auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
             SWAG_ASSERT(attr);
-            return context->report({attr->node, attr->node->token, toErr(Err0401)});
+            return context->report({attr->node, attr->node->token, toErr(Err0406)});
         }
 
         typeParam->offset                                            = storageOffset;
@@ -563,7 +563,7 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Sc
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic err{node, node->token, formErr(Err0324, node->token.cstr())};
+        Diagnostic err{node, node->token, formErr(Err0326, node->token.cstr())};
         err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
         err.addNote(formNte(Nte0140, scopeImpl->parentScope->getFullName().cstr(), node->token.cstr(), scope->parentScope->getFullName().cstr()));
         return context->report(err);
@@ -585,7 +585,7 @@ bool Semantic::resolveImpl(SemanticContext* context)
     }
 
     const auto typeIdentifier = node->identifier->resolvedSymbolOverload()->typeInfo;
-    SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, toErr(Err0703)}));
+    SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, toErr(Err0710)}));
 
     switch (typeInfo->kind)
     {
@@ -870,8 +870,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     {
         if (node->hasAttribute(ATTRIBUTE_OPAQUE))
         {
-            SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), context->report({node, node->token, toErr(Err0243)}));
-            SWAG_VERIFY(node->isPublic(), context->report({node, node->token, toErr(Err0244)}));
+            SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), context->report({node, node->token, toErr(Err0244)}));
+            SWAG_VERIFY(node->isPublic(), context->report({node, node->token, toErr(Err0245)}));
         }
     }
 
@@ -899,7 +899,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         // Waiting for myself !
         if (child->typeInfo == typeInfo)
         {
-            Diagnostic err{node, node->getTokenName(), formErr(Err0542, node->token.cstr())};
+            Diagnostic err{node, node->getTokenName(), formErr(Err0549, node->token.cstr())};
             err.addNote(child, toNte(Nte0188));
             return context->report(err);
         }
@@ -1066,12 +1066,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
                     if (!node->genericParameters)
                     {
-                        Diagnostic err{node, node->getTokenName(), formErr(Err0478, node->token.cstr(), varDecl->token.cstr())};
+                        Diagnostic err{node, node->getTokenName(), formErr(Err0485, node->token.cstr(), varDecl->token.cstr())};
                         err.addNote(child, child->token, Diagnostic::isType(child->typeInfo));
                         return context->report(err);
                     }
 
-                    Diagnostic err{node, node->getTokenName(), formErr(Err0479, node->token.cstr(), varDecl->token.cstr())};
+                    Diagnostic err{node, node->getTokenName(), formErr(Err0486, node->token.cstr(), varDecl->token.cstr())};
                     err.addNote(child, child->token, Diagnostic::isType(child->typeInfo));
                     return context->report(err);
                 }
@@ -1100,7 +1100,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     {
                         auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
                         SWAG_ASSERT(attr);
-                        return context->report({attr->node, attr->parameters[0].token, formErr(Err0734, forceOffset->text.cstr())});
+                        return context->report({attr->node, attr->parameters[0].token, formErr(Err0743, forceOffset->text.cstr())});
                     }
                 }
             }
@@ -1152,7 +1152,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 // User cannot name its variables itemX
                 if (!node->hasAstFlag(AST_GENERATED) && hasItemName)
                 {
-                    return context->report({child, child->token, formErr(Err0544, child->token.cstr())});
+                    return context->report({child, child->token, formErr(Err0551, child->token.cstr())});
                 }
 
                 if (!hasItemName)

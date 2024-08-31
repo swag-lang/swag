@@ -69,9 +69,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (msg[0] == 0)
         msg = "$$$";
     if (tokenParse.is(TokenId::EndOfFile))
-        errMsg = formErr(Err0450, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+        errMsg = formErr(Err0456, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     else
-        errMsg = formErr(Err0451, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+        errMsg = formErr(Err0457, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     errMsg.replace(" $$$", "");
 
     Diagnostic err{sourceFile, tokenParse, errMsg};
@@ -130,7 +130,7 @@ bool Parser::eatSemiCol(const char* msg)
     SWAG_ASSERT(msg);
 
     if (!Tokenizer::isStartOfNewStatement(tokenParse))
-        return error(tokenParse, formErr(Err0473, msg));
+        return error(tokenParse, formErr(Err0480, msg));
     if (tokenParse.is(TokenId::SymSemiColon))
         SWAG_CHECK(eatToken());
 

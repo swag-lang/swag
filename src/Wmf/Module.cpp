@@ -737,7 +737,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic err{importNode, tokenVersion, toErr(Err0223)};
+        Diagnostic err{importNode, tokenVersion, toErr(Err0224)};
         err.addNote(toNte(Nte0152));
         return Report::report(err);
     }
@@ -768,7 +768,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            Diagnostic err{importNode, tokenVersion, toErr(Err0223)};
+            Diagnostic err{importNode, tokenVersion, toErr(Err0224)};
             err.addNote(toErr(Nte0152));
             return Report::report(err);
         }
@@ -778,10 +778,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0540, dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0547, dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0541, dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0548, dep->buildNum)}));
                 break;
             default:
                 break;
