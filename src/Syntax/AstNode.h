@@ -881,11 +881,13 @@ struct AstSwitchCase : AstNode
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> expressions;
+    VectorNative<uint32_t> allJumps;
     Token                  matchVarName;
     AstNode*               block;
     AstNode*               whereClause;
     AstSwitch*             ownerSwitch;
     uint32_t               caseIndex;
+    uint32_t               jumpToNextCase;
 };
 
 struct AstSwitchCaseBlock : AstNode

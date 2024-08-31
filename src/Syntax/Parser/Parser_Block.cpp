@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -240,12 +243,15 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 if (!caseNode->matchVarName.text.empty())
                 {
                     SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0768)));
+                    expression->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
                     caseNode->expressions.push_back(expression);
                     break;
                 }
 
                 if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
+                
+                expression->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
                 caseNode->expressions.push_back(expression);
 
                 if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere))

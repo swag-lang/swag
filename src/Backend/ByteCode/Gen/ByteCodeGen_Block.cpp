@@ -823,108 +823,144 @@ bool ByteCodeGen::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
+{
+    const auto expr = context->node;
+    if (expr->parent->isNot(AstNodeKind::SwitchCase))
+        return true;
+
+    const auto caseNode = castAst<AstSwitchCase>(expr->parent, AstNodeKind::SwitchCase);
+
+    if (caseNode->ownerSwitch->expression)
+        caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
+
+    // If there's a where clause evaluated to false compile-time, then no need to generate this case, as it will
+    // fail whatever
+    if (caseNode->whereClause && caseNode->whereClause->hasComputedValue() && !caseNode->whereClause->computedValue()->reg.b)
+    {
+        if (expr == caseNode->expressions.back())
+        {
+            caseNode->jumpToNextCase = context->bc->numInstructions;
+            const auto inst          = EMIT_INST0(context, ByteCodeOp::Jump);
+            inst->b.u64              = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+        }
+
+        freeRegisterRC(context, expr->resultRegisterRc);
+        return true;
+    }
+
+    if (caseNode->ownerSwitch->expression)
+    {
+        RegisterList r0;
+        if (expr->is(AstNodeKind::Range))
+        {
+            context->node        = caseNode->block;
+            const auto rangeNode = castAst<AstRange>(expr, AstNodeKind::Range);
+            SWAG_CHECK(emitSwitchCaseRange(context, caseNode, rangeNode, r0));
+            context->node = expr;
+            YIELD();
+        }
+        else if (caseNode->hasSpecialFuncCall())
+        {
+            context->node = caseNode->block;
+            SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual, r0));
+            context->node = expr;
+            YIELD();
+        }
+        else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
+        {
+            r0              = reserveRegisterRC(context);
+            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
+            inst->b.u64     = 1;
+        }
+        else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE))
+        {
+            r0 = reserveRegisterRC(context);
+            EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
+        }
+        else
+        {
+            r0 = reserveRegisterRC(context);
+            SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
+        }
+
+        caseNode->allJumps.push_back(context->bc->numInstructions);
+        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
+        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+        freeRegisterRC(context, r0);
+    }
+
+    // A switch without an expression
+    else
+    {
+        caseNode->allJumps.push_back(context->bc->numInstructions);
+        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRc);
+        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+    }
+
+    freeRegisterRC(context, expr->resultRegisterRc);
+
+    // If this is the last expression, and it's also false, jump to the next case
+    if (expr == caseNode->expressions.back())
+    {
+        caseNode->jumpToNextCase = context->bc->numInstructions;
+        const auto inst          = EMIT_INST0(context, ByteCodeOp::Jump);
+        inst->b.u64              = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+
+        // Now this is the beginning of the block, so we can resolve all Jumps
+        for (const auto jumpIdx : caseNode->allJumps)
+        {
+            ByteCodeInstruction* jump = context->bc->out + jumpIdx;
+            jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
+        }
+
+        caseNode->allJumps.clear();
+    }
+
+    return true;
+}
+
 bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
     const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
     const auto caseNode  = blockNode->ownerCase;
 
-    if (caseNode->ownerSwitch->expression)
-        caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
-
     // Default case does not have expressions
-    VectorNative<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
-        // Normal switch, with an expression
-        if (caseNode->ownerSwitch->expression)
+        SWAG_ASSERT(caseNode->allJumps.empty());
+
+        // where clause
+        if (caseNode->ownerSwitch->expression && caseNode->whereClause && !caseNode->whereClause->hasComputedValue())
         {
-            if(!caseNode->whereClause || !caseNode->whereClause->hasComputedValue() || caseNode->whereClause->computedValue()->reg.b)
-            {
-                for (const auto expr : caseNode->expressions)
-                {
-                    RegisterList r0;
-                    if (expr->is(AstNodeKind::Range))
-                    {
-                        const auto rangeNode = castAst<AstRange>(expr, AstNodeKind::Range);
-                        SWAG_CHECK(emitSwitchCaseRange(context, caseNode, rangeNode, r0));
-                        YIELD();
-                    }
-                    else if (caseNode->hasSpecialFuncCall())
-                    {
-                        SWAG_CHECK(emitSwitchCaseSpecialFunc(context, caseNode, expr, TokenId::SymEqualEqual, r0));
-                        YIELD();
-                    }
-                    else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
-                    {
-                        r0              = reserveRegisterRC(context);
-                        const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
-                        inst->b.u64     = 1;
-                    }
-                    else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE))
-                    {
-                        r0 = reserveRegisterRC(context);
-                        EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                    }
-                    else
-                    {
-                        r0 = reserveRegisterRC(context);
-                        SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
-                    }
-
-                    allJumps.push_back(context->bc->numInstructions);
-                    const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
-                    inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-                    freeRegisterRC(context, r0);
-                }
-
-                if (caseNode->whereClause && !caseNode->whereClause->hasComputedValue())
-                {
-                    // No value is true, jump to the next case
-                    auto inst   = EMIT_INST0(context, ByteCodeOp::Jump);
-                    inst->b.u64 = 1;
-                    
-                    // Resolve all the case values to jump to the where clause if true
-                    for (const auto jumpIdx : allJumps)
-                    {
-                        ByteCodeInstruction* jump = context->bc->out + jumpIdx;
-                        jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
-                    }
-
-                    allJumps.clear();
-                    allJumps.push_back(context->bc->numInstructions);
-                    inst        = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, caseNode->whereClause->resultRegisterRc[0]);
-                    inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-                }
-            }
+            caseNode->allJumps.push_back(context->bc->numInstructions);
+            const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, caseNode->whereClause->resultRegisterRc[0]);
+            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
         }
-
-        // A switch without an expression
         else
         {
-            for (const auto expr : caseNode->expressions)
-            {
-                allJumps.push_back(context->bc->numInstructions);
-                const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRc);
-                inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-            }
+            caseNode->allJumps.push_back(context->bc->numInstructions);
+            const auto inst = EMIT_INST0(context, ByteCodeOp::Jump);
+            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
         }
 
-        for (const auto expr : caseNode->expressions)
-            freeRegisterRC(context, expr->resultRegisterRc);
+        // Make the false path point here
+        ByteCodeInstruction* jump = context->bc->out + caseNode->jumpToNextCase;
+        jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
 
-        // Jump to the next case, except for the default, which is the last
+        // Jump to the next case
         blockNode->seekJumpNextCase = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
 
-        // Save start of the case
+        // Save start of the case block
         blockNode->seekStart = context->bc->numInstructions;
 
         // Now this is the beginning of the block, so we can resolve all Jump
-        for (const auto jumpIdx : allJumps)
+        for (const auto jumpIdx : caseNode->allJumps)
         {
-            ByteCodeInstruction* jump = context->bc->out + jumpIdx;
-            jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
+            jump        = context->bc->out + jumpIdx;
+            jump->b.s32 = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
         }
 
         // Pop the location from emitSwitchCaseBeforeCase
@@ -934,7 +970,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     // default with a "where"
     else if (caseNode->whereClause && !caseNode->whereClause->hasComputedValue())
     {
-        allJumps.push_back(context->bc->numInstructions);
+        caseNode->allJumps.push_back(context->bc->numInstructions);
         const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, caseNode->whereClause->resultRegisterRc[0]);
         inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
 
@@ -943,7 +979,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
         EMIT_INST0(context, ByteCodeOp::Jump);
 
         // Now this is the beginning of the block, so we can resolve all Jump
-        for (const auto jumpIdx : allJumps)
+        for (const auto jumpIdx : caseNode->allJumps)
         {
             ByteCodeInstruction* jump = context->bc->out + jumpIdx;
             jump->b.s32               = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);

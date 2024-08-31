@@ -208,6 +208,7 @@ namespace ByteCodeGen
     bool emitBeforeSwitch(ByteCodeGenContext* context);
     bool emitSwitchAfterExpr(ByteCodeGenContext* context);
     bool emitSwitchCaseBeforeCase(ByteCodeGenContext* context);
+    bool emitSwitchCaseAfterValue(ByteCodeGenContext* context);
     bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
     bool emitSafetyUnreachable(ByteCodeGenContext* context);
     bool emitSafetySwitchDefault(ByteCodeGenContext* context);
