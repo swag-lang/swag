@@ -816,13 +816,6 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
-{
-    const auto node = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
-    context->pushLocation(&node->ownerSwitch->token.startLocation);
-    return true;
-}
-
 bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 {
     const auto expr = context->node;
@@ -962,9 +955,6 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             jump        = context->bc->out + jumpIdx;
             jump->b.s32 = static_cast<int32_t>(context->bc->numInstructions - jump->b.u32);
         }
-
-        // Pop the location from emitSwitchCaseBeforeCase
-        context->popLocation();
     }
 
     // default with a "where"

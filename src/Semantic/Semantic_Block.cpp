@@ -546,9 +546,6 @@ bool Semantic::resolveCase(SemanticContext* context)
     if (caseNode->ownerSwitch->expression)
         caseNode->typeInfo = caseNode->ownerSwitch->expression->typeInfo;
 
-    if (!caseNode->expressions.empty())
-        caseNode->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
-
     SWAG_CHECK(SemanticError::warnWhereDoIf(context));
     caseNode->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
 
