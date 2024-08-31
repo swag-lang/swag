@@ -918,8 +918,13 @@ void initErrors()
     SWAG_ERROR(Err0771, "misplaced match variable                          $ cannot declare a match variable in a [[switch]] expression of type [[%s]]                                                                $ the only supported type are [[interface]] and [[any]]");
     SWAG_ERROR(Err0773, "misplaced [[var]]                                 $ cannot use [[var]] to declare a match variable                                                                                           $ consider using [[let]] instead");
     SWAG_ERROR(Err0772, "invalid dereference                               $ cannot dereference a constant address at compile time                                                                                    $ ");
-    SWAG_ERROR(Err0774, nullptr);
-    SWAG_ERROR(Err0775, nullptr);
+    SWAG_ERROR(Err0774, "unknown struct                                    $ cannot find the struct [[%s]] in [[%s]]                                                                                                  $ ");
+    SWAG_ERROR(Err0775, "unknown function                                  $ cannot find the function [[%s]] in [[%s]]                                                                                                $ ");
+    SWAG_ERROR(Err0776, "unknown attribute                                 $ cannot find the attribute [[%s]] in [[%s]]                                                                                               $ ");
+    SWAG_ERROR(Err0777, nullptr);
+    SWAG_ERROR(Err0778, nullptr);
+    SWAG_ERROR(Err0779, nullptr);
+    SWAG_ERROR(Err0780, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

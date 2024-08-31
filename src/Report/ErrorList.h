@@ -816,6 +816,11 @@ SWAG_ERROR(Err0772),
 SWAG_ERROR(Err0773),
 SWAG_ERROR(Err0774),
 SWAG_ERROR(Err0775),
+SWAG_ERROR(Err0776),
+SWAG_ERROR(Err0777),
+SWAG_ERROR(Err0778),
+SWAG_ERROR(Err0779),
+SWAG_ERROR(Err0780),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

@@ -80,15 +80,15 @@ namespace
         }
         else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0713, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0776, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0722, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0775, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0735, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0774, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }        
         else if (typeWhere->isStruct())
         {
