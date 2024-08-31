@@ -82,10 +82,14 @@ namespace
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0713, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
-        else if (identifier->callParameters)
+        else if (identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0722, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
+        else if (identifier->callParameters)
+        {
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0735, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+        }        
         else if (typeWhere->isStruct())
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0743, identifier->token.cstr(), typeWhere->getDisplayNameC())};
