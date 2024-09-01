@@ -319,7 +319,7 @@ void initErrors()
     SWAG_ERROR(Err0172, "invalid align value                               $ expected a power of two argument for [[#[Swag.Align]]], found [[%d]] instead                                                             $ ");
     SWAG_ERROR(Err0173, "invalid argument                                  $ cannot use [[null]] as the [[@mkany]] first argument                                                                                     $ ");
     SWAG_ERROR(Err0174, "invalid argument                                  $ expected a [[variable]] as the first argument of [[%s]]                                                                                  $ a variable is required if the second argument of [[@init]] is not provided");
-    SWAG_ERROR(Err0175, "invalid argument                                  $ expected a constant value as the last argument of [[@gettag]], found [[%s]] instead                                                      $ ");
+    SWAG_ERROR(Err0175, "invalid argument                                  $ expected a constant value as the last argument of [[#gettag]], found [[%s]] instead                                                      $ ");
     SWAG_ERROR(Err0176, "invalid argument                                  $ expected a positive value as the argument of [[@countof]], found [[%I64d]] instead                                                       $ ");
     SWAG_ERROR(Err0177, "invalid argument                                  $ expected a positive value as the argument of [[@countof]], found [[%d]] instead                                                          $ ");
     SWAG_ERROR(Err0178, "invalid array dimension                           $ cannot have an array dimension of 0                                                                                                      $ ");
@@ -982,7 +982,7 @@ void initErrors()
     SWAG_ERROR(Nte0050, "consider using [[-w:<path>]] or [[--workspace:<path>]] to specify a valid workspace folder, or run [[Swag]] from an appropriate workspace");
     SWAG_ERROR(Nte0051, "consider using [[//]] to start a line comment");
     SWAG_ERROR(Nte0052, "consider using [[?]] to unpack and discard a variable");
-    SWAG_ERROR(Nte0053, "consider using [[@decltype]] to retrieve the type of an expression");
+    SWAG_ERROR(Nte0053, "consider using [[#decltype]] to retrieve the type of an expression");
     SWAG_ERROR(Nte0054, "consider using [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0055, "consider using [[func(]] or [[closure(]] to declare a lambda type");
     SWAG_ERROR(Nte0056, "consider using [[func]] instead of [[mtd]] to avoid the implicit [[self]] parameter.");
@@ -1041,7 +1041,7 @@ void initErrors()
     SWAG_ERROR(Nte0109, "the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected");
     SWAG_ERROR(Nte0110, "the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]");
     SWAG_ERROR(Nte0111, "the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]");
-    SWAG_ERROR(Nte0112, "the [[@gettag]] default value should conform to this type");
+    SWAG_ERROR(Nte0112, "the [[#gettag]] default value should conform to this type");
     SWAG_ERROR(Nte0113, "the [[@init]] initialization value should conform to this pointed type ([[%s]])");
     SWAG_ERROR(Nte0114, "the address of [[%s]] is taken implicitly because it is a mutable UFCS argument");
     SWAG_ERROR(Nte0115, "the argument [[%s]] could be converted to %s");

@@ -147,7 +147,7 @@ impl Image
         var p = {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
         {
-            let p = cast(*@decltype(p)) data
+            let p = cast(*#decltype(p)) data
             #macro
             {
                 let image    = #up p.self

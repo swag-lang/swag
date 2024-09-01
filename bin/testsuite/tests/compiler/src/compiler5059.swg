@@ -2,5 +2,5 @@
 
 #test
 {
-    let a = @hastag(0)
+    let a = #hastag(0)
 }

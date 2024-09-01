@@ -14,7 +14,7 @@ func yes_auto(x: Foozle)
 #test
 {
     var fooz1: Foozle'(s32, f32)
-    var fooz2: Foozle'(bool, @decltype(fooz1))
+    var fooz2: Foozle'(bool, #decltype(fooz1))
     yes_auto(fooz1)
     yes_auto(fooz2)
     @assert(G == 3)

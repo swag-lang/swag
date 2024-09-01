@@ -593,7 +593,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     Ast::addChildBack(newParent, subDecl);
 
     // We want to solve the sub-decl in the correct context, with all the previous nodes (inside the function)
-    // solved, in case we make a reference to it (like in 5296, the @decltype).
+    // solved, in case we make a reference to it (like in 5296, the #decltype).
     // So we add a fake makePointerLambda which will authorise the solving of the corresponding sub-decl
     // when it is evaluated.
     if (orgSubDecl->isNot(AstNodeKind::FuncDecl) || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))

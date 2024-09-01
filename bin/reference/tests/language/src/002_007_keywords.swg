@@ -134,6 +134,19 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #up
 #type
 
+#defined
+#offsetof
+#alignof
+#sizeof
+#typeof
+#stringof
+#nameof
+#isconstexpr
+#location
+#decltype
+#gettag
+#hastag
+
 #cfg
 #os
 #arch
@@ -150,11 +163,6 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #swagrevision
 #swagbuildnum
 #swagos
-
-#defined
-#offsetof
-#alignof
-#typeof
 
 #index
 #alias0
@@ -182,22 +190,16 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @compilerwarning
 @getcontext
 @pinfos
-@gettag
-@hastag
 @init
 @isbytecode
-#isconstexpr
 @itftableof
 @kindof
-#location
 @mkany
 @mkcallback
 @mkinterface
 @mkslice
 @mkstring
-@decltype
 @modules
-#nameof
 @panic
 @postcopy
 @postmove
@@ -205,10 +207,8 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @rtflags
 @safety
 @setcontext
-#sizeof
 @spread
 @stringcmp
-#stringof
 @sysalloc
 @is
 @typecmp

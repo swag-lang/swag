@@ -120,7 +120,7 @@ impl MainWnd
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
-            var p = cast(*@decltype(params)) userData
+            var p = cast(*#decltype(params)) userData
             foreach f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
@@ -158,7 +158,7 @@ impl MainWnd
         var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
-            var p = cast(*@decltype(params)) userData
+            var p = cast(*#decltype(params)) userData
             foreach f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}
@@ -254,7 +254,7 @@ impl MainWnd
         var params = {capture, infos: infos.buffer, forms: &forms, masks}
         undo.newImg.visitPixels(&params)
         {
-            var p = cast(*@decltype(params)) userData
+            var p = cast(*#decltype(params)) userData
             foreach f, idx in dref p.forms
             {
                 var pt = Math.Point{cast(f32) x, cast(f32) p.capture.backImg.height - y}

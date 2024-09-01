@@ -28,7 +28,7 @@ func day3B()
     var arr: HashTable'({ x, y: s32 }, s32)
     arr[{0, 0}] = 1
 
-    func sum(x, y: s32, a: @decltype(arr))->s32
+    func sum(x, y: s32, a: #decltype(arr))->s32
     {
         var s: s32
         for dx in -1 to 1:

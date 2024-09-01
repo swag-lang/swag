@@ -9,8 +9,8 @@ func getType(x: s32)->typeinfo
 
 #test
 {
-    var x: @decltype(getType(0))
+    var x: #decltype(getType(0))
     @assert(#typeof(x) == s32)
-    var x1: @decltype(getType(1))
+    var x1: #decltype(getType(1))
     @assert(#typeof(x1) == bool)
 }

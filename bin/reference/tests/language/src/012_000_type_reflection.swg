@@ -90,24 +90,24 @@ between various kinds of types and handle them appropriately.
 }
 
 /**
-# `@decltype`
+# `#decltype`
 
-The `@decltype` intrinsic performs the reverse operation of `#typeof` or `@kindof`. 
+The `#decltype` intrinsic performs the reverse operation of `#typeof` or `@kindof`. 
 It converts a `typeinfo` structure back into an actual compiler type. This is useful 
 when you need to dynamically determine the type of a variable based on compile-time 
 information and then use that type within your code.
 */
 #test
 {
-    // Using @decltype to declare a variable of type s32 based on its typeinfo
-    var x: @decltype(#typeof(s32))
+    // Using #decltype to declare a variable of type s32 based on its typeinfo
+    var x: #decltype(#typeof(s32))
     #assert #typeof(x) == s32  // Confirms that the variable 'x' is indeed of type 's32'
 }
 
 /**
-# Using `@decltype` with Compile-Time Expressions
+# Using `#decltype` with Compile-Time Expressions
 
-`@decltype` can evaluate a compile-time constant expression (*constexpr*) that returns 
+`#decltype` can evaluate a compile-time constant expression (*constexpr*) that returns 
 a `typeinfo` to determine the actual type. This is particularly powerful when the type 
 depends on compile-time logic, allowing for dynamic yet type-safe programming patterns.
 */
@@ -123,13 +123,13 @@ depends on compile-time logic, allowing for dynamic yet type-safe programming pa
             return s32
     }
 
-    // Using @decltype to determine the type of 'x' based on the compile-time condition
-    var x: @decltype(getType(needAString: false))
+    // Using #decltype to determine the type of 'x' based on the compile-time condition
+    var x: #decltype(getType(needAString: false))
     #assert #typeof(x) == s32  // Confirms that 'x' is of type s32
     x = 0
 
     // Another example with the condition evaluating to true
-    var x1: @decltype(getType(needAString: true))
+    var x1: #decltype(getType(needAString: true))
     #assert #typeof(x1) == string  // Confirms that 'x1' is of type string
     x1 = "0"
 }

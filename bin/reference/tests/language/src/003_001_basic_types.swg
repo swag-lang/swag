@@ -104,13 +104,13 @@ Swag supports **type reflection** both at **compile time** and at **runtime**. T
 */
 
 /**
-# Type Creation with @decltype
-You can use `@decltype` to create a type based on an expression. This is useful for cases where you want to infer or mirror the type of a variable dynamically, promoting code reusability and reducing redundancy.
+# Type Creation with #decltype
+You can use `#decltype` to create a type based on an expression. This is useful for cases where you want to infer or mirror the type of a variable dynamically, promoting code reusability and reducing redundancy.
 */
 #test
 {
     let a  = 0                  // The type of 'a' is inferred to be 's32'.
-    let b: @decltype(a) = 1     // 'b' is declared with the same type as 'a' (which is 's32').
+    let b: #decltype(a) = 1     // 'b' is declared with the same type as 'a' (which is 's32').
 
     @assert(#typeof(a) == #typeof(b)) // Verifies that 'a' and 'b' have the same type.
     @assert(#typeof(a) == s32)        // Verifies that the type of 'a' is 's32'.

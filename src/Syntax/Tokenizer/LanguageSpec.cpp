@@ -426,6 +426,9 @@ void LanguageSpec::setupKeywords()
     keywords.add("#nameof", TokenId::IntrinsicNameOf);
     keywords.add("#isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("#location", TokenId::IntrinsicLocation);    
+    keywords.add("#decltype", TokenId::IntrinsicDeclType);
+    keywords.add("#hastag", TokenId::IntrinsicHasTag);
+    keywords.add("#gettag", TokenId::IntrinsicGetTag);
     
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
@@ -443,8 +446,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@breakpoint", TokenId::IntrinsicBcBreakpoint);
     keywords.add("@assert", TokenId::IntrinsicAssert);
     keywords.add("@panic", TokenId::IntrinsicPanic);
-    keywords.add("@hastag", TokenId::IntrinsicHasTag);
-    keywords.add("@gettag", TokenId::IntrinsicGetTag);
     keywords.add("@init", TokenId::IntrinsicInit);
     keywords.add("@drop", TokenId::IntrinsicDrop);
     keywords.add("@safety", TokenId::IntrinsicSafety);
@@ -452,7 +453,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@postmove", TokenId::IntrinsicPostMove);
     keywords.add("@postcopy", TokenId::IntrinsicPostCopy);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);
-    keywords.add("@decltype", TokenId::IntrinsicDeclType);
     keywords.add("@countof", TokenId::IntrinsicCountOf);
     keywords.add("@runes", TokenId::IntrinsicRunes);
     keywords.add("@dataof", TokenId::IntrinsicDataOf);
