@@ -461,7 +461,7 @@ The `for` construct allows you to iterate over all values in an enum.
 
     // Counting Enum Values
     var cpt = 0
-    for idx in RGB:                      // Iterate over all enum values using 'for'
+    for idx in RGB:                       // Iterate over all enum values using 'for'
         cpt += 1                          // Increment counter for each value
     @assert(cpt == 3)                     // Assert that the enum has exactly 3 values
 
@@ -485,7 +485,7 @@ The `foreach` statement offers a more structured way to iterate over an enum and
     enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
 
     // Performing Actions Based on Enum Values
-    foreach val in RGB                      // Use 'foreach' to iterate over each value in the enum
+    foreach val in RGB                    // Use 'foreach' to iterate over each value in the enum
     {
         switch val                        // A switch statement to perform actions based on the enum value
         {

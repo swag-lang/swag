@@ -123,7 +123,7 @@ Additionally, the cast mode `unsafe` can be used in explicit casts to indicate t
 
     // To perform this cast, an explicit cast is required:
     let z0: s16 = 256
-    let z1: s8 = cast<overflow>(s8) z0            // Explicit cast needed to convert from s16 to s8
+    let z1: s8 = cast<overflow>(s8) z0          // Explicit cast needed to convert from s16 to s8
     @assert(z1 == 0)                            // This may cause data loss as 256 cannot be represented in s8 (max is 127)
 
     // Implicit cast from unsigned to signed type where the value is out of range
@@ -131,7 +131,7 @@ Additionally, the cast mode `unsafe` can be used in explicit casts to indicate t
     // let s_val: s16 = u_val                   // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss
 
     // To perform this cast, an explicit cast is required, with the risk of data loss:
-    let s_val: s16 = cast<overflow>(s16) u_val    // This could result in an unexpected negative value
+    let s_val: s16 = cast<overflow>(s16) u_val  // This could result in an unexpected negative value
     @assert(s_val == -1)                        // 65535 in u16 becomes -1 in s16 due to overflow
 
     // Implicit cast from f64 to f32, which can lose precision

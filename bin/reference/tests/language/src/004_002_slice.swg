@@ -25,12 +25,12 @@ the slice will reference the elements in the array.
 #test
 {
     var a: const [..] u32 = [10, 20, 30, 40, 50]  // Initialize a slice with an array literal
-    @assert(@countof(a) == 5)                    // Verify that the slice contains 5 elements
+    @assert(@countof(a) == 5)                     // Verify that the slice contains 5 elements
     @assert(a[0] == 10)
     @assert(a[4] == 50)
 
     // Slices are dynamic, allowing for modification of the referenced elements at runtime.
-    a = [1, 2]                                   // Reassign the slice to a different array
+    a = [1, 2]                                    // Reassign the slice to a different array
     @assert(@countof(a) == 2)
     @assert(a[0] == 1)
     @assert(a[1] == 2)
@@ -46,13 +46,13 @@ get the number of elements in the slice.
 #test
 {
     var a: const [..] u32 = [10, 20, 30, 40, 50]  // Initialize a slice with an array literal
-    let count = @countof(a)                      // Get the number of elements in the slice
-    let addr  = @dataof(a)                       // Get the address of the slice's data buffer
+    let count = @countof(a)                       // Get the number of elements in the slice
+    let addr  = @dataof(a)                        // Get the address of the slice's data buffer
     @assert(count == 5)
     @assert(addr[0] == 10)
     @assert(addr[4] == 50)
 
-    a = [1, 2]                                   // Reassign the slice to a different array
+    a = [1, 2]                                    // Reassign the slice to a different array
     @assert(@countof(a) == 2)
 }
 

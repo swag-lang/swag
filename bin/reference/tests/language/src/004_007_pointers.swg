@@ -79,7 +79,7 @@ For cases where you need **pointer arithmetic** and want a pointer to **multiple
     var ptr: ^u8                        // Declaring a pointer to a memory block of 'u8' values
 
     // Pointer arithmetic allows you to navigate through the memory block by modifying the pointer's address
-    ptr = ptr - 1                        // Move the pointer back by one 'u8'
+    ptr = ptr - 1                       // Move the pointer back by one 'u8'
 }
 
 /**
