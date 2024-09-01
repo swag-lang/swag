@@ -188,7 +188,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 #isconstexpr
 @itftableof
 @kindof
-@location
+#location
 @mkany
 @mkcallback
 @mkinterface

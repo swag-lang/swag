@@ -5,6 +5,14 @@
     { "include": "#one-line-comment" },
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
+    { "include": "#compiler-functions" },
+    { "include": "#compiler-global" },
+    { "include": "#compiler-statement" },
+    { "include": "#compiler-ret" },    
+    { "include": "#compiler-intrinsics" },
+    { "include": "#compiler-keywords" },
+    { "include": "#compiler-modifiers" },
+    { "include": "#compiler-invalid" },    
     { "include": "#keywords-mode" },
     { "include": "#keywords" },
     { "include": "#keywords-decl" },
@@ -22,14 +30,6 @@
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
-    { "include": "#compiler-functions" },
-    { "include": "#compiler-global" },
-    { "include": "#compiler-statement" },
-    { "include": "#compiler-ret" },    
-    { "include": "#compiler-intrinsics" },
-    { "include": "#compiler-keywords" },
-    { "include": "#compiler-modifiers" },
-    { "include": "#compiler-invalid" },
     { "include": "#types" },
     { "include": "#strings" },
     { "include": "#var-decl" },
@@ -167,7 +167,7 @@
       "patterns": [
         {
           "name": "entity.name.function",
-          "match": "(#)\\b(run|test|init|drop|premain|main|message|ast|dependencies)\\b"
+          "match": "(#)(run|test|init|drop|premain|main|message|ast|dependencies)\\b"
         }
       ]
     },
@@ -196,7 +196,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)\\b(tokenpos|type|file|line|cfg|os|arch|cpu|module|backend|self|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
+          "match": "(#)(tokenpos|curlocation|file|line|cfg|os|arch|cpu|module|backend|self|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
         }
       ]
     },
@@ -204,7 +204,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|curlocation)"
+          "match": "(#)(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|location)"
         }
       ]
     },        
@@ -212,7 +212,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(up)"
+          "match": "(#)(up|type)"
         }
       ]
     },

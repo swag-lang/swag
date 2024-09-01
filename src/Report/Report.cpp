@@ -26,7 +26,7 @@ namespace
                 continue;
 
             // It can happen that the location has nothing to do with the node where the error occurs
-            // (because of @location in a @compilererror for example).
+            // (because of #location in a @compilererror for example).
             // So hack to avoid displaying generic information not relevant.
             const auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
             if (genCheckNode && genCheckNode->token.sourceFile == note->sourceFile)

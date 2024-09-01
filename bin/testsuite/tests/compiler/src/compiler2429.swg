@@ -4,7 +4,7 @@ func print(s: string, f: ...)
     where<call>
     {
         if @countof(f) != 3:
-            @compilererror("invalid number of arguments", @location(f))
+            @compilererror("invalid number of arguments", #location(f))
         return true
     }
 {

@@ -175,7 +175,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("in", State.Control)
 
         mapWords.add("#defined", State.Intrinsic)
-        mapWords.add("@location", State.Intrinsic)
+        mapWords.add("#location", State.Intrinsic)
         mapWords.add("@stringcmp", State.Intrinsic)
         mapWords.add("@is", State.Intrinsic)
         mapWords.add("@as", State.Intrinsic)

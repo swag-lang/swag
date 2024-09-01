@@ -425,7 +425,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#stringof", TokenId::IntrinsicStringOf);
     keywords.add("#nameof", TokenId::IntrinsicNameOf);
     keywords.add("#isconstexpr", TokenId::IntrinsicIsConstExpr);
-    keywords.add("@location", TokenId::IntrinsicLocation);
+    keywords.add("#location", TokenId::IntrinsicLocation);
     
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);

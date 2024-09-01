@@ -8,7 +8,7 @@ func toto(str: string)
     {
         if !#isconstexpr(str):
             return true
-        @compilererror("toto", @location(str))
+        @compilererror("toto", #location(str))
         return true
     }
 {

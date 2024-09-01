@@ -4,7 +4,7 @@ func(T) add(x, y: T)->T
     {
         if cast(bool) (#typeof(T).flags & .Integer):
             return true
-        @compilererror("type " ++ #typeof(T).name ++ " is not supported", @location(x))
+        @compilererror("type " ++ #typeof(T).name ++ " is not supported", #location(x))
         return false
     }
 {

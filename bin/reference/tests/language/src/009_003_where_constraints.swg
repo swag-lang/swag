@@ -90,7 +90,7 @@ Using the `@compilererror` intrinsic, you can trigger custom compile-time errors
             if T == s32 or T == s64:                    // Check if `T` is `s32` or `s64`
                 return true                             // Return true if valid
 
-            @compilererror("Invalid type " ++ #stringof(T), @location(T))
+            @compilererror("Invalid type " ++ #stringof(T), #location(T))
             return false                                // Return false after error
         }
     {
@@ -139,7 +139,7 @@ By utilizing the `where<call>` mode, the `where` clause is evaluated for **each*
                 if !#isconstexpr(y):
                     return true                         // Allow if `y` is not constant
                 if y == 0:
-                    @compilererror("Division by zero", @location(y))
+                    @compilererror("Division by zero", #location(y))
                 return true                             // Allow otherwise
             }
         {

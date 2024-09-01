@@ -4,7 +4,7 @@ struct(T) Point
     where
     {
         if T != bool:
-            @compilererror("s32 is bad !", @location(T))
+            @compilererror("s32 is bad !", #location(T))
         return true
     }
 {

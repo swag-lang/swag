@@ -10,7 +10,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     {
         #[Match("where", false)]
         var str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
-        @compilererror(str, @location(values))
+        @compilererror(str, #location(values))
     }
 }
 
@@ -188,7 +188,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
     where<call>
     {
         if !#isconstexpr(exp):
-            @compilererror("expression should be constant", @location(exp))
+            @compilererror("expression should be constant", #location(exp))
         return true
     }
 {
@@ -248,7 +248,7 @@ func toInterp(exp: string)->String
     where<call>
     {
         if !#isconstexpr(exp):
-            @compilererror("expression should be constant", @location(exp))
+            @compilererror("expression should be constant", #location(exp))
         return true
     }
 {

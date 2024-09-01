@@ -5,7 +5,7 @@ func toto(v: u8)
 {
     #ast
     {
-        @compilererror("toto", @location(v))
+        @compilererror("toto", #location(v))
         return ""
     }
 }

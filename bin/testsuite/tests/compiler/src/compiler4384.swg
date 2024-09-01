@@ -3,7 +3,7 @@
 #[Swag.ConstExpr, Swag.Mixin]
 func isF32(t: typeinfo)->bool
 {
-    @compilererror("toto", @location(t))
+    @compilererror("toto", #location(t))
     return t == f32
 }
 
