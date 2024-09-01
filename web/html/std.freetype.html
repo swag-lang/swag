@@ -712,7 +712,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Done_Face</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Done_Face</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -724,7 +724,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Done_FreeType</span>(alibrary: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Done_FreeType</span>(alibrary: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -927,7 +927,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Get_Char_Index</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, charcode: <span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Get_Char_Index</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, charcode: <span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1062,7 +1062,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_GlyphSlot_Oblique</span>(slot: <span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_GlyphSlot_Oblique</span>(slot: <span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1160,7 +1160,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_IMAGE_TAG</span>(x1, x2, x3, x4: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_IMAGE_TAG</span>(x1, x2, x3, x4: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1172,7 +1172,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Init_FreeType</span>(alibrary: *<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Init_FreeType</span>(alibrary: *<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1184,7 +1184,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_LOAD_TARGET</span>(x: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_LOAD_TARGET</span>(x: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1306,7 +1306,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Library_SetLcdFilter</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, filter: <span class="SCst"><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Library_SetLcdFilter</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, filter: <span class="SCst"><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1318,7 +1318,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Library_SetLcdFilterWeights</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, weights: <span class="SKwd">const</span> *<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Library_SetLcdFilterWeights</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, weights: <span class="SKwd">const</span> *<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1353,7 +1353,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Load_Char</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, char_code: <span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>, load_flags: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Load_Char</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, char_code: <span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>, load_flags: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1365,7 +1365,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Load_Glyph</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, glyph_index: <span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, load_flags: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Load_Glyph</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, glyph_index: <span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, load_flags: <span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1410,7 +1410,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_New_Memory_Face</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, file_base: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Byte">FT_Byte</a></span>, file_size: <span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, face_index: <span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, aface: *<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_New_Memory_Face</span>(library: <span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, file_base: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Byte">FT_Byte</a></span>, file_size: <span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, face_index: <span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, aface: *<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1465,7 +1465,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Decompose</span>(outline: *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, func_interface: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline_Funcs">FT_Outline_Funcs</a></span>, user: *<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Outline_Decompose</span>(outline: *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, func_interface: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline_Funcs">FT_Outline_Funcs</a></span>, user: *<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1477,7 +1477,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Embolden</span>(outline: *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, strength: <span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Outline_Embolden</span>(outline: *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, strength: <span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1532,7 +1532,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Transform</span>(outline: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, matrix: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Outline_Transform</span>(outline: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, matrix: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1544,7 +1544,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Translate</span>(outline: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset, yOffset: <span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Outline_Translate</span>(outline: <span class="SKwd">const</span> *<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset, yOffset: <span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1605,7 +1605,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Render_Glyph</span>(slot: <span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>, render_mode: <span class="SCst"><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Render_Glyph</span>(slot: <span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>, render_mode: <span class="SCst"><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1654,7 +1654,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Set_Pixel_Sizes</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width, pixel_height: <span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">FT_Set_Pixel_Sizes</span>(face: <span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width, pixel_height: <span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>

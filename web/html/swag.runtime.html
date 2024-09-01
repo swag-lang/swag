@@ -2019,7 +2019,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Align">Align</a></span>(value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Align">Align</a></span>(value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2136,7 +2136,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AllowOverflow">AllowOverflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_AllowOverflow">AllowOverflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2165,7 +2165,7 @@
 <p>Hardcoded usage. </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3559,7 +3559,7 @@
 <p>The following definition is deprecated and should not be used. </p>
 <div class="api-additional-infos"><b>Usage</b>: function enum enum-value struct 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3682,7 +3682,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3715,7 +3715,7 @@
 <p>The following function is foreign (imported). </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3908,7 +3908,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Match">Match</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Match">Match</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4038,7 +4038,7 @@
 <p>Struct field member relocation. </p>
 <div class="api-additional-infos"><b>Usage</b>: struct-var 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></div>
 <p>The field offset in the struct should be the same as the variable <span class="code-inline">name</span> </p>
 <p>
 <table class="api-item">
@@ -4069,7 +4069,7 @@
 <p>Enable/Disable a given function optimization. </p>
 <div class="api-additional-infos"><b>Usage</b>: function multi 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optimize">Optimize</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Optimize">Optimize</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>Options are: </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">bytecode</span>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
@@ -4105,7 +4105,7 @@
 <p><span class="code-inline">struct</span> packing information. </p>
 <div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4231,7 +4231,7 @@
 <p>Enable/Disable one or more safety checks. </p>
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>For example: </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Safety("", false)]</span>                    <span class="SCmt">// Disable all</span>
 <span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></div>
@@ -5448,7 +5448,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="STpe">typeinfo</span>...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Using">Using</a></span>(what: <span class="STpe">typeinfo</span>...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5463,7 +5463,7 @@
 <p>Change the behavior of a given warning or list of warnings. </p>
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warning">Warning</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag_WarningLevel">WarningLevel</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Warning">Warning</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag_WarningLevel">WarningLevel</a></span>)</span></div>
 <p>For example: </p>
 <div class="code-block"><span class="SAtr">#[Swag.Warning("Wrn0006", Swag.WarningLevel.Error)
 #[Swag.Warning("Wrn0002|Wrn0006", Swag.WarningLevel.Disable)

@@ -342,7 +342,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pState: *<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">XInputGetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pState: *<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -354,7 +354,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pVibration: *<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">XInputSetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pVibration: *<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
 <div class="swag-watermark">
 Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>

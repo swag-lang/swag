@@ -1347,7 +1347,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">X3DAudioInitialize</span>(speakerChannelMask: <span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, speedOfSound: <span class="SCst"><a href="#XAudio2_FLOAT32">FLOAT32</a></span>, instance: <span class="SCst"><a href="#XAudio2_X3DAUDIO_HANDLE">X3DAUDIO_HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">X3DAudioInitialize</span>(speakerChannelMask: <span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, speedOfSound: <span class="SCst"><a href="#XAudio2_FLOAT32">FLOAT32</a></span>, instance: <span class="SCst"><a href="#XAudio2_X3DAUDIO_HANDLE">X3DAUDIO_HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1750,7 +1750,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XAudio2Create</span>(ppXAudio2: **<span class="SCst"><a href="#XAudio2_IXAudio2">IXAudio2</a></span>, flags: <span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, processor: <span class="SCst"><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></span> = <span class="SCst"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">XAudio2Create</span>(ppXAudio2: **<span class="SCst"><a href="#XAudio2_IXAudio2">IXAudio2</a></span>, flags: <span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, processor: <span class="SCst"><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></span> = <span class="SCst"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></div>
 <div class="swag-watermark">
 Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>

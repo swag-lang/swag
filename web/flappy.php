@@ -206,7 +206,7 @@
 <h2 id="">Variables </h2>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird: <span class="SCst">Bird</span> <span class="SCmt">// 'Bird' is a structure, and will be defined later</span></span></div>
 <p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module, but thanks to the global <span class="code-inline">using Core</span>, we: not need to write <span class="code-inline">Core.Array'Pipe</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes: <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes: <span class="SFct">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>Here are a bunch of global variables. All of them are <b>initialized to 0</b> by default. </p>
