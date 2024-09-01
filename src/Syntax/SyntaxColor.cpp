@@ -520,18 +520,25 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 }
             }
 
-            // Modifier
-            if (identifier[0] == '#' && g_LangSpec->modifiers.find(identifier))
-            {
-                result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
-                result += identifier;
-                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                continue;
-            }
-
             auto it = g_LangSpec->keywords.find(identifier);
             if (it)
             {
+                if(Tokenizer::isModifier(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                    continue;
+                }
+
+                if(Tokenizer::isCompilerIntrinsic(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                    continue;
+                }                
+                
                 switch (*it)
                 {
                     case TokenId::KwdReserved:

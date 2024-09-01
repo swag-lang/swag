@@ -291,8 +291,73 @@ void LanguageSpec::setupBcKeywords()
 
 void LanguageSpec::setupKeywords()
 {
+    keywords.add("if", TokenId::KwdIf);
+    keywords.add("else", TokenId::KwdElse);
+    keywords.add("elif", TokenId::KwdElif);
+    keywords.add("for", TokenId::KwdFor);
+    keywords.add("while", TokenId::KwdWhile);
+    keywords.add("switch", TokenId::KwdSwitch);
+    keywords.add("defer", TokenId::KwdDefer);
+    keywords.add("foreach", TokenId::KwdForEach);
+    keywords.add("break", TokenId::KwdBreak);
+    keywords.add("fallthrough", TokenId::KwdFallThrough);
+    keywords.add("return", TokenId::KwdReturn);
+    keywords.add("case", TokenId::KwdCase);
+    keywords.add("continue", TokenId::KwdContinue);
+    keywords.add("default", TokenId::KwdDefault);
+    keywords.add("and", TokenId::KwdAnd);
+    keywords.add("or", TokenId::KwdOr);
+    keywords.add("orelse", TokenId::KwdOrElse);
+    keywords.add("unreachable", TokenId::KwdUnreachable);
+    keywords.add("to", TokenId::KwdTo);
+    keywords.add("until", TokenId::KwdUntil);
+    keywords.add("where", TokenId::KwdWhere);
+    keywords.add("in", TokenId::KwdIn);
+    keywords.add("as", TokenId::KwdAs);
+
+    keywords.add("is", TokenId::KwdReserved);
+    keywords.add("not", TokenId::KwdReserved);
+    keywords.add("do", TokenId::KwdReserved);
+    
+    keywords.add("using", TokenId::KwdUsing);
+    keywords.add("with", TokenId::KwdWith);
+    keywords.add("cast", TokenId::KwdCast);
+    keywords.add("dref", TokenId::KwdDeRef);
+    keywords.add("retval", TokenId::KwdRetVal);
+    keywords.add("try", TokenId::KwdTry);
+    keywords.add("trycatch", TokenId::KwdTryCatch);
+    keywords.add("catch", TokenId::KwdCatch);
+    keywords.add("assume", TokenId::KwdAssume);
+    keywords.add("throw", TokenId::KwdThrow);
+    keywords.add("discard", TokenId::KwdDiscard);
+
+    keywords.add("true", TokenId::KwdTrue);
+    keywords.add("false", TokenId::KwdFalse);
+    keywords.add("null", TokenId::KwdNull);
+    keywords.add("undefined", TokenId::KwdUndefined);
+    
+    keywords.add("public", TokenId::KwdPublic);
+    keywords.add("internal", TokenId::KwdInternal);
+    keywords.add("private", TokenId::KwdPrivate);
+
+    keywords.add("enum", TokenId::KwdEnum);
+    keywords.add("struct", TokenId::KwdStruct);
+    keywords.add("union", TokenId::KwdUnion);
+    keywords.add("impl", TokenId::KwdImpl);
+    keywords.add("interface", TokenId::KwdInterface);
+    keywords.add("func", TokenId::KwdFunc);
+    keywords.add("closure", TokenId::KwdClosure);
+    keywords.add("mtd", TokenId::KwdMethod);
+    keywords.add("namespace", TokenId::KwdNamespace);
+    keywords.add("typealias", TokenId::KwdTypeAlias);
+    keywords.add("namealias", TokenId::KwdNameAlias);
+    keywords.add("attr", TokenId::KwdAttr);
+    keywords.add("var", TokenId::KwdVar);
+    keywords.add("let", TokenId::KwdLet);
+    keywords.add("const", TokenId::KwdConst);
+    keywords.add("moveref", TokenId::KwdMoveRef);
+    
     keywords.add("#global", TokenId::CompilerGlobal);
-    keywords.add("#type", TokenId::CompilerType);
 
     keywords.add("#run", TokenId::CompilerRun);
     keywords.add("#ast", TokenId::CompilerAst);
@@ -321,6 +386,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#code", TokenId::CompilerCode);
     keywords.add("#scope", TokenId::CompilerScope);
     keywords.add("#up", TokenId::CompilerUp);
+    keywords.add("#type", TokenId::CompilerType);
 
     keywords.add("#prom", TokenId::ModifierPromote);
     keywords.add("#over", TokenId::ModifierOver);
@@ -351,72 +417,6 @@ void LanguageSpec::setupKeywords()
 
     keywords.add("#index", TokenId::IntrinsicIndex);
 
-    keywords.add("true", TokenId::KwdTrue);
-    keywords.add("false", TokenId::KwdFalse);
-    keywords.add("null", TokenId::KwdNull);
-    keywords.add("undefined", TokenId::KwdUndefined);
-
-    keywords.add("using", TokenId::KwdUsing);
-    keywords.add("with", TokenId::KwdWith);
-    keywords.add("cast", TokenId::KwdCast);
-    keywords.add("dref", TokenId::KwdDeRef);
-    keywords.add("retval", TokenId::KwdRetVal);
-    keywords.add("try", TokenId::KwdTry);
-    keywords.add("trycatch", TokenId::KwdTryCatch);
-    keywords.add("catch", TokenId::KwdCatch);
-    keywords.add("assume", TokenId::KwdAssume);
-    keywords.add("throw", TokenId::KwdThrow);
-    keywords.add("discard", TokenId::KwdDiscard);
-
-    keywords.add("public", TokenId::KwdPublic);
-    keywords.add("internal", TokenId::KwdInternal);
-    keywords.add("private", TokenId::KwdPrivate);
-
-    keywords.add("enum", TokenId::KwdEnum);
-    keywords.add("struct", TokenId::KwdStruct);
-    keywords.add("union", TokenId::KwdUnion);
-    keywords.add("impl", TokenId::KwdImpl);
-    keywords.add("interface", TokenId::KwdInterface);
-    keywords.add("func", TokenId::KwdFunc);
-    keywords.add("closure", TokenId::KwdClosure);
-    keywords.add("mtd", TokenId::KwdMethod);
-    keywords.add("namespace", TokenId::KwdNamespace);
-    keywords.add("typealias", TokenId::KwdTypeAlias);
-    keywords.add("namealias", TokenId::KwdNameAlias);
-    keywords.add("attr", TokenId::KwdAttr);
-    keywords.add("var", TokenId::KwdVar);
-    keywords.add("let", TokenId::KwdLet);
-    keywords.add("const", TokenId::KwdConst);
-    keywords.add("moveref", TokenId::KwdMoveRef);
-
-    keywords.add("if", TokenId::KwdIf);
-    keywords.add("else", TokenId::KwdElse);
-    keywords.add("elif", TokenId::KwdElif);
-    keywords.add("for", TokenId::KwdFor);
-    keywords.add("while", TokenId::KwdWhile);
-    keywords.add("switch", TokenId::KwdSwitch);
-    keywords.add("defer", TokenId::KwdDefer);
-    keywords.add("foreach", TokenId::KwdForEach);
-    keywords.add("break", TokenId::KwdBreak);
-    keywords.add("fallthrough", TokenId::KwdFallThrough);
-    keywords.add("return", TokenId::KwdReturn);
-    keywords.add("case", TokenId::KwdCase);
-    keywords.add("continue", TokenId::KwdContinue);
-    keywords.add("default", TokenId::KwdDefault);
-    keywords.add("and", TokenId::KwdAnd);
-    keywords.add("or", TokenId::KwdOr);
-    keywords.add("orelse", TokenId::KwdOrElse);
-    keywords.add("unreachable", TokenId::KwdUnreachable);
-    keywords.add("to", TokenId::KwdTo);
-    keywords.add("until", TokenId::KwdUntil);
-    keywords.add("where", TokenId::KwdWhere);
-    keywords.add("in", TokenId::KwdIn);
-    keywords.add("as", TokenId::KwdAs);
-
-    keywords.add("is", TokenId::KwdReserved);
-    keywords.add("not", TokenId::KwdReserved);
-    keywords.add("do", TokenId::KwdReserved);
-    
     keywords.add("#defined", TokenId::IntrinsicDefined);
     keywords.add("#offsetof", TokenId::IntrinsicOffsetOf);
     keywords.add("#alignof", TokenId::IntrinsicAlignOf);
@@ -425,7 +425,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#stringof", TokenId::IntrinsicStringOf);
     keywords.add("#nameof", TokenId::IntrinsicNameOf);
     keywords.add("#isconstexpr", TokenId::IntrinsicIsConstExpr);
-    keywords.add("#location", TokenId::IntrinsicLocation);
+    keywords.add("#location", TokenId::IntrinsicLocation);    
     
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
@@ -592,19 +592,6 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("NoDoc", ATTRIBUTE_NO_DOC);
 }
 
-void LanguageSpec::setupModifiers()
-{
-    modifiers.add(name_sharp_prom, MODIFIER_PROM);
-    modifiers.add(name_sharp_over, MODIFIER_OVERFLOW);
-    modifiers.add(name_sharp_nodrop, MODIFIER_NO_LEFT_DROP);
-    modifiers.add(name_sharp_move, MODIFIER_MOVE);
-    modifiers.add(name_sharp_moveraw, MODIFIER_MOVE_RAW);
-    modifiers.add(name_sharp_unconst, MODIFIER_UN_CONST);
-    modifiers.add(name_sharp_back, MODIFIER_BACK);
-    modifiers.add(name_sharp_ref, MODIFIER_REF);
-    modifiers.add(name_sharp_constref, MODIFIER_CONST_REF);
-}
-
 void LanguageSpec::setup()
 {
     setupNames();
@@ -612,5 +599,4 @@ void LanguageSpec::setup()
     setupBcKeywords();
     setupNativeTypes();
     setupAttributesFlags();
-    setupModifiers();
 }
