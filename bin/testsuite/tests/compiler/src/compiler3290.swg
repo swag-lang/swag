@@ -13,7 +13,7 @@ func MK_GET()
     #run
     {
         let itf = @compiler()
-        itf.compileString("impl X {\n mtd get_" ++ @nameof(#alias0) ++ "() => " ++ @nameof(#alias0) ++ ";\n}")
+        itf.compileString("impl X {\n mtd get_" ++ #nameof(#alias0) ++ "() => " ++ #nameof(#alias0) ++ ";\n}")
     }
 }
 

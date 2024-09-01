@@ -7,7 +7,7 @@ func toto(x: s32)
 #[Swag.Overload]
 func toto()
 {
-    let x = @nameof(toto)
+    let x = #nameof(toto)
     @assert(x == "toto")
 }
 

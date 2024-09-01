@@ -9,7 +9,7 @@ struct X
 func(T) GEN()->String
 {
     var sb: StrConv.StringBuilder
-    sb.appendFormat("X", @nameof(T))
+    sb.appendFormat("X", #nameof(T))
     return sb.toString()
 }
 
