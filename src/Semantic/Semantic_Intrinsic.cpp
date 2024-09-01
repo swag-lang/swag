@@ -801,8 +801,8 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         return true;
     }
 
-    SWAG_CHECK(resolveIntrinsicTypeOf(context));
-    return true;
+    const Diagnostic err{node, node->token, formErr(Err0777, expr->typeInfo->getDisplayNameC())};
+    return context->report(err);
 }
 
 bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)

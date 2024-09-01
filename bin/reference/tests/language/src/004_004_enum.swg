@@ -48,7 +48,7 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
 /**
 # Using `@kindof` to Retrieve Underlying Type
 
-`@kindof` can be used to return the underlying type of the enum at runtime.
+`@kindof` can be used to return the underlying type of the enum at compile time.
 */
 #test
 {

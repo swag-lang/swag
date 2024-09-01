@@ -6,5 +6,5 @@
 
     let value = cast(s32) val
     @assert(value == 666)
-    @assert(@kindof(value) == s32)
+    @assert(#typeof(value) == s32)
 }

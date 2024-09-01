@@ -921,7 +921,7 @@ void initErrors()
     SWAG_ERROR(Err0774, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0775, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0776, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-    SWAG_ERROR(Err0777, nullptr);
+    SWAG_ERROR(Err0777, "misplace [[@kindof]]                              $ cannot apply [[@kindof]] to the type [[%s]]                                                                                              $ this type does not have an underlying type to retrieve");
     SWAG_ERROR(Err0778, nullptr);
     SWAG_ERROR(Err0779, nullptr);
     SWAG_ERROR(Err0780, nullptr);
