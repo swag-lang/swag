@@ -6,6 +6,7 @@ const TakeWorst       = 1'u32
 
 #[Swag.Tls]
 var g_Rng: Random.Rng
+
 var g_NumGenes:   u32
 var g_Gen:        [2] Generation
 var g_CurGen:     u32

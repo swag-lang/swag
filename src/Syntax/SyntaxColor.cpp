@@ -640,7 +640,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 continue;
             }
 
-            if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
+            if (SWAG_IS_ALPHA(identifier[0]) && (c == '(' || c == '\''))
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
                 result += identifier;
