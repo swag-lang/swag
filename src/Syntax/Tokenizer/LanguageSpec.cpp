@@ -299,8 +299,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("switch", TokenId::KwdSwitch);
     keywords.add("defer", TokenId::KwdDefer);
     keywords.add("foreach", TokenId::KwdForEach);
+    keywords.add("where", TokenId::KwdWhere);
     keywords.add("break", TokenId::KwdBreak);
     keywords.add("fallthrough", TokenId::KwdFallThrough);
+    keywords.add("unreachable", TokenId::KwdUnreachable);
     keywords.add("return", TokenId::KwdReturn);
     keywords.add("case", TokenId::KwdCase);
     keywords.add("continue", TokenId::KwdContinue);
@@ -308,16 +310,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("and", TokenId::KwdAnd);
     keywords.add("or", TokenId::KwdOr);
     keywords.add("orelse", TokenId::KwdOrElse);
-    keywords.add("unreachable", TokenId::KwdUnreachable);
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
-    keywords.add("where", TokenId::KwdWhere);
     keywords.add("in", TokenId::KwdIn);
     keywords.add("as", TokenId::KwdAs);
-
-    keywords.add("is", TokenId::KwdReserved);
-    keywords.add("not", TokenId::KwdReserved);
-    keywords.add("do", TokenId::KwdReserved);
     
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);
@@ -356,6 +352,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("let", TokenId::KwdLet);
     keywords.add("const", TokenId::KwdConst);
     keywords.add("moveref", TokenId::KwdMoveRef);
+
+    keywords.add("is", TokenId::KwdReserved);
+    keywords.add("not", TokenId::KwdReserved);
+    keywords.add("do", TokenId::KwdReserved);
     
     keywords.add("#global", TokenId::CompilerGlobal);
 

@@ -19,7 +19,7 @@
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#keywords-invalid" },
-    { "include": "#keywords-control" },
+    { "include": "#keywords-logic" },
     { "include": "#function-call" },
     { "include": "#function-call1" },
     { "include": "#raw-strings" },
@@ -91,11 +91,11 @@
         }
       ]
     },
-    "keywords-control": {
+    "keywords-logic": {
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as)\\b"
         }
       ]
     },
@@ -119,7 +119,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(err|itftableof|modules|gvtd|args|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|decltype|countof|dataof|runes|postcopy|postmove|spread)\\b"
+          "match": "(@)(err|itftableof|modules|gvtd|args|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|decltype|countof|dataof|runes|postcopy|postmove|spread)\\b"
         }
       ]
     },
@@ -127,7 +127,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(rol|ror|muladd|byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|strcmp|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg|cvastart|cvaend|cvaarg)\\b"
+          "match": "(@)(rol|ror|muladd|byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|strcmp|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg|cvastart|cvaend|cvaarg)\\b"
         }
       ]
     },
@@ -135,7 +135,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)\\b(index)\\b"
+          "match": "(#)(index)\\b"
         }
       ]
     },

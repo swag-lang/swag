@@ -523,224 +523,141 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             auto it = g_LangSpec->keywords.find(identifier);
             if (it)
             {
-                if(Tokenizer::isModifier(*it))
+                if (Tokenizer::isModifier(*it))
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                    continue;
                 }
-
-                if(Tokenizer::isCompilerIntrinsic(*it))
+                else if (Tokenizer::isCompilerIntrinsic(*it))
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                    continue;
-                }                
-                
-                switch (*it)
+                }
+                else if (*it == TokenId::KwdReserved)
                 {
-                    case TokenId::KwdReserved:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxInvalid, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    case TokenId::KwdUsing:
-                    case TokenId::KwdWith:
-                    case TokenId::KwdCast:
-                    case TokenId::KwdAutoCast:
-                    case TokenId::KwdDeRef:
-                    case TokenId::KwdMoveRef:
-                    case TokenId::KwdRetVal:
-                    case TokenId::KwdTry:
-                    case TokenId::KwdCatch:
-                    case TokenId::KwdTryCatch:
-                    case TokenId::KwdAssume:
-                    case TokenId::KwdThrow:
-                    case TokenId::KwdDiscard:
-
-                    case TokenId::KwdVar:
-                    case TokenId::KwdLet:
-                    case TokenId::KwdConst:
-                    case TokenId::KwdUndefined:
-
-                    case TokenId::KwdEnum:
-                    case TokenId::KwdStruct:
-                    case TokenId::KwdUnion:
-                    case TokenId::KwdImpl:
-                    case TokenId::KwdInterface:
-                    case TokenId::KwdFunc:
-                    case TokenId::KwdClosure:
-                    case TokenId::KwdMethod:
-                    case TokenId::KwdNamespace:
-                    case TokenId::KwdTypeAlias:
-                    case TokenId::KwdNameAlias:
-                    case TokenId::KwdAttr:
-
-                    case TokenId::KwdTrue:
-                    case TokenId::KwdFalse:
-                    case TokenId::KwdNull:
-
-                    case TokenId::KwdPublic:
-                    case TokenId::KwdInternal:
-                    case TokenId::KwdPrivate:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    case TokenId::KwdCode:
-                    case TokenId::KwdCVarArgs:
-                    case TokenId::NativeType:
-                    case TokenId::CompilerType:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    case TokenId::KwdIf:
-                    case TokenId::KwdElse:
-                    case TokenId::KwdElif:
-                    case TokenId::KwdFor:
-                    case TokenId::KwdWhile:
-                    case TokenId::KwdSwitch:
-                    case TokenId::KwdDefer:
-                    case TokenId::KwdIn:
-                    case TokenId::KwdForEach:
-                    case TokenId::KwdBreak:
-                    case TokenId::KwdFallThrough:
-                    case TokenId::KwdUnreachable:
-                    case TokenId::KwdReturn:
-                    case TokenId::KwdCase:
-                    case TokenId::KwdContinue:
-                    case TokenId::KwdDefault:
-                    case TokenId::KwdAnd:
-                    case TokenId::KwdOr:
-                    case TokenId::KwdOrElse:
-                    case TokenId::KwdTo:
-                    case TokenId::KwdUntil:
-                    case TokenId::KwdWhere:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxLogic, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    case TokenId::CompilerDependencies:
-                    case TokenId::CompilerRun:
-                    case TokenId::CompilerAst:
-                    case TokenId::CompilerFuncMessage:
-                    case TokenId::CompilerFuncDrop:
-                    case TokenId::CompilerFuncInit:
-                    case TokenId::CompilerFuncMain:
-                    case TokenId::CompilerFuncPreMain:
-                    case TokenId::CompilerFuncTest:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    case TokenId::IntrinsicIndex:
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
-                        result += identifier;
-                        result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        break;
-
-                    default:
-                        if (identifier[0] == '@')
-                        {
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
-                            result += identifier;
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        }
-                        else if (identifier[0] == '#')
-                        {
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
-                            result += identifier;
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                        }
-                        else
-                        {
-                            result += identifier;
-                        }
-
-                        break;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxInvalid, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (Tokenizer::isKeywordLogic(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxLogic, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (Tokenizer::isKeyword(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (Tokenizer::isType(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (Tokenizer::isCompilerFunc(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (identifier[0] == '@')
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else if (identifier[0] == '#')
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
+                else
+                {
+                    result += identifier;
                 }
 
-                switch (*it)
+                if (Tokenizer::isHasMode(*it) && c == '<')
                 {
-                    case TokenId::KwdCast:
-                    case TokenId::KwdWhere:
-                    case TokenId::KwdForEach:
-                    case TokenId::KwdDefer:
-                        if (c == '<')
-                        {
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                            result += "<";
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                    result += "<";
 
-                            Utf8 kwdMode;
-                            pz = Utf8::decodeUtf8(pz, c, offset);
-                            while (SWAG_IS_ALPHA(c))
-                            {
-                                kwdMode += c;
-                                pz = Utf8::decodeUtf8(pz, c, offset);
-                            }
+                    Utf8 kwdMode;
+                    pz = Utf8::decodeUtf8(pz, c, offset);
+                    while (SWAG_IS_ALPHA(c))
+                    {
+                        kwdMode += c;
+                        pz = Utf8::decodeUtf8(pz, c, offset);
+                    }
 
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
-                            result += kwdMode;
-                            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                            if (c == '>')
-                            {
-                                result += ">";
-                                pz = Utf8::decodeUtf8(pz, c, offset);
-                            }
-                        }
-                        break;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
+                    result += kwdMode;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                    if (c == '>')
+                    {
+                        result += ">";
+                        pz = Utf8::decodeUtf8(pz, c, offset);
+                    }
                 }
+
+                continue;
             }
-            else if (identifier.startsWith("#alias") || identifier.startsWith("#mix"))
+
+            if (identifier.startsWith("#alias") || identifier.startsWith("#mix"))
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
             }
-            else if (identifier[0] == '@')
+
+            if (identifier[0] == '@')
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
             }
-            else if (identifier[0] == '#')
+
+            if (identifier[0] == '#')
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
             }
-            else if (identifier == g_LangSpec->name_self || identifier == g_LangSpec->name_Self)
+
+            if (identifier == g_LangSpec->name_self || identifier == g_LangSpec->name_Self)
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
             }
-            else if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
+
+            if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxFunction, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
             }
-            else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
+
+            if (identifier[0] >= 'A' and identifier[0] <= 'Z')
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxConstant, mode);
                 result += identifier;
                 result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-            }
-            else
-            {
-                hasCode = true;
-                result += identifier;
+                continue;
             }
 
+            hasCode = true;
+            result += identifier;
             continue;
         }
 

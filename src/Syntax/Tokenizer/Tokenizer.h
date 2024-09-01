@@ -19,6 +19,9 @@ constexpr TokenFlags TOKEN_COMPILER_FUNC      = 0x00000040;
 constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
 constexpr TokenFlags TOKEN_MODIFIER           = 0x00000100;
 constexpr TokenFlags TOKEN_COMPILER_INTRINSIC = 0x00000200;
+constexpr TokenFlags TOKEN_KWD_LOGIC          = 0x00000400;
+constexpr TokenFlags TOKEN_AS_TYPE            = 0x00000800;
+constexpr TokenFlags TOKEN_HAS_MODE           = 0x00001000;
 
 constexpr TokenizerFlags TOKENIZER_TRACK_COMMENTS = 0x00000001;
 constexpr TokenizerFlags TOKENIZER_TRACK_FORMAT   = 0x00000002;
@@ -80,11 +83,15 @@ struct Tokenizer
     static TokenId tokenRelated(TokenId id);
 
     static bool isKeyword(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_KWD); }
+    static bool isKeywordLogic(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_KWD_LOGIC); }
     static bool isSymbol(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_SYM); }
     static bool isLiteral(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_LITERAL); }
     static bool isCompiler(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_COMPILER); }
     static bool isCompilerIntrinsic(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_COMPILER_INTRINSIC); }
     static bool isModifier(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_MODIFIER); }
+    static bool isType(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_AS_TYPE); }
+    static bool isCompilerFunc(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_COMPILER_FUNC); }
+    static bool isHasMode(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_HAS_MODE); }
     static bool isIntrinsicReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_RETURN); }
     static bool isIntrinsicNoReturn(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
     static bool isTopLevelInst(TokenId id) { return TOKEN_FLAGS[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }

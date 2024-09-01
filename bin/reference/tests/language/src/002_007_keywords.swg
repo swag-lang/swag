@@ -25,6 +25,7 @@ to
 until
 where
 in
+as
 
 true
 false
@@ -69,9 +70,9 @@ moveref
 These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features.
 
 ```swag
-do
 is
 not
+do
 ```
 
 # Basic Types
