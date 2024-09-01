@@ -596,61 +596,20 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
     switch (node->token.id)
     {
         case TokenId::CompilerIntrinsicIsConstExpr:
-        {
-            const auto expr = node->firstChild();
-            node->typeInfo  = g_TypeMgr->typeInfoBool;
-            expr->addAstFlag(AST_NO_BYTECODE);
-
-            // Special case for a function parameter in a where block, should be done at runtime
-            if (expr->isWhereParam(expr->resolvedSymbolOverload()))
-            {
-                node->byteCodeFct = ByteCodeGen::emitIntrinsicIsConstExprSI;
-                break;
-            }
-
-            node->setFlagsValueIsComputed();
-            node->computedValue()->reg.b = expr->hasFlagComputedValue();
-            break;
-        }
+            SWAG_CHECK(resolveCompilerIntrinsicIsConstExpr(context));
+            return true;
 
         case TokenId::CompilerIntrinsicSizeOf:
-        {
-            auto expr = node->firstChild();
-            SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0145)}));
-            node->setFlagsValueIsComputed();
-            node->computedValue()->reg.u64 = expr->typeInfo->sizeOf;
-            if (node->computedValue()->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoU64;
-            else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-            break;
-        }
+            SWAG_CHECK(resolveCompilerIntrinsicSizeOf(context));
+            return true;
 
         case TokenId::CompilerIntrinsicAlignOf:
-        {
-            auto expr = node->firstChild();
-            SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0143)}));
-            node->setFlagsValueIsComputed();
-            node->computedValue()->reg.u64 = TypeManager::alignOf(expr->typeInfo);
-            if (node->computedValue()->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoU64;
-            else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-            break;
-        }
+            SWAG_CHECK(resolveCompilerIntrinsicAlignOf(context));
+            return true;
 
         case TokenId::CompilerIntrinsicOffsetOf:
-        {
-            const auto expr = node->firstChild();
-            SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload(), expr));
-            node->setFlagsValueIsComputed();
-            node->computedValue()->reg.u64 = expr->resolvedSymbolOverload()->computedValue.storageOffset;
-            if (node->computedValue()->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoU64;
-            else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-            break;
-        }
+            SWAG_CHECK(resolveCompilerIntrinsicOffsetOf(context));
+            return true;
 
         case TokenId::CompilerIntrinsicDeclType:
             SWAG_CHECK(resolveCompilerIntrinsicDeclType(context));

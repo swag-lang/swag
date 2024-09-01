@@ -302,6 +302,10 @@ namespace Semantic
     bool resolveCompilerIntrinsicTag(SemanticContext* context);
     bool resolveCompilerIntrinsicDeclType(SemanticContext* context);
     bool resolveCompilerIntrinsicRunes(SemanticContext* context);
+    bool resolveCompilerIntrinsicIsConstExpr(const SemanticContext* context);
+    bool resolveCompilerIntrinsicSizeOf(SemanticContext* context);
+    bool resolveCompilerIntrinsicAlignOf(SemanticContext* context);
+    bool resolveCompilerIntrinsicOffsetOf(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);
     bool resolveDefer(SemanticContext* context);

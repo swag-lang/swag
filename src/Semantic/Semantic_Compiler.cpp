@@ -1231,3 +1231,66 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
     node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
     return true;
 }
+
+bool Semantic::resolveCompilerIntrinsicIsConstExpr(const SemanticContext* context)
+{
+    const auto node = context->node;
+    const auto expr = node->firstChild();
+    node->typeInfo  = g_TypeMgr->typeInfoBool;
+    expr->addAstFlag(AST_NO_BYTECODE);
+
+    // Special case for a function parameter in a where block, should be done at runtime
+    if (expr->isWhereParam(expr->resolvedSymbolOverload()))
+    {
+        node->byteCodeFct = ByteCodeGen::emitIntrinsicIsConstExprSI;
+    }
+    else
+    {
+        node->setFlagsValueIsComputed();
+        node->computedValue()->reg.b = expr->hasFlagComputedValue();
+    }
+    
+    return true;
+}
+
+bool Semantic::resolveCompilerIntrinsicSizeOf(SemanticContext* context)
+{
+    const auto node = context->node;
+    auto       expr = node->firstChild();
+    SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0145)}));
+    node->setFlagsValueIsComputed();
+    node->computedValue()->reg.u64 = expr->typeInfo->sizeOf;
+    if (node->computedValue()->reg.u64 > UINT32_MAX)
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+    else
+        node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    return true;
+}
+
+bool Semantic::resolveCompilerIntrinsicAlignOf(SemanticContext* context)
+{
+    const auto node = context->node;
+    auto       expr = node->firstChild();
+    SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0143)}));
+    node->setFlagsValueIsComputed();
+    node->computedValue()->reg.u64 = TypeManager::alignOf(expr->typeInfo);
+    if (node->computedValue()->reg.u64 > UINT32_MAX)
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+    else
+        node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    return true;
+}
+
+bool Semantic::resolveCompilerIntrinsicOffsetOf(SemanticContext* context)
+{
+    const auto node = context->node;
+    const auto expr = node->firstChild();
+    SWAG_CHECK(Semantic::checkIsConstExpr(context, expr->resolvedSymbolOverload(), expr));
+    node->setFlagsValueIsComputed();
+    node->computedValue()->reg.u64 = expr->resolvedSymbolOverload()->computedValue.storageOffset;
+    if (node->computedValue()->reg.u64 > UINT32_MAX)
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+    else
+        node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    return true;
+}
