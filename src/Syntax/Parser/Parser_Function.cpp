@@ -50,7 +50,7 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
                 SWAG_CHECK(doLiteral(param, &dummyResult));
                 break;
 
-            case TokenId::CompilerLocation:
+            case TokenId::CompilerCurLocation:
                 SWAG_CHECK(doCompilerSpecialValue(param, &dummyResult));
                 break;
 

@@ -407,7 +407,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
     keywords.add("#self", TokenId::CompilerSelf);
-    keywords.add("#curlocation", TokenId::CompilerLocation);
+    keywords.add("#curlocation", TokenId::CompilerCurLocation);
     keywords.add("#callerlocation", TokenId::CompilerCallerLocation);
     keywords.add("#callerfunction", TokenId::CompilerCallerFunction);
     keywords.add("#swagversion", TokenId::CompilerBuildVersion);

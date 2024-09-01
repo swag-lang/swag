@@ -660,7 +660,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doIndex(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIndex(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstNode>(AstNodeKind::Index, this, parent);
     node->semanticFct = Semantic::resolveIndex;

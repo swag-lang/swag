@@ -193,8 +193,8 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
-    else if (node->token.is(TokenId::CompilerIntrinsicTypeOf) ||
-             node->token.is(TokenId::IntrinsicKindOf) ||
+    else if (node->token.is(TokenId::IntrinsicKindOf) ||
+             node->token.is(TokenId::CompilerIntrinsicTypeOf) ||
              node->token.is(TokenId::CompilerIntrinsicSizeOf) ||
              node->token.is(TokenId::CompilerIntrinsicDeclType))
     {
@@ -245,21 +245,12 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doCompilerSpecialValue(parent, result));
             break;
 
-        case TokenId::CompilerLocation:
-        case TokenId::CompilerIntrinsicLocation:
-            SWAG_CHECK(doIdentifierRef(parent, result));
-            break;
-
         case TokenId::CompilerIntrinsicDefined:
-            SWAG_CHECK(doIntrinsicDefined(parent, result));
+            SWAG_CHECK(doCompilerIntrinsicDefined(parent, result));
             break;
 
         case TokenId::CompilerIntrinsicInclude:
-            SWAG_CHECK(doCompilerInclude(parent, result));
-            break;
-
-        case TokenId::CompilerSelf:
-            SWAG_CHECK(doIdentifierRef(parent, result));
+            SWAG_CHECK(doCompilerIntrinsicInclude(parent, result));
             break;
 
         case TokenId::SymLeftParen:
@@ -287,10 +278,12 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::KwdAssume:
             SWAG_CHECK(doTryCatchAssume(parent, result));
             break;
+
         case TokenId::CompilerUp:
         case TokenId::Identifier:
             SWAG_CHECK(doIdentifierRef(parent, result));
             break;
+
         case TokenId::SymDot:
         {
             SWAG_CHECK(eatToken());
@@ -305,26 +298,44 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
         }
 
+        case TokenId::CompilerType:
+        {
+            if (exprFlags.has(EXPR_FLAG_SIMPLE))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            eatToken();
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
+            (*result)->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
+            break;
+        }
+
         case TokenId::CompilerIndex:
-            SWAG_CHECK(doIndex(parent, result));
+            SWAG_CHECK(doCompilerIndex(parent, result));
             break;
 
         case TokenId::CompilerIntrinsicHasTag:
         case TokenId::CompilerIntrinsicGetTag:
         case TokenId::CompilerIntrinsicSafety:
-            SWAG_CHECK(doIntrinsicTag(parent, result));
+            SWAG_CHECK(doCompilerIntrinsicTag(parent, result));
             break;
 
-        case TokenId::IntrinsicSpread:
+        case TokenId::CompilerSelf:
+        case TokenId::CompilerCurLocation:
+        case TokenId::CompilerIntrinsicLocation:
         case TokenId::CompilerIntrinsicSizeOf:
         case TokenId::CompilerIntrinsicAlignOf:
         case TokenId::CompilerIntrinsicOffsetOf:
-        case TokenId::IntrinsicKindOf:
-        case TokenId::IntrinsicCountOf:
-        case TokenId::IntrinsicDataOf:
+        case TokenId::CompilerIntrinsicIsConstExpr:
+        case TokenId::CompilerIntrinsicTypeOf:
         case TokenId::CompilerIntrinsicStringOf:
         case TokenId::CompilerIntrinsicNameOf:
         case TokenId::CompilerIntrinsicRunes:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
+
+        case TokenId::IntrinsicSpread:
+        case TokenId::IntrinsicKindOf:
+        case TokenId::IntrinsicCountOf:
+        case TokenId::IntrinsicDataOf:
         case TokenId::IntrinsicMakeAny:
         case TokenId::IntrinsicMakeSlice:
         case TokenId::IntrinsicMakeString:
@@ -353,9 +364,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::IntrinsicAtomicXor:
         case TokenId::IntrinsicAtomicXchg:
         case TokenId::IntrinsicAtomicCmpXchg:
-        case TokenId::CompilerIntrinsicIsConstExpr:
         case TokenId::IntrinsicCVaArg:
-        case TokenId::CompilerIntrinsicTypeOf:
         case TokenId::IntrinsicItfTableOf:
         case TokenId::IntrinsicDbgAlloc:
         case TokenId::IntrinsicSysAlloc:
@@ -396,16 +405,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::IntrinsicMulAdd:
             SWAG_CHECK(doIdentifierRef(parent, result));
             break;
-
-        case TokenId::CompilerType:
-        {
-            if (exprFlags.has(EXPR_FLAG_SIMPLE))
-                return invalidTokenError(InvalidTokenError::PrimaryExpression);
-            eatToken();
-            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-            (*result)->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
-            break;
-        }
 
         case TokenId::KwdConst:
         case TokenId::KwdCode:
@@ -558,7 +557,7 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
         case TokenId::KwdCast:
             SWAG_CHECK(doCast(parent, result));
             return true;
-        
+
         case TokenId::SymMinus:
         case TokenId::SymExclam:
         case TokenId::SymTilde:

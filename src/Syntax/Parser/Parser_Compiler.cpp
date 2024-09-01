@@ -11,7 +11,7 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIntrinsicTag(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstNode>(AstNodeKind::IntrinsicProp, this, parent);
     *result           = node;
@@ -678,7 +678,7 @@ bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIntrinsicLocation(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicLocation, this, parent);
     *result             = exprNode;
@@ -696,7 +696,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIntrinsicDefined(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicDefined, this, parent);
     *result             = exprNode;
@@ -715,7 +715,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
+bool Parser::doCompilerIntrinsicInclude(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicInclude, this, parent);
     *result             = exprNode;

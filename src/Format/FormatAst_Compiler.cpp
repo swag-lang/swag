@@ -101,7 +101,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
         case TokenId::CompilerCallerLocation:
             concat->addString("#callerlocation");
             break;
-        case TokenId::CompilerLocation:
+        case TokenId::CompilerCurLocation:
             concat->addString("#curlocation");
             break;
         case TokenId::CompilerOs:

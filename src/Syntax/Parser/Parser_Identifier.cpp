@@ -270,31 +270,33 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
 
     switch (tokenParse.token.id)
     {
-        case TokenId::CompilerLocation:
+        case TokenId::CompilerCurLocation:
             SWAG_CHECK(doCompilerSpecialValue(identifierRef, &dummyResult));
             break;
         case TokenId::CompilerIntrinsicLocation:
-            SWAG_CHECK(doIntrinsicLocation(identifierRef, &dummyResult));
+            SWAG_CHECK(doCompilerIntrinsicLocation(identifierRef, &dummyResult));
             break;
 
-        case TokenId::IntrinsicSpread:
         case TokenId::CompilerIntrinsicSizeOf:
         case TokenId::CompilerIntrinsicAlignOf:
         case TokenId::CompilerIntrinsicOffsetOf:
         case TokenId::CompilerIntrinsicTypeOf:
-        case TokenId::IntrinsicKindOf:
         case TokenId::CompilerIntrinsicDeclType:
-        case TokenId::IntrinsicCountOf:
-        case TokenId::IntrinsicDataOf:
         case TokenId::CompilerIntrinsicStringOf:
         case TokenId::CompilerIntrinsicNameOf:
         case TokenId::CompilerIntrinsicRunes:
+        case TokenId::CompilerIntrinsicIsConstExpr:
+            SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
+            break;
+        case TokenId::IntrinsicSpread:
+        case TokenId::IntrinsicKindOf:
+        case TokenId::IntrinsicCountOf:
+        case TokenId::IntrinsicDataOf:
         case TokenId::IntrinsicMakeAny:
         case TokenId::IntrinsicMakeSlice:
         case TokenId::IntrinsicMakeString:
         case TokenId::IntrinsicMakeInterface:
         case TokenId::IntrinsicMakeCallback:
-        case TokenId::CompilerIntrinsicIsConstExpr:
         case TokenId::IntrinsicCVaStart:
         case TokenId::IntrinsicCVaEnd:
         case TokenId::IntrinsicCVaArg:

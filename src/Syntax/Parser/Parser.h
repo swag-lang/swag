@@ -130,7 +130,7 @@ struct Parser
     bool doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
-    bool doIntrinsicTag(AstNode* parent, AstNode** result);
+    bool doCompilerIntrinsicTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);
     bool doCompilerMacro(AstNode* parent, AstNode** result);
@@ -145,10 +145,10 @@ struct Parser
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);
     bool doCompilerGlobal(AstNode* parent, AstNode** result);
     bool doCompilerSpecialValue(AstNode* parent, AstNode** result);
-    bool doIntrinsicDefined(AstNode* parent, AstNode** result);
-    bool doIntrinsicLocation(AstNode* parent, AstNode** result);
+    bool doCompilerIntrinsicDefined(AstNode* parent, AstNode** result);
+    bool doCompilerIntrinsicLocation(AstNode* parent, AstNode** result);
     bool doCompilerDependencies(AstNode* parent);
-    bool doCompilerInclude(AstNode* parent, AstNode** result);
+    bool doCompilerIntrinsicInclude(AstNode* parent, AstNode** result);
     bool doCompilerLoad(AstNode* parent);
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);
@@ -194,7 +194,7 @@ struct Parser
     bool doLiteral(AstNode* parent, AstNode** result);
     bool doIntrinsicProp(AstNode* parent, AstNode** result);
     bool doParenthesisExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
-    bool doIndex(AstNode* parent, AstNode** result);
+    bool doCompilerIndex(AstNode* parent, AstNode** result);
     bool doMoveRef(AstNode* parent, AstNode** result);
     bool doDeRef(AstNode* parent, AstNode** result);
     bool doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& mdfFlags, AstNode* node = nullptr);

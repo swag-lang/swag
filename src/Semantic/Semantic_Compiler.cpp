@@ -937,7 +937,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             node->typeInfo              = g_TypeMgr->typeInfoString;
             return true;
 
-        case TokenId::CompilerLocation:
+        case TokenId::CompilerCurLocation:
             node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
             node->setFlagsValueIsComputed();
             ByteCodeGen::computeSourceLocation(context, node, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
