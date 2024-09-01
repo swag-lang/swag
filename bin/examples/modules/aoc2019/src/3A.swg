@@ -56,7 +56,7 @@ private var grid: [S, S] bool
 private var total = Swag.S32.Max
 func day3A0()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     func trace(idx: s32, line: string)
@@ -108,7 +108,7 @@ func day3A0()
 /////////////////////////////////////////////////////////////////
 func day3A1()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     func trace(line: string)->Array'Vector2

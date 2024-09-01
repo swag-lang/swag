@@ -169,7 +169,7 @@ public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
 //func tcf_assert1(a,b,c,d,e,f: s32)->string
 public func tcf_assert1()
 {
-    @compilererror("message", #location)
+    @compilererror("message", #curlocation)
 }
 
 public func tcf_assert(values: ...)

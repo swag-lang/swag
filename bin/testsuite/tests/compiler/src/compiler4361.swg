@@ -4,7 +4,7 @@ struct(T) Point
     where
     {
         if T != bool:
-            @compilererror("toto", #location)
+            @compilererror("toto", #curlocation)
         return true
     }
 {

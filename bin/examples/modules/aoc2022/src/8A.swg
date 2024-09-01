@@ -32,7 +32,7 @@ using Core
 
 func day8A()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "8.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     //Time.Stopwatch.scopeMeasure()

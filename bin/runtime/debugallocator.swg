@@ -97,7 +97,7 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
         {
             mutex.unlock()
-            @panic("memory block corruption", #location)
+            @panic("memory block corruption", #curlocation)
         }
 
         if ptrHeader.allocId == 0 or
@@ -108,7 +108,7 @@ impl DebugAllocator
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
             mutex.unlock()
-            @panic("memory block corruption", #location)
+            @panic("memory block corruption", #curlocation)
         }
     }
 

@@ -119,7 +119,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(err|itftableof|modules|gvtd|args|location|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|decltype|countof|dataof|runes|postcopy|postmove|spread|isconstexpr)\\b"
+          "match": "(@)\\b(err|itftableof|modules|gvtd|args|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|decltype|countof|dataof|runes|postcopy|postmove|spread)\\b"
         }
       ]
     },
@@ -196,7 +196,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)\\b(tokenpos|type|file|line|cfg|os|arch|cpu|module|backend|self|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
+          "match": "(#)\\b(tokenpos|type|file|line|cfg|os|arch|cpu|module|backend|self|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
         }
       ]
     },
@@ -204,7 +204,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(defined|offsetof|typeof|alignof|sizeof|stringof|nameof)"
+          "match": "(#)\\b(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|curlocation)"
         }
       ]
     },        

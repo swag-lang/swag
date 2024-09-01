@@ -62,7 +62,7 @@ func calc(a, b: u8)->u64
 
 func day3B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     lines = assume File.readAllLines(dataPath)
 
     let o2  = calc(`1`, `0`)

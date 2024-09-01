@@ -3,14 +3,14 @@ using Core, Pixel
 
 /*internal func dataPath()->String
 {
-    var dataPath = Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "datas")
 }
 
 internal func tmpPath()->String
 {
-    var dataPath = Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "tmp")
 }

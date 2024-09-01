@@ -569,7 +569,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     let surface = try app.createSurface(100, 100, 1024, 1024, flags: (.OverlappedWindow & ~.Sizeable), hook: &onEvent)
     surface.setTitle("Chess")
 
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas")
     dataPath = Path.combine(dataPath, "chess")
     dataPath = Path.combine(dataPath, "pieces.png")

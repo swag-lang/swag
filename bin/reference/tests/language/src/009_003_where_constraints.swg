@@ -136,7 +136,7 @@ By utilizing the `where<call>` mode, the `where` clause is evaluated for **each*
             where<call>
             {
                 // Verify if `y` is a compile-time constant.
-                if !@isconstexpr(y):
+                if !#isconstexpr(y):
                     return true                         // Allow if `y` is not constant
                 if y == 0:
                     @compilererror("Division by zero", @location(y))
@@ -158,7 +158,7 @@ By utilizing the `where<call>` mode, the `where` clause is evaluated for **each*
         // Function with different implementations based on whether `x` is known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32                         // Overload for constexpr `x`
-            where<call> @isconstexpr(x)
+            where<call> #isconstexpr(x)
         {
             return 555                                  // Return 555 if `x` is constexpr
         }
@@ -166,7 +166,7 @@ By utilizing the `where<call>` mode, the `where` clause is evaluated for **each*
         // Overload for the case where `x` is not known at compile time.
         #[Swag.Overload]
         func first(x: s32)->s32                         // Overload for non-constexpr `x`
-            where<call> !@isconstexpr(x)
+            where<call> !#isconstexpr(x)
         {
             return 666                                  // Return 666 if `x` is not constexpr
         }

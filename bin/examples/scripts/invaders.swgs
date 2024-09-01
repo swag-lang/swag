@@ -324,7 +324,7 @@ func loadBindTextures() assume
     func loadAndBindTexture(name: string)->Texture throw => g_Wnd.getApp().getRenderer().addImage(Path.combine(g_DataPath, name))
     func loadSound(name: string)->Audio.SoundFile throw  => Audio.SoundFile.load(Path.combine(g_DataPath, name), true)
 
-    g_DataPath = Path.getDirectoryName(#location.fileName)
+    g_DataPath = Path.getDirectoryName(#curlocation.fileName)
     g_DataPath = Path.combine(g_DataPath, "datas")
     g_DataPath = Path.combine(g_DataPath, "invaders")
 

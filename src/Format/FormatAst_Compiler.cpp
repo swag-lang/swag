@@ -102,7 +102,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
             concat->addString("#callerlocation");
             break;
         case TokenId::CompilerLocation:
-            concat->addString("#location");
+            concat->addString("#curlocation");
             break;
         case TokenId::CompilerOs:
             concat->addString("#os");

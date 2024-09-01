@@ -886,7 +886,7 @@ namespace Swag
 
     // Represent a part of a source code file.
     //
-    // This is typically what will be returned by '#location' or '#callerlocation'.
+    // This is typically what will be returned by '#curlocation' or '#callerlocation'.
     struct SourceCodeLocation
     {
         fileName:      string     // Full path name of the source file

@@ -3,7 +3,7 @@ using Core.File
 //#[Swag.PrintBc]
 #test
 {
-    var loc = #location
+    var loc = #curlocation
     let res = Path.getDirectoryName(loc.fileName)
     @assert(@countof(res) != 0)
     //Console.print("%\n", res)

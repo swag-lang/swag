@@ -29,7 +29,7 @@ using Core
 
 func day7B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
     let str      = Tokenize.split(lines[0], `,`'u8)
 

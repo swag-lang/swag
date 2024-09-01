@@ -1,7 +1,7 @@
 func print(f: f32)
     where<call>
     {
-        @assert(@isconstexpr(f))
+        @assert(#isconstexpr(f))
         return true
     }
 {

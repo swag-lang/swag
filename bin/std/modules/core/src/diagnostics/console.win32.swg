@@ -77,7 +77,7 @@ public func resetColor()
 public func printf(message: string, params: ...)
     where<call>
     {
-        if !@isconstexpr(message) or !@isconstexpr(params):
+        if !#isconstexpr(message) or !#isconstexpr(params):
             return true
         Format.checkFormat(#nameof(#self), message, params)
         return true

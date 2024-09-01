@@ -7,6 +7,6 @@ func titi(ptr: ...)
 //#[Swag.PrintBc]
 #test
 {
-    titi(#location)
+    titi(#curlocation)
     //var x = toto("y")
 }

@@ -120,7 +120,7 @@ private var convert: [7] Array'Range
 
 func day5A()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var mode = Mode.Invalid

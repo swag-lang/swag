@@ -4,7 +4,7 @@ using Core, Pixel
 #[Swag.Overload]
 internal func tmpPath1()->String
 {
-    var dataPath = Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "tmp")
 }

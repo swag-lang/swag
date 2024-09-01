@@ -8,16 +8,16 @@ using Swag
 
     var req: AllocatorRequest
     req.size = 10
-    req.callerLoc = #location
+    req.callerLoc = #curlocation
     dbg.IAllocator.req(&req)
 
     var req1 = req
     req1.mode = .Free
-    req1.callerLoc = #location
+    req1.callerLoc = #curlocation
     dbg.IAllocator.req(&req1)
 
     var req2 = req
     req2.mode = .Free
-    req2.callerLoc = #location
+    req2.callerLoc = #curlocation
     dbg.IAllocator.req(&req2)
 }

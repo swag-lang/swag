@@ -63,7 +63,7 @@ struct ImageInfo
 
 func loadRes(app: *Application)
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards", "res")
 
     var img = assume Image.load(Path.combine(dataPath, "m.png"))
@@ -347,7 +347,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
 #main
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards")
 
     var pathImg = Path.combine(dataPath, "img")

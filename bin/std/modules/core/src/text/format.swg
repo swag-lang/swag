@@ -39,7 +39,7 @@ func countPercent(fmt: string)->u32
 func replaceString(dest: *String, fmt: string, values: ...)
     where<call>
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values):
+        if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
         checkFormat(#nameof(#self), fmt, values)
         return true
@@ -75,7 +75,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 func toString(fmt: string, values: ...)->String
     where<call>
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values):
+        if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
         checkFormat(#nameof(#self), fmt, values)
         return true
@@ -93,7 +93,7 @@ func toString(fmt: string, values: ...)->String
 func toStringTemp(fmt: string, values: ...)->string
     where<call>
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values):
+        if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
         checkFormat(#nameof(#self), fmt, values)
         return true
@@ -112,7 +112,7 @@ func toStringTemp(fmt: string, values: ...)->string
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     where<call>
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values):
+        if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
         checkFormat(#nameof(#self), fmt, values)
         return true
@@ -187,7 +187,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 func toInterp(buf: *ConcatBuffer, exp: string)
     where<call>
     {
-        if !@isconstexpr(exp):
+        if !#isconstexpr(exp):
             @compilererror("expression should be constant", @location(exp))
         return true
     }
@@ -247,7 +247,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 func toInterp(exp: string)->String
     where<call>
     {
-        if !@isconstexpr(exp):
+        if !#isconstexpr(exp):
             @compilererror("expression should be constant", @location(exp))
         return true
     }

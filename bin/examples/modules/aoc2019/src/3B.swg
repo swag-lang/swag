@@ -32,7 +32,7 @@ using Core, Core.Math
 
 func day3B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     func trace(line: string)->Array'Vector2

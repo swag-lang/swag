@@ -25,7 +25,7 @@ using Core
 
 func day2B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "2.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "2.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var total = 0'u64

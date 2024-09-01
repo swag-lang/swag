@@ -13,7 +13,7 @@ using Core
 
 func day1B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "1.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var count: [3] u64

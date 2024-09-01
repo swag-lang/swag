@@ -6,7 +6,7 @@ using Core.File
 #test
 {
     var reader: TextReader
-    var loc     = #location
+    var loc     = #curlocation
 
     {
         catch reader.open(loc.fileName)

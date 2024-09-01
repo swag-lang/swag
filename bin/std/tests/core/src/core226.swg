@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    let p = #location.fileName
+    let p = #curlocation.fileName
     //Console.print("%\n", p)
 
     {

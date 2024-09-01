@@ -16,7 +16,7 @@ func __setErr(err: any)
 {
     let cxt = @getcontext()
     if cxt.errorIndex >= MaxErrors:
-        @panic("too many nested error levels!", #location)
+        @panic("too many nested error levels!", #curlocation)
 
     __dropErr(cxt.errors[cxt.errorIndex].value)
 

@@ -4,7 +4,7 @@ public struct(T) TOTOcompiler1899
 {
     #ast
     {
-        @compilererror("this is a test man !", #location)
+        @compilererror("this is a test man !", #curlocation)
         return ""
     }
 }

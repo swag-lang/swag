@@ -40,7 +40,7 @@ using Core
 
 func day5B()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32

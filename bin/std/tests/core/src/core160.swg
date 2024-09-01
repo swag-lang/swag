@@ -6,7 +6,7 @@ using Core
     @assert(Path.getExtension("loc.fileName") == ".fileName")
     @assert(Path.getFileName("/") == null)
 
-    var loc = #location
+    var loc = #curlocation
     @assert(File.exists(loc.fileName))
     @assert(Path.getExtension(loc.fileName) == ".swg")
     @assert(Path.hasExtension(loc.fileName))

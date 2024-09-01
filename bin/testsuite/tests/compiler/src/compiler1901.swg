@@ -2,7 +2,7 @@ struct(T, loc: Swag.SourceCodeLocation) TOTO
 {
     #ast
     {
-        //@compilererror(#location, "this is a test man !")
+        //@compilererror(#curlocation, "this is a test man !")
         @assert(cast(s64) loc.lineStart == 12)
         return ""
     }
@@ -10,5 +10,5 @@ struct(T, loc: Swag.SourceCodeLocation) TOTO
 
 #test
 {
-    var x: TOTO'(s32, #location){}
+    var x: TOTO'(s32, #curlocation){}
 }

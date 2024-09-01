@@ -78,7 +78,7 @@ using Core
 
 func day7A()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var folder:  String

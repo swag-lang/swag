@@ -69,7 +69,7 @@ using Core
 
 func day9A()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var total: s64

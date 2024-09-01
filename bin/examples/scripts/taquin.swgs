@@ -43,7 +43,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Rect = wnd.getClientRect()
 
     case Create:
-        var dataPath: String = Path.getDirectoryName(#location.fileName)
+        var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
         dataPath = Path.combine(dataPath, "datas")
         dataPath = Path.combine(dataPath, "taquin")
 

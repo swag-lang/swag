@@ -21,7 +21,7 @@ const H = 1024
 
 func dataPath()->String
 {
-    var dataPath = Path.getDirectoryName(#location.fileName)
+    var dataPath = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)
     dataPath = Path.getDirectoryName(dataPath)

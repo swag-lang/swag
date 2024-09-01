@@ -341,7 +341,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
     keywords.add("#self", TokenId::CompilerSelf);
-    keywords.add("#location", TokenId::CompilerLocation);
+    keywords.add("#curlocation", TokenId::CompilerLocation);
     keywords.add("#callerlocation", TokenId::CompilerCallerLocation);
     keywords.add("#callerfunction", TokenId::CompilerCallerFunction);
     keywords.add("#swagversion", TokenId::CompilerBuildVersion);
@@ -424,7 +424,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#typeof", TokenId::IntrinsicTypeOf);
     keywords.add("#stringof", TokenId::IntrinsicStringOf);
     keywords.add("#nameof", TokenId::IntrinsicNameOf);
-    keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
+    keywords.add("#isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@location", TokenId::IntrinsicLocation);
     
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);

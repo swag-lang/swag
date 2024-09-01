@@ -2117,7 +2117,7 @@ func loadBindTextures()
     }
 
     // Assets are located in the 'datas/pacman' sub folder
-    g_DataPath = Path.getDirectoryName(#location.fileName)
+    g_DataPath = Path.getDirectoryName(#curlocation.fileName)
     g_DataPath = Path.combine(g_DataPath, "datas")
     g_DataPath = Path.combine(g_DataPath, "pacman")
 

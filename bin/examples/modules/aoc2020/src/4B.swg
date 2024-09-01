@@ -77,7 +77,7 @@ func day4B()
 /////////////////////////////////////////////////////////////////
 func day4B0()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     var total, pass: u32
@@ -145,7 +145,7 @@ func day4B0()
 /////////////////////////////////////////////////////////////////
 func day4B1()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
 
     assume

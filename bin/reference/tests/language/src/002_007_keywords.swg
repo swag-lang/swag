@@ -142,7 +142,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #file
 #line
 #self
-#location
+#curlocation
 #callerlocation
 #callerfunction
 #swagversion
@@ -185,7 +185,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @hastag
 @init
 @isbytecode
-@isconstexpr
+#isconstexpr
 @itftableof
 @kindof
 @location

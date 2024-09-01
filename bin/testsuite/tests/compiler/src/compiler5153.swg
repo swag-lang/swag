@@ -2,5 +2,5 @@
 
 #test
 {
-    @panic("toto", #location)
+    @panic("toto", #curlocation)
 }

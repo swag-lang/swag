@@ -11,5 +11,5 @@ public func Compiler1960()
 
     }
 
-    var x = #location
+    var x = #curlocation
 }

@@ -6,7 +6,7 @@ using Core, Core.Directory
     var options: EnumerationOptions
     options.recurse = true
 
-    let loc = #location.fileName
+    let loc = #curlocation.fileName
     let pth = Path.getDirectoryName(loc)
 
     let res   = assume enumerate(pth, options)

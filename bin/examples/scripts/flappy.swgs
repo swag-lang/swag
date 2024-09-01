@@ -484,7 +484,7 @@ func loadAssets(wnd: *Wnd) throw
 {
     let render = &wnd.getApp().renderer
 
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas")
     dataPath = Path.combine(dataPath, "flappy")
 

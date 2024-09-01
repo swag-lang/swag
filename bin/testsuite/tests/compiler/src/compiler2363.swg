@@ -1,4 +1,4 @@
 #test
 {
-    var f = #location.fileName
+    var f = #curlocation.fileName
 }

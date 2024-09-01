@@ -55,7 +55,7 @@ impl IWnd for MyView
         let surface = app.createSurface(100, 100, W, H, view: view)
 
         let rdr      = surface.app.getRenderer()
-        let dataPath = Path.getDirectoryName(#location.fileName)
+        let dataPath = Path.getDirectoryName(#curlocation.fileName)
         g_Image0 = Image.load(Path.combine(dataPath, "/datas/img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "/datas/img2.jpg"))
         g_Font   = view.getTheme().createDefaultFont(30)
