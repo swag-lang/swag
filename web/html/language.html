@@ -655,7 +655,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@postmove</span>
 <span class="SItr">@print</span>
 <span class="SItr">@rtflags</span>
-<span class="SItr">@safety</span>
+<span class="SItr">#safety</span>
 <span class="SItr">@setcontext</span>
 <span class="SItr">@spread</span>
 <span class="SItr">@stringcmp</span>
