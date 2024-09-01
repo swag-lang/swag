@@ -45,7 +45,7 @@ impl Image
         var f = {kernel, dstImage}
         visitPixels(&f)
         {
-            let params     = cast(*@decltype(f)) userData
+            let params     = cast(*#decltype(f)) userData
             let kernelSize = params.kernel[0] / 2
             let b8         = image.bpp8
             let w8         = image.width8

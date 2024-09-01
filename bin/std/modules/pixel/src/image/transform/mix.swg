@@ -19,7 +19,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                let params   = cast(*@decltype(f)) userData
+                let params   = cast(*#decltype(f)) userData
                 let dstImage = cast(*Image) params.dstImage
                 let srcImage = cast(const *Image) params.srcImage
 

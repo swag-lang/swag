@@ -429,7 +429,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#decltype", TokenId::IntrinsicDeclType);
     keywords.add("#hastag", TokenId::IntrinsicHasTag);
     keywords.add("#gettag", TokenId::IntrinsicGetTag);
-    
+    keywords.add("#runes", TokenId::IntrinsicRunes);
+
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
     keywords.add("@is", TokenId::IntrinsicIs);
@@ -454,7 +455,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@postcopy", TokenId::IntrinsicPostCopy);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);
     keywords.add("@countof", TokenId::IntrinsicCountOf);
-    keywords.add("@runes", TokenId::IntrinsicRunes);
     keywords.add("@dataof", TokenId::IntrinsicDataOf);
     keywords.add("@mkslice", TokenId::IntrinsicMakeSlice);
     keywords.add("@mkstring", TokenId::IntrinsicMakeString);

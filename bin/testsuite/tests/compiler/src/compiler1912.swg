@@ -6,7 +6,7 @@ func toto() => "tag"
 {
     //@print(#tagval(f64, "tag1"))
 
-    if(@hastag(toto()))
+    if(#hastag(toto()))
     {
         @print("tag\n")
     }

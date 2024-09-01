@@ -363,7 +363,7 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
-            let params = cast(*@decltype(f)) data
+            let params = cast(*#decltype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
@@ -378,7 +378,7 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
-            let params = cast(*@decltype(f)) data
+            let params = cast(*#decltype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
@@ -401,7 +401,7 @@ namespace ResizeTools
         {
             dstImage.visitPixels(&f)
             {
-                let params = cast(*@decltype(f)) userData
+                let params = cast(*#decltype(f)) userData
                 let fx     = cast(u32) (x * params.xscale)
                 let fy     = cast(u32) (y * params.yscale)
                 let pixSrc = params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)

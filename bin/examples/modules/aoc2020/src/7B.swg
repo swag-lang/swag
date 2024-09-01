@@ -55,7 +55,7 @@ func day7B0()
         }
     }
 
-    typealias T = @decltype(id)
+    typealias T = #decltype(id)
     func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
@@ -95,7 +95,7 @@ func day7B1()
         }
     }
 
-    typealias T = @decltype(id)
+    typealias T = #decltype(id)
     func count(id: *T, what: string)->u32
     {
         let it = id.find(what)

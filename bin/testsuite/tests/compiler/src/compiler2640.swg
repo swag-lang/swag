@@ -6,6 +6,6 @@
 
     let v = cast(*void) &g
 
-    let p = cast(*@decltype(g)) v
+    let p = cast(*#decltype(g)) v
     @assert(p.factor == 666)
 }

@@ -41,7 +41,7 @@ impl Image
         var f = {&convArr[0, 0], st}
         visitPixels(&f)
         {
-            let params = cast(*@decltype(f)) userData
+            let params = cast(*#decltype(f)) userData
 
             let min = Math.min(pix[0], pix[1], pix[2])
             let max = Math.max(pix[0], pix[1], pix[2])

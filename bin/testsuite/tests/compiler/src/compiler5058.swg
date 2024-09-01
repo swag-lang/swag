@@ -4,5 +4,5 @@ func toto()=>"toto"
 
 #test
 {
-    let a = @hastag(toto())
+    let a = #hastag(toto())
 }

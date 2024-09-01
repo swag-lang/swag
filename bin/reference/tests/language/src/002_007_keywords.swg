@@ -146,6 +146,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #decltype
 #gettag
 #hastag
+#runes
 
 #cfg
 #os

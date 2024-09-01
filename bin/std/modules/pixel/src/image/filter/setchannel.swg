@@ -48,7 +48,7 @@ impl Image
         var f = {rmode, value, color}
         visitPixels(&f)
         {
-            let params = cast(*@decltype(f)) userData
+            let params = cast(*#decltype(f)) userData
             let mode   = params.rmode
 
             var color: u8 = undefined

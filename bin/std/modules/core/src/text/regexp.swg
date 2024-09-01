@@ -975,70 +975,70 @@ impl RegExp
             // Predefined sets
             if pz[0] == `[`
             {
-                if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
+                if Unicode.compare(subSlice, #runes("[:digit:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiDigit | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:xdigit:]"), false, 10) == 0
+                if Unicode.compare(subSlice, #runes("[:xdigit:]"), false, 10) == 0
                 {
                     preprocessed.add(RuneAsciiHexa | invert)
                     pz += 10
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
+                if Unicode.compare(subSlice, #runes("[:alpha:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiLetter | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
+                if Unicode.compare(subSlice, #runes("[:alnum:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiAlNum | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
+                if Unicode.compare(subSlice, #runes("[:lower:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiLower | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:upper:]"), false, 9) == 0
+                if Unicode.compare(subSlice, #runes("[:upper:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiUpper)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:blank:]"), false, 9) == 0
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:blank:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiBlank | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:space:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAsciiSpace | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:ascii:]"), false, 9) == 0
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:ascii:]"), false, 9) == 0
                 {
                     preprocessed.add(RuneAscii | invert)
                     pz += 9
                     continue
                 }
 
-                if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
+                if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:word:]"), false, 8) == 0
                 {
                     preprocessed.add(RuneAsciiWord | invert)
                     pz += 8
@@ -1270,34 +1270,34 @@ impl RegExp
             switch pz[1]
             {
             case `d`:
-                preprocessInter(@runes("[[:digit:]]"))
+                preprocessInter(#runes("[[:digit:]]"))
                 return pz + 2
             case `D`:
-                preprocessInter(@runes("[^[:digit:]]"))
+                preprocessInter(#runes("[^[:digit:]]"))
                 return pz + 2
             case `w`:
-                preprocessInter(@runes("[[:word:]]"))
+                preprocessInter(#runes("[[:word:]]"))
                 return pz + 2
             case `W`:
-                preprocessInter(@runes("[^[:word:]]"))
+                preprocessInter(#runes("[^[:word:]]"))
                 return pz + 2
             case `s`:
-                preprocessInter(@runes("[[:space:]]"))
+                preprocessInter(#runes("[[:space:]]"))
                 return pz + 2
             case `S`:
-                preprocessInter(@runes("[^[:space:]]"))
+                preprocessInter(#runes("[^[:space:]]"))
                 return pz + 2
             case `l`:
-                preprocessInter(@runes("[[:lower:]]"))
+                preprocessInter(#runes("[[:lower:]]"))
                 return pz + 2
             case `L`:
-                preprocessInter(@runes("[^[:lower:]]"))
+                preprocessInter(#runes("[^[:lower:]]"))
                 return pz + 2
             case `u`:
-                preprocessInter(@runes("[[:upper:]]"))
+                preprocessInter(#runes("[[:upper:]]"))
                 return pz + 2
             case `U`:
-                preprocessInter(@runes("[^[:upper:]]"))
+                preprocessInter(#runes("[^[:upper:]]"))
                 return pz + 2
             case `a`:
                 preprocessed.add(`\a`)

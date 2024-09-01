@@ -208,7 +208,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@countof", State.Intrinsic)
         mapWords.add("#stringof", State.Intrinsic)
         mapWords.add("#nameof", State.Intrinsic)
-        mapWords.add("@runes", State.Intrinsic)
+        mapWords.add("#runes", State.Intrinsic)
         mapWords.add("@dataof", State.Intrinsic)
         mapWords.add("@mkslice", State.Intrinsic)
         mapWords.add("@mkstring", State.Intrinsic)

@@ -59,7 +59,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                let params  = cast(*@decltype(f)) userData
+                let params  = cast(*#decltype(f)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = y / cast(f32) image.height
                 let colH1   = Color.getBlend(params.topLeft, params.topRight, factor0)

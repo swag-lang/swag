@@ -84,7 +84,7 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let swapRB  = params.swapRB
                 let factor0 = y / cast(f32) image.height
                 let col     = Color.fromHsl(params.hsl.h, factor0, 0.5)
@@ -136,7 +136,7 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let swapRB  = params.swapRB
                 let factor0 = y / cast(f32) image.height
                 let col     = Color.fromHsl(params.hsl.h, 1, factor0)
@@ -188,7 +188,7 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = y / cast(f32) image.height
                 let col     = Color.fromHsl(factor0, factor1, 0.5)
@@ -212,7 +212,7 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = y / cast(f32) image.height
                 let col     = Color.fromHsl(factor0, 1, factor1)
@@ -236,7 +236,7 @@ impl Image
             var pms = {hsl, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = y / cast(f32) image.height
                 var l       = 0.5 + ((1 - factor0) * 0.5)
@@ -262,7 +262,7 @@ impl Image
             var pms = {color.r / 255.0, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = 1 - (y / cast(f32) image.height)
                 let col     = Color.fromRgbf(params.item0, factor0, factor1)
@@ -286,7 +286,7 @@ impl Image
             var pms = {color.g / 255.0, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = 1 - (y / cast(f32) image.height)
                 let col     = Color.fromRgbf(factor0, params.item0, factor1)
@@ -310,7 +310,7 @@ impl Image
             var pms = {color.b / 255.0, swapRB}
             visitPixels(&pms)
             {
-                let params  = dref cast(*@decltype(pms)) userData
+                let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
                 let factor1 = 1 - (y / cast(f32) image.height)
                 let col     = Color.fromRgbf(factor0, factor1, params.item0)

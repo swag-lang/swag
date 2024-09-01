@@ -21,7 +21,7 @@ impl Image
             case T90:
                 dstImage.visitPixels(&f)
                 {
-                    let data     = cast(*@decltype(f)) userData
+                    let data     = cast(*#decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
                     let nx       = srcImage.width - y - 1
                     let ny       = x
@@ -32,7 +32,7 @@ impl Image
             case T180:
                 dstImage.visitPixels(&f)
                 {
-                    let data     = cast(*@decltype(f)) userData
+                    let data     = cast(*#decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
                     let nx       = srcImage.width - x - 1
                     let ny       = srcImage.height - y - 1
@@ -43,7 +43,7 @@ impl Image
             case T270:
                 dstImage.visitPixels(&f)
                 {
-                    let data     = cast(*@decltype(f)) userData
+                    let data     = cast(*#decltype(f)) userData
                     let srcImage = cast(const *Image) data.img
                     let nx       = y
                     let ny       = srcImage.height - x - 1

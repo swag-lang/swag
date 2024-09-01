@@ -19,7 +19,7 @@ func compute()
     var data = {minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
     g_Image.visitPixels(&data)
     {
-        var params = cast(*@decltype(data)) userData
+        var params = cast(*#decltype(data)) userData
         var minS   = params.minS
         var maxS   = params.maxS
 
