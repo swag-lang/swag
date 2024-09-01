@@ -2141,7 +2141,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Using <span class="code-inline">@kindof</span> to Retrieve Underlying Type </h4>
-<p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at runtime. </p>
+<p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
@@ -6118,7 +6118,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// sum(2, 3)</span>
 
     <span class="SCmt">// To explicitly discard the return value when you don't need it, use 'discard' at the call site.</span>
-    <span class="SKwd">discard</span> <span class="SFct">sum</span>(<span class="SNum">2</span>, <span class="SNum">3</span>)                            <span class="SCmt">// The return value of 'sum' is intentionally ignored here.</span>
+    <span class="SCmt">// The return value of 'sum' is intentionally ignored here.</span>
+    <span class="SKwd">discard</span> <span class="SFct">sum</span>(<span class="SNum">2</span>, <span class="SNum">3</span>)                            
 }</span></div>
 <h4 id="_007_000_functions_swg__007_010_discard_swg"><span class="code-inline">Swag.Discardable</span> Attribute </h4>
 <p>There are scenarios where the return value of a function may be optional or non-critical to the operation.  In such cases, the function can be marked with the <span class="code-inline">Swag.Discardable</span> attribute. This attribute permits the caller  to ignore the return value without triggering a compiler error, making it clear that the result is not necessarily  intended to be used. </p>
@@ -6128,7 +6129,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">mul</span>(x, y: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> =&gt; x * y
 
     <span class="SCmt">// It's allowed to ignore the return value of 'mul' without using 'discard'.</span>
-    <span class="SFct">mul</span>(<span class="SNum">2</span>, <span class="SNum">4</span>)                                    <span class="SCmt">// No error, even though the return value is not used.</span>
+    <span class="SFct">mul</span>(<span class="SNum">2</span>, <span class="SNum">4</span>)                                    
 }</span></div>
 
 <h3 id="_007_000_functions_swg__007_011_retval_swg">Retval</h3><h4 id="_007_000_functions_swg__007_011_retval_swg">The <span class="code-inline">retval</span> special type </h4>
@@ -8848,7 +8849,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>
