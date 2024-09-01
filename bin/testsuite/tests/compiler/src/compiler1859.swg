@@ -132,7 +132,7 @@ func aaa(ptr: *s64)
 
         {
             let x = 0xFFFFFFFF_FFFFFFFF'u64
-            let y = cast<unsafe>(u32) x
+            let y = cast<overflow>(u32) x
             let z = cast(u64) y
             print(cast(s64) z)
         }

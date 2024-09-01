@@ -320,7 +320,7 @@
           }
         },        
         {
-          "match": "\\b(cast)\\<(bit|unsafe)\\>",
+          "match": "\\b(cast)\\<(bit|overflow|unconst)\\>",
           "captures": {
             "1": {
               "name": "keyword"

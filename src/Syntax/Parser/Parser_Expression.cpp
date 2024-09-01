@@ -691,22 +691,6 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.is(TokenId::ModifierUnconst))
-        {
-            switch (opId)
-            {
-                case TokenId::KwdCast:
-                    break;
-                default:
-                    return error(tokenParse, formErr(Err0695, tokenParse.cstr(), forNode.cstr()));
-            }
-
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(tokenParse, formErr(Err0058, tokenParse.cstr())));
-            mdfFlags.add(MODIFIER_UN_CONST);
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
         if (tokenParse.is(TokenId::ModifierMove))
         {
             switch (opId)

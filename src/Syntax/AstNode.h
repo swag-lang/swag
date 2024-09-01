@@ -1158,7 +1158,7 @@ struct AstAlias : AstNode
 
 struct AstCast : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_UNSAFE        = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_OVERFLOW      = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_BIT           = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_UN_CONST      = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_PATTERN_MATCH = 0x0008;
