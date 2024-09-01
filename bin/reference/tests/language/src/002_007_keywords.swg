@@ -116,11 +116,11 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 
 #global
 #load
+#foreignlib
 #assert
 #print
 #error
 #warning
-#foreignlib
 #import
 #mixin
 #macro
@@ -128,10 +128,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #if
 #else
 #elif
-#code
 #scope
-#up
-#type
 
 #defined
 #offsetof
@@ -166,7 +163,11 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #swagbuildnum
 #swagos
 
+#code
+#type
+#up
 #index
+
 #alias0
 #alias1
 #alias2 // and more generally #aliasN

@@ -354,7 +354,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#dependencies", State.CompilerFunction)
 
         mapWords.add("#global", State.CompilerGlobal)
-
         mapWords.add("#load", State.CompilerStatement)
         mapWords.add("#foreignlib", State.CompilerStatement)
         mapWords.add("#assert", State.CompilerStatement)
