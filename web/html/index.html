@@ -115,31 +115,31 @@
 <div class="right">
 <div class="right-page">
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
-    <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
-    <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
-    <div style="margin-top:50px; padding-bottom:20px; color:White; font-size:20px;">
+    <p style="padding-top:30px;"><img src="imgs/swag_logo.png" width="50%"></p>
+    <p style="color:white; font-size:40px; line-height:1.3em;"><b>SWAG</b> Programming Language</p>
+    <div style="margin-top:50px; padding-bottom:20px; color:white; font-size:20px;">
         <div class="round-button"><a href="getting-started.php" style="color:#F7F900; text-decoration:none;">Getting Started</a></div>
-        <div class="round-button"><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900; text-decoration:none;">Download the Compiler</a> </div>
+        <div class="round-button"><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900; text-decoration:none;">Download the Compiler</a></div>
     </div>
 </div>
 
-<div style="display:flex;flex-wrap:wrap;margin-bottom:30px;">
+<div style="display:flex; flex-wrap:wrap; margin-bottom:30px;">
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
-        <h2>A Sophisticated Toy</h2>
-        <p>Swag is a <b>systems</b> programming language created for fun, because, let's be honest, C++ has become a monstrous and unwieldy beast!</p>
-        <p>This is my third compiler (the previous ones were developed for AAA <b>game engines</b>), and it is by far the most advanced.</p>
+        <h2>A Modern Playground</h2>
+        <p>Swag is a <b>systems</b> programming language crafted for fun, offering a fresh alternative to the increasingly cumbersome C++.</p>
+        <p>This is my third compiler project (the previous ones powered AAA <b>game engines</b>), but Swag represents a significant leap forward in terms of capability and design.</p>
     </div>
 
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
-        <h2>Native or Interpreted</h2>
-        <p>The Swag compiler can generate efficient <b>native</b> code using a custom x64 backend or LLVM. It can also function as an interpreter for a <b>scripting</b> language.</p>
-        <p>Imagine C++, but where everything could be <i>constexpr</i>.</p>
+        <h2>Flexible and Powerful</h2>
+        <p>The Swag compiler can generate high-performance <b>native</b> code using a custom x64 backend or LLVM, and it can also function as an interpreter for <b>scripting</b> purposes.</p>
+        <p>Think of it as C++, but with the ability to make everything <i>constexpr</i>.</p>
     </div>
 
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
-        <h2>Modern</h2>
-        <p>Swag offers full <b>compile-time</b> evaluation, <b>type reflection</b> at both runtime and compile time, <b>meta-programming</b>, <b>generics</b>, a powerful <b>macro system</b>, and more.</p>
-        <p>Enjoy.</p>
+        <h2>Cutting-Edge Features</h2>
+        <p>Swag offers advanced features like full <b>compile-time</b> evaluation, <b>type reflection</b> at both runtime and compile time, <b>meta-programming</b>, <b>generics</b>, a powerful <b>macro system</b>, and much more.</p>
+        <p>It's designed to be both fun and highly productive.</p>
     </div>
 </div>
 
@@ -155,18 +155,18 @@
     </div>
 </div></p>
 <p style="white-space: break-spaces"><div align="center">
-    <p>Take a look at a detailed implementation of the <b>Flappy Bird</b> game in a single, compact script file.</p>
+    <p>Explore a detailed, single-script implementation of the <b>Flappy Bird</b> game.</p>
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div></p>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, including this website, is still a <b>work in progress</b>. The rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Swag is still under active development! Everything, including this website, is a <b>work in progress</b>. Features and details are subject to change until we officially reach version 1.0.0. Stay tuned and enjoy the ride! </p>
 </div>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The 'IsSet' generic struct is generated as a mirror of the user input struct.</span>
-<span class="SCmt">// Each field has the same name as the original one, but with a 'bool' type.</span>
-<span class="SCmt">// It indicates, after command line parsing, whether the corresponding argument has been</span>
-<span class="SCmt">// specified by the user.</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'IsSet' generic struct mirrors the user-defined struct,</span>
+<span class="SCmt">// with each field converted to a 'bool' type.</span>
+<span class="SCmt">// After command-line parsing, it indicates whether each argument</span>
+<span class="SCmt">// was provided by the user.</span>
 <span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">IsSet</span>
 {
     <span class="SFct">#ast</span>
@@ -194,19 +194,17 @@
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>
 }</span></div>
-<p>Swag is <b>open source</b> and released under the <a href="https://github.com/swag-lang/swag/blob/master/LICENCE">MIT license</a>. The compiler source code is available on <a href="https://github.com/swag-lang/swag">GitHub</a>. You can also visit our <a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q">YouTube</a> channel for coding sessions. </p>
+<p>Swag is <b>open source</b> and released under the <a href="https://github.com/swag-lang/swag/blob/master/LICENCE">MIT license</a>. The compiler source code is available on <a href="https://github.com/swag-lang/swag">GitHub</a>. Check out our <a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q">YouTube</a> channel for coding sessions. </p>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> The language is evolving, and some videos may show outdated syntax. However, the corresponding scripts on GitHub are always up-to-date and functional. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> As the language evolves, some videos might show outdated syntax. However, the corresponding scripts on GitHub are always up-to-date and functional. </p>
 </div>
-<p style="white-space: break-spaces">
-<div style="display:flex; flex-wrap:wrap;">
+<p style="white-space: break-spaces"><div style="display:flex; flex-wrap:wrap;">
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/Il0UuJCXTWI" title="Swag Live Coding - The Flappy Bird Game (silent)" frameborder="0" allowfullscreen></iframe>
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/Bqr1pakewaU" title="Swag Live Coding - The Pacman Game (silent)" frameborder="0" allowfullscreen></iframe>
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/f2rIXoH6H38" title="Swag Live Coding: The 2048 Game (silent)" frameborder="0" allowfullscreen></iframe>
-</div>
-</p>
+</div></p>
 <div class="blockquote blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages on this website and all related documentation have been generated with Swag, as the compiler can also produce HTML from markdown files and source code. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This website and all related documentation were generated using Swag. The compiler can also produce HTML from markdown files and source code. </p>
 </div>
 <div class="swag-watermark">
 Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
