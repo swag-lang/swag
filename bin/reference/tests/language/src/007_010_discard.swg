@@ -15,7 +15,8 @@ consciously handling all return values, which can be critical for maintaining th
     // sum(2, 3)
 
     // To explicitly discard the return value when you don't need it, use 'discard' at the call site.
-    discard sum(2, 3)                            // The return value of 'sum' is intentionally ignored here.
+    // The return value of 'sum' is intentionally ignored here.
+    discard sum(2, 3)                            
 }
 
 /**
@@ -32,5 +33,5 @@ intended to be used.
     func mul(x, y: s32) -> s32 => x * y
 
     // It's allowed to ignore the return value of 'mul' without using 'discard'.
-    mul(2, 4)                                    // No error, even though the return value is not used.
+    mul(2, 4)                                    
 }
