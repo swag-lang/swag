@@ -415,22 +415,22 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagbuildnum", TokenId::CompilerBuildNum);
     keywords.add("#swagos", TokenId::CompilerSwagOs);
 
-    keywords.add("#index", TokenId::IntrinsicIndex);
+    keywords.add("#index", TokenId::CompilerIndex);
 
-    keywords.add("#defined", TokenId::IntrinsicDefined);
-    keywords.add("#offsetof", TokenId::IntrinsicOffsetOf);
-    keywords.add("#alignof", TokenId::IntrinsicAlignOf);
-    keywords.add("#sizeof", TokenId::IntrinsicSizeOf);
-    keywords.add("#typeof", TokenId::IntrinsicTypeOf);
-    keywords.add("#stringof", TokenId::IntrinsicStringOf);
-    keywords.add("#nameof", TokenId::IntrinsicNameOf);
-    keywords.add("#isconstexpr", TokenId::IntrinsicIsConstExpr);
-    keywords.add("#location", TokenId::IntrinsicLocation);    
-    keywords.add("#decltype", TokenId::IntrinsicDeclType);
-    keywords.add("#hastag", TokenId::IntrinsicHasTag);
-    keywords.add("#gettag", TokenId::IntrinsicGetTag);
-    keywords.add("#runes", TokenId::IntrinsicRunes);
-    keywords.add("#safety", TokenId::IntrinsicSafety);
+    keywords.add("#defined", TokenId::CompilerIntrinsicDefined);
+    keywords.add("#offsetof", TokenId::CompilerIntrinsicOffsetOf);
+    keywords.add("#alignof", TokenId::CompilerIntrinsicAlignOf);
+    keywords.add("#sizeof", TokenId::CompilerIntrinsicSizeOf);
+    keywords.add("#typeof", TokenId::CompilerIntrinsicTypeOf);
+    keywords.add("#stringof", TokenId::CompilerIntrinsicStringOf);
+    keywords.add("#nameof", TokenId::CompilerIntrinsicNameOf);
+    keywords.add("#isconstexpr", TokenId::CompilerIntrinsicIsConstExpr);
+    keywords.add("#location", TokenId::CompilerIntrinsicLocation);    
+    keywords.add("#decltype", TokenId::CompilerIntrinsicDeclType);
+    keywords.add("#hastag", TokenId::CompilerIntrinsicHasTag);
+    keywords.add("#gettag", TokenId::CompilerIntrinsicGetTag);
+    keywords.add("#runes", TokenId::CompilerIntrinsicRunes);
+    keywords.add("#safety", TokenId::CompilerIntrinsicSafety);
 
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);

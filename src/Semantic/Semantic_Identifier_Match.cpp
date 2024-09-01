@@ -1465,17 +1465,17 @@ bool Semantic::registerMatch(SemanticContext*            context,
                         isLast = true;
                 }
 
-                if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicTypeOf))
+                if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicTypeOf))
                     asMatch = true;
                 else if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicKindOf))
                     asMatch = true;
-                else if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicNameOf))
+                else if (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicNameOf))
                     asMatch = true;
                 else if (isLast && pr2->is(AstNodeKind::BinaryOp) && pr2->token.is(TokenId::SymEqualEqual) && overload->symbol->is(SymbolKind::Struct))
                     asMatch = true;
                 else if (isLast && pr2->is(AstNodeKind::BinaryOp) && pr2->token.is(TokenId::SymExclamEqual) && overload->symbol->is(SymbolKind::Struct))
                     asMatch = true;
-                else if (pr2->is(AstNodeKind::IntrinsicDefined))
+                else if (pr2->is(AstNodeKind::CompilerIntrinsicDefined))
                     asMatch = true;
             }
         }

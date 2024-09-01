@@ -64,8 +64,8 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
     if (countMatches > 1)
     {
         const auto pr2 = node->getParent(2);
-        if (pr2->is(AstNodeKind::IntrinsicDefined) ||
-            (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicNameOf)))
+        if (pr2->is(AstNodeKind::CompilerIntrinsicDefined) ||
+            (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicNameOf)))
         {
             matches.count = 1;
             return true;

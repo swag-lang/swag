@@ -27,7 +27,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
     const auto node = context->node;
     switch (node->token.id)
     {
-        case TokenId::IntrinsicSafety:
+        case TokenId::CompilerIntrinsicSafety:
         {
             auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
@@ -60,7 +60,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             return true;
         }
 
-        case TokenId::IntrinsicHasTag:
+        case TokenId::CompilerIntrinsicHasTag:
         {
             auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
@@ -74,7 +74,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             return true;
         }
 
-        case TokenId::IntrinsicGetTag:
+        case TokenId::CompilerIntrinsicGetTag:
         {
             auto       nameNode   = node->firstChild();
             const auto typeNode   = node->secondChild();
@@ -872,7 +872,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_CHECK(resolveIntrinsicSpread(context));
             return true;
 
-        case TokenId::IntrinsicIsConstExpr:
+        case TokenId::CompilerIntrinsicIsConstExpr:
         {
             const auto expr = node->firstChild();
             node->typeInfo  = g_TypeMgr->typeInfoBool;
@@ -890,7 +890,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             break;
         }
 
-        case TokenId::IntrinsicSizeOf:
+        case TokenId::CompilerIntrinsicSizeOf:
         {
             auto expr = node->firstChild();
             SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0145)}));
@@ -903,7 +903,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             break;
         }
 
-        case TokenId::IntrinsicAlignOf:
+        case TokenId::CompilerIntrinsicAlignOf:
         {
             auto expr = node->firstChild();
             SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, toErr(Err0143)}));
@@ -916,7 +916,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             break;
         }
 
-        case TokenId::IntrinsicOffsetOf:
+        case TokenId::CompilerIntrinsicOffsetOf:
         {
             const auto expr = node->firstChild();
             SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload(), expr));
@@ -929,11 +929,11 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             break;
         }
 
-        case TokenId::IntrinsicDeclType:
+        case TokenId::CompilerIntrinsicDeclType:
             SWAG_CHECK(resolveIntrinsicDeclType(context));
             return true;
 
-        case TokenId::IntrinsicTypeOf:
+        case TokenId::CompilerIntrinsicTypeOf:
             SWAG_CHECK(resolveIntrinsicTypeOf(context));
             return true;
 
@@ -941,14 +941,14 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_CHECK(resolveIntrinsicKindOf(context));
             return true;
 
-        case TokenId::IntrinsicStringOf:
+        case TokenId::CompilerIntrinsicStringOf:
             SWAG_CHECK(resolveIntrinsicStringOf(context));
             return true;
-        case TokenId::IntrinsicNameOf:
+        case TokenId::CompilerIntrinsicNameOf:
             SWAG_CHECK(resolveIntrinsicNameOf(context));
             return true;
 
-        case TokenId::IntrinsicRunes:
+        case TokenId::CompilerIntrinsicRunes:
             SWAG_CHECK(resolveIntrinsicRunes(context));
             return true;
 

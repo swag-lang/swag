@@ -193,10 +193,10 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
-    else if (node->token.is(TokenId::IntrinsicTypeOf) ||
+    else if (node->token.is(TokenId::CompilerIntrinsicTypeOf) ||
              node->token.is(TokenId::IntrinsicKindOf) ||
-             node->token.is(TokenId::IntrinsicSizeOf) ||
-             node->token.is(TokenId::IntrinsicDeclType))
+             node->token.is(TokenId::CompilerIntrinsicSizeOf) ||
+             node->token.is(TokenId::CompilerIntrinsicDeclType))
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF, &dummyResult));
     }
@@ -246,11 +246,11 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::CompilerLocation:
-        case TokenId::IntrinsicLocation:
+        case TokenId::CompilerIntrinsicLocation:
             SWAG_CHECK(doIdentifierRef(parent, result));
             break;
 
-        case TokenId::IntrinsicDefined:
+        case TokenId::CompilerIntrinsicDefined:
             SWAG_CHECK(doIntrinsicDefined(parent, result));
             break;
 
@@ -305,26 +305,26 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
         }
 
-        case TokenId::IntrinsicIndex:
+        case TokenId::CompilerIndex:
             SWAG_CHECK(doIndex(parent, result));
             break;
 
-        case TokenId::IntrinsicHasTag:
-        case TokenId::IntrinsicGetTag:
-        case TokenId::IntrinsicSafety:
+        case TokenId::CompilerIntrinsicHasTag:
+        case TokenId::CompilerIntrinsicGetTag:
+        case TokenId::CompilerIntrinsicSafety:
             SWAG_CHECK(doIntrinsicTag(parent, result));
             break;
 
         case TokenId::IntrinsicSpread:
-        case TokenId::IntrinsicSizeOf:
-        case TokenId::IntrinsicAlignOf:
-        case TokenId::IntrinsicOffsetOf:
+        case TokenId::CompilerIntrinsicSizeOf:
+        case TokenId::CompilerIntrinsicAlignOf:
+        case TokenId::CompilerIntrinsicOffsetOf:
         case TokenId::IntrinsicKindOf:
         case TokenId::IntrinsicCountOf:
         case TokenId::IntrinsicDataOf:
-        case TokenId::IntrinsicStringOf:
-        case TokenId::IntrinsicNameOf:
-        case TokenId::IntrinsicRunes:
+        case TokenId::CompilerIntrinsicStringOf:
+        case TokenId::CompilerIntrinsicNameOf:
+        case TokenId::CompilerIntrinsicRunes:
         case TokenId::IntrinsicMakeAny:
         case TokenId::IntrinsicMakeSlice:
         case TokenId::IntrinsicMakeString:
@@ -353,9 +353,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::IntrinsicAtomicXor:
         case TokenId::IntrinsicAtomicXchg:
         case TokenId::IntrinsicAtomicCmpXchg:
-        case TokenId::IntrinsicIsConstExpr:
+        case TokenId::CompilerIntrinsicIsConstExpr:
         case TokenId::IntrinsicCVaArg:
-        case TokenId::IntrinsicTypeOf:
+        case TokenId::CompilerIntrinsicTypeOf:
         case TokenId::IntrinsicItfTableOf:
         case TokenId::IntrinsicDbgAlloc:
         case TokenId::IntrinsicSysAlloc:
