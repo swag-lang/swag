@@ -571,6 +571,12 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 }
+                else if (identifier == "#index")
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }
                 else if (identifier[0] == '#')
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
