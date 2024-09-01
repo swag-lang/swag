@@ -732,19 +732,19 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
             YIELD();
 
             auto typeStruct = typeNode->typeInfo;
-            if(typeNode->typeInfo->isPointer())
+            if (typeNode->typeInfo->isPointer())
                 typeStruct = castTypeInfo<TypeInfoPointer>(typeNode->typeInfo, TypeInfoKind::Pointer)->pointedType;
             waitTypeCompleted(context->baseJob, typeStruct);
             YIELD();
-            
-            if(typeNode->typeInfo->isStruct())
+
+            if (typeNode->typeInfo->isStruct())
                 SWAG_CHECK(exprNode->addAnyType(context, typeNode->typeInfo));
             else
             {
                 const auto ptrType = castTypeInfo<TypeInfoPointer>(typeNode->typeInfo, TypeInfoKind::Pointer);
                 SWAG_CHECK(exprNode->addAnyType(context, ptrType->pointedType));
             }
-            
+
             YIELD();
         }
     }

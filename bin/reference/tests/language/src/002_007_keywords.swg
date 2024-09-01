@@ -146,6 +146,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #gettag
 #hastag
 #runes
+#safety
 #include
 
 #cfg
@@ -206,7 +207,6 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @postmove
 @print
 @rtflags
-#safety
 @setcontext
 @spread
 @stringcmp

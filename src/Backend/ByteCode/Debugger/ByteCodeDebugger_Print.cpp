@@ -229,7 +229,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         appendTypedValue(context, result, resultForExpression, res, 0, 0);
     }
 
-    if(resultForExpression.empty())
+    if (resultForExpression.empty())
         resultForExpression = result;
 
     str += result;

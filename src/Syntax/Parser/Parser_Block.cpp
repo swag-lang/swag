@@ -250,7 +250,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
                 if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
                     SWAG_CHECK(doRange(caseNode, expression, &expression));
-                
+
                 expression->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
                 caseNode->expressions.push_back(expression);
 

@@ -62,7 +62,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         if (!castFlags.has(CAST_FLAG_JUST_CHECK))
         {
             fromNode->typeInfoCast = fromNode->typeInfo;
-            fromNode->typeInfo       = toType;
+            fromNode->typeInfo     = toType;
         }
     }
 

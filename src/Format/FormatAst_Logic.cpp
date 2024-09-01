@@ -183,7 +183,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
                 concat->addString("as");
                 concat->addBlank();
             }
-            
+
             bool first = true;
             for (const auto it : c->expressions)
             {

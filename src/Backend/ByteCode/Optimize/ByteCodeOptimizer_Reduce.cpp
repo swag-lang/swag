@@ -3002,7 +3002,7 @@ void ByteCodeOptimizer::reduceStack2(ByteCodeOptContext* context, ByteCodeInstru
                     setNop(context, tst);
                     return;
                 }
-            }            
+            }
             else
             {
                 switch (tst->op)

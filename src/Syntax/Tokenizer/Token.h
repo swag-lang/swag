@@ -4,7 +4,7 @@ struct SourceFile;
 enum class TokenId : uint16_t
 {
 #define DEFINE_TOKEN_ID(__id, __flags) __id,
-#include "TokenIds.h"    
+#include "TokenIds.h"
 };
 
 struct SourceLocation

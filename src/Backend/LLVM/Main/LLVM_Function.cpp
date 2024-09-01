@@ -878,7 +878,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto result = emitCall(buildParameters, g_LangSpec->name_at_as, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
                 break;
-            }            
+            }
 
             case ByteCodeOp::MemCpy8:
             {

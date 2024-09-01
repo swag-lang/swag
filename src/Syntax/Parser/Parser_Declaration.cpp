@@ -633,7 +633,7 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
     {
         case TokenId::KwdReturn:
             SWAG_CHECK(doReturn(parent, result));
-            if(tokenParse.isNot(TokenId::SymRightCurly))
+            if (tokenParse.isNot(TokenId::SymRightCurly))
                 SWAG_CHECK(eatSemiCol("return expression"));
             break;
         case TokenId::KwdIf:

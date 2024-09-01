@@ -314,7 +314,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("until", TokenId::KwdUntil);
     keywords.add("in", TokenId::KwdIn);
     keywords.add("as", TokenId::KwdAs);
-    
+
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);
     keywords.add("cast", TokenId::KwdCast);
@@ -331,7 +331,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("false", TokenId::KwdFalse);
     keywords.add("null", TokenId::KwdNull);
     keywords.add("undefined", TokenId::KwdUndefined);
-    
+
     keywords.add("public", TokenId::KwdPublic);
     keywords.add("internal", TokenId::KwdInternal);
     keywords.add("private", TokenId::KwdPrivate);
@@ -356,7 +356,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
     keywords.add("do", TokenId::KwdReserved);
-    
+
     keywords.add("#global", TokenId::CompilerGlobal);
 
     keywords.add("#run", TokenId::CompilerRun);
@@ -425,7 +425,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#stringof", TokenId::CompilerIntrinsicStringOf);
     keywords.add("#nameof", TokenId::CompilerIntrinsicNameOf);
     keywords.add("#isconstexpr", TokenId::CompilerIntrinsicIsConstExpr);
-    keywords.add("#location", TokenId::CompilerIntrinsicLocation);    
+    keywords.add("#location", TokenId::CompilerIntrinsicLocation);
     keywords.add("#decltype", TokenId::CompilerIntrinsicDeclType);
     keywords.add("#hastag", TokenId::CompilerIntrinsicHasTag);
     keywords.add("#gettag", TokenId::CompilerIntrinsicGetTag);
@@ -468,7 +468,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@pinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@modules", TokenId::IntrinsicModules);
     keywords.add("@gvtd", TokenId::IntrinsicGvtd);
-    
+
     keywords.add("@byteswap", TokenId::IntrinsicByteSwap);
     keywords.add("@bitcountnz", TokenId::IntrinsicBitCountNz);
     keywords.add("@bitcounttz", TokenId::IntrinsicBitCountTz);
@@ -499,7 +499,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@exp", TokenId::IntrinsicExp);
     keywords.add("@exp2", TokenId::IntrinsicExp2);
     keywords.add("@pow", TokenId::IntrinsicPow);
-    
+
     keywords.add("@alloc", TokenId::IntrinsicAlloc);
     keywords.add("@realloc", TokenId::IntrinsicRealloc);
     keywords.add("@free", TokenId::IntrinsicFree);

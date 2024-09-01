@@ -146,7 +146,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     g_RunContext         = &runContext;
     g_ByteCodeStackTrace = &stackTrace;
 
-    sourceFile->numErrors = 0;
+    sourceFile->numErrors         = 0;
     sourceFile->module->numErrors = 0;
 
     auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);

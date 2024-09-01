@@ -162,10 +162,10 @@ void ByteCodeGen::collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>*
 
 bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 {
-    const auto node     = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    TypeInfoList *typeList;
+    const auto    node = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    TypeInfoList* typeList;
 
-    if(node->typeInfoCast)
+    if (node->typeInfoCast)
         typeList = castTypeInfo<TypeInfoList>(node->typeInfoCast, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
     else
         typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);

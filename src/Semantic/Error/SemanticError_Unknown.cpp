@@ -89,7 +89,7 @@ namespace
         else if (identifier->callParameters)
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0745, identifier->token.cstr(), typeWhere->getDisplayNameC())};
-        }        
+        }
         else if (typeWhere->isStruct())
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0753, identifier->token.cstr(), typeWhere->getDisplayNameC())};

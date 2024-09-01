@@ -31,7 +31,7 @@ bool FormatAst::outputChildrenMultiVar(const FormatContext& context, AstNode* no
         const auto varNode = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         SWAG_CHECK(outputVarContent(cxt, varNode, 0, 0, 0));
     }
-    
+
     return true;
 }
 

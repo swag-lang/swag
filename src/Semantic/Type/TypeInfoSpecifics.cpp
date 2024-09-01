@@ -1003,7 +1003,7 @@ void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, u
 {
     ScopedLock lk(mutexCache);
     SWAG_RACE_CONDITION_READ(raceFields);
-    
+
     for (const auto p : fields)
     {
         if (!p->flags.has(TYPEINFOPARAM_HAS_USING))

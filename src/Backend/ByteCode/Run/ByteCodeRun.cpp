@@ -2978,7 +2978,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(registersRC[ip->a.u32].pointer);
             localCall(context, bc, 3, ip->d.u32);
             break;
-        }        
+        }
         case ByteCodeOp::CloneString:
         {
             auto     ptr   = reinterpret_cast<char*>(registersRC[ip->a.u32].pointer);

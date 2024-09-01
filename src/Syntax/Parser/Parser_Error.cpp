@@ -146,7 +146,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 return context->report(err);
             }
 
-            if(Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
+            if (Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
             {
                 Diagnostic err{sourceFile, tokenParse, formErr(Err0204, prevTokenParse.cstr())};
                 return context->report(err);

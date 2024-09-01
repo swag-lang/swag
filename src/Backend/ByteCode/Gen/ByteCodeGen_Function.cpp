@@ -538,7 +538,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, child1);
             freeRegisterRC(context, child2);
             break;
-        }        
+        }
         case TokenId::IntrinsicRtFlags:
         {
             node->resultRegisterRc = reserveRegisterRC(context);
