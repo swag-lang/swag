@@ -195,7 +195,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#gettag", State.Intrinsic)
         mapWords.add("@init", State.Intrinsic)
         mapWords.add("@drop", State.Intrinsic)
-        mapWords.add("@safety", State.Intrinsic)
+        mapWords.add("#safety", State.Intrinsic)
         mapWords.add("@spread", State.Intrinsic)
         mapWords.add("@postmove", State.Intrinsic)
         mapWords.add("@postcopy", State.Intrinsic)

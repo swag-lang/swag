@@ -430,6 +430,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#hastag", TokenId::IntrinsicHasTag);
     keywords.add("#gettag", TokenId::IntrinsicGetTag);
     keywords.add("#runes", TokenId::IntrinsicRunes);
+    keywords.add("#safety", TokenId::IntrinsicSafety);
 
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
@@ -449,7 +450,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@panic", TokenId::IntrinsicPanic);
     keywords.add("@init", TokenId::IntrinsicInit);
     keywords.add("@drop", TokenId::IntrinsicDrop);
-    keywords.add("@safety", TokenId::IntrinsicSafety);
     keywords.add("@spread", TokenId::IntrinsicSpread);
     keywords.add("@postmove", TokenId::IntrinsicPostMove);
     keywords.add("@postcopy", TokenId::IntrinsicPostCopy);
@@ -499,6 +499,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@exp", TokenId::IntrinsicExp);
     keywords.add("@exp2", TokenId::IntrinsicExp2);
     keywords.add("@pow", TokenId::IntrinsicPow);
+    
     keywords.add("@alloc", TokenId::IntrinsicAlloc);
     keywords.add("@realloc", TokenId::IntrinsicRealloc);
     keywords.add("@free", TokenId::IntrinsicFree);

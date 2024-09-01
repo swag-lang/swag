@@ -21,7 +21,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
 #[Swag.Inline, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func(what: string) safety(expr: bool, message: string = null, loc = #callerlocation)
 {
-    #if @safety(what)
+    #if #safety(what)
     {
         if !expr:
             breakPanic(message, loc)

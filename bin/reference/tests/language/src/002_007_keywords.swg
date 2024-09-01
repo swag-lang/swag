@@ -206,7 +206,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @postmove
 @print
 @rtflags
-@safety
+#safety
 @setcontext
 @spread
 @stringcmp
