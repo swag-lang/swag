@@ -77,7 +77,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 if j == 0 and yi != g_RD[i].lastYI
                 {
                     g_RD[i].lastYI = yi
-                    Memory.copyOver(&g_RD[i].c[1], &g_RD[i].c[0], (cast(u64) g_RD[i].length - 1) * @sizeof(rune))
+                    Memory.copyOver(&g_RD[i].c[1], &g_RD[i].c[0], (cast(u64) g_RD[i].length - 1) * #sizeof(rune))
                     g_RD[i].c[0] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
                 }
 

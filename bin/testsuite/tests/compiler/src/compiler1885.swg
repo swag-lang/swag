@@ -4,12 +4,12 @@ struct(T) AA
 {
     #ast
     {
-        #assert(@typeof(T).kind == TypeInfoKind.Struct)
+        #assert(#typeof(T).kind == TypeInfoKind.Struct)
 
         var buf: [100] u8
         var idx = 0'u64
 
-        let ptr = @typeof(T)
+        let ptr = #typeof(T)
         foreach it in ptr.fields
         {
             @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))

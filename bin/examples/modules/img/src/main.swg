@@ -317,7 +317,7 @@ func createWindow()->HWND
     g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
-    pfd.nSize      = @sizeof(pfd)
+    pfd.nSize      = #sizeof(pfd)
     pfd.nVersion   = 1
     pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
     pfd.iPixelType = PFD_TYPE_RGBA
@@ -327,7 +327,7 @@ func createWindow()->HWND
     {
         let pf = ChoosePixelFormat(g_HDC, &pfd)
         SetPixelFormat(g_HDC, pf, &pfd)
-        DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+        DescribePixelFormat(g_HDC, pf, cast(UINT) #sizeof(PIXELFORMATDESCRIPTOR), &pfd)
     }
 
     ReleaseDC(hWnd, g_HDC)

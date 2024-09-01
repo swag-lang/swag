@@ -20,11 +20,11 @@ struct CodecDesc
 // Register a codec
 public func(T) addCodec()
 {
-    #assert Reflection.hasInterface(@typeof(T), ICodec)
+    #assert Reflection.hasInterface(#typeof(T), ICodec)
 
     var desc: CodecDesc = undefined
-    desc.type = @typeof(T)
-    desc.itf  = @mkinterface(null, @typeof(T), ICodec)
+    desc.type = #typeof(T)
+    desc.itf  = @mkinterface(null, #typeof(T), ICodec)
     g_Codecs.add(desc)
 }
 

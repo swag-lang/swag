@@ -5,7 +5,7 @@
 #test
 {
     var x: [2] *~8 s32
-    #assert @sizeof(x) == 2
+    #assert #sizeof(x) == 2
 
     var v = [10, 20]
     x[0] = &v[0]

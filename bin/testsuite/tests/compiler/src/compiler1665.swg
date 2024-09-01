@@ -18,8 +18,8 @@ func C(x: ...)
     @assert(ptr1.x == 456)
 
     /*@print(@kindof(x[0]).name); @print("\n")
-    @print(@typeof(ptr1).name); @print("\n")
-    @print(@typeof(ptr2).name); @print("\n")*/
+    @print(#typeof(ptr1).name); @print("\n")
+    @print(#typeof(ptr2).name); @print("\n")*/
     //ptr1.value = 0
 }
 

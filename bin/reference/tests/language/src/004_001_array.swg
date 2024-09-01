@@ -19,13 +19,13 @@ A static array is declared using the syntax `[N]` followed by the type, where `N
 /**
 # Array Size and Memory
 
-The `@countof` intrinsic provides the number of elements in an array, while `@sizeof` gives the total size in bytes.
+The `@countof` intrinsic provides the number of elements in an array, while `#sizeof` gives the total size in bytes.
 */
 #test
 {
     var array: [2] s32               // Declare a static array of two s32 elements
     #assert @countof(array) == 2     // Ensure the array contains 2 elements
-    #assert @sizeof(array) == 2 * @sizeof(s32)  // Verify the size in bytes (2 elements * size of s32)
+    #assert #sizeof(array) == 2 * #sizeof(s32)  // Verify the size in bytes (2 elements * size of s32)
 }
 
 /**
@@ -56,7 +56,7 @@ An array literal is a list of elements enclosed in square brackets `[A, B, ...]`
 {
     var arr = [1, 2, 3, 4]           // Declare and initialize a static array of four s32 elements
     #assert @countof(arr) == 4       // Verify the array contains 4 elements
-    #assert @typeof(arr) == #type [4] s32  // Verify the array's type is [4] s32
+    #assert #typeof(arr) == #type [4] s32  // Verify the array's type is [4] s32
 }
 
 /**
@@ -123,7 +123,7 @@ If the array's type is not explicitly specified, Swag infers the type based on t
 {
     var arr = [1'f64, 2, 3, 4]       // All elements are inferred to be 'f64'
     #assert @countof(arr) == 4       // Verify the array has 4 elements
-    #assert @typeof(arr) == #type [4] f64  // Confirm that all elements are of type f64
+    #assert #typeof(arr) == #type [4] f64  // Confirm that all elements are of type f64
     @assert(arr[3] == 4.0)           // Confirm the value of the fourth element
 }
 

@@ -115,8 +115,8 @@ func new(type: typeinfo, allocator: IAllocator = null, alignment: u32 = 0, hint:
 #[Swag.Overload]
 func(T) new(allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
-    let userHint = hint orelse @stringof(T)
-    let ptr      = cast(*T) alloc(@sizeof(T), allocator, alignment, userHint, loc)
+    let userHint = hint orelse #stringof(T)
+    let ptr      = cast(*T) alloc(#sizeof(T), allocator, alignment, userHint, loc)
     @init(ptr, 1)
     return ptr
 }
@@ -127,10 +127,10 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 {
     if !ptr:
         return
-    let userHint = hint orelse @stringof(T)
-    assertIsAllocated(ptr, @sizeof(T), allocator, hint, loc)
+    let userHint = hint orelse #stringof(T)
+    assertIsAllocated(ptr, #sizeof(T), allocator, hint, loc)
     @drop(ptr)
-    free(ptr, @sizeof(T), allocator, userHint, loc)
+    free(ptr, #sizeof(T), allocator, userHint, loc)
 }
 
 // Drop and release memory of the given type
@@ -160,8 +160,8 @@ func(T) new(num: u64, allocator: IAllocator = null, alignment: u32 = 0, hint: st
 {
     Debug.assert(num > 0)
 
-    let userHint = hint orelse @stringof(T)
-    let ptr      = cast(^T) alloc(@sizeof(T) * num, allocator, alignment, userHint, loc)
+    let userHint = hint orelse #stringof(T)
+    let ptr      = cast(^T) alloc(#sizeof(T) * num, allocator, alignment, userHint, loc)
     @init(ptr, num)
     return ptr
 }
@@ -174,8 +174,8 @@ func(T) delete(ptr: ^T, num: u64, allocator: IAllocator = null, hint: string = n
         return
     Debug.assert(num > 0)
 
-    let userHint = hint orelse @stringof(T)
-    assertIsAllocated(ptr, @sizeof(T) * num, allocator, userHint, loc)
+    let userHint = hint orelse #stringof(T)
+    assertIsAllocated(ptr, #sizeof(T) * num, allocator, userHint, loc)
     @drop(ptr, num)
-    free(ptr, @sizeof(T) * num, allocator, userHint, loc)
+    free(ptr, #sizeof(T) * num, allocator, userHint, loc)
 }

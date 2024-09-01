@@ -7,6 +7,6 @@ using Core
     arr.add("toto")
     foreach v in arr
     {
-        //Console.print("%\n", @typeof(v))
+        //Console.print("%\n", #typeof(v))
     }
 }

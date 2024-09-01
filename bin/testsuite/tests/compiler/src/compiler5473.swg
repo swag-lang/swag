@@ -14,5 +14,5 @@ func toto()->AL
 #test
 {
     let x = toto()
-    @assert(@typeof(x) == AL)
+    @assert(#typeof(x) == AL)
 }

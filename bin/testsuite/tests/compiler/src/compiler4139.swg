@@ -16,7 +16,7 @@ func toto(stmt: code)
     toto() {
         var t: s32
         var x: s32
-        @print(@offsetof(x))
+        @print(#offsetof(x))
     }
-    @print(@offsetof(x))
+    @print(#offsetof(x))
 }

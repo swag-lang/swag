@@ -7,7 +7,7 @@ func titi()
 
 #test
 {
-    let toI = @typeof(titi)
+    let toI = #typeof(titi)
     @assert(@countof(toI.attributes) == 1)
     @assert(@countof(toI.attributes[0].params) == 4)
     @assert(cast(s32) toI.attributes[0].params[0].value == 666)

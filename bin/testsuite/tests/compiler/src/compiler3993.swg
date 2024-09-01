@@ -11,5 +11,5 @@ impl V
 func toto(a, b: const &V)
 {
     var c = a - b
-    #assert @typeof(c) == V
+    #assert #typeof(c) == V
 }

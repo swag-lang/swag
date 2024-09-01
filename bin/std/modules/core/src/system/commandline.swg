@@ -17,7 +17,7 @@ struct(T) IsSet
     #ast
     {
         var str    = StrConv.StringBuilder{}
-        let typeof = @typeof(T)
+        let typeof = #typeof(T)
         foreach f in typeof.fields:
             str.appendFormat("%: bool\n", f.name)
         return str.toString()
@@ -108,7 +108,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     var allArgs = splitArguments(args, options)
 
     // Parse all
-    let typeof = @typeof(T)
+    let typeof = #typeof(T)
     let maxItp = @countof(allArgs)
     for var itp = 0; itp < maxItp; itp += 1
     {
@@ -135,7 +135,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // All types supported by 'Parse.pokeValue'
-        elif typeField == @typeof(Core.String) or
+        elif typeField == #typeof(Core.String) or
              Reflection.isInteger(typeField) or
              Reflection.isFloat(typeField) or
              Reflection.isBool(typeField) or
@@ -191,7 +191,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Set the associated 'isSet' boolean to true
-        let typeFieldIsSet = Reflection.getField(@typeof(result.isSet), typeParam.name)
+        let typeFieldIsSet = Reflection.getField(#typeof(result.isSet), typeParam.name)
         Debug.assert(typeFieldIsSet != null)
         var addrIsSet = cast(^bool) &result.isSet
         addrIsSet += typeFieldIsSet.offset

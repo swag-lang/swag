@@ -37,13 +37,13 @@ low-level or performance-critical code.
 @drop()                     // Destroys a variable or memory area.
 @postmove()                 // Called after a move operation to handle post-move logic.
 @postcopy()                 // Called after a copy operation to handle post-copy logic.
-@sizeof()                   // Returns the size, in bytes, of a type or variable.
-@alignof()                  // Returns the alignment requirement of a type.
-@offsetof()                 // Returns the offset, in bytes, of a field within a struct.
-@typeof()                   // Returns the type of a given expression.
+#sizeof()                   // Returns the size, in bytes, of a type or variable.
+#alignof()                  // Returns the alignment requirement of a type.
+#offsetof()                 // Returns the offset, in bytes, of a field within a struct.
+#typeof()                   // Returns the type of a given expression.
 @kindof()                   // Returns the kind (e.g., primitive, struct) of a type.
 @countof()                  // Returns the number of elements in an array.
-@stringof()                 // Returns the string representation of a type or expression.
+#stringof()                 // Returns the string representation of a type or expression.
 @dataof()                   // Returns a pointer to the underlying data of a type.
 @mkslice()                  // Creates a slice from a given data pointer and length.
 @mkstring()                 // Creates a string from a given data pointer and length.

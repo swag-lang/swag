@@ -2,7 +2,7 @@ typealias A = u8
 
 func(T) toto()
 {
-    @assert(@typeof(T).name == "u8")
+    @assert(#typeof(T).name == "u8")
 }
 
 #test

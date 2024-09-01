@@ -6,7 +6,7 @@ enum X: const [..] u32
 
 #test
 {
-    let ptr = @typeof(X)
+    let ptr = #typeof(X)
     var cpt = 0'u64
     foreach p in ptr.values
     {

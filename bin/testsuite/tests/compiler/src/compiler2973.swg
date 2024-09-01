@@ -6,7 +6,7 @@ enum X: const [4] u8
 
 #test
 {
-    let ptr = @typeof(X)
+    let ptr = #typeof(X)
     var cpt = 0
     foreach p in ptr.values
     {

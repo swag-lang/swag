@@ -148,7 +148,7 @@ public impl enum Argb
     // Get the Argb value that matches 'name'
     func fromName(name: string)->Argb
     {
-        let t = @typeof(Argb)
+        let t = #typeof(Argb)
         foreach it in t.values where it.name == name:
             return dref cast(const *Argb) it.value
         return Argb.Black

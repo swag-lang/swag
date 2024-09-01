@@ -12,7 +12,7 @@ enabling efficient manipulation of large datasets.
 #test
 {
     var a: [..] bool  // Declare a slice of boolean values
-    #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)  // Ensure slice size includes pointer and element count
+    #assert #sizeof(a) == #sizeof(*void) + #sizeof(u64)  // Ensure slice size includes pointer and element count
 }
 
 /**

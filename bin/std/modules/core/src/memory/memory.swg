@@ -27,7 +27,7 @@ func compare(dest, src: const ^void, size: u64)->s32
 // Compare two blocks of memory
 func(T) equals(dest, src: const *T)->bool
 {
-    return @memcmp(dest, src, @sizeof(T)) == 0
+    return @memcmp(dest, src, #sizeof(T)) == 0
 }
 
 // Clear one block of memory
@@ -48,7 +48,7 @@ func set(dest: ^void, value: u8, size: u64)
 #[Swag.Overload]
 func align(value: u64, alignment: u32)->u64
 {
-    let toAlign = (alignment orelse @sizeof(*void)) - 1
+    let toAlign = (alignment orelse #sizeof(*void)) - 1
     return (value + toAlign) & ~toAlign
 }
 

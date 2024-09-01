@@ -7,6 +7,6 @@ enum A: u32
 
 #test
 {
-    @assert(@stringof(A.G) == "A.G")
-    @assert(@stringof(A.R | A.G) == "A.R|A.G")
+    @assert(#stringof(A.G) == "A.G")
+    @assert(#stringof(A.R | A.G) == "A.R|A.G")
 }

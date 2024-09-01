@@ -17,5 +17,5 @@ mk("toto", s32)
 #test
 {
     @assert(toto == 444)
-    @assert(@typeof(toto) == s32)
+    @assert(#typeof(toto) == s32)
 }*/

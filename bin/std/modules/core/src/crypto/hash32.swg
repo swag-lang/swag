@@ -12,17 +12,17 @@ public func(T) hash32(value: T)->u32
 {
     #if T == string:
         return Hash.Crc32.compute(value)
-    #elif Reflection.isStruct(T) and @defined(T.IHash32):
-        #ast "return " ++ @typeof(T).fullname ++ ".IHash32.compute(value)"
-    #elif Reflection.isStruct(T) and @sizeof(T) == 8:
+    #elif Reflection.isStruct(T) and #defined(T.IHash32):
+        #ast "return " ++ #typeof(T).fullname ++ ".IHash32.compute(value)"
+    #elif Reflection.isStruct(T) and #sizeof(T) == 8:
         return cast(u32) murmur3(dref cast(const *u64) &value)
-    #elif Reflection.isStruct(T) and @sizeof(T) == 4:
+    #elif Reflection.isStruct(T) and #sizeof(T) == 4:
         return murmur3(dref cast(const *u32) &value)
     #elif Reflection.isStruct(T):
-        return Hash.Crc32.compute(cast(const *u8) &value, @sizeof(T))
-    #elif @sizeof(T) == 8:
+        return Hash.Crc32.compute(cast(const *u8) &value, #sizeof(T))
+    #elif #sizeof(T) == 8:
         return cast(u32) murmur3(cast<bit>(u64) value)
-    #elif @sizeof(T) == 4:
+    #elif #sizeof(T) == 4:
         return murmur3(cast<bit>(u32) value)
     #elif Reflection.isInteger(T):
         return murmur3(cast(u32) value)

@@ -241,11 +241,11 @@ impl TagBin
         if skipFat
         {
             sec.afterFatSeek = fatSeek
-            sec.afterFatSeek += @sizeof(u32)
+            sec.afterFatSeek += #sizeof(u32)
             // Signature
-            sec.afterFatSeek += fatCount * @sizeof(u32)
+            sec.afterFatSeek += fatCount * #sizeof(u32)
             // Crc
-            sec.afterFatSeek += fatCount * @sizeof(u64)
+            sec.afterFatSeek += fatCount * #sizeof(u64)
         }
         else
         {

@@ -5,7 +5,7 @@ enum X: const [..] u8
 
 #test
 {
-    let ptr = @typeof(X)
+    let ptr = #typeof(X)
 
     let ptr1 = cast(const [..] u8) ptr.values[0].value
     @assert(ptr1[0] == 1)

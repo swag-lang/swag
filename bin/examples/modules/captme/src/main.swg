@@ -28,7 +28,7 @@ var g_App: Application
     using Win32
     with var tnid: NOTIFYICONDATAA
     {
-        .cbSize           = @sizeof(NOTIFYICONDATAA)
+        .cbSize           = #sizeof(NOTIFYICONDATAA)
         .hWnd             = surface.hWnd
         .uID              = 1
         .uFlags           = NIF_ICON | NIF_MESSAGE

@@ -7,7 +7,7 @@ impl A
 {
     func toto(using self)
     {
-        //@print(@typeof(x).name)
+        //@print(#typeof(x).name)
     }
 }
 #test

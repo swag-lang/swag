@@ -7,6 +7,6 @@ struct(T, N: u8) A
 #test
 {
     var x: A'(s32, 5)
-    @assert(@sizeof(x) == 6 * @sizeof(s32))
-    //@print(@typeof(x.y).name)
+    @assert(#sizeof(x) == 6 * #sizeof(s32))
+    //@print(#typeof(x.y).name)
 }

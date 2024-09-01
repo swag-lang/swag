@@ -1,6 +1,6 @@
 #global testerror "Err0556"
 
-const SmallSizeInternal = @sizeof(Utf8.size)
+const SmallSizeInternal = #sizeof(Utf8.size)
 struct Utf8
 {
     size: u32

@@ -23,7 +23,7 @@ func day6B()
     for 256
     {
         var oldState = state
-        Memory.clear(&state[0], @sizeof(state))
+        Memory.clear(&state[0], #sizeof(state))
 
         state[6], state[8] = oldState[0]
         total = oldState[0] * 2

@@ -12,10 +12,10 @@ By default, Swag aligns struct fields similarly to the C programming language. E
         z:     s64     // offset 8: aligned to 8 bytes (no padding needed)
     }
 
-    #assert @offsetof(MyStruct.x) == 0
-    #assert @offsetof(MyStruct.y) == 4
-    #assert @offsetof(MyStruct.z) == 8
-    #assert @sizeof(MyStruct) == 16
+    #assert #offsetof(MyStruct.x) == 0
+    #assert #offsetof(MyStruct.y) == 4
+    #assert #offsetof(MyStruct.z) == 8
+    #assert #sizeof(MyStruct) == 16
 }
 
 /**
@@ -31,9 +31,9 @@ Swag allows you to reduce the packing of struct fields using the `#[Swag.Pack]` 
         x:     bool    // offset 0: 1 byte (no padding)
         y:     s32     // offset 1: 4 bytes (no padding)
     }
-    #assert @offsetof(MyStruct1.x) == 0
-    #assert @offsetof(MyStruct1.y) == 1
-    #assert @sizeof(MyStruct1) == 5
+    #assert #offsetof(MyStruct1.x) == 0
+    #assert #offsetof(MyStruct1.y) == 1
+    #assert #sizeof(MyStruct1) == 5
 
     #[Swag.Pack(2)]
     struct MyStruct2
@@ -41,9 +41,9 @@ Swag allows you to reduce the packing of struct fields using the `#[Swag.Pack]` 
         x:     bool    // offset 0: 1 byte
         y:     s32     // offset 2: 4 bytes (1 byte of padding before y)
     }
-    #assert @offsetof(MyStruct2.x) == 0
-    #assert @offsetof(MyStruct2.y) == 2
-    #assert @sizeof(MyStruct2) == 6
+    #assert #offsetof(MyStruct2.x) == 0
+    #assert #offsetof(MyStruct2.y) == 2
+    #assert #sizeof(MyStruct2) == 6
 
     #[Swag.Pack(4)]
     struct MyStruct3
@@ -51,9 +51,9 @@ Swag allows you to reduce the packing of struct fields using the `#[Swag.Pack]` 
         x:     bool    // offset 0: 1 byte
         y:     s64     // offset 4: 8 bytes (3 bytes of padding before y)
     }
-    #assert @offsetof(MyStruct3.x) == 0
-    #assert @offsetof(MyStruct3.y) == 4
-    #assert @sizeof(MyStruct3) == 12
+    #assert #offsetof(MyStruct3.x) == 0
+    #assert #offsetof(MyStruct3.y) == 4
+    #assert #sizeof(MyStruct3) == 12
 }
 
 /**
@@ -69,7 +69,7 @@ The total size of a struct in Swag is always a multiple of the largest alignment
         y:     bool    // 1 byte
         // 3 bytes of padding to align with s32 size
     }
-    #assert @sizeof(MyStruct1) == 8
+    #assert #sizeof(MyStruct1) == 8
 }
 
 /**
@@ -84,9 +84,9 @@ Swag provides the `#[Swag.Align]` attribute to enforce specific alignment constr
         x:     bool    // 1 byte
         y:     bool    // 1 byte
     }
-    #assert @offsetof(MyStruct1.x) == 0
-    #assert @offsetof(MyStruct1.y) == 1
-    #assert @sizeof(MyStruct1) == 2
+    #assert #offsetof(MyStruct1.x) == 0
+    #assert #offsetof(MyStruct1.y) == 1
+    #assert #sizeof(MyStruct1) == 2
 
     #[Swag.Align(8)]
     struct MyStruct2
@@ -95,9 +95,9 @@ Swag provides the `#[Swag.Align]` attribute to enforce specific alignment constr
         y:     bool    // 1 byte
         // 6 bytes of padding to align struct size to 8
     }
-    #assert @offsetof(MyStruct2.x) == 0
-    #assert @offsetof(MyStruct2.y) == 1
-    #assert @sizeof(MyStruct2) == 8
+    #assert #offsetof(MyStruct2.x) == 0
+    #assert #offsetof(MyStruct2.y) == 1
+    #assert #sizeof(MyStruct2) == 8
 }
 
 /**
@@ -113,7 +113,7 @@ Swag allows setting specific alignment values for individual struct fields using
         #[Swag.Align(8)]
         y: bool         // offset 8: aligned to 8 bytes (7 bytes of padding before y)
     }
-    #assert @sizeof(MyStruct1) == 9
+    #assert #sizeof(MyStruct1) == 9
 
     #[Swag.Align(8)]
     struct MyStruct2
@@ -123,5 +123,5 @@ Swag allows setting specific alignment values for individual struct fields using
         y: bool         // offset 4: aligned to 4 bytes (3 bytes of padding before y)
         // 3 bytes of padding to align struct size to 8
     }
-    #assert @sizeof(MyStruct2) == 8
+    #assert #sizeof(MyStruct2) == 8
 }

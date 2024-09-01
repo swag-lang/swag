@@ -1,13 +1,13 @@
-#assert !@defined(TOIKTOI)
-#assert @defined(G)
+#assert !#defined(TOIKTOI)
+#assert #defined(G)
 var G = 0
 
-#if @defined(PRRRRR)
+#if #defined(PRRRRR)
 {
     #assert(false)
 }
 
-#if @defined(Value)
+#if #defined(Value)
 {
     const Value1 = Value
 }

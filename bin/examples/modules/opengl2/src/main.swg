@@ -81,7 +81,7 @@ func createWindow()->HWND
     g_HDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
-    pfd.nSize      = @sizeof(pfd)
+    pfd.nSize      = #sizeof(pfd)
     pfd.nVersion   = 1
     pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
     pfd.iPixelType = PFD_TYPE_RGBA
@@ -89,7 +89,7 @@ func createWindow()->HWND
 
     let pf = assume ChoosePixelFormat(g_HDC, &pfd)
     assume SetPixelFormat(g_HDC, pf, &pfd)
-    assume DescribePixelFormat(g_HDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    assume DescribePixelFormat(g_HDC, pf, cast(UINT) #sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
     ReleaseDC(hWnd, g_HDC)
     return hWnd
@@ -165,7 +165,7 @@ func createShader()
 
     glGenBuffers(1, &g_VertexBuffer)
     glBindBuffer(GL_ARRAY_BUFFER, g_VertexBuffer)
-    glBufferData(GL_ARRAY_BUFFER, @sizeof(VertexBufferData), @dataof(VertexBufferData), GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, #sizeof(VertexBufferData), @dataof(VertexBufferData), GL_STATIC_DRAW)
     createShader()
 
     display()

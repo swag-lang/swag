@@ -23,7 +23,7 @@ impl X
 #test
 {
     using Swag
-    let ptr = cast(const *TypeInfoStruct) @typeof(X)
+    let ptr = cast(const *TypeInfoStruct) #typeof(X)
     @assert(@countof(ptr.methods) == 1)
 
     foreach i in ptr.methods

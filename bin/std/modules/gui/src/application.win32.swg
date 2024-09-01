@@ -182,7 +182,7 @@ impl Application
         }
 
         var sgi: SHSTOCKICONINFO
-        sgi.cbSize = @sizeof(SHSTOCKICONINFO)
+        sgi.cbSize = #sizeof(SHSTOCKICONINFO)
 
         var whatWin = SHSTOCKICONID.SIID_FOLDER
         switch what
@@ -266,7 +266,7 @@ impl Application
         }
 
         if !sfi.hIcon:
-            discard SHGetFileInfoA(@dataof(ext), isDirectory ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, @sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
+            discard SHGetFileInfoA(@dataof(ext), isDirectory ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, #sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
         if !sfi.hIcon:
             return result
 

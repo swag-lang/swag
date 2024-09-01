@@ -14,6 +14,6 @@ struct AA
     var v: AA
     @assert(v.z.x == "true")
     @assert(v.z.y == "true")
-    var ptr = @typeof(AA.BB)
-    @assert(@sizeof(v) == 6 * 8)
+    var ptr = #typeof(AA.BB)
+    @assert(#sizeof(v) == 6 * 8)
 }

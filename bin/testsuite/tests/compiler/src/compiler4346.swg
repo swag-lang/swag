@@ -20,6 +20,6 @@ impl Point
     var p2 = Point{x: "Hello", y: `c`'rune}
     var p3 = p1.mixup'(string, rune)(p2)
 
-    @assert(@typeof(p3.x) == s32)
-    @assert(@typeof(p3.y) == rune)
+    @assert(#typeof(p3.x) == s32)
+    @assert(#typeof(p3.y) == rune)
 }

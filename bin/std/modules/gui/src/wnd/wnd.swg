@@ -1329,7 +1329,7 @@ impl Wnd
     // Register one new action
     mtd(T) registerAction()
     {
-        var itfAct = @mkinterface(null, @typeof(T), IActionUI)
+        var itfAct = @mkinterface(null, #typeof(T), IActionUI)
         actions.add(itfAct)
     }
 

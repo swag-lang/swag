@@ -68,7 +68,7 @@ Swag provides flexibility in assigning tuples to each other, even if the field n
     @assert(x.b == 2)                      // 'x.b' acquires the value of 'y.d'.
 
     // Although 'x' and 'y' have different field names, their types are not identical.
-    #assert @typeof(x) != @typeof(y)
+    #assert #typeof(x) != #typeof(y)
 }
 
 /**

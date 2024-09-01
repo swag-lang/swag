@@ -8,6 +8,6 @@ func toto()
 
 #test
 {
-    const toI = @typeof(toto)
+    const toI = #typeof(toto)
     @assert(@kindof(toI.attributes[0].params[0].value) == RGB)
 }

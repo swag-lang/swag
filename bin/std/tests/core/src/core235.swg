@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    let t = @typeof(String)
+    let t = #typeof(String)
 
     let ptr = @alloc(cast(u64) t.sizeof)
     defer @free(ptr)

@@ -23,6 +23,6 @@ func getField(type: typeinfo, name: string)->const* TypeValue
 
 #test
 {
-    let type = getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
+    let type = getField(#typeof(BaseForm), #nameof(BaseForm.borderSize))
     @assert(type != null)
 }

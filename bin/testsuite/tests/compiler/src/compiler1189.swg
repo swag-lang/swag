@@ -11,5 +11,5 @@ struct TOTO
     pt.a = 0xFF;
     pt.r = 0xFF;
     @assert(pt.argb == 0xFFFF0000)
-    @assert(@sizeof(TOTO) == 4)
+    @assert(#sizeof(TOTO) == 4)
 }

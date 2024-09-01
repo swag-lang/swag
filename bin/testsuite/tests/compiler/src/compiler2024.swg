@@ -1,6 +1,6 @@
 func(T) inc(x: T)->T
 {
-    @assert(@typeof(T) == s32)
+    @assert(#typeof(T) == s32)
     return x * x
 }
 

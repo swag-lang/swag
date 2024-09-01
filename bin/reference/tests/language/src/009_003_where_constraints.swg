@@ -65,7 +65,7 @@ The `where` clause can also take the form of a block returning a `bool` value. T
     func(T) sum(x: T...)->T                             // Function with a block-based `where`
         where
         {
-            if @typeof(T) == s32 or @typeof(T) == s64:  // Check if `T` is `s32` or `s64`
+            if #typeof(T) == s32 or #typeof(T) == s64:  // Check if `T` is `s32` or `s64`
                 return true                             // Return true if valid
             return false                                // Return false otherwise
         }
@@ -90,7 +90,7 @@ Using the `@compilererror` intrinsic, you can trigger custom compile-time errors
             if T == s32 or T == s64:                    // Check if `T` is `s32` or `s64`
                 return true                             // Return true if valid
 
-            @compilererror("Invalid type " ++ @stringof(T), @location(T))
+            @compilererror("Invalid type " ++ #stringof(T), @location(T))
             return false                                // Return false after error
         }
     {

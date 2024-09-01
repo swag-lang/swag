@@ -28,7 +28,7 @@ var G = 0
     let typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1:
         return
-    if typeS.attributes[0].type != @typeof(GenStuff):
+    if typeS.attributes[0].type != #typeof(GenStuff):
         return
 
     itf.compileString("impl I for A {\n mtd impl toto() {\nG += 1\n}\n}")

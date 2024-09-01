@@ -14,12 +14,12 @@ public impl IImageEncoder for Encoder
     {
         var fileHeader: FileHeader
         fileHeader.bfType    = 0x4d42
-        fileHeader.bfSize    = cast(u32) image.size + @sizeof(FileHeader)
-        fileHeader.bfOffBits = @sizeof(FileHeader) + @sizeof(Header)
+        fileHeader.bfSize    = cast(u32) image.size + #sizeof(FileHeader)
+        fileHeader.bfOffBits = #sizeof(FileHeader) + #sizeof(Header)
         result.addStruct(fileHeader)
 
         var header: Header
-        header.biSize        = @sizeof(Header)
+        header.biSize        = #sizeof(Header)
         header.biWidth       = image.width
         header.biHeight      = image.height
         header.biPlanes      = 1

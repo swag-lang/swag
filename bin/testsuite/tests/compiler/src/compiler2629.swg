@@ -8,8 +8,8 @@
     var G = 1
 }
 
-#assert @defined(G)
-#assert !@defined(H)
+#assert #defined(G)
+#assert !#defined(H)
 
 #test
 {

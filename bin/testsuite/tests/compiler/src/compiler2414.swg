@@ -4,10 +4,10 @@ var G = 0
 func(T) toto(v: T)
 where
 {
-    return @typeof(T) == f32
+    return #typeof(T) == f32
 }
 {
-    #assert @typeof(T) == f32
+    #assert #typeof(T) == f32
     G += 1
 }
 /*

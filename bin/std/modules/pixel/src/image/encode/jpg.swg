@@ -255,7 +255,7 @@ impl Encoder
         }
 
         imageX = cast(u16) xDiv8
-        var tmpline = Array.createBuffer(cast(u64) imageX * @sizeof(ColorRGB))
+        var tmpline = Array.createBuffer(cast(u64) imageX * #sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
         var nrLineUp = cast(u32) imageY - 1

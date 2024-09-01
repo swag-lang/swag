@@ -5,5 +5,5 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-	var ptr = @typeof(*TypeInfo)
+	var ptr = #typeof(*TypeInfo)
 }

@@ -64,8 +64,8 @@ impl Keyboard
     {
         previousState.clear()
         currentState.clear()
-        Memory.clear(&pressedRepeat, @sizeof(pressedRepeat))
-        Memory.clear(&pressedTime, @sizeof(pressedTime))
+        Memory.clear(&pressedRepeat, #sizeof(pressedRepeat))
+        Memory.clear(&pressedTime, #sizeof(pressedTime))
     }
 
     // Determines whether given key is currently being pressed

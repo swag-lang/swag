@@ -14,7 +14,7 @@ impl Array
 		var request: AllocatorRequest
 		request.mode = AllocatorMode.Free
 		request.address = buffer
-		request.size = cast(u64) size * @sizeof(T)
+		request.size = cast(u64) size * #sizeof(T)
 		@getcontext().allocator.req(&request)
 	}
 
@@ -30,11 +30,11 @@ impl Array
 		let context = @getcontext()
 
 		var request: AllocatorRequest
-		request.size = cast(u64) self.size * @sizeof(T)
+		request.size = cast(u64) self.size * #sizeof(T)
 		context.allocator.req(&request)
 		let newBuffer = request.address
 		if self.buffer:
-			@memcpy(newBuffer, self.buffer, cast(u64) self.count * @sizeof(T))
+			@memcpy(newBuffer, self.buffer, cast(u64) self.count * #sizeof(T))
 
 		request.mode = AllocatorMode.Free
 		request.address = self.buffer

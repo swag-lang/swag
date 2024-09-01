@@ -175,7 +175,7 @@ func aaa(ptr: *s64)
             print(cast(s64) x[0])
             print(cast(s64) x[1])
             print(cast(s64) x[2])
-            @memset(&x[0], 0, cast(u64) 3 * @sizeof(u32))
+            @memset(&x[0], 0, cast(u64) 3 * #sizeof(u32))
             print(cast(s64) x[0])
             print(cast(s64) x[1])
             print(cast(s64) x[2])
@@ -184,7 +184,7 @@ func aaa(ptr: *s64)
         {
             var x = [1, 2, 3]
             var y = [10, 20, 30]
-            @memcpy(&x[0], &y[0], cast(u64) 3 * @sizeof(u32))
+            @memcpy(&x[0], &y[0], cast(u64) 3 * #sizeof(u32))
             print(cast(s64) x[0])
             print(cast(s64) x[1])
             print(cast(s64) x[2])
@@ -535,11 +535,11 @@ func aaa(ptr: *s64)
         }
 
         {
-            let ptr = @typeof(s32)
+            let ptr = #typeof(s32)
             print(ptr.fullname)
         }
         {
-            let ptr = @typeof(s32)
+            let ptr = #typeof(s32)
             print(cast(s64) ptr.sizeof)
         }
         {

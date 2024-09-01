@@ -28,7 +28,7 @@ public impl NativeRenderOgl
         result.height = height
 
         var pfd: PIXELFORMATDESCRIPTOR
-        pfd.nSize        = @sizeof(pfd)
+        pfd.nSize        = #sizeof(pfd)
         pfd.nVersion     = 1
         pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
         pfd.iPixelType   = PFD_TYPE_RGBA

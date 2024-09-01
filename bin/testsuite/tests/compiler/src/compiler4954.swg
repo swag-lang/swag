@@ -2,5 +2,5 @@
 
 #test
 {
-    let a = @typeof()
+    let a = #typeof()
 }

@@ -65,11 +65,11 @@ public impl Image
     // Register an image decoder
     func(T) addDecoder()
     {
-        #assert Reflection.hasInterface(@typeof(T), IImageDecoder)
+        #assert Reflection.hasInterface(#typeof(T), IImageDecoder)
 
         var decoder: ImageDecoder = undefined
-        decoder.type = @typeof(T)
-        decoder.itf  = @mkinterface(null, @typeof(T), IImageDecoder)
+        decoder.type = #typeof(T)
+        decoder.itf  = @mkinterface(null, #typeof(T), IImageDecoder)
         decoders.add(decoder)
     }
 

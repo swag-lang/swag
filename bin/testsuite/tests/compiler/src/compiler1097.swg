@@ -14,7 +14,7 @@ enum Days
 #test
 {
     let meetingDays = Days.Tuesday | Days.Thursday;
-	@assert(@typeof(meetingDays) == @typeof(Days))
-	let ptr = @typeof(meetingDays)
+	@assert(#typeof(meetingDays) == #typeof(Days))
+	let ptr = #typeof(meetingDays)
 	@assert(ptr.fullname == "__compiler1097.Days")
 }

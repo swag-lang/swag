@@ -16,7 +16,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        #if @defined(T.titi):
+        #if #defined(T.titi):
             @assert(false)
     }
 }

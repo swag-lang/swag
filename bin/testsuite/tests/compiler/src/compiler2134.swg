@@ -9,6 +9,6 @@ func toto()->const &string
 #test
 {
     var x = toto()
-    @assert(@typeof(x) == string)
+    @assert(#typeof(x) == string)
     @assert(x == "666")
 }

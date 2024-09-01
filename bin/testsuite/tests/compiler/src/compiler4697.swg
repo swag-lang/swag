@@ -16,7 +16,7 @@ impl AA
 
 #test
 {
-    const t = @typeof(AA)
+    const t = #typeof(AA)
     let f = t.methods[0].value
     let fn = cast(func()) f
     fn()

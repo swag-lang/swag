@@ -31,9 +31,9 @@ When a function takes a variadic parameter, the `parameters` variable is treated
         @assert(@countof(parameters) == 3)
 
         // Each parameter is initially treated as 'any' type.
-        #assert @typeof(parameters[0]) == any
-        #assert @typeof(parameters[1]) == any
-        #assert @typeof(parameters[2]) == any
+        #assert #typeof(parameters[0]) == any
+        #assert #typeof(parameters[1]) == any
+        #assert #typeof(parameters[2]) == any
 
         // Use '@kindof' to determine the actual type of each parameter at runtime.
         @assert(@kindof(parameters[0]) == s32)
@@ -56,10 +56,10 @@ This practice makes the parameters' type explicit, ensuring they are not treated
     func myFunction(value: bool, parameters: s32...)
     {
         // All parameters in 'parameters' must be of type 's32'.
-        #assert @typeof(parameters[0]).name == "s32"
-        #assert @typeof(parameters[1]).name == "s32"
-        #assert @typeof(parameters[2]) == s32
-        #assert @typeof(parameters[3]) == s32
+        #assert #typeof(parameters[0]).name == "s32"
+        #assert #typeof(parameters[1]).name == "s32"
+        #assert #typeof(parameters[2]) == s32
+        #assert #typeof(parameters[3]) == s32
 
         // Verify that the parameters have been passed correctly.
         @assert(parameters[0] == 10)

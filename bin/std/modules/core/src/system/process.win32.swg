@@ -16,7 +16,7 @@ func startProcess(info: StartInfo)->Process throw
 
     var si: STARTUPINFOA
     var pi: PROCESS_INFORMATION
-    si.cb = @sizeof(si)
+    si.cb = #sizeof(si)
 
     // Construct the command line
     var builder: StringBuilder

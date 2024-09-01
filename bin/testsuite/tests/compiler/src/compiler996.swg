@@ -11,7 +11,7 @@ enum A : f32
 
 #test
 {
-	let ptr = cast(const *TypeInfoEnum) @typeof(A.VAL)
+	let ptr = cast(const *TypeInfoEnum) #typeof(A.VAL)
 	@assert(@countof(ptr.values) == 1)
 	@assert(@countof(ptr.attributes) == 0)
 	let ptr1 = cast(const *TypeValue) ptr.values[0]

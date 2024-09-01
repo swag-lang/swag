@@ -5,7 +5,7 @@ union Evt1
     v: s64
 }
 
-#assert @sizeof(Evt1) == 8
+#assert #sizeof(Evt1) == 8
 
 #test
 {

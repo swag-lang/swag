@@ -14,7 +14,7 @@ struct Point3
 }
 
 //#[Swag.PrintBc]
-func(T) norm(vec: T) -> @typeof(T.R)
+func(T) norm(vec: T) -> #typeof(T.R)
 {
     return vec.x
 }

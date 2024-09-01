@@ -47,7 +47,7 @@ private func run(op: &Array's64, input: s64)->s64
         if offset >= op.count
         {
             op.grow(offset + 1)
-            Memory.clear(op.buffer + op.count, (op.capacity - op.count) * @sizeof(s64))
+            Memory.clear(op.buffer + op.count, (op.capacity - op.count) * #sizeof(s64))
             op.count = offset + 1
         }
 

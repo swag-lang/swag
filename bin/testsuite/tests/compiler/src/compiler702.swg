@@ -16,7 +16,7 @@ struct(T) Array
 #test
 {
 	var arr: Array's32
-	@assert(@sizeof(arr) == 8)
+	@assert(#sizeof(arr) == 8)
 	let ptr = &arr.pt
 	@assert(ptr.x == 5)
 	@assert(ptr.y == 100)

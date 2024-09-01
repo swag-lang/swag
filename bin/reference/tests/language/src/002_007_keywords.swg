@@ -103,8 +103,6 @@ cvarargs
 Compiler instructions are prefixed with `#` and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with `#`, ensuring that compiler keywords do not conflict with user-defined names.
 
 ```swag
-#type
-
 #run
 #ast
 #test
@@ -133,6 +131,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #code
 #scope
 #up
+#type
 
 #cfg
 #os
@@ -151,6 +150,11 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #swagbuildnum
 #swagos
 
+#defined
+#offsetof
+#alignof
+#typeof
+
 #index
 #alias0
 #alias1
@@ -165,7 +169,6 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 
 ```swag
 @err
-@alignof
 @args
 @assert
 @breakpoint
@@ -173,7 +176,6 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @countof
 @dataof
 @dbgalloc
-@defined
 @drop
 @compilererror
 @compilerwarning
@@ -194,8 +196,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @mkstring
 @decltype
 @modules
-@nameof
-@offsetof
+#nameof
 @panic
 @postcopy
 @postmove
@@ -203,14 +204,13 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @rtflags
 @safety
 @setcontext
-@sizeof
+#sizeof
 @spread
 @stringcmp
-@stringof
+#stringof
 @sysalloc
 @is
 @typecmp
-@typeof
 ```
 
 # Intrinsics from libc

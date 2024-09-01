@@ -8,7 +8,7 @@ func titi()
 
 #test
 {
-    const to = @typeof(titi)
+    const to = #typeof(titi)
     @assert(@countof(to.attributes) == 1)
     @assert(@countof(to.attributes.params) == 3)
 }

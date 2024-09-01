@@ -12,5 +12,5 @@ struct(T) Arr
 #test
 {
     var x: Arr'f64
-    @assert(@typeof(x.z.x) == f64)
+    @assert(#typeof(x.z.x) == f64)
 }

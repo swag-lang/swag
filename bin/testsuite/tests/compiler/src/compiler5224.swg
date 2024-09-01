@@ -43,5 +43,5 @@ func beginStruct(fct: *void, structType: typeinfo, _structData: const *u8)->bool
 
 #test
 {
-    discard assume beginStruct(null, @typeof(SerializationError), null)
+    discard assume beginStruct(null, #typeof(SerializationError), null)
 }

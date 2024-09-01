@@ -91,7 +91,7 @@ impl Serializer
         var value: Swag.TypeValue
         value.name        = name
         value.crc32       = crc32
-        value.pointedType = @typeof(MT)
+        value.pointedType = #typeof(MT)
 
         if isWrite
         {
@@ -121,7 +121,7 @@ impl Serializer
             #elif MT == f64:
                 encode.writeF64(dref res)
             #else:
-                encode.write(res, @typeof(MT))
+                encode.write(res, #typeof(MT))
         }
         else
         {
@@ -152,7 +152,7 @@ impl Serializer
             #elif MT == f64:
                 dref res = decode.readF64()
             #else:
-                decode.read(res, @typeof(MT))
+                decode.read(res, #typeof(MT))
         }
     }
 

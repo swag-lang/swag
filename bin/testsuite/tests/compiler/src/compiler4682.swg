@@ -7,7 +7,7 @@ struct AA
 //#[Swag.PrintBc]
 #test
 {
-    const t = @typeof(AA)
+    const t = #typeof(AA)
 
     let ptr = @alloc(cast(u64) t.sizeof)
     defer @free(ptr)

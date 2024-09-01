@@ -117,10 +117,10 @@ public impl IImageDecoder for Decoder
         let countof = @countof(buffer)
         let last    = dataof + countof
 
-        if countof <= @sizeof(Header):
+        if countof <= #sizeof(Header):
             throw InvalidFormatError{"invalid source buffer"}
         let header = cast(const *Header) dataof
-        dataof += @sizeof(Header)
+        dataof += #sizeof(Header)
 
         // Create image
         var result: retval

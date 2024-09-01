@@ -48,7 +48,7 @@ impl DateTime
     #[Swag.Inline]
     mtd const opEquals(other: Self)->bool
     {
-        return Memory.compare(self, other, cast(u64) @sizeof(Self)) == 0
+        return Memory.compare(self, other, cast(u64) #sizeof(Self)) == 0
     }
 
     mtd const opCmp(other: DateTime)->s32

@@ -6,5 +6,5 @@ struct(T) A
 
 #test
 {
-    let a = @alignof(A)
+    let a = #alignof(A)
 }

@@ -12,7 +12,7 @@ enum TOTO
 {
 	using Swag
 
-	const t = @typeof(TOTO)
+	const t = #typeof(TOTO)
 	let ptr = cast(const *TypeInfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 

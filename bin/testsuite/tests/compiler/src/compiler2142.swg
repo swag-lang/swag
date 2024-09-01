@@ -11,5 +11,5 @@ public typealias ConstF = Const'f32
 {
     @assert(ConstF.Zero == 0)
     @assert(ConstF.One == 1)
-    @assert(@typeof(ConstF.Zero) == f32)
+    @assert(#typeof(ConstF.Zero) == f32)
 }

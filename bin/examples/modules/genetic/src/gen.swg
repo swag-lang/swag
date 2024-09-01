@@ -187,7 +187,7 @@ func genGo()->*u8
 
         // Copy solution from father
         let child1 = g_Gen[nextGenIdx].all[index]
-        Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * @sizeof(u32))
+        Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * #sizeof(u32))
         for i in crossPoint1:
             done[child1.genes.buffer[i]] = true
 

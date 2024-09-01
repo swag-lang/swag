@@ -37,12 +37,12 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
 #test
 {
     enum Values { A, B }
-    let type = @typeof(Values)
+    let type = #typeof(Values)
 
     // 'type' here is a 'typeinfo' dedicated to the enum type.
     // In that case, 'type.rawType' represents the enum's underlying type.
     @assert(type.rawType == s32)
-    #assert @typeof(Values) == Values
+    #assert #typeof(Values) == Values
 }
 
 /**
@@ -53,7 +53,7 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
 #test
 {
     enum RGB { R, G, B }
-    #assert @typeof(RGB) == RGB
+    #assert #typeof(RGB) == RGB
     #assert @kindof(RGB) != RGB
     #assert @kindof(RGB) == s32
 }
@@ -73,7 +73,7 @@ You can specify a custom underlying type for an enum by appending it after the e
     }
 
     #assert @kindof(Values1) == s64
-    #assert @typeof(Values1.A) == Values1
+    #assert #typeof(Values1.A) == Values1
 }
 
 /**

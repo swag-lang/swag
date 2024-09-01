@@ -11,6 +11,6 @@ func toto(a: s32)
 #test
 {
     let x = Swag.S8.Min / -1
-    #print @typeof(x).name
+    #print #typeof(x).name
     //toto(Swag.S32.Min)
 }

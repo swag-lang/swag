@@ -10,7 +10,7 @@ func toto(x: s32)
 {
 	using Swag
 
-	let t = @typeof(toto)
+	let t = #typeof(toto)
 
 	let ptr = cast(const *TypeInfoFunc) t
 	@assert(@countof(ptr.parameters) == 1)

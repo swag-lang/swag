@@ -230,7 +230,7 @@ impl Capture
             arr.add(itf)
         }
 
-        Clipboard.addTypedValue(&arr, @typeof(arr))
+        Clipboard.addTypedValue(&arr, #typeof(arr))
     }
 
     mtd pasteImageInside()
@@ -255,7 +255,7 @@ impl Capture
     mtd paste()
     {
         var res: Array'IForm
-        if !Clipboard.getTypedValue(&res, @typeof(res))
+        if !Clipboard.getTypedValue(&res, #typeof(res))
         {
             var img = Clipboard.getImage()
             if img.isValid()

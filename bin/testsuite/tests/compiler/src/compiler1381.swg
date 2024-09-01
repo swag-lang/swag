@@ -23,7 +23,7 @@ struct CompilerParamsBackendC
 
 #test
 {
-    let ptr = cast(const *Swag.TypeInfoStruct) @typeof(CompilerTarget)
+    let ptr = cast(const *Swag.TypeInfoStruct) #typeof(CompilerTarget)
     @assert(ptr.fields[0].offset == 0) // bytecodeBoundCheck
     @assert(ptr.fields[1].offset == 1) // bytecodeAnyCastCheck
     @assert(ptr.fields[2].offset == 4) // byteCodeMaxRecurse

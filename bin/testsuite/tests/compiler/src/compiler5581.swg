@@ -21,7 +21,7 @@ impl Queue
 
     mtd enqueue(value: T) 
     {
-        let node = cast(*Node) @alloc(@sizeof(Node))
+        let node = cast(*Node) @alloc(#sizeof(Node))
         @init(node)
         node.data = value
         if end:

@@ -16,6 +16,6 @@ impl A
 {
     var a: A
     let b = &a[0]
-    @assert(@typeof(b).kind == .Pointer)
+    @assert(#typeof(b).kind == .Pointer)
     @assert(dref b == 666)
 }

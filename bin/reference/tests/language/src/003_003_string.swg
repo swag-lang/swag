@@ -26,7 +26,7 @@ it can accommodate any Unicode character.
 {
     const a: rune = `是`                             // Define a rune using a Chinese character
     #assert a == `是`                                // Assert the rune matches the expected value
-    #assert @sizeof(a) == @sizeof(u32)               // Confirm the size of a rune is 32 bits (same as u32)
+    #assert #sizeof(a) == #sizeof(u32)               // Confirm the size of a rune is 32 bits (same as u32)
 }
 
 /**
@@ -47,7 +47,7 @@ UTF-8 encoding.
     // Retrieves the first byte of the string, which corresponds to the character 't'
     const b = a[0]
     #assert b == `t`                                 // Assert the first byte is 't'
-    #assert @typeof(b) == @typeof(u8)                // Confirm the type is `u8` (byte)
+    #assert #typeof(b) == #typeof(u8)                // Confirm the type is `u8` (byte)
 
     // UTF-8 encoding affects indexing. 'X' is not at index 1 due to the multibyte encoding of the
     // preceding Chinese character.
@@ -130,23 +130,23 @@ controlling the storage size of the character.
 {
     let a = `0`'u8                                 // Character literal explicitly typed as u8
     @assert(a == 48)                               // ASCII value of '0' is 48
-    @assert(@typeof(a) == u8)                      // Confirm type is u8
+    @assert(#typeof(a) == u8)                      // Confirm type is u8
 
     let b = `1`'u16                                // Character literal explicitly typed as u16
     @assert(b == 49)                               // ASCII value of '1' is 49
-    @assert(@typeof(b) == u16)                     // Confirm type is u16
+    @assert(#typeof(b) == u16)                     // Confirm type is u16
 
     let c = `2`'u32                                // Character literal explicitly typed as u32
     @assert(c == 50)                               // ASCII value of '2' is 50
-    @assert(@typeof(c) == u32)                     // Confirm type is u32
+    @assert(#typeof(c) == u32)                     // Confirm type is u32
 
     let d = `3`'u64                                // Character literal explicitly typed as u64
     @assert(d == 51)                               // ASCII value of '3' is 51
-    @assert(@typeof(d) == u64)                     // Confirm type is u64
+    @assert(#typeof(d) == u64)                     // Confirm type is u64
 
     let e = `4`'rune                               // Character literal explicitly typed as rune
     @assert(e == 52)                               // ASCII value of '4' is 52
-    @assert(@typeof(e) == rune)                    // Confirm type is rune
+    @assert(#typeof(e) == rune)                    // Confirm type is rune
 }
 
 /**
@@ -283,22 +283,22 @@ from being included in the string.
 }
 
 /**
-# @stringof and @nameof Intrinsics
-The `@stringof` intrinsic in Swag returns the string representation of a constant expression 
+# #stringof and #nameof Intrinsics
+The `#stringof` intrinsic in Swag returns the string representation of a constant expression 
 at compile time.
 */
 #test
 {
     const X = 1
-    #assert @stringof(X) == "1"                    // The string representation of X is "1"
-    #assert @stringof(X + 10) == "11"              // Expression evaluation is also possible
+    #assert #stringof(X) == "1"                    // The string representation of X is "1"
+    #assert #stringof(X + 10) == "11"              // Expression evaluation is also possible
 }
 
 /**
-The `@nameof` intrinsic returns the name of a variable, function, etc., as a string.
+The `#nameof` intrinsic returns the name of a variable, function, etc., as a string.
 */
 #test
 {
     const X = 1
-    #assert @nameof(X) == "X"                      // Returns the variable name "X"
+    #assert #nameof(X) == "X"                      // Returns the variable name "X"
 }

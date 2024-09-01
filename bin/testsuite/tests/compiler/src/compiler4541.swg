@@ -8,7 +8,7 @@ enum Flags
 }
 
 func(T) has(flags, value: T)->bool
-    where @typeof(T).kind == Swag.TypeInfoKind.Enum
+    where #typeof(T).kind == Swag.TypeInfoKind.Enum
 {
     return flags & value != 0
 }

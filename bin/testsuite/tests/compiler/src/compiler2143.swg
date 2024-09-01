@@ -9,8 +9,8 @@ struct(T) P
 {
     var p: P's32
     @assert(p.XX == 1)
-    @assert(@typeof(p.XX) == s32)
+    @assert(#typeof(p.XX) == s32)
 
     var p1: P'f64
-    @assert(@typeof(p1.XX) == f64)
+    @assert(#typeof(p1.XX) == f64)
 }

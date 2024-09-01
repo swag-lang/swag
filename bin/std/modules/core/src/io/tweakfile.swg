@@ -20,7 +20,7 @@ impl TweakFile
     {
         #if !Reflection.isStruct(T):
             #error "type should be a struct"
-        folders.add({@typeof(T), folder})
+        folders.add({#typeof(T), folder})
     }
 
     // Read and parse a file

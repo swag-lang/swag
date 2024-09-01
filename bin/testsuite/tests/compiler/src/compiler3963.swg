@@ -23,6 +23,6 @@ func toto()->const &VV
 #test
 {
     var x = toto()
-    @assert(@typeof(x) == VV)
+    @assert(#typeof(x) == VV)
     @assert(PC)
 }

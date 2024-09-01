@@ -160,7 +160,7 @@ impl Voice
         wfx.format.nSamplesPerSec = cast(u16) file.frequency
         wfx.format.wBitsPerSample = cast(u16) file.bitsPerSample
         wfx.format.wFormatTag     = FORMAT_EXTENSIBLE
-        wfx.format.cbSize         = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
+        wfx.format.cbSize         = #sizeof(WAVEFORMATEXTENSIBLE) - #sizeof(WAVEFORMATEX)
         wfx.dwChannelMask         = file.channelMask
 
         switch file.encoding

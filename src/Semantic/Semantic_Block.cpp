@@ -914,7 +914,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += form(R"({ let __addr%u = @typeof(%s); )", id, result.cstr());
+        content += form(R"({ let __addr%u = #typeof(%s); )", id, result.cstr());
         content += form(R"(for %s %d { )", visitBack.cstr(), typeEnum->values.size());
         firstAliasVar = 1;
         content += R"(let )";

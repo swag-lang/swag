@@ -5,6 +5,6 @@
 {
     if var x = 1
     {
-        @assert(@offsetof(x) == 0)
+        @assert(#offsetof(x) == 0)
     }
 }

@@ -16,8 +16,8 @@ impl HashTable
 {
     func grow(self)
     {
-        /*@print(@typeof(K).name)
-        @print(@typeof(V).name)
+        /*@print(#typeof(K).name)
+        @print(#typeof(V).name)
         @print("\n")*/
         toto()
     }

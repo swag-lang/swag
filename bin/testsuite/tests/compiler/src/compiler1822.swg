@@ -21,7 +21,7 @@ impl IPrintable for Point
 {
     var pt: Point
 
-    let type = @typeof(pt)
+    let type = #typeof(pt)
     foreach itf in type.interfaces
     {
         /*if(itf.pointedType == IPrintable)

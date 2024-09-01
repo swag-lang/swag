@@ -56,7 +56,7 @@ impl Event
     func(T) create()->*T
     {
         let res = Memory.new'T()
-        res.type = @typeof(T)
+        res.type = #typeof(T)
         return res
     }
 
@@ -64,7 +64,7 @@ impl Event
     func(T) create(kind: EventKind)->*T
     {
         let res = Memory.new'T()
-        res.type = @typeof(T)
+        res.type = #typeof(T)
         res.kind = kind
         return res
     }

@@ -9,7 +9,7 @@ impl Toto
     mtd toto()
     {
         var x: Array's32
-        @assert(@typeof(Array).flags & .Generic ? true : false)
+        @assert(#typeof(Array).flags & .Generic ? true : false)
     }
 }
 

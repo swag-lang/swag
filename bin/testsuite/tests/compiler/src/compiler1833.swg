@@ -5,6 +5,6 @@ func toto()->s32
 
 #test
 {
-    @assert(@typeof(toto) != #type func()->s32)
+    @assert(#typeof(toto) != #type func()->s32)
     @assert(@kindof(toto) == #type func()->s32)
 }

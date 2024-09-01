@@ -2,8 +2,8 @@ using Swag
 namespace std
 {
     const SmallSize = 28'u32
-    const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
-    #assert @sizeof(String1372) == 40
+    const SmallSizeInternal = SmallSize - (#sizeof(IAllocator) + #sizeof(u32))
+    #assert #sizeof(String1372) == 40
 
     struct String1372
     {

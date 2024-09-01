@@ -18,6 +18,6 @@ impl AA
 #test
 {
     var v = AA.create(10)
-    @assert(@typeof(v.x) == u8)
+    @assert(#typeof(v.x) == u8)
     @assert(v.x == 10)
 }

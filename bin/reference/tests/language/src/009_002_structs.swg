@@ -13,9 +13,9 @@ Structs in Swag can also be made generic, allowing them to operate with differen
         }
 
         var x: Struct's32
-        @assert(@typeof(x.val) == s32)         // The type of 'val' is deduced as 's32'.
+        @assert(#typeof(x.val) == s32)         // The type of 'val' is deduced as 's32'.
         var x1: Struct'f32
-        @assert(@typeof(x1.val) == f32)        // The type of 'val' is deduced as 'f32'.
+        @assert(#typeof(x1.val) == f32)        // The type of 'val' is deduced as 'f32'.
     }
 
     {
@@ -26,6 +26,6 @@ Structs in Swag can also be made generic, allowing them to operate with differen
         }
 
         var x: Struct'(bool, 10)
-        @assert(@typeof(x.val) == #type [10] bool) // The type is an array of 10 booleans.
+        @assert(#typeof(x.val) == #type [10] bool) // The type is an array of 10 booleans.
     }
 }

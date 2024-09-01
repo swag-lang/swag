@@ -4,7 +4,7 @@
 func toto32(s: string, x: s32...)->s32
 {
     @assert(@countof(x) == 3)
-    @assert(@typeof(x).rawType == s32)
+    @assert(#typeof(x).rawType == s32)
     return 0
 }
 

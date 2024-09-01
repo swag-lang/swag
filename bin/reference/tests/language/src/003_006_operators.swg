@@ -177,7 +177,7 @@ A <=> B == 1  if A > B
 {
     {
         let a = -1.5 <=> 2.31
-        #assert @typeof(a) == s32
+        #assert #typeof(a) == s32
         @assert(a == -1)
 
         @assert(-10 <=> 10 == -1)
@@ -236,18 +236,18 @@ be promoted if the two sides of an operation do not have the same type.
 */
 #test
 {
-    #assert @typeof(0'u8 + 1'u8) == u8
-    #assert @typeof(0'u8 + 1'u16) == u16 // Priority to bigger type
-    #assert @typeof(0'u8 + 1'u32) == u32
-    #assert @typeof(0'u8 + 1'u64) == u64
-    #assert @typeof(0'u8 + 1's8) == s8   // Priority to signed type
-    #assert @typeof(0'u8 + 1's16) == s16
-    #assert @typeof(0'u8 + 1's32) == s32
-    #assert @typeof(0'u8 + 1's64) == s64
-    #assert @typeof(0'u8 + 1'f32) == f32
-    #assert @typeof(0'u8 + 1'f64) == f64
+    #assert #typeof(0'u8 + 1'u8) == u8
+    #assert #typeof(0'u8 + 1'u16) == u16 // Priority to bigger type
+    #assert #typeof(0'u8 + 1'u32) == u32
+    #assert #typeof(0'u8 + 1'u64) == u64
+    #assert #typeof(0'u8 + 1's8) == s8   // Priority to signed type
+    #assert #typeof(0'u8 + 1's16) == s16
+    #assert #typeof(0'u8 + 1's32) == s32
+    #assert #typeof(0'u8 + 1's64) == s64
+    #assert #typeof(0'u8 + 1'f32) == f32
+    #assert #typeof(0'u8 + 1'f64) == f64
 
-    #assert @typeof(0's8 + 1'u16) == u16 // Priority to bigger type also
+    #assert #typeof(0's8 + 1'u16) == u16 // Priority to bigger type also
 }
 
 /**
@@ -257,7 +257,7 @@ to at least 32 bits. The operation will be done accordingly.
 */
 #test
 {
-    #assert @typeof(255'u8 + #prom 1'u8) == u32
+    #assert #typeof(255'u8 + #prom 1'u8) == u32
     #assert 255'u8 + #prom 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
 }
 

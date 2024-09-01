@@ -9,6 +9,6 @@ func toto()->&s32
 #test
 {
     let a = &toto()
-    @assert(@typeof(a) == *s32)
+    @assert(#typeof(a) == *s32)
     @assert(dref a == 55)
 }

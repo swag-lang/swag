@@ -5,5 +5,5 @@ struct TOTO
 
 #test
 {
-    @assert(@typeof(TOTO) == TOTO)
+    @assert(#typeof(TOTO) == TOTO)
 }

@@ -9,7 +9,7 @@ interface I
 }
 
 func(T) titi()
-    where @typeof(T).fullname != null
+    where #typeof(T).fullname != null
 {
 }
 

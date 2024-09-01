@@ -24,13 +24,13 @@ impl X
 //#[Swag.PrintBc]
 #test
 {
-    #if hasMember(@typeof(X), "toto")
+    #if hasMember(#typeof(X), "toto")
     {
         @assert(false)
     }
 
     var x = false
-    #if hasMember(@typeof(X), "titi")
+    #if hasMember(#typeof(X), "titi")
     {
         x = true
     }

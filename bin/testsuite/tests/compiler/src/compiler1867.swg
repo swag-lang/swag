@@ -2,7 +2,7 @@ struct(T) Toto
 {
     #ast
     {
-        //var type = @typeof(T)
+        //var type = #typeof(T)
         return "x: s32 = 666"
     }
 }

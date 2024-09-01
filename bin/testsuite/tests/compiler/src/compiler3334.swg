@@ -8,7 +8,7 @@ struct(T) VV
 #[Swag.Overload]
 func toto(t: *VV)
 {
-    @assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
+    @assert(#typeof(t) == *VV'f32 or #typeof(t) == *VV'bool)
 }
 
 #test

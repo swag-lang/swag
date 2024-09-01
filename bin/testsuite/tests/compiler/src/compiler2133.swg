@@ -9,6 +9,6 @@ func toto()->const &u64
 #test
 {
     var x = toto()
-    @assert(@typeof(x) == u64)
+    @assert(#typeof(x) == u64)
     @assert(x == 666)
 }

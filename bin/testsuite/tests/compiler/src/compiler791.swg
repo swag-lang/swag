@@ -9,12 +9,12 @@ struct Point
 //#[Swag.PrintBc]
 func(T) toto()
 {
-	let t = @typeof(T)
-	if(t == @typeof(s32)):
+	let t = #typeof(T)
+	if(t == #typeof(s32)):
 		cpt |= 1
-	if(t == @typeof(f32)):
+	if(t == #typeof(f32)):
 		cpt |= 2
-	//if(t == @typeof(Point))
+	//if(t == #typeof(Point))
 	//	cpt |= 4
 }
 

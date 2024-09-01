@@ -17,13 +17,13 @@ impl IT for Arr
     func impl toto(self)
     {
         G += 1
-        @assert(@typeof(T) == s32)
+        @assert(#typeof(T) == s32)
     }
 
     func impl toto1(self)
     {
         G += 10
-        @assert(@typeof(T) == f64)
+        @assert(#typeof(T) == f64)
     }
 }
 

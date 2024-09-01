@@ -42,13 +42,13 @@
 /**
 # Type Information and `any`
 
-When `@typeof` is used on an `any`, it returns `any` as the type because `any` is the type of the reference. To obtain the underlying type of the value stored in `any`, use `@kindof`, which is evaluated at runtime.
+When `#typeof` is used on an `any`, it returns `any` as the type because `any` is the type of the reference. To obtain the underlying type of the value stored in `any`, use `@kindof`, which is evaluated at runtime.
 */
 
 #test
 {
     var a: any = "string"             // Store a string in 'a'
-    #assert @typeof(a) == any         // The type of 'a' is 'any'
+    #assert #typeof(a) == any         // The type of 'a' is 'any'
     @assert(@kindof(a) == string)     // The underlying type of the value is 'string'
 
     a = true                          // Change the stored value to a bool
@@ -64,7 +64,7 @@ You can retrieve the value stored in an `any` either directly or as a constant r
 #test
 {
     let a: any = 42                   // Store an s32 value in 'a'
-    #assert @typeof(a) == any         // The type of 'a' is 'any'
+    #assert #typeof(a) == any         // The type of 'a' is 'any'
     @assert(@kindof(a) == s32)        // The underlying type is 's32'
 
     let b = cast(s32) a               // Get the value itself

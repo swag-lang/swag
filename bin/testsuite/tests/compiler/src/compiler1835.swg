@@ -8,7 +8,7 @@ struct Point2
 }
 /*
 //#[Swag.PrintBc]
-func(T) norm(vec: T)-> @typeof(T.R)
+func(T) norm(vec: T)-> #typeof(T.R)
 {
 
 }*/

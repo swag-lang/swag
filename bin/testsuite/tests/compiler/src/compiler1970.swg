@@ -6,8 +6,8 @@ struct(T) AA
 
 func(T) toto()
 {
-    @assert(@sizeof(AA'T) == 16)
-    @assert(@sizeof(T) == 8)
+    @assert(#sizeof(AA'T) == 16)
+    @assert(#sizeof(T) == 8)
 }
 
 func(T) titi()

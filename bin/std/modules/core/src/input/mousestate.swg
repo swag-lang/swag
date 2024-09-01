@@ -34,7 +34,7 @@ impl MouseState
     // Reset the state to its default value
     mtd clear()
     {
-        Memory.clear(&pressed, @sizeof(pressed))
+        Memory.clear(&pressed, #sizeof(pressed))
         position = getMousePos()
     }
 }

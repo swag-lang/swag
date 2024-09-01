@@ -6,7 +6,7 @@ func(T) titi()
     {
         func tata()
         {
-            @assert(@typeof(T) == s32)
+            @assert(#typeof(T) == s32)
             G = 1
         }
 

@@ -1,6 +1,6 @@
 func(T) toto(x, y: T)
 {
-    @assert(@typeof(x) == @typeof(f32))
+    @assert(#typeof(x) == #typeof(f32))
 }
 
 #test

@@ -14,7 +14,7 @@ impl DateTime
 {
     func opEquals(self, other: Self)->bool
     {
-        return @memcmp(self, other, cast(u64) @sizeof(Self)) == 0
+        return @memcmp(self, other, cast(u64) #sizeof(Self)) == 0
     }
 }
 

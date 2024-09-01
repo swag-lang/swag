@@ -14,5 +14,5 @@ func(X: s32) toto()->TOTO'X
 #test
 {
     let s = toto'(4)()
-    @assert(@typeof(s.v) == [4] s32)
+    @assert(#typeof(s.v) == [4] s32)
 }

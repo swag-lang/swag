@@ -11,9 +11,9 @@ struct(T) BB
 
 impl BB
 {
-    //#[Swag.compileif(@typeof(T) != AA)]
+    //#[Swag.compileif(#typeof(T) != AA)]
     func opIndexAffect(using self, index: u64, value: T)
-        where @typeof(T) != AA
+        where #typeof(T) != AA
     {
         var x: T
         x = value

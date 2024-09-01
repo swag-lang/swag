@@ -16,7 +16,7 @@ namespace N2
 
 func(T) toto()->typeinfo
 {
-    return @typeof(T)
+    return #typeof(T)
 }
 
 #test

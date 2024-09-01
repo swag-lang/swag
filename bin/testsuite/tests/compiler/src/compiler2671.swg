@@ -14,7 +14,7 @@ func toto(x: AA)
     @print(v.item0.x)
     //@print(v.item0.y)
     //@print(v.item0.z)
-    //@assert(@sizeof(v) == 3 * @sizeof(f64))
+    //@assert(#sizeof(v) == 3 * #sizeof(f64))
 }
 */
 

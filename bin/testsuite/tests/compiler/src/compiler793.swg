@@ -7,9 +7,9 @@ struct Point
 //#[Swag.PrintBc]
 func(T) toto()
 {
-	let t = @typeof(T)
+	let t = #typeof(T)
 	@assert(t.fullname == "__compiler793.Point")
-	if(t == @typeof(Point)):
+	if(t == #typeof(Point)):
 		cpt = 1
 }
 

@@ -5,6 +5,6 @@ attr Toto(x: s32)
 
 #test
 {
-    let x = @typeof(Toto)
+    let x = #typeof(Toto)
     @assert(x == Toto)
 }

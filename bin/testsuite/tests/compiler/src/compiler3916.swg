@@ -1,7 +1,7 @@
 #test
 {
     var x: [2] const [..] s32
-    @assert(@typeof(x).name == "[2] const [..] s32")
+    @assert(#typeof(x).name == "[2] const [..] s32")
 
     x[0] = [1, 2]
     x[1] = [3, 4]

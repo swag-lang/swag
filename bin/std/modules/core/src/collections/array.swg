@@ -45,7 +45,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer, oldBuffer, @sizeof(T) * count)
+            Memory.copy(buffer, oldBuffer, #sizeof(T) * count)
         }
     }
 
@@ -117,7 +117,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer, dataof, @sizeof(T) * countof)
+            Memory.copy(buffer, dataof, #sizeof(T) * countof)
         }
 
         count += countof
@@ -183,13 +183,13 @@ impl Array
 
         if newCapacity == 0
         {
-            Memory.free(buffer, capacity * @sizeof(T), allocator)
+            Memory.free(buffer, capacity * #sizeof(T), allocator)
             buffer   = null
             capacity = 0
             return
         }
 
-        let newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
+        let newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * #sizeof(T), capacity * #sizeof(T), allocator)
 
         // Need to call opPostMove on every existing element if the buffer has not been reallocated
         // in place
@@ -217,7 +217,7 @@ impl Array
             @drop(buffer, count)
         }
 
-        Memory.free(buffer, capacity * @sizeof(T), allocator)
+        Memory.free(buffer, capacity * #sizeof(T), allocator)
         buffer = null
         count, capacity = 0
     }
@@ -404,7 +404,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(buffer + index + 1, buffer + index, #sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] = #nodrop value
@@ -429,7 +429,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(buffer + index + 1, buffer + index, #sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] = #nodrop #move value
@@ -459,7 +459,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + sliceCount, buffer + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(buffer + index + sliceCount, buffer + index, #sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
@@ -469,7 +469,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(buffer + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -496,7 +496,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(buffer + index + @countof(values), buffer + index, #sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
@@ -506,7 +506,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(buffer + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -538,7 +538,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
+            Memory.copy(buffer + oldCount, @dataof(values), sliceCount * #sizeof(T))
         }
     }
 
@@ -562,7 +562,7 @@ impl Array
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(buffer + index, buffer + index + num, (count - (index + num)) * @sizeof(T))
+            Memory.copyOver(buffer + index, buffer + index + num, (count - (index + num)) * #sizeof(T))
         }
         #else
         {
@@ -627,7 +627,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index, buffer + index + numValues, @sizeof(T) * (count - index))
+            Memory.copyOver(buffer + index, buffer + index + numValues, #sizeof(T) * (count - index))
         }
     }
 

@@ -20,11 +20,11 @@ public impl Image
     // Register an image encoder
     func(T) addEncoder()
     {
-        #assert Reflection.hasInterface(@typeof(T), IImageEncoder)
+        #assert Reflection.hasInterface(#typeof(T), IImageEncoder)
 
         var encoder: ImageEncoder = undefined
-        encoder.type = @typeof(T)
-        encoder.itf  = @mkinterface(null, @typeof(T), IImageEncoder)
+        encoder.type = #typeof(T)
+        encoder.itf  = @mkinterface(null, #typeof(T), IImageEncoder)
         encoders.add(encoder)
     }
 

@@ -11,7 +11,7 @@ struct Point
 #test
 {
 	let x : any = Point{10, 20}
-	@assert(@kindof(x) == @typeof(Point))
+	@assert(@kindof(x) == #typeof(Point))
 
 	let ptr = cast(*Point) @dataof(x)
 	@assert(ptr.x == 10)

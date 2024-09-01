@@ -5,5 +5,5 @@ struct E
 
 #test
 {
-    var ptr = @typeof(E.x)
+    var ptr = #typeof(E.x)
 }

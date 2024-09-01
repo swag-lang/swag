@@ -521,8 +521,8 @@ impl Deflate
 
             huffmanEnforceMaxCodeSize(numCodes, numUsedSyms, codeSizeLimit)
 
-            Memory.clear(&d.huffCodeSizes[tableNum], @sizeof(d.huffCodeSizes[tableNum]))
-            Memory.clear(&d.huffCodes[tableNum], @sizeof(d.huffCodes[tableNum]))
+            Memory.clear(&d.huffCodeSizes[tableNum], #sizeof(d.huffCodeSizes[tableNum]))
+            Memory.clear(&d.huffCodes[tableNum], #sizeof(d.huffCodes[tableNum]))
 
             for var i = 1, j = numUsedSyms; i <= codeSizeLimit; i += 1
             {
@@ -703,7 +703,7 @@ impl Deflate
         var rleZCount            = 0
         var rleRepeatCount       = 0
 
-        Memory.clear(&d.huffCount[2, 0], cast(u64) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
+        Memory.clear(&d.huffCount[2, 0], cast(u64) #sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
         for i in totalCodeSizesToPack
         {
             let codeSize = codeSizesToPack[i]
@@ -905,8 +905,8 @@ impl Deflate
         if finish and d.bitsIn:
             putBits(0, 8 - d.bitsIn)
 
-        Memory.clear(&d.huffCount[0, 0], cast(u64) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
-        Memory.clear(&d.huffCount[1, 0], cast(u64) @sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
+        Memory.clear(&d.huffCount[0, 0], cast(u64) #sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
+        Memory.clear(&d.huffCount[1, 0], cast(u64) #sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
 
         d.lzCodeBufAddr = &d.lzCodeBuf[0] + 1
         d.lzFlags       = &d.lzCodeBuf[0]
@@ -1056,7 +1056,7 @@ impl Deflate
             }
             elif !curMatchDist
             {
-                recordLiteral(d.dict[Math.min(curPos, cast(u32) @sizeof(d.dict) - 1)])
+                recordLiteral(d.dict[Math.min(curPos, cast(u32) #sizeof(d.dict) - 1)])
             }
             elif d.greedyParsing or (d.compressFlags & RleMatches) or (curMatchLen >= 128)
             {
@@ -1065,7 +1065,7 @@ impl Deflate
             }
             else
             {
-                d.savedLit       = d.dict[Math.min(curPos, cast(u32) @sizeof(d.dict) - 1)]
+                d.savedLit       = d.dict[Math.min(curPos, cast(u32) #sizeof(d.dict) - 1)]
                 d.savedMatchDist = curMatchDist
                 d.savedMatchLen  = curMatchLen
             }

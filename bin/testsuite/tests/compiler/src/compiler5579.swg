@@ -21,7 +21,7 @@ impl Queue
 
     mtd enqueue(value: T) 
     {
-        const node = @alloc(@sizeof(Node))
+        const node = @alloc(#sizeof(Node))
         @init(node)
         node.data = value
         if end:

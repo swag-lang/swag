@@ -1,6 +1,6 @@
 #test
 {
-    @assert(@countof(@typeof(Drawing.Color).interfaces) == 1)
+    @assert(@countof(#typeof(Drawing.Color).interfaces) == 1)
 }
 
 //#global skip
@@ -24,7 +24,7 @@ namespace Parse
     {
         func impl xoxo(using self)
         {
-            #assert @sizeof(Color) == 8
+            #assert #sizeof(Color) == 8
         }
     }
 }

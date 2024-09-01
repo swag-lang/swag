@@ -17,7 +17,7 @@ impl A
     {
         G = 1
         var ptr : TTX
-        @assert(@typeof(TTX) == @typeof(s32))
+        @assert(#typeof(TTX) == #typeof(s32))
     }
 }
 

@@ -463,7 +463,7 @@ impl Decoder
         stream.init(buffer)
 
         var signature: u64 = undefined
-        stream.peekBytes(@sizeof(signature), cast(^u8) &signature)
+        stream.peekBytes(#sizeof(signature), cast(^u8) &signature)
         if signature != 0x0a1a0a0d474e5089:
             throw InvalidFormatError{"not a png"}
 

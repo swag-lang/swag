@@ -5,8 +5,8 @@ enum Days
 	None1 = 0b_0000_0000
 }
 
-var g = @typeof(Days).fullname
-var g1 = @typeof(Days).kind
+var g = #typeof(Days).fullname
+var g1 = #typeof(Days).kind
 
 #test
 {

@@ -24,7 +24,7 @@ func toto()->const &VV
 {
     let x = #ref toto()
     let y = x
-    @assert(@typeof(x) == const &VV)
-    @assert(@typeof(y) == VV)
+    @assert(#typeof(x) == const &VV)
+    @assert(#typeof(y) == VV)
     @assert(PC == true)
 }

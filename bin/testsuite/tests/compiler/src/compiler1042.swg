@@ -1,7 +1,7 @@
 func(T) new()->*T
 {
 	var req : Swag.AllocatorRequest
-	req.size = @sizeof(T)
+	req.size = #sizeof(T)
 
 	let context = @getcontext()
 	context.allocator.req(&req)
@@ -24,6 +24,6 @@ struct Point
 	var req : Swag.AllocatorRequest
 	req.address = ptr
 	req.mode = .Free
-	req.size = @sizeof(Point)
+	req.size = #sizeof(Point)
 	@getcontext().allocator.req(&req)
 }

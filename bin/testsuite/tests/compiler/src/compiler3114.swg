@@ -23,6 +23,6 @@ func totoXXX()->AA
 #test
 {
     let vvv = totoXXX()
-    @assert(@nameof(@typeof(vvv)) == "AA")
+    @assert(#nameof(#typeof(vvv)) == "AA")
     test(vvv)
 }

@@ -68,7 +68,7 @@ operation to 32-bit, thereby avoiding overflow by widening the operand types.
 {
     let x = 255'u8 + #prom 1                      // Promote the addition to 32-bit to avoid overflow
     @assert(x == 256)                             // Assert that the result is 256
-    @assert(@typeof(x) == u32)                    // Assert that the type of x is u32
+    @assert(#typeof(x) == u32)                    // Assert that the type of x is u32
 }
 
 /**

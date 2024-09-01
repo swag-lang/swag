@@ -5,8 +5,8 @@ func(T) create(data: *T)
         using outer: T
     }
 
-    #assert @typeof(Inner.outer) == Outer
-    //#print @typeof(Inner.outer).name
+    #assert #typeof(Inner.outer) == Outer
+    //#print #typeof(Inner.outer).name
 }
 
 struct Outer

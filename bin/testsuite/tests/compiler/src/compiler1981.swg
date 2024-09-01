@@ -8,15 +8,15 @@ struct String1981
 
 func(T) titi(x: T)
 {
-    //#print @typeof(T).name
-    #assert(@typeof(T).kind == Swag.TypeInfoKind.Struct)
+    //#print #typeof(T).name
+    #assert(#typeof(T).kind == Swag.TypeInfoKind.Struct)
 }
 
 impl Array
 {
     func add(self, x: K)
     {
-        #assert(@typeof(K).kind == Swag.TypeInfoKind.Struct)
+        #assert(#typeof(K).kind == Swag.TypeInfoKind.Struct)
         titi(x)
     }
 }

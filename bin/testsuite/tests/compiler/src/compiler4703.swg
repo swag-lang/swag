@@ -3,7 +3,7 @@
     // It is declared with `[..]`.
     {
         var a: [..] bool
-        #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
+        #assert #sizeof(a) == #sizeof(*void) + #sizeof(u64)
     }
 
     // You can initialize a slice like an array.

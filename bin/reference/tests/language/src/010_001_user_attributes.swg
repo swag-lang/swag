@@ -58,6 +58,6 @@ Swag supports the retrieval and inspection of attributes at runtime through type
 */
 #test
 {
-    let type = @typeof(function2)  // Retrieve the type of the function
+    let type = #typeof(function2)  // Retrieve the type of the function
     @assert(@countof(type.attributes) == 1)  // Assert that the function has exactly one attribute
 }

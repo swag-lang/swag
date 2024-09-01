@@ -9,7 +9,7 @@ struct BABA
 #test
 {
     var arr: Array'BABA
-    @assert(@typeof(arr).fullname == "Core.Array'(__core68.BABA)")
+    @assert(#typeof(arr).fullname == "Core.Array'(__core68.BABA)")
 
     var x: BABA
     x.val = 666

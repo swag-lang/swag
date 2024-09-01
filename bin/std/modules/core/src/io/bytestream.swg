@@ -61,11 +61,11 @@ public impl ByteStream
     {
         Debug.assert(writeBuffer != null)
 
-        if seek + @sizeof(T) > writeBuffer.count:
-            writeBuffer.reserve(seek + @sizeof(T))
+        if seek + #sizeof(T) > writeBuffer.count:
+            writeBuffer.reserve(seek + #sizeof(T))
         var ptr = cast(*T) (writeBuffer.buffer + seek)
         dref ptr = val
-        seek += @sizeof(T)
+        seek += #sizeof(T)
         writeBuffer.count = Math.max(writeBuffer.count, seek)
     }
 
@@ -89,10 +89,10 @@ public impl ByteStream
     // Read a 'native' type value
     mtd(T) readNative()->T throw
     {
-        if seek + @sizeof(T) > length():
+        if seek + #sizeof(T) > length():
             throw OverflowError{"byte stream overflow"}
         let val = dref cast(const *T) (readData() + seek)
-        seek += @sizeof(T)
+        seek += #sizeof(T)
         return val
     }
 

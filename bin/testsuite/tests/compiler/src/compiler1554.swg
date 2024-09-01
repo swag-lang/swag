@@ -20,7 +20,7 @@ impl A
 
 #test
 {
-    let ptr = cast(const* TypeInfoStruct) @typeof(A)
+    let ptr = cast(const* TypeInfoStruct) #typeof(A)
     @assert(@countof(ptr.methods) == 1)
 
     let fct = ptr.methods[0]

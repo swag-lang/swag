@@ -416,9 +416,17 @@ void LanguageSpec::setupKeywords()
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
     keywords.add("do", TokenId::KwdReserved);
-
-    keywords.add("@defined", TokenId::IntrinsicDefined);
+    
+    keywords.add("#defined", TokenId::IntrinsicDefined);
+    keywords.add("#offsetof", TokenId::IntrinsicOffsetOf);
+    keywords.add("#alignof", TokenId::IntrinsicAlignOf);
+    keywords.add("#sizeof", TokenId::IntrinsicSizeOf);
+    keywords.add("#typeof", TokenId::IntrinsicTypeOf);
+    keywords.add("#stringof", TokenId::IntrinsicStringOf);
+    keywords.add("#nameof", TokenId::IntrinsicNameOf);
+    keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@location", TokenId::IntrinsicLocation);
+    
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
     keywords.add("@is", TokenId::IntrinsicIs);
@@ -443,15 +451,9 @@ void LanguageSpec::setupKeywords()
     keywords.add("@spread", TokenId::IntrinsicSpread);
     keywords.add("@postmove", TokenId::IntrinsicPostMove);
     keywords.add("@postcopy", TokenId::IntrinsicPostCopy);
-    keywords.add("@sizeof", TokenId::IntrinsicSizeOf);
-    keywords.add("@alignof", TokenId::IntrinsicAlignOf);
-    keywords.add("@offsetof", TokenId::IntrinsicOffsetOf);
-    keywords.add("@typeof", TokenId::IntrinsicTypeOf);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);
     keywords.add("@decltype", TokenId::IntrinsicDeclType);
     keywords.add("@countof", TokenId::IntrinsicCountOf);
-    keywords.add("@stringof", TokenId::IntrinsicStringOf);
-    keywords.add("@nameof", TokenId::IntrinsicNameOf);
     keywords.add("@runes", TokenId::IntrinsicRunes);
     keywords.add("@dataof", TokenId::IntrinsicDataOf);
     keywords.add("@mkslice", TokenId::IntrinsicMakeSlice);
@@ -459,7 +461,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkany", TokenId::IntrinsicMakeAny);
     keywords.add("@mkinterface", TokenId::IntrinsicMakeInterface);
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
-    keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);
@@ -467,7 +468,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@pinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@modules", TokenId::IntrinsicModules);
     keywords.add("@gvtd", TokenId::IntrinsicGvtd);
-
+    
     keywords.add("@byteswap", TokenId::IntrinsicByteSwap);
     keywords.add("@bitcountnz", TokenId::IntrinsicBitCountNz);
     keywords.add("@bitcounttz", TokenId::IntrinsicBitCountTz);

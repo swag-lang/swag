@@ -2,7 +2,7 @@
 
 #test
 {
-    if @defined("titi")
+    if #defined("titi")
     {
     }
 }

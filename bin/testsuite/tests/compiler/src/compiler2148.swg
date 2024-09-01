@@ -12,7 +12,7 @@ struct(T) A
 #test
 {
     var v: A'f32
-    @assert(@typeof(v.X) == f32)
+    @assert(#typeof(v.X) == f32)
     var v1: A'f64
-    @assert(@typeof(v1.X) == f64)
+    @assert(#typeof(v1.X) == f64)
 }

@@ -1,7 +1,7 @@
 //#global testerror "Err0027"
 
 func(T) add(x, y: T)->T
-    //where cast(bool) (@typeof(T).flags & .Integer)
+    //where cast(bool) (#typeof(T).flags & .Integer)
 {
     return x + y
 }

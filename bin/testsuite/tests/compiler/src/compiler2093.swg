@@ -7,5 +7,5 @@ func(T) AA()
 {
     namealias RR = AA's32
     RR()
-    //@assert(@typeof(x.v) == s64)
+    //@assert(#typeof(x.v) == s64)
 }

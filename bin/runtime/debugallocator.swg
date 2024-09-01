@@ -85,7 +85,7 @@ impl DebugAllocator
 
     func memAlign(value: u64, alignment: u32)->u64
     {
-        let toAlign = (alignment orelse @sizeof(*void)) - 1
+        let toAlign = (alignment orelse #sizeof(*void)) - 1
         return (value + toAlign) & ~toAlign
     }
 
@@ -230,7 +230,7 @@ impl DebugAllocator
     {
         if !addr:
             return
-        let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - @sizeof(DebugAllocatorHeader))
+        let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - #sizeof(DebugAllocatorHeader))
         checkIsAllocated(ptrHeader, callerLoc)
     }
 
@@ -263,7 +263,7 @@ impl IAllocator for DebugAllocator
         assertIsAllocated(request.address, request.callerLoc)
 
         let userAddr  = cast(^u8) request.address
-        let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
+        let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - #sizeof(DebugAllocatorHeader))
         let ptrFooter = cast(*DebugAllocatorFooter) (userAddr + ptrHeader.userSize)
 
         @assert(ptrHeader.userSize == request.size)
@@ -340,9 +340,9 @@ impl IAllocator for DebugAllocator
         let freeSize = ptrHeader.allocSize
 
         // Fill header/footer with garbage
-        let ptrFooter = cast(*DebugAllocatorFooter) (cast(^u8) ptrHeader.allocAddr + ptrHeader.userSize + @sizeof(DebugAllocatorHeader))
-        @memset(ptrHeader, FreeByte, @sizeof(DebugAllocatorHeader))
-        @memset(ptrFooter, FreeByte, @sizeof(DebugAllocatorFooter))
+        let ptrFooter = cast(*DebugAllocatorFooter) (cast(^u8) ptrHeader.allocAddr + ptrHeader.userSize + #sizeof(DebugAllocatorHeader))
+        @memset(ptrHeader, FreeByte, #sizeof(DebugAllocatorHeader))
+        @memset(ptrFooter, FreeByte, #sizeof(DebugAllocatorFooter))
 
         // Really free the memory
         var req: AllocatorRequest
@@ -390,10 +390,10 @@ impl IAllocator for DebugAllocator
         // Adapt sizeAlloc to be able to store additional informations
         // Take care of alignment request, because we need to be sure
         // that the returned memory block is well aligned
-        let toAddAlign = memAlign(@sizeof(DebugAllocatorHeader), request.alignment)
+        let toAddAlign = memAlign(#sizeof(DebugAllocatorHeader), request.alignment)
 
         // Make the real allocation
-        copyReq.size += toAddAlign + @sizeof(DebugAllocatorFooter)
+        copyReq.size += toAddAlign + #sizeof(DebugAllocatorFooter)
         allocator.req(&copyReq)
 
         // This is the aligned returned user address
@@ -401,7 +401,7 @@ impl IAllocator for DebugAllocator
         userAddr += toAddAlign
 
         // Setup header
-        let header = cast(*DebugAllocatorHeader) (userAddr - @sizeof(DebugAllocatorHeader))
+        let header = cast(*DebugAllocatorHeader) (userAddr - #sizeof(DebugAllocatorHeader))
         header.magic      = MagicAlloc
         header.allocAddr  = copyReq.address
         header.allocSize  = copyReq.size

@@ -58,21 +58,21 @@ The `#ast` block can be effectively used with generics, allowing for flexible an
     {
         #ast
         {
-            return "x, y: " ++ @typeof(T).name // Generates fields 'x' and 'y' with the type of the generic parameter 'T'.
+            return "x, y: " ++ #typeof(T).name // Generates fields 'x' and 'y' with the type of the generic parameter 'T'.
         }
 
         z: string          // Additional static declaration that adds a field 'z' of type string.
     }
 
     var v: MyStruct'bool
-    #assert @typeof(v.x) == bool     // Asserts that the generated field 'x' is of type 'bool'.
-    #assert @typeof(v.y) == bool     // Asserts that the generated field 'y' is of type 'bool'.
-    #assert @typeof(v.z) == string   // Asserts that the static field 'z' is of type 'string'.
+    #assert #typeof(v.x) == bool     // Asserts that the generated field 'x' is of type 'bool'.
+    #assert #typeof(v.y) == bool     // Asserts that the generated field 'y' is of type 'bool'.
+    #assert #typeof(v.z) == string   // Asserts that the static field 'z' is of type 'string'.
 
     var v1: MyStruct'f64
-    #assert @typeof(v1.x) == f64     // Asserts that the generated field 'x' is of type 'f64'.
-    #assert @typeof(v1.y) == f64     // Asserts that the generated field 'y' is of type 'f64'.
-    #assert @typeof(v1.z) == string  // Asserts that the static field 'z' is of type 'string'.
+    #assert #typeof(v1.x) == f64     // Asserts that the generated field 'x' is of type 'f64'.
+    #assert #typeof(v1.y) == f64     // Asserts that the generated field 'y' is of type 'f64'.
+    #assert #typeof(v1.z) == string  // Asserts that the static field 'z' is of type 'string'.
 }
 
 /**
@@ -123,7 +123,7 @@ struct(T) IsSet
         var str = StrConv.StringBuilder{}
 
         // We get the type of the generic parameter 'T'
-        let typeof = @typeof(T)
+        let typeof = #typeof(T)
 
         // Then we foreach all the fields, assuming the type is a struct (or this will not compile).
         // For each original field, we create one with the same name, but with a `bool` type.

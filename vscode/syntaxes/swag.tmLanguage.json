@@ -22,10 +22,11 @@
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
-    { "include": "#compiler-function" },
+    { "include": "#compiler-functions" },
     { "include": "#compiler-global" },
     { "include": "#compiler-statement" },
-    { "include": "#compiler-ret" },
+    { "include": "#compiler-ret" },    
+    { "include": "#compiler-intrinsics" },
     { "include": "#compiler-keywords" },
     { "include": "#compiler-modifiers" },
     { "include": "#compiler-invalid" },
@@ -118,7 +119,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(err|itftableof|modules|gvtd|args|defined|location|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|decltype|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
+          "match": "(@)\\b(err|itftableof|modules|gvtd|args|location|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|decltype|countof|dataof|runes|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },
@@ -162,7 +163,7 @@
         }
       ]
     },
-    "compiler-function": {
+    "compiler-functions": {
       "patterns": [
         {
           "name": "entity.name.function",
@@ -199,6 +200,14 @@
         }
       ]
     },
+    "compiler-intrinsics": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "(#)\\b(defined|offsetof|typeof|alignof|sizeof|stringof|nameof)"
+        }
+      ]
+    },        
     "compiler-keywords": {
       "patterns": [
         {

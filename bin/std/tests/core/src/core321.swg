@@ -5,7 +5,7 @@ struct(T) SoaTest
     #ast
     {
         var sb: StringBuilder
-        foreach p in @typeof(T).fields:
+        foreach p in #typeof(T).fields:
             sb.appendFormat("%: Array'%\n", p.name, p.pointedType.name)
         return sb.toString()
     }

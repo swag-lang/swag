@@ -4,7 +4,7 @@ struct(TTT) Soa
 {
     #ast
     {
-        foreach p in @typeof(TTT).name
+        foreach p in #typeof(TTT).name
         {
             G += 1
         }

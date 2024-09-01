@@ -9,6 +9,6 @@ func toto()->const &s32
 #test
 {
     let x = toto()
-    @assert(@typeof(x) == s32)
+    @assert(#typeof(x) == s32)
     @assert(x == 555)
 }

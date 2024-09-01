@@ -14,4 +14,4 @@ const _White_Space: [] Range16 =
     {0x3000, 0x3000, 1},
 ]
 
-#assert @sizeof(_White_Space) == 6 * 7
+#assert #sizeof(_White_Space) == 6 * 7

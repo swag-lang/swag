@@ -3,7 +3,7 @@ var G: s32
 func toto(v: const &s32)
 {
     let ptr = &v
-    @assert(@typeof(ptr) == const *s32)
+    @assert(#typeof(ptr) == const *s32)
     @assert(ptr == &G)
 }
 

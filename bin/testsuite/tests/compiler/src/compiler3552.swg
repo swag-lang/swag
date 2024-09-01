@@ -17,7 +17,7 @@ var G = 0
 
     let typeS = cast(const *TypeInfoStruct) msg.type
     if @countof(typeS.attributes) != 1: return
-    if typeS.attributes[0].type != @typeof(GenStuff): return
+    if typeS.attributes[0].type != #typeof(GenStuff): return
     itf.compileString("impl A {\n mtd opDrop() {\nG += 1\n}\n}")
 }
 
@@ -29,7 +29,7 @@ var G = 0
         @assert(G == 0)
     }
 
-    let t = @typeof(A)
+    let t = #typeof(A)
     @assert(t.opDrop != null)
     @assert(G == 1)
 }

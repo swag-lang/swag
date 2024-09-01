@@ -8,7 +8,7 @@ struct TT
 //#[Swag.PrintBc]
 func C(x: ...)
 {
-    //@print(@typeof(x[0]).name)
+    //@print(#typeof(x[0]).name)
     var ptr1 = cast(const TT) x[0]
     ptr1.value = 456
 }

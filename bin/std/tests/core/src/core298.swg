@@ -15,7 +15,7 @@ func parse(st: *TT, args: const [..] string)->Defined
 {
     var x: Defined
 
-    let typeof = @typeof(TT)
+    let typeof = #typeof(TT)
 
     for var itp = 0; itp < @countof(args); itp += 2
     {

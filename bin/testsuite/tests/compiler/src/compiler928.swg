@@ -6,13 +6,13 @@ var G : s32 = 0
 func average(x: any)
 {
 	let tt = @kindof(x)
-	if(tt == @typeof(s32))
+	if(tt == #typeof(s32))
 	{
 		let val = cast(*s32) @dataof(x)
 		@assert(dref val == 666)
 		G += 1
 	}
-	elif(tt == @typeof(string))
+	elif(tt == #typeof(string))
 	{
 		let val = cast(*string) @dataof(x)
 		@assert(dref val == "666")

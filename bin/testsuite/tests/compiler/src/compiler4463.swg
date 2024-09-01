@@ -1,19 +1,19 @@
-#assert @typeof(0's8 + 1's8)   == s8
-#assert @typeof(0's16 + 1's16) == s16
-#assert @typeof(0's32 + 1's32) == s32
-#assert @typeof(0's64 + 1's64) == s64
+#assert #typeof(0's8 + 1's8)   == s8
+#assert #typeof(0's16 + 1's16) == s16
+#assert #typeof(0's32 + 1's32) == s32
+#assert #typeof(0's64 + 1's64) == s64
 
-#assert @typeof(0'u8 + 1'u8)   == u8
-#assert @typeof(0'u16 + 1'u16) == u16
-#assert @typeof(0'u32 + 1'u32) == u32
-#assert @typeof(0'u64 + 1'u64) == u64
+#assert #typeof(0'u8 + 1'u8)   == u8
+#assert #typeof(0'u16 + 1'u16) == u16
+#assert #typeof(0'u32 + 1'u32) == u32
+#assert #typeof(0'u64 + 1'u64) == u64
 
-#assert @typeof(0'u8 + 1'f32)  == f32
-#assert @typeof(0'u16 + 1'f32) == f32
-#assert @typeof(0'u32 + 1'f32) == f32
-#assert @typeof(0'u64 + 1'f32) == f64
+#assert #typeof(0'u8 + 1'f32)  == f32
+#assert #typeof(0'u16 + 1'f32) == f32
+#assert #typeof(0'u32 + 1'f32) == f32
+#assert #typeof(0'u64 + 1'f32) == f64
 
-#assert @typeof(0'u8 + 1'f64)  == f64
-#assert @typeof(0'u16 + 1'f64) == f64
-#assert @typeof(0'u32 + 1'f64) == f64
-#assert @typeof(0'u64 + 1'f64) == f64
+#assert #typeof(0'u8 + 1'f64)  == f64
+#assert #typeof(0'u16 + 1'f64) == f64
+#assert #typeof(0'u32 + 1'f64) == f64
+#assert #typeof(0'u64 + 1'f64) == f64

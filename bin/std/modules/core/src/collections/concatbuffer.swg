@@ -146,7 +146,7 @@ impl ConcatBuffer
             let nextPtr = ptr.next
             Memory.free(ptr.datas, ptr.size, allocator)
             if ptr != &viewFirstBucket:
-                Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
+                Memory.free(ptr, #sizeof(ConcatBufferBucket), allocator)
             ptr = nextPtr
         }
 
@@ -173,23 +173,23 @@ impl ConcatBuffer
         {
             // If not enough room in the current bucket, then we
             // have to split the content with the next bucket
-            if @sizeof(T) > curBucket.count or
-               currentSP > curBucket.datas + curBucket.count - @sizeof(T)
+            if #sizeof(T) > curBucket.count or
+               currentSP > curBucket.datas + curBucket.count - #sizeof(T)
             {
                 var v = val
-                addBytes(@mkslice(cast(^u8) &v, @sizeof(T)), false)
+                addBytes(@mkslice(cast(^u8) &v, #sizeof(T)), false)
                 return
             }
 
             dref cast(*T) currentSP = val
-            currentSP += @sizeof(T)
+            currentSP += #sizeof(T)
         }
         else
         {
-            grow(@sizeof(T))
+            grow(#sizeof(T))
             dref cast(*T) currentSP = val
-            currentSP += @sizeof(T)
-            curBucket.count += @sizeof(T)
+            currentSP += #sizeof(T)
+            curBucket.count += #sizeof(T)
         }
     }
 
@@ -197,7 +197,7 @@ impl ConcatBuffer
     #[Swag.Inline]
     mtd(T) addStruct(val: T)
     {
-        addBytes(@mkslice(cast(const ^u8) &val, @sizeof(T)))
+        addBytes(@mkslice(cast(const ^u8) &val, #sizeof(T)))
     }
 
     // Append a slice of bytes to the buffer
@@ -425,7 +425,7 @@ impl ConcatBuffer
         let rcapacity = firstBucket.size
 
         if firstBucket != &viewFirstBucket:
-            Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
+            Memory.free(firstBucket, #sizeof(ConcatBufferBucket), allocator)
         firstBucket = null
 
         return {rdata, rcount, rcapacity}

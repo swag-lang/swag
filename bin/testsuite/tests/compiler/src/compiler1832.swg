@@ -6,5 +6,5 @@ struct TOTO
 #test
 {
     var x: TOTO.R = 0
-    @assert(@typeof(TOTO.R) == s32)
+    @assert(#typeof(TOTO.R) == s32)
 }

@@ -7,7 +7,7 @@ func toto()
     #else:
         typealias AA = s64
     var x: AA
-    @assert(@typeof(x) == s64)
+    @assert(#typeof(x) == s64)
 }
 
 #test

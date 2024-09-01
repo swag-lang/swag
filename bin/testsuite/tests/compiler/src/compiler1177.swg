@@ -9,7 +9,7 @@ typealias X = TOTO
 
 func fromName(name: string)->X
 {
-    let t = cast(const *TypeInfoEnum) @typeof(TOTO)
+    let t = cast(const *TypeInfoEnum) #typeof(TOTO)
     for t.values
     {
         let param = t.values[#index]

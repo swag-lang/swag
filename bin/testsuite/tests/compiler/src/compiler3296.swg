@@ -5,7 +5,7 @@ func TITI(stmt: code)
 {
     #ast
     {
-        return @stringof(stmt)
+        return #stringof(stmt)
     }
 }
 

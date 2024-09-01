@@ -9,7 +9,7 @@ public func getProcessorCount()->u32 => cast(u32) Env.g_SysInfo.dwNumberOfProces
 public func getMacAddress()->u64
 {
     var info:   [16] IP_ADAPTER_INFO
-    var length: DWORD = @sizeof(info)
+    var length: DWORD = #sizeof(info)
     if GetAdaptersInfo(&info, &length) != 0:
         return 0
     return dref cast(*u64) &info[0].address[0]

@@ -64,12 +64,12 @@ public impl IImageDecoder for Decoder
 
         // FileHeader
         var bfOffBits: u32
-        if countof >= @sizeof(FileHeader)
+        if countof >= #sizeof(FileHeader)
         {
             let fh = cast(const *FileHeader) dataof
             if fh.bfType == 0x4d42
             {
-                dataof += @sizeof(FileHeader)
+                dataof += #sizeof(FileHeader)
                 bfOffBits = fh.bfOffBits
             }
         }
@@ -77,12 +77,12 @@ public impl IImageDecoder for Decoder
         // CoreHeader
         var bh:  Header
         let size = dref cast(const *u32) dataof
-        if size == @sizeof(CoreHeader)
+        if size == #sizeof(CoreHeader)
         {
-            if dataof + @sizeof(CoreHeader) > last:
+            if dataof + #sizeof(CoreHeader) > last:
                 throw InvalidFormatError{"invalid source buffer"}
             let ch = cast(const *CoreHeader) dataof
-            dataof += @sizeof(Header)
+            dataof += #sizeof(Header)
             bh.biSize        = ch.bcSize
             bh.biWidth       = cast(s32) ch.bcWidth
             bh.biHeight      = cast(s32) ch.bcHeight
@@ -92,11 +92,11 @@ public impl IImageDecoder for Decoder
         }
         else
         {
-            if dataof + @sizeof(Header) > last:
+            if dataof + #sizeof(Header) > last:
                 throw InvalidFormatError{"invalid source buffer"}
 
-            Memory.copy(&bh, dataof, @sizeof(Header))
-            dataof += @sizeof(Header)
+            Memory.copy(&bh, dataof, #sizeof(Header))
+            dataof += #sizeof(Header)
         }
 
         // Create image

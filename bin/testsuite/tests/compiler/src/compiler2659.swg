@@ -14,6 +14,6 @@ func titi(stmt: code)
     let v = 0
     titi()
     {
-        let ptr = @typeof(v)
+        let ptr = #typeof(v)
     }
 }

@@ -13,7 +13,7 @@ struct Point
 	var tt: Point
 
 	x = tt
-	@assert(@kindof(x) == @typeof(Point))
+	@assert(@kindof(x) == #typeof(Point))
 
 	let ptr = cast(*Point) @dataof(x)
 	//@print(ptr.x)

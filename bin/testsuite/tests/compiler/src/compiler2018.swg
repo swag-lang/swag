@@ -5,7 +5,7 @@ struct(T) toto
     #run
     {
         /*@print("this is the type: ")
-        @print(@typeof(T).name)
+        @print(#typeof(T).name)
         @print("\n")*/
         G += 1
     }

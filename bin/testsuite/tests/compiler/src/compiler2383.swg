@@ -8,7 +8,7 @@ func(T) toto()
 {
     var x: T
     var v = isStruct(T) ? cast(const &T) x : x
-    @print(@typeof(v).name)
+    @print(#typeof(v).name)
 }
 
 #test

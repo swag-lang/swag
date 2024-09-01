@@ -254,7 +254,7 @@ private
 
         var wc: WNDCLASSW
         wc.hInstance     = GetModuleHandleW(null)
-        wc.cbWndExtra    = @sizeof(*void)
+        wc.cbWndExtra    = #sizeof(*void)
         wc.style         = CS_HREDRAW | CS_VREDRAW
         wc.lpfnWndProc   = cast() @mkcallback(&winProc)
         wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_CROSS))
@@ -381,7 +381,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
     // Transform that to an image
     var bmp: BITMAP
-    GetObjectA(cast() hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
+    GetObjectA(cast() hCaptureBitmap, cast(s32) #sizeof(BITMAP), &bmp)
     result = Image.create(bmp.bmWidth, bmp.bmHeight, .BGRA8)
     GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels.buffer)
     result.flip()

@@ -79,6 +79,6 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 		cpt += 1
 	}
 
-	@assert(@sizeof(str) != 3)
+	@assert(#sizeof(str) != 3)
 	@assert(cpt == 3)
 }

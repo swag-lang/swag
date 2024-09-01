@@ -1,6 +1,6 @@
 func(T, N: u32) toto()
 {
-    //@print(@typeof(T).name)
+    //@print(#typeof(T).name)
     //@print(cast(s64) N)
 }
 

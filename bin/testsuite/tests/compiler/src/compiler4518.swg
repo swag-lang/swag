@@ -10,6 +10,6 @@ func toto()->AL
 #test
 {
     var x = toto()
-    //@print(@typeof(x).name)
+    //@print(#typeof(x).name)
     @assert(x.g == 2)
 }

@@ -9,17 +9,17 @@ struct(T) AA
 
 impl AA
 {
-    //#[compileif(@typeof(T) == s32)]
+    //#[compileif(#typeof(T) == s32)]
     #[Swag.Overload]
-    func isNull(using self)->bool where @typeof(T) == s32
+    func isNull(using self)->bool where #typeof(T) == s32
     {
         G += 1
         return x == 0
     }
 
-    //#[compileif(@typeof(T) == f32)]
+    //#[compileif(#typeof(T) == f32)]
     #[Swag.Overload]
-    func isNull(using self)->bool where @typeof(T) == f32
+    func isNull(using self)->bool where #typeof(T) == f32
     {
         G += 2
         return x == 0

@@ -18,6 +18,6 @@ using Core
         cpt += 1
     }
 
-    @assert(@sizeof(str) != 3)
+    @assert(#sizeof(str) != 3)
     @assert(cpt == 3)
 }

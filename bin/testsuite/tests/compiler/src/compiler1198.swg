@@ -16,5 +16,5 @@ struct E
 {
     var pt: E
     @assert(pt.y == 10)
-    @assert(@sizeof(pt) == 4)
+    @assert(#sizeof(pt) == 4)
 }

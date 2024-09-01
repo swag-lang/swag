@@ -8,7 +8,7 @@ struct(X: s32) TOTO
 func(X: s32) toto()//->TOTO
 {
     var t: TOTO
-    @assert(@typeof(t.v) == [4] s32)
+    @assert(#typeof(t.v) == [4] s32)
     //return {0}
 }
 

@@ -11,7 +11,7 @@ impl X
 //#[Swag.PrintBc]
 #test
 {
-    let tt = @typeof(X)
+    let tt = #typeof(X)
     @assert(hasMethod(tt, "toto"))
     @assert(!hasMethod(tt, "toto1"))
 }

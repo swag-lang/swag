@@ -37,7 +37,7 @@ impl IActionUI for ActionCopyPaste
             evt.setFlags |= .Disabled | .Name | .Icon
             if !capture:
                 evt.disabled = true
-            elif !Clipboard.hasTypedValue(@typeof(Capture.forms)) and !Clipboard.hasImage():
+            elif !Clipboard.hasTypedValue(#typeof(Capture.forms)) and !Clipboard.hasImage():
                 evt.disabled = true
             evt.name = "Paste"
             evt.icon = main.getTheme().getIcon24(.Paste)

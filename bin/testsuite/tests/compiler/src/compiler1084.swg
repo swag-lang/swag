@@ -20,7 +20,7 @@ struct U2
 
 #test
 {
-	@assert(@sizeof(U) == 8)
-	@assert(@sizeof(U1) == 4)
-	@assert(@sizeof(U2) == 5)
+	@assert(#sizeof(U) == 8)
+	@assert(#sizeof(U1) == 4)
+	@assert(#sizeof(U2) == 5)
 }

@@ -15,14 +15,14 @@ impl HashTable
 {
     func grow(using self)
     {
-        /*@print(@typeof(HashTableEntry.K).name)
-        @print(@typeof(HashTableEntry.V).name)
-        @print(@typeof(HashTableEntry).name)
-        @print(cast(s64) @sizeof(HashTableEntry))
+        /*@print(#typeof(HashTableEntry.K).name)
+        @print(#typeof(HashTableEntry.V).name)
+        @print(#typeof(HashTableEntry).name)
+        @print(cast(s64) #sizeof(HashTableEntry))
         @print("\n")*/
 
-        G += @sizeof(HashTableEntry)
-        G += @sizeof(HashTableEntry)
+        G += #sizeof(HashTableEntry)
+        G += #sizeof(HashTableEntry)
     }
 }
 

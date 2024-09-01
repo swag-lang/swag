@@ -2,7 +2,7 @@
 
 func(T) toto(x: T)
 {
-    #assert @typeof(T) == const [2] s32
+    #assert #typeof(T) == const [2] s32
 }
 
 #test

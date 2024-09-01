@@ -38,16 +38,16 @@ exceeds 32 bits, it is automatically inferred as `u64`.
 #test
 {
     const a = 0xFF                 // Compiler infers 'a' as 'u32' since value fits within 32 bits
-    #assert @typeof(a) == u32      // Verifies that 'a' is of type 'u32'
+    #assert #typeof(a) == u32      // Verifies that 'a' is of type 'u32'
 
     const b = 0xF_FFFFF_FFFFFF     // Large value exceeding 32 bits; inferred as 'u64'
-    #assert @typeof(b) == u64      // Verifies that 'b' is of type 'u64'
+    #assert #typeof(b) == u64      // Verifies that 'b' is of type 'u64'
 
     const c = 0b00000001           // Binary value within 32 bits, inferred as 'u32'
-    #assert @typeof(c) == u32      // Verifies that 'c' is of type 'u32'
+    #assert #typeof(c) == u32      // Verifies that 'c' is of type 'u32'
 
     const d = 0b00000001_00000001_00000001_00000001_00000001  // Exceeds 32 bits, inferred as 'u64'
-    #assert @typeof(d) == u64      // Verifies that 'd' is of type 'u64'
+    #assert #typeof(d) == u64      // Verifies that 'd' is of type 'u64'
 }
 
 /**
@@ -74,7 +74,7 @@ provides familiarity and ease of use for developers.
 {
     let a = 1.5
     @assert(a == 1.5)              // Verifies that 'a' holds the value 1.5
-    #assert @typeof(a) == f32      // The type of 'a' is inferred to be 'f32'
+    #assert #typeof(a) == f32      // The type of 'a' is inferred to be 'f32'
 
     let b = 0.11
     @assert(b == 0.11)             // Verifies that 'b' holds the value 0.11
@@ -98,8 +98,8 @@ C/C++, where floating-point literals default to `double` (`f64`).
 {
     let a = 1.5
     @assert(a == 1.5)              // Verifies that 'a' holds the value 1.5
-    #assert @typeof(a) == f32      // Verifies that 'a' is of type 'f32'
-    #assert @typeof(a) != f64      // Verifies that 'a' is not of type 'f64'
+    #assert #typeof(a) == f32      // Verifies that 'a' is of type 'f32'
+    #assert #typeof(a) != f64      // Verifies that 'a' is not of type 'f64'
 }
 
 /**
@@ -112,12 +112,12 @@ when a specific type is required, such as `f64` or `u8`.
     let a = 1.5'f64                // Explicitly declare 'a' as 'f64' with the value 1.5
     @assert(a == 1.5)              // Verifies that 'a' holds the value 1.5
     @assert(a == 1.5'f64)          // Verifies that 'a' explicitly holds the value 1.5 as 'f64'
-    #assert @typeof(a) == f64      // Verifies that 'a' is of type 'f64'
+    #assert #typeof(a) == f64      // Verifies that 'a' is of type 'f64'
 
     let b = 10'u8                  // Declare 'b' as 'u8' and assign it the value 10
     @assert(b == 10)               // Verifies that 'b' holds the value 10
-    #assert @typeof(b) == u8       // Verifies that 'b' is of type 'u8'
+    #assert #typeof(b) == u8       // Verifies that 'b' is of type 'u8'
 
     let c = 1'u32
-    #assert @typeof(c) == u32      // Verifies that 'c' is of type 'u32'
+    #assert #typeof(c) == u32      // Verifies that 'c' is of type 'u32'
 }

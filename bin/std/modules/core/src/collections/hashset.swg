@@ -49,7 +49,7 @@ impl HashSet
         if allocator == null:
             allocator = @getcontext().allocator
 
-        let newTable = cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
+        let newTable = cast(^HashSetEntry) Memory.alloc(capacity * #sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
         {
             for i in capacity
@@ -60,7 +60,7 @@ impl HashSet
         }
         #else
         {
-            Memory.copy(newTable, table, capacity * @sizeof(HashSetEntry))
+            Memory.copy(newTable, table, capacity * #sizeof(HashSetEntry))
         }
 
         table = newTable
@@ -117,7 +117,7 @@ impl HashSet
             return
 
         // Need to drop every structs
-        #if Reflection.hasDrop(@typeof(K))
+        #if Reflection.hasDrop(#typeof(K))
         {
             for i in capacity
             {
@@ -126,7 +126,7 @@ impl HashSet
             }
         }
 
-        Memory.free(table, capacity * @sizeof(HashSetEntry), allocator)
+        Memory.free(table, capacity * #sizeof(HashSetEntry), allocator)
         table = null
         count, capacity, deleted = 0
     }
@@ -150,7 +150,7 @@ impl HashSet
 
         let oldTable = table
         count, deleted = 0
-        let newCapacityBytes = reqCapacity * @sizeof(HashSetEntry)
+        let newCapacityBytes = reqCapacity * #sizeof(HashSetEntry)
 
         if allocator == null:
             allocator = @getcontext().allocator
@@ -175,7 +175,7 @@ impl HashSet
             }
         }
 
-        Memory.free(oldTable, oldCapacity * @sizeof(HashSetEntry), allocator)
+        Memory.free(oldTable, oldCapacity * #sizeof(HashSetEntry), allocator)
     }
 
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
@@ -208,7 +208,7 @@ impl HashSet
     // Add a new element.
     #[Discardable, Overload]
     mtd add(key: K)->*HashSetEntry
-        where Reflection.canCopy(@typeof(K))
+        where Reflection.canCopy(#typeof(K))
     {
         grow()
 
@@ -267,7 +267,7 @@ impl HashSet
     // Add a new element.
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
-        where Reflection.canCopy(@typeof(K))
+        where Reflection.canCopy(#typeof(K))
     {
         grow()
 

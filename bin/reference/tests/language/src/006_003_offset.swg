@@ -19,7 +19,7 @@ between different fields.
     }
 
     // Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.
-    #assert @sizeof(MyStruct) == 4
+    #assert #sizeof(MyStruct) == 4
 
     var v = MyStruct{}
     v.x = 666

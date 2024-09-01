@@ -6,5 +6,5 @@ struct(T) A
 
 #test
 {
-    let a = @sizeof(A)
+    let a = #sizeof(A)
 }

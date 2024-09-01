@@ -5,7 +5,7 @@ struct(T) AA
 
 func(T) inc(x: T)->T
 {
-    @assert(@typeof(T) == AA'f32)
+    @assert(#typeof(T) == AA'f32)
     var ret: T
     ret.v = 666
     return ret

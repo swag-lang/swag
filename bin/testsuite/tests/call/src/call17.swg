@@ -5,7 +5,7 @@ using test_foreign
 {
     var x: tcf_Point
 
-    var t = @typeof(tcf_Point)
+    var t = #typeof(tcf_Point)
     foreach p in t.methods
     {
         if p.name != "set":

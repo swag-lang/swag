@@ -8,7 +8,7 @@ impl Image
     mtd toHICON()->HICON throw
     {
         var bi: BITMAPINFO
-        bi.bmiHeader.biSize        = @sizeof(BITMAPINFOHEADER)
+        bi.bmiHeader.biSize        = #sizeof(BITMAPINFOHEADER)
         bi.bmiHeader.biWidth       = width
         bi.bmiHeader.biHeight      = height
         bi.bmiHeader.biPlanes      = 1
@@ -53,7 +53,7 @@ impl Image
         var result: retval
 
         var bitmap: BITMAP
-        GetObjectA(cast(HANDLE) hbitmap, @sizeof(BITMAP), &bitmap)
+        GetObjectA(cast(HANDLE) hbitmap, #sizeof(BITMAP), &bitmap)
 
         switch bitmap.bmBitsPixel
         {
@@ -69,7 +69,7 @@ impl Image
         defer ReleaseDC(null, dc)
 
         var infos: BITMAPINFO
-        infos.bmiHeader.biSize        = @sizeof(BITMAPINFOHEADER)
+        infos.bmiHeader.biSize        = #sizeof(BITMAPINFOHEADER)
         infos.bmiHeader.biWidth       = bitmap.bmWidth
         infos.bmiHeader.biHeight      = bitmap.bmHeight
         infos.bmiHeader.biPlanes      = bitmap.bmPlanes

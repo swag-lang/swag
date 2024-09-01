@@ -10,7 +10,7 @@ impl Arr
 {
     mtd opPostCopy()
     {
-        var x = @typeof(T).flags
+        var x = #typeof(T).flags
     }
 }
 

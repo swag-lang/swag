@@ -26,7 +26,7 @@ var toTreatCpt: u32
     let typeF = cast(const *TypeInfoFunc) msg.type
     foreach i in typeF.attributes
     {
-        if i.type == @typeof(myAttr)
+        if i.type == #typeof(myAttr)
         {
             @assert(toTreatCpt != @countof(toTreat))
             toTreat[toTreatCpt] = typeF.fullname

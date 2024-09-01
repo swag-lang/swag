@@ -6,6 +6,6 @@ enum A: string
 
 #test
 {
-    @assert(@stringof(A.R) == "A.R")
-    @assert(@stringof(A.G) == "A.G")
+    @assert(#stringof(A.R) == "A.R")
+    @assert(#stringof(A.G) == "A.G")
 }

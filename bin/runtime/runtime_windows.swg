@@ -316,15 +316,15 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
     }
 
     const SYM_LEN_NAME = 128
-    var sym:           [@sizeof(SYMBOL_INFO) + SYM_LEN_NAME * @sizeof(CHAR)] u8
+    var sym:           [#sizeof(SYMBOL_INFO) + SYM_LEN_NAME * #sizeof(CHAR)] u8
     var displacement:  ULONG64
 
     let psym = cast(*SYMBOL_INFO) sym
-    psym.SizeOfStruct = @sizeof(SYMBOL_INFO)
+    psym.SizeOfStruct = #sizeof(SYMBOL_INFO)
     psym.MaxNameLen   = SYM_LEN_NAME
 
     var line: IMAGEHLP_LINE64
-    line.SizeOfStruct = @sizeof(IMAGEHLP_LINE64)
+    line.SizeOfStruct = #sizeof(IMAGEHLP_LINE64)
 
     var hasStarted = false
 

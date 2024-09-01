@@ -4,7 +4,7 @@
 func average(x: any)
 {
 	let tt = @kindof(x)
-	@assert(tt == @typeof(string))
+	@assert(tt == #typeof(string))
 }
 
 //#[Swag.PrintBc]

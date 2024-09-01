@@ -38,14 +38,14 @@ impl SigArray
             return
 
         // Be sure the call has the right number of arguments
-        Debug.assert(@countof(params) == @countof(@typeof(T).parameters))
+        Debug.assert(@countof(params) == @countof(#typeof(T).parameters))
 
         foreach fn in arr
         {
             #ast
             {
                 var sb: StrConv.StringBuilder
-                let ts  = @typeof(T)
+                let ts  = #typeof(T)
 
                 sb.appendString("fn(")
                 for i in ts.parameters

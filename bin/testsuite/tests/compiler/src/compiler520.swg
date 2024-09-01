@@ -10,5 +10,5 @@ struct point
 #test
 {
 	var pt: point
-	@assert(@sizeof(pt) == 8)
+	@assert(#sizeof(pt) == 8)
 }

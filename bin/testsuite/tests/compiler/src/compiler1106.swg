@@ -6,7 +6,7 @@ struct(T = s32) Toto
 #test
 {
 	var pt: Toto
-	@assert(@typeof(pt.x) == s32)
+	@assert(#typeof(pt.x) == s32)
 	var pt1: Toto'f32
-	@assert(@typeof(pt1.x) == f32)
+	@assert(#typeof(pt1.x) == f32)
 }

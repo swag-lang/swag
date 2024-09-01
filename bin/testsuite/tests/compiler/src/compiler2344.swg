@@ -22,7 +22,7 @@ func toto(t: typeinfo) => t.fullname
 //#[Swag.PrintBc]
 #test
 {
-    var s = @typeof(bool)
+    var s = #typeof(bool)
     let x = toto(s32)
     @assert(x == "s32")
 }

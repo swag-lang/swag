@@ -3,7 +3,7 @@
 
 func(T) max(a, b: T, c: string)
 {
-    @assert(@typeof(T).name == c)
+    @assert(#typeof(T).name == c)
 }
 
 #test

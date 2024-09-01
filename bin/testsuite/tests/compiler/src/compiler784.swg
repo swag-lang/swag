@@ -11,7 +11,7 @@ struct Point
 {
 	using Swag
 
-	let t = @typeof(Point)
+	let t = #typeof(Point)
 	@assert(t.fullname == "__compiler784.Point")
 	@assert(t.kind == TypeInfoKind.Struct)
 

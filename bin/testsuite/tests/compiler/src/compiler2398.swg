@@ -6,5 +6,5 @@ struct(N: u32) A
 #test
 {
     var x: A'(5)
-    @assert(@sizeof(x) == 5 * @sizeof(s32))
+    @assert(#sizeof(x) == 5 * #sizeof(s32))
 }

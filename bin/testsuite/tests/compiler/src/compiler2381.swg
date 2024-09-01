@@ -6,7 +6,7 @@ func(T) toto()
 {
     var x: T
     let v = isStruct(T) ? cast(const *T) &x : &x
-    @assert(@typeof(v) == const *s32)
+    @assert(#typeof(v) == const *s32)
 }
 
 #test

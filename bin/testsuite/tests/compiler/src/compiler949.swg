@@ -10,8 +10,8 @@ func toto(x: s32, y: bool)->s32 => x
 	let t1 = t
 	@assert(t1(10, true) == 10)
 
-	//var ptr = @typeof(t)
-	//var ptr = cast(const *TypeInfoFunc) @typeof(t)
+	//var ptr = #typeof(t)
+	//var ptr = cast(const *TypeInfoFunc) #typeof(t)
 	//@assert(@countof(ptr.parameters) == 2)
-	//@assert(ptr.returnType == @typeof(f32))
+	//@assert(ptr.returnType == #typeof(f32))
 }

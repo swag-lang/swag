@@ -6,7 +6,7 @@ enum X: const [..] u32
 
 #test
 {
-    const ptr = @typeof(X)
+    const ptr = #typeof(X)
 
     let ptr1 = cast(const [..] u32) ptr.values[0].value
     @assert(ptr1[0] == 1)

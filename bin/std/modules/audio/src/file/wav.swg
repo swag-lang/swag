@@ -143,7 +143,7 @@ func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
 
 func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
-    if chunkSize < @sizeof(WAVEFORMAT):
+    if chunkSize < #sizeof(WAVEFORMAT):
         throw InvalidFormatError{"invalid wav"}
 
     var wf: WAVEFORMAT
@@ -160,7 +160,7 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
     validity |= .ChannelCount
 
     ////////
-    if chunkSize < @sizeof(PCMWAVEFORMAT):
+    if chunkSize < #sizeof(PCMWAVEFORMAT):
         return
 
     var pcmwf: PCMWAVEFORMAT
@@ -172,7 +172,7 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
     setEncodingFormat(wf.wFormatTag)
 
     ////////
-    if chunkSize < @sizeof(WAVEFORMATEX):
+    if chunkSize < #sizeof(WAVEFORMATEX):
         return
 
     var wfx: WAVEFORMATEX
@@ -182,7 +182,7 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
         throw InvalidFormatError{"invalid wav"}
 
     ////////
-    if chunkSize < @sizeof(WAVEFORMATEXTENSIBLE):
+    if chunkSize < #sizeof(WAVEFORMATEXTENSIBLE):
         return
 
     var wfex: WAVEFORMATEXTENSIBLE

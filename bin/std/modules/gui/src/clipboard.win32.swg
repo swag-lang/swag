@@ -50,7 +50,7 @@ func addTypedData(fmt: ValueFormat, type: typeinfo, data: const [..] u8)
         return
     defer discard CloseClipboard()
 
-    let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(u32) + @sizeof(u64))
+    let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + #sizeof(u32) + #sizeof(u64))
     let pz    = cast(^u8) GlobalLock(hglob)
     defer discard GlobalUnlock(pz)
 
@@ -132,19 +132,19 @@ func addImage(image: Image)
     // BITMAP
     #scope
     {
-        let size  = @sizeof(Bmp.Header) + image.size
+        let size  = #sizeof(Bmp.Header) + image.size
         let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
         let buf   = cast(^u8) GlobalLock(hglob)
 
         let header = cast(*Bmp.Header) buf
-        header.biSize        = @sizeof(Bmp.Header)
+        header.biSize        = #sizeof(Bmp.Header)
         header.biWidth       = image.width
         header.biHeight      = image.height
         header.biPlanes      = 1
         header.biCompression = Bmp.BI_RGB
         header.biBitCount    = image.bpp
 
-        let datas = buf + @sizeof(Bmp.Header)
+        let datas = buf + #sizeof(Bmp.Header)
         Memory.copy(datas, image.pixels.buffer, image.size)
 
         discard GlobalUnlock(buf)
@@ -211,7 +211,7 @@ func getImage()->Image
             defer discard GlobalUnlock(pz)
 
             let header = cast(*Bmp.Header) pz
-            let size   = @sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
+            let size   = #sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
 
             var bmp: Bmp.Decoder
             return catch bmp.IImageDecoder.decode(@mkslice(pz, size), {})

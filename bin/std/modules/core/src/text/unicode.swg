@@ -235,7 +235,7 @@ func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
     }
     else
     {
-        result = Memory.compare(@dataof(src), @dataof(dst), minLen * @sizeof(rune))
+        result = Memory.compare(@dataof(src), @dataof(dst), minLen * #sizeof(rune))
     }
 
     if result != 0:

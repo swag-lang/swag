@@ -94,7 +94,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copy(buffer, dataof, @sizeof(T) * countof)
+            Memory.copy(buffer, dataof, #sizeof(T) * countof)
         }
 
         count += countof
@@ -260,7 +260,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, #sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] = #nodrop value
@@ -285,7 +285,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, @sizeof(T) * (count - 1 - index))
+            Memory.copyOver(&buffer[0] + index + 1, &buffer[0] + index, #sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] = #nodrop #move value
@@ -315,7 +315,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copyOver(&buffer[0] + index + sliceCount, &buffer[0] + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(&buffer[0] + index + sliceCount, &buffer[0] + index, #sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
@@ -325,7 +325,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copy(&buffer[0] + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(&buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -352,7 +352,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copyOver(&buffer[0] + index + @countof(values), &buffer[0] + index, @sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(&buffer[0] + index + @countof(values), &buffer[0] + index, #sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
@@ -362,7 +362,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copy(&buffer[0] + index, @dataof(values), @sizeof(T) * sliceCount)
+            Memory.copy(&buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -389,7 +389,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copy(&buffer[0] + oldCount, @dataof(values), sliceCount * @sizeof(T))
+            Memory.copy(&buffer[0] + oldCount, @dataof(values), sliceCount * #sizeof(T))
         }
     }
 
@@ -403,7 +403,7 @@ impl StaticArray
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + num, (count - (index + num)) * @sizeof(T))
+            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + num, (count - (index + num)) * #sizeof(T))
         }
         #else
         {
@@ -468,7 +468,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + numValues, @sizeof(T) * (count - index))
+            Memory.copyOver(&buffer[0] + index, &buffer[0] + index + numValues, #sizeof(T) * (count - index))
         }
     }
 

@@ -10,5 +10,5 @@ using Pixel
     @assert(y.g == 0)
     @assert(y.b == 0)
     @assert(y.argb == Argb.Red)
-    @assert(@sizeof(Color) == 4)
+    @assert(#sizeof(Color) == 4)
 }

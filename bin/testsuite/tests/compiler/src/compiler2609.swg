@@ -7,7 +7,7 @@ struct(T) AA
 
 impl AA
 {
-    #assert @typeof(T) != s32
+    #assert #typeof(T) != s32
 }
 
 #test

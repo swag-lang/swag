@@ -59,8 +59,8 @@ In this example, `x` and `y` are inferred as `f32` due to the `0.0` literal.
 */
 func sum3(x, y = 0.0)
 {
-    #assert @typeof(x) == f32                       // Asserts that x is of type f32
-    #assert @typeof(y) == f32                       // Asserts that y is of type f32
+    #assert #typeof(x) == f32                       // Asserts that x is of type f32
+    #assert #typeof(y) == f32                       // Asserts that y is of type f32
 }
 
 /**
@@ -73,7 +73,7 @@ enum Values { A, B }
 #[Swag.Overload]
 func toto(x: s32, y = Values.A)
 {
-    #assert @typeof(y) == Values                    // Asserts that y is of type Values
+    #assert #typeof(y) == Values                    // Asserts that y is of type Values
 }
 
 /**

@@ -10,6 +10,6 @@ func toto()->const &s32
 {
     var x = #ref toto()
     let y = &x
-    @assert(@typeof(y) == const *s32)
+    @assert(#typeof(y) == const *s32)
     @assert(y == &G)
 }

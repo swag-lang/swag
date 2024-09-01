@@ -305,7 +305,7 @@ impl Decoder
                 let pDC = coeffBufGetp(dcCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
 
                 p[0] = pDC[0]
-                Memory.copy(&p[1], &pAC[1], 63'u64 * @sizeof(s16))
+                Memory.copy(&p[1], &pAC[1], 63'u64 * #sizeof(s16))
 
                 var i = 63
                 while i > 0
@@ -381,7 +381,7 @@ impl Decoder
         if c != (nextRestartNum + cast(u32) Marker.M_RST0):
             throw InvalidFormatError{"bad restart marker"}
 
-        Memory.clear(&lastDcVal, cast(u64) compsInFrame * @sizeof(u32))
+        Memory.clear(&lastDcVal, cast(u64) compsInFrame * #sizeof(u32))
 
         eobRun         = 0
         restartsLeft   = restartInterval
@@ -714,7 +714,7 @@ impl Decoder
 
         for maxBlocksPerRow
         {
-            Memory.copy(tempBlock, psrcPtr, 64'u64 * @sizeof(s16))
+            Memory.copy(tempBlock, psrcPtr, 64'u64 * #sizeof(s16))
             idct(tempBlock, pdstPtr)
             psrcPtr += 64
             pdstPtr += 64
@@ -1045,10 +1045,10 @@ impl Decoder
         if maxBlocksPerRow > MaxBlocksPerRow:
             throw InvalidFormatError{"assertion error"}
 
-        quantBuf.resize(cast(u64) maxBlocksPerRow * 64 * @sizeof(s16) + 8)
+        quantBuf.resize(cast(u64) maxBlocksPerRow * 64 * #sizeof(s16) + 8)
         for i in maxBlocksPerRow
         {
-            blockSeg[i]       = cast(^s16) (quantBuf.buffer + i * 64 * @sizeof(s16))
+            blockSeg[i]       = cast(^s16) (quantBuf.buffer + i * 64 * #sizeof(s16))
             blockMaxZagSet[i] = 64
         }
 
@@ -1088,7 +1088,7 @@ impl Decoder
         checkHuffTables()
         checkQuantTables()
 
-        Memory.clear(lastDcVal, cast(u64) compsInFrame * @sizeof(u32))
+        Memory.clear(lastDcVal, cast(u64) compsInFrame * #sizeof(u32))
 
         eobRun = 0
         if restartInterval
@@ -1165,9 +1165,9 @@ impl Decoder
             si += 1
         }
 
-        Memory.clear(hs.lookUp, @sizeof(hs.lookUp))
-        Memory.clear(hs.tree, @sizeof(hs.tree))
-        Memory.clear(hs.codeSize, @sizeof(hs.codeSize))
+        Memory.clear(hs.lookUp, #sizeof(hs.lookUp))
+        Memory.clear(hs.tree, #sizeof(hs.tree))
+        Memory.clear(hs.codeSize, #sizeof(hs.codeSize))
 
         var nextFreeEntry = -1
         p = 0
@@ -1309,7 +1309,7 @@ impl Decoder
         blockNumY = blkNumY
         blockLenX = blkLenX
         blockLenY = blkLenY
-        blockSize = (blkLenX * blkLenY) * @sizeof(s16)
+        blockSize = (blkLenX * blkLenY) * #sizeof(s16)
         pdata.resize(cast(u64) blockSize * blkNumX * blkNumY)
         return result
     }
@@ -1495,7 +1495,7 @@ impl Decoder
 
         for mcusPerCol
         {
-            Memory.clear(blockMcutX, @sizeof(blockMcutX))
+            Memory.clear(blockMcutX, #sizeof(blockMcutX))
             for mcusPerRow
             {
                 var blockMcuOfsX = 0
