@@ -121,7 +121,7 @@
 =&gt; type 'swag script -f:myScript.swgs' to run that script</span></div>
 <p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and the program entry point <span class="code-inline">#main</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Swag script file</span>
-<span class="SFct">#dependencies</span>
+<span class="SCmp">#dependencies</span>
 {
     <span class="SCmt">// Here you can add your external dependencies</span>
     <span class="SCmt">// #import "core" location="swag@std"</span>
@@ -145,7 +145,7 @@ Hello world !</span></div>
 </div></p>
 <h2 id="">Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SCmp">#dependencies</span>
 {
     <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
     <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
@@ -157,7 +157,7 @@ Hello world !</span></div>
 </ul>
 <h2 id="">More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <span class="code-inline">#load &lt;filename&gt;</span> in the <span class="code-inline">#dependencies</span> block. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SCmp">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
     <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
@@ -166,7 +166,7 @@ Hello world !</span></div>
 <p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 <div class="swag-watermark">
-Generated on 30-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

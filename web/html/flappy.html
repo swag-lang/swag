@@ -138,7 +138,7 @@
 <p>If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations. </p>
 </div>
 <p>So in our case, we need to import the module <span class="code-inline">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="code-inline">core</span> and <span class="code-inline">pixel</span> (2D painting). </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SCmp">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>
@@ -520,7 +520,7 @@
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 
-    <span class="SKwd">var</span> dataPath: <span class="SCst">String</span> = <span class="SCst">Path</span>.<span class="SFct">getDirectoryName</span>(<span class="SCmp">#location</span>.fileName)
+    <span class="SKwd">var</span> dataPath: <span class="SCst">String</span> = <span class="SCst">Path</span>.<span class="SFct">getDirectoryName</span>(<span class="SCmp">#curlocation</span>.fileName)
     dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"datas"</span>)
     dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"flappy"</span>)
 
@@ -558,7 +558,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 30-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>

@@ -490,6 +490,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SLgc">until</span>
 <span class="SLgc">where</span>
 <span class="SLgc">in</span>
+<span class="SLgc">as</span>
 
 <span class="SKwd">true</span>
 <span class="SKwd">false</span>
@@ -499,7 +500,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">using</span>
 <span class="SKwd">with</span>
 <span class="SKwd">cast</span>
-<span class="SKwd">cast</span>()
 <span class="SKwd">dref</span>
 <span class="SKwd">retval</span>
 <span class="SKwd">try</span>
@@ -531,9 +531,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">moveref</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Reserved Keywords </h4>
 <p>These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features. </p>
-<div class="code-block"><span class="SCde"><span class="SInv">do</span>
-<span class="SInv">is</span>
-<span class="SInv">not</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SInv">is</span>
+<span class="SInv">not</span>
+<span class="SInv">do</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Basic Types </h4>
 <p>These are the fundamental data types provided by the language. They are reserved keywords and form the core types that can be used to define variables, constants, and function return types. </p>
 <div class="code-block"><span class="SCde"><span class="STpe">s8</span>
@@ -552,14 +552,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="STpe">any</span>
 <span class="STpe">typeinfo</span>
 <span class="STpe">void</span>
-<span class="STpe">code</span>
+<span class="SKwd">code</span>
 <span class="STpe">cstring</span>
-<span class="STpe">cvarargs</span></span></div>
+<span class="SKwd">cvarargs</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Compiler Instructions </h4>
 <p>Compiler instructions are prefixed with <span class="code-inline">#</span> and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with <span class="code-inline">#</span>, ensuring that compiler keywords do not conflict with user-defined names. </p>
-<div class="code-block"><span class="SCde"><span class="STpe">#type</span>
-
-<span class="SFct">#run</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 <span class="SFct">#ast</span>
 <span class="SFct">#test</span>
 <span class="SFct">#init</span>
@@ -567,7 +565,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SFct">#main</span>
 <span class="SFct">#premain</span>
 <span class="SFct">#message</span>
-<span class="SFct">#dependencies</span>
+<span class="SCmp">#dependencies</span>
 
 <span class="SCmp">#global</span>
 <span class="SCmp">#include</span>
@@ -587,6 +585,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#code</span>
 <span class="SCmp">#scope</span>
 <span class="SCmp">#up</span>
+<span class="SCmp">#type</span>
 
 <span class="SCmp">#cfg</span>
 <span class="SCmp">#os</span>
@@ -597,7 +596,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#file</span>
 <span class="SCmp">#line</span>
 <span class="SCmp">#self</span>
-<span class="SCmp">#location</span>
+<span class="SCmp">#curlocation</span>
 <span class="SCmp">#callerlocation</span>
 <span class="SCmp">#callerfunction</span>
 <span class="SCmp">#swagversion</span>
@@ -605,7 +604,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#swagbuildnum</span>
 <span class="SCmp">#swagos</span>
 
-<span class="SItr">#index</span>
+<span class="SItr">#defined</span>
+<span class="SItr">#offsetof</span>
+<span class="SItr">#alignof</span>
+<span class="SItr">#typeof</span>
+
+<span class="SCmp">#index</span>
 <span class="SItr">#alias0</span>
 <span class="SItr">#alias1</span>
 <span class="SItr">#alias2</span> <span class="SCmt">// and more generally #aliasN</span>
@@ -615,7 +619,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Miscellaneous Intrinsics </h4>
 <p>Intrinsic functions are prefixed with <span class="code-inline">@</span> and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@err</span>
-<span class="SItr">@alignof</span>
 <span class="SItr">@args</span>
 <span class="SItr">@assert</span>
 <span class="SItr">@breakpoint</span>
@@ -623,7 +626,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@countof</span>
 <span class="SItr">@dataof</span>
 <span class="SItr">@dbgalloc</span>
-<span class="SItr">@defined</span>
 <span class="SItr">@drop</span>
 <span class="SItr">@compilererror</span>
 <span class="SItr">@compilerwarning</span>
@@ -633,10 +635,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@hastag</span>
 <span class="SItr">@init</span>
 <span class="SItr">@isbytecode</span>
-<span class="SItr">@isconstexpr</span>
+<span class="SItr">#isconstexpr</span>
 <span class="SItr">@itftableof</span>
 <span class="SItr">@kindof</span>
-<span class="SItr">@location</span>
+<span class="SItr">#location</span>
 <span class="SItr">@mkany</span>
 <span class="SItr">@mkcallback</span>
 <span class="SItr">@mkinterface</span>
@@ -644,8 +646,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@mkstring</span>
 <span class="SItr">@decltype</span>
 <span class="SItr">@modules</span>
-<span class="SItr">@nameof</span>
-<span class="SItr">@offsetof</span>
+<span class="SItr">#nameof</span>
 <span class="SItr">@panic</span>
 <span class="SItr">@postcopy</span>
 <span class="SItr">@postmove</span>
@@ -653,14 +654,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@rtflags</span>
 <span class="SItr">@safety</span>
 <span class="SItr">@setcontext</span>
-<span class="SItr">@sizeof</span>
+<span class="SItr">#sizeof</span>
 <span class="SItr">@spread</span>
 <span class="SItr">@stringcmp</span>
-<span class="SItr">@stringof</span>
+<span class="SItr">#stringof</span>
 <span class="SItr">@sysalloc</span>
 <span class="SItr">@is</span>
-<span class="SItr">@typecmp</span>
-<span class="SItr">@typeof</span></span></div>
+<span class="SItr">@typecmp</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Intrinsics from libc </h4>
 <p>These intrinsic functions provide access to standard libc functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with <span class="code-inline">@</span> to avoid conflicts with user-defined identifiers. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@abs</span>
@@ -738,10 +738,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(c == -<span class="SNum">3</span>)             <span class="SCmt">// Verifies that 'c' holds the value -3.</span>
     <span class="SItr">@assert</span>(d == -<span class="SNum">4</span>)             <span class="SCmt">// Verifies that 'd' holds the value -4.</span>
 
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>)     <span class="SCmt">// 'a' is an s8, so its size is 1 byte.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">2</span>)     <span class="SCmt">// 'b' is an s16, so its size is 2 bytes.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(c) == <span class="SNum">4</span>)     <span class="SCmt">// 'c' is an s32, so its size is 4 bytes.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(d) == <span class="SNum">8</span>)     <span class="SCmt">// 'd' is an s64, so its size is 8 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">1</span>)     <span class="SCmt">// 'a' is an s8, so its size is 1 byte.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(b) == <span class="SNum">2</span>)     <span class="SCmt">// 'b' is an s16, so its size is 2 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(c) == <span class="SNum">4</span>)     <span class="SCmt">// 'c' is an s32, so its size is 4 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(d) == <span class="SNum">8</span>)     <span class="SCmt">// 'd' is an s64, so its size is 8 bytes.</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Unsigned Integers </h4>
 <p>Swag also supports various unsigned integer types: <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span>, and <span class="code-inline">u64</span>. These types represent unsigned integers, which can only hold non-negative values, making them ideal for scenarios where negative numbers are not applicable. </p>
@@ -757,10 +757,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(c == <span class="SNum">3</span>)             <span class="SCmt">// Verifies that 'c' holds the value 3.</span>
     <span class="SItr">@assert</span>(d == <span class="SNum">4</span>)             <span class="SCmt">// Verifies that 'd' holds the value 4.</span>
 
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>)    <span class="SCmt">// 'a' is a u8, so its size is 1 byte.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">2</span>)    <span class="SCmt">// 'b' is a u16, so its size is 2 bytes.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(c) == <span class="SNum">4</span>)    <span class="SCmt">// 'c' is a u32, so its size is 4 bytes.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(d) == <span class="SNum">8</span>)    <span class="SCmt">// 'd' is a u64, so its size is 8 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">1</span>)    <span class="SCmt">// 'a' is a u8, so its size is 1 byte.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(b) == <span class="SNum">2</span>)    <span class="SCmt">// 'b' is a u16, so its size is 2 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(c) == <span class="SNum">4</span>)    <span class="SCmt">// 'c' is a u32, so its size is 4 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(d) == <span class="SNum">8</span>)    <span class="SCmt">// 'd' is a u64, so its size is 8 bytes.</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Floating-Point Types </h4>
 <p>Swag supports floating-point types <span class="code-inline">f32</span> and <span class="code-inline">f64</span>. These types represent single-precision and double-precision floating-point numbers, respectively. They are crucial for calculations requiring fractional values and greater precision. </p>
@@ -772,8 +772,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SNum">3.14</span>)          <span class="SCmt">// Verifies that 'a' holds the value 3.14.</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">3.14159</span>)       <span class="SCmt">// Verifies that 'b' holds the value 3.14159.</span>
 
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">4</span>)    <span class="SCmt">// 'a' is an f32, so its size is 4 bytes.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">8</span>)    <span class="SCmt">// 'b' is an f64, so its size is 8 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">4</span>)    <span class="SCmt">// 'a' is an f32, so its size is 4 bytes.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(b) == <span class="SNum">8</span>)    <span class="SCmt">// 'b' is an f64, so its size is 8 bytes.</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Boolean Type </h4>
 <p>The boolean type <span class="code-inline">bool</span> is used to represent true or false values. In Swag, a boolean is stored as a 1-byte value, offering a straightforward way to handle binary logic within your programs. </p>
@@ -785,8 +785,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SKwd">true</span>)           <span class="SCmt">// Verifies that 'a' is true.</span>
     <span class="SItr">@assert</span>(b == <span class="SKwd">false</span>)          <span class="SCmt">// Verifies that 'b' is false.</span>
 
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">1</span>)     <span class="SCmt">// The size of a boolean is 1 byte.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(b) == <span class="SNum">1</span>)     <span class="SCmt">// The size of a boolean is 1 byte.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">1</span>)     <span class="SCmt">// The size of a boolean is 1 byte.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(b) == <span class="SNum">1</span>)     <span class="SCmt">// The size of a boolean is 1 byte.</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">String Type </h4>
 <p>The <span class="code-inline">string</span> type represents text. In Swag, strings are <b>UTF-8</b> encoded and are stored as two 64-bit values: one for the pointer to the data and one for the length in bytes. Strings in Swag are designed to handle text efficiently, including international characters, while ensuring compatibility with common text processing routines. </p>
@@ -795,7 +795,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> a: <span class="STpe">string</span> = <span class="SStr">"string 是"</span>  <span class="SCmt">// A string containing UTF-8 encoded characters</span>
 
     <span class="SItr">@assert</span>(a == <span class="SStr">"string 是"</span>)    <span class="SCmt">// Verifies that 'a' holds the correct string.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>)) <span class="SCmt">// A string is stored as two 64-bit values (pointer and length).</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">2</span> * <span class="SItr">#sizeof</span>(*<span class="STpe">void</span>)) <span class="SCmt">// A string is stored as two 64-bit values (pointer and length).</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Rune Type </h4>
 <p>The <span class="code-inline">rune</span> type in Swag represents a 32-bit Unicode code point. It is used to store individual Unicode characters, allowing for the manipulation of text at the character level, supporting a wide range of languages and symbols. </p>
@@ -804,7 +804,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> a: <span class="STpe">rune</span> = <span class="SStr">`是`</span>             <span class="SCmt">// A single Unicode character, represented by a 32-bit code point</span>
 
     <span class="SItr">@assert</span>(a == <span class="SStr">`是`</span>)              <span class="SCmt">// Verifies that 'a' holds the correct Unicode code point.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">4</span>)        <span class="SCmt">// The size of a rune is 4 bytes (32 bits).</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#sizeof</span>(a) == <span class="SNum">4</span>)        <span class="SCmt">// The size of a rune is 4 bytes (32 bits).</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Type Reflection </h4>
 <p>Swag supports <b>type reflection</b> both at <b>compile time</b> and at <b>runtime</b>. This powerful feature allows for the inspection and manipulation of types dynamically, enabling more flexible and introspective programming paradigms. Further details on how to leverage type reflection will be explored in subsequent sections. </p>
@@ -815,17 +815,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> a  = <span class="SNum">0</span>                  <span class="SCmt">// The type of 'a' is inferred to be 's32'.</span>
     <span class="SKwd">let</span> b: <span class="SItr">@decltype</span>(a) = <span class="SNum">1</span>     <span class="SCmt">// 'b' is declared with the same type as 'a' (which is 's32').</span>
 
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(b)) <span class="SCmt">// Verifies that 'a' and 'b' have the same type.</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(a) == <span class="STpe">s32</span>)        <span class="SCmt">// Verifies that the type of 'a' is 's32'.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(a) == <span class="SItr">#typeof</span>(b)) <span class="SCmt">// Verifies that 'a' and 'b' have the same type.</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(a) == <span class="STpe">s32</span>)        <span class="SCmt">// Verifies that the type of 'a' is 's32'.</span>
 
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(b)  <span class="SCmt">// Compile-time validation using '#assert'.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="SItr">#typeof</span>(b)  <span class="SCmt">// Compile-time validation using '#assert'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">s32</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Types as Values </h4>
 <p>Types in Swag are also treated as values, both at compile time and at runtime. This allows types to be manipulated, compared, and inspected just like any other value. This feature is particularly useful in metaprogramming and dynamic type manipulation scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x = <span class="SItr">@typeof</span>(<span class="STpe">s32</span>)        <span class="SCmt">// 'x' is now a variable that holds a type (in this case, 's32').</span>
+    <span class="SKwd">let</span> x = <span class="SItr">#typeof</span>(<span class="STpe">s32</span>)        <span class="SCmt">// 'x' is now a variable that holds a type (in this case, 's32').</span>
     <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)           <span class="SCmt">// Verifies that 'x' is equal to the type 's32'.</span>
 
     <span class="SItr">@assert</span>(x.name == <span class="SStr">"s32"</span>)    <span class="SCmt">// Retrieves and verifies the name of the type 's32'.</span>
@@ -863,16 +863,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SNum">0xFF</span>                 <span class="SCmt">// Compiler infers 'a' as 'u32' since value fits within 32 bits</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'a' is of type 'u32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'a' is of type 'u32'</span>
 
     <span class="SKwd">const</span> b = <span class="SNum">0xF_FFFFF_FFFFFF</span>     <span class="SCmt">// Large value exceeding 32 bits; inferred as 'u64'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="STpe">u64</span>      <span class="SCmt">// Verifies that 'b' is of type 'u64'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(b) == <span class="STpe">u64</span>      <span class="SCmt">// Verifies that 'b' is of type 'u64'</span>
 
     <span class="SKwd">const</span> c = <span class="SNum">0b00000001</span>           <span class="SCmt">// Binary value within 32 bits, inferred as 'u32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
 
     <span class="SKwd">const</span> d = <span class="SNum">0b00000001_00000001_00000001_00000001_00000001</span>  <span class="SCmt">// Exceeds 32 bits, inferred as 'u64'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">u64</span>      <span class="SCmt">// Verifies that 'd' is of type 'u64'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(d) == <span class="STpe">u64</span>      <span class="SCmt">// Verifies that 'd' is of type 'u64'</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Booleans </h4>
 <p>In Swag, a boolean type can be either <span class="code-inline">true</span> or <span class="code-inline">false</span>. As constants are known at compile time, you  can use <span class="code-inline">#assert</span> to verify their values during compilation. </p>
@@ -891,7 +891,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> a = <span class="SNum">1.5</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)              <span class="SCmt">// Verifies that 'a' holds the value 1.5</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f32</span>      <span class="SCmt">// The type of 'a' is inferred to be 'f32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">f32</span>      <span class="SCmt">// The type of 'a' is inferred to be 'f32'</span>
 
     <span class="SKwd">let</span> b = <span class="SNum">0.11</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">0.11</span>)             <span class="SCmt">// Verifies that 'b' holds the value 0.11</span>
@@ -911,8 +911,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> a = <span class="SNum">1.5</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)              <span class="SCmt">// Verifies that 'a' holds the value 1.5</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f32</span>      <span class="SCmt">// Verifies that 'a' is of type 'f32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) != <span class="STpe">f64</span>      <span class="SCmt">// Verifies that 'a' is not of type 'f64'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">f32</span>      <span class="SCmt">// Verifies that 'a' is of type 'f32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) != <span class="STpe">f64</span>      <span class="SCmt">// Verifies that 'a' is not of type 'f64'</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Suffix </h4>
 <p>To specify the type of a literal explicitly, you can add a <b>suffix</b> to the literal. This is useful  when a specific type is required, such as <span class="code-inline">f64</span> or <span class="code-inline">u8</span>. </p>
@@ -921,14 +921,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> a = <span class="SNum">1.5</span>'<span class="STpe">f64</span>                <span class="SCmt">// Explicitly declare 'a' as 'f64' with the value 1.5</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)              <span class="SCmt">// Verifies that 'a' holds the value 1.5</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>'<span class="STpe">f64</span>)          <span class="SCmt">// Verifies that 'a' explicitly holds the value 1.5 as 'f64'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f64</span>      <span class="SCmt">// Verifies that 'a' is of type 'f64'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">f64</span>      <span class="SCmt">// Verifies that 'a' is of type 'f64'</span>
 
     <span class="SKwd">let</span> b = <span class="SNum">10</span>'<span class="STpe">u8</span>                  <span class="SCmt">// Declare 'b' as 'u8' and assign it the value 10</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">10</span>)               <span class="SCmt">// Verifies that 'b' holds the value 10</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="STpe">u8</span>       <span class="SCmt">// Verifies that 'b' is of type 'u8'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(b) == <span class="STpe">u8</span>       <span class="SCmt">// Verifies that 'b' is of type 'u8'</span>
 
     <span class="SKwd">let</span> c = <span class="SNum">1</span>'<span class="STpe">u32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
 }</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_003_string_swg">String</h3><h4 id="_003_000_fundamentals_swg__003_003_string_swg">UTF-8 Encoding </h4>
@@ -949,7 +949,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">const</span> a: <span class="STpe">rune</span> = <span class="SStr">`是`</span>                             <span class="SCmt">// Define a rune using a Chinese character</span>
     <span class="SCmp">#assert</span> a == <span class="SStr">`是`</span>                                <span class="SCmt">// Assert the rune matches the expected value</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(a) == <span class="SItr">@sizeof</span>(<span class="STpe">u32</span>)               <span class="SCmt">// Confirm the size of a rune is 32 bits (same as u32)</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(a) == <span class="SItr">#sizeof</span>(<span class="STpe">u32</span>)               <span class="SCmt">// Confirm the size of a rune is 32 bits (same as u32)</span>
 }</span></div>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Direct indexing of a string to retrieve a <span class="code-inline">rune</span> is not possible, except for ASCII strings.  This is because Swag avoids the runtime overhead of UTF-8 decoding in string operations. However,  the <span class="code-inline">Std.Core</span> module provides utilities for working with UTF-8 encoded strings. </p>
@@ -963,7 +963,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Retrieves the first byte of the string, which corresponds to the character 't'</span>
     <span class="SKwd">const</span> b = a[<span class="SNum">0</span>]
     <span class="SCmp">#assert</span> b == <span class="SStr">`t`</span>                                 <span class="SCmt">// Assert the first byte is 't'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="SItr">@typeof</span>(<span class="STpe">u8</span>)                <span class="SCmt">// Confirm the type is `u8` (byte)</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(b) == <span class="SItr">#typeof</span>(<span class="STpe">u8</span>)                <span class="SCmt">// Confirm the type is `u8` (byte)</span>
 
     <span class="SCmt">// UTF-8 encoding affects indexing. 'X' is not at index 1 due to the multibyte encoding of the</span>
     <span class="SCmt">// preceding Chinese character.</span>
@@ -1027,23 +1027,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> a = <span class="SStr">`0`</span>'<span class="STpe">u8</span>                                 <span class="SCmt">// Character literal explicitly typed as u8</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">48</span>)                               <span class="SCmt">// ASCII value of '0' is 48</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(a) == <span class="STpe">u8</span>)                      <span class="SCmt">// Confirm type is u8</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(a) == <span class="STpe">u8</span>)                      <span class="SCmt">// Confirm type is u8</span>
 
     <span class="SKwd">let</span> b = <span class="SStr">`1`</span>'<span class="STpe">u16</span>                                <span class="SCmt">// Character literal explicitly typed as u16</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">49</span>)                               <span class="SCmt">// ASCII value of '1' is 49</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(b) == <span class="STpe">u16</span>)                     <span class="SCmt">// Confirm type is u16</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(b) == <span class="STpe">u16</span>)                     <span class="SCmt">// Confirm type is u16</span>
 
     <span class="SKwd">let</span> c = <span class="SStr">`2`</span>'<span class="STpe">u32</span>                                <span class="SCmt">// Character literal explicitly typed as u32</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">50</span>)                               <span class="SCmt">// ASCII value of '2' is 50</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(c) == <span class="STpe">u32</span>)                     <span class="SCmt">// Confirm type is u32</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(c) == <span class="STpe">u32</span>)                     <span class="SCmt">// Confirm type is u32</span>
 
     <span class="SKwd">let</span> d = <span class="SStr">`3`</span>'<span class="STpe">u64</span>                                <span class="SCmt">// Character literal explicitly typed as u64</span>
     <span class="SItr">@assert</span>(d == <span class="SNum">51</span>)                               <span class="SCmt">// ASCII value of '3' is 51</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(d) == <span class="STpe">u64</span>)                     <span class="SCmt">// Confirm type is u64</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(d) == <span class="STpe">u64</span>)                     <span class="SCmt">// Confirm type is u64</span>
 
     <span class="SKwd">let</span> e = <span class="SStr">`4`</span>'<span class="STpe">rune</span>                               <span class="SCmt">// Character literal explicitly typed as rune</span>
     <span class="SItr">@assert</span>(e == <span class="SNum">52</span>)                               <span class="SCmt">// ASCII value of '4' is 52</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(e) == <span class="STpe">rune</span>)                    <span class="SCmt">// Confirm type is rune</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(e) == <span class="STpe">rune</span>)                    <span class="SCmt">// Confirm type is rune</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_003_string_swg">Escape Sequences </h4>
 <p>Swag supports escape sequences in strings and character literals, allowing special characters to be represented within these literals. </p>
@@ -1142,19 +1142,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// a</span>
     <span class="SCmt">// string</span>
 }</span></div>
-<h4 id="_003_000_fundamentals_swg__003_003_string_swg">@stringof and @nameof Intrinsics </h4>
-<p>The <span class="code-inline">@stringof</span> intrinsic in Swag returns the string representation of a constant expression  at compile time. </p>
+<h4 id="_003_000_fundamentals_swg__003_003_string_swg">#stringof and #nameof Intrinsics </h4>
+<p>The <span class="code-inline">#stringof</span> intrinsic in Swag returns the string representation of a constant expression  at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">X</span> = <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@stringof</span>(<span class="SCst">X</span>) == <span class="SStr">"1"</span>                    <span class="SCmt">// The string representation of X is "1"</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@stringof</span>(<span class="SCst">X</span> + <span class="SNum">10</span>) == <span class="SStr">"11"</span>              <span class="SCmt">// Expression evaluation is also possible</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#stringof</span>(<span class="SCst">X</span>) == <span class="SStr">"1"</span>                    <span class="SCmt">// The string representation of X is "1"</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#stringof</span>(<span class="SCst">X</span> + <span class="SNum">10</span>) == <span class="SStr">"11"</span>              <span class="SCmt">// Expression evaluation is also possible</span>
 }</span></div>
-<p>The <span class="code-inline">@nameof</span> intrinsic returns the name of a variable, function, etc., as a string. </p>
+<p>The <span class="code-inline">#nameof</span> intrinsic returns the name of a variable, function, etc., as a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">X</span> = <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@nameof</span>(<span class="SCst">X</span>) == <span class="SStr">"X"</span>                      <span class="SCmt">// Returns the variable name "X"</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#nameof</span>(<span class="SCst">X</span>) == <span class="SStr">"X"</span>                      <span class="SCmt">// Returns the variable name "X"</span>
 }</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants</h3><h4 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants with <span class="code-inline">const</span> </h4>
@@ -1263,15 +1263,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> a = <span class="SNum">1.5</span>  <span class="SCmt">// The type of 'a' is inferred to be 'f32' due to the floating-point literal.</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1.5</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">f32</span>
 
     <span class="SKwd">let</span> b = <span class="SStr">"string"</span>  <span class="SCmt">// The type of 'b' is inferred to be 'string'.</span>
     <span class="SItr">@assert</span>(b == <span class="SStr">"string"</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="STpe">string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(b) == <span class="STpe">string</span>
 
     <span class="SKwd">let</span> c = <span class="SNum">1.5</span>'<span class="STpe">f64</span>  <span class="SCmt">// The type of 'c' is explicitly set to 'f64' using a suffix.</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(c) == <span class="STpe">f64</span>
 }</span></div>
 <p>Type inference also applies when declaring multiple variables simultaneously. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -1279,14 +1279,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> a, b = <span class="SKwd">true</span>  <span class="SCmt">// Both 'a' and 'b' are inferred to be of type 'bool'.</span>
     <span class="SItr">@assert</span>(a == <span class="SKwd">true</span>)
     <span class="SItr">@assert</span>(b == <span class="SKwd">true</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="SItr">@typeof</span>(<span class="SKwd">true</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(b) == <span class="SItr">@typeof</span>(a)
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="SItr">#typeof</span>(<span class="SKwd">true</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(b) == <span class="SItr">#typeof</span>(a)
 
     <span class="SKwd">let</span> c = <span class="SNum">1.5</span>, d = <span class="SStr">"string"</span>  <span class="SCmt">// 'c' is inferred as 'f32', and 'd' as 'string'.</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">1.5</span>)
     <span class="SItr">@assert</span>(d == <span class="SStr">"string"</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(c) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(d) == <span class="STpe">string</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_005_variables_swg">Special Variables </h4>
 <p>Swag offers special keywords and attributes to manage variable storage and behavior beyond typical usage. </p>
@@ -1467,7 +1467,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     {
         <span class="SKwd">let</span> a = -<span class="SNum">1.5</span> &lt;=&gt; <span class="SNum">2.31</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">s32</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">s32</span>
         <span class="SItr">@assert</span>(a == -<span class="SNum">1</span>)
 
         <span class="SItr">@assert</span>(-<span class="SNum">10</span> &lt;=&gt; <span class="SNum">10</span> == -<span class="SNum">1</span>)
@@ -1512,23 +1512,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Unlike C, types are not promoted to 32 bits when dealing with 8 or 16-bit types. However, types will  be promoted if the two sides of an operation do not have the same type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u8</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u16</span>) == <span class="STpe">u16</span> <span class="SCmt">// Priority to bigger type</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u32</span>) == <span class="STpe">u32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u64</span>) == <span class="STpe">u64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s8</span>) == <span class="STpe">s8</span>   <span class="SCmt">// Priority to signed type</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s16</span>) == <span class="STpe">s16</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s32</span>) == <span class="STpe">s32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s64</span>) == <span class="STpe">s64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">f32</span>) == <span class="STpe">f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">f64</span>) == <span class="STpe">f64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u16</span>) == <span class="STpe">u16</span> <span class="SCmt">// Priority to bigger type</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u32</span>) == <span class="STpe">u32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">u64</span>) == <span class="STpe">u64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s8</span>) == <span class="STpe">s8</span>   <span class="SCmt">// Priority to signed type</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s16</span>) == <span class="STpe">s16</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s32</span>) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">s64</span>) == <span class="STpe">s64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">f32</span>) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">u8</span> + <span class="SNum">1</span>'<span class="STpe">f64</span>) == <span class="STpe">f64</span>
 
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">0</span>'<span class="STpe">s8</span> + <span class="SNum">1</span>'<span class="STpe">u16</span>) == <span class="STpe">u16</span> <span class="SCmt">// Priority to bigger type also</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">0</span>'<span class="STpe">s8</span> + <span class="SNum">1</span>'<span class="STpe">u16</span>) == <span class="STpe">u16</span> <span class="SCmt">// Priority to bigger type also</span>
 }</span></div>
 <p>This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take  care. In that case, you can use the <span class="code-inline"> #prom</span> modifier on the operation, which will promote the type  to at least 32 bits. The operation will be done accordingly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
     <span class="SCmp">#assert</span> <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span> <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
 }</span></div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
@@ -1567,11 +1567,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SCmt">// 'x' is initialized as a floating-point number (f32 by default)</span>
     <span class="SKwd">let</span> x = <span class="SNum">1.0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x) == <span class="STpe">f32</span>
 
     <span class="SCmt">// 'y' is explicitly cast to a 32-bit signed integer (s32)</span>
     <span class="SKwd">let</span> y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(y) == <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)                            <span class="SCmt">// The floating-point value 1.0 is cast to the integer value 1</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Automatic Cast with <span class="code-inline">cast()</span> </h4>
@@ -1580,7 +1580,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
     <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>() x                       <span class="SCmt">// Automatically cast 'x' to 's32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(y) == <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Bitcast </h4>
@@ -1693,8 +1693,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SKwd">var</span> x: <span class="SCst">Float32</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var x: f32'</span>
     <span class="SKwd">var</span> y: <span class="SCst">Float64</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var y: f64'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float32</span>) == <span class="STpe">f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Float64</span>) == <span class="STpe">f64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Float32</span>) == <span class="STpe">f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Float64</span>) == <span class="STpe">f64</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Strict Type Alias </h4>
 <p>In cases where you need to enforce type safety, Swag provides the <span class="code-inline">Swag.Strict</span> attribute, which can be applied to a <span class="code-inline">typealias</span>. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate. </p>
@@ -1702,7 +1702,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SAtr">#[Swag.Strict]</span>
     <span class="SKwd">typealias</span> <span class="SCst">MyType</span> = <span class="STpe">s32</span>                  <span class="SCmt">// 'MyType' is a distinct type, not interchangeable with 's32'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">MyType</span>) != <span class="STpe">s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">MyType</span>) != <span class="STpe">s32</span>
 
     <span class="SKwd">let</span> x: <span class="SCst">MyType</span> = <span class="SKwd">cast</span>(<span class="SCst">MyType</span>) <span class="SNum">0</span>          <span class="SCmt">// Explicit cast is required to assign a value</span>
     <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x                <span class="SCmt">// Casting back to 's32' also requires an explicit cast</span>
@@ -1741,12 +1741,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     array[<span class="SNum">1</span>] = <span class="SNum">2</span>                     <span class="SCmt">// Assign the value 2 to the second element</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Array Size and Memory </h4>
-<p>The <span class="code-inline">@countof</span> intrinsic provides the number of elements in an array, while <span class="code-inline">@sizeof</span> gives the total size in bytes. </p>
+<p>The <span class="code-inline">@countof</span> intrinsic provides the number of elements in an array, while <span class="code-inline">#sizeof</span> gives the total size in bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>               <span class="SCmt">// Declare a static array of two s32 elements</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>     <span class="SCmt">// Ensure the array contains 2 elements</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the size in bytes (2 elements * size of s32)</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">#sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the size in bytes (2 elements * size of s32)</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Obtaining the Address of an Array </h4>
 <p>The <span class="code-inline">@dataof</span> intrinsic retrieves the address of the first element in an array. </p>
@@ -1769,7 +1769,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]           <span class="SCmt">// Declare and initialize a static array of four s32 elements</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>       <span class="SCmt">// Verify the array contains 4 elements</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">s32</span>  <span class="SCmt">// Verify the array's type is [4] s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(arr) == <span class="SCmp">#type</span> [<span class="SNum">4</span>] <span class="STpe">s32</span>  <span class="SCmt">// Verify the array's type is [4] s32</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Type Deduction in Arrays </h4>
 <p>Swag can deduce the size of the array from the initialization expression, eliminating the need to specify the dimension explicitly. </p>
@@ -1816,7 +1816,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">1</span>'<span class="STpe">f64</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]       <span class="SCmt">// All elements are inferred to be 'f64'</span>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>       <span class="SCmt">// Verify the array has 4 elements</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(arr) == <span class="STpe">#type</span> [<span class="SNum">4</span>] <span class="STpe">f64</span>  <span class="SCmt">// Confirm that all elements are of type f64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(arr) == <span class="SCmp">#type</span> [<span class="SNum">4</span>] <span class="STpe">f64</span>  <span class="SCmt">// Confirm that all elements are of type f64</span>
     <span class="SItr">@assert</span>(arr[<span class="SNum">3</span>] == <span class="SNum">4.0</span>)           <span class="SCmt">// Confirm the value of the fourth element</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Multi-Dimensional Arrays </h4>
@@ -1871,7 +1871,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a: [..] <span class="STpe">bool</span>  <span class="SCmt">// Declare a slice of boolean values</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(a) == <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>) + <span class="SItr">@sizeof</span>(<span class="STpe">u64</span>)  <span class="SCmt">// Ensure slice size includes pointer and element count</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(a) == <span class="SItr">#sizeof</span>(*<span class="STpe">void</span>) + <span class="SItr">#sizeof</span>(<span class="STpe">u64</span>)  <span class="SCmt">// Ensure slice size includes pointer and element count</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_002_slice_swg">Initializing Slices </h4>
 <p>Slices can be initialized in a similar manner to arrays. By assigning an array literal to a slice,  the slice will reference the elements in the array. </p>
@@ -2057,7 +2057,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x.b == <span class="SNum">2</span>)                      <span class="SCmt">// 'x.b' acquires the value of 'y.d'.</span>
 
     <span class="SCmt">// Although 'x' and 'y' have different field names, their types are not identical.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) != <span class="SItr">@typeof</span>(y)
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x) != <span class="SItr">#typeof</span>(y)
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_003_tuple_swg">Tuple Unpacking </h4>
 <p>Swag allows tuples to be unpacked, meaning their individual elements can be extracted into separate variables. This feature is particularly useful for disaggregating a tuple's data for specific operations or further processing. </p>
@@ -2118,19 +2118,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>, <span class="SCst">B</span> }
-    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(<span class="SCst">Values</span>)
+    <span class="SKwd">let</span> type = <span class="SItr">#typeof</span>(<span class="SCst">Values</span>)
 
     <span class="SCmt">// 'type' here is a 'typeinfo' dedicated to the enum type.</span>
     <span class="SCmt">// In that case, 'type.rawType' represents the enum's underlying type.</span>
     <span class="SItr">@assert</span>(type.rawType == <span class="STpe">s32</span>)
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Using <span class="code-inline">@kindof</span> to Retrieve Underlying Type </h4>
 <p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">RGB</span>) == <span class="SCst">RGB</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">RGB</span>) == <span class="SCst">RGB</span>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) != <span class="SCst">RGB</span>
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) == <span class="STpe">s32</span>
 }</span></div>
@@ -2146,7 +2146,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">Values1</span>) == <span class="STpe">s64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SCst">Values1</span>.<span class="SCst">A</span>) == <span class="SCst">Values1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values1</span>.<span class="SCst">A</span>) == <span class="SCst">Values1</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Default and Custom Enum Values </h4>
 <p>Enum values, if not explicitly specified, start at 0 and increase by 1 for each subsequent value. </p>
@@ -2576,7 +2576,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> arr = <span class="SNum">1</span>                          <span class="SCmt">// Declare an integer variable</span>
     <span class="SKwd">let</span> ptr = &arr                        <span class="SCmt">// Take the address of the variable 'arr'</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == *<span class="STpe">s32</span>)         <span class="SCmt">// The type of 'ptr' is a pointer to 's32', the type of 'arr'</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr) == *<span class="STpe">s32</span>)         <span class="SCmt">// The type of 'ptr' is a pointer to 's32', the type of 'arr'</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Dereferencing a Pointer </h4>
 <p>Dereferencing a pointer involves accessing the value stored at the memory location that the pointer refers to. In Swag, you use the <span class="code-inline">dref</span> intrinsic for dereferencing, which allows you to retrieve the actual data stored at the pointer's address. </p>
@@ -2604,7 +2604,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Multiple Values Pointers </h4>
 <p>For cases where you need <b>pointer arithmetic</b> and want a pointer to <b>multiple values</b> (like an array or a memory block), you declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. This type of pointer is especially useful for iterating over a sequence of elements stored in contiguous memory locations. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Safety("sanity", false)]</span>
+<span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> ptr: ^<span class="STpe">u8</span>                        <span class="SCmt">// Declaring a pointer to a memory block of 'u8' values</span>
 
@@ -2620,7 +2621,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values</span>
     ptr = ptr - <span class="SNum">1</span>                       <span class="SCmt">// Move the pointer back to the first element</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>        <span class="SCmt">// The type of 'ptr' is now a pointer to multiple 's32' values</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(ptr) == ^<span class="STpe">s32</span>        <span class="SCmt">// The type of 'ptr' is now a pointer to multiple 's32' values</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Dereferencing with Indexes </h4>
 <p>When pointer arithmetic is enabled, you can dereference the pointer using an index, allowing access to elements in an array-like manner. This is particularly useful when working with arrays through pointers, as it allows for flexible element access. </p>
@@ -2628,21 +2629,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]             <span class="SCmt">// Declare and initialize an array of 's32' elements</span>
     <span class="SKwd">let</span> ptr = &arr[<span class="SNum">0</span>]                  <span class="SCmt">// Take the address of the first element</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == ^<span class="STpe">s32</span>)      <span class="SCmt">// The pointer type allows pointer arithmetic</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr) == ^<span class="STpe">s32</span>)      <span class="SCmt">// The pointer type allows pointer arithmetic</span>
 
     <span class="SCmt">// Dereferencing by index to access the elements</span>
     <span class="SKwd">let</span> value1 = ptr[<span class="SNum">0</span>]                <span class="SCmt">// Access the first element</span>
     <span class="SItr">@assert</span>(value1 == <span class="SNum">1</span>)               <span class="SCmt">// Verify the first element's value is 1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value1) == <span class="STpe">s32</span>     <span class="SCmt">// Assert the type of value1 is 's32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(value1) == <span class="STpe">s32</span>     <span class="SCmt">// Assert the type of value1 is 's32'</span>
 
     <span class="SKwd">let</span> value2 = ptr[<span class="SNum">1</span>]                <span class="SCmt">// Access the second element</span>
     <span class="SItr">@assert</span>(value2 == <span class="SNum">2</span>)               <span class="SCmt">// Verify the second element's value is 2</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value2) == <span class="STpe">s32</span>     <span class="SCmt">// Assert the type of value2 is 's32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(value2) == <span class="STpe">s32</span>     <span class="SCmt">// Assert the type of value2 is 's32'</span>
 
     <span class="SCmt">// Using 'dref' for the first element, equivalent to ptr[0]</span>
     <span class="SKwd">let</span> value = <span class="SKwd">dref</span> ptr               <span class="SCmt">// Dereference the pointer to access the first element</span>
     <span class="SItr">@assert</span>(value == <span class="SNum">1</span>)                <span class="SCmt">// Verify the dereferenced value is 1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(value) == <span class="STpe">s32</span>      <span class="SCmt">// Assert the type of the dereferenced value is 's32'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(value) == <span class="STpe">s32</span>      <span class="SCmt">// Assert the type of the dereferenced value is 's32'</span>
 }</span></div>
 
 <h3 id="_004_000_data_structures_swg__004_008_references_swg">References</h3><h4 id="_004_000_data_structures_swg__004_008_references_swg">References in Swag </h4>
@@ -2771,11 +2772,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SKwd">dref</span> ptr == <span class="SNum">6</span>)                  <span class="SCmt">// Dereference the pointer to get the value</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_009_any_swg">Type Information and <span class="code-inline">any</span> </h4>
-<p>When <span class="code-inline">@typeof</span> is used on an <span class="code-inline">any</span>, it returns <span class="code-inline">any</span> as the type because <span class="code-inline">any</span> is the type of the reference. To obtain the underlying type of the value stored in <span class="code-inline">any</span>, use <span class="code-inline">@kindof</span>, which is evaluated at runtime. </p>
+<p>When <span class="code-inline">#typeof</span> is used on an <span class="code-inline">any</span>, it returns <span class="code-inline">any</span> as the type because <span class="code-inline">any</span> is the type of the reference. To obtain the underlying type of the value stored in <span class="code-inline">any</span>, use <span class="code-inline">@kindof</span>, which is evaluated at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a: <span class="STpe">any</span> = <span class="SStr">"string"</span>             <span class="SCmt">// Store a string in 'a'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>         <span class="SCmt">// The type of 'a' is 'any'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">any</span>         <span class="SCmt">// The type of 'a' is 'any'</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">string</span>)     <span class="SCmt">// The underlying type of the value is 'string'</span>
 
     a = <span class="SKwd">true</span>                          <span class="SCmt">// Change the stored value to a bool</span>
@@ -2786,7 +2787,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a: <span class="STpe">any</span> = <span class="SNum">42</span>                   <span class="SCmt">// Store an s32 value in 'a'</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>         <span class="SCmt">// The type of 'a' is 'any'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">any</span>         <span class="SCmt">// The type of 'a' is 'any'</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">s32</span>)        <span class="SCmt">// The underlying type is 's32'</span>
 
     <span class="SKwd">let</span> b = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) a               <span class="SCmt">// Get the value itself</span>
@@ -2960,7 +2961,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
     <span class="SLgc">for</span> <span class="SNum">5</span>                             <span class="SCmt">// Loop 5 times</span>
     {
-        cpt += <span class="SItr">#index</span>                 <span class="SCmt">// Add the current index value to 'cpt' in each iteration</span>
+        cpt += <span class="SCmp">#index</span>                 <span class="SCmt">// Add the current index value to 'cpt' in each iteration</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Assert that 'cpt' equals the sum of the indices</span>
@@ -2975,7 +2976,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">for</span> i <span class="SLgc">in</span> <span class="SNum">5</span>                        <span class="SCmt">// The `for` index is named 'i'</span>
     {
         cpt += i                      <span class="SCmt">// Use the named index 'i'</span>
-        cpt1 += <span class="SItr">#index</span>                <span class="SCmt">// '#index' is still accessible and returns the same value as 'i'</span>
+        cpt1 += <span class="SCmp">#index</span>                <span class="SCmt">// '#index' is still accessible and returns the same value as 'i'</span>
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span> + <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>) <span class="SCmt">// Confirm that 'cpt' equals the sum of indices</span>
@@ -2990,7 +2991,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">for</span> arr:                          <span class="SCmt">// Loop over the array's elements</span>
-        cpt += arr[<span class="SItr">#index</span>]            <span class="SCmt">// Add the current element's value to 'cpt'</span>
+        cpt += arr[<span class="SCmp">#index</span>]            <span class="SCmt">// Add the current element's value to 'cpt'</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span> + <span class="SNum">20</span> + <span class="SNum">30</span> + <span class="SNum">40</span>) <span class="SCmt">// Verify that 'cpt' equals the sum of the array elements</span>
 }</span></div>
 <div class="blockquote blockquote-warning">
@@ -3014,11 +3015,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">for</span> <span class="SCmp">#back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)     <span class="SCmt">// First iteration, index should be 2</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)     <span class="SCmt">// First iteration, index should be 2</span>
         <span class="SLgc">elif</span> cpt == <span class="SNum">1</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)     <span class="SCmt">// Second iteration, index should be 1</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)     <span class="SCmt">// Second iteration, index should be 1</span>
         <span class="SLgc">elif</span> cpt == <span class="SNum">2</span>:
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)     <span class="SCmt">// Third iteration, index should be 0</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)     <span class="SCmt">// Third iteration, index should be 0</span>
 
         cpt += <span class="SNum">1</span>
     }
@@ -3107,7 +3108,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SLgc">for</span>
     {
-        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">4</span>:              <span class="SCmt">// Use `#index` to break the for after 4 iterations</span>
+        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">4</span>:              <span class="SCmt">// Use `#index` to break the for after 4 iterations</span>
             <span class="SLgc">break</span>
     }
 }</span></div>
@@ -3230,12 +3231,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     
     <span class="SCmt">// Using `#index` to accumulate the for indices.</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>:
-        cpt += <span class="SItr">#index</span>
+        cpt += <span class="SCmp">#index</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>'<span class="STpe">u64</span>
     <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>:
-        cpt1 += <span class="SItr">#index</span>
+        cpt1 += <span class="SCmp">#index</span>
     <span class="SItr">@assert</span>(cpt1 == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></div>
 <h4 id="_005_000_control_flow_swg__005_003_for_swg">Using <span class="code-inline">break</span> and <span class="code-inline">continue</span> in <span class="code-inline">for</span> Loops </h4>
@@ -3275,7 +3276,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Inner for</span>
         <span class="SLgc">for</span> <span class="SKwd">var</span> j = <span class="SNum">0</span>; j &lt; <span class="SNum">5</span>; j += <span class="SNum">1</span>
         {
-            result += <span class="SItr">#index</span>  <span class="SCmt">// Adds the index of the inner for</span>
+            result += <span class="SCmp">#index</span>  <span class="SCmt">// Adds the index of the inner for</span>
         }
     }
 
@@ -3647,7 +3648,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Switch statement based on the underlying type of 'x'.</span>
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span>:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str <span class="SLgc">as</span> <span class="STpe">string</span>:    <span class="SCmt">// 'str' will contain the value if 'x' is a string</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)
         <span class="SLgc">break</span>    
 
@@ -3663,11 +3664,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SLgc">switch</span> x    <span class="SCmt">// Implicitly checks the type of `x` using `@kindof`.</span>
     {
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str <span class="SLgc">as</span> <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"value"</span>:       <span class="SCmt">// Matches if `x` is a string and equals "value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"value"</span>)                     <span class="SCmt">// Asserts that `str` is equal to "value"</span>
         <span class="SLgc">break</span>   
 
-    <span class="SLgc">case</span> <span class="SKwd">let</span> str as <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
+    <span class="SLgc">case</span> <span class="SKwd">let</span> str <span class="SLgc">as</span> <span class="STpe">string</span> <span class="SLgc">where</span> str == <span class="SStr">"not_a_value"</span>: <span class="SCmt">// Matches if `x` is a string and equals "not_a_value"</span>
         <span class="SItr">@assert</span>(str == <span class="SStr">"not_a_value"</span>)               <span class="SCmt">// Asserts that `str` is equal to "not_a_value"</span>
         <span class="SLgc">break</span>     
 
@@ -3798,7 +3799,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SLgc">for</span> <span class="SNum">10</span>
         {
-            <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">5</span>:
+            <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">5</span>:
                 <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
         }
 
@@ -3815,7 +3816,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">foreach</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '#index' is available to store the loop index.</span>
-        <span class="SKwd">let</span> a = <span class="SItr">#index</span>                                     <span class="SCmt">// Index of the current iteration</span>
+        <span class="SKwd">let</span> a = <span class="SCmp">#index</span>                                     <span class="SCmt">// Index of the current iteration</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
@@ -3852,7 +3853,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">foreach</span> <span class="SStr">"ABC"</span>
     {
         <span class="SKwd">let</span> a = <span class="SItr">#alias1</span>                                    <span class="SCmt">// Default alias for the index</span>
-        <span class="SItr">@assert</span>(a == <span class="SItr">#index</span>)                               <span class="SCmt">// Ensure alias matches the index</span>
+        <span class="SItr">@assert</span>(a == <span class="SCmp">#index</span>)                               <span class="SCmt">// Ensure alias matches the index</span>
         <span class="SLgc">switch</span> a
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
@@ -3877,13 +3878,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         {
         <span class="SLgc">case</span> <span class="SNum">0</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>)                          <span class="SCmt">// First value should be 'C'</span>
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">2</span>)                           <span class="SCmt">// Index should be 2</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)                           <span class="SCmt">// Index should be 2</span>
         <span class="SLgc">case</span> <span class="SNum">1</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>)                          <span class="SCmt">// Second value should be 'B'</span>
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">1</span>)                           <span class="SCmt">// Index should be 1</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)                           <span class="SCmt">// Index should be 1</span>
         <span class="SLgc">case</span> <span class="SNum">2</span>:
             <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>)                          <span class="SCmt">// Third value should be 'A'</span>
-            <span class="SItr">@assert</span>(<span class="SItr">#index</span> == <span class="SNum">0</span>)                           <span class="SCmt">// Index should be 0</span>
+            <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)                           <span class="SCmt">// Index should be 0</span>
         }
 
         cpt += <span class="SNum">1</span>                                           <span class="SCmt">// Increment the counter</span>
@@ -4209,7 +4210,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SCmt">// Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">4</span>
 
     <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}
     v.x = <span class="SNum">666</span>
@@ -4251,10 +4252,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         z:     <span class="STpe">s64</span>     <span class="SCmt">// offset 8: aligned to 8 bytes (no padding needed)</span>
     }
 
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.y) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct</span>.z) == <span class="SNum">8</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">16</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct</span>.y) == <span class="SNum">4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct</span>.z) == <span class="SNum">8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct</span>) == <span class="SNum">16</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_004_packing_swg">Reducing Packing </h4>
 <p>Swag allows you to reduce the packing of struct fields using the <span class="code-inline">#[Swag.Pack]</span> attribute. This attribute specifies the alignment value to be applied to each field, enabling more compact struct representations. Below are examples demonstrating different levels of packing. </p>
@@ -4266,9 +4267,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte (no padding)</span>
         y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 1: 4 bytes (no padding)</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">5</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">5</span>
 
     <span class="SAtr">#[Swag.Pack(2)]</span>
     <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
@@ -4276,9 +4277,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
         y:     <span class="STpe">s32</span>     <span class="SCmt">// offset 2: 4 bytes (1 byte of padding before y)</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">2</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">6</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">2</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">6</span>
 
     <span class="SAtr">#[Swag.Pack(4)]</span>
     <span class="SKwd">struct</span> <span class="SCst">MyStruct3</span>
@@ -4286,9 +4287,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x:     <span class="STpe">bool</span>    <span class="SCmt">// offset 0: 1 byte</span>
         y:     <span class="STpe">s64</span>     <span class="SCmt">// offset 4: 8 bytes (3 bytes of padding before y)</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct3</span>) == <span class="SNum">12</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct3</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct3</span>.y) == <span class="SNum">4</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct3</span>) == <span class="SNum">12</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_004_packing_swg">Struct Size and Alignment </h4>
 <p>The total size of a struct in Swag is always a multiple of the largest alignment value among its fields. This ensures that the struct remains correctly aligned when used within larger data structures or arrays. </p>
@@ -4300,7 +4301,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
         <span class="SCmt">// 3 bytes of padding to align with s32 size</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_004_packing_swg">Enforcing Alignment with <span class="code-inline">Swag.Align</span> </h4>
 <p>Swag provides the <span class="code-inline">#[Swag.Align]</span> attribute to enforce specific alignment constraints on an entire struct. This attribute can be used to ensure that a struct's alignment meets specific hardware or performance requirements. </p>
@@ -4311,9 +4312,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         x:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
         y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">2</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct1</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct1</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">2</span>
 
     <span class="SAtr">#[Swag.Align(8)]</span>
     <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
@@ -4322,9 +4323,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         y:     <span class="STpe">bool</span>    <span class="SCmt">// 1 byte</span>
         <span class="SCmt">// 6 bytes of padding to align struct size to 8</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">1</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct2</span>.x) == <span class="SNum">0</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#offsetof</span>(<span class="SCst">MyStruct2</span>.y) == <span class="SNum">1</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_004_packing_swg">Field-Specific Alignment </h4>
 <p>Swag allows setting specific alignment values for individual struct fields using the <span class="code-inline">#[Swag.Align]</span> attribute. This enables fine-grained control over memory layout, which can be crucial for certain low-level optimizations. </p>
@@ -4336,7 +4337,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SAtr">#[Swag.Align(8)]</span>
         y: <span class="STpe">bool</span>         <span class="SCmt">// offset 8: aligned to 8 bytes (7 bytes of padding before y)</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">9</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">9</span>
 
     <span class="SAtr">#[Swag.Align(8)]</span>
     <span class="SKwd">struct</span> <span class="SCst">MyStruct2</span>
@@ -4346,7 +4347,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         y: <span class="STpe">bool</span>         <span class="SCmt">// offset 4: aligned to 4 bytes (3 bytes of padding before y)</span>
         <span class="SCmt">// 3 bytes of padding to align struct size to 8</span>
     }
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
 
 <h3 id="_006_000_structs_swg__006_005_special_functions_swg">Special functions</h3><p>A struct in Swag can define special operations within the <span class="code-inline">impl</span> block. These operations are predefined and recognized by the compiler. This enables the ability to <b>overload operators</b> and customize behavior when interacting with the struct. </p>
@@ -4456,9 +4457,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Multiple versions can be defined by adding a name after 'opVisit'.</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SKwd">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SKwd">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SKwd">code</span>) {}
     }
 }</span></div>
 
@@ -4612,7 +4613,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="SKwd">code</span>)
     {
         <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based </span>
         <span class="SCmt">// or reverse-order iterations.</span>
@@ -4644,7 +4645,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 }
 
                 <span class="SCmt">// `#alias1` holds the current index of the iteration.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SCmp">#index</span>
 
                 <span class="SCmt">// Insert user-defined logic from the calling scope.</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
@@ -4684,7 +4685,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
+    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="SKwd">code</span>)
     {
         <span class="SCmt">// In this version, we foreach the fields in reverse order.</span>
         <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
@@ -4702,7 +4703,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                     <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x' in reverse order</span>
                 }
 
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SCmp">#index</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
             }
         }
@@ -4745,7 +4746,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="SKwd">code</span>)
     {
         <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
         {
@@ -4755,7 +4756,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SCmp">#up</span> <span class="STpe">self</span>.buffer[<span class="SCmp">#up</span> idx]
 
                 <span class="SCmt">// #alias1 represents the current index.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
+                <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SCmp">#index</span>
 
                 <span class="SCmt">// Insert the user-provided logic from the caller.</span>
                 <span class="SCmp">#mixin</span> <span class="SCmp">#up</span> stmt
@@ -5062,7 +5063,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> pt3: <span class="SCst">Point3</span>
     <span class="SKwd">var</span> itf  = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt2
 
-    <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(itf) == <span class="SNum">2</span> * <span class="SItr">@sizeof</span>(*<span class="STpe">void</span>)
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(itf) == <span class="SNum">2</span> * <span class="SItr">#sizeof</span>(*<span class="STpe">void</span>)
 
     <span class="SCmt">// You can retrieve the concrete type associated with an interface instance with '@kindof'.</span>
     itf = <span class="SKwd">cast</span>(<span class="SCst">IReset</span>) pt2
@@ -5141,8 +5142,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>If a parameter has a default value, its type can be inferred from the value provided.  In this example, <span class="code-inline">x</span> and <span class="code-inline">y</span> are inferred as <span class="code-inline">f32</span> due to the <span class="code-inline">0.0</span> literal. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum3</span>(x, y = <span class="SNum">0.0</span>)
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">f32</span>                       <span class="SCmt">// Asserts that x is of type f32</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="STpe">f32</span>                       <span class="SCmt">// Asserts that y is of type f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x) == <span class="STpe">f32</span>                       <span class="SCmt">// Asserts that x is of type f32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(y) == <span class="STpe">f32</span>                       <span class="SCmt">// Asserts that y is of type f32</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_001_declaration_swg">Overloading Functions </h4>
 <p>Swag allows function overloading, where multiple functions can share the same name but differ  in their parameter types or counts. </p>
@@ -5151,7 +5152,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SAtr">#[Swag.Overload]</span>
 <span class="SKwd">func</span> <span class="SFct">toto</span>(x: <span class="STpe">s32</span>, y = <span class="SCst">Values</span>.<span class="SCst">A</span>)
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="SCst">Values</span>                    <span class="SCmt">// Asserts that y is of type Values</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(y) == <span class="SCst">Values</span>                    <span class="SCmt">// Asserts that y is of type Values</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_001_declaration_swg">Nested Functions </h4>
 <p>Functions can be nested within other functions to provide encapsulation and organize code.  These nested functions are not closures but are limited to the scope in which they are declared. </p>
@@ -5444,7 +5445,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
-    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="SKwd">code</span>)
     {
         <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
         <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
@@ -5460,7 +5461,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
-    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(value: <span class="STpe">s32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(value: <span class="STpe">s32</span>, what: <span class="SKwd">code</span>)
     {
         <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
         <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
@@ -5590,7 +5591,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="SKwd">code</span>)
     {
         <span class="SCmp">#mixin</span> what                            <span class="SCmt">// Inserts the provided code block</span>
     }
@@ -5614,7 +5615,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="SKwd">code</span>)
     {
         <span class="SKwd">var</span> a = <span class="SNum">666</span>                            <span class="SCmt">// Declare 'a' in the macro's own scope</span>
 
@@ -5637,7 +5638,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeat</span>(count: <span class="STpe">s32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeat</span>(count: <span class="STpe">s32</span>, what: <span class="SKwd">code</span>)
     {
         <span class="SKwd">var</span> a = <span class="SNum">0</span>
         <span class="SLgc">while</span> a &lt; count
@@ -5670,7 +5671,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="SKwd">code</span>)
     {
         <span class="SCmt">// Define a label `Up` for the scope that will allow us to break out of the outermost loop</span>
         <span class="SCmp">#scope</span> <span class="SCst">Up</span>                              
@@ -5715,7 +5716,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="SKwd">code</span>)
     {
         <span class="SCmt">// Define a label `Outer` for the scope that will allow us to </span>
         <span class="SCmt">// break or continue from the outermost loop</span>
@@ -5770,7 +5771,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="SKwd">code</span>)
     {
         <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v                        <span class="SCmt">// Assign 'v' to '#alias0'</span>
         <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span>                    <span class="SCmt">// Assign 'v * 2' to '#alias1'</span>
@@ -5817,9 +5818,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(parameters) == <span class="SNum">3</span>)
 
         <span class="SCmt">// Each parameter is initially treated as 'any' type.</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">0</span>]) == <span class="STpe">any</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">1</span>]) == <span class="STpe">any</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">2</span>]) == <span class="STpe">any</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">0</span>]) == <span class="STpe">any</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">1</span>]) == <span class="STpe">any</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">2</span>]) == <span class="STpe">any</span>
 
         <span class="SCmt">// Use '@kindof' to determine the actual type of each parameter at runtime.</span>
         <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(parameters[<span class="SNum">0</span>]) == <span class="STpe">s32</span>)
@@ -5836,10 +5837,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">myFunction</span>(value: <span class="STpe">bool</span>, parameters: <span class="STpe">s32</span>...)
     {
         <span class="SCmt">// All parameters in 'parameters' must be of type 's32'.</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">0</span>]).name == <span class="SStr">"s32"</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">1</span>]).name == <span class="SStr">"s32"</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">2</span>]) == <span class="STpe">s32</span>
-        <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(parameters[<span class="SNum">3</span>]) == <span class="STpe">s32</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">0</span>]).name == <span class="SStr">"s32"</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">1</span>]).name == <span class="SStr">"s32"</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">2</span>]) == <span class="STpe">s32</span>
+        <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(parameters[<span class="SNum">3</span>]) == <span class="STpe">s32</span>
 
         <span class="SCmt">// Verify that the parameters have been passed correctly.</span>
         <span class="SItr">@assert</span>(parameters[<span class="SNum">0</span>] == <span class="SNum">10</span>)
@@ -6266,13 +6267,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@drop</span>()                     <span class="SCmt">// Destroys a variable or memory area.</span>
 <span class="SItr">@postmove</span>()                 <span class="SCmt">// Called after a move operation to handle post-move logic.</span>
 <span class="SItr">@postcopy</span>()                 <span class="SCmt">// Called after a copy operation to handle post-copy logic.</span>
-<span class="SItr">@sizeof</span>()                   <span class="SCmt">// Returns the size, in bytes, of a type or variable.</span>
-<span class="SItr">@alignof</span>()                  <span class="SCmt">// Returns the alignment requirement of a type.</span>
-<span class="SItr">@offsetof</span>()                 <span class="SCmt">// Returns the offset, in bytes, of a field within a struct.</span>
-<span class="SItr">@typeof</span>()                   <span class="SCmt">// Returns the type of a given expression.</span>
+<span class="SItr">#sizeof</span>()                   <span class="SCmt">// Returns the size, in bytes, of a type or variable.</span>
+<span class="SItr">#alignof</span>()                  <span class="SCmt">// Returns the alignment requirement of a type.</span>
+<span class="SItr">#offsetof</span>()                 <span class="SCmt">// Returns the offset, in bytes, of a field within a struct.</span>
+<span class="SItr">#typeof</span>()                   <span class="SCmt">// Returns the type of a given expression.</span>
 <span class="SItr">@kindof</span>()                   <span class="SCmt">// Returns the kind (e.g., primitive, struct) of a type.</span>
 <span class="SItr">@countof</span>()                  <span class="SCmt">// Returns the number of elements in an array.</span>
-<span class="SItr">@stringof</span>()                 <span class="SCmt">// Returns the string representation of a type or expression.</span>
+<span class="SItr">#stringof</span>()                 <span class="SCmt">// Returns the string representation of a type or expression.</span>
 <span class="SItr">@dataof</span>()                   <span class="SCmt">// Returns a pointer to the underlying data of a type.</span>
 <span class="SItr">@mkslice</span>()                  <span class="SCmt">// Creates a slice from a given data pointer and length.</span>
 <span class="SItr">@mkstring</span>()                 <span class="SCmt">// Creates a string from a given data pointer and length.</span>
@@ -6280,7 +6281,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@mkinterface</span>()              <span class="SCmt">// Creates an interface type from a given implementation.</span>
 <span class="SItr">@mkcallback</span>()               <span class="SCmt">// Creates a callback from a given function pointer.</span>
 <span class="SItr">@pinfos</span>()                   <span class="SCmt">// Retrieves program information.</span>
-<span class="SItr">@isconstexpr</span>()              <span class="SCmt">// Checks if an expression is a constant expression.</span>
+<span class="SItr">#isconstexpr</span>()              <span class="SCmt">// Checks if an expression is a constant expression.</span>
 <span class="SItr">@itftableof</span>()               <span class="SCmt">// Returns the interface table for a given type.</span></span></div>
 <h3 id="_008_000_intrinsics_swg">Memory-related Intrinsics </h3>
 <p>These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation,  deallocation, and manipulation. </p>
@@ -6682,9 +6683,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SKwd">var</span> x: <span class="SCst">Struct</span>'<span class="STpe">s32</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">s32</span>)         <span class="SCmt">// The type of 'val' is deduced as 's32'.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x.val) == <span class="STpe">s32</span>)         <span class="SCmt">// The type of 'val' is deduced as 's32'.</span>
         <span class="SKwd">var</span> x1: <span class="SCst">Struct</span>'<span class="STpe">f32</span>
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x1.val) == <span class="STpe">f32</span>)        <span class="SCmt">// The type of 'val' is deduced as 'f32'.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x1.val) == <span class="STpe">f32</span>)        <span class="SCmt">// The type of 'val' is deduced as 'f32'.</span>
     }
 
     {
@@ -6695,7 +6696,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SKwd">var</span> x: <span class="SCst">Struct</span>'(<span class="STpe">bool</span>, <span class="SNum">10</span>)
-        <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x.val) == <span class="STpe">#type</span> [<span class="SNum">10</span>] <span class="STpe">bool</span>) <span class="SCmt">// The type is an array of 10 booleans.</span>
+        <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x.val) == <span class="SCmp">#type</span> [<span class="SNum">10</span>] <span class="STpe">bool</span>) <span class="SCmt">// The type is an array of 10 booleans.</span>
     }
 }</span></div>
 
@@ -6754,7 +6755,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>                             <span class="SCmt">// Function with a block-based `where`</span>
         <span class="SLgc">where</span>
         {
-            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>:  <span class="SCmt">// Check if `T` is `s32` or `s64`</span>
+            <span class="SLgc">if</span> <span class="SItr">#typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">#typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>:  <span class="SCmt">// Check if `T` is `s32` or `s64`</span>
                 <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Return true if valid</span>
             <span class="SLgc">return</span> <span class="SKwd">false</span>                                <span class="SCmt">// Return false otherwise</span>
         }
@@ -6775,7 +6776,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">if</span> <span class="SCst">T</span> == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SCst">T</span> == <span class="STpe">s64</span>:                    <span class="SCmt">// Check if `T` is `s32` or `s64`</span>
                 <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Return true if valid</span>
 
-            <span class="SItr">@compilererror</span>(<span class="SStr">"Invalid type "</span> ++ <span class="SItr">@stringof</span>(<span class="SCst">T</span>), <span class="SItr">@location</span>(<span class="SCst">T</span>))
+            <span class="SItr">@compilererror</span>(<span class="SStr">"Invalid type "</span> ++ <span class="SItr">#stringof</span>(<span class="SCst">T</span>), <span class="SItr">#location</span>(<span class="SCst">T</span>))
             <span class="SLgc">return</span> <span class="SKwd">false</span>                                <span class="SCmt">// Return false after error</span>
         }
     {
@@ -6813,10 +6814,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SLgc">where</span>&lt;call&gt;
             {
                 <span class="SCmt">// Verify if `y` is a compile-time constant.</span>
-                <span class="SLgc">if</span> !<span class="SItr">@isconstexpr</span>(y):
+                <span class="SLgc">if</span> !<span class="SItr">#isconstexpr</span>(y):
                     <span class="SLgc">return</span> <span class="SKwd">true</span>                         <span class="SCmt">// Allow if `y` is not constant</span>
                 <span class="SLgc">if</span> y == <span class="SNum">0</span>:
-                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>, <span class="SItr">@location</span>(y))
+                    <span class="SItr">@compilererror</span>(<span class="SStr">"Division by zero"</span>, <span class="SItr">#location</span>(y))
                 <span class="SLgc">return</span> <span class="SKwd">true</span>                             <span class="SCmt">// Allow otherwise</span>
             }
         {
@@ -6835,7 +6836,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Function with different implementations based on whether `x` is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for constexpr `x`</span>
-            <span class="SLgc">where</span>&lt;call&gt; <span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span>&lt;call&gt; <span class="SItr">#isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>                                  <span class="SCmt">// Return 555 if `x` is constexpr</span>
         }
@@ -6843,7 +6844,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Overload for the case where `x` is not known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for non-constexpr `x`</span>
-            <span class="SLgc">where</span>&lt;call&gt; !<span class="SItr">@isconstexpr</span>(x)
+            <span class="SLgc">where</span>&lt;call&gt; !<span class="SItr">#isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>                                  <span class="SCmt">// Return 666 if `x` is not constexpr</span>
         }
@@ -6891,7 +6892,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Swag supports the retrieval and inspection of attributes at runtime through type reflection. This feature enables dynamic interaction with the metadata associated with various code elements, allowing developers to adapt behavior based on the presence or configuration of attributes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(function2)  <span class="SCmt">// Retrieve the type of the function</span>
+    <span class="SKwd">let</span> type = <span class="SItr">#typeof</span>(function2)  <span class="SCmt">// Retrieve the type of the function</span>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>)  <span class="SCmt">// Assert that the function has exactly one attribute</span>
 }</span></div>
 
@@ -7181,7 +7182,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SFct">releaseResource</span>(&resource)              <span class="SCmt">// Release the resource when exiting the loop.</span>
         }
 
-        <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">2</span>:
+        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">2</span>:
             <span class="SLgc">break</span>      <span class="SCmt">// Exit for early, defer block still ensures resource release.</span>
     }
 
@@ -7406,51 +7407,51 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="_012_000_type_reflection_swg">Type reflection</h2><h3 id="_012_000_type_reflection_swg">Types as Values in Swag </h3>
-<p>In Swag, <b>types are treated as first-class values</b> that can be inspected and manipulated  at both compile-time and runtime. This powerful feature enables advanced metaprogramming  capabilities, allowing developers to write more flexible and reusable code. The primary  intrinsics for interacting with types are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>, which provide the ability  to introspect and work with types dynamically. </p>
-<h3 id="_012_000_type_reflection_swg">Using <span class="code-inline">@typeof</span> to Inspect Types </h3>
-<p>The <span class="code-inline">@typeof</span> intrinsic allows you to retrieve the type information of an expression.  When an expression explicitly represents a type, you can also directly use the type  itself. This is particularly useful for type inspection and validation at compile time. </p>
+<p>In Swag, <b>types are treated as first-class values</b> that can be inspected and manipulated  at both compile-time and runtime. This powerful feature enables advanced metaprogramming  capabilities, allowing developers to write more flexible and reusable code. The primary  intrinsics for interacting with types are <span class="code-inline">#typeof</span> and <span class="code-inline">@kindof</span>, which provide the ability  to introspect and work with types dynamically. </p>
+<h3 id="_012_000_type_reflection_swg">Using <span class="code-inline">#typeof</span> to Inspect Types </h3>
+<p>The <span class="code-inline">#typeof</span> intrinsic allows you to retrieve the type information of an expression.  When an expression explicitly represents a type, you can also directly use the type  itself. This is particularly useful for type inspection and validation at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Using @typeof to retrieve the type information of the basic type 's8'</span>
-    <span class="SKwd">let</span> ptr1 = <span class="SItr">@typeof</span>(<span class="STpe">s8</span>)
+    <span class="SCmt">// Using #typeof to retrieve the type information of the basic type 's8'</span>
+    <span class="SKwd">let</span> ptr1 = <span class="SItr">#typeof</span>(<span class="STpe">s8</span>)
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"s8"</span>) <span class="SCmt">// Verifies that the name of the type is 's8'</span>
     <span class="SItr">@assert</span>(ptr1 == <span class="STpe">s8</span>)        <span class="SCmt">// Confirms that the retrieved type matches 's8'</span>
 
-    <span class="SCmt">// Retrieving the type of another basic type 's16' using @typeof</span>
-    <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>(<span class="STpe">s16</span>)
+    <span class="SCmt">// Retrieving the type of another basic type 's16' using #typeof</span>
+    <span class="SKwd">let</span> ptr2 = <span class="SItr">#typeof</span>(<span class="STpe">s16</span>)
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"s16"</span>)
     <span class="SItr">@assert</span>(ptr2 == <span class="STpe">s16</span>)
 
-    <span class="SCmt">// Directly using the type 's32' without @typeof</span>
+    <span class="SCmt">// Directly using the type 's32' without #typeof</span>
     <span class="SKwd">let</span> ptr3 = <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(ptr3.name == <span class="SStr">"s32"</span>)
-    <span class="SItr">@assert</span>(ptr3 == <span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
+    <span class="SItr">@assert</span>(ptr3 == <span class="SItr">#typeof</span>(<span class="STpe">s32</span>))
 
     <span class="SCmt">// Another example of direct type usage with 's64'</span>
     <span class="SKwd">let</span> ptr4 = <span class="STpe">s64</span>
     <span class="SItr">@assert</span>(ptr4.name == <span class="SStr">"s64"</span>)
     <span class="SItr">@assert</span>(ptr4 == <span class="STpe">s64</span>)
 }</span></div>
-<h3 id="_012_000_type_reflection_swg">Understanding the Result of <span class="code-inline">@typeof</span> </h3>
-<p>The result of the <span class="code-inline">@typeof</span> intrinsic is a constant pointer to a <span class="code-inline">Swag.TypeInfo</span> structure.  This structure serves as a type descriptor, providing detailed information about the type  it describes. The <span class="code-inline">Swag.TypeInfo</span> is an alias for the <span class="code-inline">typeinfo</span> type, and each type in Swag  corresponds to a specific <span class="code-inline">TypeInfo</span> structure found in the <span class="code-inline">Swag</span> namespace, which is  part of the compiler runtime. </p>
+<h3 id="_012_000_type_reflection_swg">Understanding the Result of <span class="code-inline">#typeof</span> </h3>
+<p>The result of the <span class="code-inline">#typeof</span> intrinsic is a constant pointer to a <span class="code-inline">Swag.TypeInfo</span> structure.  This structure serves as a type descriptor, providing detailed information about the type  it describes. The <span class="code-inline">Swag.TypeInfo</span> is an alias for the <span class="code-inline">typeinfo</span> type, and each type in Swag  corresponds to a specific <span class="code-inline">TypeInfo</span> structure found in the <span class="code-inline">Swag</span> namespace, which is  part of the compiler runtime. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can explore all available type descriptors in the runtime documentation on the Swag website. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// Using @typeof on a bool type, which is a native type</span>
+    <span class="SCmt">// Using #typeof on a bool type, which is a native type</span>
     <span class="SKwd">let</span> ptr = <span class="STpe">bool</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>)) 
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr) == <span class="SItr">#typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>)) 
 
     <span class="SCmt">// The `#type` keyword is used when the expression might be ambiguous, such as with arrays.</span>
     <span class="SCmt">// This ensures that the compiler understands the expression as a type.</span>
-    <span class="SKwd">let</span> ptr1 = <span class="STpe">#type</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr1) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>)) 
+    <span class="SKwd">let</span> ptr1 = <span class="SCmp">#type</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr1) == <span class="SItr">#typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>)) 
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"[2] s32"</span>)
 
-    <span class="SCmt">// Using @typeof on an array literal</span>
-    <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>])
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr2) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
+    <span class="SCmt">// Using #typeof on an array literal</span>
+    <span class="SKwd">let</span> ptr2 = <span class="SItr">#typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>])
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr2) == <span class="SItr">#typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"const [3] s32"</span>)
 }</span></div>
 <h3 id="_012_000_type_reflection_swg">Working with <span class="code-inline">TypeInfo</span> Structures </h3>
@@ -7463,17 +7464,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// Evaluating these type checks at compile time</span>
     <span class="SKwd">using</span> <span class="SCst">Swag</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(*<span class="STpe">u8</span>).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>  <span class="SCmt">// Ensures the type is recognized as a pointer</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>  <span class="SCmt">// Ensures the type is recognized as an array</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>  <span class="SCmt">// Ensures the type is recognized as a struct</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(*<span class="STpe">u8</span>).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>  <span class="SCmt">// Ensures the type is recognized as a pointer</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>  <span class="SCmt">// Ensures the type is recognized as an array</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>  <span class="SCmt">// Ensures the type is recognized as a struct</span>
 }</span></div>
 <h3 id="_012_000_type_reflection_swg"><span class="code-inline">@decltype</span> </h3>
-<p>The <span class="code-inline">@decltype</span> intrinsic performs the reverse operation of <span class="code-inline">@typeof</span> or <span class="code-inline">@kindof</span>.  It converts a <span class="code-inline">typeinfo</span> structure back into an actual compiler type. This is useful  when you need to dynamically determine the type of a variable based on compile-time  information and then use that type within your code. </p>
+<p>The <span class="code-inline">@decltype</span> intrinsic performs the reverse operation of <span class="code-inline">#typeof</span> or <span class="code-inline">@kindof</span>.  It converts a <span class="code-inline">typeinfo</span> structure back into an actual compiler type. This is useful  when you need to dynamically determine the type of a variable based on compile-time  information and then use that type within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Using @decltype to declare a variable of type s32 based on its typeinfo</span>
-    <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that the variable 'x' is indeed of type 's32'</span>
+    <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SItr">#typeof</span>(<span class="STpe">s32</span>))
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that the variable 'x' is indeed of type 's32'</span>
 }</span></div>
 <h3 id="_012_000_type_reflection_swg">Using <span class="code-inline">@decltype</span> with Compile-Time Expressions </h3>
 <p><span class="code-inline">@decltype</span> can evaluate a compile-time constant expression (<i>constexpr</i>) that returns  a <span class="code-inline">typeinfo</span> to determine the actual type. This is particularly powerful when the type  depends on compile-time logic, allowing for dynamic yet type-safe programming patterns. </p>
@@ -7491,12 +7492,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// Using @decltype to determine the type of 'x' based on the compile-time condition</span>
     <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">false</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that 'x' is of type s32</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x) == <span class="STpe">s32</span>  <span class="SCmt">// Confirms that 'x' is of type s32</span>
     x = <span class="SNum">0</span>
 
     <span class="SCmt">// Another example with the condition evaluating to true</span>
     <span class="SKwd">var</span> x1: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">true</span>))
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x1) == <span class="STpe">string</span>  <span class="SCmt">// Confirms that 'x1' is of type string</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(x1) == <span class="STpe">string</span>  <span class="SCmt">// Confirms that 'x1' is of type string</span>
     x1 = <span class="SStr">"0"</span>
 }</span></div>
 
@@ -7777,7 +7778,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)                             <span class="SCmt">// Assert that the result is 256</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Information Loss During Casting </h4>
 <p>Swag checks for potential information loss during type casting operations, such as when converting  between different integer types. </p>
@@ -8140,10 +8141,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h3 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</h3><h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#assert</span> </h4>
 <p>The <span class="code-inline">#assert</span> directive is used to perform a static assertion during the compilation process.  It ensures that a particular condition is true at compile time. If the condition evaluates to <span class="code-inline">false</span>,  compilation will fail, providing an error message. This is particularly useful for enforcing  compile-time invariants and validating assumptions within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span> <span class="SCmt">// This assertion always passes, so no error is triggered.</span></span></div>
-<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">@defined(SYMBOL)</span> </h4>
-<p>The <span class="code-inline">@defined(SYMBOL)</span> intrinsic checks if a given symbol exists within the current context  at compile time. It returns <span class="code-inline">true</span> if the symbol is defined, and <span class="code-inline">false</span> otherwise. This is  useful for conditional compilation, allowing you to verify the existence of variables,  constants, or functions before using them. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>) <span class="SCmt">// Ensures that the symbol 'DOES_NOT_EXISTS' is not defined.</span>
-<span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)            <span class="SCmt">// Confirms that the symbol 'Global' is defined.</span>
+<h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#defined(SYMBOL)</span> </h4>
+<p>The <span class="code-inline">#defined(SYMBOL)</span> intrinsic checks if a given symbol exists within the current context  at compile time. It returns <span class="code-inline">true</span> if the symbol is defined, and <span class="code-inline">false</span> otherwise. This is  useful for conditional compilation, allowing you to verify the existence of variables,  constants, or functions before using them. </p>
+<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">#defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>) <span class="SCmt">// Ensures that the symbol 'DOES_NOT_EXISTS' is not defined.</span>
+<span class="SCmp">#assert</span> <span class="SItr">#defined</span>(<span class="SCst">Global</span>)            <span class="SCmt">// Confirms that the symbol 'Global' is defined.</span>
 <span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span>                      <span class="SCmt">// Define a global variable 'Global'.</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#if</span>/<span class="code-inline">#elif</span>/<span class="code-inline">#else</span> </h4>
 <p>The <span class="code-inline">#if</span>/<span class="code-inline">#elif</span>/<span class="code-inline">#else</span> directives are used for static conditional compilation.  They evaluate expressions at compile time and include or exclude code based on the result.  This mechanism allows you to compile different sections of code based on predefined constants  or compile-time conditions. </p>
@@ -8312,21 +8313,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SFct">#ast</span>
         {
-            <span class="SLgc">return</span> <span class="SStr">"x, y: "</span> ++ <span class="SItr">@typeof</span>(<span class="SCst">T</span>).name <span class="SCmt">// Generates fields 'x' and 'y' with the type of the generic parameter 'T'.</span>
+            <span class="SLgc">return</span> <span class="SStr">"x, y: "</span> ++ <span class="SItr">#typeof</span>(<span class="SCst">T</span>).name <span class="SCmt">// Generates fields 'x' and 'y' with the type of the generic parameter 'T'.</span>
         }
 
         z: <span class="STpe">string</span>          <span class="SCmt">// Additional static declaration that adds a field 'z' of type string.</span>
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>'<span class="STpe">bool</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.x) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'bool'.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.y) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'bool'.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v.z) == <span class="STpe">string</span>   <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v.x) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'bool'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v.y) == <span class="STpe">bool</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'bool'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v.z) == <span class="STpe">string</span>   <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
 
     <span class="SKwd">var</span> v1: <span class="SCst">MyStruct</span>'<span class="STpe">f64</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.x) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'f64'.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.y) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'f64'.</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(v1.z) == <span class="STpe">string</span>  <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v1.x) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'x' is of type 'f64'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v1.y) == <span class="STpe">f64</span>     <span class="SCmt">// Asserts that the generated field 'y' is of type 'f64'.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(v1.z) == <span class="STpe">string</span>  <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
 }</span></div>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg">Constructing Strings in <span class="code-inline">#ast</span> </h4>
 <p>The <span class="code-inline">#ast</span> block requires a <i>string-like</i> value to be returned, which can be dynamically constructed. In this example, the string is manually built, although a more sophisticated method like <span class="code-inline">Core.String</span> is typically recommended. </p>
@@ -8371,7 +8372,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">var</span> str = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
 
         <span class="SCmt">// We get the type of the generic parameter 'T'</span>
-        <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
+        <span class="SKwd">let</span> typeof = <span class="SItr">#typeof</span>(<span class="SCst">T</span>)
 
         <span class="SCmt">// Then we foreach all the fields, assuming the type is a struct (or this will not compile).</span>
         <span class="SCmt">// For each original field, we create one with the same name, but with a `bool` type.</span>
@@ -8492,7 +8493,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>To generate documentation for your workspace, use the following command: </p>
 <div class="code-block"><span class="SCde">swag doc -w:myWorkspaceFolder</span></div>
 <p>Swag supports various documentation generation modes, which should be specified in the module.swg file within the <a href="swag.runtime.php#Swag_BuildCfg">Swag.BuildCfg</a> structure. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SCmp">#dependencies</span>
 {
     <span class="SCmp">#import</span> <span class="SStr">"pixel"</span>
 
@@ -8761,7 +8762,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h3 id="_018_000_documentation_md__018_001_api_swg">Api</h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <span class="code-inline">module.swg</span> file. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// This is the main module documentation.</span>
-<span class="SFct">#dependencies</span>
+<span class="SCmp">#dependencies</span>
 {
 }</span></div>
 <p>Other comments need to be placed just before a function, struct or enum. </p>
@@ -8832,7 +8833,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 30-08-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
+Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.38.0</div>
 </div>
 </div>
 </div>
