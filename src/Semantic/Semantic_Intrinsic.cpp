@@ -442,48 +442,6 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     return true;
 }
 
-bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
-{
-    const auto node     = context->node;
-    auto       expr     = node->firstChild();
-    const auto typeInfo = expr->typeInfo;
-
-    SWAG_CHECK(checkIsConstExpr(context, expr->hasFlagComputedValue(), expr));
-    SWAG_VERIFY(typeInfo->isString(), context->report({expr, formErr(Err0595, typeInfo->getDisplayNameC())}));
-    node->setFlagsValueIsComputed();
-
-    // Convert
-    Vector<uint32_t> runes;
-    const char*      pz  = expr->computedValue()->text.buffer;
-    uint32_t         cpt = 0;
-    while (cpt < expr->computedValue()->text.count)
-    {
-        uint32_t c;
-        uint32_t offset;
-        pz = Utf8::decodeUtf8(pz, c, offset);
-        runes.push_back(c);
-        cpt += offset;
-    }
-
-    // :SliceLiteral
-    const auto storageSegment             = getConstantSegFromContext(context->node);
-    node->computedValue()->storageSegment = storageSegment;
-
-    SwagSlice* slice;
-    node->computedValue()->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
-    slice->count                         = runes.size();
-
-    uint8_t* addrDst;
-    storageSegment->reserve(runes.size() * sizeof(uint32_t), &addrDst);
-    slice->buffer = addrDst;
-
-    // Setup array
-    std::copy_n(runes.data(), runes.size(), reinterpret_cast<uint32_t*>(addrDst));
-
-    node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
-    return true;
-}
-
 bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -710,7 +668,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             return true;
 
         case TokenId::CompilerIntrinsicRunes:
-            SWAG_CHECK(resolveIntrinsicRunes(context));
+            SWAG_CHECK(resolveCompilerIntrinsicRunes(context));
             return true;
 
         case TokenId::IntrinsicSpread:

@@ -301,6 +301,7 @@ namespace Semantic
     bool resolveCompilerIntrinsicStringOf(SemanticContext* context);
     bool resolveCompilerIntrinsicTag(SemanticContext* context);
     bool resolveCompilerIntrinsicDeclType(SemanticContext* context);
+    bool resolveCompilerIntrinsicRunes(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);
     bool resolveDefer(SemanticContext* context);
@@ -347,7 +348,6 @@ namespace Semantic
     bool resolveIntrinsicMakeInterface(SemanticContext* context);
     bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, const char* name);
     bool resolveIntrinsicProperty(SemanticContext* context);
-    bool resolveIntrinsicRunes(SemanticContext* context);
     bool resolveIntrinsicSpread(SemanticContext* context);
     bool resolveCompilerIntrinsicTypeOf(SemanticContext* context);
     bool resolveKeepRef(SemanticContext* context);
