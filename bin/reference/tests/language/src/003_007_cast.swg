@@ -1,6 +1,6 @@
 /**
 # Explicit Cast with 'cast'
-Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the `cast(type) value` function, which transforms the value into the specified type.
+Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the `cast(type) value` syntax, which transforms the `value` into the specified `type`.
 */
 #test
 {
@@ -24,6 +24,19 @@ A `cast()` without an expression stands for `automatic cast`, allowing the compi
     let y: s32 = cast() x                       // Automatically cast 'x' to 's32'
     #assert #typeof(y) == s32
     @assert(y == 1)
+}
+
+/**
+This also works for a function call argument.
+*/
+func testAutoCast(x: s32)
+{
+    @assert(x == 1)
+}
+
+#test
+{
+    testAutoCast(cast() 1.4)        // Automatic cast to the type 's32' of 'x'
 }
 
 /**
