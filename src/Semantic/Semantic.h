@@ -297,6 +297,10 @@ namespace Semantic
     bool resolveCompilerSpecialValue(SemanticContext* context);
     bool resolveWhereConstraintExpression(SemanticContext* context);
     bool resolveCompilerWarning(SemanticContext* context);
+    bool resolveCompilerIntrinsicNameOf(SemanticContext* context);
+    bool resolveCompilerIntrinsicStringOf(SemanticContext* context);
+    bool resolveCompilerIntrinsicTag(SemanticContext* context);
+    bool resolveCompilerIntrinsicDeclType(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);
     bool resolveDefer(SemanticContext* context);
@@ -335,7 +339,6 @@ namespace Semantic
     bool resolveInterface(SemanticContext* context);
     bool resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression);
     bool resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression);
-    bool resolveIntrinsicDeclType(SemanticContext* context);
     bool resolveIntrinsicDefined(SemanticContext* context);
     bool resolveIntrinsicKindOf(SemanticContext* context);
     bool resolveIntrinsicLocation(SemanticContext* context);
@@ -343,13 +346,10 @@ namespace Semantic
     bool resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node);
     bool resolveIntrinsicMakeInterface(SemanticContext* context);
     bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, const char* name);
-    bool resolveIntrinsicNameOf(SemanticContext* context);
     bool resolveIntrinsicProperty(SemanticContext* context);
     bool resolveIntrinsicRunes(SemanticContext* context);
     bool resolveIntrinsicSpread(SemanticContext* context);
-    bool resolveIntrinsicStringOf(SemanticContext* context);
-    bool resolveIntrinsicTag(SemanticContext* context);
-    bool resolveIntrinsicTypeOf(SemanticContext* context);
+    bool resolveCompilerIntrinsicTypeOf(SemanticContext* context);
     bool resolveKeepRef(SemanticContext* context);
     bool resolveLiteral(SemanticContext* context);
     bool resolveLiteralSuffix(SemanticContext* context);

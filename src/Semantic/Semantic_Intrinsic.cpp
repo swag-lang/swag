@@ -1,124 +1,14 @@
 #include "pch.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
-
-#define CHECK_SAFETY_NAME(__name, __flag)                                        \
-    do                                                                           \
-    {                                                                            \
-        if (w == g_LangSpec->__name)                                             \
-        {                                                                        \
-            done                         = true;                                 \
-            node->computedValue()->reg.b = module->mustEmitSafety(node, __flag); \
-        }                                                                        \
-    } while (0)
-
-bool Semantic::resolveIntrinsicTag(SemanticContext* context)
-{
-    const auto node = context->node;
-    switch (node->token.id)
-    {
-        case TokenId::CompilerIntrinsicSafety:
-        {
-            auto front = node->firstChild();
-            SWAG_CHECK(evaluateConstExpression(context, front));
-            YIELD();
-            SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0038), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0609, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
-            node->typeInfo = g_TypeMgr->typeInfoBool;
-            node->setFlagsValueIsComputed();
-
-            const auto& w      = front->computedValue()->text;
-            const auto  module = node->token.sourceFile->module;
-            bool        done   = false;
-
-            CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUND_CHECK);
-            CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
-            CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
-            CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
-            CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
-            CHECK_SAFETY_NAME(name_dyncast, SAFETY_DYN_CAST);
-            CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
-            CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-            CHECK_SAFETY_NAME(name_sanity, SAFETY_SANITY);
-            CHECK_SAFETY_NAME(name_null, SAFETY_NULL);
-
-            if (!done)
-            {
-                return context->report({front, front->token, formErr(Err0751, w.cstr())});
-            }
-
-            return true;
-        }
-
-        case TokenId::CompilerIntrinsicHasTag:
-        {
-            auto front = node->firstChild();
-            SWAG_CHECK(evaluateConstExpression(context, front));
-            YIELD();
-            SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0038), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0609, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
-            const auto tag = g_Workspace->hasTag(front->computedValue()->text);
-            node->typeInfo = g_TypeMgr->typeInfoBool;
-            node->setFlagsValueIsComputed();
-            node->computedValue()->reg.b = tag ? true : false;
-            return true;
-        }
-
-        case TokenId::CompilerIntrinsicGetTag:
-        {
-            auto       nameNode   = node->firstChild();
-            const auto typeNode   = node->secondChild();
-            auto       defaultVal = node->children[2];
-            SWAG_CHECK(evaluateConstExpression(context, nameNode));
-            YIELD();
-            SWAG_CHECK(evaluateConstExpression(context, defaultVal));
-            YIELD();
-
-            SWAG_CHECK(checkIsConstExpr(context, nameNode->hasFlagComputedValue(), nameNode, toErr(Err0038), node->token.text));
-            SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0609, node->token.cstr(), nameNode->typeInfo->getDisplayNameC())}));
-            SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0175, Naming::aKindName(defaultVal).cstr())}));
-
-            {
-                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0112); });
-                SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
-            }
-
-            node->setFlagsValueIsComputed();
-            node->typeInfo = typeNode->typeInfo;
-
-            const auto tag = g_Workspace->hasTag(nameNode->computedValue()->text);
-            if (tag)
-            {
-                if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
-                {
-                    Diagnostic err{typeNode, formErr(Err0576, typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.cstr())};
-                    err.addNote(formNte(Nte0117, tag->cmdLine.cstr()));
-                    return context->report(err);
-                }
-
-                node->typeInfo         = tag->type;
-                *node->computedValue() = tag->value;
-            }
-            else
-            {
-                node->extSemantic()->computedValue = defaultVal->extSemantic()->computedValue;
-            }
-
-            return true;
-        }
-    }
-    return true;
-}
 
 bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
@@ -552,70 +442,6 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     return true;
 }
 
-bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
-{
-    const auto node     = context->node;
-    auto       expr     = node->firstChild();
-    const auto typeInfo = expr->typeInfo;
-
-    node->setFlagsValueIsComputed();
-    SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
-    YIELD();
-
-    if (expr->hasFlagComputedValue())
-    {
-        if (expr->isConstantGenTypeInfo())
-            node->computedValue()->text = Utf8{expr->getConstantGenTypeInfo()->fullName};
-        else if (typeInfo->isString())
-            node->computedValue()->text = expr->computedValue()->text;
-        else if (typeInfo->isNative())
-            node->computedValue()->text = Ast::literalToString(typeInfo, *expr->computedValue());
-        else if (typeInfo->isEnum())
-            node->computedValue()->text = Ast::enumToString(typeInfo, expr->computedValue()->text, expr->computedValue()->reg);
-        else
-            return context->report({expr, toErr(Err0772)});
-    }
-    else if (expr->typeInfo->isCode())
-    {
-        FormatAst     fmtAst;
-        FormatContext fmtCxt;
-        const auto    typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
-        fmtAst.outputNode(fmtCxt, typeCode->content);
-        node->computedValue()->text = fmtAst.getUtf8();
-    }
-    else if (expr->resolvedSymbolName())
-        node->computedValue()->text = expr->resolvedSymbolName()->getFullName();
-    else if (expr->resolvedSymbolOverload())
-        node->computedValue()->text = expr->resolvedSymbolOverload()->symbol->getFullName();
-    else
-        return context->report({expr, toErr(Err0772)});
-
-    node->typeInfo = g_TypeMgr->typeInfoString;
-    return true;
-}
-
-bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
-{
-    const auto node = context->node;
-    auto       expr = node->firstChild();
-
-    node->setFlagsValueIsComputed();
-    SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
-    YIELD();
-
-    if (expr->isConstantGenTypeInfo())
-        node->computedValue()->text = Utf8{expr->getConstantGenTypeInfo()->name};
-    else if (expr->resolvedSymbolName())
-        node->computedValue()->text = expr->resolvedSymbolName()->name;
-    else if (expr->resolvedSymbolOverload())
-        node->computedValue()->text = expr->resolvedSymbolOverload()->symbol->name;
-    else
-        return context->report({expr, toErr(Err0771)});
-
-    node->typeInfo = g_TypeMgr->typeInfoString;
-    return true;
-}
-
 bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 {
     const auto node     = context->node;
@@ -805,73 +631,12 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
     return context->report(err);
 }
 
-bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
-{
-    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->firstChild();
-    auto       typeInfo = expr->typeInfo;
-
-    SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, toErr(Err0278)}));
-
-    if (expr->hasAstFlag(AST_CONST_EXPR))
-    {
-        SWAG_CHECK(executeCompilerNode(context, expr, true));
-        YIELD();
-    }
-
-    expr->addAstFlag(AST_NO_BYTECODE);
-
-    // @mktype on a typeinfo will give back the original compiler type
-    if (typeInfo->isPointerToTypeInfo() &&
-        expr->hasFlagComputedValue() &&
-        expr->computedValue()->storageOffset != UINT32_MAX &&
-        expr->computedValue()->storageSegment != nullptr)
-    {
-        const auto addr        = expr->computedValue()->getStorageAddr();
-        const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue()->storageSegment, static_cast<ExportedTypeInfo*>(addr));
-        if (newTypeInfo)
-            typeInfo = newTypeInfo;
-    }
-
-    // Should be a lambda
-    if (typeInfo->isFuncAttr() && !typeInfo->hasFlag(TYPEINFO_FUNC_IS_ATTR))
-    {
-        typeInfo         = typeInfo->clone();
-        typeInfo->kind   = TypeInfoKind::LambdaClosure;
-        typeInfo->sizeOf = sizeof(void*);
-    }
-
-    node->typeInfo = typeInfo;
-    return true;
-}
-
-bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
-{
-    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->firstChild();
-    const auto typeInfo = expr->typeInfo;
-
-    SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, toErr(Err0278)}));
-
-    expr->addAstFlag(AST_NO_BYTECODE);
-
-    SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
-    YIELD();
-    node->inheritComputedValue(expr);
-    SWAG_CHECK(setupIdentifierRef(context, node));
-    return true;
-}
-
 bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 
     switch (node->token.id)
     {
-        case TokenId::IntrinsicSpread:
-            SWAG_CHECK(resolveIntrinsicSpread(context));
-            return true;
-
         case TokenId::CompilerIntrinsicIsConstExpr:
         {
             const auto expr = node->firstChild();
@@ -930,26 +695,30 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         }
 
         case TokenId::CompilerIntrinsicDeclType:
-            SWAG_CHECK(resolveIntrinsicDeclType(context));
+            SWAG_CHECK(resolveCompilerIntrinsicDeclType(context));
             return true;
 
         case TokenId::CompilerIntrinsicTypeOf:
-            SWAG_CHECK(resolveIntrinsicTypeOf(context));
-            return true;
-
-        case TokenId::IntrinsicKindOf:
-            SWAG_CHECK(resolveIntrinsicKindOf(context));
+            SWAG_CHECK(resolveCompilerIntrinsicTypeOf(context));
             return true;
 
         case TokenId::CompilerIntrinsicStringOf:
-            SWAG_CHECK(resolveIntrinsicStringOf(context));
+            SWAG_CHECK(resolveCompilerIntrinsicStringOf(context));
             return true;
         case TokenId::CompilerIntrinsicNameOf:
-            SWAG_CHECK(resolveIntrinsicNameOf(context));
+            SWAG_CHECK(resolveCompilerIntrinsicNameOf(context));
             return true;
 
         case TokenId::CompilerIntrinsicRunes:
             SWAG_CHECK(resolveIntrinsicRunes(context));
+            return true;
+
+        case TokenId::IntrinsicSpread:
+            SWAG_CHECK(resolveIntrinsicSpread(context));
+            return true;
+
+        case TokenId::IntrinsicKindOf:
+            SWAG_CHECK(resolveIntrinsicKindOf(context));
             return true;
 
         case TokenId::IntrinsicCountOf:

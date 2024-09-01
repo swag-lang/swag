@@ -15,7 +15,7 @@ bool Parser::doCompilerIntrinsicTag(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstNode>(AstNodeKind::IntrinsicProp, this, parent);
     *result           = node;
-    node->semanticFct = Semantic::resolveIntrinsicTag;
+    node->semanticFct = Semantic::resolveCompilerIntrinsicTag;
 
     SWAG_CHECK(eatToken());
 
