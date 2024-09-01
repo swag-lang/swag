@@ -9134,7 +9134,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
 {
-    k: <span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
+    k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
 }
 )</span></div>
 <p>
