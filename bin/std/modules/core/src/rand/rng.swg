@@ -176,7 +176,7 @@ impl Rng
         let dataOf  = @dataof(slice)
         for i in slice
         {
-            var o = nextU64(0, countOf)
+            let o = nextU64(0, countOf)
             Core.swap(dataOf + i, dataOf + o)
         }
     }
