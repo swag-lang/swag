@@ -369,7 +369,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#message", TokenId::CompilerFuncMessage);
     keywords.add("#dependencies", TokenId::CompilerDependencies);
 
-    keywords.add("#include", TokenId::CompilerInclude);
+    keywords.add("#include", TokenId::CompilerIntrinsicInclude);
     keywords.add("#load", TokenId::CompilerLoad);
     keywords.add("#assert", TokenId::CompilerAssert);
     keywords.add("#print", TokenId::CompilerPrint);

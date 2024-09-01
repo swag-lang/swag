@@ -1,5 +1,5 @@
 const F = #file
-const g = #include F
+const g = #include(F)
 
 #test
 {

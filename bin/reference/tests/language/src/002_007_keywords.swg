@@ -115,7 +115,6 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #dependencies
 
 #global
-#include
 #load
 #assert
 #print
@@ -147,6 +146,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #gettag
 #hastag
 #runes
+#include
 
 #cfg
 #os

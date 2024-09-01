@@ -91,7 +91,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 msg = toErr(Err0273);
                 if (startToken.is(TokenId::KwdLet))
                     note = toNte(Nte0060);
-                else if (startToken.is(TokenId::CompilerInclude))
+                else if (startToken.is(TokenId::CompilerIntrinsicInclude))
                     note = toNte(Nte0054);
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
                     note = toNte(Nte0057);

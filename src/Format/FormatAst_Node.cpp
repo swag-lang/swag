@@ -51,11 +51,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             concat->addBlank();
             SWAG_CHECK(outputChildrenBlank(context, node));
             break;
-        case AstNodeKind::CompilerInclude:
-            concat->addString("#include");
-            concat->addBlank();
-            SWAG_CHECK(outputChildrenBlank(context, node));
-            break;
         case AstNodeKind::CompilerGlobal:
             SWAG_CHECK(outputCompilerGlobal(context, node));
             break;
@@ -361,6 +356,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             }
             break;
 
+        case AstNodeKind::CompilerIntrinsicInclude:
         case AstNodeKind::CompilerIntrinsicDefined:
         case AstNodeKind::CompilerIntrinsicLocation:
             concat->addString(node->token.text);

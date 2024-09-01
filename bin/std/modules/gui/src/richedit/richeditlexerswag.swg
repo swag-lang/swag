@@ -189,6 +189,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#gettag", State.Intrinsic)
         mapWords.add("#runes", State.Intrinsic)
         mapWords.add("#safety", State.Intrinsic)
+        mapWords.add("#include", State.Intrinsic)
 
         mapWords.add("@stringcmp", State.Intrinsic)
         mapWords.add("@is", State.Intrinsic)
@@ -354,7 +355,6 @@ impl IRichEditLexer for RichEditLexerSwag
 
         mapWords.add("#global", State.CompilerGlobal)
 
-        mapWords.add("#include", State.CompilerStatement)
         mapWords.add("#load", State.CompilerStatement)
         mapWords.add("#foreignlib", State.CompilerStatement)
         mapWords.add("#assert", State.CompilerStatement)

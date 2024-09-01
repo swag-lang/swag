@@ -188,7 +188,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|include|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|scope)\\b"
+          "match": "(#)(global|load|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|scope)\\b"
         }
       ]
     },
@@ -204,7 +204,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|location|decltype|hastag|gettag|runes|safety)"
+          "match": "(#)(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|location|decltype|hastag|gettag|runes|safety|include)"
         }
       ]
     },        

@@ -715,6 +715,25 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
+{
+    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicInclude, this, parent);
+    *result             = exprNode;
+    exprNode->addAstFlag(AST_NO_BYTECODE);
+    SWAG_CHECK(eatToken());
+
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0459)));
+
+    ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
+    SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
+
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+
+    exprNode->semanticFct = Semantic::resolveCompilerInclude;
+    return true;
+}
+
 bool Parser::doCompilerDependencies(AstNode* parent)
 {
     if (!sourceFile->hasFlag(FILE_CFG) && !sourceFile->hasFlag(FILE_SCRIPT) && !sourceFile->hasFlag(FILE_FOR_FORMAT))
@@ -735,20 +754,6 @@ bool Parser::doCompilerDependencies(AstNode* parent)
         node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     }
 
-    return true;
-}
-
-bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
-{
-    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerInclude, this, parent);
-    *result             = exprNode;
-    exprNode->addAstFlag(AST_NO_BYTECODE);
-    SWAG_CHECK(eatToken());
-
-    ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
-    SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
-
-    exprNode->semanticFct = Semantic::resolveCompilerInclude;
     return true;
 }
 

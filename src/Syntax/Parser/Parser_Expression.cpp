@@ -254,7 +254,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doIntrinsicDefined(parent, result));
             break;
 
-        case TokenId::CompilerInclude:
+        case TokenId::CompilerIntrinsicInclude:
             SWAG_CHECK(doCompilerInclude(parent, result));
             break;
 
