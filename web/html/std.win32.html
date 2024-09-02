@@ -1750,7 +1750,7 @@
 <tr>
 <td id="Win32_CSIDL_FLAG_NO_ALIAS">CSIDL_FLAG_NO_ALIAS</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>combine with CSIDL_ value to insure non-typealias versions of the pidl. </td>
+<td>combine with CSIDL_ value to insure non-alias versions of the pidl. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_FLAG_PER_USER_INIT">CSIDL_FLAG_PER_USER_INIT</td>

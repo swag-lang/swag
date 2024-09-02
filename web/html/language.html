@@ -519,11 +519,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">impl</span>
 <span class="SKwd">interface</span>
 <span class="SKwd">func</span>
-<span class="SKwd">closure</span>
 <span class="SKwd">mtd</span>
 <span class="SKwd">namespace</span>
-<span class="SKwd">typealias</span>
-<span class="SKwd">namealias</span>
+<span class="SKwd">alias</span>
 <span class="SKwd">attr</span>
 <span class="SKwd">var</span>
 <span class="SKwd">let</span>
@@ -1688,23 +1686,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_003_000_fundamentals_swg__003_008_alias_swg">Alias</h3><h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Type Alias </h4>
-<p>A <span class="code-inline">typealias</span> allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with. </p>
+<p>An <span class="code-inline">alias</span> allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with. </p>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Basic Type Alias </h4>
-<p>Using <span class="code-inline">typealias</span>, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one. </p>
+<p>Using <span class="code-inline">alias</span>, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
     <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span> == <span class="SNum">0</span>)
 
-    <span class="SKwd">typealias</span> <span class="SCst">Color</span> = <span class="SCst">RGB</span>                   <span class="SCmt">// 'Color' is now a shorthand for 'RGB'</span>
+    <span class="SKwd">alias</span> <span class="SCst">Color</span> = <span class="SCst">RGB</span>                   <span class="SCmt">// 'Color' is now a shorthand for 'RGB'</span>
     <span class="SItr">@assert</span>(<span class="SCst">Color</span>.<span class="SCst">G</span> == <span class="SNum">1</span>)                   <span class="SCmt">// 'Color' can be used wherever 'RGB' is expected.</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Aliasing Primitive Types </h4>
 <p>You can create aliases for primitive types, making your code more readable and meaningful, especially when the alias represents a specific domain concept. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Float32</span> = <span class="STpe">f32</span>                 <span class="SCmt">// 'Float32' is an alias for 'f32'</span>
-    <span class="SKwd">typealias</span> <span class="SCst">Float64</span> = <span class="STpe">f64</span>                 <span class="SCmt">// 'Float64' is an alias for 'f64'</span>
+    <span class="SKwd">alias</span> <span class="SCst">Float32</span> = <span class="STpe">f32</span>                 <span class="SCmt">// 'Float32' is an alias for 'f32'</span>
+    <span class="SKwd">alias</span> <span class="SCst">Float64</span> = <span class="STpe">f64</span>                 <span class="SCmt">// 'Float64' is an alias for 'f64'</span>
 
     <span class="SKwd">var</span> x: <span class="SCst">Float32</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var x: f32'</span>
     <span class="SKwd">var</span> y: <span class="SCst">Float64</span> = <span class="SNum">1.0</span>                    <span class="SCmt">// Equivalent to declaring 'var y: f64'</span>
@@ -1712,33 +1710,33 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Float64</span>) == <span class="STpe">f64</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Strict Type Alias </h4>
-<p>In cases where you need to enforce type safety, Swag provides the <span class="code-inline">Swag.Strict</span> attribute, which can be applied to a <span class="code-inline">typealias</span>. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate. </p>
+<p>In cases where you need to enforce type safety, Swag provides the <span class="code-inline">Swag.Strict</span> attribute, which can be applied to a <span class="code-inline">alias</span>. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Strict]</span>
-    <span class="SKwd">typealias</span> <span class="SCst">MyType</span> = <span class="STpe">s32</span>                  <span class="SCmt">// 'MyType' is a distinct type, not interchangeable with 's32'</span>
+    <span class="SKwd">alias</span> <span class="SCst">MyType</span> = <span class="STpe">s32</span>                  <span class="SCmt">// 'MyType' is a distinct type, not interchangeable with 's32'</span>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">MyType</span>) != <span class="STpe">s32</span>
 
     <span class="SKwd">let</span> x: <span class="SCst">MyType</span> = <span class="SKwd">cast</span>(<span class="SCst">MyType</span>) <span class="SNum">0</span>          <span class="SCmt">// Explicit cast is required to assign a value</span>
     <span class="SKwd">let</span> y: <span class="STpe">s32</span> = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) x                <span class="SCmt">// Casting back to 's32' also requires an explicit cast</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Name Alias </h4>
-<p>A <span class="code-inline">namealias</span> allows you to create an alternative name or shortcut for functions, variables, or namespaces. This can be particularly useful for simplifying code, managing long or complex names, or improving the readability and maintainability of your code. </p>
+<p>An <span class="code-inline">alias</span> allows you also to create an alternative name or shortcut for functions, variables, or namespaces. This can be particularly useful for simplifying code, managing long or complex names, or improving the readability and maintainability of your code. </p>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Function Name Alias </h4>
-<p>With <span class="code-inline">namealias</span>, you can define a shorter or more convenient name for a function. This is particularly helpful when dealing with functions that have long or descriptive names, allowing you to simplify your code without sacrificing functionality. </p>
+<p>With <span class="code-inline">alias</span>, you can define a shorter or more convenient name for a function. This is particularly helpful when dealing with functions that have long or descriptive names, allowing you to simplify your code without sacrificing functionality. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">thisIsABigFunctionName</span>(x: <span class="STpe">s32</span>) =&gt; x * x
 
-    <span class="SKwd">namealias</span> myFunc = thisIsABigFunctionName
+    <span class="SKwd">alias</span> myFunc = thisIsABigFunctionName
     <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(<span class="SNum">4</span>) == <span class="SNum">16</span>)                <span class="SCmt">// 'myFunc' is now an alias for 'thisIsABigFunctionName'</span>
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Variable and Namespace Alias </h4>
-<p><span class="code-inline">namealias</span> can also be used to alias variables and namespaces, offering a shorter or more convenient reference that can be used throughout your code. This is particularly useful in large codebases where certain variables or namespaces are frequently referenced. </p>
+<p><span class="code-inline">alias</span> can also be used to alias variables and namespaces, offering a shorter or more convenient reference that can be used throughout your code. This is particularly useful in large codebases where certain variables or namespaces are frequently referenced. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myLongVariableName: <span class="STpe">s32</span> = <span class="SNum">0</span>
-    <span class="SKwd">namealias</span> short = myLongVariableName
+    <span class="SKwd">alias</span> short = myLongVariableName
 
     short += <span class="SNum">2</span>                              <span class="SCmt">// 'short' is an alias for 'myLongVariableName'</span>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)        <span class="SCmt">// The original variable reflects changes made via the alias</span>
@@ -4180,7 +4178,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Define a type alias 'Lambda' for a function pointer taking 'MyStruct' and returning 's32'</span>
-    <span class="SKwd">typealias</span> <span class="SCst">Lambda</span> = <span class="SKwd">func</span>(<span class="SCst">MyStruct</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">alias</span> <span class="SCst">Lambda</span> = <span class="SKwd">func</span>(<span class="SCst">MyStruct</span>)-&gt;<span class="STpe">s32</span>
 
     <span class="SKwd">var</span> fnX: <span class="SCst">Lambda</span>  <span class="SCmt">// Function pointer for 'returnX'</span>
     <span class="SKwd">var</span> fnY: <span class="SCst">Lambda</span>  <span class="SCmt">// Function pointer for 'returnY'</span>
@@ -4370,9 +4368,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     x, y: <span class="STpe">s32</span>   <span class="SCmt">// Define two properties, x and y, of type s32 (signed 32-bit integer)</span>
 }
 
-<span class="SKwd">typealias</span> <span class="SCst">OneType</span>      = <span class="STpe">bool</span>   <span class="SCmt">// Alias for boolean type</span>
-<span class="SKwd">typealias</span> <span class="SCst">AnotherType</span>  = <span class="STpe">s32</span>    <span class="SCmt">// Alias for signed 32-bit integer type</span>
-<span class="SKwd">typealias</span> <span class="SCst">WhateverType</span> = <span class="STpe">bool</span>   <span class="SCmt">// Another alias for boolean type</span>
+<span class="SKwd">alias</span> <span class="SCst">OneType</span>      = <span class="STpe">bool</span>   <span class="SCmt">// Alias for boolean type</span>
+<span class="SKwd">alias</span> <span class="SCst">AnotherType</span>  = <span class="STpe">s32</span>    <span class="SCmt">// Alias for signed 32-bit integer type</span>
+<span class="SKwd">alias</span> <span class="SCst">WhateverType</span> = <span class="STpe">bool</span>   <span class="SCmt">// Another alias for boolean type</span>
 
 <span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
@@ -5244,7 +5242,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Lambdas can be passed as parameters, enabling higher-order functions where other functions are executed dynamically based on input. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">alias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
     <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value) <span class="SCmt">// Execute the lambda with the given value</span>
 
     <span class="SKwd">func</span> <span class="SFct">square</span>(x: <span class="STpe">s32</span>) =&gt; x * x
@@ -5264,7 +5262,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Anonymous functions can be passed directly as arguments to other functions, without first being assigned to variables. This enables concise and flexible code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">alias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
     <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
 
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x: <span class="STpe">s32</span>) =&gt; x * x) == <span class="SNum">16</span>) <span class="SCmt">// Passing anonymous functions as arguments</span>
@@ -5275,7 +5273,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Swag allows for inferred parameter types in anonymous functions, resulting in cleaner and more concise code, especially when the type can be unambiguously deduced from context. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">typealias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+    <span class="SKwd">alias</span> <span class="SCst">Callback</span> = <span class="SKwd">func</span>(<span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
     <span class="SKwd">func</span> <span class="SFct">toDo</span>(value: <span class="STpe">s32</span>, ptr: <span class="SCst">Callback</span>)-&gt;<span class="STpe">s32</span> =&gt; <span class="SFct">ptr</span>(value)
 
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, <span class="SKwd">func</span>(x) =&gt; x * x) == <span class="SNum">16</span>) <span class="SCmt">// The type of 'x' is inferred from context</span>
@@ -5325,23 +5323,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_007_000_functions_swg__007_003_closure_swg">Closure</h3><h4 id="_007_000_functions_swg__007_003_closure_swg">Introduction to Closures in Swag </h4>
-<p>Swag supports a limited implementation of the <span class="code-inline">closure</span> concept. A closure allows capturing variables  from its surrounding scope. Swag currently permits capturing up to 48 bytes, ensuring no hidden  allocations. However, only simple variables (i.e., variables without custom behaviors such as <span class="code-inline">opDrop</span>,  <span class="code-inline">opPostCopy</span>, or <span class="code-inline">opPostMove</span>) are eligible for capture. </p>
+<p>Swag supports a limited implementation of the closure concept. A closure allows capturing variables  from its surrounding scope. Swag currently permits capturing up to 48 bytes, ensuring no hidden  allocations. However, only simple variables (i.e., variables without custom behaviors such as <span class="code-inline">opDrop</span>,  <span class="code-inline">opPostCopy</span>, or <span class="code-inline">opPostMove</span>) are eligible for capture. </p>
 <h4 id="_007_000_functions_swg__007_003_closure_swg">Declaring a Closure </h4>
-<p>A closure is declared similarly to a lambda, with captured variables specified between <span class="code-inline">|...|</span> before  the function parameters. </p>
+<p>A closure is declared similarly to a lambda, with captured variables specified between <span class="code-inline">|...|</span> before  the function parameters. For a type, the syntax is <span class="code-inline">func||(...)</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a = <span class="SNum">125</span>                      <span class="SCmt">// Initialize variable 'a' with a value of 125.</span>
     <span class="SKwd">let</span> b = <span class="SNum">521</span>                      <span class="SCmt">// Initialize variable 'b' with a value of 521.</span>
 
     <span class="SCmt">// Capture 'a' and 'b' by value, meaning copies of these variables are captured.</span>
-    <span class="SKwd">let</span> fct: <span class="SKwd">closure</span>() = <span class="SKwd">closure</span>|a, b|()
+    <span class="SKwd">let</span> fct: <span class="SKwd">func</span>||() = <span class="SKwd">func</span>|a, b|()
     {
-        <span class="SCmt">// Inside the closure, the captured values 'a' and 'b' are accessible.</span>
+        <span class="SCmt">// Inside the func, the captured values 'a' and 'b' are accessible.</span>
         <span class="SItr">@assert</span>(a == <span class="SNum">125</span>)            <span class="SCmt">// Verify that the captured 'a' equals 125.</span>
         <span class="SItr">@assert</span>(b == <span class="SNum">521</span>)            <span class="SCmt">// Verify that the captured 'b' equals 521.</span>
     }
 
-    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the closure.</span>
+    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the func.</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_003_closure_swg">Capturing Variables by Reference </h4>
 <p>Variables can also be captured by reference using <span class="code-inline">&</span>. By default, variables are captured by value. </p>
@@ -5349,25 +5347,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> a = <span class="SNum">125</span>                      <span class="SCmt">// Declare a mutable variable 'a' with an initial value of 125.</span>
 
-    <span class="SCmt">// Capture 'a' by reference, meaning changes to 'a' inside the closure will affect 'a' outside the closure.</span>
-    <span class="SKwd">let</span> fct: <span class="SKwd">closure</span>() = <span class="SKwd">closure</span>|&a|()
+    <span class="SCmt">// Capture 'a' by reference, meaning changes to 'a' inside the func will affect 'a' outside the func.</span>
+    <span class="SKwd">let</span> fct: <span class="SKwd">func</span>||() = <span class="SKwd">func</span>|&a|()
     {
         a += <span class="SNum">1</span>                       <span class="SCmt">// Modify the captured variable 'a' by incrementing it.</span>
     }
 
-    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the closure, which increments 'a' by 1.</span>
+    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the func, which increments 'a' by 1.</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">126</span>)                <span class="SCmt">// Check that 'a' has been incremented to 126.</span>
 
-    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the closure again, further incrementing 'a'.</span>
+    <span class="SFct">fct</span>()                            <span class="SCmt">// Invoke the func again, further incrementing 'a'.</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">127</span>)                <span class="SCmt">// Check that 'a' has been incremented to 127.</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_003_closure_swg">Assigning Lambdas to Closure Variables </h4>
 <p>A closure variable can also hold a standard lambda (without capture). This provides flexibility in  assigning different types of functions to the same variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> <span class="SCmt">// Declare a closure variable that takes two integers and returns an integer.</span>
+    <span class="SKwd">var</span> fct: <span class="SKwd">func</span>||(<span class="STpe">s32</span>, <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> <span class="SCmt">// Declare a func variable that takes two integers and returns an integer.</span>
 
-    <span class="SCmt">// Assign a simple lambda that adds two integers to the closure variable 'fct'.</span>
+    <span class="SCmt">// Assign a simple lambda that adds two integers to the func variable 'fct'.</span>
     fct = <span class="SKwd">func</span>(x, y) =&gt; x + y
 
     <span class="SItr">@assert</span>(<span class="SFct">fct</span>(<span class="SNum">1</span>, <span class="SNum">2</span>) == <span class="SNum">3</span>)          <span class="SCmt">// Test the lambda by passing values 1 and 2, expecting the result to be 3.</span>
@@ -5378,13 +5376,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> x = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]                <span class="SCmt">// Declare and initialize an array 'x' of integers.</span>
 
-    <span class="SKwd">var</span> fct: <span class="SKwd">closure</span>(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>     <span class="SCmt">// Declare a closure variable that takes an integer and returns an integer.</span>
+    <span class="SKwd">var</span> fct: <span class="SKwd">func</span>||(<span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>      <span class="SCmt">// Declare a closure variable that takes an integer and returns an integer.</span>
 
     <span class="SCmt">// Capture the array 'x' by value (a copy of the array is made).</span>
-    fct = <span class="SKwd">closure</span>|x|(toAdd)
+    fct = <span class="SKwd">func</span>|x|(toAdd)
     {
         <span class="SKwd">var</span> res = <span class="SNum">0</span>                  <span class="SCmt">// Initialize a result variable 'res' to accumulate the sum.</span>
-        <span class="SLgc">foreach</span> v <span class="SLgc">in</span> x:                <span class="SCmt">// Iterate over the captured array 'x' and sum its elements.</span>
+        <span class="SLgc">foreach</span> v <span class="SLgc">in</span> x:              <span class="SCmt">// Iterate over the captured array 'x' and sum its elements.</span>
             res += v
         res += toAdd                 <span class="SCmt">// Add the 'toAdd' parameter to the sum.</span>
         <span class="SLgc">return</span> res
@@ -5398,12 +5396,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// A function that returns a closure, which increments a captured variable 'x' each time it's called.</span>
-    <span class="SKwd">func</span> <span class="SFct">getInc</span>() -&gt; <span class="SKwd">closure</span>() -&gt; <span class="STpe">s32</span>
+    <span class="SKwd">func</span> <span class="SFct">getInc</span>() -&gt; <span class="SKwd">func</span>||() -&gt; <span class="STpe">s32</span>
     {
         <span class="SKwd">let</span> x = <span class="SNum">10</span>                   <span class="SCmt">// Initialize 'x' with 10.</span>
 
         <span class="SCmt">// Return a closure that captures 'x' by value.</span>
-        <span class="SLgc">return</span> <span class="SKwd">closure</span>|x|() -&gt; <span class="STpe">s32</span>
+        <span class="SLgc">return</span> <span class="SKwd">func</span>|x|() -&gt; <span class="STpe">s32</span>
         {
             x += <span class="SNum">1</span>                   <span class="SCmt">// Increment the captured 'x' and return its new value.</span>
             <span class="SLgc">return</span> x
@@ -6665,7 +6663,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Example where `T` is a type and `N` is a constant of type `s32`.</span>
         <span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>(x: <span class="SCst">T</span>) =&gt; x * <span class="SCst">N</span>
 
-        <span class="SKwd">namealias</span> call = <span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="SNum">10</span>)
+        <span class="SKwd">alias</span> call = <span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="SNum">10</span>)
         <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">2</span>) == <span class="SNum">20</span>)                 <span class="SCmt">// Function call with 's32' type and 10 constant.</span>
         <span class="SItr">@assert</span>(<span class="SFct">call</span>(<span class="SNum">100</span>) == <span class="SNum">1000</span>)             <span class="SCmt">// Another call with the same type and constant.</span>
     }

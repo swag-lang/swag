@@ -2844,7 +2844,7 @@
 </p>
 <p>Sort array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">closure</span>(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18805,7 +18805,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_makeConcreteAlias">makeConcreteAlias</a></span></td>
-<td>In case this is a type typealias, need to go deep inside it to find the right type. </td>
+<td>In case this is a type alias, need to go deep inside it to find the right type. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Reflection_makeConcreteEnum">makeConcreteEnum</a></span></td>
@@ -19399,7 +19399,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 </p>
-<p>In case this is a type typealias, need to go deep inside it to find the right type. </p>
+<p>In case this is a type alias, need to go deep inside it to find the right type. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeConcreteAlias</span>(type: <span class="STpe">typeinfo</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></div>
 <p>
 <table class="api-item">
@@ -22850,7 +22850,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if <span class="code-inline">cb</span> returns true for all values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">allOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">allOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22863,7 +22863,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if <span class="code-inline">cb</span> returns true for at least one value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">anyOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">anyOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22957,7 +22957,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Insertion sort algorithm (slow). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">insertionSort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">insertionSort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22971,7 +22971,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Returns true if the slice is sorted. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isSorted</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isSorted</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isSorted</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22984,7 +22984,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Map the content of a slice to an array of type <span class="code-inline">R</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">R</span>) <span class="SFct">map</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>)-&gt;<span class="SCst">R</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst">R</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">R</span>) <span class="SFct">map</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="SCst">R</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst">R</span>)</span></div>
 <p>The lambda must return the value of <span class="code-inline">R</span> for each element of the slice. </p>
 <p>
 <table class="api-item">
@@ -23024,7 +23024,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Transform in place the content of a slice with a given lambda. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">modify</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(*<span class="SCst">T</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">modify</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(*<span class="SCst">T</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23050,7 +23050,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if <span class="code-inline">cb</span> returns false for all values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">noneOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">noneOf</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23063,7 +23063,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Quick sort algorithm. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">quickSort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">quickSort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23076,7 +23076,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reduce the content of a slice to one single value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">reduce</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">reduce</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
 <p>The lambda is called with the previous reduced value and each element of the slice. The first reduced value is the first element of the slice. </p>
 <p>
 <table class="api-item">
@@ -23104,7 +23104,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Sort the slice, by picking the right algorithm depending on the type and the number of elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sort</span>(values: [..] <span class="SCst">T</span>, bigFirst = <span class="SKwd">false</span>)
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">closure</span>(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sort</span>(values: [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23733,7 +23733,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Sort array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">closure</span>(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26356,7 +26356,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td>userLambda</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_Threading">Threading</a></span>.<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_Threading">Threading</a></span>.<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -26448,7 +26448,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize a thread in pause state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lambda: <span class="SKwd">closure</span>(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lambda: <span class="SKwd">func</span>||(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>

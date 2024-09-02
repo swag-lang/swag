@@ -4859,7 +4859,7 @@
 </tr>
 <tr>
 <td>Strict</td>
-<td>This is a typealias with the Swag.Strict attribute. </td>
+<td>This is a alias with the Swag.Strict attribute. </td>
 </tr>
 <tr>
 <td>CanCopy</td>
@@ -4994,7 +4994,7 @@
 </tr>
 <tr>
 <td>Lambda</td>
-<td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a func. </td>
 </tr>
 <tr>
 <td>Pointer</td>
