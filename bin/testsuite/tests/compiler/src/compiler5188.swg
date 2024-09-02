@@ -1,6 +1,6 @@
-typealias Point = s64
-typealias Triangle = s64
-typealias Orientation = bool
+alias Point = s64
+alias Triangle = s64
+alias Orientation = bool
 
 struct A {}
 impl A

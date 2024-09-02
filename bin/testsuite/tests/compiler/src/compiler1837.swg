@@ -3,13 +3,13 @@
 
 struct Point2
 {
-    typealias R = s32
+    alias R = s32
     x, y: s32
 }
 
 struct Point3
 {
-    typealias R = s32
+    alias R = s32
     x, y, z: s32
 }
 

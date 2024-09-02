@@ -8,7 +8,7 @@ enum Flags
 }
 
 #[Swag.Strict]
-typealias A = Flags
+alias A = Flags
 
 func add(flags: &A, value: A)
 {

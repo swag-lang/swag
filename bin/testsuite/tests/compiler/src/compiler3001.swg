@@ -8,5 +8,5 @@ struct AA
     b: BBPtr
 }
 
-typealias AAPtr = *AA
-typealias BBPtr = *BB
+alias AAPtr = *AA
+alias BBPtr = *BB

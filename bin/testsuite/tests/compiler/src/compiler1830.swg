@@ -1,6 +1,6 @@
 #global testerror "Err0647"
 
-typealias X = func()->s32
+alias X = func()->s32
 
 #test
 {

@@ -420,11 +420,16 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::SymLeftCurly:
-            SWAG_CHECK(doExpressionListTuple(parent, result));
+            if (exprFlags.has(EXPR_FLAG_ALIAS))
+                SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
+            else
+                SWAG_CHECK(doExpressionListTuple(parent, result));
             break;
 
         case TokenId::SymLeftSquare:
-            if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
+            if (exprFlags.has(EXPR_FLAG_ALIAS))
+                SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
+            else if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
             {
                 tokenizer.saveState(tokenParse);
                 SWAG_CHECK(doExpressionListArray(parent, result));
@@ -447,7 +452,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
                 return invalidTokenError(InvalidTokenError::PrimaryExpression);
 
-            if (exprFlags.has(EXPR_FLAG_TYPEOF))
+            if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_ALIAS))
                 SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
             else
                 SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));

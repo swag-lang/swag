@@ -1,6 +1,6 @@
 #global testerror "Err0756"
 
-typealias A = [] s32
+alias A = [] s32
 var x: A
 #test
 {

@@ -3,7 +3,7 @@ struct A { r, g, b, d : s32; }
 var G = 0
 
 #[Swag.Strict]
-typealias AL = A
+alias AL = A
 
 func toto(x: AL)
 {

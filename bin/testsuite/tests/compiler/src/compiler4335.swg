@@ -1,4 +1,4 @@
-typealias A = s32
+alias A = s32
 
 //#global testerror
 //var G: {#type A, b: s32 = 1}

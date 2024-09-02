@@ -1,6 +1,6 @@
 func toto(x: s32) => x + 1
 
-namealias AA = toto
+alias AA = toto
 
 #test
 {

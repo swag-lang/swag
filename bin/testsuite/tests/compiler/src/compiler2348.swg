@@ -1,4 +1,4 @@
-typealias HANDLE = const *void
+alias HANDLE = const *void
 
 func toto(ptr: *HANDLE)
 {

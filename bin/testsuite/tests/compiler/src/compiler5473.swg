@@ -1,7 +1,7 @@
 struct A { r, g : s32; }
 
 #[Swag.Strict]
-typealias AL = A
+alias AL = A
 
 //#[Swag.PrintBc]
 //#[Swag.Optimize("", false)]

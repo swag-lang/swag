@@ -2,7 +2,7 @@
 using Swag
 
 struct FILE {}
-typealias fpos_t = s64
+alias fpos_t = s64
 
 const _IOFBF = 0x0000
 const _IONBF = 0x0004

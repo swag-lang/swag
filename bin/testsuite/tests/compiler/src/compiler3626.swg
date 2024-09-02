@@ -4,7 +4,7 @@ struct A
     c: s32 = 666
 }
 
-typealias AA = A
+alias AA = A
 var g: [4] AA
 
 #test

@@ -1,8 +1,8 @@
 #[Swag.Strict]
-typealias U = u32
+alias U = u32
 
 #[Swag.Strict]
-typealias V = u32
+alias V = u32
 
 func toto(u: V)
 {

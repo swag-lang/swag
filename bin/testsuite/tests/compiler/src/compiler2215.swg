@@ -1,4 +1,4 @@
-typealias DWORD = s32
+alias DWORD = s32
 
 struct A
 {

@@ -1,3 +1,3 @@
 #global export
 
-typealias size_t = u64
+alias size_t = u64

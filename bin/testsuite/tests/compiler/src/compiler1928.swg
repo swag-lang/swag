@@ -1,9 +1,9 @@
-#global testerror "Err0666"
+#global testerror "Err0480"
 
-typealias A = [2] s32
+alias A = [2] s32
 var x: A
 
 #test
 {
-    namealias p = &x[0]
+    alias p = &x[0]
 }

@@ -57,8 +57,7 @@ func
 closure
 mtd
 namespace
-typealias
-namealias
+alias
 attr
 var
 let

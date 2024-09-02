@@ -15,4 +15,4 @@ public impl C1925
     }
 }
 
-public typealias C1925X = C1925's32
+public alias C1925X = C1925's32

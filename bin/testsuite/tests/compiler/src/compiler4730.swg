@@ -1,5 +1,5 @@
 #global testerror "Err0322"
-typealias Toto4730 = s32
+alias Toto4730 = s32
 
 #[Swag.Inline]
 public func toto4730()

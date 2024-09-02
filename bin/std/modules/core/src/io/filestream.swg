@@ -1,7 +1,7 @@
 #global public
 #global namespace File
 
-typealias FileHandle = const *void
+alias FileHandle = const *void
 
 #[Swag.NoCopy]
 struct FileStream

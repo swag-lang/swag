@@ -1,6 +1,6 @@
 using Core
 
-typealias GG = s32
+alias GG = s32
 
 #test
 {

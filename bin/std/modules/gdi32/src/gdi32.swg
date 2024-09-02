@@ -5,9 +5,9 @@ using Swag, Win32
 
 #[Swag.Strict]
 {
-    typealias HGDIOBJ = const *void
-    typealias HFONT   = const *void
-    typealias HPEN    = const *void
+    alias HGDIOBJ = const *void
+    alias HFONT   = const *void
+    alias HPEN    = const *void
 }
 
 const GDI_ERROR = 0xFFFFFFFF
@@ -409,8 +409,8 @@ struct NEWTEXTMETRICW
     ntmAvgWidth:            UINT
 }
 
-typealias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL
-typealias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL
+alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL
+alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL
 
 #[Swag.Inline]
 func RGB(r, g, b: s32)->COLORREF

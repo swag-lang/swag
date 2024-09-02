@@ -1,7 +1,7 @@
 #global testerror "Err0570"
 
 #[Swag.Strict]
-typealias B = func(s32)
+alias B = func(s32)
 
 var G = 0
 

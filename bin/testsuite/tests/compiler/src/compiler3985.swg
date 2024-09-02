@@ -1,6 +1,6 @@
-typealias AA = A
-typealias BB = B
-typealias CC = C
+alias AA = A
+alias BB = B
+alias CC = C
 
 struct A
 {

@@ -1,8 +1,8 @@
 var G = 0
 func toto() { G = 1; }
 
-namealias O = toto
-namealias P = O
+alias O = toto
+alias P = O
 
 #test
 {

@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    typealias arr4 = Math.NumericArray'(f32, 4)
+    alias arr4 = Math.NumericArray'(f32, 4)
     var v1: arr4 = [1, 2, 3, 4]
     var v2: arr4 = [1, 2, 3, 4]
     v1 += v2

@@ -1,6 +1,6 @@
 #global testerror "Err0004"
 
-typealias point = string
+alias point = string
 func toto(x: point)
 {
     var point = 0

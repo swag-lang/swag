@@ -19,7 +19,7 @@ impl I for A
     {
     }
 
-    typealias XX2 = s32
+    alias XX2 = s32
 
     mtd impl toto()
     {

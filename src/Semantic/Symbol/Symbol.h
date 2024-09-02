@@ -19,6 +19,7 @@ enum class SymbolKind : uint8_t
     Variable,
     TypeAlias,
     NameAlias,
+    Alias,
     Namespace,
     Enum,
     EnumValue,

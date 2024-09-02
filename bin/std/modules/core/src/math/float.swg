@@ -23,8 +23,8 @@ struct(T) Const
     const Epsilon:        T = 1e-06
 }
 
-typealias ConstF32 = Const'f32
-typealias ConstF64 = Const'f64
+alias ConstF32 = Const'f32
+alias ConstF64 = Const'f64
 
 #[Swag.ConstExpr, Swag.Inline, Swag.Overload]
 {

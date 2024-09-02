@@ -1,6 +1,6 @@
 #global testerror "Err0522"
 
-typealias toto = bool
+alias toto = bool
 
 //#[Swag.PrintBc]
 #test

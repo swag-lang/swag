@@ -1,4 +1,4 @@
-typealias ret = {a,b: s32}
+alias ret = {a,b: s32}
 
 func toto()->ret
 {

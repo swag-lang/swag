@@ -1,4 +1,4 @@
-typealias fct = func(s32, s32)->s32
+alias fct = func(s32, s32)->s32
 
 struct A
 {

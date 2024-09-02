@@ -1151,6 +1151,8 @@ struct AstTryCatchAssume : AstReturn
 
 struct AstAlias : AstNode
 {
+    static constexpr SpecFlags SPEC_FLAG_NAME_ALIAS = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     Token kwdLoc;

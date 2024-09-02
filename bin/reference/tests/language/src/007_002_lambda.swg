@@ -36,7 +36,7 @@ are executed dynamically based on input.
 */
 #test
 {
-    typealias Callback = func(s32)->s32
+    alias Callback = func(s32)->s32
     func toDo(value: s32, ptr: Callback)->s32 => ptr(value) // Execute the lambda with the given value
 
     func square(x: s32) => x * x
@@ -64,7 +64,7 @@ assigned to variables. This enables concise and flexible code.
 */
 #test
 {
-    typealias Callback = func(s32)->s32
+    alias Callback = func(s32)->s32
     func toDo(value: s32, ptr: Callback)->s32 => ptr(value)
 
     @assert(toDo(4, func(x: s32) => x * x) == 16) // Passing anonymous functions as arguments
@@ -79,7 +79,7 @@ concise code, especially when the type can be unambiguously deduced from context
 */
 #test
 {
-    typealias Callback = func(s32)->s32
+    alias Callback = func(s32)->s32
     func toDo(value: s32, ptr: Callback)->s32 => ptr(value)
 
     @assert(toDo(4, func(x) => x * x) == 16) // The type of 'x' is inferred from context

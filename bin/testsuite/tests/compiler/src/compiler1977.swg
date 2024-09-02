@@ -25,7 +25,7 @@ impl HashTable
 
 namespace N
 {
-    typealias A = s32
+    alias A = s32
 }
 
 #test

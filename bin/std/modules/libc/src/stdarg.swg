@@ -1,6 +1,6 @@
 #global export
 
-typealias va_list = Swag.CVaList
+alias va_list = Swag.CVaList
 
 #[Swag.Mixin]
 {

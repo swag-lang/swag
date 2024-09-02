@@ -505,7 +505,7 @@ namespace Swag
         HasPostCopy       = 0x00000010     // This is a struct with a 'opPostCopy'
         HasPostMove       = 0x00000020     // This is a struct with a 'opPostMove'
         HasDrop           = 0x00000040     // This is a struct with a 'opDrop'
-        Strict            = 0x00000080     // This is a typealias with the Swag.Strict attribute
+        Strict            = 0x00000080     // This is a alias with the Swag.Strict attribute
         CanCopy           = 0x00000100     // This is a struct that can be copied
         Tuple             = 0x00000200     // This is a tuple
         CString           = 0x00000400     // This is a 'cstring'

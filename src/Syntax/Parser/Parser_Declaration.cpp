@@ -30,8 +30,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdUnion:
         case TokenId::KwdImpl:
         case TokenId::KwdInterface:
-        case TokenId::KwdTypeAlias:
-        case TokenId::KwdNameAlias:
+        case TokenId::KwdAlias:
         case TokenId::KwdNamespace:
         case TokenId::CompilerGlobal:
             break;
@@ -882,11 +881,8 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::CompilerScope:
             SWAG_CHECK(doCompilerScopeBreakable(parent, result));
             break;
-        case TokenId::KwdTypeAlias:
-            SWAG_CHECK(doTypeAlias(parent, result));
-            break;
-        case TokenId::KwdNameAlias:
-            SWAG_CHECK(doNameAlias(parent, result));
+        case TokenId::KwdAlias:
+            SWAG_CHECK(doAlias(parent, result));
             break;
 
         case TokenId::KwdPublic:
@@ -957,11 +953,8 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdConst:
             SWAG_CHECK(doVarDecl(parent, result));
             return true;
-        case TokenId::KwdTypeAlias:
-            SWAG_CHECK(doTypeAlias(parent, result));
-            return true;
-        case TokenId::KwdNameAlias:
-            SWAG_CHECK(doNameAlias(parent, result));
+        case TokenId::KwdAlias:
+            SWAG_CHECK(doAlias(parent, result));
             return true;
         case TokenId::KwdPublic:
         case TokenId::KwdInternal:

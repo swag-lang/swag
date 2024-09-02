@@ -7,6 +7,6 @@ impl A
     }
 }
 
-typealias B = A
+alias B = A
 var x:  [4] B
 var x1: B

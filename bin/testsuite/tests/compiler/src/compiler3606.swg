@@ -1,4 +1,4 @@
-typealias MyType = s32
+alias MyType = s32
 
 enum E: MyType
 {

@@ -4,10 +4,10 @@
 #test
 {
     {
-        typealias point = string
+        alias point = string
         func toto(x: point)
         {
-            typealias point = s32
+            alias point = s32
             var y: point
         }
 

@@ -1,7 +1,7 @@
 #global public
 #global namespace Env
 
-typealias ProcessHandle = const *void
+alias ProcessHandle = const *void
 
 struct StartInfo
 {

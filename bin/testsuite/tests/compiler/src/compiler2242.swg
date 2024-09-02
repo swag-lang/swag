@@ -1,7 +1,7 @@
 
 #global testerror "Err0289"
 
-func mix(v, val: typealias)
+func mix(v, val: alias)
 {
     v += val
 }

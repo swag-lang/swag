@@ -1,7 +1,7 @@
 #[Swag.Strict]
 {
-    typealias AA = *void
-    typealias BB = *void
+    alias AA = *void
+    alias BB = *void
 }
 
 #[Swag.Overload]

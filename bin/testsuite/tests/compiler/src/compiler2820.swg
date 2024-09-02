@@ -1,4 +1,4 @@
-typealias X = [2] u32
+alias X = [2] u32
 func toto(x: X)
 {
     x[0] = 1

@@ -1,4 +1,4 @@
-typealias A = u8
+alias A = u8
 
 #test
 {

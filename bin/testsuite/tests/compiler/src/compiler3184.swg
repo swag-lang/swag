@@ -1,4 +1,4 @@
 #global testerror "Err0767"
 
 using X
-typealias X = s32
+alias X = s32

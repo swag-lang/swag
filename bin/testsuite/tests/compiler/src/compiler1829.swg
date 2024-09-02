@@ -3,7 +3,7 @@ struct(T) Point
     x: T = 1.5
 }
 
-typealias X = Point'f32
+alias X = Point'f32
 
 #test
 {

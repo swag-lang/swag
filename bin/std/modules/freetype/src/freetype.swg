@@ -1,35 +1,35 @@
 #global export
 using Swag
 
-typealias FT_Library        = *FT_LibraryRec
-typealias FT_Face           = *FT_FaceRec
-typealias FT_CharMap        = *FT_CharMapRec
-typealias FT_GlyphSlot      = *FT_GlyphSlotRec
-typealias FT_SubGlyph       = *FT_SubGlyphRec
-typealias FT_Size           = *FT_SizeRec
-typealias FT_Slot_Internal  = *void
-typealias FT_Size_Internal  = *void
-typealias FT_Face_Internal  = *void
-typealias FT_Memory         = *void
-typealias FT_Module         = *void
-typealias FT_Renderer       = *void
-typealias FT_DebugHook_Func = *void
-typealias FT_ListNode       = *void
-typealias FT_Driver         = *void
-typealias FT_Stream         = *void
+alias FT_Library        = *FT_LibraryRec
+alias FT_Face           = *FT_FaceRec
+alias FT_CharMap        = *FT_CharMapRec
+alias FT_GlyphSlot      = *FT_GlyphSlotRec
+alias FT_SubGlyph       = *FT_SubGlyphRec
+alias FT_Size           = *FT_SizeRec
+alias FT_Slot_Internal  = *void
+alias FT_Size_Internal  = *void
+alias FT_Face_Internal  = *void
+alias FT_Memory         = *void
+alias FT_Module         = *void
+alias FT_Renderer       = *void
+alias FT_DebugHook_Func = *void
+alias FT_ListNode       = *void
+alias FT_Driver         = *void
+alias FT_Stream         = *void
 
-typealias FT_String = u8
-typealias FT_Int    = s32
-typealias FT_UInt   = u32
-typealias FT_Long   = s32
-typealias FT_ULong  = u32
-typealias FT_Short  = s16
-typealias FT_UShort = u16
-typealias FT_Pos    = s32
-typealias FT_Error  = s32
-typealias FT_Fixed  = s32
-typealias FT_Byte   = u8
-typealias FT_Int32  = s32
+alias FT_String = u8
+alias FT_Int    = s32
+alias FT_UInt   = u32
+alias FT_Long   = s32
+alias FT_ULong  = u32
+alias FT_Short  = s16
+alias FT_UShort = u16
+alias FT_Pos    = s32
+alias FT_Error  = s32
+alias FT_Fixed  = s32
+alias FT_Byte   = u8
+alias FT_Int32  = s32
 
 const FT_LOAD_DEFAULT                     = 0x0
 const FT_LOAD_NO_SCALE                    = 1 << 0

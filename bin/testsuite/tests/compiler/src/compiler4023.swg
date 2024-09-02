@@ -1,1 +1,1 @@
-typealias X = [2] s32
+alias X = [2] s32

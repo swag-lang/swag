@@ -1,7 +1,7 @@
 #global public
 namespace AA2944
 {
-    typealias T = s32
+    alias T = s32
 }
 
 using AA2944

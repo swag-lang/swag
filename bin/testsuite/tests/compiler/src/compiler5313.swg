@@ -1,6 +1,6 @@
 namespace C
 {
-    typealias B = s32
+    alias B = s32
 }
 
 //#[Swag.PrintBc]

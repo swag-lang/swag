@@ -145,7 +145,7 @@ private
 // VOICE
 ///////////////////////////////////////////////////////////////
 
-public typealias VoiceHandle = *IXAudio2SourceVoice
+public alias VoiceHandle = *IXAudio2SourceVoice
 
 impl Voice
 {
@@ -316,7 +316,7 @@ public impl Voice
 // BUS
 ///////////////////////////////////////////////////////////////
 
-public typealias BusHandle = *IXAudio2SubmixVoice
+public alias BusHandle = *IXAudio2SubmixVoice
 
 impl Bus
 {

@@ -226,7 +226,7 @@ bool FormatAst::outputTypeAlias(FormatContext& context, AstNode* node, uint32_t 
 {
     beautifyBefore(context, node);
 
-    concat->addString("typealias");
+    concat->addString("alias");
     concat->addBlank();
     const auto startColumn = concat->column;
     concat->addString(node->token.text);

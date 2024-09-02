@@ -1,7 +1,7 @@
 struct(T) BB
 {
-    typealias TYPE = [4] T
-    //typealias y = {T, T}
+    alias TYPE = [4] T
+    //alias y = {T, T}
 }
 
 //#[Swag.PrintBc]

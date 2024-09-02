@@ -1,5 +1,5 @@
 #[Swag.Strict]
-typealias T = s32
+alias T = s32
 
 func toto(x: T)
 {

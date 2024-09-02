@@ -9,4 +9,4 @@ namespace A
 	}
 }
 
-typealias myType = u32;
+alias myType = u32;

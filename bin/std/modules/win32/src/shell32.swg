@@ -2,8 +2,8 @@
 #foreignlib "shell32"
 using Swag
 
-typealias SHSTDAPI = *void
-typealias HRESULT  = *void
+alias SHSTDAPI = *void
+alias HRESULT  = *void
 
 const S_OK = cast(HRESULT) null
 
@@ -67,7 +67,7 @@ const CSIDL_COMPUTERSNEARME         = 0x003d             // Computers Near Me (c
 const CSIDL_FLAG_CREATE             = 0x8000             // combine with CSIDL_ value to force folder creation in SHGetFolderPath()
 const CSIDL_FLAG_DONT_VERIFY        = 0x4000             // combine with CSIDL_ value to return an unverified folder path
 const CSIDL_FLAG_DONT_UNEXPAND      = 0x2000             // combine with CSIDL_ value to avoid unexpanding environment variables
-const CSIDL_FLAG_NO_ALIAS           = 0x1000             // combine with CSIDL_ value to insure non-typealias versions of the pidl
+const CSIDL_FLAG_NO_ALIAS           = 0x1000             // combine with CSIDL_ value to insure non-alias versions of the pidl
 const CSIDL_FLAG_PER_USER_INIT      = 0x0800             // combine with CSIDL_ value to indicate per-user init (eg. upgrade)
 const CSIDL_FLAG_MASK               = 0xFF00             // mask for all possible flag values
 

@@ -19,15 +19,15 @@ internal
 }
 
 #[Swag.Strict]
-typealias TextureHandle = u64
+alias TextureHandle = u64
 const InvalidTextureHandle: TextureHandle = cast() 0
 
 #[Swag.Strict]
-typealias RenderTargetHandle = u64
+alias RenderTargetHandle = u64
 const InvalidRenderTargetHandle: RenderTargetHandle = cast() 0
 
 #[Swag.Strict]
-typealias RenderTargetSurfaceHandle = u64
+alias RenderTargetSurfaceHandle = u64
 const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = cast() 0
 
 #[Swag.NoCopy]

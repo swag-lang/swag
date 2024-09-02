@@ -6,7 +6,7 @@ struct C
 var g_RD: [40] C
 
 enum EE { R; G; }
-typealias E = EE
+alias E = EE
 
 #test
 {

@@ -1,6 +1,6 @@
 #global testerror "Err0571"
 
-typealias toto = s32
+alias toto = s32
 
 //#[Swag.PrintBc]
 #test

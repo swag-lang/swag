@@ -13,7 +13,7 @@ impl Array
     }
 }
 
-typealias Vector = Array'f32
+alias Vector = Array'f32
 
 func toto(x: Vector)
 {

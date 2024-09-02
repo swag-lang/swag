@@ -15,7 +15,7 @@
 
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {
-    const auto node = castAst<AstAlias>(context->node, AstNodeKind::NameAlias);
+    const auto node = castAst<AstAlias>(context->node, AstNodeKind::TypeAlias);
     auto       back = node->lastChild();
 
     SWAG_ASSERT(node->resolvedSymbolName());

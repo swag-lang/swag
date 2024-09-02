@@ -1,6 +1,6 @@
 struct TOTO
 {
-    typealias R = s32
+    alias R = s32
 }
 
 #test

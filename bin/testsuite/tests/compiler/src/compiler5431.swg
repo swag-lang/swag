@@ -1,6 +1,6 @@
 namespace A
 {
-    typealias T = s32
+    alias T = s32
 }
 
 #[Swag.Using(A)]

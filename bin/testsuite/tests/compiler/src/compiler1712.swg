@@ -1,7 +1,7 @@
 #test
 {
     {
-        typealias point = string
+        alias point = string
         func toto(x: point)
         {
             var y: point

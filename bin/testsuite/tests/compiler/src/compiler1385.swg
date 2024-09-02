@@ -4,7 +4,7 @@ enum Key
     B
 }
 
-typealias VirtualKey = u32
+alias VirtualKey = u32
 var g_mapVKeyToKey: [256] u8
 
 func VKeyToKey(vkey: VirtualKey)-> Key

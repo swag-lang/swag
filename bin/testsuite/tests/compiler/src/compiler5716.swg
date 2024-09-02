@@ -1,6 +1,6 @@
 #global testerror "San0006"
 
-typealias A = string
+alias A = string
 
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]

@@ -4,19 +4,19 @@ using Swag
 
 #[Swag.Strict]
 {
-    typealias HWND     = const *void
-    typealias HMENU    = const *void
-    typealias HICON    = const *void
-    typealias HBITMAP  = const *void
-    typealias HCURSOR  = const *void
-    typealias HBRUSH   = const *void
-    typealias HDC      = const *void
-    typealias HMONITOR = const *void
+    alias HWND     = const *void
+    alias HMENU    = const *void
+    alias HICON    = const *void
+    alias HBITMAP  = const *void
+    alias HCURSOR  = const *void
+    alias HBRUSH   = const *void
+    alias HDC      = const *void
+    alias HMONITOR = const *void
 }
 
-typealias WPARAM   = u64
-typealias LPARAM   = u64
-typealias COLORREF = DWORD
+alias WPARAM   = u64
+alias LPARAM   = u64
+alias COLORREF = DWORD
 
 const MOD_ALT      = 0x0001
 const MOD_CONTROL  = 0x0002
@@ -954,7 +954,7 @@ struct ICONINFO
     hbmColor:     HBITMAP
 }
 
-typealias DPI_AWARENESS_CONTEXT = *void
+alias DPI_AWARENESS_CONTEXT = *void
 const DPI_AWARENESS_CONTEXT_UNAWARE              = cast(DPI_AWARENESS_CONTEXT) cast<bit>(u64) -1's64
 const DPI_AWARENESS_CONTEXT_SYSTEM_AWARE         = cast(DPI_AWARENESS_CONTEXT) cast<bit>(u64) -2's64
 const DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE    = cast(DPI_AWARENESS_CONTEXT) cast<bit>(u64) -3's64

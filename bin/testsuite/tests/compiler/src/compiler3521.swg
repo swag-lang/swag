@@ -13,7 +13,7 @@ impl Array
     }
 }
 
-typealias Vector = Array
+alias Vector = Array
 
 func toto(x: Vector)
 {

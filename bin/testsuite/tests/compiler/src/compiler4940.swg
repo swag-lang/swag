@@ -1,3 +1,3 @@
 #global testerror "Err0667"
 
-namealias 0 = 1
+alias 0 = 1

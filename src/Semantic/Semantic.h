@@ -385,8 +385,8 @@ namespace Semantic
     bool resolveTupleUnpackBefore(SemanticContext* context);
     bool resolveTupleUnpackBeforeVar(SemanticContext* context);
     bool resolveType(SemanticContext* context);
-    bool resolveTypeAlias(SemanticContext* context);
-    bool resolveTypeAliasBefore(SemanticContext* context);
+    bool resolveAlias(SemanticContext* context);
+    bool resolveAliasAfterValue(SemanticContext* context);
     bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
     bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
     bool resolveTypeLambdaClosure(SemanticContext* context);

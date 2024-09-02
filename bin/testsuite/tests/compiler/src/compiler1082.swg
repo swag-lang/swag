@@ -1,10 +1,10 @@
-typealias HANDLE= 		*void
-typealias WORD= 		u16
-typealias DWORD= 		u32
-typealias BOOL= 		bool
-typealias LPCVOID=		const *void
-typealias LPDWORD=		*DWORD
-typealias LPOVERLAPPED= *DWORD
+alias HANDLE= 		*void
+alias WORD= 		u16
+alias DWORD= 		u32
+alias BOOL= 		bool
+alias LPCVOID=		const *void
+alias LPDWORD=		*DWORD
+alias LPOVERLAPPED= *DWORD
 
 const STD_INPUT_HANDLE 	= cast<bit>(DWORD) -10
 const STD_OUTPUT_HANDLE = cast<bit>(DWORD) -11

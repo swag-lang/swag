@@ -84,7 +84,7 @@ but with this annotation, they can be accessed programmatically.
 #test
 {
     // Define a type alias 'Lambda' for a function pointer taking 'MyStruct' and returning 's32'
-    typealias Lambda = func(MyStruct)->s32
+    alias Lambda = func(MyStruct)->s32
 
     var fnX: Lambda  // Function pointer for 'returnX'
     var fnY: Lambda  // Function pointer for 'returnY'

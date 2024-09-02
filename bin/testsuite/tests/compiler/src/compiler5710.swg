@@ -1,6 +1,6 @@
 #global testerror "Err0473"
-typealias Bool = bool
-typealias Int = s32
+alias Bool = bool
+alias Int = s32
 
 #test
 {

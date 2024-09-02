@@ -5,7 +5,7 @@ enum TOTO : s64
     B = 100
 }
 
-typealias X = TOTO
+alias X = TOTO
 
 func fromName(name: string)->X
 {

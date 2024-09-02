@@ -1,8 +1,8 @@
 #global export
 using Swag
 
-typealias float_t  = f32
-typealias double_t = f64
+alias float_t  = f32
+alias double_t = f64
 
 const NAN       = cast<bit>(f64) ~0'u64
 const INFINITY  = 1e5000'f32

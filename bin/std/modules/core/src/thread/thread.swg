@@ -1,7 +1,7 @@
 #global public
 #global namespace Threading
 
-typealias ThreadHandle = const *void
+alias ThreadHandle = const *void
 
 enum ThreadPriority
 {

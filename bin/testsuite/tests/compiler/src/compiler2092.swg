@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    typealias RRRR = AAAA
+    alias RRRR = AAAA
     var x = RRRR's64{}
     @assert(#typeof(x.v) == s64)
 }

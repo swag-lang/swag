@@ -1,5 +1,5 @@
 #[Swag.Strict]
-typealias Handle = u32
+alias Handle = u32
 
 #test
 {

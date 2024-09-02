@@ -517,11 +517,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             break;
 
         // A user alias
-        case TokenId::KwdTypeAlias:
-            SWAG_CHECK(doTypeAlias(parent, result));
-            break;
-        case TokenId::KwdNameAlias:
-            SWAG_CHECK(doNameAlias(parent, result));
+        case TokenId::KwdAlias:
+            SWAG_CHECK(doAlias(parent, result));
             break;
 
         // Using on a struct member

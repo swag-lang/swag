@@ -1,4 +1,4 @@
-typealias F = func(s32)->bool
+alias F = func(s32)->bool
 
 struct A
 {

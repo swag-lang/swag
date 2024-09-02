@@ -158,8 +158,7 @@ struct Parser
     bool doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet);
     bool doVarDecl(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
-    bool doTypeAlias(AstNode* parent, AstNode** result);
-    bool doNameAlias(AstNode* parent, AstNode** result);
+    bool doAlias(AstNode* parent, AstNode** result);
     bool doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags);
     bool doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);

@@ -578,9 +578,38 @@ bool Semantic::resolveType(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
+bool Semantic::resolveAliasAfterValue(SemanticContext* context)
 {
-    const auto node = context->node;
+    const auto node = context->node->parent;
+
+    if (node->firstChild()->is(AstNodeKind::IdentifierRef))
+    {
+        const auto idRef    = castAst<AstIdentifierRef>(node->firstChild(), AstNodeKind::IdentifierRef);
+        const auto resolved = idRef->lastChild()->resolvedSymbolName();
+
+        if (idRef->lastChild()->is(AstNodeKind::Identifier))
+        {
+            if (resolved->is(SymbolKind::Function) || resolved->is(SymbolKind::Namespace))
+                node->addSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS);
+        }
+
+        if (resolved)
+        {
+            if (resolved->is(SymbolKind::TypeAlias))
+                node->removeSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS);
+            else if (resolved->is(SymbolKind::Variable) || resolved->is(SymbolKind::NameAlias))
+                node->addSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS);
+        }
+    }
+    else if (node->firstChild()->isNot(AstNodeKind::TypeExpression) &&
+             node->firstChild()->isNot(AstNodeKind::TypeClosure) &&
+             node->firstChild()->isNot(AstNodeKind::TypeLambda))
+    {
+        node->addSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS);
+    }
+
+    if (node->hasSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS))
+        return true;
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
@@ -609,9 +638,13 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveTypeAlias(SemanticContext* context)
+bool Semantic::resolveAlias(SemanticContext* context)
 {
-    const auto node     = context->node;
+    const auto node = castAst<AstAlias>(context->node, AstNodeKind::TypeAlias);
+
+    if (node->hasSpecFlag(AstAlias::SPEC_FLAG_NAME_ALIAS))
+        return resolveNameAlias(context);
+
     const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
     typeInfo->rawType   = node->firstChild()->typeInfo;
     typeInfo->sizeOf    = typeInfo->rawType->sizeOf;

@@ -6,6 +6,6 @@ enum A
 
 #test
 {
-    typealias TOTO = A
+    alias TOTO = A
     @assert(TOTO.AA == 0)
 }

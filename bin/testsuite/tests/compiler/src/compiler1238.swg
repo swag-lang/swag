@@ -1,4 +1,4 @@
-typealias T = func()->void
+alias T = func()->void
 
 //#[Swag.PrintBc]
 #test

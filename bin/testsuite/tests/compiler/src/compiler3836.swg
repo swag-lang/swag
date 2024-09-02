@@ -4,7 +4,7 @@
     if pt {}
 
     #[Swag.Strict]
-    typealias PVOID = *void
+    alias PVOID = *void
     var pt1: PVOID
     if pt1 {}
 }

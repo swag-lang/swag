@@ -1,10 +1,12 @@
-#global testerror "Err0289"
-#test
+//#global testerror "Err0289"
+
+#[Swag.Macro]
+func toto()
 {
     var myVar = 0
     #macro
     {
-        typealias myVar = #up myVar
+        alias myVar = #up myVar
         myVar += 1
     }
 

@@ -13,7 +13,7 @@ namespace StrConv
 
 namespace Clipboard
 {
-    typealias Format = u32
+    alias Format = u32
     public func toto()
     {
         StrConv.titi's32()

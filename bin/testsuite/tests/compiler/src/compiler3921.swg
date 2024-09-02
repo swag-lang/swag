@@ -1,7 +1,7 @@
 #global testerror "Err0603"
 #test
 {
-    typealias X = *u16
+    alias X = *u16
     var v: X
     var str = @mkstring(v, 1)
 }

@@ -117,7 +117,7 @@ You can mix types and constants in generic parameters.
         // Example where `T` is a type and `N` is a constant of type `s32`.
         func(T, N: s32) myFunc(x: T) => x * N
 
-        namealias call = myFunc'(s32, 10)
+        alias call = myFunc'(s32, 10)
         @assert(call(2) == 20)                 // Function call with 's32' type and 10 constant.
         @assert(call(100) == 1000)             // Another call with the same type and constant.
     }

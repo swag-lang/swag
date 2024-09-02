@@ -2,7 +2,7 @@
 #global testerror "Err0605"
 
 #[Swag.Strict]
-typealias Alias = s32
+alias Alias = s32
 
 func toto(x: Alias)
 {

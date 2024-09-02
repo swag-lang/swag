@@ -10,5 +10,5 @@ namespace A.B
 #test
 {
     var toto = &A.B.toto
-    typealias toto = A.B.toto
+    alias toto = A.B.toto
 }

@@ -1,37 +1,37 @@
 #global export
 
-typealias int8_t   = s8
-typealias int16_t  = s16
-typealias int32_t  = s32
-typealias int64_t  = s64
-typealias uint8_t  = u8
-typealias uint16_t = u16
-typealias uint32_t = u32
-typealias uint64_t = u64
+alias int8_t   = s8
+alias int16_t  = s16
+alias int32_t  = s32
+alias int64_t  = s64
+alias uint8_t  = u8
+alias uint16_t = u16
+alias uint32_t = u32
+alias uint64_t = u64
 
-typealias int_least8_t   = s8
-typealias int_least16_t  = s16
-typealias int_least32_t  = s32
-typealias int_least64_t  = s64
-typealias uint_least8_t  = u8
-typealias uint_least16_t = u16
-typealias uint_least32_t = u32
-typealias uint_least64_t = u64
+alias int_least8_t   = s8
+alias int_least16_t  = s16
+alias int_least32_t  = s32
+alias int_least64_t  = s64
+alias uint_least8_t  = u8
+alias uint_least16_t = u16
+alias uint_least32_t = u32
+alias uint_least64_t = u64
 
-typealias int_fast8_t   = s8
-typealias int_fast16_t  = s32
-typealias int_fast32_t  = s32
-typealias int_fast64_t  = s64
-typealias uint_fast8_t  = u8
-typealias uint_fast16_t = u32
-typealias uint_fast32_t = u32
-typealias uint_fast64_t = u64
+alias int_fast8_t   = s8
+alias int_fast16_t  = s32
+alias int_fast32_t  = s32
+alias int_fast64_t  = s64
+alias uint_fast8_t  = u8
+alias uint_fast16_t = u32
+alias uint_fast32_t = u32
+alias uint_fast64_t = u64
 
-typealias intptr_t  = s64
-typealias uintptr_t = u64
-typealias ptrdiff_t = s64
-typealias intmax_t  = s64
-typealias uintmax_t = u64
+alias intptr_t  = s64
+alias uintptr_t = u64
+alias ptrdiff_t = s64
+alias intmax_t  = s64
+alias uintmax_t = u64
 
 const SIZE_MAX    = Swag.U64.Max
 const PTRDIFF_MIN = Swag.S64.Min

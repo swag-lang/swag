@@ -14,9 +14,9 @@ const Unassigned    = -1
 const Skip          = -2
 const HorizontalVal = -1.0E+40
 
-public typealias CInt = s64
-typealias ClipperPath  = Array'IntPoint
-typealias ClipperPaths = Array'ClipperPath
+public alias CInt = s64
+alias ClipperPath  = Array'IntPoint
+alias ClipperPaths = Array'ClipperPath
 
 public enum PolyType
 {

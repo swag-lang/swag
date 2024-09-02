@@ -1,5 +1,5 @@
 #global testerror "Err0257"
-typealias AL = void
+alias AL = void
 func toto()->AL
 {
 }

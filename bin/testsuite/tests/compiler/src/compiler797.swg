@@ -1,6 +1,6 @@
 
 
-typealias alloc = func(u32)->*void
+alias alloc = func(u32)->*void
 var cpt: u32 = 0
 
 func toto(a: alloc)->*void

@@ -1,4 +1,4 @@
-typealias Vec4 = [8] f32
+alias Vec4 = [8] f32
 
 //#[Swag.PrintBc]
 #[Swag.NoInline]

@@ -1,4 +1,4 @@
-typealias GG = s32
+alias GG = s32
 enum AA: GG
 {
     A = 0

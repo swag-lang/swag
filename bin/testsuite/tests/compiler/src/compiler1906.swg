@@ -1,5 +1,5 @@
 interface TOTO
 {
-    typealias FL = func(self)
+    alias FL = func(self)
     func x(self);
 }

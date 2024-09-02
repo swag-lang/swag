@@ -457,11 +457,10 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
+bool Parser::doAlias(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstAlias>(AstNodeKind::TypeAlias, this, parent);
-    node->kwdLoc      = tokenParse.token;
-    node->semanticFct = Semantic::resolveUsing;
+    const auto node = Ast::newNode<AstAlias>(AstNodeKind::TypeAlias, this, parent);
+    node->kwdLoc    = tokenParse.token;
 
     *result = node;
     SWAG_CHECK(eatToken());
@@ -472,45 +471,20 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased type"));
+    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased value"));
 
     AstNode* expr;
-    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &expr));
+    if (tokenParse.is(TokenId::CompilerIntrinsicDeclType))
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_ALIAS, &expr));
+    else
+        SWAG_CHECK(doSinglePrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));
 
-    SWAG_CHECK(eatSemiCol("[[typealias]] declaration"));
+    SWAG_CHECK(eatSemiCol("[[alias]] declaration"));
 
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = Semantic::resolveTypeAliasBefore;
-    node->semanticFct                      = Semantic::resolveTypeAlias;
-    node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias));
-    return true;
-}
+    expr->allocateExtension(ExtensionKind::Semantic);
+    expr->extSemantic()->semanticAfterFct = Semantic::resolveAliasAfterValue;
 
-bool Parser::doNameAlias(AstNode* parent, AstNode** result)
-{
-    const auto node   = Ast::newNode<AstAlias>(AstNodeKind::NameAlias, this, parent);
-    node->kwdLoc      = tokenParse.token;
-    node->semanticFct = Semantic::resolveUsing;
-
-    *result = node;
-    SWAG_CHECK(eatToken());
-
-    SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0667, node->token.cstr())));
-    node->inheritTokenName(tokenParse.token);
-    node->inheritTokenLocation(tokenParse.token);
-    SWAG_CHECK(checkIsValidUserName(node));
-
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased name"));
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0666)));
-
-    AstNode* expr;
-    SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_CALL_PARAMS | IDENTIFIER_NO_ARRAY));
-
-    SWAG_CHECK(eatSemiCol("[[namealias]] declaration"));
-    expr->lastChild()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
-
-    node->semanticFct = Semantic::resolveNameAlias;
-    node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias));
+    node->semanticFct = Semantic::resolveAlias;
+    node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::Alias));
     return true;
 }

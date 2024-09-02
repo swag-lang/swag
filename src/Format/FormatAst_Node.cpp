@@ -317,7 +317,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::NameAlias:
-            concat->addString("namealias");
+            concat->addString("alias");
             concat->addBlank();
             concat->addString(node->token.text);
             concat->addBlank();

@@ -1,4 +1,4 @@
-typealias F = func()
+alias F = func()
 
 func toto()
 {

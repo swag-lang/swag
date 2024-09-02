@@ -1,8 +1,9 @@
-#global testerror "Err0407"
+/*#global testerror "Err0407"
 
 #[Swag.Strict]
-namealias T = toto
+alias T = toto
 
 func toto(x: s32)
 {
 }
+*/

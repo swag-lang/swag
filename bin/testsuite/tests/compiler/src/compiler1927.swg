@@ -1,4 +1,4 @@
-typealias A = [2] s32
+alias A = [2] s32
 var x: A
 
 #test

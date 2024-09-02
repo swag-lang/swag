@@ -1,7 +1,7 @@
 //#global testerror
 
 #[Swag.Strict]
-typealias B = closure(s32)
+alias B = closure(s32)
 
 var G = 0
 

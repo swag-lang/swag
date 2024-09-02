@@ -1,6 +1,6 @@
 #if #os == Swag.TargetOs.Windows
 {
-    typealias HANDLE = *void
+    alias HANDLE = *void
 
     #[Swag.Foreign("kernel32")]
     func GetStdHandle(nStdHandle: u32)->HANDLE;

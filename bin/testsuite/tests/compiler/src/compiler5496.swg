@@ -1,6 +1,6 @@
 #global testerror "Err0210"
 
-typealias X = func()->s32
+alias X = func()->s32
 
 #test
 {

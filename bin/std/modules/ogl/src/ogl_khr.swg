@@ -42,8 +42,8 @@ const GL_DEBUG_SEVERITY_MEDIUM            = 0x9147
 const GL_DEBUG_SEVERITY_LOW               = 0x9148
 const GL_DEBUG_OUTPUT                     = 0x92E0
 
-//typealias GLDEBUGPROC = func(source: GLenum, type: GLenum, id: GLuint, severity: GLenum, length: GLsizei, message: const *GLchar, userParam: const *void)
-typealias GLDEBUGPROC = func(GLenum, GLenum, GLuint, GLenum, GLsizei, const *GLchar, const *void)
+//alias GLDEBUGPROC = func(source: GLenum, type: GLenum, id: GLuint, severity: GLenum, length: GLsizei, message: const *GLchar, userParam: const *void)
+alias GLDEBUGPROC = func(GLenum, GLenum, GLuint, GLenum, GLsizei, const *GLchar, const *void)
 
 #[Extension]
 {

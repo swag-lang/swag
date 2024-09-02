@@ -338,6 +338,11 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
         return true;
 
     // A symbol with a different kind already exists
+    if (symbol->kind == SymbolKind::Alias && kind == SymbolKind::TypeAlias)
+        symbol->kind = SymbolKind::TypeAlias;
+    else if (symbol->kind == SymbolKind::Alias && kind == SymbolKind::NameAlias)
+        symbol->kind = SymbolKind::NameAlias;
+
     if (symbol->kind != kind)
     {
         const auto front = symbol->nodes.front();

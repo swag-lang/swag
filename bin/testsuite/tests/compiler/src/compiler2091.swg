@@ -6,7 +6,7 @@ impl AA
 {
     func toto(using self)->{a: T}
     {
-        typealias RR = {a: T}
+        alias RR = {a: T}
         return RR{50}
     }
 }

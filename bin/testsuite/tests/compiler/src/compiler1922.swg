@@ -3,7 +3,7 @@ struct(T) TT
     x: T
 }
 
-typealias AA = TT's32
+alias AA = TT's32
 
 #test
 {

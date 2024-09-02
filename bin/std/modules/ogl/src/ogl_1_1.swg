@@ -1,23 +1,23 @@
 #global export
 
-typealias GLenum     = u32
-typealias GLboolean  = u8
-typealias GLbitfield = u32
-typealias GLbyte     = s8
-typealias GLshort    = s16
-typealias GLint      = s32
-typealias GLsizei    = s32
-typealias GLubyte    = u8
-typealias GLushort   = u16
-typealias GLuint     = u32
-typealias GLfloat    = f32
-typealias GLclampf   = f32
-typealias GLdouble   = f64
-typealias GLclampd   = f64
-typealias GLvoid     = void
-typealias GLchar     = u8
-typealias GLint64    = s64
-typealias GLuint64   = u64
+alias GLenum     = u32
+alias GLboolean  = u8
+alias GLbitfield = u32
+alias GLbyte     = s8
+alias GLshort    = s16
+alias GLint      = s32
+alias GLsizei    = s32
+alias GLubyte    = u8
+alias GLushort   = u16
+alias GLuint     = u32
+alias GLfloat    = f32
+alias GLclampf   = f32
+alias GLdouble   = f64
+alias GLclampd   = f64
+alias GLvoid     = void
+alias GLchar     = u8
+alias GLint64    = s64
+alias GLuint64   = u64
 
 /* AccumOp */
 const GL_ACCUM  = 0x0100

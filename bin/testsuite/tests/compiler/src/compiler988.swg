@@ -1,4 +1,4 @@
-typealias pair = {a:string, b:any}
+alias pair = {a:string, b:any}
 
 //#[Swag.PrintBc]
 #test

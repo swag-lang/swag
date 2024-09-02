@@ -9,6 +9,6 @@ struct A
 #test
 {
     var v: A
-    namealias err = v.x
+    alias err = v.x
     //@print(err)
 }
