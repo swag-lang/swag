@@ -479,6 +479,15 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
     else
         SWAG_CHECK(doSinglePrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));
 
+    if (expr->isNot(AstNodeKind::IdentifierRef) &&
+        expr->isNot(AstNodeKind::TypeLambda) &&
+        expr->isNot(AstNodeKind::TypeClosure) &&
+        expr->isNot(AstNodeKind::TypeExpression))
+    {
+        const Diagnostic err{expr, toErr(Err0666)};
+        return context->report(err);
+    }
+
     SWAG_CHECK(eatSemiCol("[[alias]] declaration"));
 
     expr->allocateExtension(ExtensionKind::Semantic);
