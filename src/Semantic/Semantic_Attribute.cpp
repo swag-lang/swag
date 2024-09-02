@@ -122,7 +122,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         {
             if (kind == AstNodeKind::TypeAlias)
                 return true;
-            specificMsg = "a [[typealias]]";
+            specificMsg = "a type [[alias]]";
         }
     }
 
