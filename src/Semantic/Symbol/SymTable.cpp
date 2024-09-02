@@ -359,7 +359,10 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     if (!canOverload && !symbol->overloads.empty())
     {
         const auto firstOverload = symbol->overloads[0];
-        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
+        auto       fromNode      = firstOverload->node;
+        if (firstOverload->hasFlag(OVERLOAD_FROM_ALIAS))
+            fromNode = firstOverload->node->extraPointer<AstNode>(ExtraPointerKind::FromAlias);
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, fromNode);
     }
 
     // A symbol with the same type already exists
@@ -381,7 +384,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     return true;
 }
 
-bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload)
+bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload)
 {
     ScopedLock lkn(symbol->mutex);
     SharedLock lkn1(otherSymbol->mutex);
@@ -398,7 +401,11 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
             }
         }
 
-        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
+        auto fromNode = firstOverload->node;
+        if (firstOverload->hasFlag(OVERLOAD_FROM_ALIAS))
+            fromNode = firstOverload->node->extraPointer<AstNode>(ExtraPointerKind::FromAlias);
+
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, fromNode);
     }
 
     SWAG_ASSERT(!otherSymbol->cptOverloads);
@@ -408,6 +415,8 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
         symbol->cptOverloadsInit += 1;
         const auto copy = Allocator::alloc<SymbolOverload>();
         copy->from(otherOverload);
+        copy->flags.add(OVERLOAD_FROM_ALIAS);
+        copy->node->addExtraPointer(ExtraPointerKind::FromAlias, node);
         otherOverload->flags.add(OVERLOAD_HAS_AFFECT);
         symbol->overloads.push_back(copy);
     }
@@ -418,6 +427,8 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
         {
             auto copy = Allocator::alloc<SymbolOverload>();
             copy->from(o);
+            copy->flags.add(OVERLOAD_FROM_ALIAS);
+            copy->node->addExtraPointer(ExtraPointerKind::FromAlias, node);
             o->flags.add(OVERLOAD_HAS_AFFECT);
             symbol->overloads.push_back(copy);
         }

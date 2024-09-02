@@ -61,6 +61,7 @@ constexpr OverloadFlags OVERLOAD_PERSISTENT_REG   = 0x02000000;
 constexpr OverloadFlags OVERLOAD_HINT_REG         = 0x04000000;
 constexpr OverloadFlags OVERLOAD_INLINE_REG       = 0x08000000;
 constexpr OverloadFlags OVERLOAD_UNDEFINED        = 0x10000000;
+constexpr OverloadFlags OVERLOAD_FROM_ALIAS       = 0x20000000;
 
 constexpr SymbolFlags SYMBOL_ATTRIBUTE_GEN = 0x0001;
 constexpr SymbolFlags SYMBOL_USED          = 0x0002;

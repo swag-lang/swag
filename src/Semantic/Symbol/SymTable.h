@@ -46,7 +46,7 @@ struct SymTable
     bool        acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* node, SymbolKind kind, const SymbolName* symbol) const;
     bool        checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol) const;
     void        addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
-    static bool registerNameAlias(ErrorContext* context, const AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload);
+    static bool registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload);
 
     static void disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 

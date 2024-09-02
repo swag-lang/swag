@@ -283,7 +283,8 @@ enum class ExtraPointerKind
     AlternativeNode,
     IsNamed,
     UserOp,
-    TokenParse
+    TokenParse,
+    FromAlias
 };
 
 struct AstNode

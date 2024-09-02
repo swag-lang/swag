@@ -80,6 +80,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Take care of where/check
         if (overSym->is(SymbolKind::Function) &&
+            over->node->is(AstNodeKind::FuncDecl) &&
             !context->node->hasAstFlag(AST_IN_WHERE) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_WHERE_OFF))
         {
