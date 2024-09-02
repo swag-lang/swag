@@ -108,6 +108,8 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return true
     }
 
+    if cmpFlags & .UnScoped:
+        return @stringcmp(type1.name, type2.name)
     return @stringcmp(type1.fullname, type2.fullname)
 }
 

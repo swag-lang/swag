@@ -439,8 +439,9 @@ namespace Swag
     #[EnumFlags]
     enum TypeCmpFlags
     {
-        Strict  = 0
-        CastAny = 1
+        Strict   = 0
+        CastAny  = 1
+        UnScoped = 2
     }
 
     

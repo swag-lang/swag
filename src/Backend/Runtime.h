@@ -564,10 +564,9 @@ struct ExportedCompilerMessage
 static constexpr uint64_t SWAG_LAMBDA_BC_MARKER_BIT = 63;
 static constexpr uint64_t SWAG_LAMBDA_BC_MARKER     = 1ULL << SWAG_LAMBDA_BC_MARKER_BIT;
 
-constexpr uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
-constexpr uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
-
-constexpr uint32_t SWAG_IS_FLAG_CAST_CHECK = 0x00000001;
+constexpr uint32_t SWAG_TYPECMP_STRICT   = 0x00000000;
+constexpr uint32_t SWAG_TYPECMP_CAST_ANY = 0x00000001;
+constexpr uint32_t SWAG_TYPECMP_UNSCOPED = 0x00000002;
 
 inline void setSlice(SwagSlice& slice, const char* value)
 {

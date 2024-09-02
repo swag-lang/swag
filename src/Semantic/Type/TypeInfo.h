@@ -314,6 +314,7 @@ struct TypeInfoFuncAttr final : TypeInfo
     TypeInfoFuncAttr() :
         TypeInfo{TypeInfoKind::FuncAttr}
     {
+        sizeOf = sizeof(void*);
     }
 
     uint32_t  numRegisters() const override { return 1; }

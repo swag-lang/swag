@@ -496,12 +496,12 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
     const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);
     emitMakeSegPointer(context, anyTypeSegment, static_cast<uint32_t>(anyTypeOffset), r0);
 
-    const auto rflags = reserveRegisterRC(context);
-    const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
-    inst->b.u64       = SWAG_COMPARE_CAST_ANY;
+    const auto flags = reserveRegisterRC(context);
+    const auto inst  = EMIT_INST1(context, ByteCodeOp::SetImmediate32, flags);
+    inst->b.u64      = SWAG_TYPECMP_CAST_ANY;
 
-    EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRc[1], rflags, r1);
-    freeRegisterRC(context, rflags);
+    EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRc[1], flags, r1);
+    freeRegisterRC(context, flags);
     emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
 
     freeRegisterRC(context, r0);
