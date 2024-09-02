@@ -934,7 +934,7 @@ impl RenderOgl
     mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
-        buf.replace("#include(base)", @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
+        buf.replace("#include base", @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
 
         let vertexShaderID      = glCreateShader(GL_VERTEX_SHADER)
         var vertexSourcePointer = buf.buffer
@@ -944,7 +944,7 @@ impl RenderOgl
         try setShaderCompileError(vertexShaderID)
 
         buf = @mkstring(@dataof(pixel), @countof(pixel))
-        buf.replace("#include(base)", @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
+        buf.replace("#include base", @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
 
         let fragmentShaderID   = glCreateShader(GL_FRAGMENT_SHADER)
         var pixelSourcePointer = buf.buffer
