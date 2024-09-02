@@ -63,7 +63,7 @@ struct Tab
     itemAutoLayoutMargin:     f32 = 25
     itemMinWidth:             f32 = 25
 
-    sigSelChanged:            SigArray'closure(*Tab)
+    sigSelChanged:            SigArray'func||(*Tab)
 
     buttonPopup:              *IconButton
     views:                    ArrayPtr'TabItem
@@ -325,7 +325,7 @@ internal impl Tab
         foreach item in views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
-        popup.sigSelected = closure|self|(list, idx)
+        popup.sigSelected = func|self|(list, idx)
         {
             if idx != Swag.U32.Max:
                 self.select(idx)
@@ -432,7 +432,7 @@ internal impl Tab
             {
                 buttonPopup      = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed += closure|self|(btn)
+                buttonPopup.sigPressed += func|self|(btn)
                 {
                     var rect = btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)

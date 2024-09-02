@@ -8,7 +8,7 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-    alias CB = closure()
+    alias CB = func||()
     var arr: [2] CB
     arr[0] = &toto
 

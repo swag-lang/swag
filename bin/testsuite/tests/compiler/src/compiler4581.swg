@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
-func toto(x: closure() = null)
+func toto(x: func||() = null)
 {
-    var y: closure()
+    var y: func||()
     y = x
     if y: y()
 }

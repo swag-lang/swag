@@ -7,7 +7,7 @@ struct SliderCtrl
     labelSize:          f32 = 60
     editSize:           f32 = 60
 
-    sigChanged:         SigArray'closure(*Self)
+    sigChanged:         SigArray'func||(*Self)
 
     label:              *Label
     slider:             *Slider
@@ -51,7 +51,7 @@ impl SliderCtrl
             .label.horzAlignmentText = .Right
 
             .slider = Slider.create(ctrl, {})
-            .slider.sigChanged += closure|ctrl|(wnd)
+            .slider.sigChanged += func|ctrl|(wnd)
             {
                 var val: String
                 switch ctrl.edit.inputMode
@@ -71,7 +71,7 @@ impl SliderCtrl
             .edit = EditBox.create(ctrl, "", {})
             .edit.setForm(.Square)
             .edit.editBoxFlags |= .RightAlign
-            .edit.sigLoseFocus += closure|ctrl|(edit)
+            .edit.sigLoseFocus += func|ctrl|(edit)
             {
                 switch edit.inputMode
                 {

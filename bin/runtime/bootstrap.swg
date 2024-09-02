@@ -453,7 +453,7 @@ namespace Swag
         Namespace         // The typeinfo is a [[TypeInfoNamespace]]
         Enum              // The typeinfo is a [[TypeInfoEnum]]
         Func              // The typeinfo is a [[TypeInfoFunc]]
-        Lambda            // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
+        Lambda            // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a func
         Pointer           // The typeinfo is a [[TypeInfoPointer]]
         Array             // The typeinfo is a [[TypeInfoArray]]
         Slice             // The typeinfo is a [[TypeInfoSlice]]

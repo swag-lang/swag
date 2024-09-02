@@ -80,7 +80,7 @@ func createUI(wnd: *Wnd)
         .prop.sizeEditValue = 260
         .prop.setColumnSize(65)
         .prop.addStruct(g_NoiseParams)
-        .prop.sigChanged += closure|wnd|(list, item)
+        .prop.sigChanged += func|wnd|(list, item)
         {
             compute()
             wnd.invalidate()

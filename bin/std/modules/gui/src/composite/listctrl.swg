@@ -66,13 +66,13 @@ struct ListCtrl
     selectionMode           = ListSelectionMode.Single
     leftTextMargin:         f32
 
-    sigSelChanged:          SigArray'closure(*Self)
-    sigCheckChanged:        SigArray'closure(*Self)
-    sigRightClick:          SigArray'closure(*Self, Math.Point)
-    sigLeftDoubleClick:     SigArray'closure(*Self, Math.Point)
-    sigExpand:              SigArray'closure(*Self, *ListLine)
-    sigCollapse:            SigArray'closure(*Self, *ListLine)
-    sigKeyPressed:          SigArray'closure(*Self, *KeyEvent)
+    sigSelChanged:          SigArray'func||(*Self)
+    sigCheckChanged:        SigArray'func||(*Self)
+    sigRightClick:          SigArray'func||(*Self, Math.Point)
+    sigLeftDoubleClick:     SigArray'func||(*Self, Math.Point)
+    sigExpand:              SigArray'func||(*Self, *ListLine)
+    sigCollapse:            SigArray'func||(*Self, *ListLine)
+    sigKeyPressed:          SigArray'func||(*Self, *KeyEvent)
     sigVirtualFill:         func(*Self, *ListLine, u32)
     sigSort:                func(*ListLine, *ListLine, u32, bool)->s32
 
@@ -826,12 +826,12 @@ impl ListCtrl
             .header                  = Header.create(fwnd, {})
             .header.dockStyle        = .Top
             .header.form             = .Round
-            .header.sigLayoutChanged = closure|list|(header)
+            .header.sigLayoutChanged = func|list|(header)
             {
                 list.computeLayout()
             }
 
-            .header.sigClicked = closure|list|(header, col)
+            .header.sigClicked = func|list|(header, col)
             {
                 list.sort(col, header.sortMark <= 0 ? false : true, true)
             }
@@ -842,7 +842,7 @@ impl ListCtrl
             .scrollWnd.focusStrategy   = .None
             .scrollWnd.backgroundStyle = .Transparent
             .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
-            .scrollWnd.sigScrollPosChanged += closure|list.header|(scrollWnd, op, np)
+            .scrollWnd.sigScrollPosChanged += func|list.header|(scrollWnd, op, np)
             {
                 header.scrollPos.x = np.x
                 header.invalidate()
@@ -1142,7 +1142,7 @@ impl ListCtrl
             return res
         }
 
-        let cb = closure|self, column, descentOrder|(a, b: *ListLine)->s32
+        let cb = func|self, column, descentOrder|(a, b: *ListLine)->s32
         {
             if self.sigSort:
                 return self.sigSort(a, b, column, descentOrder)

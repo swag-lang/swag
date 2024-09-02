@@ -2,7 +2,7 @@
 
 struct V
 {
-    fn: closure()
+    fn: func||()
 }
 
 #[Swag.Safety("null", true)]

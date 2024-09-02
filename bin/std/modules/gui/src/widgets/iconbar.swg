@@ -16,8 +16,8 @@ struct IconBar
     iconSize:            f32
     iconPadding:         f32 = 4
 
-    sigUpdateState:      SigArray'closure(*CommandStateEvent)
-    sigCheckChanged:     SigArray'closure(*IconButton)
+    sigUpdateState:      SigArray'func||(*CommandStateEvent)
+    sigCheckChanged:     SigArray'func||(*IconButton)
 }
 
 impl IWnd for IconBar
@@ -75,7 +75,7 @@ impl IconBar
 
         if iconBtnFlags.has(.Checkable | .CheckableToggle)
         {
-            b.sigCheckChanged += closure|self|(btn)
+            b.sigCheckChanged += func|self|(btn)
             {
                 self.sigCheckChanged.call(btn)
             }

@@ -2,7 +2,7 @@
 using Core, Pixel
 
 alias WndId     = string
-alias HookEvent = closure(*Wnd, *Event)->bool
+alias HookEvent = func||(*Wnd, *Event)->bool
 
 // Automatic placement and size of the window in the parent client rectangle
 enum DockStyle

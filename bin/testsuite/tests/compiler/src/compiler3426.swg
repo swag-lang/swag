@@ -1,7 +1,7 @@
 #test
 {
     let str = "10"
-    let v: closure() = closure|str|()
+    let v: func||() = func|str|()
     {
         @assert(str == "10")
     }

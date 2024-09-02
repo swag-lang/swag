@@ -3,7 +3,7 @@
 
 // Transform in place the content of a slice with a given lambda
 #[Swag.Inline]
-func(T) modify(values: [..] T, cb: closure(*T))
+func(T) modify(values: [..] T, cb: func||(*T))
 {
     for i in values:
         cb(&values[i])
@@ -11,7 +11,7 @@ func(T) modify(values: [..] T, cb: closure(*T))
 
 // Map the content of a slice to an array of type 'R'.
 // The lambda must return the value of 'R' for each element of the slice.
-func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
+func(T, R) map(values: const [..] T, cb: func||(T)->R)->Array'R
 {
     var result: retval
     foreach v in values:
@@ -22,7 +22,7 @@ func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 // Reduce the content of a slice to one single value.
 // The lambda is called with the previous reduced value and each element of the slice.
 // The first reduced value is the first element of the slice.
-func(T) reduce(values: const [..] T, cb: closure(T, T)->T)->T
+func(T) reduce(values: const [..] T, cb: func||(T, T)->T)->T
 {
     var result = values[0]
     for i in 1 to @countof(values) - 1:
@@ -73,7 +73,7 @@ func(T) max(values: const [..] T)->{ value: T, index: u64 }
 }
 
 // Returns true if 'cb' returns true for all values
-func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
+func(T) allOf(values: const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {
@@ -85,7 +85,7 @@ func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
 }
 
 // Returns true if 'cb' returns true for at least one value
-func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
+func(T) anyOf(values: const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {
@@ -97,7 +97,7 @@ func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
 }
 
 // Returns true if 'cb' returns false for all values
-func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
+func(T) noneOf(values: const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {

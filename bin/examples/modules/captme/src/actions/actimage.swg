@@ -94,7 +94,7 @@ impl MainWnd
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {120, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
-        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt)
+        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
         {
             if btnRatio.checked == .Checked
             {
@@ -103,7 +103,7 @@ impl MainWnd
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
-        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt)
+        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
         {
             if btnRatio.checked == .Checked
             {
@@ -170,7 +170,7 @@ impl MainWnd
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
 
-        edit0.edit.sigChanged += closure|ratio, btnRatio, edit1|(edt)
+        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
         {
             if btnRatio.checked == .Checked
             {
@@ -179,7 +179,7 @@ impl MainWnd
                 edit1.edit.setTextSilent(Format.toString("%", h))
             }
         }
-        edit1.edit.sigChanged += closure|ratio, btnRatio, edit0|(edt)
+        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
         {
             if btnRatio.checked == .Checked
             {

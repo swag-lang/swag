@@ -1,2 +1,2 @@
-alias CB = closure(s32)
-alias CB1 = closure(s32)
+alias CB = func||(s32)
+alias CB1 = func||(s32)

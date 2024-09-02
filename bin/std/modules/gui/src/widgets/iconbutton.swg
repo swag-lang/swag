@@ -58,10 +58,10 @@ struct IconButton
     arrowPos             = IconButtonArrowPos.None
     textPos              = IconButtonTextPos.Bottom
 
-    sigHidePopup:        SigArray'closure(*Self)
-    sigShowPopup:        SigArray'closure(*Self)
-    sigCheckChanged:     SigArray'closure(*Self)
-    sigPaintIcon:        closure(*Self, *PaintContext, Math.Rectangle)
+    sigHidePopup:        SigArray'func||(*Self)
+    sigShowPopup:        SigArray'func||(*Self)
+    sigCheckChanged:     SigArray'func||(*Self)
+    sigPaintIcon:        func||(*Self, *PaintContext, Math.Rectangle)
 
     aniBk:               BlendColor
     isChecked:           bool

@@ -50,11 +50,11 @@ struct EditBox
     maxLength:            s32
     rightMargin:          f32
 
-    sigChanged:           SigArray'closure(*Self)
-    sigLoseFocus:         SigArray'closure(*Self)
-    sigEnterPressed:      SigArray'closure(*Self)
-    sigEscapePressed:     SigArray'closure(*Self)
-    sigCheckContent:      closure(*Self)->EditBoxCheckResult
+    sigChanged:           SigArray'func||(*Self)
+    sigLoseFocus:         SigArray'func||(*Self)
+    sigEnterPressed:      SigArray'func||(*Self)
+    sigEscapePressed:     SigArray'func||(*Self)
+    sigCheckContent:      func||(*Self)->EditBoxCheckResult
     using minMax: union
     {
         minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}
@@ -333,7 +333,7 @@ internal impl EditBox
                 clearBtn           = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
                 clearBtn.dockStyle = .Right
                 clearBtn.setForm(IconButtonForm.Round)
-                clearBtn.sigPressed += closure|self|(btn) { self.setText(null); }
+                clearBtn.sigPressed += func|self|(btn) { self.setText(null); }
                 applyLayout()
             }
         }

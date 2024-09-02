@@ -151,7 +151,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("impl", State.Declaration)
         mapWords.add("interface", State.Declaration)
         mapWords.add("func", State.Declaration)
-        mapWords.add("closure", State.Declaration)
         mapWords.add("mtd", State.Declaration)
         mapWords.add("namespace", State.Declaration)
         mapWords.add("alias", State.Declaration)

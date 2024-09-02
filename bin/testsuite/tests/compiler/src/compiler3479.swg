@@ -1,4 +1,4 @@
-func(T) toto(cb: closure(T, T))
+func(T) toto(cb: func||(T, T))
 {
     cb(10, 20)
 }

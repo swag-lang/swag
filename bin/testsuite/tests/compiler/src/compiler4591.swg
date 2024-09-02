@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    let x: closure(s32) = func(x: s32)
+    let x: func||(s32) = func(x: s32)
     {
         //@print(x)
         @assert(x == 52)

@@ -4,7 +4,7 @@
 {
     var toto = 0
     //@breakpoint()
-    let x = closure|&toto|()
+    let x = func|&toto|()
     {
         toto += 1
     }

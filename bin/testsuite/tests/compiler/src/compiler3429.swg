@@ -1,6 +1,6 @@
 #test
 {
-    let v: closure()->s32 = closure||()->s32
+    let v: func||()->s32 = func||()->s32
     {
         return 66
     }

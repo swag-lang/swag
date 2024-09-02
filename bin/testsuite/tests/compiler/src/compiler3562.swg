@@ -11,7 +11,7 @@ impl Arr
     }
 }
 
-alias CB = closure()
+alias CB = func||()
 
 #test
 {

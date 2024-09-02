@@ -1,4 +1,4 @@
-alias H = closure()
+alias H = func||()
 
 /*#[Swag.PrintBc]
 func toto(x: H = null)
@@ -12,7 +12,7 @@ func toto(x: H = null)
 //#[Swag.PrintBc]
 #test
 {
-    var y: closure()
+    var y: func||()
     y = null
 
 //    toto()

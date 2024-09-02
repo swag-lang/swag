@@ -54,7 +54,6 @@ union
 impl
 interface
 func
-closure
 mtd
 namespace
 alias

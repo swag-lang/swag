@@ -6,7 +6,7 @@ struct V
 #test
 {
     var v: V
-    var fn: closure(V)
+    var fn: func||(V)
 
     fn = func(v)
     {

@@ -111,7 +111,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
         let btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
-        btn.sigPressed += closure|wnd|(btn)
+        btn.sigPressed += func|wnd|(btn)
         {
             setup()
             wnd.invalidate()

@@ -22,14 +22,14 @@ impl Properties
             {
                 .dockStyle = .Left
                 .setInputF64()
-                .sigLoseFocus += closure|self, dataField, item|(ed)
+                .sigLoseFocus += func|self, dataField, item|(ed)
                 {
                     dref dataField = catch StrConv.toF32(ed.text)
                     self.hasChanged(item)
                 }
             }
 
-            item.sigRefresh += closure|ed, dataField|(item)
+            item.sigRefresh += func|ed, dataField|(item)
             {
                 ed.setText(Format.toString("%", dref dataField))
             }

@@ -53,7 +53,7 @@ impl Properties
                 .setText(dispDesc == null ? "" : cast(string) dispDesc)
             }
 
-            item.sigResize += closure|label, line, lineHeight|(item)
+            item.sigResize += func|label, line, lineHeight|(item)
             {
                 label.autoHeight()
                 line.position.height = Math.max(lineHeight, label.position.height)
@@ -61,7 +61,7 @@ impl Properties
         }
 
         item.checkBox = ed
-        ed.sigChanged += closure|self, item|(ed)
+        ed.sigChanged += func|self, item|(ed)
         {
             self.validateBool(item)
         }

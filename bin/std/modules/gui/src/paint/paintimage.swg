@@ -8,7 +8,7 @@ public struct PaintImage
     surface:     *Surface
     image:       Image
     w, h:        s32
-    paint:       closure(app: *Application, painter: *Painter)
+    paint:       func||(app: *Application, painter: *Painter)
 }
 
 impl PaintImage
@@ -55,9 +55,9 @@ impl PaintImage
         self.h           = #self.h
     }
 
-    // Draw to an image by calling the closure
+    // Draw to an image by calling the func
     #[Swag.Overload]
-    public mtd draw(call: closure(*Application, *Painter))->Image
+    public mtd draw(call: func||(*Application, *Painter))->Image
     {
         paint = call
         surface.invalidate()
@@ -67,7 +67,7 @@ impl PaintImage
 
     // One shot paint to image
     #[Swag.Overload]
-    public func draw(w, h: s32, call: closure(*Application, *Painter))->Image
+    public func draw(w, h: s32, call: func||(*Application, *Painter))->Image
     {
         var pt: PaintImage
         pt.init(w, h)

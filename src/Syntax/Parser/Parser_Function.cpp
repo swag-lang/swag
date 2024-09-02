@@ -1160,7 +1160,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
 
     // Closure capture arguments
-    if (tokenParse.is(TokenId::KwdClosure))
+    if (getNextToken().is(TokenId::SymVertical) || getNextToken().is(TokenId::SymVerticalVertical))
     {
         SWAG_CHECK(eatToken());
 

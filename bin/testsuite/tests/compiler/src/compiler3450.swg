@@ -3,7 +3,7 @@
 {
     let x = {a: 2, b: 3}
 
-    let v = closure|x|()
+    let v = func|x|()
     {
         @assert(x.item0 == 2)
         @assert(x.item1 == 3)

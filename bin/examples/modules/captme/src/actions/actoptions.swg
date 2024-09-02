@@ -45,7 +45,7 @@ impl IActionUI for ActionOptions
         opt.addStruct(main.editorOptions, "Editor")
         opt.addStruct(main.getApp().options, "Application")
 
-        opt.prop.sigChanged += closure|main|(opt, item)
+        opt.prop.sigChanged += func|main|(opt, item)
         {
             main.setTopBarHeight()
             main.invalidate()

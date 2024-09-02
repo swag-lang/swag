@@ -249,19 +249,20 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
 
 bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
 {
-    SWAG_ASSERT(tokenParse.token.id == TokenId::KwdClosure || tokenParse.token.id == TokenId::KwdFunc);
+    SWAG_ASSERT(tokenParse.token.id == TokenId::KwdFunc);
 
     AstTypeExpression* firstAddedType = nullptr;
     AstNode*           params         = nullptr;
 
-    if (tokenParse.token.id == TokenId::KwdFunc)
+    if (tokenParse.token.id == TokenId::KwdFunc && getNextToken().isNot(TokenId::SymVerticalVertical))
     {
         node->kind = AstNodeKind::TypeLambda;
         SWAG_CHECK(eatToken());
     }
-    else if (tokenParse.token.id == TokenId::KwdClosure)
+    else if (tokenParse.token.id == TokenId::KwdFunc && getNextToken().is(TokenId::SymVerticalVertical))
     {
         node->kind = AstNodeKind::TypeClosure;
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken());
 
         // :ClosureForceFirstParam
@@ -452,7 +453,6 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
 
         case TokenId::KwdFunc:
-        case TokenId::KwdClosure:
         case TokenId::KwdMethod:
             SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0370)}));
             SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
@@ -624,7 +624,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     }
 
     // This is a lambda
-    if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdClosure) || tokenParse.is(TokenId::KwdMethod))
+    if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdMethod))
     {
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0370)}));
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));

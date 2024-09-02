@@ -11,6 +11,6 @@ impl A
 
 #test
 {
-    var xxxx: A'closure(s32)
+    var xxxx: A'func||(s32)
     xxxx += func(a) { }
 }

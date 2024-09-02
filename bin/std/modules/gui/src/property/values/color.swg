@@ -27,14 +27,14 @@ impl Properties
             .dockStyle = .Left
             .margin.z  = MarginBtn
             .setInputX64()
-            .sigLoseFocus += closure|self, color, item|(ed)
+            .sigLoseFocus += func|self, color, item|(ed)
             {
                 color.argb = cast(u32) catch StrConv.parseX64(ed.text).value
                 self.hasChanged(item)
             }
         }
 
-        btn.sigPaintIcon = closure|color|(btn, bc, pos)
+        btn.sigPaintIcon = func|color|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
             if !color.isOpaque():
@@ -42,7 +42,7 @@ impl Properties
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
 
-        btn.sigShowPopup += closure|self, color, item|(btn)
+        btn.sigShowPopup += func|self, color, item|(btn)
         {
             let frame = btn.createAnchorPopup(356, 382)
             self.editPopup = frame
@@ -56,19 +56,19 @@ impl Properties
 
             let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal, flags)
             picker.setColor(color)
-            picker.sigChanged += closure|self, color, item|(pk)
+            picker.sigChanged += func|self, color, item|(pk)
             {
                 color.argb = pk.getColor().argb
                 self.hasChanged(item)
             }
         }
 
-        btn.sigHidePopup += closure|self|(btn)
+        btn.sigHidePopup += func|self|(btn)
         {
             self.editPopup = null
         }
 
-        item.sigRefresh += closure|ed, btn, color|(item)
+        item.sigRefresh += func|ed, btn, color|(item)
         {
             ed.setText(Format.toString("%{X08}", color.argb))
             btn.invalidate()

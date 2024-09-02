@@ -167,7 +167,7 @@ impl Properties
                 .flags.add(.NoSeparator)
             }
 
-            line.hookOnEvent = closure|self, itemB|(wnd, evt) { return self.onItemEvent(itemB, wnd, evt); }
+            line.hookOnEvent = func|self, itemB|(wnd, evt) { return self.onItemEvent(itemB, wnd, evt); }
 
             with let ed = CheckButton.create(line, "", {0, 0, gridLineHeight, 0})
             {
@@ -191,7 +191,7 @@ impl Properties
             }
 
             let minHeight = ed.position.height
-            itemB.sigResize += closure|label1, line, minHeight|(itemB)
+            itemB.sigResize += func|label1, line, minHeight|(itemB)
             {
                 label1.autoHeight()
                 line.position.height = Math.max(minHeight, label1.position.height)
@@ -199,7 +199,7 @@ impl Properties
             }
 
             refreshEnumFlags(itemB)
-            itemB.checkBox.sigChanged += closure|self, itemB|(ed)
+            itemB.checkBox.sigChanged += func|self, itemB|(ed)
             {
                 self.validateEnumFlags(itemB)
             }
@@ -230,7 +230,7 @@ impl Properties
             ed.addItem(v.name)
 
         refreshEnum(item)
-        item.comboBox.sigChanged += closure|self, item|(ed, n)
+        item.comboBox.sigChanged += func|self, item|(ed, n)
         {
             self.validateEnum(item)
         }

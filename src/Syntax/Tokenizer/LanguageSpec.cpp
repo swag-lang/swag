@@ -341,7 +341,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("impl", TokenId::KwdImpl);
     keywords.add("interface", TokenId::KwdInterface);
     keywords.add("func", TokenId::KwdFunc);
-    keywords.add("closure", TokenId::KwdClosure);
     keywords.add("mtd", TokenId::KwdMethod);
     keywords.add("namespace", TokenId::KwdNamespace);
     keywords.add("alias", TokenId::KwdAlias);

@@ -4,7 +4,7 @@
 {
     struct X {}
 
-    let x: closure(X, ...) = func(x: X, y: ...)
+    let x: func||(X, ...) = func(x: X, y: ...)
     {
         @assert(cast(s32) y[0] == 4)
     }

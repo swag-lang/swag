@@ -1,5 +1,5 @@
 #[Swag.Inline]
-func toto(x: closure(s32...))
+func toto(x: func||(s32...))
 {
     x(40, 50, 60, 70)
 }

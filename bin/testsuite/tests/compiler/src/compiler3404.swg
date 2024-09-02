@@ -2,7 +2,7 @@
 
 #test
 {
-    var v: closure(s32)
+    var v: func||(s32)
     @assert(#sizeof(v) == 8 * #sizeof(*void))
     //v = &toto
 }

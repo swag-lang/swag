@@ -4,7 +4,7 @@
 #test
 {
     var a = 10
-    let v: closure(s32) = closure|&a|(x: s32)
+    let v: func||(s32) = func|&a|(x: s32)
     {
         a += x
     }

@@ -3,7 +3,7 @@
 {
     let x: const [..] s32 = [1, 2]
 
-    let v = closure|x|()
+    let v = func|x|()
     {
         @assert(x[0] == 1)
         @assert(x[1] == 2)

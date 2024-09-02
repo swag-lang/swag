@@ -1,7 +1,7 @@
 #test
 {
     var str = "10"
-    var v: closure() = closure||()
+    var v: func||() = func||()
     {
         //@print(str)
     }

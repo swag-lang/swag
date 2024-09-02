@@ -5,8 +5,8 @@ public struct Button
     icon:                Icon
     iconSizeX:           f32
     iconSizeY:           f32
-    sigPressed:          SigArray'closure(*Self)
-    sigRightPressed:     SigArray'closure(*Self)
+    sigPressed:          SigArray'func||(*Self)
+    sigRightPressed:     SigArray'func||(*Self)
     isPressed:           bool
     isPressing:          bool
     isHot:               bool

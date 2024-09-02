@@ -5,7 +5,7 @@ struct Dialog
     using wnd:            Wnd
     wndBottom:            *StackLayoutCtrl
     buttons:              Array'(*PushButton)
-    sigPressedButton:     closure(*Dialog, WndId)->bool
+    sigPressedButton:     func||(*Dialog, WndId)->bool
 }
 
 impl IWnd for Dialog
@@ -146,7 +146,7 @@ impl Dialog
         {
             .form = isDefault ? .Default : .Strong
 
-            .sigPressed += closure|self|(btn)
+            .sigPressed += func|self|(btn)
             {
                 if !self.sigPressedButton or self.sigPressedButton(self, btn.id):
                     btn.getApp().exitModal(btn.id)

@@ -3,7 +3,7 @@
     let str = "10"
     let a = 50
     let b = 150
-    let v: closure() = closure|str,a,b|()
+    let v: func||() = func|str,a,b|()
     {
         @assert(str == "10")
         @assert(a == 50)

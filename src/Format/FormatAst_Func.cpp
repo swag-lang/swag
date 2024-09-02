@@ -304,15 +304,9 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Closure capture parameters
+    concat->addString("func");
     if (funcDecl->captureParameters)
-    {
-        concat->addString("closure");
         SWAG_CHECK(outputClosureArguments(context, funcDecl));
-    }
-    else
-    {
-        concat->addString("func");
-    }
 
     SWAG_CHECK(outputFuncDeclParameters(context, funcDecl->parameters, false));
     SWAG_CHECK(outputFuncReturnType(context, funcDecl));
@@ -388,7 +382,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
     if (node->is(AstNodeKind::TypeLambda))
         concat->addString("func");
     else
-        concat->addString("closure");
+        concat->addString("func||");
 
     FormatContext cxt{context};
     cxt.alignVarDecl = false;

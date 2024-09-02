@@ -23,8 +23,8 @@ impl I for A
     var x: A
     let itf: I = cast(I) x
 
-    //var ptr: closure()
-    let ptr = closure|itf|()
+    //var ptr: func||()
+    let ptr = func|itf|()
     {
         itf.toto()
     }

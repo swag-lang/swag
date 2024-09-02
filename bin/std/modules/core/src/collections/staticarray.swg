@@ -503,7 +503,7 @@ impl StaticArray
 
     // Sort array
     #[Swag.Overload]
-    mtd sort(cb: closure(T, T)->s32)
+    mtd sort(cb: func||(T, T)->s32)
     {
         Debug.assert(cb != null)
         Slice.sort(toSlice(), cb)

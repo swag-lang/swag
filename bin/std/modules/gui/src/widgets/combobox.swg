@@ -21,7 +21,7 @@ struct ComboBox
     kind                = ComboBoxKind.Select
     minWidthPopup:      f32 = 100
     maxHeightPopup:     f32 = 300
-    sigChanged:         SigArray'closure(*Self, u32)
+    sigChanged:         SigArray'func||(*Self, u32)
 
     editBox:            *EditBox
     isHot:              bool
@@ -167,7 +167,7 @@ internal impl ComboBox
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
-        popup.sigSelected = closure|self|(list, idx)
+        popup.sigSelected = func|self|(list, idx)
         {
             if idx != Swag.U32.Max:
                 self.selectItem(idx)

@@ -1,4 +1,4 @@
-func(T) sort(values: const [..] T, cb: closure(T, T)->s32)
+func(T) sort(values: const [..] T, cb: func||(T, T)->s32)
 {
 }
 

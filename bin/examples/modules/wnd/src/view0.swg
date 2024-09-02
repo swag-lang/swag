@@ -418,7 +418,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         let prg = ProgressBar.create(view, {20, 550, 200})
         g_Prg = prg
-        tabView.sigSelChanged += closure|prg|(tab)
+        tabView.sigSelChanged += func|prg|(tab)
         {
             prg.setProgression(0)
         }
@@ -450,18 +450,18 @@ func createView0(tabView: *Tab, view: *Wnd)
         let slider = Slider.create(view, {425, 780, 120})
         slider.disable()
 
-        btn.sigPressed += closure|img2, slider|(btn)
+        btn.sigPressed += func|img2, slider|(btn)
         {
             img2.movie.pause(!img2.movie.inPause)
             slider.enable(img2.movie.inPause)
             btn.icon = img2.movie.inPause ? btn.getTheme().getIcon24(ThemeIcons24.Play) : btn.getTheme().getIcon24(ThemeIcons24.Pause)
         }
-        img2.movie.sigFrameChanged += closure|slider|(movie)
+        img2.movie.sigFrameChanged += func|slider|(movie)
         {
             slider.setMinMax(0, cast() movie.numFrames)
             slider.setValue(cast() movie.frameIndex)
         }
-        slider.sigChanged += closure|img2|(slider)
+        slider.sigChanged += func|img2|(slider)
         {
             if !img2.movie.inPause:
                 return

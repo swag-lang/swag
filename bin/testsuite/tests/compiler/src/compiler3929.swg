@@ -1,4 +1,4 @@
-var g: closure(s32)
+var g: func||(s32)
 
 #test
 {

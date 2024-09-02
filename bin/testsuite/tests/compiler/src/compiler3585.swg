@@ -6,8 +6,8 @@ impl A
 
 #test
 {
-    var x: A'closure(s32)
-    var y: A'closure(f32)
+    var x: A'func||(s32)
+    var y: A'func||(f32)
 
     x = func(t) {}
     y = func(t) {}

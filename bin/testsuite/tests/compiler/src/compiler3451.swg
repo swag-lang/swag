@@ -8,7 +8,7 @@ struct Vector
 {
     let x = Vector{1, 2}
 
-    let v = closure|x|()
+    let v = func|x|()
     {
         @assert(x.x == 1)
         @assert(x.y == 2)

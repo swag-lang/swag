@@ -1,6 +1,6 @@
 #test
 {
-    func toto(cb: closure())
+    func toto(cb: func||())
     {
         @assert(cb == null)
         if cb:

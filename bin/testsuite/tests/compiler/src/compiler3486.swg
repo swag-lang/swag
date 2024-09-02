@@ -1,6 +1,6 @@
 struct A
 {
-    fct: closure(*Self)
+    fct: func||(*Self)
 }
 
 #test

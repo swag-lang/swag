@@ -618,8 +618,6 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, ComputeNameKind nameKi
     {
         if (flags.has(TYPEINFO_FUNC_IS_ATTR))
             resName += "attr";
-        else if (isClosure())
-            resName += "closure";
         else
             resName += "func";
     }

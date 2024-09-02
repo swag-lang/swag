@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var v: closure()
+    var v: func||()
     if v:
         v()
 }

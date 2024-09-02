@@ -448,7 +448,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::KwdFunc:
-        case TokenId::KwdClosure:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
                 return invalidTokenError(InvalidTokenError::PrimaryExpression);
 

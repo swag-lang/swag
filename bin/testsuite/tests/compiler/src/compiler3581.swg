@@ -2,12 +2,12 @@
 
 struct A
 {
-    x: closure()
+    x: func||()
 }
 
 impl A
 {
-    mtd opAffect(p: closure())
+    mtd opAffect(p: func||())
     {
         x = p
     }

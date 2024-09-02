@@ -376,7 +376,7 @@ impl IForm for FormText
             .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = closure|self|(g, first, hitMove)
+        gizmo.sigChanged = func|self|(g, first, hitMove)
         {
             g.apply(self, first, hitMove)
         }

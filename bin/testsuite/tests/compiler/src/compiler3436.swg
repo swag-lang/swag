@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(v: closure(s32)->s32)->s32
+func toto(v: func||(s32)->s32)->s32
 {
     return v(5)
 }

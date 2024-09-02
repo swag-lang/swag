@@ -38,9 +38,9 @@ struct RichEditCtrl
     marginRight:                 f32
     lexer:                       IRichEditLexer
     form                         = RichEditForm.RichEditCtrl
-    sigIsReadOnly:               SigArray'closure(*bool)
-    sigChanged:                  SigArray'closure(*Self)
-    sigModified:                 SigArray'closure(*Self)
+    sigIsReadOnly:               SigArray'func||(*bool)
+    sigChanged:                  SigArray'func||(*Self)
+    sigModified:                 SigArray'func||(*Self)
     bkColorModel:                String
 
     styles:                      [256] RichEditRuneStyle
@@ -252,7 +252,7 @@ impl RichEditCtrl
             .scrollWnd.dockStyle     = .Center
             .scrollWnd.focusStrategy = .None
             .scrollWnd.setAllPaddings(.getThemeMetrics().richEdit_Padding)
-            .scrollWnd.sigScrollPosChanged += closure|ed|(scrollWnd, op, np)
+            .scrollWnd.sigScrollPosChanged += func|ed|(scrollWnd, op, np)
             {
                 if op.y != np.y:
                     ed.dirtyFirstLineView = true

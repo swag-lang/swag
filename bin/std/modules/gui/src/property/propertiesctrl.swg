@@ -37,7 +37,7 @@ impl PropertiesCtrl
 
             .list = ListCtrl.createSimple(.splitter)
             .list.listFlags.add(.ForceMarginExpandMark)
-            .list.sigSelChanged += closure|ed|(list)
+            .list.sigSelChanged += func|ed|(list)
             {
                 let sel = list.getFocusLine()
                 if !sel:
@@ -64,7 +64,7 @@ impl PropertiesCtrl
             .dockStyle = .Top
             .setNote("Search")
             .margin.w = 8
-            .sigChanged += closure|ed|(fil) { ed.prop.setStringFilter(fil.text); }
+            .sigChanged += func|ed|(fil) { ed.prop.setStringFilter(fil.text); }
             .editBoxFlags.add(.ClearButton)
         }
 
@@ -76,7 +76,7 @@ impl PropertiesCtrl
                 .margin.w  = 12
                 .dockStyle = .Top
                 .setForm(.PushButton)
-                .sigSelChanged += closure|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }
+                .sigSelChanged += func|ed|(tab) { ed.prop.setCurrentSection(cast(u32) cast(u64) tab.getSelectedItem().userData0); }
             }
         }
 

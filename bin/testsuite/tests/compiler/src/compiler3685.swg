@@ -11,7 +11,7 @@ var G: s32
 {
     toto()
     {
-        //var fn: closure(s32)
+        //var fn: func||(s32)
         let fn = func(val: s32){
             G += val
         }

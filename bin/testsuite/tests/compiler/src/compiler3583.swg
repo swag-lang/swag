@@ -2,13 +2,13 @@
 
 struct A
 {
-    x: closure()
+    x: func||()
 }
 
 impl A
 {
     #[Swag.Inline]
-    mtd opAffect(p: closure())
+    mtd opAffect(p: func||())
     {
         x = p
     }

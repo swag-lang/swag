@@ -1,8 +1,8 @@
 #test
 {
     let a = 666
-    var cb = closure|a|() {
-        var cb1 = closure|a|() {
+    var cb = func|a|() {
+        var cb1 = func|a|() {
             a = 0
         }
     }

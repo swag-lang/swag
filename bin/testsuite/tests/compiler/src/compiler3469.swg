@@ -9,6 +9,6 @@ func toto(x: ...)
 //#[Swag.PrintBc]
 #test
 {
-    let x: closure(...) = &toto
+    let x: func||(...) = &toto
     x(4, 5)
 }

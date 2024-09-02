@@ -3,7 +3,7 @@
 {
     let xx: s64 = 42
 
-    let x: closure(s32, ...) = closure|xx|(x: s32, y: ...)
+    let x: func||(s32, ...) = func|xx|(x: s32, y: ...)
     {
         //@print(xx)
         @assert(x == 52)

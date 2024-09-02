@@ -2,5 +2,5 @@
 
 #test
 {
-    let a = closure||toto
+    let a = func||toto
 }

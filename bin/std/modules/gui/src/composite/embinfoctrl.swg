@@ -52,7 +52,7 @@ impl EmbInfoCtrl
         {
             .margin    = 5
             .dockStyle = .Right
-            .sigPressed += closure|ctrl|(btn)
+            .sigPressed += func|ctrl|(btn)
             {
                 ctrl.destroy()
             }

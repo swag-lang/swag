@@ -7,7 +7,7 @@ struct Node
     kids:     Array'Node
 }
 
-alias WalkAction = closure(const &Node, s32)
+alias WalkAction = func||(const &Node, s32)
 
 func walk(tree: const &Node, action: WalkAction, depth = 0)
 {
@@ -29,7 +29,7 @@ func print(tree: const &Node)
 func calcTotalDepth(tree: const &Node)->s32
 {
     var total = 0
-    walk(tree, closure|&total|(node, depth)
+    walk(tree, func|&total|(node, depth)
     {
         total += depth
     })

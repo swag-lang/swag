@@ -1,4 +1,4 @@
-func toto(x: closure(s32, s32)->s32)->s32
+func toto(x: func||(s32, s32)->s32)->s32
 {
     return x(1, 2)
 }

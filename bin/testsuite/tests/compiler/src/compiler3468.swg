@@ -7,6 +7,6 @@ func toto(x: s32...)
 
 #test
 {
-    let x: closure(s32...) = &toto
+    let x: func||(s32...) = &toto
     x(4, 5)
 }

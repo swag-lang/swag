@@ -16,13 +16,13 @@ var G = 0
 func ref1()->CB
 {
     let v = 2
-    return closure|v|()
+    return func|v|()
     {
         G = v
     }
 }
 
-alias CB = closure()
+alias CB = func||()
 
 #test
 {

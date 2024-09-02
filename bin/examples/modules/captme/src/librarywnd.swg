@@ -199,7 +199,7 @@ impl LibraryView
         // Launch thread to read all captures
         try
         {
-            thread.init(closure|self|(th: Thread)
+            thread.init(func|self|(th: Thread)
             {
                 foreach &it in self.items
                 {
@@ -375,7 +375,7 @@ impl LibraryWnd
             .backgroundStyle = .Window
             .listFlags |= .ForceMarginExpandMark
             .dockStyle = .Center
-            .sigSelChanged += closure|view|(list)
+            .sigSelChanged += func|view|(list)
             {
                 var sel = list.getSelectedLine()
                 if !sel:

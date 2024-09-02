@@ -1,12 +1,12 @@
 #global public
 using Core, Serialization
 
-alias FrameCallback = closure(*Application)
+alias FrameCallback = func||(*Application)
 
 struct Application
 {
     using native:           ApplicationNative
-    sigFrame:               SigArray'closure(*Application)
+    sigFrame:               SigArray'func||(*Application)
 
     options:                ApplicationOptions
     appIcon:                Pixel.Image
@@ -459,7 +459,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: *Surface, cb: closure(*Application) = null)->WndId
+    public mtd doModalLoop(surface: *Surface, cb: func||(*Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1

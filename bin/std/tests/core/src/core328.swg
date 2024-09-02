@@ -1,6 +1,6 @@
 using Core
 
-alias CB = closure()
+alias CB = func||()
 
 //#[Swag.PrintBc]
 #test

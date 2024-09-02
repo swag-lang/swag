@@ -42,7 +42,7 @@ struct Properties
     listNameMarginAfter:      s32 = 5
     listDescMarginAfter:      s32 = 5
 
-    sigChanged:               SigArray'closure(*Self, *PropertiesItem)
+    sigChanged:               SigArray'func||(*Self, *PropertiesItem)
 
     leftMargin:               s32 = 15
     rightMargin:              s32 = 15
@@ -103,8 +103,8 @@ struct PropertiesItem
     comboBox:           *ComboBox
     sliderBox:          *SliderCtrl
 
-    sigResize:          SigArray'closure(*Self)
-    sigRefresh:         SigArray'closure(*Self)
+    sigResize:          SigArray'func||(*Self)
+    sigRefresh:         SigArray'func||(*Self)
 
     ntfyItf:            IPropertyNotify
 
@@ -544,7 +544,7 @@ internal impl Properties
                 .extendFocus = gridLineMargin * 0.5
         }
 
-        line.hookOnEvent = closure|self, item|(wnd, evt) { return self.onItemEvent(item, wnd, evt); }
+        line.hookOnEvent = func|self, item|(wnd, evt) { return self.onItemEvent(item, wnd, evt); }
 
         // Name
         if flags.has(.Name)

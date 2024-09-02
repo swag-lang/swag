@@ -4,5 +4,5 @@ namespace A {}
 
 #test
 {
-    var x = closure|A|() {}
+    var x = func|A|() {}
 }

@@ -14,7 +14,7 @@ impl Vector
 {
     var x = Vector{1, 2}
 
-    var v = closure|x|()
+    var v = func|x|()
     {
         @assert(x.x == 1)
         @assert(x.y == 2)

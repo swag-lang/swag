@@ -1,4 +1,4 @@
-var x: closure()
+var x: func||()
 
 //#[Swag.PrintBc]
 #test

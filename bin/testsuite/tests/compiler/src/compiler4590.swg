@@ -6,10 +6,10 @@ struct V
 #test
 {
     var v: V
-    var fn: closure(V)
+    var fn: func||(V)
     let t: s32 = 40
 
-    fn = closure|t|(v)
+    fn = func|t|(v)
     {
         @assert(v.x == 666)
         @assert(t == 40)

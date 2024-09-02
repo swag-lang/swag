@@ -15,7 +15,7 @@ struct Label
 {
     using wnd:            Wnd
 
-    sigUrlClicked:        SigArray'closure(*Label, string)
+    sigUrlClicked:        SigArray'func||(*Label, string)
 
     icon:                 Icon
     iconColor:            Color

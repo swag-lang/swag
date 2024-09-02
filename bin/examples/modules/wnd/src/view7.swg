@@ -91,9 +91,9 @@ func createView7(_tabView: *Tab, view: *Wnd)
     lt1.addStruct(aa, "Section 2")
     lt1.splitter.setPaneSize(0, 150)
 
-    lt.sigChanged += closure|lt1|(lt, item) { lt1.prop.refresh(); }
-    lt1.prop.sigChanged += closure|lt|(lt1, item) { lt.refresh(); }
+    lt.sigChanged += func|lt1|(lt, item) { lt1.prop.refresh(); }
+    lt1.prop.sigChanged += func|lt|(lt1, item) { lt.refresh(); }
 
     let btn = PushButton.create(view, "show/hide", {500, 650, 600})
-    btn.sigPressed += closure|lt1|(btn) { lt1.splitter.showPane(0, lt1.splitter.isPaneVisible(0) ? false : true); }
+    btn.sigPressed += func|lt1|(btn) { lt1.splitter.showPane(0, lt1.splitter.isPaneVisible(0) ? false : true); }
 }

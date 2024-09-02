@@ -1,12 +1,12 @@
 //#[Swag.PrintBc]
 #test
 {
-    func getInc()->closure()->s32
+    func getInc()->func||()->s32
     {
         let x = 10
         let y = 20
         let z = 30
-        return closure|x, z|()->s32 {
+        return func|x, z|()->s32 {
             x = x + z + 1
             return x
         }
