@@ -1756,12 +1756,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     array[<span class="SNum">1</span>] = <span class="SNum">2</span>                     <span class="SCmt">// Assign the value 2 to the second element</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Array Size and Memory </h4>
-<p>The <span class="code-inline">@countof</span> intrinsic provides the number of elements in an array, while <span class="code-inline">#sizeof</span> gives the total size in bytes. </p>
+<p>The <span class="code-inline">@countof</span> intrinsic can be used to get the number of elements in an array, while <span class="code-inline">#sizeof</span> provides the total size of the array in bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>               <span class="SCmt">// Declare a static array of two s32 elements</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>     <span class="SCmt">// Ensure the array contains 2 elements</span>
-    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">#sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the size in bytes (2 elements * size of s32)</span>
+    <span class="SCmt">// Declare a static array with two 32-bit signed integer (s32) elements</span>
+    <span class="SKwd">var</span> array: [<span class="SNum">2</span>] <span class="STpe">s32</span>                          
+
+    <span class="SCmt">// Use '#typeof' to get the array type and check the number of elements with '.count'</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(array).count == <span class="SNum">2</span>
+
+    <span class="SCmt">// '@countof' is a runtime intrinsic that also works with compile-time elements</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(array) == <span class="SNum">2</span>                <span class="SCmt">// Ensure the array contains 2 elements</span>
+
+    <span class="SCmt">// '#sizeof' is a compile-time intrinsic that returns the size in bytes of the given element</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(array) == <span class="SNum">2</span> * <span class="SItr">#sizeof</span>(<span class="STpe">s32</span>)  <span class="SCmt">// Verify the total size in bytes</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Obtaining the Address of an Array </h4>
 <p>The <span class="code-inline">@dataof</span> intrinsic retrieves the address of the first element in an array. </p>

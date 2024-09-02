@@ -19,13 +19,21 @@ A static array is declared using the syntax `[N]` followed by the type, where `N
 /**
 # Array Size and Memory
 
-The `@countof` intrinsic provides the number of elements in an array, while `#sizeof` gives the total size in bytes.
+The `@countof` intrinsic can be used to get the number of elements in an array, while `#sizeof` provides the total size of the array in bytes.
 */
 #test
 {
-    var array: [2] s32               // Declare a static array of two s32 elements
-    #assert @countof(array) == 2     // Ensure the array contains 2 elements
-    #assert #sizeof(array) == 2 * #sizeof(s32)  // Verify the size in bytes (2 elements * size of s32)
+    // Declare a static array with two 32-bit signed integer (s32) elements
+    var array: [2] s32                          
+
+    // Use '#typeof' to get the array type and check the number of elements with '.count'
+    #assert #typeof(array).count == 2
+
+    // '@countof' is a runtime intrinsic that also works with compile-time elements
+    #assert @countof(array) == 2                // Ensure the array contains 2 elements
+
+    // '#sizeof' is a compile-time intrinsic that returns the size in bytes of the given element
+    #assert #sizeof(array) == 2 * #sizeof(s32)  // Verify the total size in bytes
 }
 
 /**
