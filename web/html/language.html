@@ -2140,15 +2140,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(type.rawType == <span class="STpe">s32</span>)
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values</span>) == <span class="SCst">Values</span>
 }</span></div>
-<h4 id="_004_000_data_structures_swg__004_004_enum_swg">Using <span class="code-inline">@kindof</span> to Retrieve Underlying Type </h4>
-<p><span class="code-inline">@kindof</span> can be used to return the underlying type of the enum at compile time. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
-    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">RGB</span>) == <span class="SCst">RGB</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) != <span class="SCst">RGB</span>
-    <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">RGB</span>) == <span class="STpe">s32</span>
-}</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Custom Enum Underlying Type </h4>
 <p>You can specify a custom underlying type for an enum by appending it after the enum name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2160,7 +2151,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCst">C</span>
     }
 
-    <span class="SCmp">#assert</span> <span class="SItr">@kindof</span>(<span class="SCst">Values1</span>) == <span class="STpe">s64</span>
+    <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values1</span>).rawType == <span class="STpe">s64</span>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(<span class="SCst">Values1</span>.<span class="SCst">A</span>) == <span class="SCst">Values1</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_004_enum_swg">Default and Custom Enum Values </h4>
@@ -8849,7 +8840,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 01-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 02-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>
