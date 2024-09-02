@@ -516,7 +516,7 @@ void initErrors()
     SWAG_ERROR(Err0369, "misplaced [[mtd]]                                 $ cannot use [[mtd]] outside of a struct implementation block                                                                              $ consider replacing [[mtd]] with [[func]]");
     SWAG_ERROR(Err0370, "misplaced [[mtd]]                                 $ cannot use [[mtd]] to declare a lambda type                                                                                              $ consider using [[func]] or [[closure]] instead");
     SWAG_ERROR(Err0371, "misplaced [[mtd]] in enum                         $ cannot use [[mtd]] outside of a struct implementation block                                                                              $ consider replacing [[mtd]] with [[func]]");
-    SWAG_ERROR(Err0372, "misplaced [[namealias]]                           $ cannot use [[namealias]] on a struct member                                                                                              $ ");
+    SWAG_ERROR(Err0372, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0373, "misplaced [[return]]                              $ cannot use [[return]] after [[=>]] as it is implicit                                                                                     $ consider removing it");
     SWAG_ERROR(Err0374, "misplaced [[retval]]                              $ cannot use the [[retval]] special type in a function that returns nothing                                                                $ ");
     SWAG_ERROR(Err0375, "misplaced [[retval]]                              $ cannot use the [[retval]] special type outside of a function body                                                                        $ ");
@@ -940,7 +940,6 @@ void initErrors()
     SWAG_ERROR(Nte0008, "[[%s]] was found in [[%s]] because of a [[using]] field");
     SWAG_ERROR(Nte0009, "[[closure]] should be followed by capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0010, "[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
-    SWAG_ERROR(Nte0011, "[[namealias]] should be associated with a namespace, function, or variable, not a type");
     SWAG_ERROR(Nte0012, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
     SWAG_ERROR(Nte0013, "a [[let]] variable is immutable and cannot be modified");
     SWAG_ERROR(Nte0014, "a [[public]] struct should export all of its special functions");
@@ -1152,6 +1151,7 @@ void initErrors()
     SWAG_ERROR(Nte0220, "the [[%s]] does not implement the [[%s]]");
     SWAG_ERROR(Nte0221, "this is the last [[%s]]");
     SWAG_ERROR(Nte0222, "consider using [[&%s]] if you want a function pointer for a lambda or a closure");
+    SWAG_ERROR(Nte0011, nullptr);
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);
     SWAG_ERROR(Nte0225, nullptr);
