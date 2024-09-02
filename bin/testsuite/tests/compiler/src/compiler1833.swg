@@ -1,4 +1,4 @@
-func toto()->s32
+/*func toto()->s32
 {
     return 0
 }
@@ -7,4 +7,4 @@ func toto()->s32
 {
     @assert(#typeof(toto) != #type func()->s32)
     @assert(@kindof(toto) == #type func()->s32)
-}
+}*/

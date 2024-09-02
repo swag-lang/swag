@@ -5,6 +5,6 @@ enum RGB: u32 { R; G; B; }
 {
     var x: RGB = R | G
     #assert #typeof(RGB) == RGB
-    #assert @kindof(RGB) == u32
+    #assert #typeof(RGB).rawType == u32
 //    @assert(x == .R)
 }

@@ -553,38 +553,6 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         return true;
     }
 
-    // For a function, this is the unscoped type
-    if (expr->typeInfo->isFuncAttr())
-    {
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
-        YIELD();
-        node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node));
-        return true;
-    }
-
-    // For an enum, this is the raw type
-    if (expr->typeInfo->isEnum())
-    {
-        const auto typeEnum = castTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));
-        YIELD();
-        node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node));
-        return true;
-    }
-
-    // For an alias, this is the raw type
-    if (expr->typeInfo->isAlias())
-    {
-        const auto typeAlias = castTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
-        SWAG_CHECK(resolveTypeAsExpression(context, expr, typeAlias->rawType, &node->typeInfo));
-        YIELD();
-        node->inheritComputedValue(expr);
-        SWAG_CHECK(setupIdentifierRef(context, node));
-        return true;
-    }
-
     const Diagnostic err{node, node->token, formErr(Err0777, expr->typeInfo->getDisplayNameC())};
     return context->report(err);
 }
