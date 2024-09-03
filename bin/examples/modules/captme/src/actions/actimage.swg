@@ -319,7 +319,7 @@ impl MainWnd
                 if col.a
                 {
                     minX = Math.min(minX, x + capture.backImagePos.x)
-                    break in Left
+                    break to Left
                 }
             }
         }
@@ -335,7 +335,7 @@ impl MainWnd
                 if col.a
                 {
                     maxX = Math.max(maxX, x + capture.backImagePos.x + 1)
-                    break in Right
+                    break to Right
                 }
             }
         }
@@ -351,7 +351,7 @@ impl MainWnd
                 if col.a
                 {
                     minY = Math.min(minY, y + capture.backImagePos.y)
-                    break in Up
+                    break to Up
                 }
             }
         }
@@ -367,7 +367,7 @@ impl MainWnd
                 if col.a
                 {
                     maxY = Math.max(maxY, y + capture.backImagePos.y + 1)
-                    break in Down
+                    break to Down
                 }
             }
         }

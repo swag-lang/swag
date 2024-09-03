@@ -30,7 +30,7 @@ impl A
             {
                 var z: A
                 defer cpt += 1
-                break in outer
+                break to outer
             }
         }
 

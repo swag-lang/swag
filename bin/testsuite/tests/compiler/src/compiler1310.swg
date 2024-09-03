@@ -6,7 +6,7 @@
     {
         for 20
         {
-            break in outer
+            break to outer
         }
 
         error = true

@@ -187,10 +187,10 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // Injects the user code `what` here.
                     // The `#inject` directive replaces certain parts of the user code:
-                    // - `break` in the user code is replaced with `break in Up`, meaning it will break 
+                    // - `break` in the user code is replaced with `break to Up`, meaning it will break 
                     //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
-                    #inject #up what => { break = break in ScopeTarget; }
+                    #inject #up what => { break = break to ScopeTarget; }
                 }
             }
         }
@@ -205,7 +205,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     {
         a += 1
         if a == 10:
-            // This `break` statement is replaced by `break in Up` due to the macro,
+            // This `break` statement is replaced by `break to Up` due to the macro,
             // meaning it will exit the outermost `for`, not just the inner `for`.
             break  
     }
@@ -234,9 +234,9 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
             {
                 #macro
                 {
-                    // `break` in the user code is replaced with `break in Outer`, exiting the outer loop.
+                    // `break` in the user code is replaced with `break to Outer`, exiting the outer loop.
                     // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
-                    #inject #up what => { break = break in Outer; continue = break; }
+                    #inject #up what => { break = break to Outer; continue = break; }
                 }
             }
         }

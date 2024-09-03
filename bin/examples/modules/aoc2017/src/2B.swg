@@ -40,12 +40,12 @@ func day2B()
                 if value % v1 == 0
                 {
                     total += value / v1
-                    break in Done
+                    break to Done
                 }
                 if v1 % value == 0
                 {
                     total += v1 / value
-                    break in Done
+                    break to Done
                 }
             }
 

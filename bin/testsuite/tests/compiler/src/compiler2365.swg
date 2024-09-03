@@ -7,7 +7,7 @@ public func macro2365(stmt: code)
         #scope down
         #macro
         {
-            #inject #up stmt => { break = break in up; continue = break in down; }
+            #inject #up stmt => { break = break to up; continue = break to down; }
         }
 
         #up g += 1

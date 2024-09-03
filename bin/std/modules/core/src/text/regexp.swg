@@ -1364,15 +1364,15 @@ impl RegExp
                         cpt2 += 1
                     case `[`:
                         if cpt0 == 0:
-                            break in Loop
+                            break to Loop
                         cpt0 -= 1
                     case `(`:
                         if cpt1 == 0:
-                            break in Loop
+                            break to Loop
                         cpt1 -= 1
                     case `{`:
                         if cpt2 == 0:
-                            break in Loop
+                            break to Loop
                         cpt2 -= 1
                     }
 
@@ -1397,15 +1397,15 @@ impl RegExp
                         cpt2 += 1
                     case `]`:
                         if cpt0 == 0:
-                            break in Loop
+                            break to Loop
                         cpt0 -= 1
                     case `)`:
                         if cpt1 == 0:
-                            break in Loop
+                            break to Loop
                         cpt1 -= 1
                     case `}`:
                         if cpt2 == 0:
-                            break in Loop
+                            break to Loop
                         cpt2 -= 1
                     }
 

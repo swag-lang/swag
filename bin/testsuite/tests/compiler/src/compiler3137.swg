@@ -10,12 +10,12 @@
                 for 10
                 {
                     x += 1
-                    break in A
+                    break to A
                 }
             }
 
             x += 1
-            break in A
+            break to A
         }
     }
 

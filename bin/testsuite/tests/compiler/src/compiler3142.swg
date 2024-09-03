@@ -18,7 +18,7 @@ func titi(stmt: code)
     {
         for 5
         {
-            #inject stmt => { break = break in Up; }
+            #inject stmt => { break = break to Up; }
         }
     }
 }

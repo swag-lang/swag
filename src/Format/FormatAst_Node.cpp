@@ -195,7 +195,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             if (!breakNode->label.text.empty())
             {
                 concat->addBlank();
-                concat->addString("in");
+                concat->addString("to");
                 concat->addBlank();
                 concat->addString(breakNode->label.text);
             }

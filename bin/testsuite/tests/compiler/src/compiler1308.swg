@@ -9,7 +9,7 @@
         #scope Outer
         for 20
         {
-            break in Outer
+            break to Outer
         }
 
 		error = true

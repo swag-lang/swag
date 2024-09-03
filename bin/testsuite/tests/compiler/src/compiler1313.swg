@@ -22,7 +22,7 @@ impl A
         var x: A
         defer cpt = 1
         for 10:
-            break in outer
+            break to outer
         @assert(false)
     }
 

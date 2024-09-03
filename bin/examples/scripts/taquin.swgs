@@ -98,7 +98,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 {
                     g_HotX = i
                     g_HotY = j
-                    break in Big
+                    break to Big
                 }
             }
         }

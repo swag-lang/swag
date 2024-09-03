@@ -90,7 +90,7 @@ impl SelModel
                 {
                     let #alias0 = #up i
                     let #alias1 = #index
-                    #inject #up stmt => { break = break in Up; }
+                    #inject #up stmt => { break = break to Up; }
                 }
             }
         }

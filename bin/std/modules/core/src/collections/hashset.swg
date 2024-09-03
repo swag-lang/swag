@@ -95,7 +95,7 @@ impl HashSet
                     let #alias0 = #up table[#index].key
                 }
 
-                #inject #up stmt => { break = break in Up; continue = break in Down; }
+                #inject #up stmt => { break = break to Up; continue = break to Down; }
             }
 
             remain -= 1

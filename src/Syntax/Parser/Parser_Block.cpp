@@ -694,7 +694,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     *result           = node;
     SWAG_CHECK(eatToken());
 
-    if (tokenParse.is(TokenId::KwdIn))
+    if (tokenParse.is(TokenId::KwdTo))
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0660)));
