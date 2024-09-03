@@ -188,7 +188,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|scope)\\b"
+          "match": "(#)(global|load|assert|error|warning|print|import|inject|macro|placeholder|foreignlib|if|else|elif|do|scope)\\b"
         }
       ]
     },

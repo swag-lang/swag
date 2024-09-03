@@ -8,7 +8,7 @@ impl AA
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
-        #mixin stmt
+        #inject stmt
     }
 }
 

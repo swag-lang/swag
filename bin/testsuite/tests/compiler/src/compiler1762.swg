@@ -3,7 +3,7 @@
     #[Swag.Mixin]
     func myMixin(what: code)
     {
-        #mixin what
+        #inject what
     }
 
     var a = 0

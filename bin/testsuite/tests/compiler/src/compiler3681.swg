@@ -2,7 +2,7 @@
 func toto(stmt: code)
 {
     let a = 666
-    #mixin stmt
+    #inject stmt
 }
 
 var G: s32

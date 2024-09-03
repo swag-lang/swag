@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func toto(x: code)
 {
-    let AAA = #mixin x
+    let AAA = #inject x
     @assert(AAA)
 }
 

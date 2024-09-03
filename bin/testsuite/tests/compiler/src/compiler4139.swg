@@ -5,7 +5,7 @@ func toto(stmt: code)
 {
     #macro
     {
-        #mixin stmt
+        #inject stmt
     }
 }
 

@@ -8,7 +8,7 @@ func Visit(user: code)
 		#macro
         {
             var value = #up c
-            #mixin #up user
+            #inject #up user
         }
 	}
 }

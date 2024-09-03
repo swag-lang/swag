@@ -2,7 +2,7 @@
 func toto(x: code)
 {
     for 10:
-        #mixin x
+        #inject x
 }
 
 //#[Swag.PrintBc]

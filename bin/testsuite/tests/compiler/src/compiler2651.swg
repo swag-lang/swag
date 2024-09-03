@@ -4,7 +4,7 @@ func res() => 666
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    #mixin stmt
+    #inject stmt
 }
 
 #test

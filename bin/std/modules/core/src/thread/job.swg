@@ -232,7 +232,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
             {
                 let #alias0 = #up scan
                 let #alias1 = #up userData
-                #mixin #up stmt
+                #inject #up stmt
             }
 
             scan += offset
@@ -303,7 +303,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
             {
                 let #alias0 = #up curIndex
                 let #alias1 = #up userData
-                #mixin #up stmt
+                #inject #up stmt
             }
 
             curIndex += 1

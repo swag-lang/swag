@@ -239,7 +239,7 @@ impl String
                 #else:
                     var #alias0 = dref #up scan
                 var #alias1 = #index
-                #mixin #up stmt
+                #inject #up stmt
             }
         }
     }

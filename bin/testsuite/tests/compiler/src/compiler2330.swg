@@ -11,7 +11,7 @@ impl AA
         count = 0
         #macro
         {
-            #mixin #up stmt
+            #inject #up stmt
         }
     }
 }

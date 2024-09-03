@@ -14,7 +14,7 @@ impl S
             {
                 #macro
                 {
-                    #mixin #up stmt
+                    #inject #up stmt
                 }
             }
         }

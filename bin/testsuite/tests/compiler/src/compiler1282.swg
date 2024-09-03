@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func toto(x: code)
 {
-    if #mixin x:
+    if #inject x:
         @assert(true)
     else:
         @assert(false)

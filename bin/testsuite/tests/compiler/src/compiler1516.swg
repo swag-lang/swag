@@ -22,7 +22,7 @@ func toto(stmt: code)
     {
         #macro
         {
-            #mixin #up stmt
+            #inject #up stmt
         }
     }
 }

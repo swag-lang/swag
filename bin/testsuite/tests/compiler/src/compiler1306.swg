@@ -7,7 +7,7 @@ func toto(t: s32, x: code)
     #macro
     {
         var value = #up xx
-        #mixin #up x
+        #inject #up x
     }
 }
 

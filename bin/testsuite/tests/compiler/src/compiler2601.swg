@@ -8,7 +8,7 @@ func toto(stmt: code)
     func titi(cpt: s32)
     {
         var #alias0 = cpt
-        #mixin stmt
+        #inject stmt
     }
 
     for 5: titi(#index)

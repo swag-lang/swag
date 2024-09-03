@@ -1,8 +1,8 @@
 #[Swag.Macro]
 func toto(x: code)
 {
-    #mixin x
-    #mixin x
+    #inject x
+    #inject x
 }
 
 //#[Swag.PrintBc]

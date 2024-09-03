@@ -3,7 +3,7 @@ func toto(stmt: code)
 {
     let #alias0: s64 = 555
     let #alias1: s64 = 666
-    #mixin stmt
+    #inject stmt
 }
 
 #test

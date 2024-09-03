@@ -3,9 +3,9 @@
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    #mixin stmt
-    #mixin stmt
-    #mixin stmt
+    #inject stmt
+    #inject stmt
+    #inject stmt
 }
 
 var G: s32

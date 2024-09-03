@@ -82,7 +82,7 @@ This feature is similar to mixins but within the macro's scope.
     #[Swag.Macro]
     func myMacro(what: code)
     {
-        #mixin what                            // Inserts the provided code block
+        #inject what                            // Inserts the provided code block
     }
 
     var a = 0
@@ -114,7 +114,7 @@ This technique negates the need for the `#up` keyword when referencing the calle
 
         #macro                                 // Ensures the following code operates in the caller's scope
         {
-            #mixin #up what                    // References the caller's 'a'
+            #inject #up what                    // References the caller's 'a'
         }
     }
 
@@ -143,7 +143,7 @@ This avoids the overhead associated with lambda calls, making macros a performan
             #macro
             {
                 var index = #up a              // 'index' references 'a' from the caller's scope
-                #mixin #up what                // Insert the provided code block
+                #inject #up what                // Insert the provided code block
             }
             a += 1
         }
@@ -175,7 +175,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     func repeatSquare(count: u32, what: code)
     {
         // Define a label `Up` for the scope that will allow us to break out of the outermost loop
-        #scope Up                              
+        #scope ScopeTarget                              
         
         // Outer for: this will run `count` times
         for count
@@ -186,11 +186,11 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 #macro
                 {
                     // Injects the user code `what` here.
-                    // The `#mixin` directive replaces certain parts of the user code:
+                    // The `#inject` directive replaces certain parts of the user code:
                     // - `break` in the user code is replaced with `break in Up`, meaning it will break 
                     //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
-                    #mixin #up what where { break = break in Up; }
+                    #inject #up what where { break = break in ScopeTarget; }
                 }
             }
         }
@@ -236,7 +236,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // `break` in the user code is replaced with `break in Outer`, exiting the outer loop.
                     // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
-                    #mixin #up what where { break = break in Outer; continue = break; }
+                    #inject #up what where { break = break in Outer; continue = break; }
                 }
             }
         }
@@ -283,7 +283,7 @@ These aliases allow you to define and access specific variables within a macro.
     {
         let #alias0 = v                        // Assign 'v' to '#alias0'
         let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'
-        #mixin stmt                            // Insert the provided code block
+        #inject stmt                            // Insert the provided code block
     }
 
     call(20)

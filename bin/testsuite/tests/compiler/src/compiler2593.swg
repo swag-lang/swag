@@ -11,7 +11,7 @@ func toto(stmt: code)
     }
 
     titi()
-    #mixin stmt
+    #inject stmt
 }
 
 //#[Swag.PrintBc]

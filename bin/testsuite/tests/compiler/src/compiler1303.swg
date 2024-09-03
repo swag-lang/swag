@@ -6,7 +6,7 @@ func toto(x: code)
         #macro
         {
             var value = 100
-            #mixin #up x
+            #inject #up x
         }
     }
 }

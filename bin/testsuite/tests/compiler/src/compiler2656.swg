@@ -15,7 +15,7 @@ impl AA
     {
         func toto(ptr: *void)
         {
-            #mixin stmt
+            #inject stmt
         }
     }
 

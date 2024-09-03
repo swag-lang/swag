@@ -5,7 +5,7 @@ namespace tt
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(x: string, stmt: code)
     {
-        for x: #mixin stmt
+        for x: #inject stmt
     }
 }
 

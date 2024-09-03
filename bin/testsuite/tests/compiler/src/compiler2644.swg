@@ -3,7 +3,7 @@ var G = 0
 #[Swag.Macro]
 func titi(stmt: code)
 {
-    #mixin stmt
+    #inject stmt
     G *= 2
 }
 

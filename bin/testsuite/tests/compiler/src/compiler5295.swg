@@ -6,7 +6,7 @@ impl Array
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         for 7:
-        #mixin stmt
+        #inject stmt
     }
 
     mtd opSlice(a, b: u64)->string

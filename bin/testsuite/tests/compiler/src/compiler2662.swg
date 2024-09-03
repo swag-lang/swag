@@ -5,7 +5,7 @@ func toto(stmt: code)
 {
     func tata()
     {
-        #mixin stmt
+        #inject stmt
     }
 
     tata()
@@ -17,7 +17,7 @@ func titi(stmt: code)
     toto()
     {
         G += 1
-        #mixin stmt
+        #inject stmt
     }
 }
 

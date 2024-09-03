@@ -8,7 +8,7 @@ impl String
     {
         #macro
         {
-            #mixin #up s
+            #inject #up s
         }
     }
 }

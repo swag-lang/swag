@@ -1282,7 +1282,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
     {
         // This is super hacky
         // The problem is that the relation between a lambda and the make pointer lambda is tight,
-        // and with #mixin the lambda is not duplicated, but the make pointer lambda is...
+        // and with #inject the lambda is not duplicated, but the make pointer lambda is...
         // So this is a mess
         if (context.forceFlags.has(AST_IN_MIXIN))
         {

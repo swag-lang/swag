@@ -12,7 +12,7 @@ func toto(x: s32, stmt: code)
         #macro
         {
             var #alias0 = #index
-            #mixin #up stmt
+            #inject #up stmt
         }
     }
 }
@@ -30,7 +30,7 @@ impl A
     {
         toto(|#alias0| titi())
         {
-            #mixin stmt
+            #inject stmt
         }
     }
 }

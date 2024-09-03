@@ -14,7 +14,7 @@ impl S
     {
         for var x = down; x <= up; x += 1
         {
-            #mixin stmt
+            #inject stmt
         }
     }
 }

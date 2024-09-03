@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func titi(stmt: code)
 {
-    #mixin stmt
+    #inject stmt
 }
 
 func toto()->{idx: s32, sep: bool}

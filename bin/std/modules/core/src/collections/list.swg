@@ -49,7 +49,7 @@ impl List
                 let #alias1 = #up n
                 let #alias2 = #index
 
-                #mixin #up stmt where { break = break in Up; continue = break in Down; }
+                #inject #up stmt where { break = break in Up; continue = break in Down; }
             }
 
             #if back:

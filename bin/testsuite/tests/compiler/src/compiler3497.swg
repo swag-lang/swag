@@ -11,7 +11,7 @@ impl A
         @assert(x == 666)
         for 4
         {
-            #mixin stmt
+            #inject stmt
         }
 
         /*#if #typeof(T).kind == .Struct

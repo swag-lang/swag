@@ -183,19 +183,19 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
         {
             auto tokenId = tokenParse.token.id;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify another [[#mixin]] block argument"));
+            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify another [[#inject]] block argument"));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
             node->extOwner()->nodesToFree.push_back(stmt);
             if (tokenParse.isNot(TokenId::SymRightCurly))
-                SWAG_CHECK(eatSemiCol("[[#mixin]] replacement statement"));
+                SWAG_CHECK(eatSemiCol("[[#inject]] replacement statement"));
         }
 
         SWAG_CHECK(eatFormat(node));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#mixin]] replacement statement"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#inject]] replacement statement"));
     }
 
-    SWAG_CHECK(eatSemiCol("[[#mixin]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#inject]] expression"));
     return true;
 }
 

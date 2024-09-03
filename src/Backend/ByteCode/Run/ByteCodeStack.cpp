@@ -102,7 +102,7 @@ Utf8 ByteCodeStack::getLogStep(uint32_t level, bool current, ByteCodeStackStep& 
 
     str += "\n";
 
-    // #mixin
+    // #inject
     if (ip->node->hasAstFlag(AST_IN_MIXIN))
     {
         auto owner = ip->node->parent;

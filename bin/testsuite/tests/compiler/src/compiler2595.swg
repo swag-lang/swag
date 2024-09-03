@@ -8,7 +8,7 @@ func toto(stmt: code)
         x, y: s32
     }
 
-    #mixin #up stmt
+    #inject #up stmt
 }
 
 //#[Swag.PrintBc]

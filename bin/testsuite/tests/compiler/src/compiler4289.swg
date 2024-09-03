@@ -7,7 +7,7 @@ func parse(stmt: code)->s32
 {
     #macro
     {
-        #mixin stmt
+        #inject stmt
     }
 
     return 5

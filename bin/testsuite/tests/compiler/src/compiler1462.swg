@@ -13,13 +13,13 @@ impl S
         {
             let #alias0 = v
             let #alias1 = #index
-            #mixin stmt
+            #inject stmt
 
             /*#macro
             {
                 let alias0 = x
                 let alias1 = #index
-                //#mixin #up stmt
+                //#inject #up stmt
             }*/
         }
     }

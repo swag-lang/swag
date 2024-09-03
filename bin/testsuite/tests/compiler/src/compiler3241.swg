@@ -6,7 +6,7 @@ func tata(x: string)
 #[Swag.Macro]
 func toto(x: code)
 {
-    #mixin x
+    #inject x
 }
 
 #test

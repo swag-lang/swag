@@ -132,7 +132,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 {
     const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
-    concat->addString("#mixin");
+    concat->addString("#inject");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->firstChild()));
     if (!compilerMixin->replaceTokens.empty())

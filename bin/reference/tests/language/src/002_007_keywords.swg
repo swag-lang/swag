@@ -124,7 +124,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #if
 #else
 #elif
-#mixin
+#inject
 #macro
 #scope
 

@@ -15,7 +15,7 @@ func toto(stmt: code)
     titi()
     #macro
     {
-        #mixin #up stmt
+        #inject #up stmt
     }
 }
 

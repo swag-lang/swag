@@ -153,7 +153,7 @@ impl Array
                 #else:
                     let #alias0 = #up scan[0]
                 let #alias1 = #index
-                #mixin #up stmt
+                #inject #up stmt
             }
         }
     }

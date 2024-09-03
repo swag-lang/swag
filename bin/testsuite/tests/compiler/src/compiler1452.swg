@@ -9,7 +9,7 @@ impl S
     {
         #macro
         {
-            #mixin stmt
+            #inject stmt
         }
     }
 }
