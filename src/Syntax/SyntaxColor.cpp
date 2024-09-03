@@ -547,15 +547,15 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 }
-                else if (Tokenizer::isKeyword(*it))
-                {
-                    result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
-                    result += identifier;
-                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                }
                 else if (Tokenizer::isType(*it))
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
+                    result += identifier;
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                }                
+                else if (Tokenizer::isKeyword(*it))
+                {
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 }

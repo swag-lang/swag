@@ -138,7 +138,7 @@
 <p>If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations. </p>
 </div>
 <p>So in our case, we need to import the module <span class="code-inline">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="code-inline">core</span> and <span class="code-inline">pixel</span> (2D painting). </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>

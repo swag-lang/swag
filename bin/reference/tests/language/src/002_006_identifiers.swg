@@ -17,7 +17,7 @@ However, identifiers cannot start with two underscores, as this prefix is reserv
 
 /**
 # Compiler Instructions
-Additionally, some identifiers may begin with `#`, indicating a compiler instruction. These instructions have specific roles within the Swag programming environment.
+Additionally, some identifiers may begin with `#`, indicating a compiler directive or special function. These instructions have specific roles within the Swag programming environment. They evaluate at compile time.
 
 Examples of compiler instructions:
 ```swag
@@ -27,7 +27,7 @@ Examples of compiler instructions:
 ```
 
 # Intrinsics
-Identifiers that start with '@' represent intrinsic functions. These functions may be available only at compile time or at both compile time and runtime, depending on the specific intrinsic.
+Identifiers that start with '@' represent intrinsic functions. These functions are available at both compile time and runtime.
 
 Examples of intrinsic functions:
 ```swag

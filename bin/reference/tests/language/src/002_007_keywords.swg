@@ -217,8 +217,8 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @setcontext
 ```
 
-# Intrinsics from libc
-These intrinsic functions provide access to standard libc functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with `@` to avoid conflicts with user-defined identifiers.
+# Intrinsics from *libc*
+These intrinsic functions provide access to standard *libc* functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with `@` to avoid conflicts with user-defined identifiers.
 
 ```swag
 @abs

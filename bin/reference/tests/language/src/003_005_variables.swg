@@ -1,6 +1,6 @@
 /**
 # Variable Declaration
-In Swag, variables are declared using the `let` or `var` keyword, followed by a `:` and the variable's type.
+Variables are declared using the `let` or `var` keyword, followed by a `:` and the variable's type.
 
 - **`let`**: Used for declaring a constant variable. The value assigned cannot be modified, ensuring immutability.
 - **`var`**: Used for declaring a mutable variable. The value assigned can be modified after initialization.
@@ -46,7 +46,7 @@ Alternatively, multiple variables of different types can also be declared on the
 
 /**
 # Default Initialization
-In Swag, if a variable is declared without an initial value, it is automatically initialized with its default value.
+If a variable is declared without an initial value, it is automatically initialized with its default value.
 A variable is **always** initialized, ensuring it never holds an undefined value.
 */
 #test

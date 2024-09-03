@@ -1876,7 +1876,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fprintf</span>(file: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fprintf</span>(file: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1960,7 +1960,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fscanf</span>(file: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fscanf</span>(file: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3012,7 +3012,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printf</span>(format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3288,7 +3288,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scanf</span>(format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scanf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3385,7 +3385,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">snprintf</span>(s: *<span class="STpe">u8</span>, count: <a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">snprintf</span>(s: *<span class="STpe">u8</span>, count: <a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3397,7 +3397,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3445,7 +3445,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sscanf</span>(s, format: <span class="STpe">cstring</span>, args: <span class="SKwd">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sscanf</span>(s, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>

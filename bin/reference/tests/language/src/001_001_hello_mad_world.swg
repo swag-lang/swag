@@ -56,7 +56,7 @@ using Core
 */
 
 /**
-Now a stupid version that generates the code to: the print thanks to **meta programming**.
+Now a stupid version that generates the code to do the print thanks to **meta programming**.
 ```swag
 using Core
 
@@ -106,6 +106,7 @@ func mySillyFunction()->string
         return sb.toString()
     }
 
+    // We then use and return the constant created just above
     return MyConst
 }
 ```

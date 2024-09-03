@@ -6,20 +6,20 @@ including those from various languages and symbol sets.
 
 /**
 # String Comparison
-Strings in Swag can be compared directly for equality using the `==` operator.
+Strings can be compared directly for equality using the `==` operator.
 */
 #test
 {
-    const a = "this is a Chinese character: 是"       // String with a Chinese character
-    #assert a == "this is a Chinese character: 是"   // Assert equality between two identical strings
+    const a = "this is a Chinese character: 是"           // String with a Chinese character
+    #assert a == "this is a Chinese character: 是"        // Assert equality between two identical strings
 
-    const b = "these are some Cyrillic characters: ӜИ"  // String with Cyrillic characters
+    const b = "these are some Cyrillic characters: ӜИ"    // String with Cyrillic characters
     #assert b == "these are some Cyrillic characters: ӜИ" // Assert equality for another string
 }
 
 /**
-# Rune Type
-In Swag, a `rune` represents a Unicode code point and is stored as a 32-bit value, ensuring 
+# The 'rune' Type
+A `rune` represents a Unicode code point and is stored as a 32-bit value, ensuring 
 it can accommodate any Unicode character.
 */
 #test
@@ -74,7 +74,7 @@ Swag allows compile-time concatenation of strings and other values using the `++
 
 /**
 # Null Strings
-In Swag, a string can be `null` if it has not been initialized. This behavior can be used to 
+A string can be `null` if it has not been initialized. This behavior can be used to 
 check whether a string has been assigned a value.
 */
 #test
@@ -89,7 +89,7 @@ check whether a string has been assigned a value.
 
 /**
 # Character Literals
-Character literals in Swag are enclosed in backticks. These literals can represent any Unicode 
+Character literals are enclosed in backticks. These literals can represent any Unicode 
 character, not just ASCII characters.
 */
 #test
@@ -197,7 +197,7 @@ Escape sequences can also be used to specify characters via their ASCII or Unico
 
 /**
 # Raw Strings
-A raw string in Swag is a string where escape sequences and special characters are not processed.
+A raw string is a string where escape sequences and special characters are not processed.
 This can be useful for strings that contain many special characters or backslashes.
 */
 
@@ -223,7 +223,7 @@ These two strings are equivalent, even though one uses escape sequences and the 
 
 /**
 # Multiline Raw Strings
-Raw strings in Swag can span multiple lines, and all leading spaces before the closing `"#` are 
+Raw strings can span multiple lines, and all leading spaces before the closing `"#` are 
 removed from each line.
 */
 #test
@@ -248,7 +248,7 @@ before the closing `"#` are stripped from each line.
 
 /**
 # Multiline Strings
-Multiline strings in Swag start and end with `"""`. Unlike raw strings, they still process escape 
+Multiline strings start and end with `"""`. Unlike raw strings, they still process escape 
 sequences.
 */
 #test
@@ -284,7 +284,7 @@ from being included in the string.
 
 /**
 # #stringof and #nameof Intrinsics
-The `#stringof` intrinsic in Swag returns the string representation of a constant expression 
+The `#stringof` intrinsic returns the string representation of a constant expression 
 at compile time.
 */
 #test

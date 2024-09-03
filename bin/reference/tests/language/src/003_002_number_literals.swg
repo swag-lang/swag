@@ -1,6 +1,6 @@
 /**
 # Number Representations
-In Swag, integers can be written in multiple formats: *decimal*, *hexadecimal*, or *binary*. These
+Integers can be written in multiple formats: *decimal*, *hexadecimal*, or *binary*. These
 different representations allow you to express numbers in the format that best suits your needs.
 */
 #test
@@ -52,7 +52,7 @@ exceeds 32 bits, it is automatically inferred as `u64`.
 
 /**
 # Booleans
-In Swag, a boolean type can be either `true` or `false`. As constants are known at compile time, you 
+A boolean type can be either `true` or `false`. As constants are known at compile time, you 
 can use `#assert` to verify their values during compilation.
 */
 #test
@@ -67,7 +67,7 @@ can use `#assert` to verify their values during compilation.
 
 /**
 # Floating Point Values
-Floating point values in Swag use the standard C/C++ notation for floating-point literals. This 
+Floating point values use the standard C/C++ notation for floating-point literals. This 
 provides familiarity and ease of use for developers.
 */
 #test
@@ -91,7 +91,7 @@ provides familiarity and ease of use for developers.
 
 /**
 # Default Floating Point Type
-By default, floating-point literals in Swag are of type `f32`. This is different from languages like 
+By default, floating-point literals are of type `f32`. This is different from languages like 
 C/C++, where floating-point literals default to `double` (`f64`).
 */
 #test
@@ -103,7 +103,7 @@ C/C++, where floating-point literals default to `double` (`f64`).
 }
 
 /**
-# Suffix
+# Literal Suffix
 To specify the type of a literal explicitly, you can add a **suffix** to the literal. This is useful 
 when a specific type is required, such as `f64` or `u8`.
 */

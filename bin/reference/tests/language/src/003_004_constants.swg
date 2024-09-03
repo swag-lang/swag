@@ -1,6 +1,6 @@
 /**
 # Constants with `const`
-Using `const` in Swag implies that the value must be **known by the compiler** at compile time. 
+Using `const` implies that the value must be **known by the compiler** at compile time. 
 This ensures that the value is embedded directly into the compiled code, eliminating any runtime 
 memory usage for simple types like integers or strings. Essentially, the compiler replaces occurrences 
 of these constants with their respective values wherever they are referenced in the code, leading to 

@@ -76,7 +76,7 @@ The boolean type `bool` is used to represent true or false values. In Swag, a bo
 
 /**
 # String Type
-The `string` type represents text. In Swag, strings are **UTF-8** encoded and are stored as two 64-bit values: one for the pointer to the data and one for the length in bytes. Strings in Swag are designed to handle text efficiently, including international characters, while ensuring compatibility with common text processing routines.
+The `string` type represents text. In Swag, strings are **UTF-8** encoded and are stored as two 64-bit values: one for the pointer to the data and one for the length in bytes. Strings are designed to handle text efficiently, including international characters, while ensuring compatibility with common text processing routines.
 */
 #test
 {
@@ -88,7 +88,7 @@ The `string` type represents text. In Swag, strings are **UTF-8** encoded and ar
 
 /**
 # Rune Type
-The `rune` type in Swag represents a 32-bit Unicode code point. It is used to store individual Unicode characters, allowing for the manipulation of text at the character level, supporting a wide range of languages and symbols.
+The `rune` type represents a 32-bit Unicode code point. It is used to store individual Unicode characters, allowing for the manipulation of text at the character level, supporting a wide range of languages and symbols.
 */
 #test
 {
@@ -99,8 +99,8 @@ The `rune` type in Swag represents a 32-bit Unicode code point. It is used to st
 }
 
 /**
-# Type Reflection
-Swag supports **type reflection** both at **compile time** and at **runtime**. This powerful feature allows for the inspection and manipulation of types dynamically, enabling more flexible and introspective programming paradigms. Further details on how to leverage type reflection will be explored in subsequent sections.
+> NOTE:
+> Swag supports **type reflection** both at **compile time** and at **runtime**. This powerful feature allows for the inspection and manipulation of types dynamically, enabling more flexible and introspective programming paradigms. Further details on how to leverage type reflection will be explored in subsequent sections.
 */
 
 /**
@@ -117,19 +117,4 @@ You can use `#decltype` to create a type based on an expression. This is useful 
 
     #assert #typeof(a) == #typeof(b)  // Compile-time validation using '#assert'.
     #assert #typeof(a) == s32
-}
-
-/**
-# Types as Values
-Types in Swag are also treated as values, both at compile time and at runtime. This allows types to be manipulated, compared, and inspected just like any other value. This feature is particularly useful in metaprogramming and dynamic type manipulation scenarios.
-*/
-#test
-{
-    let x = #typeof(s32)        // 'x' is now a variable that holds a type (in this case, 's32').
-    @assert(x == s32)           // Verifies that 'x' is equal to the type 's32'.
-
-    @assert(x.name == "s32")    // Retrieves and verifies the name of the type 's32'.
-
-    let y = bool                // 'y' is assigned the boolean type
-    @assert(y == bool)          // Verifies that 'y' holds the type 'bool'.
 }
