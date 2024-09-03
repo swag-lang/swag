@@ -577,7 +577,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#if</span>
 <span class="SCmp">#else</span>
 <span class="SCmp">#elif</span>
-<span class="SCmp">#mixin</span>
+<span class="SCmp">#inject</span>
 <span class="SCmp">#macro</span>
 <span class="SCmp">#scope</span>
 
@@ -3751,10 +3751,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">for</span> <span class="SNum">10</span>
         {
             cpt += <span class="SNum">1</span>
-            <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Exits the entire 'BigScope' scope after incrementing `cpt`</span>
+            <span class="SLgc">break</span> <span class="SLgc">to</span> <span class="SCst">BigScope</span>    <span class="SCmt">// Exits the entire 'BigScope' scope after incrementing `cpt`</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break in statement above</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break to statement above</span>
     }
 
     <span class="SCmt">// Execution resumes after 'BigScope'</span>
@@ -3812,10 +3812,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">for</span> <span class="SNum">10</span>
         {
             <span class="SLgc">if</span> <span class="SItr">#index</span> == <span class="SNum">5</span>:
-                <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
+                <span class="SLgc">break</span> <span class="SLgc">to</span> <span class="SCst">Up</span>      <span class="SCmt">// Exits to the 'Up' scope when the inner loop index equals 5</span>
         }
 
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break in statement above</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)        <span class="SCmt">// This assertion is never reached due to the break to statement above</span>
     }
 }</span></div>
 
@@ -4660,7 +4660,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
 
                 <span class="SCmt">// Insert user-defined logic from the calling scope.</span>
-                <span class="SCmp">#mixin</span> <span class="SItr">#up</span> stmt
+                <span class="SCmp">#inject</span> <span class="SItr">#up</span> stmt
             }
         }
     }
@@ -4716,7 +4716,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 }
 
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
-                <span class="SCmp">#mixin</span> <span class="SItr">#up</span> stmt
+                <span class="SCmp">#inject</span> <span class="SItr">#up</span> stmt
             }
         }
     }
@@ -4771,7 +4771,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">#index</span>
 
                 <span class="SCmt">// Insert the user-provided logic from the caller.</span>
-                <span class="SCmp">#mixin</span> <span class="SItr">#up</span> stmt
+                <span class="SCmp">#inject</span> <span class="SItr">#up</span> stmt
             }
         }
     }
@@ -5453,14 +5453,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)                     <span class="SCmt">// Verifies that 'a' has been incremented by 1 and 2</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_004_mixin_swg">Mixins with Code Blocks </h4>
-<p>A mixin can accept a special parameter of type <span class="code-inline">code</span>, representing a Swag code block defined at the call site.  The mixin can execute this code block multiple times using the <span class="code-inline">#mixin</span> keyword. </p>
+<p>A mixin can accept a special parameter of type <span class="code-inline">code</span>, representing a Swag code block defined at the call site.  The mixin can execute this code block multiple times using the <span class="code-inline">#inject</span> keyword. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="SKwd">code</span>)
     {
-        <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
-        <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
+        <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
+        <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
@@ -5475,8 +5475,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(value: <span class="STpe">s32</span>, what: <span class="SKwd">code</span>)
     {
-        <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
-        <span class="SCmp">#mixin</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
+        <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
+        <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
@@ -5605,7 +5605,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="SKwd">code</span>)
     {
-        <span class="SCmp">#mixin</span> what                            <span class="SCmt">// Inserts the provided code block</span>
+        <span class="SCmp">#inject</span> what                            <span class="SCmt">// Inserts the provided code block</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
@@ -5633,7 +5633,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
         <span class="SCmp">#macro</span>                                 <span class="SCmt">// Ensures the following code operates in the caller's scope</span>
         {
-            <span class="SCmp">#mixin</span> <span class="SItr">#up</span> what                    <span class="SCmt">// References the caller's 'a'</span>
+            <span class="SCmp">#inject</span> <span class="SItr">#up</span> what                    <span class="SCmt">// References the caller's 'a'</span>
         }
     }
 
@@ -5658,7 +5658,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SCmp">#macro</span>
             {
                 <span class="SKwd">var</span> index = <span class="SItr">#up</span> a              <span class="SCmt">// 'index' references 'a' from the caller's scope</span>
-                <span class="SCmp">#mixin</span> <span class="SItr">#up</span> what                <span class="SCmt">// Insert the provided code block</span>
+                <span class="SCmp">#inject</span> <span class="SItr">#up</span> what                <span class="SCmt">// Insert the provided code block</span>
             }
             a += <span class="SNum">1</span>
         }
@@ -5686,7 +5686,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="SKwd">code</span>)
     {
         <span class="SCmt">// Define a label `Up` for the scope that will allow us to break out of the outermost loop</span>
-        <span class="SCmp">#scope</span> <span class="SCst">Up</span>                              
+        <span class="SCmp">#scope</span> <span class="SCst">ScopeTarget</span>                              
         
         <span class="SCmt">// Outer for: this will run `count` times</span>
         <span class="SLgc">for</span> count
@@ -5697,11 +5697,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 <span class="SCmp">#macro</span>
                 {
                     <span class="SCmt">// Injects the user code `what` here.</span>
-                    <span class="SCmt">// The `#mixin` directive replaces certain parts of the user code:</span>
-                    <span class="SCmt">// - `break` in the user code is replaced with `break in Up`, meaning it will break </span>
+                    <span class="SCmt">// The `#inject` directive replaces certain parts of the user code:</span>
+                    <span class="SCmt">// - `break` in the user code is replaced with `break to Up`, meaning it will break </span>
                     <span class="SCmt">//   out of the `Up` scope (i.e., the outer `for`).</span>
                     <span class="SCmt">// - You can similarly redefine `continue` if needed.</span>
-                    <span class="SCmp">#mixin</span> <span class="SItr">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Up</span>; }
+                    <span class="SCmp">#inject</span> <span class="SItr">#up</span> what =&gt; { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">to</span> <span class="SCst">ScopeTarget</span>; }
                 }
             }
         }
@@ -5716,7 +5716,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         a += <span class="SNum">1</span>
         <span class="SLgc">if</span> a == <span class="SNum">10</span>:
-            <span class="SCmt">// This `break` statement is replaced by `break in Up` due to the macro,</span>
+            <span class="SCmt">// This `break` statement is replaced by `break to Up` due to the macro,</span>
             <span class="SCmt">// meaning it will exit the outermost `for`, not just the inner `for`.</span>
             <span class="SLgc">break</span>  
     }
@@ -5742,9 +5742,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             {
                 <span class="SCmp">#macro</span>
                 {
-                    <span class="SCmt">// `break` in the user code is replaced with `break in Outer`, exiting the outer loop.</span>
+                    <span class="SCmt">// `break` in the user code is replaced with `break to Outer`, exiting the outer loop.</span>
                     <span class="SCmt">// `continue` is replaced with `break`, skipping to the next iteration of the inner loop.</span>
-                    <span class="SCmp">#mixin</span> <span class="SItr">#up</span> what <span class="SLgc">where</span> { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">in</span> <span class="SCst">Outer</span>; <span class="SLgc">continue</span> = <span class="SLgc">break</span>; }
+                    <span class="SCmp">#inject</span> <span class="SItr">#up</span> what =&gt; { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">to</span> <span class="SCst">Outer</span>; <span class="SLgc">continue</span> = <span class="SLgc">break</span>; }
                 }
             }
         }
@@ -5787,7 +5787,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v                        <span class="SCmt">// Assign 'v' to '#alias0'</span>
         <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span>                    <span class="SCmt">// Assign 'v * 2' to '#alias1'</span>
-        <span class="SCmp">#mixin</span> stmt                            <span class="SCmt">// Insert the provided code block</span>
+        <span class="SCmp">#inject</span> stmt                            <span class="SCmt">// Insert the provided code block</span>
     }
 
     <span class="SFct">call</span>(<span class="SNum">20</span>)
@@ -8846,7 +8846,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 02-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 03-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>
