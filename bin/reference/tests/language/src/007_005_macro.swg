@@ -190,7 +190,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                     // - `break` in the user code is replaced with `break in Up`, meaning it will break 
                     //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
-                    #inject #up what where { break = break in ScopeTarget; }
+                    #inject #up what => { break = break in ScopeTarget; }
                 }
             }
         }
@@ -236,7 +236,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // `break` in the user code is replaced with `break in Outer`, exiting the outer loop.
                     // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
-                    #inject #up what where { break = break in Outer; continue = break; }
+                    #inject #up what => { break = break in Outer; continue = break; }
                 }
             }
         }

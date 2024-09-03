@@ -131,14 +131,14 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 
 bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 {
-    const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
+    const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerInject);
     concat->addString("#inject");
     concat->addBlank();
     SWAG_CHECK(outputNode(context, node->firstChild()));
     if (!compilerMixin->replaceTokens.empty())
     {
         concat->addBlank();
-        concat->addString("where");
+        concat->addString("=>");
         concat->addBlank();
         concat->addChar('{');
         concat->addBlank();

@@ -134,7 +134,7 @@ struct Parser
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);
     bool doCompilerMacro(AstNode* parent, AstNode** result);
-    bool doCompilerMixin(AstNode* parent, AstNode** result);
+    bool doCompilerInject(AstNode* parent, AstNode** result);
     bool doCompilerAssert(AstNode* parent, AstNode** result);
     bool doCompilerPrint(AstNode* parent, AstNode** result);
     bool doCompilerError(AstNode* parent, AstNode** result);

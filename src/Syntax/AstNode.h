@@ -147,7 +147,7 @@ enum class AstNodeKind : uint8_t
     CompilerIntrinsicInclude,
     CompilerLoad,
     CompilerMacro,
-    CompilerMixin,
+    CompilerInject,
     CompilerPlaceHolder,
     CompilerPrint,
     CompilerRun,

@@ -291,7 +291,7 @@ namespace Semantic
     bool resolveCompilerIf(SemanticContext* context);
     bool resolveCompilerInclude(SemanticContext* context);
     bool resolveCompilerMacro(SemanticContext* context);
-    bool resolveCompilerMixin(SemanticContext* context);
+    bool resolveCompilerInject(SemanticContext* context);
     bool resolveCompilerPrint(SemanticContext* context);
     bool resolveCompilerRun(SemanticContext* context);
     bool resolveCompilerSpecialValue(SemanticContext* context);

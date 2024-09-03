@@ -6,7 +6,7 @@ func toto(stmt: code)
     {
         #macro
         {
-            #inject #up stmt where { break = break in up; }
+            #inject #up stmt => { break = break in up; }
         }
     }
 }

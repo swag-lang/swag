@@ -150,11 +150,11 @@ bool Parser::doCompilerIfStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
+bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerMixin, this, parent);
+    const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerInject, this, parent);
     *result           = node;
-    node->semanticFct = Semantic::resolveCompilerMixin;
+    node->semanticFct = Semantic::resolveCompilerInject;
     node->token       = tokenParse.token;
 
     SWAG_CHECK(eatToken());
@@ -163,7 +163,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
     // Replacement parameters
-    if (tokenParse.is(TokenId::KwdWhere))
+    if (tokenParse.is(TokenId::SymEqualGreater))
     {
         SWAG_CHECK(eatToken());
 
@@ -188,11 +188,11 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
             node->replaceTokens[tokenId] = stmt;
             node->extOwner()->nodesToFree.push_back(stmt);
             if (tokenParse.isNot(TokenId::SymRightCurly))
-                SWAG_CHECK(eatSemiCol("[[#inject]] replacement statement"));
+                SWAG_CHECK(eatSemiCol("[[#inject]] replacement block"));
         }
 
         SWAG_CHECK(eatFormat(node));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#inject]] replacement statement"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#inject]] replacement block"));
     }
 
     SWAG_CHECK(eatSemiCol("[[#inject]] expression"));

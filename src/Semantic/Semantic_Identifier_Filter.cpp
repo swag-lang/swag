@@ -336,7 +336,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                     const auto nodeToKeep = matches[j]->symbolOverload->node;
                     if (node->ownerInline()->scope->isParentOf(nodeToKeep->ownerScope))
                     {
-                        const auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerMixin);
+                        const auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerInject);
                         if (inMixin)
                         {
                             const auto inMacro = inMixin->findParent(AstNodeKind::CompilerMacro);

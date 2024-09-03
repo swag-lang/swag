@@ -445,9 +445,9 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerMixin(SemanticContext* context)
+bool Semantic::resolveCompilerInject(SemanticContext* context)
 {
-    const auto node = castAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
+    const auto node = castAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerInject);
 
     if (node->hasSemFlag(SEMFLAG_COMPILER_INSERT))
     {

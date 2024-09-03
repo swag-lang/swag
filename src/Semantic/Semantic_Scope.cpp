@@ -535,7 +535,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
     if (alternativeNode &&
-        startNode->parent->is(AstNodeKind::CompilerMixin))
+        startNode->parent->is(AstNodeKind::CompilerInject))
     {
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block
         // in the way.

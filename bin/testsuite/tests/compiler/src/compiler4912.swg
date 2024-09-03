@@ -5,6 +5,6 @@ func toto(stmt: code)
 {
     for 5
     {
-        #inject stmt where { toto = titi; }
+        #inject stmt => { toto = titi; }
     }
 }

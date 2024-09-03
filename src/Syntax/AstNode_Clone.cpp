@@ -232,7 +232,7 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstReturn>(this, context);
         case AstNodeKind::CompilerMacro:
             return clone<AstCompilerMacro>(this, context);
-        case AstNodeKind::CompilerMixin:
+        case AstNodeKind::CompilerInject:
             return clone<AstCompilerMixin>(this, context);
         case AstNodeKind::Inline:
             return clone<AstInline>(this, context);
