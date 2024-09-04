@@ -860,8 +860,6 @@ bool Parser::doCompilerImport(AstNode* parent)
 
 bool Parser::doCompilerPlaceHolder(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), context->report({sourceFile, tokenParse.token, toErr(Err0743)}));
-
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPlaceHolder, this, parent);
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0410)));
@@ -870,8 +868,6 @@ bool Parser::doCompilerPlaceHolder(AstNode* parent)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatFormat(node));
     SWAG_CHECK(eatSemiCol("[[#placeholder]] expression"));
-
     currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);
-
     return true;
 }

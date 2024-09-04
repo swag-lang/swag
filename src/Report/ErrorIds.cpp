@@ -848,6 +848,7 @@ void initErrors()
     SWAG_ERROR(Err0701, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0702, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0736, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
+    SWAG_ERROR(Err0743, "misplaced [[#placeholder]]                        $ cannot use [[#placeholder]] outside of a top-level scope                                                                                 $ ");
 	
     SWAG_ERROR(Err0703, "already defined [[#import]] location              $ cannot redefine an [[#import]] location                                                                                                  $ ");
     SWAG_ERROR(Err0704, "already defined [[#import]] location              $ cannot redefine the [[#import]] location of the module [[%s]]                                                                            $ already defined as [[%s]]");
@@ -887,7 +888,6 @@ void initErrors()
     SWAG_ERROR(Err0740, "misplaced [[#global testwarning]]                 $ cannot use [[#global testwarning]] outside of a test file in the [[./tests]] folder                                                      $ ");
     SWAG_ERROR(Err0741, "misplaced [[#import]]                             $ cannot use [[#import]] outside the [[#dependencies]] block                                                                               $ ");
     SWAG_ERROR(Err0742, "misplaced [[#load]]                               $ cannot use [[#load]] outside the [[#dependencies]] block                                                                                 $ ");
-    SWAG_ERROR(Err0743, "misplaced [[#placeholder]]                        $ cannot use [[#placeholder]] outside of a top-level scope                                                                                 $ ");
     SWAG_ERROR(Err0744, "misplaced [[#test]]                               $ cannot use [[#test]] outside test modules (in the [[./tests]] folder)                                                                    $ ");
     SWAG_ERROR(Err0745, "missing [[#import]] string argument               $ expected the module name to import after [[#import]], found $$TKN$$ instead                                                              $ ");
     SWAG_ERROR(Err0746, "missing [[#include]] string argument              $ expected the file name to include after [[#include]], found $$TKN$$ instead                                                              $ ");

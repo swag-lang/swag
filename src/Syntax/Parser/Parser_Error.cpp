@@ -123,6 +123,8 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 msg = toErr(Err0275);
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0272);
+            else if (startToken.is(TokenId::CompilerPlaceHolder))
+                msg = toErr(Err0743);        
             else
             {
                 Diagnostic err{sourceFile, startToken, toErr(Err0618)};
