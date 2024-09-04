@@ -446,14 +446,45 @@ struct AstNode
     void setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void addAlternativeScopes(NodeExtensionMisc* ext);
 
-    bool                   hasExtByteCode() const { return extension && extension->bytecode; }
-    bool                   hasExtSemantic() const { return extension && extension->semantic; }
-    bool                   hasExtOwner() const { return extension && extension->owner; }
-    bool                   hasExtMisc() const { return extension && extension->misc; }
-    NodeExtensionByteCode* extByteCode() const { return extension->bytecode; }
-    NodeExtensionSemantic* extSemantic() const { return extension->semantic; }
-    NodeExtensionOwner*    extOwner() const { return extension->owner; }
-    NodeExtensionMisc*     extMisc() const { return extension->misc; }
+    bool hasExtByteCode() const
+    {
+        return extension && extension->bytecode;
+    }
+
+    bool hasExtSemantic() const
+    {
+        return extension && extension->semantic;
+    }
+
+    bool hasExtOwner() const
+    {
+        return extension && extension->owner;
+    }
+
+    bool hasExtMisc() const
+    {
+        return extension && extension->misc;
+    }
+
+    NodeExtensionByteCode* extByteCode() const
+    {
+        return extension->bytecode;
+    }
+
+    NodeExtensionSemantic* extSemantic() const
+    {
+        return extension->semantic;
+    }
+
+    NodeExtensionOwner* extOwner() const
+    {
+        return extension->owner;
+    }
+
+    NodeExtensionMisc* extMisc() const
+    {
+        return extension->misc;
+    }
 
     AstTryCatchAssume*  ownerTryCatchAssume() const { return extOwner()->ownerTryCatchAssume; }
     bool                hasOwnerTryCatchAssume() const { return hasExtOwner() && extOwner()->ownerTryCatchAssume; }
@@ -471,6 +502,7 @@ struct AstNode
     {
         if (!hasExtMisc())
             return nullptr;
+        SharedLock lk(mutex);
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
             return static_cast<T*>(it->second);
@@ -482,6 +514,7 @@ struct AstNode
     {
         if (!hasExtMisc())
             return nullptr;
+        SharedLock lk(mutex);
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
             return static_cast<T*>(it->second);
@@ -492,6 +525,7 @@ struct AstNode
     {
         if (!hasExtMisc())
             return 0;
+        SharedLock lk(mutex);
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
             return reinterpret_cast<uint64_t>(it->second);
@@ -501,12 +535,14 @@ struct AstNode
     void addExtraPointer(ExtraPointerKind extraPtrKind, void* value)
     {
         allocateExtension(ExtensionKind::Misc);
+        ScopedLock lk(mutex);
         extMisc()->extraPointers[extraPtrKind] = value;
     }
 
     void addExtraValue(ExtraPointerKind extraPtrKind, uint64_t value)
     {
         allocateExtension(ExtensionKind::Misc);
+        ScopedLock lk(mutex);
         extMisc()->extraPointers[extraPtrKind] = reinterpret_cast<void*>(value);
     }
 
@@ -514,6 +550,7 @@ struct AstNode
     {
         if (!hasExtMisc())
             return false;
+        SharedLock lk(mutex);
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it == extMisc()->extraPointers.end())
             return false;
@@ -637,7 +674,7 @@ struct AstIdentifier : AstNode
         IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
     };
 
-    ~                 AstIdentifier();
+    ~AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
     bool              isForcedUFCS() const;
@@ -667,7 +704,7 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_IMPL                 = 0x4000;
     static constexpr SpecFlags SPEC_FLAG_METHOD               = 0x8000;
 
-    ~           AstFuncDecl();
+    ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecl(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeignExport();
@@ -812,7 +849,7 @@ struct AstScopeBreakable : AstBreakable
 {
     static constexpr SpecFlags SPEC_FLAG_NAMED = 0x0001;
 
-             AstScopeBreakable();
+    AstScopeBreakable();
     AstNode* clone(CloneContext& context);
 
     AstNode* block;
@@ -828,7 +865,7 @@ struct AstWhile : AstBreakable
 
 struct AstFor : AstBreakable
 {
-    ~        AstFor();
+    ~AstFor();
     AstNode* clone(CloneContext& context);
 
     AstNode* preStatement;
@@ -842,7 +879,7 @@ struct AstLoop : AstBreakable
 {
     static constexpr SpecFlags SPEC_FLAG_BACK = 0x0001;
 
-    ~        AstLoop();
+    ~AstLoop();
     AstNode* clone(CloneContext& context);
 
     AstNode* specificName;
@@ -866,7 +903,7 @@ struct AstVisit : AstNode
 
 struct AstSwitch : AstBreakable
 {
-             AstSwitch();
+    AstSwitch();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstSwitchCase*> cases;
@@ -893,7 +930,7 @@ struct AstSwitchCase : AstNode
 
 struct AstSwitchCaseBlock : AstNode
 {
-    ~        AstSwitchCaseBlock();
+    ~AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
 
     AstSwitchCase* ownerCase;
@@ -998,7 +1035,7 @@ struct AstStruct : AstNode
     static constexpr SpecFlags SPEC_FLAG_SPECIFIED_TYPE = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_NO_OVERLOAD    = 0x0020;
 
-    ~        AstStruct();
+    ~AstStruct();
     AstNode* clone(CloneContext& context);
 
     DependentJobs dependentJobs;
@@ -1015,7 +1052,7 @@ struct AstStruct : AstNode
 
 struct AstEnum : AstNode
 {
-    ~        AstEnum();
+    ~AstEnum();
     AstNode* clone(CloneContext& context);
 
     Token    tokenName;
@@ -1036,7 +1073,7 @@ struct AstImpl : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_ENUM = 0x0001;
 
-    ~        AstImpl();
+    ~AstImpl();
     AstNode* clone(CloneContext& context);
 
     Scope*   structScope;
@@ -1073,7 +1110,7 @@ struct AstReturn : AstNode
 
 struct AstCompilerMacro : AstNode
 {
-    ~        AstCompilerMacro();
+    ~AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
     Scope* scope;
@@ -1088,7 +1125,7 @@ struct AstCompilerMixin : AstNode
 
 struct AstInline : AstNode
 {
-    ~        AstInline();
+    ~AstInline();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstReturn*> returnList;
@@ -1249,7 +1286,7 @@ struct AstStatement : AstNode
     static constexpr SpecFlags SPEC_FLAG_TUPLE_UNPACKING = 0x0008;
     static constexpr SpecFlags SPEC_FLAG_IS_WHERE        = 0x0010;
 
-    ~        AstStatement();
+    ~AstStatement();
     AstNode* clone(CloneContext& context);
 };
 

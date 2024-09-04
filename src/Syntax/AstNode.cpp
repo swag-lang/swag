@@ -426,6 +426,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     switch (extensionKind)
     {
         case ExtensionKind::ByteCode:
+        {
             if (hasExtByteCode())
                 return;
             extension->bytecode = Allocator::alloc<NodeExtensionByteCode>();
@@ -433,8 +434,10 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionByteCode));
 #endif
             break;
+        }
 
         case ExtensionKind::Semantic:
+        {
             if (hasExtSemantic())
                 return;
             extension->semantic = Allocator::alloc<NodeExtensionSemantic>();
@@ -442,8 +445,10 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionSemantic));
 #endif
             break;
+        }
 
         case ExtensionKind::Owner:
+        {
             if (hasExtOwner())
                 return;
             extension->owner = Allocator::alloc<NodeExtensionOwner>();
@@ -451,8 +456,10 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionOwner));
 #endif
             break;
+        }
 
         default:
+        {
             if (hasExtMisc())
                 return;
             extension->misc = Allocator::alloc<NodeExtensionMisc>();
@@ -460,6 +467,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
             g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionMisc));
 #endif
             break;
+        }
     }
 }
 
