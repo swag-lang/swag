@@ -32,7 +32,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0088, typeExpr->identifier->resolvedSymbolName()->name.cstr())};
+                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0079, typeExpr->identifier->resolvedSymbolName()->name.cstr())};
                             return context->report(err, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
                         }
 
@@ -56,13 +56,13 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
         }
     }
 
-    return context->report({node, formErr(Err0082, node->typeInfo->getDisplayNameC())});
+    return context->report({node, formErr(Err0708, node->typeInfo->getDisplayNameC())});
 }
 
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, formErr(Err0087, node->token.cstr())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, formErr(Err0711, node->token.cstr())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -80,7 +80,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     const auto genericStructType = castTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     const auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->is(AstNodeKind::StructDecl), context->report({node, node->token, formErr(Err0084, node->token.cstr())}));
+    SWAG_VERIFY(sourceNode->is(AstNodeKind::StructDecl), context->report({node, node->token, formErr(Err0077, node->token.cstr())}));
 
     // Make a new type
     const auto newType = castTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);

@@ -19,7 +19,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 
     if (!ifs)
     {
-        Report::errorOS(formErr(Err0097, fileName.cstr()));
+        Report::errorOS(formErr(Err0720, fileName.cstr()));
         return false;
     }
 
@@ -41,7 +41,7 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 
     if (!ifs)
     {
-        Report::errorOS(formErr(Err0097, fileName.cstr()));
+        Report::errorOS(formErr(Err0720, fileName.cstr()));
         return false;
     }
 

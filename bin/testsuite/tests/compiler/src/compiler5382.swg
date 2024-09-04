@@ -1,4 +1,4 @@
-#global testerror "Err0458"
+#global testerror "Err0413"
 
 var G = 0
 #test

@@ -1,4 +1,4 @@
-#global testerror "Err0322"
+#global testerror "Err0286"
 var G = 0
 
 #[Swag.Inline]

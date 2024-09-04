@@ -1,3 +1,3 @@
-#global testerror "Err0333"
+#global testerror "Err0294"
 
 #import "toto"

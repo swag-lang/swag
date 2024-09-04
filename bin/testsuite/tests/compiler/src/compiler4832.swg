@@ -1,3 +1,3 @@
 #global #[Swag.Safety("overflow", true)]
-#global testerror "Err0319"
+#global testerror "Err0283"
 var x4 = -cast(s64) (-1's64 - Swag.S64.Max)

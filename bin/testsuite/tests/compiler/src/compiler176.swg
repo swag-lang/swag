@@ -1,3 +1,3 @@
-#global testerror "Err0043";
+#global testerror "Err0039";
 func main ()-> rune { return '1'; }
 #assert main() / '1';

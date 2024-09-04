@@ -1,4 +1,4 @@
-#global testerror "Err0383"
+#global testerror "Err0341"
 
 interface A
 {

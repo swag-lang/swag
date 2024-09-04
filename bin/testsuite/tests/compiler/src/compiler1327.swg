@@ -1,5 +1,5 @@
 
-#global testerror "Err0211"
+#global testerror "Err0185"
 
 interface toto
 {

@@ -1,4 +1,4 @@
-#global testerror "Err0705"
+#global testerror "Err0645"
 
 #[Swag.Strict]
 alias C = func(s32)

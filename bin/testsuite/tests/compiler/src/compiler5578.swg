@@ -1,4 +1,4 @@
-#global testerror "Err0737"
+#global testerror "Err0674"
 
 struct(T) Queue
 {

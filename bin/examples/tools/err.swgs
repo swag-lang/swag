@@ -92,8 +92,13 @@ func addFiles(folder: string, extension: string)
 
         if !inCpp:
             Console.printf("UNUSED: %\n", dst)
-        if !inSwg and what != "Fat" and what != "Nte":
+
+        if !inSwg and what != "Fat" and what != "Nte"
+        {
             Console.printf("UNTESTED: %\n", dst)
+            //dst[3] = 'X'
+            //replace(dst, l[11..17], &inSwg, &inCpp)
+        }
     }
 
     foreach f in files

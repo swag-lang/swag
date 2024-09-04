@@ -1,4 +1,4 @@
-#global testerror "Err0573"
+#global testerror "Err0518"
 #assert 1 ^ 1.0 == 0
 //#global testerror
 //#assert 1.0 << 1

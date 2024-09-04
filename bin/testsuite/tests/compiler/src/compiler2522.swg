@@ -1,4 +1,4 @@
-#global testerror "Err0439"
+#global testerror "Err0397"
 
 var (x, y) = toto()
 

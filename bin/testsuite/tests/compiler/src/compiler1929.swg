@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0288"
+//#global testerror "Err0254"
 
 alias A = [2] s32
 var x: A = [5, 10]

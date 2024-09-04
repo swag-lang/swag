@@ -1,4 +1,4 @@
-#global testerror "Err0226"
+#global testerror "Err0197"
 struct Evt
 {
     x: s32

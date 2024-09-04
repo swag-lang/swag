@@ -1,4 +1,4 @@
-#global testerror "Err0466"
+#global testerror "Err0421"
 #test
 {
     foreach a, in {}

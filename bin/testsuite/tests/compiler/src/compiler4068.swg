@@ -1,4 +1,4 @@
-#global testerror "Err0622"
+#global testerror "Err0566"
 #test
 {
     var toto: [..] s32 = [10, 20]

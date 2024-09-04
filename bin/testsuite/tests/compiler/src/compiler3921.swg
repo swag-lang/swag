@@ -1,4 +1,4 @@
-#global testerror "Err0603"
+#global testerror "Err0547"
 #test
 {
     alias X = *u16

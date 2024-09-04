@@ -1,4 +1,4 @@
-#global testerror "Err0571"
+#global testerror "Err0516"
 
 alias toto = s32
 

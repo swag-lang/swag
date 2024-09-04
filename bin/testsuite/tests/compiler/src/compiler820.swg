@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0573";
+#global testerror "Err0518";
 #test
 {
 	var c = {666, 666};

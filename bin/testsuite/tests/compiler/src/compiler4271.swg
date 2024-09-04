@@ -1,4 +1,4 @@
-#global testerror "Err0111"
+#global testerror "Err0089"
 
 var GHI = 0
 

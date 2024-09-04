@@ -1,4 +1,4 @@
-#global testerror "Err0637"
+#global testerror "Err0581"
 struct(T: {s32, bool}) AA
 {
 }

@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0112";
+#global testerror "Err0090";
 #test
 {
 	const d = 6;

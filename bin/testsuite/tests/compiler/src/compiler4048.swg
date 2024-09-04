@@ -1,4 +1,4 @@
-#global testerror "Err0228"
+#global testerror "Err0199"
 interface I
 {
     func toto();

@@ -87,7 +87,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                Diagnostic err{node, formErr(Err0473, Naming::kindName(overload).cstr(), node->token.cstr())};
+                Diagnostic err{node, formErr(Err0428, Naming::kindName(overload).cstr(), node->token.cstr())};
                 err.addNote(Diagnostic::hereIs(overload));
                 return context->report(err);
             }
@@ -126,7 +126,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             if (idRefSymbolName && idRefSymbolName->isNot(SymbolKind::Variable))
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic err{subNode, subNode->token, formErr(Err0229, idRefSymbolName->name.cstr(), Naming::aKindName(idRefSymbolName->kind).cstr())};
+                Diagnostic err{subNode, subNode->token, formErr(Err0200, idRefSymbolName->name.cstr(), Naming::aKindName(idRefSymbolName->kind).cstr())};
                 err.addNote(node->token, toNte(Nte0174));
                 return context->report(err);
             }

@@ -706,14 +706,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic err{importNode, tokenLocation, formErr(Err0007, dep->name.cstr(), dep->location.cstr())};
+                Diagnostic err{importNode, tokenLocation, formErr(Err0704, dep->name.cstr(), dep->location.cstr())};
                 err.addNote(dep->node, toNte(Nte0196));
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic err{importNode, tokenVersion, formErr(Err0009, dep->name.cstr(), dep->version.cstr())};
+                Diagnostic err{importNode, tokenVersion, formErr(Err0706, dep->name.cstr(), dep->version.cstr())};
                 err.addNote(dep->node, toNte(Nte0196));
                 return Report::report(err);
             }
@@ -737,7 +737,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic err{importNode, tokenVersion, toErr(Err0224)};
+        Diagnostic err{importNode, tokenVersion, toErr(Err0730)};
         err.addNote(toNte(Nte0152));
         return Report::report(err);
     }
@@ -768,7 +768,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            Diagnostic err{importNode, tokenVersion, toErr(Err0224)};
+            Diagnostic err{importNode, tokenVersion, toErr(Err0730)};
             err.addNote(toErr(Nte0152));
             return Report::report(err);
         }
@@ -778,10 +778,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0547, dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0754, dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0548, dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0755, dep->buildNum)}));
                 break;
             default:
                 break;
@@ -1067,7 +1067,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, toErr(Err0105)});
+        Report::report({ip->node, ip->node->token, toErr(Err0083)});
         return false;
     }
 

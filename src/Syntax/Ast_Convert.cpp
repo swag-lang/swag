@@ -103,7 +103,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const uint32_t maxCount = typeStruct->fields.size();
         if (countParams > maxCount)
         {
-            Diagnostic err{fromNode->children[maxCount], formErr(Err0566, maxCount, countParams)};
+            Diagnostic err{fromNode->children[maxCount], formErr(Err0511, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
             return context->report(err);
@@ -111,7 +111,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
         if (countParams < maxCount)
         {
-            Diagnostic err{fromNode->lastChild(), formErr(Err0528, maxCount, countParams)};
+            Diagnostic err{fromNode->lastChild(), formErr(Err0480, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
             return context->report(err);
@@ -199,14 +199,14 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto destStruct  = castAst<AstStruct>(toType->declNode, AstNodeKind::StructDecl);
     if (countParams > maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0566, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0511, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
         return context->report(err);
     }
     if (countParams < maxCount)
     {
-        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0528, maxCount, countParams)};
+        Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0480, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
         err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
         return context->report(err);
@@ -239,7 +239,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (typeField->isListArray())
                 typeField = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeField), false);
             if (typeField->isListTuple())
-                return context->report({fromNode, toErr(Err0764)});
+                return context->report({fromNode, toErr(Err0772)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
@@ -445,7 +445,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({callP, formErr(Err0263, identifier->typeInfo->name.cstr())});
+        return context->report({callP, formErr(Err0230, identifier->typeInfo->name.cstr())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->is(AstNodeKind::ExpressionList))

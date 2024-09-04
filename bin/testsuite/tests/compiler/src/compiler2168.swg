@@ -1,4 +1,4 @@
-#global testerror "Err0191"
+#global testerror "Err0167"
 
 func toto()->{x.x: s32}
 {

@@ -1,4 +1,4 @@
-//#global testerror "Err0546"
+//#global testerror "Err0495"
 #[Swag.Overload]
 func min(x, y: s16) => 0
 #[Swag.Overload]

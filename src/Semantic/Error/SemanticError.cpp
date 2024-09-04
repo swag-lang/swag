@@ -15,13 +15,13 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
 
     if (errorParam.destFuncDecl)
     {
-        errID     = Err0080;
+        errID     = Err0075;
         node      = errorParam.destFuncDecl;
         whereExpr = errorParam.destFuncDecl->whereExpression;
     }
     else
     {
-        errID     = Err0081;
+        errID     = Err0076;
         node      = errorParam.destStructDecl;
         whereExpr = errorParam.destStructDecl->whereExpression;
     }
@@ -86,7 +86,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, const AstNode* hintType)
 {
-    Utf8 text = formErr(Err0642, node->token.cstr(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0584, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";

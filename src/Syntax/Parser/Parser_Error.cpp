@@ -60,7 +60,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             // Identifier at global scope
             if (startToken.is(TokenId::Identifier))
             {
-                Diagnostic err{sourceFile, startToken, formErr(Err0693, startToken.cstr())};
+                Diagnostic err{sourceFile, startToken, formErr(Err0633, startToken.cstr())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote(toNte(Nte0057));
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
@@ -77,18 +77,18 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             }
 
             if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0306);
+                msg = toErr(Err0270);
             else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0305);
+                msg = toErr(Err0269);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0307);
+                msg = toErr(Err0271);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0311);
+                msg = toErr(Err0275);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0308);
+                msg = toErr(Err0272);
             else
             {
-                msg = toErr(Err0273);
+                msg = toErr(Err0240);
                 if (startToken.is(TokenId::KwdLet))
                     note = toNte(Nte0060);
                 else if (startToken.is(TokenId::CompilerIntrinsicInclude))
@@ -106,26 +106,26 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         ///////////////////////////////////////////
         case InvalidTokenError::EmbeddedInstruction:
             if (startToken.is(TokenId::SymAmpersandAmpersand))
-                msg = formErr(Err0235, "and", "&&");
+                msg = formErr(Err0205, "and", "&&");
             else if (startToken.is(TokenId::SymVerticalVertical))
-                msg = formErr(Err0235, "or", "||");
+                msg = formErr(Err0205, "or", "||");
             else if (startToken.is(TokenId::KwdElse))
-                msg = toErr(Err0310);
+                msg = toErr(Err0274);
             else if (startToken.is(TokenId::KwdElif))
-                msg = toErr(Err0309);
+                msg = toErr(Err0273);
             else if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0306);
+                msg = toErr(Err0270);
             else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0305);
+                msg = toErr(Err0269);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0307);
+                msg = toErr(Err0271);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0311);
+                msg = toErr(Err0275);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0308);
+                msg = toErr(Err0272);
             else
             {
-                Diagnostic err{sourceFile, startToken, toErr(Err0678)};
+                Diagnostic err{sourceFile, startToken, toErr(Err0618)};
                 return context->report(err);
             }
 
@@ -133,7 +133,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
         ///////////////////////////////////////////
         case InvalidTokenError::LeftExpression:
-            msg = toErr(Err0668);
+            msg = toErr(Err0608);
             break;
 
         ///////////////////////////////////////////
@@ -141,11 +141,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             
             if (Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0204, prevTokenParse.cstr())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0179, prevTokenParse.cstr())};
                 return context->report(err);
             }
 
-            msg = toErr(Err0205);
+            msg = toErr(Err0727);
             break;
     }
 
@@ -154,7 +154,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    const Utf8 message = msg ? Utf8{msg} : toErr(Err0222);
+    const Utf8 message = msg ? Utf8{msg} : toErr(Err0195);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(formNte(Nte0130, myToken.token.cstr()));
@@ -164,13 +164,13 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
 bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
 {
     if (tokenParse.is(TokenId::SymAsterisk) && getNextToken().is(TokenId::SymSlash))
-        return error(tokenParse, formErr(Err0312, "left expression"));
+        return error(tokenParse, formErr(Err0276, "left expression"));
 
     if (!leftAlone)
-        return error(tokenParse, formErr(Err0480, "left affectation"));
+        return error(tokenParse, formErr(Err0435, "left affectation"));
 
     if (tokenParse.is(TokenId::SymEqualEqual))
-        return error(tokenParse, toErr(Err0675));
+        return error(tokenParse, toErr(Err0615));
 
     if (leftNode->is(AstNodeKind::IdentifierRef) &&
         leftNode->lastChild()->is(AstNodeKind::Identifier) &&
@@ -180,7 +180,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
         const auto id = castAst<AstIdentifier>(leftNode->lastChild(), AstNodeKind::Identifier);
         if (!id->callParameters)
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0692)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0632)};
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
                 err.addNote(formNte(Nte0078, id->token.cstr(), tokenParse.cstr()));
@@ -203,7 +203,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
         afterMsg = "variable list";
 
     if (Tokenizer::isSymbol(tokenParse.token.id))
-        return error(tokenParse, formErr(Err0707, tokenParse.cstr(), afterMsg.cstr()));
+        return error(tokenParse, formErr(Err0647, tokenParse.cstr(), afterMsg.cstr()));
 
-    return error(tokenParse, formErr(Err0472, afterMsg.cstr()));
+    return error(tokenParse, formErr(Err0427, afterMsg.cstr()));
 }

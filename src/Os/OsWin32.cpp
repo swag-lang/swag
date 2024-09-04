@@ -188,7 +188,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            Report::error(formErr(Err0559, cmdline.cstr()));
+            Report::error(formErr(Err0757, cmdline.cstr()));
             return false;
         }
 
@@ -212,7 +212,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                Report::errorOS(formErr(Err0558, cmdline.cstr()));
+                Report::errorOS(formErr(Err0756, cmdline.cstr()));
                 return false;
             }
         }

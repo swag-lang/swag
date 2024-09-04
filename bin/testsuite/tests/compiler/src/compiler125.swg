@@ -1,4 +1,4 @@
-#global testerror "Err0075";
+#global testerror "Err0070";
 
 #[Swag.AttrUsage(Swag.AttributeUsage.GlobalVariable)]
 attr toto();

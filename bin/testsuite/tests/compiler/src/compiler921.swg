@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0206"
+#global testerror "Err0180"
 func average(x: any)
 {
 	var t = @dataof(any)

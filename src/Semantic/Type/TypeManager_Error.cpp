@@ -132,7 +132,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = formErr(Err0622, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0566, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
@@ -142,42 +142,42 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = formErr(Err0646, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0588, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
         if (fromType->isPointerTo(TypeInfoKind::Struct))
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
 
-        msg = formErr(Err0226, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0197, fromType->getDisplayNameC(), toType->getDisplayNameC());
         notes.push_back(Diagnostic::note(formNte(Nte0220, fromType->getDisplayNameC(), toType->getDisplayNameC())));
     }
     else if (toType->isPointerTo(TypeInfoKind::Struct) && fromType->isInterface())
     {
-        msg    = formErr(Err0226, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg    = formErr(Err0197, fromType->getDisplayNameC(), toType->getDisplayNameC());
         toType = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer)->pointedType;
         notes.push_back(Diagnostic::note(formNte(Nte0220, toType->getDisplayNameC(), fromType->getDisplayNameC())));
     }
     else if (toType->isStruct() && fromType->isInterface())
     {
         hint = Diagnostic::isType(fromType);
-        msg  = toErr(Err0572);
+        msg  = toErr(Err0517);
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = formErr(Err0647, fromType->getDisplayNameC());
+        msg = formErr(Err0589, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
             hint = toNte(Nte0135);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
         hint = formNte(Nte0175, fromType->getDisplayNameC());
-        msg  = formErr(Err0571, toType->getDisplayNameC());
+        msg  = formErr(Err0516, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
         hint = toNte(Nte0017);
-        msg  = toErr(Err0570);
+        msg  = toErr(Err0515);
     }
 
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
@@ -185,11 +185,11 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg = toErr(Err0417);
+            msg = toErr(Err0375);
         }
         else
         {
-            msg                   = formErr(Err0573, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg                   = formErr(Err0518, fromType->getDisplayNameC(), toType->getDisplayNameC());
             const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
 
             BadSignatureInfos bi;
@@ -234,7 +234,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         remarks.push_back(form("the source type is [[%s]]", fromName.cstr()));
         remarks.push_back(form("the requested type is [[%s]]", toName.cstr()));
 
-        msg = toErr(Err0569);
+        msg = toErr(Err0514);
     }
 }
 
@@ -265,7 +265,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = formErr(Err0573, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = formErr(Err0518, fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 

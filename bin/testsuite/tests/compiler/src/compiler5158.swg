@@ -1,4 +1,4 @@
-#global testerror "Err0733"
+#global testerror "Err0671"
 
 enum XY: string
 {

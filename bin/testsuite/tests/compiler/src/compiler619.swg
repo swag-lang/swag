@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0086"
+#global testerror "Err0078"
 func(x: string) Print()
 {
 	//@print(x)

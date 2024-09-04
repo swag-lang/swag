@@ -1,3 +1,3 @@
-//#global testerror "Err0392"
+//#global testerror "Err0350"
 enum A { R, G, B }
 alias b = A
