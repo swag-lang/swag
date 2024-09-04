@@ -90,11 +90,15 @@ check whether a string has been assigned a value.
 /**
 # Character Literals
 Character literals are enclosed in quotes. These literals can represent any Unicode character, not just ASCII characters.
+
+> NOTE:
+> A character literal's quotation mark must be preceded by a symbol or a space to avoid confusion with a type suffix.
 */
 #test
 {
     let char0 = 'a'                                 // ASCII character literal
     let char1 = '我'                                // Unicode character literal
+    let value = 5's32                               // This is a quote for a type suffix
 }
 
 /**

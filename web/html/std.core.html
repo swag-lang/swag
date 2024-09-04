@@ -2379,7 +2379,7 @@
 </table>
 </p>
 <p>Create a working buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBuffer</span>(size: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBuffer</span>(size: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2392,7 +2392,7 @@
 </table>
 </p>
 <p>Create a temporary array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TA</span>) <span class="SFct">createTemp</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst">TA</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TA</span>) <span class="SFct">createTemp</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(TA)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2900,7 +2900,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(*Core.ArrayPtr.T)</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3724,7 +3724,7 @@
 </tr>
 <tr>
 <td>writeBuffer</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -3882,7 +3882,7 @@
 </table>
 </p>
 <p>Creates a byte stream to write to an array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(writeBuffer: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(writeBuffer: *<span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'u8)-&gt;<a href="#Core_ByteStream">Core.ByteStream</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4140,7 +4140,7 @@
 <table class="table-enumeration">
 <tr>
 <td>isSet</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SFct"><a href="#Core_CommandLine_IsSet">IsSet</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SFct"><a href="#Core_CommandLine_IsSet">IsSet</a></span><span class="SStr">'(Core.CommandLine.IsSet.T)</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4181,7 +4181,7 @@
 </table>
 </p>
 <p>Parse all the arguments and fill the result. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parse</span>(st: *<span class="SCst">T</span>, args: <span class="SKwd">const</span> [..] <span class="STpe">string</span>, options = <span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span>{})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SFct"><a href="#Core_CommandLine_Result">Result</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_Result">Result</a></span>.<span class="SCst">T</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parse</span>(st: *<span class="SCst">T</span>, args: <span class="SKwd">const</span> [..] <span class="STpe">string</span>, options = <span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span>{})-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SFct"><a href="#Core_CommandLine_Result">Result</a></span><span class="SStr">'(Core.CommandLine.Result.T) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4206,7 +4206,7 @@
 </table>
 </p>
 <p>Clean and split a list of arguments -option:value or -option=value =&gt; -option value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitArguments</span>(args: <span class="SKwd">const</span> [..] <span class="STpe">string</span>, options: <span class="SCst"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitArguments</span>(args: <span class="SKwd">const</span> [..] <span class="STpe">string</span>, options: <span class="SCst"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4479,7 +4479,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width = <span class="SNum">24</span><span class="SStr">'u8)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4648,7 +4648,7 @@
 </table>
 </p>
 <p>Compress the source buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'u8, src: const [..] u8) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4704,7 +4704,7 @@
 </table>
 </p>
 <p>Decompress the associated stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4739,7 +4739,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4752,7 +4752,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5813,7 +5813,7 @@
 </table>
 </p>
 <p>Enumerate a directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerate</span>(dirName: <span class="STpe">string</span>, options: <span class="SCst"><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerate</span>(dirName: <span class="STpe">string</span>, options: <span class="SCst"><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5826,7 +5826,7 @@
 </table>
 </p>
 <p>Get all the directories in the given directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateDirectories</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateDirectories</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5839,7 +5839,7 @@
 </table>
 </p>
 <p>Get all the files of the given directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFiles</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFiles</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5878,7 +5878,7 @@
 </table>
 </p>
 <p>Get the list of logical drives. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDrives</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDrives</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_String">Core.String</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5891,7 +5891,7 @@
 </table>
 </p>
 <p>Get the list of volumes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumes</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumes</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_String">Core.String</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6204,7 +6204,7 @@
 </table>
 </p>
 <p>Get the list of all monitors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMonitors</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Env">Env</a></span>.<span class="SCst"><a href="#Core_Env_Monitor">Monitor</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMonitors</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_Env_Monitor">Core.Env.Monitor</a>)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7224,7 +7224,7 @@
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -7334,14 +7334,14 @@
 <table class="table-enumeration">
 <tr>
 <td>folders</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_File_Folder">Core.File.Folder</a>)</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="STpe">string</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SFct">Array</span><span class="SStr">'(string))</span></span></td>
 <td>Parse a list of lines. </td>
 </tr>
 <tr>
@@ -7370,7 +7370,7 @@
 </p>
 <p>Parse a list of lines. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'string) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7526,7 +7526,7 @@
 </table>
 </p>
 <p>Read a file, and store the result in an array of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllBytes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllBytes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u8) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7539,7 +7539,7 @@
 </table>
 </p>
 <p>Read all the lines of a file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_String">Core.String</a>) throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7607,7 +7607,7 @@
 </table>
 </p>
 <p>Write a file with the content of an array of string, one per line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAllLines</span>(fullname: <span class="STpe">string</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAllLines</span>(fullname: <span class="STpe">string</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'string)-&gt;u64 throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7737,10 +7737,7 @@
 </p>
 <p>Format a string and returns the result as a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p>Use <span class="code-inline">%</span> as a place holder for a value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life is %"</span>, myLife)</span></div>
-<p><span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life in hexadecimal is %{X}"</span>, myLife)</span></div>
+<p>Use <span class="code-inline">%</span> as a place holder for a value. <span class="code-inline">`</span>swag let x = Format.toString("my life is %", myLife) <span class="code-inline">`</span> <span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. <span class="code-inline">`</span>swag let x = Format.toString("my life in hexadecimal is %{X}", myLife) <span class="code-inline">`</span> </p>
 <ul>
 <li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a> for some valid format options</li>
 <li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a> for some valid format options</li>
@@ -8495,7 +8492,7 @@
 </tr>
 <tr>
 <td>table</td>
-<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SStr">'(Core.HashSetEntry.K)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8608,8 +8605,8 @@
 </table>
 </p>
 <p>Add a new element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)
-<span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: &&<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SStr">'(Core.HashSetEntry.K)
+func add(using self, key: &&self.K)-&gt;*<a href="#Core_HashSetEntry">Core.HashSetEntry</a>'</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8648,7 +8645,7 @@
 </table>
 </p>
 <p>Add a new element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SStr">'(Core.HashSetEntry.K)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8850,7 +8847,7 @@
 </tr>
 <tr>
 <td>table</td>
-<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -8987,10 +8984,10 @@
 </table>
 </p>
 <p>Add a new key value pair. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: <span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: <span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></div>
 <p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
 <p>Add a new key value pair. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: &&<span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: &&<span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></div>
 <p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
 <p>
 <table class="api-item">
@@ -9030,7 +9027,7 @@
 </table>
 </p>
 <p>Use with care !. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>, value: &<span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>, value: &<span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9043,7 +9040,7 @@
 </table>
 </p>
 <p>Find the given key, and returns the corresponding entry. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></div>
 <p>Returns null if the key is not there. </p>
 <p>
 <table class="api-item">
@@ -9057,7 +9054,7 @@
 </table>
 </p>
 <p>Get the entry if it exists, or creates a new one with a default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SStr">'(Core.HashTableEntry.K, Core.HashTableEntry.V)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11958,12 +11955,12 @@
 <table class="table-enumeration">
 <tr>
 <td>head</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>tail</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11995,19 +11992,19 @@
 <td>Clear all elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span><span class="SStr">'(T), &&T)</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span><span class="SStr">'(T), T)</span></span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span><span class="SStr">'(T), &&T)</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span><span class="SStr">'(T), T)</span></span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 </table>
@@ -12034,8 +12031,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)
+func addBack(using self, value: &&self.T)-&gt;*<a href="#Core_ListNode">Core.ListNode</a>'</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12048,8 +12045,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)
+func addFront(using self, value: &&self.T)-&gt;*<a href="#Core_ListNode">Core.ListNode</a>'</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12075,8 +12072,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)
+func insertAfter(using self, node: *<a href="#Core_ListNode">ListNode</a>, value: &&self.T)-&gt;*<a href="#Core_ListNode">Core.ListNode</a>'</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12089,8 +12086,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)
+func insertBefore(using self, node: *<a href="#Core_ListNode">ListNode</a>, value: &&self.T)-&gt;*<a href="#Core_ListNode">Core.ListNode</a>'</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12138,12 +12135,12 @@
 <table class="table-enumeration">
 <tr>
 <td>prev</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>next</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span><span class="SStr">'(Core.ListNode.T)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12181,7 +12178,7 @@
 </tr>
 <tr>
 <td>writers</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(<a href="#Core_ILogWriter">Core.ILogWriter</a>)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13419,7 +13416,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span><span class="SStr">'(T, N), NumericArray'</span>(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
 <td>Multiply & Add. </td>
 </tr>
 <tr>
@@ -13442,7 +13439,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span><span class="SStr">'(T, N))</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13473,7 +13470,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(values: <span class="SCst">T</span>...)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(values: <span class="SCst">T</span>...)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span><span class="SStr">'(Core.Math.NumericArray.T, N)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13526,7 +13523,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span><span class="SStr">'(Core.Math.NumericArray.T, N)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15401,7 +15398,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, pt: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'Math.Vector2, pt: Math.Vector2)-&gt;bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17720,7 +17717,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns all the captured strings, in order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17747,8 +17744,8 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Find all the occurences in the string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grepAll</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">grepAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grepAll</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string) throw
+func grepAll(using self, str: string)-&gt;<a href="#Core_Array">Core.Array</a>'</span>(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18591,7 +18588,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Get the default per thread random generator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">shared</span>()-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SFct"><a href="#Core_Random_Rng">Rng</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">shared</span>()-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SFct"><a href="#Core_Random_Rng">Rng</a></span><span class="SStr">'(<a href="#Core_Random_MWC">Core.Random.MWC</a>)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18938,9 +18935,9 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </table>
 </p>
 <p>Returns the given associated attributes to <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(value: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, attribute: <span class="STpe">typeinfo</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">Attribute</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(value: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, attribute: <span class="STpe">typeinfo</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(const *<a href="swag.runtime.php#Swag_Attribute">Swag.Attribute</a>)</span></span></div>
 <p>Returns the given associated attributes to <span class="code-inline">type</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(type: <span class="STpe">typeinfo</span>, attribute: <span class="STpe">typeinfo</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">Attribute</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(type: <span class="STpe">typeinfo</span>, attribute: <span class="STpe">typeinfo</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(const *<a href="swag.runtime.php#Swag_Attribute">Swag.Attribute</a>)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19581,9 +19578,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 <p>This is a high level decoder that needs a specific implementation like <a href="#Core_Serialization_Read_TagBin">Core.Serialization.Read.TagBin</a> or <a href="#Core_Serialization_Read_JSon">Core.Serialization.Read.JSon</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> res = <span class="SCst">File</span>.<span class="SFct">readAllBytes</span>(file)
-<span class="SKwd">var</span> decoder: <span class="SFct">Decoder</span>'<span class="SCst">Read</span>.<span class="SCst">TagBin</span>
-<span class="SKwd">let</span> myStruct = <span class="SKwd">catch</span> decoder.<span class="SFct">readAll</span>'<span class="SFct">MyStruct</span>(res.<span class="SFct">toSlice</span>())</span></div>
+<p><span class="code-inline">`</span>swag var res = File.readAllBytes(file) var decoder: Decoder'Read.TagBin let myStruct = catch decoder.readAll'MyStruct(res.toSlice()) <span class="code-inline">`</span> </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -19981,10 +19976,7 @@ https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h</p>
 </tr>
 </table>
 <p>This is a high level encoder that needs a specific implementation like <a href="#Core_Serialization_Write_TagBin">Core.Serialization.Write.TagBin</a> or <a href="#Core_Serialization_Write_JSon">Core.Serialization.Write.JSon</a>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> buf:     <span class="SCst">ConcatBuffer</span>
-<span class="SKwd">var</span> encoder: <span class="SFct">Encoder</span>'<span class="SCst">Write</span>.<span class="SCst">TagBin</span>
-encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
-<span class="SCst">File</span>.<span class="SFct">writeAllBytes</span>(file, buf)</span></div>
+<p><span class="code-inline">`</span>swag var buf:     ConcatBuffer var encoder: Encoder'Write.TagBin encoder.writeAll(&buf, myStruct) File.writeAllBytes(file, buf) <span class="code-inline">`</span> </p>
 <p>Can be serialized: </p>
 <ul>
 <li>All simple types: <span class="code-inline">bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64</span></li>
@@ -21050,12 +21042,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>freeSections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SStr">'(<a href="#Core_Serialization_Read_TagBinSection">Core.Serialization.Read.TagBinSection</a>)</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SStr">'(<a href="#Core_Serialization_Read_TagBinSection">Core.Serialization.Read.TagBinSection</a>)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -21403,7 +21395,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td>mapSeek</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_HashTable">HashTable</a></span><span class="SStr">'(u32, u64)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -21457,7 +21449,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>stackTags</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -22408,12 +22400,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>freeSections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SStr">'(<a href="#Core_Serialization_Write_TagBinSection">Core.Serialization.Write.TagBinSection</a>)</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>sections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SStr">'(<a href="#Core_Serialization_Write_TagBinSection">Core.Serialization.Write.TagBinSection</a>)</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -22679,7 +22671,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>mapSeek</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_HashTable">HashTable</a></span><span class="SStr">'(u32, <a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a>)</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -22984,7 +22976,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Map the content of a slice to an array of type <span class="code-inline">R</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">R</span>) <span class="SFct">map</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="SCst">R</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst">R</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">R</span>) <span class="SFct">map</span>(values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>)-&gt;<span class="SCst">R</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(R)</span></span></div>
 <p>The lambda must return the value of <span class="code-inline">R</span> for each element of the slice. </p>
 <p>
 <table class="api-item">
@@ -24114,8 +24106,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p>The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
-<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
+<p>The format is <span class="code-inline">[+][fmt][padding][width]'</code> </p>
+<div class="description-list-title"><p><span class="code-inline">+'</code></p></div>
 <div class="description-list-block">
 </div>
 <p>To force the positive sign if the number is positive + <span class="code-inline">fmt</span> This is the output format: </p>
@@ -25331,8 +25323,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64, comparisonType = Utf8.ComparisonType.Latin1)-&gt;u64
+func indexOf(using const self, what: rune, startByteIndex = 0'</span><span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25753,7 +25745,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert string to a 32 bits character array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(rune)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26819,11 +26811,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr><td> <span class="code-inline">g</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIso</span></td></tr>
 <tr><td> <span class="code-inline">h</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoMs</span></td></tr>
 <tr><td> <span class="code-inline">i</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoHM</span></td></tr>
-<tr><td> <span class="code-inline">j</span> </td><td> <span class="code-inline">DateTimeFormat.Date</span></td></tr>
+<tr><td> <span class="code-inline">j</span> </td><td> <span class="code-inline">DateTimeFormat.Date'</code></td></tr>
 </table>
-<div class="code-block"><span class="SCde"><span class="SKwd">let</span> myDate = <span class="SCst">DateTime</span>.<span class="SFct">now</span>()
-<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"%{a}"</span>, myDate))</span></div>
-<p>See <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> </p>
+<p><span class="code-inline"></span>'swag let myDate = DateTime.now() Console.print(Format.toString("%{a}", myDate)) <span class="code-inline">`</span> See <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -28107,7 +28097,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a sub string starting at <span class="code-inline">startByteIndex</span> and ending with <span class="code-inline">delimiter</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTo</span>(src: <span class="STpe">string</span>, delimiter: <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, includeDelimiter = <span class="SKwd">true</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTo</span>(src: <span class="STpe">string</span>, delimiter: <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64, includeDelimiter = true)-&gt;string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28146,11 +28136,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Split string into sub strings, given a byte separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">u8</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">u8</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>Split string into sub strings, given a string separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">string</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">string</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28163,7 +28153,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitAny</span>(src: <span class="STpe">string</span>, separators: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitAny</span>(src: <span class="STpe">string</span>, separators: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28176,7 +28166,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitLines</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitLines</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(string)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28408,7 +28398,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Convert an utf8 buffer to a character sequence, and returns the number of valid elements in the destination buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(dest: [..] <span class="STpe">rune</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Convert an utf8 buffer to a character sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(rune)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28723,7 +28713,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Convert a character array (32 bits unicode) to an utf16 buffer Returns the number of bytes written in the destination buffer <span class="code-inline">dest</span> must be at least 2 bytes long. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(dest: [..] <span class="STpe">u16</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert a character array (32 bits unicode) to an utf16 sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUnicode</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u16)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28738,7 +28728,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elements in the destination buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(dest: [..] <span class="STpe">u16</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Convert an utf8 buffer to an utf16 sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromUtf8</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u16)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28764,7 +28754,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert string to an utf16 array, zero terminated. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toZeroTerminated</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toZeroTerminated</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span><span class="SStr">'(u16)</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29130,10 +29120,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find the first occurence of rune <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64)-&gt;u64</span></span></div>
 <p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>Find the given string, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64, comparisonType = ComparisonType.Latin1)-&gt;u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29146,10 +29136,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64)-&gt;u64</span></span></div>
 <p>Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOfAny</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span><span class="SStr">'u64)-&gt;u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29367,7 +29357,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 03-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 04-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>

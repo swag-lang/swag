@@ -129,7 +129,7 @@
 </ul>
 <p>If LLVM has been compiled once, you can also use the <span class="code-inline">Swag.sln</span> workspace in the <span class="code-inline">build</span> subfolder. </p>
 <div class="swag-watermark">
-Generated on 03-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 04-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>

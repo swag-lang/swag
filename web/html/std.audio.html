@@ -438,7 +438,7 @@
 </tr>
 <tr>
 <td>datas</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></td>
 <td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>
@@ -1074,7 +1074,7 @@
 <p>Set the general output volume. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 03-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 04-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>

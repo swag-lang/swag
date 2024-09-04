@@ -4232,10 +4232,7 @@
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></div>
-<p>For example: </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Safety("", false)]</span>                    <span class="SCmt">// Disable all</span>
-<span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></div>
-<p>Safety checks are: </p>
+<p>For example: <span class="code-inline">`</span>swag #[Swag.Safety("", false)]                    // Disable all #[Swag.Safety("boundcheck|nan", false)]      // Disable <span class="code-inline">boundcheck</span> and <span class="code-inline">nan</span> checks <span class="code-inline">`</span> Safety checks are: </p>
 <table class="table-markdown">
 <tr><td> <span class="code-inline">boundcheck</span>   </td><td> Check out of bound access</td></tr>
 <tr><td> <span class="code-inline">overflow</span>     </td><td> Check type conversion lost of bits or precision</td></tr>
@@ -5468,11 +5465,7 @@
 <div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_Warning">Warning</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag_WarningLevel">WarningLevel</a></span>)</span></div>
-<p>For example: </p>
-<div class="code-block"><span class="SAtr">#[Swag.Warning("Wrn0006", Swag.WarningLevel.Error)
-#[Swag.Warning("Wrn0002|Wrn0006", Swag.WarningLevel.Disable)
-#global #[Swag.Warning("Wrn0005", Swag.WarningLevel.Enable)]</span></div>
-<p>You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
+<p>For example: <span class="code-inline">`</span>swag #[Swag.Warning("Wrn0006", Swag.WarningLevel.Error) #[Swag.Warning("Wrn0002|Wrn0006", Swag.WarningLevel.Disable) #global #[Swag.Warning("Wrn0005", Swag.WarningLevel.Enable)] <span class="code-inline">`</span> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5500,7 +5493,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 03-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 04-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>
