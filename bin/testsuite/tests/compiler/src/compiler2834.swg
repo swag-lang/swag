@@ -27,9 +27,9 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     let countof = @countof(str)
     var buffer = @dataof(str)
 
-    let negSign = `-`'u8 // g_CultureInfo.numberFormat.negativeSign
-    let plusSign = `+`'u8 // g_CultureInfo.numberFormat.positiveSign
-    let dotSign = `.`'u8 // g_CultureInfo.numberFormat.decimalSeparator
+    let negSign = '-''u8 // g_CultureInfo.numberFormat.negativeSign
+    let plusSign = '+''u8 // g_CultureInfo.numberFormat.positiveSign
+    let dotSign = '.''u8 // g_CultureInfo.numberFormat.decimalSeparator
 
     var c = dref buffer
     if c == negSign
@@ -59,10 +59,10 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 			sawdot = true
 			dp = nd
         }
-        elif `0`'u8 <= c and c <= `9`'u8
+        elif '0''u8 <= c and c <= '9''u8
         {
 			sawDigits = true
-			if c == `0`'u8 and nd == 0:
+			if c == '0''u8 and nd == 0:
 				dp -= 1
             else
             {
@@ -70,10 +70,10 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
                 if ndMant < maxMantDigits
                 {
                     result.mantissa *= 10
-                    result.mantissa += cast(u64) (c - `0`'u8)
+                    result.mantissa += cast(u64) (c - '0''u8)
                     ndMant += 1
                 }
-                elif c != `0`'u8
+                elif c != '0''u8
                 {
                     result.trunc = true
                 }
@@ -92,7 +92,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 
 	// Exponent
     c = dref buffer
-	if cpt < countof and (c|32) == `e`'u8
+	if cpt < countof and (c|32) == 'e''u8
     {
 		cpt, buffer += 1
 		if cpt >= countof:
@@ -112,17 +112,17 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		    c = dref buffer
         }
 
-		if cpt >= countof or c < `0`'u8 or c > `9`'u8:
+		if cpt >= countof or c < '0''u8 or c > '9''u8:
 			throw ErrInvalid{}
 
 		var e = 0
         while cpt < countof
         {
             c = dref buffer
-            if c < `0`'u8 or c > `9`'u8:
+            if c < '0''u8 or c > '9''u8:
                 break
 			if e < 10000:
-				e = e*10 + (c - `0`'u8)
+				e = e*10 + (c - '0''u8)
             buffer, cpt += 1
 		}
 

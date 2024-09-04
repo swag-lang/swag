@@ -1,5 +1,5 @@
 //#global skip
-var G: rune = `A`
+var G: rune = 'A'
 func toto()->const &rune
 {
     return &G
@@ -8,5 +8,5 @@ func toto()->const &rune
 #test
 {
     let a = cast(rune) toto()
-    @assert(a == `A`)
+    @assert(a == 'A')
 }

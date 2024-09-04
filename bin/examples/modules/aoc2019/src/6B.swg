@@ -56,7 +56,7 @@ func day6B()
     var map: HashTable'(string, string)
     foreach l in lines
     {
-        let split = Tokenize.split(l, `)`'u8)
+        let split = Tokenize.split(l, ')''u8)
         map.add(split[1], split[0])
     }
 

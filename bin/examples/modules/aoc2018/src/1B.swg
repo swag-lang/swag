@@ -31,7 +31,7 @@ func day1B()
 
     var values: Array's64
     foreach l in lines:
-        values.add(assume StrConv.toS64(l[1..]) * (l[0] == `-` ? -1 : 1))
+        values.add(assume StrConv.toS64(l[1..]) * (l[0] == '-' ? -1 : 1))
 
     var total = 0's64
     var done: HashSet's64

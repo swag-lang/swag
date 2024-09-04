@@ -1,6 +1,6 @@
 #test
 {
-    // It is declared with `[..]`.
+    // It is declared with '[..]'.
     {
         var a: [..] bool
         #assert #sizeof(a) == #sizeof(*void) + #sizeof(u64)
@@ -34,7 +34,7 @@
         @assert(@countof(a) == 2)
     }
 
-    // You can create a slice with your own `pointer` and `count` using `@mkslice`.
+    // You can create a slice with your own 'pointer' and 'count' using `@mkslice`.
     {
         var array: [4] u32 = [10, 20, 30, 40]
 
@@ -50,11 +50,11 @@
         @assert(array[2] == 314)
     }
 
-    // For a string, the slice must be `const` because a string is immutable.
+    // For a string, the slice must be 'const' because a string is immutable.
     {
         let str = "string"
         let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
-        @assert(strSlice[0] == `s`'u8)
-        @assert(strSlice[1] == `t`'u8)
+        @assert(strSlice[0] == 's''u8)
+        @assert(strSlice[1] == 't''u8)
     }
 }

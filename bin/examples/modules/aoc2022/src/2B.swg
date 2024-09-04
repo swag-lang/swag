@@ -32,8 +32,8 @@ func day2B()
     var total: u64
     foreach l in lines
     {
-        let val1 = l[0] - `A`
-        var val2 = l[2] - `X`
+        let val1 = l[0] - 'A'
+        var val2 = l[2] - 'X'
         val2 = Swap[val1, val2]
         total += Score[val1, val2]
     }

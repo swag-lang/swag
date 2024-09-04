@@ -94,9 +94,9 @@ func day6A1()
         {
             for y in y0 to y1
             {
-                if l[6] == `n`:
+                if l[6] == 'n':
                     lights.ref2(x, y, 1000) = true
-                elif l[6] == `f`:
+                elif l[6] == 'f':
                     lights.ref2(x, y, 1000) = false
                 else:
                     lights.ref2(x, y, 1000) = !lights.ref2(x, y, 1000)
@@ -138,9 +138,9 @@ func day6A2()
             for y in y0 to y1
             {
                 let coord = x + (y * 1000)
-                if l[6] == `n`:
+                if l[6] == 'n':
                     lights.set(coord, true)
-                elif l[6] == `f`:
+                elif l[6] == 'f':
                     lights.set(coord, false)
                 else:
                     lights.invert(coord)

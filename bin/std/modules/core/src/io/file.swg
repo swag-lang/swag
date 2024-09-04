@@ -52,7 +52,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8, normalizeEol = 
         while textReader.readLine(&res)
         {
             result += res
-            result += `\n`'u8
+            result += '\n''u8
         }
 
         return result

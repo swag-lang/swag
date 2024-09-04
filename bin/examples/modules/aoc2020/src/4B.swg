@@ -83,9 +83,9 @@ func day4B0()
     var total, pass: u32
     foreach l in lines
     {
-        foreach r in Tokenize.split(l, ` `'u8)
+        foreach r in Tokenize.split(l, ' ''u8)
         {
-            let res1 = Tokenize.split(r, `:`'u8)
+            let res1 = Tokenize.split(r, ':''u8)
             switch res1[0]
             {
             case "byr":
@@ -114,7 +114,7 @@ func day4B0()
                 elif sub == "in" and val.value >= 59 and val.value <= 76:
                     pass |= 8
             case "hcl":
-                if @countof(res1[1]) != 7 or res1[1][0] != `#`:
+                if @countof(res1[1]) != 7 or res1[1][0] != '#':
                     break
                 discard catch StrConv.parseX64(res1[1][1..])
                 if @err() == null:
@@ -172,9 +172,9 @@ func day4B1()
     var total, pass: u32
     foreach l in lines
     {
-        foreach r in Tokenize.split(l, ` `'u8)
+        foreach r in Tokenize.split(l, ' ''u8)
         {
-            let res1 = Tokenize.split(r, `:`'u8)
+            let res1 = Tokenize.split(r, ':''u8)
             let it   = map.find(res1[0])
             if it and it.value.r.match(res1[1]):
                 pass |= it.value.b

@@ -361,7 +361,7 @@ impl Core.StrConv.IPokeValue for Color
         if @countof(one) == 0:
             throw SyntaxError{}
 
-        if buf[0] == `0` and buf[1] | 32 == `x`
+        if buf[0] == '0' and buf[1] | 32 == 'x'
         {
             (argb, eat, ovf) = try parseU32(one)
             if ovf:

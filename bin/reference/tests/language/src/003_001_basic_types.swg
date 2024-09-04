@@ -92,9 +92,9 @@ The `rune` type represents a 32-bit Unicode code point. It is used to store indi
 */
 #test
 {
-    let a: rune = `是`             // A single Unicode character, represented by a 32-bit code point
+    let a: rune = '是'              // A single Unicode character, represented by a 32-bit code point
 
-    @assert(a == `是`)              // Verifies that 'a' holds the correct Unicode code point.
+    @assert(a == '是')              // Verifies that 'a' holds the correct Unicode code point.
     @assert(#sizeof(a) == 4)        // The size of a rune is 4 bytes (32 bits).
 }
 

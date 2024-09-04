@@ -13,17 +13,17 @@ func isValidPathName(fullname: string)->bool
     {
         if c < 32:
             return false
-        if c == `"`:
+        if c == '"':
             return false
-        if c == `<`:
+        if c == '<':
             return false
-        if c == `>`:
+        if c == '>':
             return false
-        if c == `|`:
+        if c == '|':
             return false
-        if c == `*`:
+        if c == '*':
             return false
-        if c == `?`:
+        if c == '?':
             return false
     }
 
@@ -39,23 +39,23 @@ func isValidFileName(fullname: string)->bool
     {
         if c < 32:
             return false
-        if c == `"`:
+        if c == '"':
             return false
-        if c == `<`:
+        if c == '<':
             return false
-        if c == `>`:
+        if c == '>':
             return false
-        if c == `|`:
+        if c == '|':
             return false
-        if c == `:`:
+        if c == ':':
             return false
-        if c == `*`:
+        if c == '*':
             return false
-        if c == `?`:
+        if c == '?':
             return false
-        if c == `\\`:
+        if c == '\\':
             return false
-        if c == `/`:
+        if c == '/':
             return false
     }
 

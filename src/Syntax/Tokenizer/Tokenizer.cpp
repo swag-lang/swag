@@ -201,6 +201,7 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
     ++g_Stats.numTokens;
 #endif
 
+    const auto lastTokenId         = tokenParse.token.id;
     tokenParse.literalType         = LiteralType::TypeMax;
     tokenParse.token.sourceFile    = sourceFile;
     tokenParse.comments.justBefore = tokenParse.comments.after;
@@ -340,10 +341,23 @@ bool Tokenizer::nextToken(TokenParse& tokenParse)
 
         // Character literal
         ///////////////////////////////////////////
-        if (c == '`')
+        if (c == '\'')
         {
-            SWAG_CHECK(doCharacterLiteral(tokenParse));
-            break;
+            if (tokenParse.flags.has(TOKEN_PARSE_BLANK_BEFORE))
+            {
+                SWAG_CHECK(doCharacterLiteral(tokenParse));
+                break;
+            }
+
+            if (lastTokenId != TokenId::Identifier &&
+                !isKeyword(lastTokenId) &&
+                lastTokenId != TokenId::LiteralNumber &&
+                lastTokenId != TokenId::LiteralString &&
+                lastTokenId != TokenId::LiteralCharacter)
+            {
+                SWAG_CHECK(doCharacterLiteral(tokenParse));
+                break;
+            }
         }
 
         // String literal

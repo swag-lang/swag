@@ -216,7 +216,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& tokenParse)
         }
 
         // End marker
-        if (c == '`')
+        if (c == '\'')
         {
             appendTokenName(tokenParse);
             eatChar(c, offset);

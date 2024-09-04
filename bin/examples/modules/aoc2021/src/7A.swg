@@ -42,7 +42,7 @@ func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
-    let str      = Tokenize.split(lines[0], `,`'u8)
+    let str      = Tokenize.split(lines[0], ',''u8)
 
     var crabs: Array's32
     foreach v in str:

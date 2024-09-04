@@ -91,14 +91,14 @@ When an `if` statement includes a variable declaration, you can add an additiona
     func retNothing()->string   => null
 
     // The 'where' clause is only evaluated if 'str' is not null.
-    if let str = retSomething() where str[0] == `s`:
+    if let str = retSomething() where str[0] == 's':
         @assert(true)             // This block will execute since 'str' starts with 's'
     else:
         @assert(false)            // This block will not execute
 
     // In this example, the initial test fails because 'str' is null,
     // so the 'where' clause is not evaluated.
-    if let str = retNothing() where str[0] == `s`:
+    if let str = retNothing() where str[0] == 's':
         @assert(false)            // This block will not execute
     else:
         @assert(true)             // This block will execute since the initial test fails

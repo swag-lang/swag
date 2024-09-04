@@ -43,16 +43,16 @@ func day2B()
         {
             switch c
             {
-            case `U`:
+            case 'U':
                 if pad[y - 1, x]:
                     y -= 1
-            case `D`:
+            case 'D':
                 if pad[y + 1, x]:
                     y += 1
-            case `L`:
+            case 'L':
                 if pad[y, x - 1]:
                     x -= 1
-            case `R`:
+            case 'R':
                 if pad[y, x + 1]:
                     x += 1
             }

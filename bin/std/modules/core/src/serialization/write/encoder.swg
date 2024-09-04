@@ -42,16 +42,16 @@ interface IEncoder
 Serialization encoder.
 This is a high level encoder that needs a specific implementation like [[Core.Serialization.Write.TagBin]] or [[Core.Serialization.Write.JSon]].
 
-```swag
+'`'swag
 var buf:     ConcatBuffer
 var encoder: Encoder'Write.TagBin
 encoder.writeAll(&buf, myStruct)
 File.writeAllBytes(file, buf)
-```
+'`'
 
 Can be serialized:
 * All simple types: `bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64`
-* A type value `typeinfo`, which will be saved as a crc32.
+* A type value 'typeinfo', which will be saved as a crc32.
 * An interface. Will be stored as a type and a typed value.
 * A struct.
 * A `Core.String`.

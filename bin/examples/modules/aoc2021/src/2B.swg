@@ -34,7 +34,7 @@ func day2B()
     var h, d, a: u64
     foreach l in lines
     {
-        let cmd = Tokenize.split(l, ` `'u8)
+        let cmd = Tokenize.split(l, ' ''u8)
         let val = assume StrConv.toS32(cmd[1])
         switch cmd[0]
         {

@@ -43,7 +43,7 @@ public impl JSon
         while c and Latin1.isSpace(c)
         {
             stream.moveSeek()
-            if c == `\n`
+            if c == '\n'
             {
                 line += 1
                 col = 1
@@ -63,7 +63,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `[`:
+        if c != '[':
             throw getError("malformed array, missing opening [[[]]")
         return false
     }
@@ -72,7 +72,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `]`:
+        if c != ']':
             throw getError("malformed array; missing closing [[]]]")
     }
 
@@ -80,7 +80,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.peekU8()
-        return c != `]`
+        return c != ']'
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
@@ -97,7 +97,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `{`:
+        if c != '{':
             throw getError("malformed struct, missing opening [[{]]")
     }
 
@@ -105,7 +105,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.readU8()
-        if c != `}`:
+        if c != '}':
             throw getError("malformed struct, missing closing [[}]]")
     }
 
@@ -124,12 +124,12 @@ public impl JSon
     {
         zapBlanks()
         var c = stream.readU8()
-        if c != `"`:
+        if c != '"':
             throw getError("malformed property name, missing opening [[\"]]")
 
         propName.clear()
         c = stream.readU8()
-        while c and c != `"`
+        while c and c != '"'
         {
             propName += c
             c = stream.readU8()
@@ -138,12 +138,12 @@ public impl JSon
         if propName != val.name:
             throw getError("invalid property name")
 
-        if c != `"`:
+        if c != '"':
             throw getError("malformed property name, missing closing [[\"]]")
 
         zapBlanks()
         c = stream.readU8()
-        if c != `:`:
+        if c != ':':
             throw getError("malformed property, missing [[:]] after name")
 
         return true
@@ -163,7 +163,7 @@ public impl JSon
     {
         zapBlanks()
         let c = stream.peekU8()
-        if c == `,`:
+        if c == ',':
             stream.moveSeek()
     }
 
@@ -246,12 +246,12 @@ public impl JSon
 
             zapBlanks()
             var c = stream.readU8()
-            if c != `"`
+            if c != '"'
             {
-                if c == `n` and
-                   stream.readU8() == `u` and
-                   stream.readU8() == `l` and
-                   stream.readU8() == `l`
+                if c == 'n' and
+                   stream.readU8() == 'u' and
+                   stream.readU8() == 'l' and
+                   stream.readU8() == 'l'
                 {
                     return result
                 }
@@ -260,7 +260,7 @@ public impl JSon
             }
 
             c = stream.peekU8()
-            while c and c != `"`
+            while c and c != '"'
             {
                 c = stream.readU8()
                 result += c
@@ -268,7 +268,7 @@ public impl JSon
             }
 
             c = stream.readU8()
-            if c != `"`:
+            if c != '"':
                 throw getError("malformed string, missing closing [[\"]]")
 
             return result

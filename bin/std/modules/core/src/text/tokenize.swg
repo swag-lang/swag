@@ -7,7 +7,7 @@ func eatQuotes(str: string)->string
     let countof = @countof(str)
     if countof < 2:
         return str
-    if str[0] == `"` and str[countof - 1] == `"`:
+    if str[0] == '"' and str[countof - 1] == '"':
         return @mkstring(@dataof(str) + 1, countof - 2)
     return str
 }
@@ -48,7 +48,7 @@ func splitLines(src: string)->Array'string
     var end    = dataof
     while cpt < countof
     {
-        while cpt < countof and dref end != `\r` and dref end != `\n`
+        while cpt < countof and dref end != '\r' and dref end != '\n'
         {
             end += 1
             cpt += 1
@@ -56,7 +56,7 @@ func splitLines(src: string)->Array'string
 
         let onestr = @mkstring(dataof, cast(u64) (end - dataof))
         result.add(onestr)
-        if cpt < countof - 1 and dref end == `\r` and end[1] == `\n`:
+        if cpt < countof - 1 and dref end == '\r' and end[1] == '\n':
             end, cpt += 1
         end, cpt += 1
         dataof = end

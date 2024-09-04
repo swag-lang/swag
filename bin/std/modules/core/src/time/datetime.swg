@@ -187,7 +187,7 @@ impl DateTime
                 throw SyntaxError{}
 
             done = false
-            parseSep(&buf, ` `, &result.eat)
+            parseSep(&buf, ' ', &result.eat)
 
             // Month name
             foreach dow, idx in MonthNames
@@ -206,9 +206,9 @@ impl DateTime
             if !done:
                 throw SyntaxError{}
 
-            parseSep(&buf, ` `, &result.eat)
+            parseSep(&buf, ' ', &result.eat)
             result.value.day = parseU8(&buf, &result.eat)
-            parseSep(&buf, ` `, &result.eat)
+            parseSep(&buf, ' ', &result.eat)
             result.value.year = parseU16(&buf, &result.eat)
 
             // Check day of week
@@ -220,17 +220,17 @@ impl DateTime
              Latin1.isDigit(buf[1]) and
              Latin1.isDigit(buf[2]) and
              Latin1.isDigit(buf[3]) and
-             buf[4] == `-` and
+             buf[4] == '-' and
              Latin1.isDigit(buf[5]) and
              Latin1.isDigit(buf[6]) and
-             buf[7] == `-` and
+             buf[7] == '-' and
              Latin1.isDigit(buf[8]) and
              Latin1.isDigit(buf[9])
         {
             result.value.year = parseU16(&buf, &result.eat)
-            parseSep(&buf, `-`, &result.eat)
+            parseSep(&buf, '-', &result.eat)
             result.value.month = parseU8(&buf, &result.eat)
-            parseSep(&buf, `-`, &result.eat)
+            parseSep(&buf, '-', &result.eat)
             result.value.day = parseU8(&buf, &result.eat)
         }
         else
@@ -239,39 +239,39 @@ impl DateTime
         }
 
         if @countof(buf) >= 1 and
-           buf[0] == ` `
+           buf[0] == ' '
         {
-            parseSep(&buf, ` `, &result.eat)
+            parseSep(&buf, ' ', &result.eat)
         }
 
         // Time
         if @countof(buf) >= 5 and
            Latin1.isDigit(buf[0]) and
            Latin1.isDigit(buf[1]) and
-           buf[2] == `:` and
+           buf[2] == ':' and
            Latin1.isDigit(buf[3]) and
            Latin1.isDigit(buf[4])
         {
             result.value.hour = parseU8(&buf, &result.eat)
-            parseSep(&buf, `:`, &result.eat)
+            parseSep(&buf, ':', &result.eat)
             result.value.minute = parseU8(&buf, &result.eat)
 
             // Seconds
             if @countof(buf) >= 3 and
-               buf[0] == `:` and
+               buf[0] == ':' and
                Latin1.isDigit(buf[1]) and
                Latin1.isDigit(buf[2])
             {
-                parseSep(&buf, `:`, &result.eat)
+                parseSep(&buf, ':', &result.eat)
                 result.value.second = parseU8(&buf, &result.eat)
             }
 
             // Milliseconds
             if @countof(buf) >= 2 and
-               buf[0] == `.` and
+               buf[0] == '.' and
                Latin1.isDigit(buf[1])
             {
-                parseSep(&buf, `.`, &result.eat)
+                parseSep(&buf, '.', &result.eat)
                 result.value.millisecond = parseU16(&buf, &result.eat)
             }
         }
@@ -368,12 +368,12 @@ impl StrConv.IConvert for DateTime
     // | 'g' | `DateTimeFormat.TimeIso`
     // | 'h' | `DateTimeFormat.TimeIsoMs`
     // | 'i' | `DateTimeFormat.TimeIsoHM`
-    // | 'j' | `DateTimeFormat.Date`
+    // | 'j' | `DateTimeFormat.Date'
     //
-    // ```swag
+    // ``'swag
     // let myDate = DateTime.now()
     // Console.print(Format.toString("%{a}", myDate))
-    // ```
+    // '`'
     // See [[Core.Time.DateTimeFormat]]
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
@@ -384,25 +384,25 @@ impl StrConv.IConvert for DateTime
         {
             switch strFormat[0]
             {
-            case `a`:
+            case 'a':
                 str = toString(.DateTime)
-            case `b`:
+            case 'b':
                 str = toString(.DateTimeMs)
-            case `c`:
+            case 'c':
                 str = toString(.DateTimeIso)
-            case `d`:
+            case 'd':
                 str = toString(.DateTimeIsoMs)
-            case `e`:
+            case 'e':
                 str = toString(.DateTimeIsoHM)
-            case `f`:
+            case 'f':
                 str = toString(.DateIso)
-            case `g`:
+            case 'g':
                 str = toString(.TimeIso)
-            case `h`:
+            case 'h':
                 str = toString(.TimeIsoMs)
-            case `i`:
+            case 'i':
                 str = toString(.TimeIsoHM)
-            case `j`:
+            case 'j':
                 str = toString(.Date)
             default:
                 str = toString(.DateTime)

@@ -242,7 +242,7 @@ func addObstacle(xi, yi: f32)
         var x = xi
         foreach c in line
         {
-            if c == `x`:
+            if c == 'x':
                 g_Obstacles.add({x, y})
             x += OBS_SIZE
         }

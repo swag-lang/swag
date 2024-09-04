@@ -41,7 +41,6 @@
     { "include": "#literal-hexa" },
     { "include": "#literal-float" },
     { "include": "#literal-integer" },
-    { "include": "#literal-suffix" },
     { "include": "#characters" },
     { "include": "#operator-character" },
     { "include": "#code" }
@@ -445,14 +444,6 @@
         }
       ]
     },
-    "literal-suffix": {
-      "patterns": [
-        {
-          "name": "constant.character.escape",
-          "match": "(\\'\\w[\\w_]*)"
-        }
-      ]
-    },
     "raw-strings": {
       "name": "string.quoted.double",
       "begin": "\\#\"",
@@ -487,15 +478,16 @@
       ]
     },
     "characters": {
-      "name": "string.quoted.single",
-      "begin": "`",
-      "end": "`",
       "patterns": [
         {
-          "name": "constant.character.escape",
-          "match": "\\\\."
-        }
-      ]
+          "name": "string.quoted.single",
+          "match": "'(\\\\)?(\\w+)'"
+        },
+        {
+          "name": "string.quoted.single",
+          "match": "'[^']'"
+        }  
+      ]      
     },
     "operator-character": {
       "patterns": [

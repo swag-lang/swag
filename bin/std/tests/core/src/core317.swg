@@ -14,4 +14,4 @@ func(T) GEN()->String
 }
 
 #assert cast(string) GEN'X() == "X"
-#assert GEN'X()[0] == `X`'u8
+#assert GEN'X()[0] == 'X''u8

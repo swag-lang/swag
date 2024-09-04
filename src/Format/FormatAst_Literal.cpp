@@ -16,7 +16,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
         concat->addString(R"(""")");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        concat->addString("`");
+        concat->addString("'");
 
     concat->addString(node->token.text);
 
@@ -27,7 +27,7 @@ bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
     else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
         concat->addString(R"(""")");
     else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
-        concat->addString("`");
+        concat->addString("'");
 
     if (!node->children.empty())
     {

@@ -19,7 +19,7 @@ func day1B()
     var total = 0
     foreach<Bytes> c in lines
     {
-        total += c == `(` ? 1 : -1
+        total += c == '(' ? 1 : -1
         if total == -1
         {
             total = 1 + cast(s32) #index

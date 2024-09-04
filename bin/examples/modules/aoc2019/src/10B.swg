@@ -78,7 +78,7 @@ func day10B()
 
     foreach l, y in lines:
         foreach c, x in l:
-            if c == `#`:
+            if c == '#':
                 arr.add({{cast(f32) x, cast(f32) y}})
     tot.resize(arr.count)
 

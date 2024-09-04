@@ -4,6 +4,6 @@ using Core, Core.Utf8
 #test
 {
     var x: String = "ABCDE昨"
-    @assert(x.firstRune() == `A`)
-    @assert(x.lastRune() == `昨`)
+    @assert(x.firstRune() == 'A')
+    @assert(x.lastRune() == '昨')
 }

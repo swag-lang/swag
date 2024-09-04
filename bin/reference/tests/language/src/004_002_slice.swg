@@ -88,8 +88,8 @@ For strings, the slice must be `const` because strings are immutable.
 {
     let str = "string"
     let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
-    @assert(strSlice[0] == `s`)
-    @assert(strSlice[1] == `t`)
+    @assert(strSlice[0] == 's')
+    @assert(strSlice[1] == 't')
 }
 
 /**

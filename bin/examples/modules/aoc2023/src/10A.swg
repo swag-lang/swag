@@ -126,19 +126,19 @@ func day10A()
             let one = #ref mp(cast(s64) col, cast(s64) line)
             switch c
             {
-            case `-`:
+            case '-':
                 one = .West | .East
-            case `|`:
+            case '|':
                 one = .North | .South
-            case `L`:
+            case 'L':
                 one = .North | .East
-            case `J`:
+            case 'J':
                 one = .North | .West
-            case `7`:
+            case '7':
                 one = .South | .West
-            case `F`:
+            case 'F':
                 one = .South | .East
-            case `S`:
+            case 'S':
                 startX = col
                 startY = line
             }

@@ -27,7 +27,7 @@ func day10A()
         var i    = 0
         while i < l.length
         {
-            str += `1`'u8
+            str += '1''u8
             str += l[i]
             i += 1
             while i < l.length and l[i] == str[str.length - 1]

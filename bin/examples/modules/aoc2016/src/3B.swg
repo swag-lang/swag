@@ -26,9 +26,9 @@ func day3B()
         for var l = 0'u64; l < lines.count; l += 3
         {
             var split: [3] Array'string
-            split[0] = Tokenize.split(lines[l], ` `'u8)
-            split[1] = Tokenize.split(lines[l + 1], ` `'u8)
-            split[2] = Tokenize.split(lines[l + 2], ` `'u8)
+            split[0] = Tokenize.split(lines[l], ' ''u8)
+            split[1] = Tokenize.split(lines[l + 1], ' ''u8)
+            split[2] = Tokenize.split(lines[l + 2], ' ''u8)
 
             for i in 3
             {

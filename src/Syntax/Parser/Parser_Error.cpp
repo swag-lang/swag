@@ -138,14 +138,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
         ///////////////////////////////////////////
         case InvalidTokenError::PrimaryExpression:
-
-            // Bad character syntax as an expression
-            if (startToken.is(TokenId::SymQuote) && nextNextToken.is(TokenId::SymQuote))
-            {
-                const Diagnostic err{sourceFile, startToken.startLocation, nextNextToken.token.endLocation, formErr(Err0190, nextToken.token.cstr())};
-                return context->report(err);
-            }
-
+            
             if (Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
             {
                 Diagnostic err{sourceFile, tokenParse, formErr(Err0204, prevTokenParse.cstr())};

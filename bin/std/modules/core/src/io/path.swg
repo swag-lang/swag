@@ -2,9 +2,9 @@
 #global namespace Path
 using Swag
 
-const DirectorySeparatorChar    = `/`'u8
-const AltDirectorySeparatorChar = `\\`'u8
-const VolumeSeparatorChar       = `:`'u8
+const DirectorySeparatorChar    = '/''u8
+const AltDirectorySeparatorChar = '\\''u8
+const VolumeSeparatorChar       = ':''u8
 
 // Returns true if the given character is a directory separator
 #[Inline, ConstExpr]
@@ -107,7 +107,7 @@ func getFileNameWithoutExtension(fullname: string)->string
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.` and last == countof:
+        if c == '.' and last == countof:
             last = cpt
         elif isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
@@ -134,7 +134,7 @@ func getExtension(fullname: string)->string
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.`:
+        if c == '.':
             return cast() @mkslice(@dataof(fullname) + cpt, cast(u64) @countof(fullname) - cpt)
         if isDirectorySeparator(c) or c == VolumeSeparatorChar:
             break
@@ -169,7 +169,7 @@ func hasExtension(fullname: string)->bool
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.`:
+        if c == '.':
             return true
         if isDirectorySeparator(c) or c == VolumeSeparatorChar:
             break

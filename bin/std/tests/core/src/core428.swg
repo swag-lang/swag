@@ -7,11 +7,11 @@ using Core
     foreach<Bytes> #back v in str
     {
         if cpt == 0:
-            @assert(v == `C`)
+            @assert(v == 'C')
         if cpt == 1:
-            @assert(v == `B`)
+            @assert(v == 'B')
         if cpt == 2:
-            @assert(v == `A`)
+            @assert(v == 'A')
         cpt += 1
     }
 }

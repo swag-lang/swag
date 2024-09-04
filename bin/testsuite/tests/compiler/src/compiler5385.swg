@@ -1,4 +1,4 @@
-var G: rune = `A`
+var G: rune = 'A'
 func toto()->const &rune
 {
     return &G
@@ -8,7 +8,7 @@ func toto()->const &rune
 {
     switch toto()
     {
-    case `A`: break
+    case 'A': break
     default: @assert(false)
     }
 }

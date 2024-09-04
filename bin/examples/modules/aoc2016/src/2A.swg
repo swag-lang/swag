@@ -42,16 +42,16 @@ func day2A()
         {
             switch c
             {
-            case `U`:
+            case 'U':
                 if y:
                     y -= 1
-            case `D`:
+            case 'D':
                 if y != 2:
                     y += 1
-            case `L`:
+            case 'L':
                 if x:
                     x -= 1
-            case `R`:
+            case 'R':
                 if x != 2:
                     x += 1
             }

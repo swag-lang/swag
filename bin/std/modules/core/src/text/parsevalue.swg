@@ -21,7 +21,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     if Reflection.isStructArray(type)
     {
         let valueType = Reflection.getStructArrayType(type)
-        while @countof(one) and one[0] != `#`
+        while @countof(one) and one[0] != '#'
         {
             let addrVal = Reflection.appendValueStructArray(addr, valueType)
             one = parseValue(addrVal, valueType, one)
@@ -37,7 +37,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
         let arrayType = cast(const *TypeInfoArray) type
         var addrVal   = cast(^u8) addr
         var cpt       = 0
-        while @countof(one) and one[0] != `#`
+        while @countof(one) and one[0] != '#'
         {
             if cpt == arrayType.totalCount:
                 throw InvalidFormatError{"too many static array values"}
@@ -106,10 +106,10 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             one = Tokenize.eatSpaces(one)
             if !@countof(one):
                 break
-            if one[0] == `#`:
+            if one[0] == '#':
                 break
 
-            if one[0] != `|`:
+            if one[0] != '|':
                 throw InvalidFormatError{"invalid enum flags format"}
             one = Tokenize.eatCount(one, 1)
         }

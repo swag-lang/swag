@@ -23,7 +23,7 @@ func day6B() assume
     {
         foreach c, i in l
         {
-            freq[i, c - `a`] += 1
+            freq[i, c - 'a'] += 1
         }
     }
 
@@ -36,7 +36,7 @@ func day6B() assume
             if v and v < best[c0]
             {
                 best[c0] = v
-                pwd[c0]  = cast(u8) (c1 + `a`)
+                pwd[c0]  = cast(u8) (c1 + 'a')
             }
         }
     }

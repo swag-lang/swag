@@ -17,8 +17,8 @@ func(T) largest(list: [..] T)->&T
     let result = largest(number_list[..])
     @assert(result == 100)
 
-    var char_list = [`大`'rune, "m", "a", "q"]
+    var char_list = ['大''rune, "m", "a", "q"]
 
     let result1 = largest(char_list[..])
-    @assert(result1 == `大`'rune)
+    @assert(result1 == '大''rune)
 }

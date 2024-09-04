@@ -9,5 +9,5 @@ impl A {
 #test
 {
     var a: A
-    a += `0`'u8
+    a += '0''u8
 }

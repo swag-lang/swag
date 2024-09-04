@@ -14,7 +14,7 @@ func day1B()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "1.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    let split = Tokenize.split(lines[0], `,`'u8)
+    let split = Tokenize.split(lines[0], ',''u8)
     var dx    = 0
     var dy    = 1
     var done: HashSet'u64
@@ -34,10 +34,10 @@ func day1B()
         let n = assume StrConv.toS32(v[1..])
         switch v[0]
         {
-        case `R`:
+        case 'R':
             swap(&dx, &dy)
             dy = -dy
-        case `L`:
+        case 'L':
             swap(&dx, &dy)
             dx = -dx
         }

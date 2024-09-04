@@ -15,8 +15,8 @@ using Core.File
 
         var res = reader.readToEnd()
         @assert(res.length > 10)
-        @assert(res[0] == `u`'u8)
-        @assert(res[1] == `s`'u8)
+        @assert(res[0] == 'u''u8)
+        @assert(res[1] == 's''u8)
     }
 
     {

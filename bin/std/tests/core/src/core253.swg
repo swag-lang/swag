@@ -132,7 +132,7 @@ var atoftests: [] atofTest = [
             continue
 
         cb.clear()
-        Dtoa.parse(&cb, v.value, `g`'u8, -1, false)
+        Dtoa.parse(&cb, v.value, 'g''u8, -1, false)
 
         var res = cb.toString()
         if t.out != res

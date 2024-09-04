@@ -63,7 +63,7 @@ func day7B() assume
     foreach cc, i in first
     {
         workers[i].val  = cc
-        workers[i].tick = (cc - `A`) + 61
+        workers[i].tick = (cc - 'A') + 61
         current.add(cc)
     }
 
@@ -115,7 +115,7 @@ func day7B() assume
                 continue
             let cc = avail.popBack()
             w1.val  = cc
-            w1.tick = (cc - `A`) + 61
+            w1.tick = (cc - 'A') + 61
             current.add(cc)
         }
     }

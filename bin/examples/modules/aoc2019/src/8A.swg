@@ -36,7 +36,7 @@ func day8A()
 
     foreach<Bytes> c in lines[0]
     {
-        count[c - `0`] += 1
+        count[c - '0'] += 1
         x = (x + 1) % 25
         if x != 0:
             continue

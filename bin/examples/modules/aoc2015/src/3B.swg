@@ -33,13 +33,13 @@ func day3B()
         let who = i & 1
         switch c
         {
-        case `^`:
+        case '^':
             pos[who].y -= 1
-        case `v`:
+        case 'v':
             pos[who].y += 1
-        case `<`:
+        case '<':
             pos[who].x -= 1
-        case `>`:
+        case '>':
             pos[who].x += 1
         }
 

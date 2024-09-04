@@ -23,7 +23,7 @@ func day3A()
         var total = 0
         foreach l in lines
         {
-            let split = Tokenize.split(l, ` `'u8)
+            let split = Tokenize.split(l, ' ''u8)
             let v     = [StrConv.toS32(split[0]), StrConv.toS32(split[1]), StrConv.toS32(split[2])]
 
             var ok = 0

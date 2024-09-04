@@ -8,6 +8,6 @@ using Core
 
     foreach k, v in h
     {
-        @assert(v[0] == `s`'u8)
+        @assert(v[0] == 's''u8)
     }
 }

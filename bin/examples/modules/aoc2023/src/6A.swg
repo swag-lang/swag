@@ -49,10 +49,10 @@ func day6A()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "6.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    let first  = Tokenize.split(lines[0], `:`'u8)
-    let second = Tokenize.split(lines[1], `:`'u8)
-    let val0   = Tokenize.split(first[1], ` `'u8)
-    let val1   = Tokenize.split(second[1], ` `'u8)
+    let first  = Tokenize.split(lines[0], ':''u8)
+    let second = Tokenize.split(lines[1], ':''u8)
+    let val0   = Tokenize.split(first[1], ' ''u8)
+    let val1   = Tokenize.split(second[1], ' ''u8)
 
     var times: Array's32
     var dists: Array's32

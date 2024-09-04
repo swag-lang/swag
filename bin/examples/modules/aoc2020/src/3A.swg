@@ -33,7 +33,7 @@ func day3A()
     {
         x = cast(s32) ((x + 3) % lines[0].length)
         y += 1
-        total += lines[y][x] == `#` ? 1 : 0
+        total += lines[y][x] == '#' ? 1 : 0
     }
 
     //Console.print("total: ", total)

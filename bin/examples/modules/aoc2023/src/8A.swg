@@ -77,7 +77,7 @@ func day8A()
     {
         foreach inst in instructions
         {
-            if inst == `L`:
+            if inst == 'L':
                 curNode = nodes[curNode].left
             else:
                 curNode = nodes[curNode].right

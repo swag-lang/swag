@@ -32,13 +32,13 @@ func day3A()
     {
         switch c
         {
-        case `^`:
+        case '^':
             pos.y -= 1
-        case `v`:
+        case 'v':
             pos.y += 1
-        case `<`:
+        case '<':
             pos.x -= 1
-        case `>`:
+        case '>':
             pos.x += 1
         }
 

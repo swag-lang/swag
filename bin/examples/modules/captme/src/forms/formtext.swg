@@ -217,7 +217,7 @@ impl IForm for FormText
             isDirty = true
         }
 
-        var tokens = Tokenize.split(text, `\n`'rune)
+        var tokens = Tokenize.split(text, '\n''rune)
         if isDirty
         {
             isDirty      = false

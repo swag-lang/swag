@@ -25,7 +25,7 @@ func day1B()
     for i in text
     {
         if text[i] == text[(i + (text.length / 2)) % text.length]:
-            total += text[i] - `0`
+            total += text[i] - '0'
     }
 
     //Console.print("total: ", total)

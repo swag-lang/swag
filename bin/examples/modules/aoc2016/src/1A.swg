@@ -25,7 +25,7 @@ func day1A()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "1.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    let split = Tokenize.split(lines[0], `,`'u8)
+    let split = Tokenize.split(lines[0], ',''u8)
     var x     = 0
     var y     = 1
     var px, py = 0
@@ -35,10 +35,10 @@ func day1A()
         let n = assume StrConv.toS32(v[1..])
         switch v[0]
         {
-        case `R`:
+        case 'R':
             swap(&x, &y)
             y = -y
-        case `L`:
+        case 'L':
             swap(&x, &y)
             x = -x
         }

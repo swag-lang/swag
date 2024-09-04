@@ -32,16 +32,16 @@ func day2B()
 
     foreach l, gameIdx in lines
     {
-        let first = Tokenize.split(l, `:`'u8)
-        let sets  = Tokenize.split(first[1], `;`'u8)
+        let first = Tokenize.split(l, ':''u8)
+        let sets  = Tokenize.split(first[1], ';''u8)
 
         var game: { r, g, b: s32 }
         foreach s in sets
         {
-            let values = Tokenize.split(s, `,`'u8)
+            let values = Tokenize.split(s, ',''u8)
             foreach v in values
             {
-                let one = Tokenize.split(v, ` `'u8)
+                let one = Tokenize.split(v, ' ''u8)
                 switch one[1]
                 {
                 case "red":

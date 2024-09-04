@@ -21,14 +21,14 @@ The `switch` statement in Swag operates similarly to those in C/C++, with a key 
         @assert(false)  // Assertion fails if no cases match.
     }
 
-    let ch = `A`'rune
+    let ch = 'A''rune
 
     // This `switch` checks the value of 'ch'.
     switch ch
     {
-    case `B`:
+    case 'B':
         @assert(false)  // Assertion fails if 'ch' is 'B'.
-    case `A`: 
+    case 'A': 
         break           // Exits the switch when 'ch' is 'A'.
     }
 }

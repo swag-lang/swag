@@ -54,10 +54,10 @@ func day4A()
     var total, pass: u32
     foreach l in lines
     {
-        let res = Tokenize.split(l, ` `'u8)
+        let res = Tokenize.split(l, ' ''u8)
         foreach r in res
         {
-            let res1 = Tokenize.split(r, `:`'u8)
+            let res1 = Tokenize.split(r, ':''u8)
             let idx  = Slice.findLinear(["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"], res1[0])
             pass |= 1 << cast(u32) idx
         }

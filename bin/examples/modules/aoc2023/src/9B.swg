@@ -29,7 +29,7 @@ func day9B()
 
     foreach l in lines
     {
-        let vals = Tokenize.split(l, ` `'u8)
+        let vals = Tokenize.split(l, ' ''u8)
 
         var values: Array's64
         foreach v in vals:

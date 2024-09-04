@@ -1,4 +1,4 @@
-var G: rune = `A`
+var G: rune = 'A'
 func toto()->const &rune
 {
     return &G

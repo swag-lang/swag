@@ -374,11 +374,11 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
         }
 
         // Character
-        if (c == '`')
+        if (c == '\'')
         {
             result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
             result += c;
-            while (*pz && *pz != '`')
+            while (*pz && *pz != '\'')
             {
                 if (*pz == '\\')
                     result += *pz++;
@@ -386,7 +386,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     result += *pz++;
             }
 
-            if (*pz == '`')
+            if (*pz == '\'')
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
             result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);

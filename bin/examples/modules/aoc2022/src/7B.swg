@@ -29,10 +29,10 @@ func day7B()
     for i in lines
     {
         let l = #ref lines[i]
-        if l[0] == `$`:
+        if l[0] == '$':
             l.remove(0, 1)
 
-        let cmd = Tokenize.split(l, ` `'u8)
+        let cmd = Tokenize.split(l, ' ''u8)
         switch cmd[0]
         {
         case "cd":

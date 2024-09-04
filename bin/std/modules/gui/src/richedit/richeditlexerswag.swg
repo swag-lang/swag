@@ -405,7 +405,7 @@ impl IRichEditLexer for RichEditLexerSwag
     mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool
     {
         // Smart return
-        if ch == `\n`
+        if ch == '\n'
         {
             var cp   = ed.getBegSelection()
             let line = ed.lines[cp.lineIndex]
@@ -420,8 +420,8 @@ impl IRichEditLexer for RichEditLexerSwag
                     cpt += 1
                 }
 
-                if cpt < line.chars.count and line.chars[cpt] == `{`:
-                    str += `\t`'rune
+                if cpt < line.chars.count and line.chars[cpt] == '{':
+                    str += '\t''rune
             }
 
             ed.pushUndo()
@@ -485,16 +485,16 @@ impl IRichEditLexer for RichEditLexerSwag
             switch currentState
             {
             case State.NumericFrac:
-                if Unicode.isNumber(c) or c == `_`
+                if Unicode.isNumber(c) or c == '_'
                 {
                     seekNext()
                     continue
                 }
 
-                if c == `e`
+                if c == 'e'
                 {
                     seekNext()
-                    if cn == `+` or cn == `-`:
+                    if cn == '+' or cn == '-':
                         seekNext()
                     currentState = State.Numeric
                     continue
@@ -503,7 +503,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 currentState = State.Default
 
             case State.NumericHex:
-                if Unicode.isNumber(c) or c == `_`
+                if Unicode.isNumber(c) or c == '_'
                 {
                     seekNext()
                     continue
@@ -517,13 +517,13 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.NumericBin:
-                if Unicode.isNumber(c) or c == `_`
+                if Unicode.isNumber(c) or c == '_'
                 {
                     seekNext()
                     continue
                 }
 
-                if c != `0` and c != `1`
+                if c != '0' and c != '1'
                 {
                     currentState = State.Default
                     seekNext()
@@ -531,21 +531,21 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Numeric:
-                if c == `.` and cn == `.`
+                if c == '.' and cn == '.'
                 {
                     currentState = State.Default
                     seekNext()
                     continue
                 }
 
-                if c == `.` or c == `e` or c == `E`
+                if c == '.' or c == 'e' or c == 'E'
                 {
                     currentState = State.NumericFrac
                     seekNext()
                     continue
                 }
 
-                if !Unicode.isNumber(c) and c != `.`
+                if !Unicode.isNumber(c) and c != '.'
                 {
                     currentState = State.Default
                     seekNext()
@@ -553,14 +553,14 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.String:
-                if c == `\\`
+                if c == '\\'
                 {
                     seekNext()
                     seekNext()
                     continue
                 }
 
-                if c == `"`
+                if c == '"'
                 {
                     seekNext()
                     currentState = State.Default
@@ -568,7 +568,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.RawString:
-                if c == `"` and cn == `@`
+                if c == '"' and cn == '@'
                 {
                     seekNext()
                     seekNext()
@@ -577,14 +577,14 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Character:
-                if c == `\\`
+                if c == '\\'
                 {
                     seekNext()
                     seekNext()
                     continue
                 }
 
-                if c == `\``
+                if c == '\`'
                 {
                     seekNext()
                     currentState = State.Default
@@ -592,7 +592,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Comment:
-                if c == `*` and cn == `/`
+                if c == '*' and cn == '/'
                 {
                     seekNext()
                     seekNext()
@@ -603,7 +603,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == `/` and cn == `*`
+                if c == '/' and cn == '*'
                 {
                     currentCptCmt += 1
                     seekNext()
@@ -612,7 +612,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Attribute:
-                if c == `]`
+                if c == ']'
                 {
                     seekNext()
                     currentState = State.Default
@@ -620,7 +620,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Default:
-                if c == `#` and cn == `[`
+                if c == '#' and cn == '['
                 {
                     currentState = State.Attribute
                     seekNext()
@@ -628,7 +628,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == `@` and cn == `"`
+                if c == '@' and cn == '"'
                 {
                     currentState = State.RawString
                     seekNext()
@@ -636,11 +636,11 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if Unicode.isLetter(c) or c == `_` or c == `@` or c == `#`
+                if Unicode.isLetter(c) or c == '_' or c == '@' or c == '#'
                 {
                     var word:    String
                     let saveSeek = seek
-                    while Unicode.isLetterOrDigit(c) or c == `_` or c == `@` or c == `#`
+                    while Unicode.isLetterOrDigit(c) or c == '_' or c == '@' or c == '#'
                     {
                         word += c
                         seek += 1
@@ -661,7 +661,7 @@ impl IRichEditLexer for RichEditLexerSwag
                             currentState = State.Keyword
                         elif Latin1.isUpper(word[0]):
                             currentState = State.UserType
-                        elif c == `(` and (Latin1.isLetter(word[0]) or word[0] == `_`):
+                        elif c == '(' and (Latin1.isLetter(word[0]) or word[0] == '_'):
                             currentState = State.FunctionCall
                         else:
                             currentState = State.Default
@@ -673,21 +673,21 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == `"`
+                if c == '"'
                 {
                     currentState = State.String
                     seekNext()
                     continue
                 }
 
-                if c == `\``
+                if c == '\`'
                 {
                     currentState = State.Character
                     seekNext()
                     continue
                 }
 
-                if Unicode.isNumber(c) and Unicode.toLower(cn) == `b`
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == 'b'
                 {
                     currentState = State.NumericBin
                     seekNext()
@@ -695,7 +695,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if Unicode.isNumber(c) and Unicode.toLower(cn) == `x`
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == 'x'
                 {
                     currentState = State.NumericHex
                     seekNext()
@@ -710,7 +710,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == `/` and cn == `*`
+                if c == '/' and cn == '*'
                 {
                     currentCptCmt += 1
                     currentState = State.Comment
@@ -719,7 +719,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == `/` and cn == c
+                if c == '/' and cn == c
                 {
                     currentState = State.LineComment
                     seekNext()

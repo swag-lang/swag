@@ -41,7 +41,7 @@ func calc(a, b: u8)->u64
     {
         var count = 0
         foreach l in scan:
-            count += cast(s32) (l[c] == `1`)
+            count += cast(s32) (l[c] == '1')
 
         var next: Array'String
         foreach l in scan
@@ -65,8 +65,8 @@ func day3B()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     lines = assume File.readAllLines(dataPath)
 
-    let o2  = calc(`1`, `0`)
-    let co2 = calc(`0`, `1`)
+    let o2  = calc('1', '0')
+    let co2 = calc('0', '1')
 
     //Console.print("total: ", o2*co2)
     @assert(o2 * co2 == 7041258)

@@ -90,15 +90,15 @@ func __failedAssume(loc: SourceCodeLocation)
     @memcpy(&str[len], @dataof(U), @countof(U))
     len += @countof(U)
     var maxLen = @min(@countof(type.fullname), 128)
-    str[len] = `[`
+    str[len] = '['
     len += 1
-    str[len] = `[`
+    str[len] = '['
     len += 1
     @memcpy(&str[len], @dataof(type.fullname), maxLen)
     len += maxLen
-    str[len] = `]`
+    str[len] = ']'
     len += 1
-    str[len] = `]`
+    str[len] = ']'
     len += 1
 
     if type.kind == TypeInfoKind.Struct
@@ -112,11 +112,11 @@ func __failedAssume(loc: SourceCodeLocation)
             maxLen = @min(@countof(val.message), 128)
             if maxLen
             {
-                str[len] = ` `
+                str[len] = ' '
                 len += 1
-                str[len] = `$`
+                str[len] = '$'
                 len += 1
-                str[len] = ` `
+                str[len] = ' '
                 len += 1                                
                 @memcpy(&str[len], @dataof(val.message), maxLen)
                 len += maxLen
@@ -242,8 +242,8 @@ func @panic(message: string, loc: SourceCodeLocation)
         if len > 512:
             len = 512
         @memcpy(&str[0], @dataof(message), len)
-        str[len]     = `\n`
-        str[len + 1] = `\n`
+        str[len]     = '\n'
+        str[len + 1] = '\n'
         len += 2
     }
 

@@ -66,10 +66,10 @@ var notletterTest: [] rune = [
         @assert(Unicode.isLetter(c))
     foreach c in notletterTest:
         @assert(!Unicode.isLetter(c))
-    @assert(Unicode.isLetter(`是`))
-    @assert(!Unicode.isLetter(`‼`))
+    @assert(Unicode.isLetter('是'))
+    @assert(!Unicode.isLetter('‼'))
 
-    @assert(Unicode.isNumber(`௧`))
-    @assert(Unicode.isNumber(`൧`))
-    @assert(Unicode.isNumber(`𑄷`))
+    @assert(Unicode.isNumber('௧'))
+    @assert(Unicode.isNumber('൧'))
+    @assert(Unicode.isNumber('𑄷'))
 }

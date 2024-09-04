@@ -44,9 +44,9 @@ func day3B()
             {
                 var s: s32
                 if Latin1.isLower(l[i]):
-                    s = l[i] - `a`
+                    s = l[i] - 'a'
                 else:
-                    s = 26 + (l[i] - `A`)
+                    s = 26 + (l[i] - 'A')
                 stack[ii].add(s + 1)
             }
 

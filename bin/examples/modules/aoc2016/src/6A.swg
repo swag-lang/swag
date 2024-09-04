@@ -49,9 +49,9 @@ func day6A0() assume
     {
         foreach c, i in l
         {
-            var v = freq[i, c - `a`]
+            var v = freq[i, c - 'a']
             v += 1
-            freq[i, c - `a`] = v
+            freq[i, c - 'a'] = v
 
             if v > best[i].freq
             {
@@ -83,7 +83,7 @@ func day6A1() assume
     {
         foreach c, i in l
         {
-            var v = #ref &freq[i, c - `a`]
+            var v = #ref &freq[i, c - 'a']
             v += 1
 
             if v > best[i]

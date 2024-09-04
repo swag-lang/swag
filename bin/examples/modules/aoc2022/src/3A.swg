@@ -48,7 +48,7 @@ func day3A()
             let f = Slice.findLinear(cast(const [..] u8) l[div..], c)
             if f != Swag.U64.Max
             {
-                total += 1 + (Latin1.isLower(c) ? c - `a` : 26 + (c - `A`))
+                total += 1 + (Latin1.isLower(c) ? c - 'a' : 26 + (c - 'A'))
                 break
             }
         }

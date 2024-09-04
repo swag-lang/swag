@@ -49,24 +49,24 @@ func day3A()
         for var x = 0; x < l.length; x += 1
         {
             var c = l[x]
-            if c >= `0` and c <= `9`
+            if c >= '0' and c <= '9'
             {
                 let sx  = x
                 var num = 0
                 while x < l.length
                 {
                     c = l[x]
-                    if c < `0` or c > `9`:
+                    if c < '0' or c > '9':
                         break
                     num *= 10
-                    num += c - `0`
+                    num += c - '0'
                     x += 1
                 }
 
                 nums.add({num, sx, x - 1, cast(s32) y})
             }
 
-            if c != `.` and x < l.length
+            if c != '.' and x < l.length
             {
                 symbols.add({x, cast(s32) y})
             }

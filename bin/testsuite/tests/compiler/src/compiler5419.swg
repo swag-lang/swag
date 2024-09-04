@@ -22,5 +22,5 @@ func toto(x: const [..] u8)
     @assert(@countof(a[0]) == 4)
 
     let d = cast(const *u8) @dataof(a[0])
-    @assert(dref d == `t`)
+    @assert(dref d == 't')
 }

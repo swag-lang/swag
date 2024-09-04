@@ -422,11 +422,11 @@ impl Decoder
     mtd getFrame(decodePixels: bool)->s32 throw
     {
         var sep = readU8()
-        while sep != `,`
+        while sep != ','
         {
-            if sep == `;`:
+            if sep == ';':
                 return 0
-            if sep != `!`:
+            if sep != '!':
                 throw InvalidFormatError{"invalid format"}
             readExt()
             sep = readU8()

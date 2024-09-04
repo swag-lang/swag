@@ -12,7 +12,7 @@ struct ConvertFormat
 struct ConvertFormatFloat
 {
     precision:     s8 = -1         // -1 is for 'most possible precision'
-    fmt:           u8 = `f`'u8
+    fmt:           u8 = 'f''u8
     forceSign:     bool
 }
 
@@ -42,7 +42,7 @@ impl ConvertFormatFloat
         var cpt = 0'u32
 
         // Force sign for positive numbers
-        if buffer[cpt] == `+`'u8
+        if buffer[cpt] == '+''u8
         {
             forceSign = true
             cpt += 1
@@ -53,7 +53,7 @@ impl ConvertFormatFloat
         {
             switch buffer[cpt]
             {
-            case `e`'u8, `E`'u8, `f`'u8, `g`'u8, `G`'u8:
+            case 'e''u8, 'E''u8, 'f''u8, 'g''u8, 'G''u8:
                 fmt = buffer[cpt]
                 cpt += 1
             }
@@ -85,18 +85,18 @@ struct ConvertFormatInt
 impl ConvertFormatInt
 {
     // Set some format options with a given user string.
-    // The format is `[+][fmt][padding][width]`
+    // The format is `[+][fmt][padding][width]'
     //
-    // + `+`
+    // + `+'
     //     To force the positive sign if the number is positive
-    // + `fmt`
+    // + 'fmt'
     //     This is the output format:
     //     | B | Binary
     //     | D | Decimal
     //     | X | Hexadecimal
-    // + `padding`
+    // + 'padding'
     //     The padding character, in ascii. It's mandatory before the next field
-    // + `width`
+    // + 'width'
     //     The width of the output, in number of characters
     mtd setFormat(strFormat: string)
     {
@@ -108,7 +108,7 @@ impl ConvertFormatInt
         var cpt = 0'u32
 
         // Force sign for positive numbers
-        if buffer[cpt] == `+`'u8
+        if buffer[cpt] == '+''u8
         {
             forceSign = true
             cpt += 1
@@ -117,15 +117,15 @@ impl ConvertFormatInt
         // Base
         switch buffer[cpt]
         {
-        case `B`'u8:
+        case 'B''u8:
             base = 2
             cpt += 1
 
-        case `D`'u8:
+        case 'D''u8:
             base = 10
             cpt += 1
 
-        case `X`'u8:
+        case 'X''u8:
             base = 16
             cpt += 1
         }
@@ -187,7 +187,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
         var fmt: ConvertFormatInt
         fmt.base    = 16
         fmt.width   = 16
-        fmt.padding = `0`'u8
+        fmt.padding = '0''u8
         fmt.setFormat(strFormat)
         convertInt(buf, dref cast(const *u64) valueData, fmt)
         return

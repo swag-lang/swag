@@ -44,10 +44,10 @@ func day4A()
     var total = 0'u64
     foreach l in lines
     {
-        let first = Tokenize.split(l, `:`'u8)
-        let game  = Tokenize.split(first[1], `|`'u8)
-        let val0  = Tokenize.split(game[0], ` `'u8)
-        let val1  = Tokenize.split(game[1], ` `'u8)
+        let first = Tokenize.split(l, ':''u8)
+        let game  = Tokenize.split(first[1], '|''u8)
+        let val0  = Tokenize.split(game[0], ' ''u8)
+        let val1  = Tokenize.split(game[1], ' ''u8)
 
         var v0, v1: Array's32
         foreach v in val0:

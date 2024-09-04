@@ -31,7 +31,7 @@ func day3B()
             if y >= lines.count:
                 break
             x = cast(u32) ((x + s.item0) % lines[0].length)
-            count += lines[y][x] == `#` ? 1 : 0
+            count += lines[y][x] == '#' ? 1 : 0
         }
 
         total *= count

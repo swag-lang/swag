@@ -57,7 +57,7 @@ func day6B0()
             num += 1
 
         foreach<Bytes> c in l:
-            count[c - `a`] += 1
+            count[c - 'a'] += 1
 
         if #index == lines.count - 1 or lines[#index + 1].length == 0
         {
@@ -89,7 +89,7 @@ func day6B1()
         {
             lineVal = 0
             foreach<Bytes> c in l:
-                lineVal |= 1 << cast(u32) (c - `a`)
+                lineVal |= 1 << cast(u32) (c - 'a')
             interVal &= lineVal
         }
 

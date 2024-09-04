@@ -104,16 +104,16 @@ impl Decimal
     {
         if nd1 < 0 or nd1 >= nd:
             return false
-        if d[nd1] == `5` and nd1 + 1 == nd // exactly halfway - round to even
+        if d[nd1] == '5' and nd1 + 1 == nd // exactly halfway - round to even
         {
             // if we truncated, a little higher than what's recorded - always round up
             if trunc:
                 return true
-            return nd1 > 0 and (d[nd1 - 1] - `0`) % 2 != 0
+            return nd1 > 0 and (d[nd1 - 1] - '0') % 2 != 0
         }
 
         // not halfway - digit tells all
-        return d[nd1] >= `5`
+        return d[nd1] >= '5'
     }
 
     // Round a to nd digits (or fewer).
@@ -148,7 +148,7 @@ impl Decimal
         for var i = nd1 - 1; i >= 0; i -= 1
         {
             let c = d[i]
-            if c < `9` // can stop after this digit
+            if c < '9' // can stop after this digit
             {
                 d[i] += 1
                 nd = i + 1
@@ -158,7 +158,7 @@ impl Decimal
 
         // Number is all 9s.
         // Change to single 1 with adjusted decimal point.
-        d[0] = `1`
+        d[0] = '1'
         nd   = 1
         dp += 1
     }
@@ -174,7 +174,7 @@ impl Decimal
         {
             let v1 = v / 10
             v -= 10 * v1
-            buf[n] = cast(u8) (v + `0`)
+            buf[n] = cast(u8) (v + '0')
             n += 1
             v = v1
         }
@@ -195,7 +195,7 @@ impl Decimal
 
     mtd trim()
     {
-        while nd > 0 and d[nd - 1] == `0`:
+        while nd > 0 and d[nd - 1] == '0':
             nd -= 1
         if nd == 0:
             dp = 0
@@ -229,7 +229,7 @@ impl Decimal
             }
 
             let c = cast(u64) d[r]
-            n = (n * 10) + c - `0`
+            n = (n * 10) + c - '0'
             r += 1
         }
 
@@ -243,9 +243,9 @@ impl Decimal
             let c   = cast(u64) d[r]
             let dig = n >> k
             n &= mask
-            d[w] = cast(u8) (dig + `0`)
+            d[w] = cast(u8) (dig + '0')
             w += 1
-            n = (n * 10) + c - `0`
+            n = (n * 10) + c - '0'
             r += 1
         }
 
@@ -256,7 +256,7 @@ impl Decimal
             n &= mask
             if w < @countof(d)
             {
-                d[w] = cast(u8) (dig + `0`)
+                d[w] = cast(u8) (dig + '0')
                 w += 1
             }
             elif dig > 0
@@ -298,12 +298,12 @@ impl Decimal
         r -= 1
         while r >= 0
         {
-            n += (cast(u64) d[r] - `0`) << k
+            n += (cast(u64) d[r] - '0') << k
             let quo = n / 10
             let rem = n - (10 * quo)
             w -= 1
             if w < @countof(d):
-                d[w] = cast(u8) (rem + `0`)
+                d[w] = cast(u8) (rem + '0')
             elif rem != 0:
                 trunc = true
             n = quo
@@ -317,7 +317,7 @@ impl Decimal
             let rem = n - (10 * quo)
             w -= 1
             if w < @countof(d):
-                d[w] = cast(u8) (rem + `0`)
+                d[w] = cast(u8) (rem + '0')
             elif rem != 0:
                 trunc = true
             n = quo
@@ -402,10 +402,10 @@ impl Decimal
                 sawdot = true
                 dp     = nd
             }
-            elif `0` <= c and c <= `9`
+            elif '0' <= c and c <= '9'
             {
                 sawDigits = true
-                if c == `0` and nd == 0:
+                if c == '0' and nd == 0:
                     dp -= 1
                 else
                 {
@@ -417,13 +417,13 @@ impl Decimal
                         if ndMant < maxMantDigits
                         {
                             mantissa *= 10
-                            mantissa += cast(u64) (c - `0`)
+                            mantissa += cast(u64) (c - '0')
                             ndMant += 1
                         }
-                        elif c != `0`:
+                        elif c != '0':
                             trunc = true
                     }
-                    elif c != `0`:
+                    elif c != '0':
                         bigtrunc = true
                 }
             }
@@ -440,7 +440,7 @@ impl Decimal
 
         // Exponent
         c = dref buffer
-        if cpt < countof and (c | 32) == `e`
+        if cpt < countof and (c | 32) == 'e'
         {
             cpt, buffer += 1
             if cpt >= countof:
@@ -464,17 +464,17 @@ impl Decimal
                     throw ParseIncompleteError{}
             }
 
-            if cpt >= countof or c < `0` or c > `9`:
+            if cpt >= countof or c < '0' or c > '9':
                 throw SyntaxError{}
 
             var e = 0
             while cpt < countof
             {
                 c = dref buffer
-                if c < `0` or c > `9`:
+                if c < '0' or c > '9':
                     break
                 if e < 10000:
-                    e = e * 10 + (c - `0`)
+                    e = e * 10 + (c - '0')
                 buffer, cpt += 1
             }
 
@@ -533,7 +533,7 @@ impl Decimal
                 exp += n
             }
 
-            while dp < 0 or dp == 0 and d[0] < `5`
+            while dp < 0 or dp == 0 and d[0] < '5'
             {
                 var n: s64
                 if -dp >= @countof(PowTab):
@@ -611,7 +611,7 @@ impl Decimal
         var n = 0'u64
         while i < dp and i < nd
         {
-            n = (n * 10) + cast(u64) (d[i] - `0`)
+            n = (n * 10) + cast(u64) (d[i] - '0')
             i += 1
         }
 

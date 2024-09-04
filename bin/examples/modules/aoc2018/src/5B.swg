@@ -38,7 +38,7 @@ func day5B0() assume
 
         while idx < line.length - 1
         {
-            while Latin1.toLower(line[idx]) == x + `a`:
+            while Latin1.toLower(line[idx]) == x + 'a':
                 line.remove(idx, 1)
             idx += 1
         }

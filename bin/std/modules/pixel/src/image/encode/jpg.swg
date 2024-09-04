@@ -94,7 +94,7 @@ private
         valuesCbAC:      [162] u8
     }
 
-    const APP0info = APP0InfoType{0xFFE0, 16, [`J`, `F`, `I`, `F`, 0], 1, 1, 0, 1, 1, 0, 0}
+    const APP0info = APP0InfoType{0xFFE0, 16, ['J', 'F', 'I', 'F', 0], 1, 1, 0, 1, 1, 0, 0}
     const SOF0info = SOF0InfoType{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
     const SOSinfo  = SOSInfoType{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
 
@@ -448,10 +448,10 @@ impl Encoder
     {
         writeWord(APP0info.marker)
         writeWord(APP0info.length)
-        writeByte(`J`)
-        writeByte(`F`)
-        writeByte(`I`)
-        writeByte(`F`)
+        writeByte('J')
+        writeByte('F')
+        writeByte('I')
+        writeByte('F')
         writeByte(0)
         writeByte(APP0info.versionHi)
         writeByte(APP0info.versionLo)

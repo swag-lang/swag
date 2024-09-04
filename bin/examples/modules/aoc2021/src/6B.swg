@@ -13,7 +13,7 @@ func day6B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "6.txt")
     let lines    = assume File.readAllLines(dataPath)
-    let str      = Tokenize.split(lines[0], `,`'u8)
+    let str      = Tokenize.split(lines[0], ',''u8)
 
     var state: [9] u64
     foreach v in str:

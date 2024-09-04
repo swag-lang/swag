@@ -13,31 +13,31 @@ private
 
     enum ChunkType: u32
     {
-        IHDR = @byteswap(`I`'u32 << 24 | `H`'u32 << 16 | `D`'u32 << 8 | `R`'u32)
-        PLTE = @byteswap(`P`'u32 << 24 | `L`'u32 << 16 | `T`'u32 << 8 | `E`'u32)
-        BKGD = @byteswap(`b`'u32 << 24 | `K`'u32 << 16 | `G`'u32 << 8 | `D`'u32)
-        TRNS = @byteswap(`t`'u32 << 24 | `R`'u32 << 16 | `N`'u32 << 8 | `S`'u32)
-        IDAT = @byteswap(`I`'u32 << 24 | `D`'u32 << 16 | `A`'u32 << 8 | `T`'u32)
+        IHDR = @byteswap('I''u32 << 24 | 'H''u32 << 16 | 'D''u32 << 8 | 'R''u32)
+        PLTE = @byteswap('P''u32 << 24 | 'L''u32 << 16 | 'T''u32 << 8 | 'E''u32)
+        BKGD = @byteswap('b''u32 << 24 | 'K''u32 << 16 | 'G''u32 << 8 | 'D''u32)
+        TRNS = @byteswap('t''u32 << 24 | 'R''u32 << 16 | 'N''u32 << 8 | 'S''u32)
+        IDAT = @byteswap('I''u32 << 24 | 'D''u32 << 16 | 'A''u32 << 8 | 'T''u32)
 
-        ITXt = @byteswap(`i`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
-        TEXt = @byteswap(`t`'u32 << 24 | `E`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
-        ZTXt = @byteswap(`z`'u32 << 24 | `T`'u32 << 16 | `X`'u32 << 8 | `t`'u32)
+        ITXt = @byteswap('i''u32 << 24 | 'T''u32 << 16 | 'X''u32 << 8 | 't''u32)
+        TEXt = @byteswap('t''u32 << 24 | 'E''u32 << 16 | 'X''u32 << 8 | 't''u32)
+        ZTXt = @byteswap('z''u32 << 24 | 'T''u32 << 16 | 'X''u32 << 8 | 't''u32)
 
-        ICCP = @byteswap(`i`'u32 << 24 | `C`'u32 << 16 | `C`'u32 << 8 | `P`'u32)
-        PHYs = @byteswap(`p`'u32 << 24 | `H`'u32 << 16 | `Y`'u32 << 8 | `s`'u32)
-        GAMA = @byteswap(`g`'u32 << 24 | `A`'u32 << 16 | `M`'u32 << 8 | `A`'u32)
-        TIME = @byteswap(`t`'u32 << 24 | `I`'u32 << 16 | `M`'u32 << 8 | `E`'u32)
+        ICCP = @byteswap('i''u32 << 24 | 'C''u32 << 16 | 'C''u32 << 8 | 'P''u32)
+        PHYs = @byteswap('p''u32 << 24 | 'H''u32 << 16 | 'Y''u32 << 8 | 's''u32)
+        GAMA = @byteswap('g''u32 << 24 | 'A''u32 << 16 | 'M''u32 << 8 | 'A''u32)
+        TIME = @byteswap('t''u32 << 24 | 'I''u32 << 16 | 'M''u32 << 8 | 'E''u32)
 
-        SPLT = @byteswap(`s`'u32 << 24 | `P`'u32 << 16 | `L`'u32 << 8 | `T`'u32)
-        SRGB = @byteswap(`s`'u32 << 24 | `R`'u32 << 16 | `G`'u32 << 8 | `B`'u32)
-        HIST = @byteswap(`h`'u32 << 24 | `I`'u32 << 16 | `S`'u32 << 8 | `T`'u32)
-        CHRM = @byteswap(`c`'u32 << 24 | `H`'u32 << 16 | `R`'u32 << 8 | `M`'u32)
-        SBIT = @byteswap(`s`'u32 << 24 | `B`'u32 << 16 | `I`'u32 << 8 | `T`'u32)
+        SPLT = @byteswap('s''u32 << 24 | 'P''u32 << 16 | 'L''u32 << 8 | 'T''u32)
+        SRGB = @byteswap('s''u32 << 24 | 'R''u32 << 16 | 'G''u32 << 8 | 'B''u32)
+        HIST = @byteswap('h''u32 << 24 | 'I''u32 << 16 | 'S''u32 << 8 | 'T''u32)
+        CHRM = @byteswap('c''u32 << 24 | 'H''u32 << 16 | 'R''u32 << 8 | 'M''u32)
+        SBIT = @byteswap('s''u32 << 24 | 'B''u32 << 16 | 'I''u32 << 8 | 'T''u32)
 
-        EXIf = @byteswap(`e`'u32 << 24 | `X`'u32 << 16 | `I`'u32 << 8 | `f`'u32)
-        IEND = @byteswap(`I`'u32 << 24 | `E`'u32 << 16 | `N`'u32 << 8 | `D`'u32)
-        IDOT = @byteswap(`i`'u32 << 24 | `D`'u32 << 16 | `O`'u32 << 8 | `T`'u32)
-        CbGI = @byteswap(`C`'u32 << 24 | `b`'u32 << 16 | `H`'u32 << 8 | `I`'u32)
+        EXIf = @byteswap('e''u32 << 24 | 'X''u32 << 16 | 'I''u32 << 8 | 'f''u32)
+        IEND = @byteswap('I''u32 << 24 | 'E''u32 << 16 | 'N''u32 << 8 | 'D''u32)
+        IDOT = @byteswap('i''u32 << 24 | 'D''u32 << 16 | 'O''u32 << 8 | 'T''u32)
+        CbGI = @byteswap('C''u32 << 24 | 'b''u32 << 16 | 'H''u32 << 8 | 'I''u32)
     }
 
     const Adam7OrigX:    [] s64 = [0, 4, 0, 2, 0, 1, 0]

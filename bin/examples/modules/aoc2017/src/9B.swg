@@ -26,15 +26,15 @@ func day9B() assume
     {
         switch
         {
-        case line[i] == `!` and garbage:
+        case line[i] == '!' and garbage:
             i += 1
-        case line[i] == `>` and garbage:
+        case line[i] == '>' and garbage:
             garbage -= 1
-        case line[i] == `<` and !garbage:
+        case line[i] == '<' and !garbage:
             garbage += 1
-        case line[i] == `{` and !garbage:
+        case line[i] == '{' and !garbage:
             group += 1; score += group
-        case line[i] == `}` and !garbage:
+        case line[i] == '}' and !garbage:
             group -= 1
         case garbage:
             count += 1

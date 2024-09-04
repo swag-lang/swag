@@ -138,10 +138,10 @@ namespace Swag
 
     // Enable/Disable one or more safety checks.
     // For example:
-    // ```swag
+    // '`'swag
     // #[Swag.Safety("", false)]                    // Disable all
     // #[Swag.Safety("boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
-    // ```
+    // '`'
     // Safety checks are:
     // | 'boundcheck'   | Check out of bound access
     // | 'overflow'     | Check type conversion lost of bits or precision
@@ -178,11 +178,11 @@ namespace Swag
 
     // Change the behavior of a given warning or list of warnings.
     // For example:
-    // ```swag
+    // '`'swag
     // #[Swag.Warning("Wrn0006", Swag.WarningLevel.Error)
     // #[Swag.Warning("Wrn0002|Wrn0006", Swag.WarningLevel.Disable)
     // #global #[Swag.Warning("Wrn0005", Swag.WarningLevel.Enable)]
-    // ```
+    // '`'
     // You can also change the warning behaviors for the whole module in your [[BuildCfg]]
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
     attr Warning(what: string, level: WarningLevel)

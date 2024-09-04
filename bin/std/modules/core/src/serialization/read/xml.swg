@@ -32,14 +32,14 @@ public impl Xml
         zapBlanks()
 
         var c = stream.readU8()
-        if c != `<`:
+        if c != '<':
             throw getError("malformed tag, missing opening [[<]]")
 
         let start = stream.getSeek()
         c = stream.readU8()
-        while c and c != `>`:
+        while c and c != '>':
             c = stream.readU8()
-        if c != `>`:
+        if c != '>':
             throw getError("malformed tag, missing closing [[>]]")
 
         let end = stream.getSeek() - 1
@@ -77,7 +77,7 @@ public impl Xml
         while c and Latin1.isSpace(c)
         {
             stream.moveSeek()
-            if c == `\n`
+            if c == '\n'
             {
                 line += 1
                 col = 1
@@ -99,7 +99,7 @@ public impl Xml
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
         let c = stream.peekU8()
-        return c != `<`
+        return c != '<'
     }
 
     mtd beginSection(_kind: SectionKind) throw
@@ -222,7 +222,7 @@ public impl Xml
         {
             var result: retval
             var c       = stream.peekU8()
-            while c and c != `<`
+            while c and c != '<'
             {
                 c = stream.readU8()
                 result += c

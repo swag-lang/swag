@@ -94,7 +94,7 @@ public
 
     func isWord(c: rune)->bool
     {
-        return isLetter(c) or isDigit(c) or c == `_`
+        return isLetter(c) or isDigit(c) or c == '_'
     }
 
     func toLower(c: rune)->rune

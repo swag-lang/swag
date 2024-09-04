@@ -10,7 +10,7 @@ using Core
     var h1 = h
 
     foreach k, v in h:
-        @assert(v[0] == `s`'u8)
+        @assert(v[0] == 's''u8)
     foreach k, v in h1:
-        @assert(v[0] == `s`'u8)
+        @assert(v[0] == 's''u8)
 }

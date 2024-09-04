@@ -207,9 +207,9 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
     {
         if @countof(fi.badge) >= 1:
-            paintBadge(dc, rect.x + BADGE_OFFSET, rect.y + BADGE_OFFSET, fi.badge[0] == `h`)
+            paintBadge(dc, rect.x + BADGE_OFFSET, rect.y + BADGE_OFFSET, fi.badge[0] == 'h')
         if @countof(fi.badge) >= 2:
-            paintBadge(dc, rect.x + BADGE_OFFSET + BADGE_SIZE + BADGE_BORDER * 2, rect.y + BADGE_OFFSET, fi.badge[1] == `h`)
+            paintBadge(dc, rect.x + BADGE_OFFSET + BADGE_SIZE + BADGE_BORDER * 2, rect.y + BADGE_OFFSET, fi.badge[1] == 'h')
     }
 
     // Text
@@ -354,9 +354,9 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     var lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     foreach l in lines
     {
-        var tokens  = Tokenize.split(l, `;`'rune, removeEmpty: false)
+        var tokens  = Tokenize.split(l, ';''rune, removeEmpty: false)
         var fi:     ImageInfo
-        var folders = Tokenize.split(tokens[0], `/`'rune)
+        var folders = Tokenize.split(tokens[0], '/''rune)
 
         fi.title = folders.back()
         fi.image = Path.combine(pathImg, tokens[1])

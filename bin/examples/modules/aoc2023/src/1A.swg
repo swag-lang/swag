@@ -36,7 +36,7 @@ func day1A()
     {
         let first = Utf8.indexOfAny(l, "0123456789")
         let last  = Utf8.lastIndexOfAny(l, "0123456789")
-        total += ((l[first] - `0`) * 10) + (l[last] - `0`)
+        total += ((l[first] - '0') * 10) + (l[last] - '0')
     }
 
     //Console.print("total: ", total)

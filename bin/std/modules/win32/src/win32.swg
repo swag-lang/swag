@@ -24,7 +24,7 @@ func throwWinError(errorMessageID: u32) throw
             // Trim right, remove trailing dots, remove trailing non printable characters
             for var idx = len - 1; idx >= 0; idx -= 1
             {
-                if errorMsg[idx] > 32 and errorMsg[idx] != `.`:
+                if errorMsg[idx] > 32 and errorMsg[idx] != '.':
                     break
                 len -= 1
             }

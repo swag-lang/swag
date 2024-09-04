@@ -334,7 +334,6 @@ void initErrors()
     SWAG_ERROR(Err0187, "invalid capture                                   $ cannot capture [[%s]] because it is not a plain old data struct                                                                          $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]], or [[opPostMove]]");
     SWAG_ERROR(Err0188, "invalid character literal                         $ cannot convert [['%s']] to a character literal                                                                                           $ this looks like a string and not a character");
     SWAG_ERROR(Err0189, "invalid character literal                         $ cannot convert a character literal to the type [[%s]]                                                                                    $ ");
-    SWAG_ERROR(Err0190, "invalid character syntax                          $ cannot use quotes for characters; use back-ticks instead                                                                                 $ consider using the syntax [[`%s`]]");
     SWAG_ERROR(Err0191, "invalid compound name                             $ expected a single identifier %s                                                                                                          $ consider using a single name without the symbol [['.']]");
     SWAG_ERROR(Err0192, "invalid const move reference                      $ cannot associate [[const]] with the move reference type [[&&]]                                                                           $ consider removing [[const]] or using a simple reference [[&]]");
     SWAG_ERROR(Err0193, "invalid constant                                  $ cannot create the constant because of the generic type [[%s]]                                                                            $ ");
@@ -797,7 +796,7 @@ void initErrors()
     SWAG_ERROR(Err0650, "type mismatch return                              $ expected an [[#ast]] block to return the type [[string]], found [[%s]] instead                                                           $ ");
     SWAG_ERROR(Err0651, "type mismatch return callback                     $ cannot create a callback of a function returning the type [[%s]]                                                                         $ this is not supported");
     SWAG_ERROR(Err0652, "unclosed arguments list                           $ expected [[)]] to close the list of attribute arguments                                                                                  $ ");
-    SWAG_ERROR(Err0653, "unclosed character literal                        $ expected a closing back-tick [['`']] before the end of the line                                                                          $ ");
+    SWAG_ERROR(Err0653, "unclosed character literal                        $ expected a closing quote before the end of the line                                                                                      $ ");
     SWAG_ERROR(Err0654, "unclosed comment                                  $ cannot find the closing [['*/']] for this multi-line comment                                                                             $ ");
     SWAG_ERROR(Err0655, "unclosed string literal                           $ expected a closing quotation mark [['\"']] before the end of the line                                                                    $ consider using triple quotes [[\"\"\"string\"\"\"]] if you want a multi-line string");
     SWAG_ERROR(Err0656, "unexpected [[#import]] location                   $ expected a [[#import]] location path, found $$TKN$$ instead                                                                              $ ");
@@ -922,6 +921,7 @@ void initErrors()
     SWAG_ERROR(Err0775, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0776, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0777, "misplaced [[@kindof]]                             $ cannot apply [[@kindof]] to the type [[%s]]                                                                                              $ the [[@kindof]] intrinsic should be used on the type [[any]] or on an interface");
+    SWAG_ERROR(Err0190, nullptr);
     SWAG_ERROR(Err0778, nullptr);
     SWAG_ERROR(Err0779, nullptr);
     SWAG_ERROR(Err0780, nullptr);

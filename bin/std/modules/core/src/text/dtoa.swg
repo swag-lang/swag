@@ -29,11 +29,11 @@ func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, man
         // Precision for shortest representation mode.
         switch fmt
         {
-        case `e`'u8, `E`'u8:
+        case 'e''u8, 'E''u8:
             prec = digs.nd - 1
-        case `f`'u8:
+        case 'f''u8:
             prec = Math.max(digs.nd - digs.dp, 0)
-        case `g`'u8, `G`'u8:
+        case 'g''u8, 'G''u8:
             prec = digs.nd
         }
     }
@@ -42,11 +42,11 @@ func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, man
         // Round appropriately.
         switch fmt
         {
-        case `e`'u8, `E`'u8:
+        case 'e''u8, 'E''u8:
             d.round(prec + 1)
-        case `f`'u8:
+        case 'f''u8:
             d.round(d.dp + prec)
-        case `g`'u8, `G`'u8:
+        case 'g''u8, 'G''u8:
             d.round(prec == 0 ? 1 : prec)
         }
 
@@ -63,13 +63,13 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
     var prec = precision
     switch fmt
     {
-    case `e`'u8, `E`'u8:
+    case 'e''u8, 'E''u8:
         return fmtE(dst, neg, forceSign, digs, prec, fmt)
 
-    case `f`'u8:
+    case 'f''u8:
         return fmtF(dst, neg, forceSign, digs, prec)
 
-    case `g`'u8, `G`'u8:
+    case 'g''u8, 'G''u8:
         // trailing fractional zeros in 'e' form will be trimmed.
         var eprec = prec
         if eprec > digs.nd and digs.nd >= digs.dp:
@@ -84,7 +84,7 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
         {
             if prec > digs.nd:
                 prec = digs.nd
-            return fmtE(dst, neg, forceSign, digs, prec - 1, cast(u8) (fmt + `e`'u8 - `g`'u8))
+            return fmtE(dst, neg, forceSign, digs, prec - 1, cast(u8) (fmt + 'e''u8 - 'g''u8))
         }
 
         if prec > digs.dp:
@@ -102,7 +102,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
         dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
     // first digit
-    var ch = `0`'u8
+    var ch = '0''u8
     if d.nd != 0:
         ch = d.d[0]
     dst.addNative(ch)
@@ -133,12 +133,12 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
         exp = 0
     if exp < 0
     {
-        ch  = `-`'u8
+        ch  = '-''u8
         exp = -exp
     }
     else
     {
-        ch = `+`'u8
+        ch = '+''u8
     }
 
     dst.addNative(ch)
@@ -147,15 +147,15 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
     switch
     {
     case exp < 10:
-        dst.addNative(`0`'u8)
-        dst.addNative(cast(u8) (exp + `0`'u8))
+        dst.addNative('0''u8)
+        dst.addNative(cast(u8) (exp + '0''u8))
     case exp < 100:
-        dst.addNative(cast(u8) ((exp / 10) + `0`'u8))
-        dst.addNative(cast(u8) ((exp % 10) + `0`'u8))
+        dst.addNative(cast(u8) ((exp / 10) + '0''u8))
+        dst.addNative(cast(u8) ((exp % 10) + '0''u8))
     default:
-        dst.addNative(cast(u8) ((exp / 100) + `0`'u8))
-        dst.addNative(cast(u8) (((exp / 10) % 10) + `0`'u8))
-        dst.addNative(cast(u8) ((exp % 10) + `0`'u8))
+        dst.addNative(cast(u8) ((exp / 100) + '0''u8))
+        dst.addNative(cast(u8) (((exp / 10) % 10) + '0''u8))
+        dst.addNative(cast(u8) ((exp % 10) + '0''u8))
     }
 }
 
@@ -174,12 +174,12 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
         dst.addBytes(@mkslice(&d.d[0], m))
         while m < d.dp
         {
-            dst.addNative(`0`'u8)
+            dst.addNative('0''u8)
             m += 1
         }
     }
     else:
-        dst.addNative(`0`'u8)
+        dst.addNative('0''u8)
 
     // fraction
     if prec > 0
@@ -187,7 +187,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
         dst.addNative(g_CultureInfo.numberFormat.decimalSeparator)
         for var i = 0; i < prec; i += 1
         {
-            var ch = `0`'u8
+            var ch = '0''u8
             let j  = d.dp + i
             if 0 <= j and j < d.nd:
                 ch = d.d[j]
@@ -288,13 +288,13 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
         if mi >= d.nd:
             break
         let li = ui - upper.dp + lower.dp
-        var l  = `0`'u8                       // lower digit
+        var l  = '0''u8                       // lower digit
         if li >= 0 and li < lower.nd:
             l = lower.d[li]
-        var m = `0`'u8 // middle digit
+        var m = '0''u8 // middle digit
         if mi >= 0:
             m = d.d[mi]
-        var u = `0`'u8 // upper digit
+        var u = '0''u8 // upper digit
         if ui < upper.nd:
             u = upper.d[ui]
 
@@ -315,7 +315,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
             // m = 12345xxx
             // u = 12346xxx
             upperdelta = 1
-        case upperdelta == 1 and (m != `9`'u8 or u != `0`'u8):
+        case upperdelta == 1 and (m != '9''u8 or u != '0''u8):
             // Example:
             // m = 1234598x
             // u = 1234600x
@@ -406,26 +406,26 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
             // Precision for shortest representation mode.
             switch fmt
             {
-            case `e`'u8, `E`'u8:
+            case 'e''u8, 'E''u8:
                 prec = Math.max(digs.nd - 1, 0)
-            case `f`'u8:
+            case 'f''u8:
                 prec = Math.max(digs.nd - digs.dp, 0)
-            case `g`'u8, `G`'u8:
+            case 'g''u8, 'G''u8:
                 prec = digs.nd
             }
 
             return formatDigits(buf, shortest, neg, forceSign, digs, prec, fmt)
         }
     }
-    elif fmt != `f`'u8
+    elif fmt != 'f''u8
     {
         // Fixed number of digits.
         var digits = prec
         switch fmt
         {
-        case `e`'u8, `E`'u8:
+        case 'e''u8, 'E''u8:
             digits += 1
-        case `g`'u8, `G`'u8:
+        case 'g''u8, 'G''u8:
             if prec == 0:
                 prec = 1
             digits = prec

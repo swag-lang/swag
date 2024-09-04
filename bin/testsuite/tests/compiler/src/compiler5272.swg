@@ -6,6 +6,6 @@ func(v: string) toto(x: u16) {}
 
 #test
 {
-    toto'"a"(` `'u8)
+    toto'"a"(' ''u8)
     toto'"a"(0)
 }

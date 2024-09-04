@@ -139,16 +139,16 @@ func __convertArgcArgv(args: const ^u8)
     __argc = 0
     while dref cmdLine
     {
-        while dref cmdLine == ` `:
+        while dref cmdLine == ' ':
             cmdLine += 1
         if dref cmdLine == 0:
             break
 
-        if dref cmdLine == `"`
+        if dref cmdLine == '"'
         {
             cmdLine += 1
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != `"`:
+            while dref cmdLine and dref cmdLine != '"':
                 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
             if dref cmdLine:
@@ -157,7 +157,7 @@ func __convertArgcArgv(args: const ^u8)
         else
         {
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != ` `:
+            while dref cmdLine and dref cmdLine != ' ':
                 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
@@ -165,7 +165,7 @@ func __convertArgcArgv(args: const ^u8)
         __argc += 1
         if __argc == __MAX_ARGUMENTS:
             return
-        while dref cmdLine and dref cmdLine == ` `:
+        while dref cmdLine and dref cmdLine == ' ':
             cmdLine += 1
     }
 }

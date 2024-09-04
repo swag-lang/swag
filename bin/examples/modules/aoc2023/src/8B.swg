@@ -57,7 +57,7 @@ func day8B()
         {
             let name = l[0..2]
             nameToNode.add(name, i - 2)
-            if name[2] == `A`:
+            if name[2] == 'A':
                 startNode.add(i - 2)
         }
     }
@@ -91,12 +91,12 @@ func day8B()
             instIndex = (instIndex + 1) % @countof(instructions)
 
             let c = curNode[i]
-            if inst == `L`:
+            if inst == 'L':
                 curNode[i] = nodes[c].left
             else:
                 curNode[i] = nodes[c].right
             onEnd[i] += 1
-            if nodes[curNode[i]].name[2] == `Z`:
+            if nodes[curNode[i]].name[2] == 'Z':
                 break
         }
     }

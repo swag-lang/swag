@@ -59,23 +59,23 @@ func day7B()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    map[`A`] = 12
-    map[`K`] = 11
-    map[`Q`] = 10
-    map[`T`] = 9
-    map[`9`] = 8
-    map[`8`] = 7
-    map[`7`] = 6
-    map[`6`] = 5
-    map[`5`] = 4
-    map[`4`] = 3
-    map[`3`] = 2
-    map[`2`] = 1
-    map[`J`] = 0
+    map['A'] = 12
+    map['K'] = 11
+    map['Q'] = 10
+    map['T'] = 9
+    map['9'] = 8
+    map['8'] = 7
+    map['7'] = 6
+    map['6'] = 5
+    map['5'] = 4
+    map['4'] = 3
+    map['3'] = 2
+    map['2'] = 1
+    map['J'] = 0
 
     foreach l in lines
     {
-        let first = Tokenize.split(l, ` `'u8)
+        let first = Tokenize.split(l, ' ''u8)
 
         var card:    Card
         var maxCount = 0

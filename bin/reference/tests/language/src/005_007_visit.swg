@@ -15,11 +15,11 @@ and efficient way to process each item in a collection, which can be an array, s
         switch a
         {
         case 0:
-            @assert(value == `A`)                          // Check if the first value is 'A'
+            @assert(value == 'A')                          // Check if the first value is 'A'
         case 1:
-            @assert(value == `B`)                          // Check if the second value is 'B'
+            @assert(value == 'B')                          // Check if the second value is 'B'
         case 2:
-            @assert(value == `C`)                          // Check if the third value is 'C'
+            @assert(value == 'C')                          // Check if the third value is 'C'
         }
     }
 }
@@ -38,11 +38,11 @@ especially in cases involving nested loops or complex data structures.
         switch a
         {
         case 0:
-            @assert(value == `A`)                          // Check if the first value is 'A'
+            @assert(value == 'A')                          // Check if the first value is 'A'
         case 1:
-            @assert(value == `B`)                          // Check if the second value is 'B'
+            @assert(value == 'B')                          // Check if the second value is 'B'
         case 2:
-            @assert(value == `C`)                          // Check if the third value is 'C'
+            @assert(value == 'C')                          // Check if the third value is 'C'
         }
     }
 }
@@ -62,11 +62,11 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
         switch a
         {
         case 0:
-            @assert(#alias0 == `A`)                        // Check if the first alias is 'A'
+            @assert(#alias0 == 'A')                        // Check if the first alias is 'A'
         case 1:
-            @assert(#alias0 == `B`)                        // Check if the second alias is 'B'
+            @assert(#alias0 == 'B')                        // Check if the second alias is 'B'
         case 2:
-            @assert(#alias0 == `C`)                        // Check if the third alias is 'C'
+            @assert(#alias0 == 'C')                        // Check if the third alias is 'C'
         }
     }
 }
@@ -87,13 +87,13 @@ when processing a collection from the last element to the first.
         switch cpt
         {
         case 0:
-            @assert(value == `C`)                          // First value should be 'C'
+            @assert(value == 'C')                          // First value should be 'C'
             @assert(#index == 2)                           // Index should be 2
         case 1:
-            @assert(value == `B`)                          // Second value should be 'B'
+            @assert(value == 'B')                          // Second value should be 'B'
             @assert(#index == 1)                           // Index should be 1
         case 2:
-            @assert(value == `A`)                          // Third value should be 'A'
+            @assert(value == 'A')                          // Third value should be 'A'
             @assert(#index == 0)                           // Index should be 0
         }
 

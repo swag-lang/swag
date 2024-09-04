@@ -29,10 +29,10 @@ func day4A()
         {
             var idx    = 0
             var count: [26] s32
-            while Latin1.isLetter(l[idx]) or l[idx] == `-`
+            while Latin1.isLetter(l[idx]) or l[idx] == '-'
             {
-                if l[idx] != `-`:
-                    count[l[idx] - `a`] += 1
+                if l[idx] != '-':
+                    count[l[idx] - 'a'] += 1
                 idx += 1
             }
 
@@ -49,7 +49,7 @@ func day4A()
                     maxi = i
                 }
 
-                if c != maxi + `a`
+                if c != maxi + 'a'
                 {
                     valid = false
                     break

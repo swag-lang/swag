@@ -14,5 +14,5 @@
 
     var str = "ABCD"
     let y = &str[c]
-    @assert(y[1] == `C`'u8)
+    @assert(y[1] == 'C''u8)
 }

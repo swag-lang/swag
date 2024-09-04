@@ -84,7 +84,7 @@ func day5A()
             }
         }
 
-        elif l[1] == `1`
+        elif l[1] == '1'
         {
             moveMode = true
         }
@@ -95,7 +95,7 @@ func day5A()
             {
                 if stack >= stacks.count:
                     stacks.add("")
-                if l[i] == `[`:
+                if l[i] == '[':
                     stacks[stack].append(l[i + 1])
                 stack += 1
             }

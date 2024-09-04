@@ -31,7 +31,7 @@ func day1A()
 
     var total = 0
     foreach<Bytes> c in lines:
-        total += c == `(` ? 1 : -1
+        total += c == '(' ? 1 : -1
 
     //Console.print("total: ", total)
     @assert(total == 232)

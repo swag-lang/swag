@@ -40,18 +40,18 @@ func day3B()
         var result: retval
         var pos:    Vector2
         result.add(pos)
-        foreach v in Tokenize.split(line, `,`'u8)
+        foreach v in Tokenize.split(line, ',''u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
             {
-            case `U`:
+            case 'U':
                 pos += {0, -val}
-            case `D`:
+            case 'D':
                 pos += {0, val}
-            case `R`:
+            case 'R':
                 pos += {-val, 0}
-            case `L`:
+            case 'L':
                 pos += {val, 0}
             }
             result.add(pos)

@@ -32,7 +32,7 @@ func day5B0()
         var row1 = 127
         for c in 7
         {
-            if l[c] == `F`:
+            if l[c] == 'F':
                 row1 = (row1 + row0) / 2
             else:
                 row0 = 1 + (row1 + row0) / 2
@@ -42,7 +42,7 @@ func day5B0()
         var col1 = 7
         for c in 3
         {
-            if l[7 + c] == `L`:
+            if l[7 + c] == 'L':
                 col1 = (col1 + col0) / 2
             else:
                 col0 = 1 + (col1 + col0) / 2
@@ -90,11 +90,11 @@ func day5B1()
         {
             switch
             {
-            case c < 7 and l[c] == `F`:
+            case c < 7 and l[c] == 'F':
                 row1 = (row1 + row0) / 2
             case c < 7:
                 row0 = 1 + (row1 + row0) / 2
-            case l[c] == `L`:
+            case l[c] == 'L':
                 col1 = (col1 + col0) / 2
             default:
                 col0 = 1 + (col1 + col0) / 2

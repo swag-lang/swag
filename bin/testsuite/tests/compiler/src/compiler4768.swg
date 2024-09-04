@@ -19,9 +19,9 @@
     var cpt = 0
     foreach #back v in A
     {
-        if cpt == 0: @assert(v == `C`)
-        if cpt == 1: @assert(v == `B`)
-        if cpt == 2: @assert(v == `A`)
+        if cpt == 0: @assert(v == 'C')
+        if cpt == 1: @assert(v == 'B')
+        if cpt == 2: @assert(v == 'A')
         cpt += 1
     }
 }

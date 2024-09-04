@@ -35,7 +35,7 @@ func day1A()
 
     var total = 0
     foreach l in lines:
-        total += assume StrConv.toS32(l[1..]) * (l[0] == `-` ? -1 : 1)
+        total += assume StrConv.toS32(l[1..]) * (l[0] == '-' ? -1 : 1)
     //Console.print("total: ", total)
     @assert(total == 420)
 }

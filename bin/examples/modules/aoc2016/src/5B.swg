@@ -28,10 +28,10 @@ func day5B()
     {
         let str    = Format.toString("reyedfim%", idx)
         let result = Hash.Md5.toString(Hash.Md5.compute(str))
-        if result[0] == `0` and result[1] == `0` and result[2] == `0` and result[3] == `0` and result[4] == `0`
+        if result[0] == '0' and result[1] == '0' and result[2] == '0' and result[3] == '0' and result[4] == '0'
         {
-            let pos = result[5] - `0`
-            if pos < 8 and pwd[pos] == ` `
+            let pos = result[5] - '0'
+            if pos < 8 and pwd[pos] == ' '
             {
                 pwd[pos] = result[6]
                 cpt += 1

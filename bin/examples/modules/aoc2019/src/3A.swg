@@ -63,20 +63,20 @@ func day3A0()
     {
         var x, y = S / 2
         var dx, dy = 0
-        foreach v in Tokenize.split(line, `,`'u8)
+        foreach v in Tokenize.split(line, ',''u8)
         {
             switch v[0]
             {
-            case `U`:
+            case 'U':
                 dx = 0
                 dy = -1
-            case `D`:
+            case 'D':
                 dx = 0
                 dy = 1
-            case `R`:
+            case 'R':
                 dx = 1
                 dy = 0
-            case `L`:
+            case 'L':
                 dx = -1
                 dy = 0
             }
@@ -116,18 +116,18 @@ func day3A1()
         var result: retval
         var pos:    Vector2
         result.add(pos)
-        foreach v in Tokenize.split(line, `,`'u8)
+        foreach v in Tokenize.split(line, ',''u8)
         {
             let val = assume StrConv.toF32(v[1..])
             switch v[0]
             {
-            case `U`:
+            case 'U':
                 pos += {0, -val}
-            case `D`:
+            case 'D':
                 pos += {0, val}
-            case `R`:
+            case 'R':
                 pos += {-val, 0}
-            case `L`:
+            case 'L':
                 pos += {val, 0}
             }
             result.add(pos)

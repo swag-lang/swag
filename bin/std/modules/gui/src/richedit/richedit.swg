@@ -344,7 +344,7 @@ impl RichEditCtrl
     mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)
     {
         var isChar = false
-        if mdf == .Zero and ch >= `0` and ch <= `9`:
+        if mdf == .Zero and ch >= '0' and ch <= '9':
             isChar = true
 
         // If there is a corresponding command,: nothing
@@ -359,10 +359,10 @@ impl RichEditCtrl
             return
 
         var c = ch
-        if c == `\r`:
-            c = `\n`
+        if c == '\r':
+            c = '\n'
 
-        if c == `\n` and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus):
+        if c == '\n' and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus):
             return
 
         if lexer and lexer.insertRune(self, c):

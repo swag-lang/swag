@@ -8,9 +8,9 @@ using Core
         switch i
         {
         case 0:
-            @assert(c == `あ`'rune)
+            @assert(c == 'あ''rune)
         case 1:
-            @assert(c == `え`'rune)
+            @assert(c == 'え''rune)
         }
     }
 }

@@ -50,7 +50,7 @@ impl FontFamily
             var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
             // ???
-            if x[0] == `@`:
+            if x[0] == '@':
                 return TRUE
 
             // Already here ?

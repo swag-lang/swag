@@ -75,14 +75,14 @@ func day5B()
 
         if mode == .Invalid
         {
-            let tokens = Tokenize.split(l, `:`'u8)
-            let values = Tokenize.split(tokens[1], ` `'u8)
+            let tokens = Tokenize.split(l, ':''u8)
+            let values = Tokenize.split(tokens[1], ' ''u8)
             foreach v in values:
                 seeds.add(assume StrConv.toU64(v))
             continue
         }
 
-        let values = Tokenize.split(l, ` `'u8)
+        let values = Tokenize.split(l, ' ''u8)
         var range: Range
         let rangeV = assume StrConv.toU64(values[2])
         range.dst  = assume StrConv.toU64(values[0])

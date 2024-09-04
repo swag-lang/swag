@@ -25,7 +25,7 @@ impl RichEditCtrl
 
             if start.lineIndex != end.lineIndex
             {
-                result.text.add(`\n`)
+                result.text.add('\n')
                 result.styles.add(0)
             }
 
@@ -43,7 +43,7 @@ impl RichEditCtrl
                 {
                     result.text.add(lines[i].chars.toSlice())
                     result.styles.add(lines[i].styles.toSlice())
-                    result.text.add(`\n`)
+                    result.text.add('\n')
                     result.styles.add(0)
                 }
             }
@@ -80,7 +80,7 @@ impl RichEditCtrl
                     }
                 }
 
-                result.text.add(`\n`)
+                result.text.add('\n')
                 result.styles.add(0)
                 li += 1
             }
@@ -196,10 +196,10 @@ impl RichEditCtrl
 
     mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: RichEditStyleRef)
     {
-        if c == `\r`:
+        if c == '\r':
             return
 
-        if c == `\n`
+        if c == '\n'
         {
             let linep = lines[cp.lineIndex]
             discard newLine(cp.lineIndex + 1)
@@ -210,13 +210,13 @@ impl RichEditCtrl
             cp.lineIndex += 1
             cp.charPosInLine = 0
         }
-        elif c == `\t` and (richEdFlags & .TabToSpaces)
+        elif c == '\t' and (richEdFlags & .TabToSpaces)
         {
             let line = lines[cp.lineIndex]
             for tabSize
             {
                 let posIns = Math.min(cp.charPosInLine, line.length())
-                line.insertRune(posIns, ` `, txtStyle)
+                line.insertRune(posIns, ' ', txtStyle)
                 cp.charPosInLine += 1
             }
         }
@@ -256,7 +256,7 @@ impl RichEditCtrl
             for
             {
                 let line = lines[lineIndex]
-                if rankEnd == runes.count or runes[rankEnd] == `\n`
+                if rankEnd == runes.count or runes[rankEnd] == '\n'
                 {
                     var posIns = posInLine
                     if posIns > line.length():
@@ -371,7 +371,7 @@ impl RichEditCtrl
 
     func isWord(c: rune)->bool
     {
-        return Unicode.isLetterOrDigit(c) or c == `_`
+        return Unicode.isLetterOrDigit(c) or c == '_'
     }
 
     func zapWordChar(c: rune)->bool
@@ -380,7 +380,7 @@ impl RichEditCtrl
             return false
         if Unicode.isSpace(c):
             return false
-        if c != `(` and c != `)` and c != `[` and c != `]` and c != `{` and c != `}`:
+        if c != '(' and c != ')' and c != '[' and c != ']' and c != '{' and c != '}':
             return true
         return false
     }
@@ -507,7 +507,7 @@ public impl RichEditCtrl
         if cp.charPosInLine > len:
             return result
         if cp.charPosInLine == len:
-            return {`\n`, 0}
+            return {'\n', 0}
         result.char  = lines[cp.lineIndex].chars[cp.charPosInLine]
         result.style = lines[cp.lineIndex].styles[cp.charPosInLine]
         return result

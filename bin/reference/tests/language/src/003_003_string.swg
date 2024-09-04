@@ -24,8 +24,8 @@ it can accommodate any Unicode character.
 */
 #test
 {
-    const a: rune = `是`                             // Define a rune using a Chinese character
-    #assert a == `是`                                // Assert the rune matches the expected value
+    const a: rune = '是'                             // Define a rune using a Chinese character
+    #assert a == '是'                                // Assert the rune matches the expected value
     #assert #sizeof(a) == #sizeof(u32)               // Confirm the size of a rune is 32 bits (same as u32)
 }
 
@@ -46,13 +46,13 @@ UTF-8 encoding.
 
     // Retrieves the first byte of the string, which corresponds to the character 't'
     const b = a[0]
-    #assert b == `t`                                 // Assert the first byte is 't'
+    #assert b == 't'                                 // Assert the first byte is 't'
     #assert #typeof(b) == #typeof(u8)                // Confirm the type is `u8` (byte)
 
     // UTF-8 encoding affects indexing. 'X' is not at index 1 due to the multibyte encoding of the
     // preceding Chinese character.
     const c = "是X是"                              
-    #assert c[1] != `X`                              // Assert that the byte at index 1 is not 'X'
+    #assert c[1] != 'X'                              // Assert that the byte at index 1 is not 'X'
 }
 
 /**
@@ -89,35 +89,33 @@ check whether a string has been assigned a value.
 
 /**
 # Character Literals
-Character literals are enclosed in backticks. These literals can represent any Unicode 
-character, not just ASCII characters.
+Character literals are enclosed in quotes. These literals can represent any Unicode character, not just ASCII characters.
 */
 #test
 {
-    let char0 = `a`                                 // ASCII character literal
-    let char1 = `我`                                // Unicode character literal
+    let char0 = 'a'                                 // ASCII character literal
+    let char1 = '我'                                // Unicode character literal
 }
 
 /**
 # Default Type of Character Literals
-A character literal is a 32-bit integer by default. It can be assigned to any integer type or 
-a `rune`, provided the value fits within the target type.
+A character literal is a 32-bit integer by default. It can be assigned to any integer type or a `rune`, provided the value fits within the target type.
 */
 #test
 {
     {
-        let a: u8 = `a`                             // Assign character literal to an 8-bit unsigned integer
-        let b: u16 = `a`                            // Assign to a 16-bit unsigned integer
-        let c: u32 = `我`                           // Assign to a 32-bit unsigned integer
-        let d: u64 = `我`                           // Assign to a 64-bit unsigned integer
-        let e: rune = `我`                          // Assign to a rune (32-bit)
+        let a: u8 = 'a'                             // Assign character literal to an 8-bit unsigned integer
+        let b: u16 = 'a'                            // Assign to a 16-bit unsigned integer
+        let c: u32 = '我'                           // Assign to a 32-bit unsigned integer
+        let d: u64 = '我'                           // Assign to a 64-bit unsigned integer
+        let e: rune = '我'                          // Assign to a rune (32-bit)
     }
 
     {
-        let a: s8 = `a`                             // Assign to an 8-bit signed integer
-        let b: s16 = `a`                            // Assign to a 16-bit signed integer
-        let c: s32 = `我`                           // Assign to a 32-bit signed integer
-        let d: s64 = `我`                           // Assign to a 64-bit signed integer
+        let a: s8 = 'a'                             // Assign to an 8-bit signed integer
+        let b: s16 = 'a'                            // Assign to a 16-bit signed integer
+        let c: s32 = '我'                           // Assign to a 32-bit signed integer
+        let d: s64 = '我'                           // Assign to a 64-bit signed integer
     }
 }
 
@@ -128,23 +126,23 @@ controlling the storage size of the character.
 */
 #test
 {
-    let a = `0`'u8                                 // Character literal explicitly typed as u8
+    let a = '0''u8                                 // Character literal explicitly typed as u8
     @assert(a == 48)                               // ASCII value of '0' is 48
     @assert(#typeof(a) == u8)                      // Confirm type is u8
 
-    let b = `1`'u16                                // Character literal explicitly typed as u16
+    let b = '1''u16                                // Character literal explicitly typed as u16
     @assert(b == 49)                               // ASCII value of '1' is 49
     @assert(#typeof(b) == u16)                     // Confirm type is u16
 
-    let c = `2`'u32                                // Character literal explicitly typed as u32
+    let c = '2''u32                                // Character literal explicitly typed as u32
     @assert(c == 50)                               // ASCII value of '2' is 50
     @assert(#typeof(c) == u32)                     // Confirm type is u32
 
-    let d = `3`'u64                                // Character literal explicitly typed as u64
+    let d = '3''u64                                // Character literal explicitly typed as u64
     @assert(d == 51)                               // ASCII value of '3' is 51
     @assert(#typeof(d) == u64)                     // Confirm type is u64
 
-    let e = `4`'rune                               // Character literal explicitly typed as rune
+    let e = '4''rune                               // Character literal explicitly typed as rune
     @assert(e == 52)                               // ASCII value of '4' is 52
     @assert(#typeof(e) == rune)                    // Confirm type is rune
 }
@@ -190,8 +188,8 @@ Escape sequences can also be used to specify characters via their ASCII or Unico
         const d = "\u2F46\u2F46"                   // Unicode escape sequences for two identical characters
         #assert d == "⽆⽆"                         // Assert the resulting string matches expected characters
 
-        const e = `\u2F46`                         // Unicode escape sequence as a rune literal
-        #assert e == `⽆`                           // Assert the rune matches the expected character
+        const e = '\u2F46'                         // Unicode escape sequence as a rune literal
+        #assert e == '⽆'                           // Assert the rune matches the expected character
     }
 }
 

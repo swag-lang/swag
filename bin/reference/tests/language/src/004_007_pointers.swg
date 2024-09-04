@@ -53,7 +53,7 @@ A `const` pointer in Swag refers to a pointer that cannot change the memory loca
 {
     let str  = "string"                   // Declare a string variable
     let ptr: const *u8 = @dataof(str)     // A const pointer to a 'u8' value
-    @assert(dref ptr == `s`)              // Dereferencing the pointer to get the first character of the string
+    @assert(dref ptr == 's')              // Dereferencing the pointer to get the first character of the string
 }
 
 /**

@@ -69,7 +69,7 @@ func day5B()
             stacks[colTo].insert(0, slice)
             str.remove(0, count)
         }
-        elif l[1] == `1`
+        elif l[1] == '1'
         {
             moveMode = true
         }
@@ -80,7 +80,7 @@ func day5B()
             {
                 if stack >= stacks.count:
                     stacks.add("")
-                if l[i] == `[`:
+                if l[i] == '[':
                     stacks[stack].append(l[i + 1])
                 stack += 1
             }

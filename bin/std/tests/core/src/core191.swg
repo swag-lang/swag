@@ -12,34 +12,34 @@ const TitleCase = 3
 
 var caseTest: [] CaseT = [
     // ASCII (special-cased so test carefully)
-    {UpperCase, `\n`, `\n`},
-    {UpperCase, `a`, `A`},
-    {UpperCase, `A`, `A`},
-    {UpperCase, `7`, `7`},
-    {LowerCase, `\n`, `\n`},
-    {LowerCase, `a`, `a`},
-    {LowerCase, `A`, `a`},
-    {LowerCase, `7`, `7`},
-    {TitleCase, `\n`, `\n`},
-    {TitleCase, `a`, `A`},
-    {TitleCase, `A`, `A`},
-    {TitleCase, `7`, `7`},
+    {UpperCase, '\n', '\n'},
+    {UpperCase, 'a', 'A'},
+    {UpperCase, 'A', 'A'},
+    {UpperCase, '7', '7'},
+    {LowerCase, '\n', '\n'},
+    {LowerCase, 'a', 'a'},
+    {LowerCase, 'A', 'a'},
+    {LowerCase, '7', '7'},
+    {TitleCase, '\n', '\n'},
+    {TitleCase, 'a', 'A'},
+    {TitleCase, 'A', 'A'},
+    {TitleCase, '7', '7'},
 
     // Latin-1: easy to read the tests!
     {UpperCase, 0x80, 0x80},
-    {UpperCase, `Å`, `Å`},
-    {UpperCase, `å`, `Å`},
+    {UpperCase, 'Å', 'Å'},
+    {UpperCase, 'å', 'Å'},
     {LowerCase, 0x80, 0x80},
-    {LowerCase, `Å`, `å`},
-    {LowerCase, `å`, `å`},
+    {LowerCase, 'Å', 'å'},
+    {LowerCase, 'å', 'å'},
     {TitleCase, 0x80, 0x80},
-    {TitleCase, `Å`, `Å`},
-    {TitleCase, `å`, `Å`},
+    {TitleCase, 'Å', 'Å'},
+    {TitleCase, 'å', 'Å'},
 
     // 0131;LATIN SMALL LETTER DOTLESS I;Ll;0;L;;;;;N;;;0049;;0049
-    {UpperCase, 0x0131, `I`},
+    {UpperCase, 0x0131, 'I'},
     {LowerCase, 0x0131, 0x0131},
-    {TitleCase, 0x0131, `I`},
+    {TitleCase, 0x0131, 'I'},
 
     // 0133;LATIN SMALL LIGATURE IJ;Ll;0;L;<compat> 0069 006A;;;;N;LATIN SMALL LETTER I J;;0132;;0132
     {UpperCase, 0x0133, 0x0132},
@@ -48,7 +48,7 @@ var caseTest: [] CaseT = [
 
     // 212A;KELVIN SIGN;Lu;0;L;004B;;;;N;DEGREES KELVIN;;;006B;
     {UpperCase, 0x212A, 0x212A},
-    {LowerCase, 0x212A, `k`},
+    {LowerCase, 0x212A, 'k'},
     {TitleCase, 0x212A, 0x212A},
 
     // From an UpperLower sequence

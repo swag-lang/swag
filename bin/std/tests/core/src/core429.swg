@@ -7,12 +7,12 @@ const File = """
 
 #ast
 {
-    let lines = Tokenize.split(File, `\n`'u8)
+    let lines = Tokenize.split(File, '\n''u8)
     var sb:   StrConv.StringBuilder
 
     foreach l in lines
     {
-        let parts = Tokenize.split(l, `:`'u8)
+        let parts = Tokenize.split(l, ':''u8)
         if parts.count != 2:
             continue
         let name  = parts[0]

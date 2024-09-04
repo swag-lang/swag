@@ -59,11 +59,11 @@ impl TweakFile
             var one = Tokenize.eatSpaces(oneit)
             if @countof(one) == 0:
                 continue
-            if one[0] == `#`:
+            if one[0] == '#':
                 continue
 
             // Folder
-            if one[0] == `/`
+            if one[0] == '/'
             {
                 one = Tokenize.eatCount(one, 1)
                 let folderName = catch StrConv.parseIdentifier(one)
@@ -102,7 +102,7 @@ impl TweakFile
             if !@countof(one):
                 throw SyntaxError{"missing value", line: idx + 1}
 
-            if one[0] == `$`
+            if one[0] == '$'
             {
                 one = Tokenize.eatCount(one, 1)
                 let otherField = Reflection.getField(currentFolder.type, one)
@@ -121,10 +121,10 @@ impl TweakFile
                 throw SyntaxError{"invalid value", line: idx + 1}
 
             // Be sure there's nothing left
-            if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != `#`:
+            if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != '#':
                 throw SyntaxError{"syntax error in value", line: idx + 1}
             one = Tokenize.eatSpaces(one)
-            if @countof(one) and one[0] != `#`:
+            if @countof(one) and one[0] != '#':
                 throw SyntaxError{"invalid characters after value", line: idx + 1}
         }
 

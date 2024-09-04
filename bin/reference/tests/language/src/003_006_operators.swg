@@ -136,8 +136,8 @@ and relational operators.
 
 /**
 # Logical Operators
-Logical operators evaluate expressions to return a boolean value. Swag uses `and` and `or` instead 
-of `&&` and `||` found in C/C++.
+Logical operators evaluate expressions to return a boolean value. Swag uses 'and' and 'or' instead 
+of '&&' and '||' found in C/C++.
 */
 #test
 {
@@ -149,8 +149,8 @@ of `&&` and `||` found in C/C++.
 /**
 # Ternary Operator
 The ternary operator tests an expression and returns one of two values depending on the result of 
-the test. The syntax is `A = Expression ? B : C`, where `B` is returned if the expression is true,
-and `C` is returned if the expression is false.
+the test. The syntax is `A = Expression ? B : C`, where 'B' is returned if the expression is true,
+and 'C' is returned if the expression is false.
 */
 #test
 {
@@ -165,13 +165,13 @@ and `C` is returned if the expression is false.
 
 /**
 # Spaceshift Operator
-Operator `<=>` returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right 
-expression, respectively. The returned type is `s32`.
-```swag
+Operator '<=>' returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right 
+expression, respectively. The returned type is 's32'.
+'`'swag
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
 A <=> B == 1  if A > B
-  ```
+  '`'
 */
 #test
 {
@@ -197,12 +197,12 @@ A <=> B == 1  if A > B
 
 /**
 # Null-Coalescing Operator
-The operator `orelse` returns the left expression if it is not null, otherwise it returns the right 
+The operator 'orelse' returns the left expression if it is not null, otherwise it returns the right 
 expression.
 */
 
 /**
-Works with strings, pointers, and structures with the `opData` special function (covered later).
+Works with strings, pointers, and structures with the 'opData' special function (covered later).
 */
 #test
 {
@@ -267,7 +267,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 
 /**
 # Operator Precedence
-```swag
+'`'swag
 ~
 * / %
 + -
@@ -280,7 +280,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 < <= > >=
 and
 or
-```
+'`'
 If two operators have the same precedence, the expression is evaluated from left to right.
 */
 #test

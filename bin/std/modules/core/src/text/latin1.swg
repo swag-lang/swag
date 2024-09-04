@@ -17,7 +17,7 @@ using Swag
     func isSpace(c: u8)         => cast(bool) (CharProperties[c] & .Spacing)
     func isControl(c: u8)       => cast(bool) (CharProperties[c] & .Control)
     func isSymbol(c: u8)        => cast(bool) (CharProperties[c] & .Symbol)
-    func isWord(c: u8)          => isLetter(c) or isDigit(c) or c == `_`
+    func isWord(c: u8)          => isLetter(c) or isDigit(c) or c == '_'
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
@@ -201,7 +201,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             var result = 0
             let sl0    = @mkslice(dsrc + ai, csrc)
             let sl1    = @mkslice(ddst + bi, cdst)
-            if ca == `0`'u8 or cb == `0`'u8:
+            if ca == '0''u8 or cb == '0''u8:
                 result = compareLeft(sl0, sl1)
             else:
                 result = compareRight(sl0, sl1)

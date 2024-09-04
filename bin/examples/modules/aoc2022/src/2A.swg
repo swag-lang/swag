@@ -42,7 +42,7 @@ func day2A()
     var total: u64
     foreach l in lines
     {
-        total += Score[l[0] - `A`, l[2] - `X`]
+        total += Score[l[0] - 'A', l[2] - 'X']
     }
 
     //Console.print("total: ", total)

@@ -194,9 +194,9 @@ impl IForm for FormStep
             case Number:
                 t = Format.toString("%", curIndex)
             case LetterUp:
-                t = Format.toString("%", cast(rune) (`A`'rune + curIndex - 1))
+                t = Format.toString("%", cast(rune) ('A''rune + curIndex - 1))
             case LetterDown:
-                t = Format.toString("%", cast(rune) (`a`'rune + curIndex - 1))
+                t = Format.toString("%", cast(rune) ('a''rune + curIndex - 1))
             }
 
             assume face.getStringOutline(&pathl, t, cast() fSize)

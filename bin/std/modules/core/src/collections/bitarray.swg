@@ -1,7 +1,7 @@
 using Swag
 
-// Manages a compact array of bit values, which are represented as booleans, where `true` indicates that
-// the bit is on (1) and `false` indicates the bit is off (0)
+// Manages a compact array of bit values, which are represented as booleans, where 'true' indicates that
+// the bit is on (1) and 'false' indicates the bit is off (0)
 public struct BitArray
 {
     buffer:        ^u32
@@ -62,7 +62,7 @@ public impl BitArray
         set(index, value)
     }
 
-    // Initializes a `BitArray` that contains bit values copied from the specified array of booleans
+    // Initializes a 'BitArray' that contains bit values copied from the specified array of booleans
     mtd opAffect(what: const [..] bool)
     {
         let len = @countof(what)
@@ -72,7 +72,7 @@ public impl BitArray
             set(index, value)
     }
 
-    // Compares two arrays, and returns `true` if they are equal
+    // Compares two arrays, and returns 'true' if they are equal
     mtd opEquals(other: Self)->bool
     {
         if count != other.count:
@@ -194,7 +194,7 @@ public impl BitArray
             buffer[val] |= shift
     }
 
-    // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
+    // Inverts all the bit values, so that elements set to 'true' are changed to 'false', and elements set to 'false' are changed to 'true'.
     #[Swag.Overload]
     mtd invert()
     {
@@ -204,9 +204,9 @@ public impl BitArray
             buffer[#index] = ~buffer[#index]
     }
 
-    // Performs the bitwise AND operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
+    // Performs the bitwise AND operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
     //
-    // The current `BitArray` will be modified to store the result of the bitwise AND operation.
+    // The current 'BitArray' will be modified to store the result of the bitwise AND operation.
     mtd andWith(other: Self)
     {
         Debug.assert(count == other.count)
@@ -216,7 +216,7 @@ public impl BitArray
             buffer[#index] &= other.buffer[#index]
     }
 
-    // Performs the bitwise OR operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
+    // Performs the bitwise OR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
     //
     // The current BitArray will be modified to store the result of the bitwise OR operation.
     mtd orWith(other: Self)
@@ -228,7 +228,7 @@ public impl BitArray
             buffer[#index] |= other.buffer[#index]
     }
 
-    // Performs the bitwise XOR operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
+    // Performs the bitwise XOR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
     //
     // The current BitArray will be modified to store the result of the bitwise XOR operation.
     mtd xorWith(other: Self)

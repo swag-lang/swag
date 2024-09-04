@@ -93,13 +93,13 @@ public impl TextReader
             while ptr + 8'u64 <= ptrE
             {
                 let c64 = dref cast(*u64) ptr
-                if Math.hasByte(c64, `\r`) or Math.hasByte(c64, `\n`):
+                if Math.hasByte(c64, '\r') or Math.hasByte(c64, '\n'):
                     break
                 ptr += 8
             }
 
             // u8 by u8
-            while ptr != ptrE and dref ptr != `\r` and dref ptr != `\n`:
+            while ptr != ptrE and dref ptr != '\r' and dref ptr != '\n':
                 ptr += 1
 
             let range = cast(u64) (ptr - ptrB)
@@ -119,11 +119,11 @@ public impl TextReader
             byteSeek += range + 1
 
             // If we have an '\r', then eat the following '\n' if it exists
-            if dref ptr == `\r`
+            if dref ptr == '\r'
             {
                 if byteSeek == buffer.count:
                     readBuffer()
-                if buffer.count and buffer[byteSeek] == `\n`:
+                if buffer.count and buffer[byteSeek] == '\n':
                     byteSeek += 1
             }
 
