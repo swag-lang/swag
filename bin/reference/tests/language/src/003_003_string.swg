@@ -168,8 +168,7 @@ An escape sequence starts with a backslash `\` and is followed by a specific cha
     const h = "this is ASCII code 0x0D:   \r"      // Carriage return escape sequence
     const i = "this is ASCII code 0x22:   \""      // Double quote escape sequence
     const j = "this is ASCII code 0x27:   \'"      // Single quote escape sequence
-    const k = "this is ASCII code 0x60:   \`"      // Backtick escape sequence
-    const l = "this is ASCII code 0x5C:   \\"      // Backslash escape sequence
+    const k = "this is ASCII code 0x5C:   \\"      // Backslash escape sequence
 }
 
 /**

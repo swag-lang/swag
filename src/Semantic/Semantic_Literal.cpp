@@ -105,9 +105,6 @@ bool Semantic::processLiteralString(SemanticContext* context)
             case '\"':
                 result.append('\"');
                 continue;
-            case '`':
-                result.append('`');
-                continue;
             case 'x':
             {
                 int        c1, c2;

@@ -217,7 +217,7 @@ void Diagnostic::replaceTokenName(const TokenParse& tokenParse)
     if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeString)
         textMsg.replace("$$TKN$$", form("literal [[\"%s\"]]", tokenParse.cstr()));
     else if (Tokenizer::isLiteral(tokenParse.token.id) && tokenParse.literalType == LiteralType::TypeCharacter)
-        textMsg.replace("$$TKN$$", form("literal [[`%s`]]", tokenParse.cstr()));
+        textMsg.replace("$$TKN$$", form("literal [['%s']]", tokenParse.cstr()));
     else
         replaceTokenName(tokenParse.token);
 }

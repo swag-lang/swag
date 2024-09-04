@@ -527,6 +527,8 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     currentState = State.Default
                     seekNext()
+                    if getCur() == '\'':
+                        seekNext()
                     continue
                 }
 
@@ -549,6 +551,8 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     currentState = State.Default
                     seekNext()
+                    if getCur() == '\'':
+                        seekNext()
                     continue
                 }
 
@@ -564,6 +568,8 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     seekNext()
                     currentState = State.Default
+                    if getCur() == '\'':
+                        seekNext()
                     continue
                 }
 
@@ -584,7 +590,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == '\`'
+                if c == '\''
                 {
                     seekNext()
                     currentState = State.Default
@@ -670,6 +676,8 @@ impl IRichEditLexer for RichEditLexerSwag
                     while seek != seekEnd:
                         seekNext()
                     currentState = State.Default
+                    if c == '\'':
+                        seekNext()
                     continue
                 }
 
@@ -680,7 +688,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == '\`'
+                if c == '\''
                 {
                     currentState = State.Character
                     seekNext()
