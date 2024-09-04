@@ -21,7 +21,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     if (newNode->attrUse)
         newNode->attrUse->content = newNode;
 
-    newNode->type             = reinterpret_cast<AstTypeExpression*>(findChildRef(type, newNode));
+    newNode->type             = findChildRef(type, newNode);
     newNode->assignment       = findChildRef(assignment, newNode);
     newNode->genTypeComesFrom = genTypeComesFrom;
 
