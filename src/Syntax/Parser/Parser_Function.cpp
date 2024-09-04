@@ -748,9 +748,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         }
 
         isIntrinsic = tokenParse.token.text[0] == '@';
-        if (isIntrinsic)
-            SWAG_VERIFY(sourceFile->acceptsInternalStuff(), error(tokenParse, formErr(Err0728, tokenParse.cstr())));
-        else
+        if (!isIntrinsic)
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0186)));
 
         funcNode->tokenName = tokenParse.token;

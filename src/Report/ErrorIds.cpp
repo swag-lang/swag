@@ -847,6 +847,7 @@ void initErrors()
     SWAG_ERROR(Err0700, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0701, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0702, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
+    SWAG_ERROR(Err0736, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
 	
     SWAG_ERROR(Err0703, "already defined [[#import]] location              $ cannot redefine an [[#import]] location                                                                                                  $ ");
     SWAG_ERROR(Err0704, "already defined [[#import]] location              $ cannot redefine the [[#import]] location of the module [[%s]]                                                                            $ already defined as [[%s]]");
@@ -854,6 +855,7 @@ void initErrors()
     SWAG_ERROR(Err0706, "already defined [[#import]] version               $ cannot redefine the [[#import]] version of the module [[%s]]                                                                             $ already defined as [[%s]]");
     SWAG_ERROR(Err0707, "exception!                                        $ cannot proceed because of an execution exception                                                                                         $ ");
     SWAG_ERROR(Err0708, "failed generic instantiation                      $ cannot create the variable because of the generic type [[%s]]                                                                            $ ");
+    SWAG_ERROR(Err0726, "failed generic instantiation                      $ cannot create the constant because of the generic type [[%s]]                                                                            $ ");
     SWAG_ERROR(Err0709, "failed generic instantiation                      $ cannot instantiate %s because of missing generic arguments                                                                               $ ");
     SWAG_ERROR(Err0710, "failed generic instantiation                      $ cannot instantiate the generic function [[%s]] because of missing generic arguments                                                      $ ");
     SWAG_ERROR(Err0711, "failed generic instantiation                      $ cannot instantiate the generic struct [[%s]] because of missing generic arguments                                                        $ ");
@@ -871,17 +873,14 @@ void initErrors()
     SWAG_ERROR(Err0723, "folder error                                      $ cannot create the directory [[%s]]                                                                                                       $ ");
     SWAG_ERROR(Err0724, "folder error dependency                           $ cannot find the dependency module folder [[\"%s\"]]                                                                                      $ ");
     SWAG_ERROR(Err0725, "invalid assign                                    $ cannot assign because the left expression is not a value                                                                                 $ ");
-    SWAG_ERROR(Err0726, "invalid constant                                  $ cannot create the constant because of the generic type [[%s]]                                                                            $ ");
     SWAG_ERROR(Err0727, "invalid expression                                $ expected an expression, found $$TKN$$ instead                                                                                            $ ");
-    SWAG_ERROR(Err0728, "invalid function name                             $ cannot use [[@]] at the start of a function name ([[%s]]) as it is reserved for intrinsics                                               $ ");
-    SWAG_ERROR(Err0729, "invalid import location                           $ unexpected [[#import]] location format                                                                                                   $ expecting [[location=\"mode@accesspath\"]] where mode is [[swag]] or [[disk]]");
-    SWAG_ERROR(Err0730, "invalid import version                            $ unexpected [[#import]] version format                                                                                                    $ ");
+    SWAG_ERROR(Err0729, "invalid [[#import]] location                      $ unexpected [[#import]] location format                                                                                                   $ expecting [[location=\"mode@accesspath\"]] where mode is [[swag]] or [[disk]]");
+    SWAG_ERROR(Err0730, "invalid [[#import]] version                       $ unexpected [[#import]] version format                                                                                                    $ ");
     SWAG_ERROR(Err0731, "invalid literal                                   $ cannot convert the literal [[%I64u]]                                                                                                     $ ");
     SWAG_ERROR(Err0732, "invalid reference                                 $ cannot reference the current file scope                                                                                                  $ ");
     SWAG_ERROR(Err0733, "invalid return type                               $ cannot use [[%s]] as a function return type                                                                                              $ ");
     SWAG_ERROR(Err0734, "invalid runtime typeinfo                          $ cannot convert [[%s]] to a runtime typeinfo                                                                                              $ ");
     SWAG_ERROR(Err0735, "invalid type                                      $ cannot initialize with an expression of type [[void]]                                                                                    $ ");
-    SWAG_ERROR(Err0736, "invalid variable name                             $ cannot use [[#mix]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
     SWAG_ERROR(Err0737, "invalid variable name                             $ cannot use a variable name ([[%s]]) starting with [[#]]                                                                                  $ only [[#mix]] and [[#alias]] are accepted in that case");
     SWAG_ERROR(Err0738, "misplaced [[#dependencies]]                       $ expected [[#dependencies]] to be placed at the file level                                                                                $ ");
     SWAG_ERROR(Err0739, "misplaced [[#global testerror]]                   $ cannot use [[#global testerror]] outside of a test file in the [[./tests]] folder                                                        $ ");
@@ -923,6 +922,7 @@ void initErrors()
     SWAG_ERROR(Err0775, "unsupported [[#nameof]] argument                  $ cannot evaluate the [[#nameof]] argument                                                                                                 $ ");
     SWAG_ERROR(Err0776, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
 	
+    SWAG_ERROR(Err0728, nullptr);
     SWAG_ERROR(Err0777, nullptr);
     SWAG_ERROR(Err0778, nullptr);
     SWAG_ERROR(Err0779, nullptr);
