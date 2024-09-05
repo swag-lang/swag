@@ -1356,7 +1356,7 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
     {
         // The first argument of the function needs to be the capture context, which is stored in
         // node->additionalRegisterRC as the second register.
-        SWAG_ASSERT(node->extension);
+        SWAG_ASSERT(node->hasExtension());
         accParams[static_cast<int>(accParams.size()) - 1] = node->extMisc()->additionalRegisterRC[1];
 
         // The last pushParam needs to be treated in a different way in case of closure, because
@@ -1952,7 +1952,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            SWAG_ASSERT(node->extension);
+            SWAG_ASSERT(node->hasExtension());
             inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
             inst->addFlag(BCI_NO_BACKEND);
             inst->b.s64 = 1;
@@ -1992,7 +1992,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            SWAG_ASSERT(node->extension);
+            SWAG_ASSERT(node->hasExtension());
             inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
             inst->addFlag(BCI_NO_BACKEND);
             inst->b.s64 = 1;
@@ -2019,7 +2019,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     else if (funcNode)
     {
         auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extByteCode()->bc);
+        SWAG_ASSERT(funcNode->hasExtSemantic() && funcNode->extByteCode()->bc);
         inst->a.pointer                     = reinterpret_cast<uint8_t*>(funcNode->extByteCode()->bc);
         inst->b.pointer                     = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams             = static_cast<uint8_t>(numVariadic);
@@ -2088,7 +2088,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            SWAG_ASSERT(node->extension);
+            SWAG_ASSERT(node->hasExtension());
             EMIT_INST2(context, ByteCodeOp::IncSPPostCallCond, node->extMisc()->additionalRegisterRC[1], sizeof(void*));
             if (precallStack - sizeof(void*))
                 EMIT_INST1(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));

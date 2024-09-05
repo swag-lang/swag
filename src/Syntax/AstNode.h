@@ -435,9 +435,9 @@ struct AstNode
     struct NodeExtension
     {
         NodeExtensionByteCode* bytecode = nullptr;
-        NodeExtensionSemantic* semantic = nullptr;
         NodeExtensionOwner*    owner    = nullptr;
         NodeExtensionMisc*     misc     = nullptr;
+        NodeExtensionSemantic* semantic = nullptr;
     };
 
     void allocateExtension(ExtensionKind extensionKind);
@@ -445,6 +445,12 @@ struct AstNode
     void setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void addAlternativeScopes(NodeExtensionMisc* ext);
 
+    bool hasExtension() const
+    {
+        SharedLock lk(mutexExt);
+        return extension;
+    }
+    
     bool hasExtByteCode() const
     {
         SharedLock lk(mutexExt);

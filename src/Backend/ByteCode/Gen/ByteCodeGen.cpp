@@ -251,33 +251,33 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         }
 
         node->allocateExtension(ExtensionKind::ByteCode);
-        const auto extension = node->extByteCode();
-        if (!extension->byteCodeJob)
+        const auto extByteCode = node->extByteCode();
+        if (!extByteCode->byteCodeJob)
         {
             Job* dependentJob;
             if (flags & ASKBC_WAIT_DONE)
                 dependentJob = job;
             else
                 dependentJob = job->dependentJob;
-            extension->byteCodeJob                      = ByteCodeGenJob::newJob(dependentJob, sourceFile, node);
-            extension->byteCodeJob->context.errCxtSteps = job->baseContext->errCxtSteps;
-            if (!extension->bc)
+            extByteCode->byteCodeJob                      = ByteCodeGenJob::newJob(dependentJob, sourceFile, node);
+            extByteCode->byteCodeJob->context.errCxtSteps = job->baseContext->errCxtSteps;
+            if (!extByteCode->bc)
             {
-                extension->bc             = Allocator::alloc<ByteCode>();
-                extension->bc->node       = node;
-                extension->bc->sourceFile = node->token.sourceFile;
+                extByteCode->bc             = Allocator::alloc<ByteCode>();
+                extByteCode->bc->node       = node;
+                extByteCode->bc->sourceFile = node->token.sourceFile;
             }
 
-            extension->bc->typeInfoFunc = funcDecl ? castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo) : nullptr;
+            extByteCode->bc->typeInfoFunc = funcDecl ? castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo) : nullptr;
             if (node->hasAstFlag(AST_DEFINED_INTRINSIC))
-                extension->bc->name = node->token.text;
+                extByteCode->bc->name = node->token.text;
             else if (node->token.sourceFile->hasFlag(FILE_RUNTIME))
-                extension->bc->name = node->token.text;
+                extByteCode->bc->name = node->token.text;
             else
             {
-                extension->bc->name = node->ownerScope->getFullName();
-                extension->bc->name += ".";
-                extension->bc->name += node->token.text;
+                extByteCode->bc->name = node->ownerScope->getFullName();
+                extByteCode->bc->name += ".";
+                extByteCode->bc->name += node->token.text;
             }
 
             if (node->is(AstNodeKind::FuncDecl))
@@ -290,8 +290,8 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         }
         else if (flags & ASKBC_WAIT_DONE)
         {
-            ScopedLock lk1(extension->byteCodeJob->mutexDependent);
-            extension->byteCodeJob->dependentJobs.add(job);
+            ScopedLock lk1(extByteCode->byteCodeJob->mutexDependent);
+            extByteCode->byteCodeJob->dependentJobs.add(job);
         }
 
         return;
@@ -302,12 +302,12 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         SWAG_ASSERT(job);
         if (!node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED))
         {
-            const auto extension = node->extByteCode();
-            SWAG_ASSERT(extension && extension->byteCodeJob);
+            const auto extByteCode = node->extByteCode();
+            SWAG_ASSERT(extByteCode && extByteCode->byteCodeJob);
 
-            ScopedLock lk1(extension->byteCodeJob->mutexDependent);
+            ScopedLock lk1(extByteCode->byteCodeJob->mutexDependent);
             job->setPending(JobWaitKind::AskBcWaitResolve, nullptr, node, nullptr);
-            extension->byteCodeJob->dependentJobs.add(job);
+            extByteCode->byteCodeJob->dependentJobs.add(job);
             return;
         }
     }

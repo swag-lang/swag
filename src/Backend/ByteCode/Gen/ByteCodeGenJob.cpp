@@ -115,7 +115,7 @@ JobResult ByteCodeGenJob::execute()
     {
         SWAG_ASSERT(nodes.size() == 1);
         originalNode = nodes.front();
-        SWAG_ASSERT(originalNode->extension);
+        SWAG_ASSERT(originalNode->hasExtension());
 
         baseContext        = &context;
         context.baseJob    = this;

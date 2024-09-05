@@ -1786,15 +1786,15 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         // Reset emit from the modifier if it exists, as the inline block will deal with that
         if (identifier->hasExtByteCode())
         {
-            const auto extension = identifier->extByteCode();
-            if (extension->byteCodeAfterFct == ByteCodeGen::emitTry)
-                extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
-                extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGen::emitCatch)
-                extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGen::emitAssume)
-                extension->byteCodeAfterFct = nullptr;
+            const auto extByteCode = identifier->extByteCode();
+            if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitTry)
+                extByteCode->byteCodeAfterFct = nullptr;
+            else if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
+                extByteCode->byteCodeAfterFct = nullptr;
+            else if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitCatch)
+                extByteCode->byteCodeAfterFct = nullptr;
+            else if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitAssume)
+                extByteCode->byteCodeAfterFct = nullptr;
         }
     }
 
@@ -1913,7 +1913,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     if (newContent->is(AstNodeKind::Try) || newContent->is(AstNodeKind::TryCatch) || newContent->is(AstNodeKind::Assume))
     {
-        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->firstChild()->extension)
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->firstChild()->hasExtension())
         {
             const auto front = newContent->firstChild();
             if (front->hasExtByteCode())

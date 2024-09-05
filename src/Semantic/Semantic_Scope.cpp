@@ -169,7 +169,7 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
     {
         // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
         // relevant and we cannot use it
-        if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->extension)
+        if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->hasExtension())
         {
             collectAlternativeScopes(startScope->owner, scopeHierarchy);
             collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
