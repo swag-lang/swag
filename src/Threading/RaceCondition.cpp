@@ -1,5 +1,5 @@
 #include "pch.h"
-#ifdef SWAG_HAS_ASSERT
+#ifdef SWAG_HAS_RACE_CONDITION
 #include "Report/Assert.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
@@ -15,7 +15,7 @@ void RaceCondition::lock(Instance* inst, bool r)
     myInstance = inst;
 
     const auto currentThreadId = std::this_thread::get_id();
-    SWAG_ASSERT(!myInstance->countWrite || myInstance->lastThreadID == currentThreadId);
+    SWAG_FORCE_ASSERT(!myInstance->countWrite || myInstance->lastThreadID == currentThreadId);
     read = r;
 
     if (!r)
@@ -35,9 +35,9 @@ void RaceCondition::unlock() const
     ScopedLock lk(myInstance->mutex);
     if (!read && myInstance->lastThreadID == std::this_thread::get_id())
     {
-        SWAG_ASSERT(myInstance->countWrite);
+        SWAG_FORCE_ASSERT(myInstance->countWrite);
         --myInstance->countWrite;
     }
 }
 
-#endif
+#endif // SWAG_HAS_RACE_CONDITION

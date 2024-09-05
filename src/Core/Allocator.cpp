@@ -3,7 +3,7 @@
 #include "Extern/mimalloc/mimalloc.h"
 #include "Main/Statistics.h"
 
-#ifdef SWAG_CHECK_MEMORY
+#ifdef SWAG_HAS_MEMORY_CHECK
 constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
@@ -29,7 +29,7 @@ void operator delete(void* block) noexcept
 
 void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align, [[maybe_unused]] AllocFlags flags)
 {
-#ifdef SWAG_CHECK_MEMORY
+#ifdef SWAG_HAS_MEMORY_CHECK
     auto result = mi_malloc_aligned(size + 3 * sizeof(uint64_t), align);
     result      = markDebugBlock(static_cast<uint8_t*>(result), size, MAGIC_ALLOC);
 #else
@@ -56,7 +56,7 @@ void Allocator::free(void* ptr, size_t size, [[maybe_unused]] AllocFlags flags)
     if (!ptr || !size)
         return;
 
-#ifdef SWAG_CHECK_MEMORY
+#ifdef SWAG_HAS_MEMORY_CHECK
     ptr = checkUserBlock(static_cast<uint8_t*>(ptr), size, MAGIC_ALLOC);
     (void) markDebugBlock(static_cast<uint8_t*>(ptr), size, MAGIC_FREE);
 #endif
@@ -72,7 +72,7 @@ void Allocator::free(void* ptr, size_t size, [[maybe_unused]] AllocFlags flags)
     mi_free(ptr);
 }
 
-#ifdef SWAG_CHECK_MEMORY
+#ifdef SWAG_HAS_MEMORY_CHECK
 uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker)
 {
     memset(blockAddr + 2 * sizeof(uint64_t), static_cast<uint8_t>(marker), userSize);

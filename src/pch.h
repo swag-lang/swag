@@ -49,8 +49,9 @@
 ////////////////////////////
 
 #ifdef SWAG_DEV_MODE
-#define SWAG_CHECK_MEMORY
+#define SWAG_HAS_MEMORY_CHECK
 #define SWAG_HAS_ASSERT
+#define SWAG_HAS_RACE_CONDITION
 #endif
 
 ////////////////////////////

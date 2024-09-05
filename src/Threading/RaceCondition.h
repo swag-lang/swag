@@ -1,7 +1,7 @@
 #pragma once
 #include "Threading/Mutex.h"
 
-#ifdef SWAG_HAS_ASSERT
+#ifdef SWAG_HAS_RACE_CONDITION
 struct RaceCondition
 {
     struct Instance

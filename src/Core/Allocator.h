@@ -57,7 +57,7 @@ struct Allocator
     static size_t   alignSize(size_t size) { return size + 7 & ~7; }
     static uint32_t alignSize(uint32_t size) { return size + 7 & ~7; }
 
-#ifdef SWAG_CHECK_MEMORY
+#ifdef SWAG_HAS_MEMORY_CHECK
     static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
     static uint8_t* checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker);
 #endif
