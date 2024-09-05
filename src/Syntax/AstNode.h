@@ -441,48 +441,55 @@ struct AstNode
     };
 
     void allocateExtension(ExtensionKind extensionKind);
-    void allocateExtensionNoLock(ExtensionKind extensionKind);
     void setBcNotifyBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void addAlternativeScopes(NodeExtensionMisc* ext);
 
     bool hasExtByteCode() const
     {
+        SharedLock lk(mutexExt);
         return extension && extension->bytecode;
     }
 
     bool hasExtSemantic() const
     {
+        SharedLock lk(mutexExt);
         return extension && extension->semantic;
     }
 
     bool hasExtOwner() const
     {
+        SharedLock lk(mutexExt);
         return extension && extension->owner;
     }
 
     bool hasExtMisc() const
     {
+        SharedLock lk(mutexExt);
         return extension && extension->misc;
     }
 
     NodeExtensionByteCode* extByteCode() const
     {
+        SharedLock lk(mutexExt);
         return extension->bytecode;
     }
 
     NodeExtensionSemantic* extSemantic() const
     {
+        SharedLock lk(mutexExt);
         return extension->semantic;
     }
 
     NodeExtensionOwner* extOwner() const
     {
+        SharedLock lk(mutexExt);
         return extension->owner;
     }
 
     NodeExtensionMisc* extMisc() const
     {
+        SharedLock lk(mutexExt);
         return extension->misc;
     }
 
@@ -568,6 +575,7 @@ struct AstNode
     uint8_t             padding0;
 
     mutable SharedMutex    mutex;
+    mutable SharedMutex    mutexExt;
     VectorNative<AstNode*> children;
 
     Scope*       ownerScope;

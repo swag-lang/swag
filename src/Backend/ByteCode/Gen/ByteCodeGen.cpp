@@ -250,7 +250,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
             job->setPending(JobWaitKind::SemByteCodeGenerated1, nullptr, node, nullptr);
         }
 
-        node->allocateExtensionNoLock(ExtensionKind::ByteCode);
+        node->allocateExtension(ExtensionKind::ByteCode);
         const auto extension = node->extByteCode();
         if (!extension->byteCodeJob)
         {

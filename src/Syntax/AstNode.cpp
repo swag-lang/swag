@@ -409,12 +409,8 @@ void AstNode::setBcNotifyAfter(ByteCodeNotifyFct fct, [[maybe_unused]] ByteCodeN
 
 void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
-    ScopedLock lk(mutex);
-    allocateExtensionNoLock(extensionKind);
-}
+    ScopedLock lk(mutexExt);
 
-void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
-{
     if (!extension)
     {
         extension = Allocator::alloc<NodeExtension>();
@@ -427,7 +423,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     {
         case ExtensionKind::ByteCode:
         {
-            if (hasExtByteCode())
+            if (extension->bytecode)
                 return;
             extension->bytecode = Allocator::alloc<NodeExtensionByteCode>();
 #ifdef SWAG_STATS
@@ -438,7 +434,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
 
         case ExtensionKind::Semantic:
         {
-            if (hasExtSemantic())
+            if (extension->semantic)
                 return;
             extension->semantic = Allocator::alloc<NodeExtensionSemantic>();
 #ifdef SWAG_STATS
@@ -449,7 +445,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
 
         case ExtensionKind::Owner:
         {
-            if (hasExtOwner())
+            if (extension->owner)
                 return;
             extension->owner = Allocator::alloc<NodeExtensionOwner>();
 #ifdef SWAG_STATS
@@ -460,7 +456,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
 
         default:
         {
-            if (hasExtMisc())
+            if (extension->misc)
                 return;
             extension->misc = Allocator::alloc<NodeExtensionMisc>();
 #ifdef SWAG_STATS

@@ -238,7 +238,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             ScopedLock lk(child->mutex);
             if (!child->hasExtByteCode() || !child->extByteCode()->bc)
             {
-                child->allocateExtensionNoLock(ExtensionKind::ByteCode);
+                child->allocateExtension(ExtensionKind::ByteCode);
                 child->extByteCode()->bc             = Allocator::alloc<ByteCode>();
                 child->extByteCode()->bc->node       = child;
                 child->extByteCode()->bc->sourceFile = child->token.sourceFile;
