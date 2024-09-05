@@ -436,8 +436,8 @@ struct AstNode
     {
         NodeExtensionByteCode* bytecode = nullptr;
         NodeExtensionOwner*    owner    = nullptr;
-        NodeExtensionMisc*     misc     = nullptr;
         NodeExtensionSemantic* semantic = nullptr;
+        NodeExtensionMisc*     misc     = nullptr;
     };
 
     void allocateExtension(ExtensionKind extensionKind);

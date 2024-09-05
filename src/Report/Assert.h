@@ -42,3 +42,12 @@ void swagAssert(const char* expr, const char* file, int line);
             return false;          \
         }                          \
     } while (0)
+
+#define SWAG_FORCE_ASSERT(__expr)                    \
+    do                                               \
+    {                                                \
+        if (!(__expr))                               \
+        {                                            \
+            swagAssert(#__expr, __FILE__, __LINE__); \
+        }                                            \
+    } while (0)
