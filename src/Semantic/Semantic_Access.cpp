@@ -274,21 +274,20 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
 
     AstNode*   onNode  = nullptr;
     const auto culprit = getErrorCulprit(node, &onNode);
-    if (!culprit)
-        return Report::internalError(node, "bad access, but cannot find the culprit");
     if (!onNode)
         onNode = culprit;
+    if (!culprit || !node->resolvedSymbolOverload() || !culprit->resolvedSymbolOverload())
+        return Report::internalError(node, "bad access, but cannot find the culprit");
 
     const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-    Diagnostic err{node,
-                   node->getTokenName(),
-                   formErr(Err0286,
-                           Naming::kindName(node->resolvedSymbolOverload()).cstr(),
-                           node->token.cstr(),
-                           Naming::kindName(culprit->resolvedSymbolOverload()).cstr(),
-                           culprit->token.cstr(),
-                           accessCulprit)};
+    const auto msg           = formErr(Err0286,
+                                       Naming::kindName(node->resolvedSymbolOverload()).cstr(),
+                                       node->token.cstr(),
+                                       Naming::kindName(culprit->resolvedSymbolOverload()).cstr(),
+                                       culprit->token.cstr(),
+                                       accessCulprit);
 
+    Diagnostic err{node, node->getTokenName(), msg};
     if (onNode == culprit)
         err.addNote(culprit, culprit->token, formNte(Nte0158, Naming::kindName(culprit->resolvedSymbolOverload()).cstr(), accessCulprit));
     else
