@@ -234,7 +234,7 @@ bool TypeGenStructJob::computeStruct()
                 // Be sure to patch the exported struct type in the header, because resolveImplForType can be resolved after this,
                 // and we need it in case a bytecode is running
                 ScopedLock lk1(realType->mutex);
-                auto       ptrHeader = static_cast<const void**>(addrArray[param].value) - 1;
+                const auto ptrHeader = static_cast<const void**>(addrArray[param].value) - 1;
                 *ptrHeader           = concreteType;
 
                 storageArray += sizeof(ExportedTypeValue);

@@ -10,20 +10,14 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags, TypeInfo** ptrTypeInfo, ExportedTypeInfo** result)
+bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* resultStorageOffset, GenExportFlags genFlags, TypeInfo** ptrTypeInfo, ExportedTypeInfo** resultPtr)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
-    return genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, storage, genFlags, ptrTypeInfo);
+    return genExportedTypeInfoNoLock(context, typeInfo, storageSegment, resultStorageOffset, genFlags, ptrTypeInfo, resultPtr);
 }
 
-bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
-                                        ExportedTypeInfo** result,
-                                        TypeInfo*          typeInfo,
-                                        DataSegment*       storageSegment,
-                                        uint32_t*          storage,
-                                        GenExportFlags     genFlags,
-                                        TypeInfo**         ptrTypeInfo)
+bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* resultStorageOffset, GenExportFlags genFlags, TypeInfo** ptrTypeInfo, ExportedTypeInfo** resultPtr)
 {
     switch (typeInfo->kind)
     {
@@ -55,9 +49,9 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
         if (ptrTypeInfo)
             *ptrTypeInfo = it->second.newRealType;
-        if (result)
-            *result = it->second.exportedType;
-        *storage = it->second.storageOffset;
+        if (resultPtr)
+            *resultPtr = it->second.exportedType;
+        *resultStorageOffset = it->second.storageOffset;
 
 #ifdef SWAG_DEV_MODE
         bool ok = false;
@@ -202,8 +196,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     mapType.newRealType   = typePtr;
     mapType.exportedType  = exportedTypeInfoValue;
     mapType.storageOffset = storageOffset;
-    if (result)
-        *result = mapType.exportedType;
+    if (resultPtr)
+        *resultPtr = mapType.exportedType;
 
     mapPerSeg.exportedTypes[typeName]                     = mapType;
     mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;
@@ -217,7 +211,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     // Register type and value
     if (ptrTypeInfo)
         *ptrTypeInfo = typePtr;
-    *storage = storageOffset;
+    *resultStorageOffset = storageOffset;
 
     switch (typeInfo->kind)
     {
@@ -372,23 +366,17 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     return true;
 }
 
-bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
-                                     ExportedTypeInfo** result,
-                                     void*              exportedTypeInfoValue,
-                                     DataSegment*       storageSegment,
-                                     uint32_t           storageOffset,
-                                     TypeInfo*          typeInfo,
-                                     GenExportFlags     genFlags)
+bool TypeGen::genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags)
 {
     if (!typeInfo)
     {
-        *result = nullptr;
+        *resultPtr = nullptr;
         return true;
     }
 
     uint32_t tmpStorageOffset;
-    SWAG_CHECK(genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, genFlags));
-    storageSegment->addInitPtr(OFFSET_OF_R(result), tmpStorageOffset);
+    SWAG_CHECK(genExportedTypeInfoNoLock(context, typeInfo, storageSegment, &tmpStorageOffset, genFlags, nullptr, resultPtr));
+    storageSegment->addInitPtr(OFFSET_OF_R(resultPtr), tmpStorageOffset);
 
     return true;
 }
