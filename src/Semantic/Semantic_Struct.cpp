@@ -326,19 +326,19 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     YIELD();
 
     // Construct itable in the constant segment
-    // Header has 2 pointers
+    // - Header of one pointer (the type)
+    // - Then one pointer for interface functions
+    // We have at least one room for a function, even if the interface is empty
     // :itableHeader
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
-    constexpr int  sizeOfHeader = 2 * sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve(numFctInterface * sizeof(void*) + sizeOfHeader + sizeof(void*), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
+    constexpr int  sizeOfHeader = sizeof(void*);
+    const uint32_t itableOffset = constSegment->reserve(max(numFctInterface, 1) * sizeof(void*) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader
     // The first value will be the concrete type to the interface
     // The second value will be the concrete type to the corresponding struct
-    *ptrITable++ = nullptr;
-    offset += sizeof(void*);
     *ptrITable++ = nullptr;
     offset += sizeof(void*);
 
