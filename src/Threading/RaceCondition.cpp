@@ -1,5 +1,5 @@
 #include "pch.h"
-#ifdef SWAG_HAS_RACE_CONDITION
+#if defined(SWAG_HAS_RACE_CONDITION) || defined(SWAG_HAS_RACE_CONDITION_CORE)
 #include "Report/Assert.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
@@ -40,4 +40,4 @@ void RaceCondition::unlock() const
     }
 }
 
-#endif // SWAG_HAS_RACE_CONDITION
+#endif

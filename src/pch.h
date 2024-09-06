@@ -52,13 +52,18 @@
 #define SWAG_HAS_MEMORY_CHECK
 #define SWAG_HAS_ASSERT
 #define SWAG_HAS_RACE_CONDITION
+#define SWAG_HAS_RACE_CONDITION_CORE
 #endif
+
+//#define SWAG_HAS_RACE_CONDITION_CORE
 
 ////////////////////////////
 
+#include "Threading/RaceCondition.h"
 #include "Core/Allocator.h"
 #include "Core/Map.h"
 #include "Core/Set.h"
 #include "Core/Utf8.h"
 #include "Core/Vector.h"
 #include "Core/VectorNative.h"
+#include "Threading/RaceCondition.h"

@@ -779,19 +779,28 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->isNot(SymbolKind::GenericType) &&
             oneSymbol->isNot(SymbolKind::Struct) &&
             oneSymbol->isNot(SymbolKind::Enum) &&
-            (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->is(ScopeKind::Struct) &&
             !identifierRef->startScope)
         {
-            p.remove = true;
+            bool toRemove = false;
 
-            auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-            for (const auto& dep : scopeHierarchyVars)
             {
-                if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
+                SharedLock lk(oneSymbol->mutex);
+                toRemove = (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE));
+            }
+
+            if (toRemove)
+            {
+                p.remove = true;
+
+                auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
+                for (const auto& dep : scopeHierarchyVars)
                 {
-                    p.remove = false;
-                    break;
+                    if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
+                    {
+                        p.remove = false;
+                        break;
+                    }
                 }
             }
         }

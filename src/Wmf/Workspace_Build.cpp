@@ -674,7 +674,13 @@ bool Workspace::buildTarget()
 
     // Filter modules to build
     //////////////////////////////////////////////////
-    auto toBuild = modules;
+    VectorNative<Module*> toBuild;
+
+    {
+        ScopedLock lk(mutexModules);
+        toBuild = modules;
+    }
+
     if (!g_CommandLine.moduleName.empty())
     {
         if (!filteredModule)

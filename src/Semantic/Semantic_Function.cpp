@@ -26,11 +26,13 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* /*forCall*/)
     if (!funcDecl->content)
         return false;
 
-    if (funcDecl->content->is(AstNodeKind::Return) ||
-        funcDecl->content->firstChild() && funcDecl->content->firstChild()->is(AstNodeKind::Return))
+    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+        return true;
+    if (funcDecl->content->is(AstNodeKind::Return))
         return true;
 
-    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
+    SharedLock lk(funcDecl->content->mutex);
+    if (funcDecl->content->firstChild() && funcDecl->content->firstChild()->is(AstNodeKind::Return))
         return true;
 
     return false;
@@ -1834,7 +1836,14 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     Scope* newScope = identifier->ownerScope;
     if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
     {
-        newScope          = Ast::newScope(inlineNode, form("__inline%d", identifier->ownerScope->childrenScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        uint32_t numScopes = 0;
+
+        {
+            SharedLock lk(identifier->ownerScope->mutex);
+            numScopes = identifier->ownerScope->childrenScopes.size();
+        }
+
+        newScope          = Ast::newScope(inlineNode, form("__inline%d", numScopes), ScopeKind::Inline, identifier->ownerScope);
         inlineNode->scope = newScope;
     }
 
