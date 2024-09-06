@@ -267,7 +267,11 @@ namespace
 
 bool Semantic::checkAccess(JobContext* context, AstNode* node)
 {
-    computeAccess(node);
+    {
+        SharedLock lk(node->mutex);
+        computeAccess(node);
+    }
+
     if (!node->hasAttribute(ATTRIBUTE_PUBLIC))
         return true;
     if (!node->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))

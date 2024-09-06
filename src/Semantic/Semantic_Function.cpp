@@ -446,6 +446,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 bool Semantic::setFullResolve(SemanticContext*, AstFuncDecl* funcNode)
 {
     ScopedLock lk(funcNode->funcMutex);
+    SharedLock lk1(funcNode->mutex);
     computeAccess(funcNode);
     funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE | AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
     funcNode->dependentJobs.setRunning();
