@@ -43,8 +43,8 @@ struct TypeGen
     bool         genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* resultStorageOffset, GenExportFlags genFlags = 0, TypeInfo** ptrTypeInfo = nullptr, ExportedTypeInfo** resultPtr = nullptr);
     bool         genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* resultStorageOffset, GenExportFlags genFlags, TypeInfo** ptrTypeInfo, ExportedTypeInfo** resultPtr);
     bool         genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* param, GenExportFlags genFlags, uint32_t offset = UINT32_MAX);
-    bool         genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags);
-    static void* genExportedSlice(JobContext* context, uint32_t sizeOf, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
+    bool         genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags);
+    static void* genExportedSlice(JobContext* context, uint32_t sizeOf, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
     static void* genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
     bool         genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, GenExportFlags genFlags);
     bool         genExportedAttributes(JobContext* context, AttributeList& attributes, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, GenExportFlags genFlags);
@@ -62,4 +62,4 @@ struct TypeGen
 };
 
 #define OFFSET_OF(__field)   (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) exportedTypeInfoValue))
-#define OFFSET_OF_R(__field) (storageOffset + (uint32_t) ((uint64_t) (__field) - (uint64_t) exportedTypeInfoValue))
+#define OFFSET_OF_R(__field) (storageOffset + (uint32_t) ((uint64_t) (__field) - (uint64_t) exportedValue))

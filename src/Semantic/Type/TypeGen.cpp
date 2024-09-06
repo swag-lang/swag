@@ -366,7 +366,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     return true;
 }
 
-bool TypeGen::genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags)
+bool TypeGen::genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags)
 {
     if (!typeInfo)
     {
@@ -397,13 +397,7 @@ bool TypeGen::genExportedString(JobContext*, SwagSlice* result, const Utf8& str,
     return true;
 }
 
-void* TypeGen::genExportedSlice(JobContext*,
-                                uint32_t     sizeOf,
-                                void*        exportedTypeInfoValue,
-                                DataSegment* storageSegment,
-                                uint32_t     storageOffset,
-                                void**       result,
-                                uint32_t&    storageArray)
+void* TypeGen::genExportedSlice(JobContext*, uint32_t sizeOf, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
