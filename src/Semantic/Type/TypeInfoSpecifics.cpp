@@ -992,6 +992,9 @@ void TypeInfoStruct::flattenUsingFields()
 
     if (!flattenFields.empty())
         return;
+    if (fields.empty())
+        return;
+
     flattenFields.reserve(fields.size());
     for (const auto p : fields)
         flatten(flattenFields, p);

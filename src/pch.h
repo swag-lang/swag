@@ -55,7 +55,7 @@
 #define SWAG_HAS_RACE_CONDITION_CORE
 #endif
 
-//#define SWAG_HAS_RACE_CONDITION_CORE
+#define SWAG_HAS_RACE_CONDITION_CORE
 
 ////////////////////////////
 

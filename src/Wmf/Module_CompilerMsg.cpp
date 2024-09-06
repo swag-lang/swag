@@ -11,7 +11,9 @@ bool Module::postCompilerMessage(CompilerMessage& msg)
     // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)
     {
-        if (byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty())
+        const auto type = static_cast<int>(msg.concrete.kind);
+        ScopedLock lk(byteCodeCompilerMutex[type]);
+        if (byteCodeCompiler[type].empty())
             return true;
     }
 
@@ -31,7 +33,8 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         auto& msg = compilerMessages[pass][i];
 
         // If no #message function corresponding to the message, remove
-        if (byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty())
+        const auto type = static_cast<int>(msg.concrete.kind);
+        if (byteCodeCompiler[type].empty())
         {
             compilerMessages[pass][i] = compilerMessages[pass].back();
             compilerMessages[pass].pop_back();

@@ -132,6 +132,7 @@ void Semantic::computeAccess(AstNode* node)
 void Semantic::computeAccessRec(AstNode* node)
 {
     setNodeAccess(node);
+
     for (const auto c : node->children)
     {
         if (!canInheritAccess(c))

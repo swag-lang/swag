@@ -365,7 +365,14 @@ JobResult EnumerateModuleJob::execute()
     }
 
     // Deal with embedded modules
-    for (const auto m : g_Workspace->modules)
+    VectorNative<Module*> inModules;
+
+    {
+        ScopedLock lk(g_Workspace->mutexModules);
+        inModules = g_Workspace->modules;
+    }
+
+    for (const auto m : inModules)
     {
         if (!m->buildCfg.embeddedImports)
             continue;

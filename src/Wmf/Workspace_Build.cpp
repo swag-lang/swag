@@ -151,7 +151,11 @@ void Workspace::addBootstrap()
     bootstrapModule       = Allocator::alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
     bootstrapModule->setup("bootstrap", "");
-    modules.push_back(bootstrapModule);
+
+    {
+        ScopedLock lk(mutexModules);
+        modules.push_back(bootstrapModule);
+    }
 
     const auto file = Allocator::alloc<SourceFile>();
     file->name      = "bootstrap.swg";
@@ -182,7 +186,11 @@ void Workspace::addRuntime()
     runtimeModule       = Allocator::alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
     runtimeModule->setup("runtime", "");
-    modules.push_back(runtimeModule);
+
+    {
+        ScopedLock lk(mutexModules);
+        modules.push_back(runtimeModule);
+    }
 
     addRuntimeFile(R"(runtime.swg)");
     addRuntimeFile(R"(runtime_err.swg)");
