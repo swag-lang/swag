@@ -1,13 +1,13 @@
 #global testerror "Err0023"
 
-struct A5453
-{
-    parent: s32
-}
-
 struct B5453
 {
     using l: A5453
+}
+
+struct A5453
+{
+    parent: s32
 }
 
 impl B5453

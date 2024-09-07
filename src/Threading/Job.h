@@ -67,6 +67,7 @@ enum class JobWaitKind
     SemByteCodeResolved,
     SemFullResolve,
     SemPartialResolve,
+    SemStructStartSolve,
     GenExportedType,
     GenExportedType1,
     PendingLambdaTyping,

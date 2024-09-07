@@ -15,10 +15,10 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
 {
     auto       node    = context->node;
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
-
+    
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0338, Naming::kindName(node->ownerScope->kind).cstr())}));
-
+    
     const CollectedScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? COLLECTED_SCOPE_STRUCT_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);

@@ -12,13 +12,7 @@
 
 namespace
 {
-    bool cannotMatchIdentifier(SemanticContext*            context,
-                               MatchResult                 result,
-                               uint32_t                    paramIdx,
-                               VectorNative<OneTryMatch*>& tryMatches,
-                               AstNode*                    node,
-                               Vector<const Diagnostic*>&  notes,
-                               int&                        overloadIndex)
+    bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, uint32_t paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes, int& overloadIndex)
     {
         if (tryMatches.empty())
             return false;

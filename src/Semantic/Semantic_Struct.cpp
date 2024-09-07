@@ -854,6 +854,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
     auto typeInfo   = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->baseJob;
 
+    {
+        ScopedLock lk1(node->mutex);
+        node->addSemFlag(SEMFLAG_STRUCT_START_SOLVE);
+        node->dependentJobs.setRunning();
+    }
+
     SWAG_ASSERT(typeInfo->declNode);
 
     // Structure packing

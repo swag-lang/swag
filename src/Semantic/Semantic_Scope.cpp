@@ -363,7 +363,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
             addCollectedScopeOnce(scopes, it0.scope, it0.flags);
 
             if (it0.scope && it0.scope->is(ScopeKind::Struct))
-            {
+            {               
                 SharedLock lk(it0.scope->owner->mutex);
                 if (it0.scope->owner->hasExtMisc())
                 {

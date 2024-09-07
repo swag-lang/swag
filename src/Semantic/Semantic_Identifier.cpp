@@ -1026,6 +1026,11 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
             }
         }
 
+        // A using var need to wait for the corresponding struct (if this is a struct or pointer to struct) to
+        // have solve all its fields, in order for everything other "using" nodes to be registered before solving.
+        waitStructStartSolve(context->baseJob, identifier, symbol->overloads[0]->typeInfo);
+        YIELD();
+
         // Partial resolution
         identifier->setResolvedSymbol(symbol, symbol->overloads[0]);
         identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;

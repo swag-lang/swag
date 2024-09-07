@@ -59,6 +59,7 @@ namespace Semantic
     void waitForOverloads(Job* job, SymbolName* symbol);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitOverloadCompleted(Job* job, const SymbolOverload* overload);
+    void waitStructStartSolve(Job* job, AstIdentifier* identifier, TypeInfo* typeInfo);
     void waitStructGenerated(Job* job, TypeInfo* typeInfo);
     void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
     void waitSymbolNoLock(Job* job, SymbolName* symbol);

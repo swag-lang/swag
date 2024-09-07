@@ -1978,6 +1978,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     return dealWithMatchResults(context, tryMatches, node, flags, matches, genericMatches, genericMatchesSI, forStruct, prevMatchesCount);
 }
 
+#pragma optimize("", off)
 bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef)
 {
     const auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
@@ -2023,6 +2024,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         for (const auto& oneOver : toSolveOverload)
         {
             const auto symbolOverload = oneOver.overload;
+
             identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
             identifierRef->previousResolvedNode = orgPreviousResolvedNode;
 

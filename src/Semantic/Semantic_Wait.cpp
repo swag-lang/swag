@@ -129,6 +129,46 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     }
 }
 
+void Semantic::waitStructStartSolve(Job* job, AstIdentifier* identifier, TypeInfo* typeInfo)
+{
+    if (identifier->hasAstFlag(AST_STRUCT_MEMBER))
+        return;
+
+    if (typeInfo->isArrayOfStruct())
+        typeInfo = castTypeInfo<TypeInfoArray>(typeInfo)->finalType;
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
+    typeInfo = typeInfo->getConcreteAlias();
+
+    if (!typeInfo->isStruct())
+        return;
+    if (typeInfo->isGeneric())
+        return;
+
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    if (!typeInfoStruct->declNode)
+        return;
+    if (typeInfoStruct->hasFlag(TYPEINFO_GHOST_TUPLE))
+        return;
+    if (typeInfoStruct->declNode->is(AstNodeKind::InterfaceDecl))
+        return;
+
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    if (!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_HAS_USING))
+        return;
+
+    auto p1 = identifier->findParent(AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+    if (!p1 || !p1->hasAstFlag(AST_DECL_USING))
+        return;
+
+    ScopedLock lk(structNode->mutex);
+    if (!structNode->hasSemFlag(SEMFLAG_STRUCT_START_SOLVE))
+    {
+        structNode->dependentJobs.add(job);
+        job->setPending(JobWaitKind::SemStructStartSolve, structNode->resolvedSymbolName(), structNode, nullptr);
+    }
+}
+
 void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
 {
     if (typeInfo->isArrayOfStruct())
