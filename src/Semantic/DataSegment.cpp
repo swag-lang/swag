@@ -142,7 +142,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf, uint8_t** r
 
 uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
 {
-    SWAG_RACE_CONDITION_WRITE(raceC);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
 
     SWAG_ASSERT(size);
     Bucket* last = nullptr;
@@ -225,7 +225,7 @@ uint8_t* DataSegment::address(uint32_t location)
 
 uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
-    SWAG_RACE_CONDITION_READ(raceC);
+    SWAG_RACE_CONDITION_READ_SEGMENT(raceC);
     SWAG_ASSERT(location != UINT32_MAX);
     SWAG_ASSERT(!buckets.empty());
     for (auto& i : buckets)
@@ -329,7 +329,7 @@ uint32_t DataSegment::addString(const Utf8& str, uint8_t** resultPtr)
 
 uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
 {
-    SWAG_RACE_CONDITION_WRITE(raceC);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
 
     // Same string already there ?
     using P                                 = MapUtf8<CacheValue>;
