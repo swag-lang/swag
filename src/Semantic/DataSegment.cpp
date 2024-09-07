@@ -62,6 +62,8 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
 
 void DataSegment::initFrom(DataSegment* other)
 {
+    SWAG_RACE_CONDITION_READ_SEGMENT(other->raceC);
+
     if (other->totalCount)
     {
         // :DefaultSizeBuckets
@@ -231,7 +233,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     for (auto& i : buckets)
     {
         const auto bucket = &i;
-        if (location < static_cast<uint64_t>(bucket->count))
+        if (location < bucket->count)
             return bucket->buffer + location;
         location -= bucket->count;
     }
@@ -259,6 +261,8 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
     }
 
     ScopedLock lk(mutex);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
+
     switch (typeInfo->sizeOf)
     {
         case 1:
@@ -503,6 +507,7 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
     if (const auto it = savedValues.find(address); it != savedValues.end())
         return;
 
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
     SaveValue sv;
     sv.size = size;
 
@@ -538,6 +543,8 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
 void DataSegment::restoreAllValues()
 {
     ScopedLock lk(mutex);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
+
     for (const auto& one : savedValues)
     {
         if (one.second.value.u64 == 0)
@@ -581,6 +588,8 @@ void DataSegment::release()
 void DataSegment::makeLinear()
 {
     ScopedLock lk(mutex);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
+
     if (buckets.size() == 1)
         return;
 

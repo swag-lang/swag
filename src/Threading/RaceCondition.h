@@ -29,22 +29,27 @@ struct RaceCondition
 #define SWAG_RACE_CONDITION_ON_READ(__x)     RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), true)
 #define SWAG_RACE_CONDITION_ON_READ1(__x)    RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), true)
 #define SWAG_RACE_CONDITION_ON_INSTANCE(__x) RaceCondition::Instance __x
+
 #define SWAG_RACE_CONDITION_OFF_WRITE(__x) \
     do                                     \
     {                                      \
     } while (0)
+
 #define SWAG_RACE_CONDITION_OFF_WRITE1(__x) \
     do                                      \
     {                                       \
     } while (0)
+
 #define SWAG_RACE_CONDITION_OFF_READ(__x) \
     do                                    \
     {                                     \
     } while (0)
+
 #define SWAG_RACE_CONDITION_OFF_READ1(__x) \
     do                                     \
     {                                      \
     } while (0)
+
 #define SWAG_RACE_CONDITION_OFF_INSTANCE(__x) using __dummy##__x = int
 
 #ifdef SWAG_HAS_RACE_CONDITION
