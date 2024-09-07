@@ -41,7 +41,11 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
-    textMsg    = preprocess(textMsg);
+
+    // Warnings should be correct without preprocessing, as warning construction can have a little
+    // impact on compile speed (especially if lots of warnings hidden because of various optioons)
+    if (errorLevel != DiagnosticLevel::Warning)
+        textMsg = preprocess(textMsg);
 }
 
 namespace
