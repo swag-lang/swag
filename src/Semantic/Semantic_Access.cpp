@@ -126,13 +126,14 @@ void Semantic::computeAccess(AstNode* node)
     if (node->hasSemFlag(SEMFLAG_ACCESS_COMPUTED))
         return;
     node->addSemFlag(SEMFLAG_ACCESS_COMPUTED);
-    computeAccessRec(node);
+
+    // The first will not lock, and this is normal !
+    doComputeAccess(node);
 }
 
-void Semantic::computeAccessRec(AstNode* node)
+void Semantic::doComputeAccess(AstNode* node)
 {
     setNodeAccess(node);
-
     for (const auto c : node->children)
     {
         if (!canInheritAccess(c))
@@ -140,6 +141,15 @@ void Semantic::computeAccessRec(AstNode* node)
         computeAccessRec(c);
         inheritAccess(c);
     }
+}
+
+void Semantic::computeAccessRec(AstNode* node)
+{
+    if (node->is(AstNodeKind::StructDecl))
+        node->mutex.lock_shared();
+    doComputeAccess(node);
+    if (node->is(AstNodeKind::StructDecl))
+        node->mutex.unlock_shared();
 }
 
 AstSemFlags Semantic::attributeToAccess(const AttributeFlags& attribute)

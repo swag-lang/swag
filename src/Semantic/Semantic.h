@@ -120,6 +120,7 @@ namespace Semantic
     bool        canInheritAccess(const AstNode* node);
     bool        checkAccess(JobContext* context, AstNode* node);
     void        computeAccess(AstNode* node);
+    void        doComputeAccess(AstNode* node);
     void        computeAccessRec(AstNode* node);
     void        doInheritAccess(AstNode* forNode, const AstNode* node);
     void        inheritAccess(const AstNode* node);

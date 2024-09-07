@@ -627,21 +627,16 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
         decreaseInterfaceCount(typeStruct);
     }
 
-    // Decrease methods count to resolve
+    // Remove methods
     Set<TypeInfoStruct*> allStructs;
     for (const auto& typeStructPair : block->methodsCount)
     {
-        // Remove the corresponding method
         auto typeStruct = typeStructPair.typeInfo;
         allStructs.insert(typeStruct);
-
         typeStruct->methods[typeStructPair.methodIdx] = nullptr;
-
-        // Then decrease wanted method number count
-        decreaseMethodCount(typeStructPair.funcNode, typeStruct);
     }
 
-    // Clean array
+    // Clean array of methods
     for (const auto typeStruct : allStructs)
     {
         for (uint32_t i = 0; i < typeStruct->methods.size(); i++)
@@ -652,6 +647,14 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
                 i--;
             }
         }
+    }
+
+    // Decrease methods count to resolve
+    // Do this after the clean, to avoid race conditions on the 'methods' array
+    for (const auto& typeStructPair : block->methodsCount)
+    {
+        auto typeStruct = typeStructPair.typeInfo;
+        decreaseMethodCount(typeStructPair.funcNode, typeStruct);
     }
 
     // Eliminate imports
