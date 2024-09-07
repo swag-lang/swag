@@ -1,6 +1,18 @@
 #pragma once
 #include "Threading/Mutex.h"
 
+#ifdef SWAG_HAS_RACE_CONDITION_TYPEGEN
+#define SWAG_RACE_CONDITION_WRITE_TYPEGEN(__x)    SWAG_RACE_CONDITION_ON_WRITE(__x)
+#define SWAG_RACE_CONDITION_READ_TYPEGEN(__x)     SWAG_RACE_CONDITION_ON_READ(__x)
+#define SWAG_RACE_CONDITION_READ1_TYPEGEN(__x)    SWAG_RACE_CONDITION_ON_READ1(__x)
+#define SWAG_RACE_CONDITION_INSTANCE_TYPEGEN(__x) SWAG_RACE_CONDITION_ON_INSTANCE(__x)
+#else
+#define SWAG_RACE_CONDITION_WRITE_TYPEGEN(__x)    SWAG_RACE_CONDITION_OFF_WRITE(__x)
+#define SWAG_RACE_CONDITION_READ_TYPEGEN(__x)     SWAG_RACE_CONDITION_OFF_READ(__x)
+#define SWAG_RACE_CONDITION_READ1_TYPEGEN(__x)    SWAG_RACE_CONDITION_OFF_READ1(__x)
+#define SWAG_RACE_CONDITION_INSTANCE_TYPEGEN(__x) SWAG_RACE_CONDITION_OFF_INSTANCE(__x)
+#endif
+
 struct AstNode;
 struct AttributeList;
 struct ComputedValue;
@@ -36,6 +48,7 @@ struct TypeGen
         MapUtf8<MapType>                        exportedTypes;
         MapUtf8<TypeGenStructJob*>              exportedTypesJob;
         Map<const ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
+        SWAG_RACE_CONDITION_INSTANCE_TYPEGEN(raceC);
     };
 
     void         setup(const Utf8& moduleName);

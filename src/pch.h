@@ -54,6 +54,7 @@
 #define SWAG_HAS_RACE_CONDITION
 #define SWAG_HAS_RACE_CONDITION_VECTOR
 #define SWAG_HAS_RACE_CONDITION_SEGMENT
+#define SWAG_HAS_RACE_CONDITION_TYPEGEN
 #endif
 
 ////////////////////////////

@@ -202,6 +202,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
         *resultPtr = mapType.exportedType;
     }
 
+    SWAG_RACE_CONDITION_WRITE_TYPEGEN(mapPerSeg.raceC);
     mapPerSeg.exportedTypes[typeName]                     = mapType;
     mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;
 
@@ -570,8 +571,10 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
 
 void TypeGen::tableJobDone(const TypeGenStructJob* job, DataSegment* segment)
 {
-    auto&      mapPerSeg = getMapPerSeg(segment);
-    const auto it        = mapPerSeg.exportedTypesJob.find(job->typeName);
+    auto& mapPerSeg = getMapPerSeg(segment);
+
+    SWAG_RACE_CONDITION_WRITE_TYPEGEN(mapPerSeg.raceC);
+    const auto it = mapPerSeg.exportedTypesJob.find(job->typeName);
     SWAG_ASSERT(it != mapPerSeg.exportedTypesJob.end());
     mapPerSeg.exportedTypesJob.erase(it);
     for (const auto it1 : job->patchMethods)
@@ -580,8 +583,10 @@ void TypeGen::tableJobDone(const TypeGenStructJob* job, DataSegment* segment)
 
 TypeInfo* TypeGen::getRealType(const DataSegment* segment, const ExportedTypeInfo* concreteType)
 {
-    auto&      mapPerSeg = getMapPerSeg(segment);
+    auto& mapPerSeg = getMapPerSeg(segment);
+
     SharedLock lk(mapPerSeg.mutex);
+    SWAG_RACE_CONDITION_READ_TYPEGEN(mapPerSeg.raceC);
     const auto it = mapPerSeg.exportedTypesReverse.find(concreteType);
     if (it == mapPerSeg.exportedTypesReverse.end())
         return nullptr;
@@ -593,18 +598,28 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
     if (mapPerSegment.count == 0)
         setup(name);
 
-    mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
-    for (auto& val : mapPerSegment[0]->exportedTypes | std::views::values)
     {
-        val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->constantSegment.address(val.storageOffset));
-        mapPerSegment[0]->exportedTypesReverse[val.exportedType] = val.realType;
+        SWAG_RACE_CONDITION_WRITE_TYPEGEN(mapPerSegment[0]->raceC);
+        SWAG_RACE_CONDITION_READ1_TYPEGEN(other->mapPerSegment[0]->raceC);
+
+        mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
+        for (auto& val : mapPerSegment[0]->exportedTypes | std::views::values)
+        {
+            val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->constantSegment.address(val.storageOffset));
+            mapPerSegment[0]->exportedTypesReverse[val.exportedType] = val.realType;
+        }
     }
 
-    mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
-    for (auto& val : mapPerSegment[1]->exportedTypes | std::views::values)
     {
-        val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->compilerSegment.address(val.storageOffset));
-        mapPerSegment[1]->exportedTypesReverse[val.exportedType] = val.realType;
+        SWAG_RACE_CONDITION_WRITE_TYPEGEN(mapPerSegment[1]->raceC);
+        SWAG_RACE_CONDITION_READ1_TYPEGEN(other->mapPerSegment[1]->raceC);
+
+        mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
+        for (auto& val : mapPerSegment[1]->exportedTypes | std::views::values)
+        {
+            val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->compilerSegment.address(val.storageOffset));
+            mapPerSegment[1]->exportedTypesReverse[val.exportedType] = val.realType;
+        }
     }
 }
 

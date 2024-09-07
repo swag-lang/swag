@@ -92,6 +92,7 @@ bool TypeGenStructJob::computeStruct()
 
     auto&      mapPerSeg = typeGen->getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
+    SWAG_RACE_CONDITION_WRITE_TYPEGEN(mapPerSeg.raceC);
 
     // Simple structure name, without generics
     SWAG_CHECK(typeGen->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSET_OF(concreteType->structName)));
