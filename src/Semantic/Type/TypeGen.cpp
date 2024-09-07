@@ -197,7 +197,10 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     mapType.exportedType  = exportedTypeInfoValue;
     mapType.storageOffset = storageOffset;
     if (resultPtr)
+    {
+        SWAG_FORCE_ASSERT(*resultPtr == nullptr);
         *resultPtr = mapType.exportedType;
+    }
 
     mapPerSeg.exportedTypes[typeName]                     = mapType;
     mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;

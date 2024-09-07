@@ -56,9 +56,6 @@
 #define SWAG_HAS_RACE_CONDITION_SEGMENT
 #endif
 
-#define SWAG_HAS_RACE_CONDITION_VECTOR
-#define SWAG_HAS_RACE_CONDITION_SEGMENT
-
 ////////////////////////////
 
 #include "Threading/RaceCondition.h"

@@ -255,7 +255,7 @@ bool AstNode::addAnyType(SemanticContext* context, TypeInfo* typeinfo)
     addExtraPointer(ExtraPointerKind::AnyTypeSegment, anyTypeSegment);
 
     uint32_t          offset;
-    ExportedTypeInfo* type;
+    ExportedTypeInfo* type = nullptr;
     SWAG_CHECK(module->typeGen.genExportedTypeInfo(context, typeinfo, anyTypeSegment, &offset, 0, nullptr, &type));
     YIELD();
 
