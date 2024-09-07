@@ -264,6 +264,7 @@ namespace
             }
         }
 
+        SharedLock lk(n->mutex);
         for (const auto c : n->children)
         {
             const auto res = getErrorCulprit(c, onNode);
