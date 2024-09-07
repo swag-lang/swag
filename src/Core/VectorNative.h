@@ -3,6 +3,16 @@
 #include "Core/Allocator.h"
 #include "Report/Assert.h"
 
+#ifdef SWAG_HAS_RACE_CONDITION_VECTOR
+#define SWAG_RACE_CONDITION_WRITE_VECTOR(__x)    SWAG_RACE_CONDITION_ON_WRITE(__x)
+#define SWAG_RACE_CONDITION_READ_VECTOR(__x)     SWAG_RACE_CONDITION_ON_READ(__x)
+#define SWAG_RACE_CONDITION_INSTANCE_VECTOR(__x) SWAG_RACE_CONDITION_ON_INSTANCE(__x)
+#else
+#define SWAG_RACE_CONDITION_WRITE_VECTOR(__x)    SWAG_RACE_CONDITION_OFF_WRITE(__x)
+#define SWAG_RACE_CONDITION_READ_VECTOR(__x)     SWAG_RACE_CONDITION_OFF_READ(__x)
+#define SWAG_RACE_CONDITION_INSTANCE_VECTOR(__x) SWAG_RACE_CONDITION_OFF_INSTANCE(__x)
+#endif
+
 template<typename T>
 struct VectorNative
 {
@@ -13,6 +23,7 @@ struct VectorNative
 
     VectorNative(const VectorNative& other)
     {
+        SWAG_RACE_CONDITION_READ_VECTOR(other.raceC);
         allocated = 0;
         buffer    = nullptr;
 
@@ -23,6 +34,7 @@ struct VectorNative
 
     VectorNative(VectorNative&& other) noexcept
     {
+        SWAG_RACE_CONDITION_READ_VECTOR(other.raceC);
         buffer          = other.buffer;
         count           = other.count;
         allocated       = other.allocated;
@@ -44,7 +56,7 @@ struct VectorNative
 
     void release()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (!buffer)
             return;
         Allocator::freeAlignedN(buffer, allocated);
@@ -55,7 +67,7 @@ struct VectorNative
 
     void reserve(uint32_t newCapacity, bool copy = true)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (newCapacity <= allocated)
             return;
 
@@ -72,7 +84,7 @@ struct VectorNative
 
     T* reserve_back()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (count + 1 > allocated)
             reserve(count + 1);
         count++;
@@ -81,7 +93,7 @@ struct VectorNative
 
     void push_back(const T& val)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (count + 1 > allocated)
             reserve(count + 1);
         buffer[count++] = val;
@@ -89,7 +101,7 @@ struct VectorNative
 
     void push_back_once(const T& val)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (contains(val))
             return;
         push_back(val);
@@ -97,7 +109,7 @@ struct VectorNative
 
     void push_front(const T& val)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (count + 1 > allocated)
             reserve(count + 1);
         memmove(buffer + 1, buffer, count * sizeof(T));
@@ -107,14 +119,14 @@ struct VectorNative
 
     void reverse()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         for (uint32_t i = 0; i < count / 2; i++)
             std::swap(buffer[i], buffer[count - i - 1]);
     }
 
     void insert_at_index(const T& val, size_t index)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (index == count)
         {
             push_back(val);
@@ -131,14 +143,14 @@ struct VectorNative
 
     void pop_back()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         SWAG_ASSERT(count);
         count--;
     }
 
     T get_pop_back()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         SWAG_ASSERT(count);
         count--;
         return buffer[count];
@@ -146,7 +158,7 @@ struct VectorNative
 
     void expand_clear(size_t num)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (num)
         {
             reserve(static_cast<uint32_t>(num), true);
@@ -159,7 +171,7 @@ struct VectorNative
 
     void set_size_clear(size_t num)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (num)
         {
             reserve(static_cast<uint32_t>(num), false);
@@ -171,63 +183,63 @@ struct VectorNative
 
     void clear()
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         count = 0;
     }
 
     T* begin()
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer;
     }
 
     T* end()
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer + count;
     }
 
     const T* begin() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer;
     }
 
     const T* end() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer + count;
     }
 
     bool empty() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return count == 0;
     }
 
     T& back()
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
     const T& back() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
     const T& front() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer[0];
     }
 
     void erase(size_t index, size_t num = 1)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (index != count - num)
             memmove(buffer + index, buffer + index + num, (count - index - num) * sizeof(T));
         count -= static_cast<uint32_t>(num);
@@ -235,7 +247,7 @@ struct VectorNative
 
     void erase_unordered(size_t index)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (index != count - 1)
             buffer[index] = buffer[count - 1];
         count--;
@@ -243,7 +255,7 @@ struct VectorNative
 
     void erase_ordered_by_val(const T& val)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         for (uint32_t i = 0; i < count; i++)
         {
             if (buffer[i] == val)
@@ -256,7 +268,7 @@ struct VectorNative
 
     void erase_unordered_by_val(const T& val)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         for (uint32_t i = 0; i < count; i++)
         {
             if (buffer[i] == val)
@@ -271,7 +283,7 @@ struct VectorNative
     {
         if (!other.count)
             return;
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         reserve(count + other.count);
         std::copy_n(other.buffer, other.count, buffer + count);
         count += other.count;
@@ -279,7 +291,7 @@ struct VectorNative
 
     int find(const T& value)
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         int idx = 0;
         for (auto& it : *this)
         {
@@ -293,7 +305,7 @@ struct VectorNative
 
     bool contains(const T& val)
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         for (uint32_t i = 0; i < count; i++)
         {
             if (buffer[i] == val)
@@ -305,19 +317,19 @@ struct VectorNative
 
     uint32_t capacity() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return allocated;
     }
 
     uint32_t size() const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return count;
     }
 
     VectorNative& operator=(const Vector<T>& other)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         count = other.size();
         if (allocated < count)
             reserve(count, false);
@@ -327,7 +339,7 @@ struct VectorNative
 
     VectorNative& operator=(const VectorNative& other) // NOLINT(bugprone-unhandled-self-assignment)
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (this == &other)
             return *this;
 
@@ -341,7 +353,7 @@ struct VectorNative
 
     VectorNative& operator=(VectorNative&& other) noexcept
     {
-        SWAG_RACE_CONDITION_WRITE_CORE(raceC);
+        SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         count     = other.count;
         allocated = other.allocated;
         buffer    = other.buffer;
@@ -353,13 +365,13 @@ struct VectorNative
 
     const T& operator[](size_t index) const
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         return buffer[index];
     }
 
     T& operator[](size_t index)
     {
-        SWAG_RACE_CONDITION_READ_CORE(raceC);
+        SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         SWAG_ASSERT(buffer && count);
         SWAG_ASSERT(index < count);
         return buffer[index];
@@ -369,5 +381,5 @@ struct VectorNative
     uint32_t count     = 0;
     uint32_t allocated = 0;
 
-    SWAG_RACE_CONDITION_INSTANCE_CORE(raceC);
+    SWAG_RACE_CONDITION_INSTANCE_VECTOR(raceC);
 };

@@ -1,7 +1,6 @@
 #pragma once
 #include "Threading/Mutex.h"
 
-#if defined(SWAG_HAS_RACE_CONDITION) || defined(SWAG_HAS_RACE_CONDITION_CORE)
 struct RaceCondition
 {
     struct Instance
@@ -24,61 +23,40 @@ struct RaceCondition
 
     bool read = false;
 };
-#endif
 
-#ifdef SWAG_HAS_RACE_CONDITION
-
-#define SWAG_RACE_CONDITION_WRITE(__x)    RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), false)
-#define SWAG_RACE_CONDITION_WRITE1(__x)   RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), false)
-#define SWAG_RACE_CONDITION_READ(__x)     RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), true)
-#define SWAG_RACE_CONDITION_READ1(__x)    RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), true)
-#define SWAG_RACE_CONDITION_INSTANCE(__x) RaceCondition::Instance __x
-
-#else
-#define SWAG_RACE_CONDITION_WRITE(__x) \
-    do                                 \
-    {                                  \
-    } while (0)
-#define SWAG_RACE_CONDITION_WRITE1(__x) \
-    do                                  \
-    {                                   \
-    } while (0)
-#define SWAG_RACE_CONDITION_READ(__x) \
-    do                                \
-    {                                 \
-    } while (0)
-#define SWAG_RACE_CONDITION_READ1(__x) \
-    do                                 \
-    {                                  \
-    } while (0)
-#define SWAG_RACE_CONDITION_INSTANCE(__x) using __dummy##__x = int
-#endif
-
-#ifdef SWAG_HAS_RACE_CONDITION_CORE
-
-#define SWAG_RACE_CONDITION_WRITE_CORE(__x)    RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), false)
-#define SWAG_RACE_CONDITION_WRITE1_CORE(__x)   RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), false)
-#define SWAG_RACE_CONDITION_READ_CORE(__x)     RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), true)
-#define SWAG_RACE_CONDITION_READ1_CORE(__x)    RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), true)
-#define SWAG_RACE_CONDITION_INSTANCE_CORE(__x) RaceCondition::Instance __x
-
-#else
-
-#define SWAG_RACE_CONDITION_WRITE_CORE(__x) \
-    do                                      \
-    {                                       \
-    } while (0)
-#define SWAG_RACE_CONDITION_WRITE1_CORE(__x) \
-    do                                       \
-    {                                        \
-    } while (0)
-#define SWAG_RACE_CONDITION_READ_CORE(__x) \
+#define SWAG_RACE_CONDITION_ON_WRITE(__x)    RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), false)
+#define SWAG_RACE_CONDITION_ON_WRITE1(__x)   RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), false)
+#define SWAG_RACE_CONDITION_ON_READ(__x)     RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), true)
+#define SWAG_RACE_CONDITION_ON_READ1(__x)    RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), true)
+#define SWAG_RACE_CONDITION_ON_INSTANCE(__x) RaceCondition::Instance __x
+#define SWAG_RACE_CONDITION_OFF_WRITE(__x) \
     do                                     \
     {                                      \
     } while (0)
-#define SWAG_RACE_CONDITION_READ1_CORE(__x) \
+#define SWAG_RACE_CONDITION_OFF_WRITE1(__x) \
     do                                      \
     {                                       \
     } while (0)
-#define SWAG_RACE_CONDITION_INSTANCE_CORE(__x) using __dummy##__x = int
+#define SWAG_RACE_CONDITION_OFF_READ(__x) \
+    do                                    \
+    {                                     \
+    } while (0)
+#define SWAG_RACE_CONDITION_OFF_READ1(__x) \
+    do                                     \
+    {                                      \
+    } while (0)
+#define SWAG_RACE_CONDITION_OFF_INSTANCE(__x) using __dummy##__x = int
+
+#ifdef SWAG_HAS_RACE_CONDITION
+#define SWAG_RACE_CONDITION_WRITE(__x)    SWAG_RACE_CONDITION_ON_WRITE(__x)
+#define SWAG_RACE_CONDITION_WRITE1(__x)   SWAG_RACE_CONDITION_ON_WRITE1(__x)
+#define SWAG_RACE_CONDITION_READ(__x)     SWAG_RACE_CONDITION_ON_READ(__x)
+#define SWAG_RACE_CONDITION_READ1(__x)    SWAG_RACE_CONDITION_ON_READ1(__x)
+#define SWAG_RACE_CONDITION_INSTANCE(__x) SWAG_RACE_CONDITION_ON_INSTANCE(__x)
+#else
+#define SWAG_RACE_CONDITION_WRITE(__x)    SWAG_RACE_CONDITION_OFF_WRITE(__x)
+#define SWAG_RACE_CONDITION_WRITE1(__x)   SWAG_RACE_CONDITION_OFF_WRITE1(__x)
+#define SWAG_RACE_CONDITION_READ(__x)     SWAG_RACE_CONDITION_OFF_READ(__x)
+#define SWAG_RACE_CONDITION_READ1(__x)    SWAG_RACE_CONDITION_OFF_READ1(__x)
+#define SWAG_RACE_CONDITION_INSTANCE(__x) SWAG_RACE_CONDITION_OFF_INSTANCE(__x)
 #endif

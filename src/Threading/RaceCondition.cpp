@@ -1,5 +1,4 @@
 #include "pch.h"
-#if defined(SWAG_HAS_RACE_CONDITION) || defined(SWAG_HAS_RACE_CONDITION_CORE)
 #include "Report/Assert.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
@@ -39,5 +38,3 @@ void RaceCondition::unlock() const
         --myInstance->countWrite;
     }
 }
-
-#endif
