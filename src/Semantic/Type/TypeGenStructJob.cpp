@@ -144,7 +144,7 @@ bool TypeGenStructJob::computeStruct()
     // Fields
     concreteType->fields.buffer = nullptr;
     concreteType->fields.count  = 0;
-    if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE))
+    if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE) && !realType->isGeneric())
     {
         SWAG_RACE_CONDITION_READ(realType->raceFields);
         concreteType->fields.count = realType->fields.size();
@@ -165,27 +165,29 @@ bool TypeGenStructJob::computeStruct()
     // Fields with using
     concreteType->usingFields.buffer = nullptr;
     concreteType->usingFields.count  = 0;
-
-    VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
-    realType->collectUsingFields(usingFields);
-    concreteType->usingFields.count = usingFields.size();
-    if (concreteType->usingFields.count)
+    if (!realType->isGeneric())
     {
-        uint32_t   storageArray;
-        const auto count     = static_cast<uint32_t>(concreteType->usingFields.count * sizeof(ExportedTypeValue));
-        const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->usingFields.buffer, storageArray);
-        const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
-        for (uint32_t param = 0; param < concreteType->usingFields.count; param++)
+        VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
+        realType->collectUsingFields(usingFields);
+        concreteType->usingFields.count = usingFields.size();
+        if (concreteType->usingFields.count)
         {
-            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, usingFields[param].first, genFlags, usingFields[param].second));
-            storageArray += sizeof(ExportedTypeValue);
+            uint32_t   storageArray;
+            const auto count     = static_cast<uint32_t>(concreteType->usingFields.count * sizeof(ExportedTypeValue));
+            const auto genSlice  = TypeGen::genExportedSlice(baseContext, count, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->usingFields.buffer, storageArray);
+            const auto addrArray = static_cast<ExportedTypeValue*>(genSlice);
+            for (uint32_t param = 0; param < concreteType->usingFields.count; param++)
+            {
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, usingFields[param].first, genFlags, usingFields[param].second));
+                storageArray += sizeof(ExportedTypeValue);
+            }
         }
     }
 
     // Methods
     concreteType->methods.buffer = nullptr;
     concreteType->methods.count  = 0;
-    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS))
+    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) && !realType->isGeneric())
     {
         concreteType->methods.count = realType->methods.size();
         if (concreteType->methods.count)
@@ -212,7 +214,7 @@ bool TypeGenStructJob::computeStruct()
     // Interfaces
     concreteType->interfaces.buffer = nullptr;
     concreteType->interfaces.count  = 0;
-    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
+    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && !realType->isGeneric())
     {
         concreteType->interfaces.count = realType->interfaces.size();
         if (concreteType->interfaces.count)
@@ -224,6 +226,7 @@ bool TypeGenStructJob::computeStruct()
             for (uint32_t param = 0; param < concreteType->interfaces.count; param++)
             {
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], genFlags));
+                SWAG_FORCE_ASSERT(realType->interfaces[param]->offset != UINT32_MAX);
 
                 // :ItfIsConstantSeg
                 const uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
@@ -234,9 +237,9 @@ bool TypeGenStructJob::computeStruct()
                 // :itableHeader
                 // Be sure to patch the exported struct type in the header, because resolveImplForType can be resolved after this,
                 // and we need it in case a bytecode is running
-                ScopedLock lk1(realType->mutex);
                 const auto ptrHeader = static_cast<const void**>(addrArray[param].value) - 1;
-                *ptrHeader           = concreteType;
+                ScopedLock lk1(realType->mutex);
+                *ptrHeader = concreteType;
 
                 storageArray += sizeof(ExportedTypeValue);
             }

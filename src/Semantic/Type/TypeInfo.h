@@ -242,7 +242,7 @@ struct TypeInfoParam
     AstNode*       declNode = nullptr;
 
     uint32_t       index   = 0;
-    uint32_t       offset  = 0;
+    uint32_t       offset  = UINT32_MAX;
     TypeParamFlags flags   = 0;
     uint32_t       padding = 0;
 };
