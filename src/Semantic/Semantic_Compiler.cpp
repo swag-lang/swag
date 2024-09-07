@@ -1204,7 +1204,7 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
     node->setFlagsValueIsComputed();
 
     // Convert
-    Vector<uint32_t> runes;
+    VectorNative<uint32_t> runes;
     const char*      pz  = expr->computedValue()->text.buffer;
     uint32_t         cpt = 0;
     while (cpt < expr->computedValue()->text.count)
@@ -1229,7 +1229,7 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
     slice->buffer = addrDst;
 
     // Setup array
-    std::copy_n(runes.data(), runes.size(), reinterpret_cast<uint32_t*>(addrDst));
+    std::copy_n(runes.buffer, runes.size(), reinterpret_cast<uint32_t*>(addrDst));
 
     node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
     return true;

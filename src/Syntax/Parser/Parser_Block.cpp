@@ -189,8 +189,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[switch]] body"));
 
-    Vector<AstSwitchCase*> defaultCase;
-    uint32_t               cptDefaultNoWhere = 0;
+    VectorNative<AstSwitchCase*> defaultCase;
+    uint32_t                     cptDefaultNoWhere = 0;
 
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
     {

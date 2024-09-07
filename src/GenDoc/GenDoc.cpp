@@ -268,7 +268,7 @@ void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
         helpContent += "</div>\n";
 }
 
-void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, const Vector<Utf8>& lines, bool shortDesc)
+void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Utf8>& lines, bool shortDesc)
 {
     uint32_t start = 0;
     while (start < lines.size())
@@ -643,7 +643,7 @@ void GenDoc::computeUserComments(UserComment& result, const Vector<Utf8>& lines,
     if (shortDesc && !result.blocks.empty() && result.blocks[0]->kind == UserBlockKind::Paragraph)
     {
         result.shortDesc = std::move(*result.blocks[0]);
-        result.blocks.erase(result.blocks.begin());
+        result.blocks.erase(0);
         result.shortDesc.lines[0].trim();
         if (result.shortDesc.lines.back().back() != '.')
             result.shortDesc.lines.back() += '.';

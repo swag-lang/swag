@@ -10201,7 +10201,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 04-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 07-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
 </div>
 </div>
 </div>

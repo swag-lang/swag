@@ -280,7 +280,7 @@ struct Context
     ByteCode*                 bc      = nullptr;
     uint32_t                  state   = 0;
     Set<ByteCodeInstruction*> statesHere;
-    Vector<State*>            states;
+    VectorNative<State*>      states;
     bool                      canSetConstants = true;
 };
 
@@ -2424,7 +2424,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         }
     }
 
-    cxt.states.emplace_back(state);
+    cxt.states.push_back(state);
 
     for (uint32_t i = 0; i < cxt.states.size(); i++)
     {

@@ -101,9 +101,9 @@ void profiler()
     // Collect
     //////////////////////////////////////////
 
-    MapUtf8<FFIStat>  ffi;
-    Vector<FFIStat>   linFFi;
-    Vector<ByteCode*> bcs;
+    MapUtf8<FFIStat>        ffi;
+    Vector<FFIStat>         linFFi;
+    VectorNative<ByteCode*> bcs;
 
     for (const auto m : g_Workspace->modules)
     {
