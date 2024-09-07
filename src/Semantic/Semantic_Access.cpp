@@ -291,14 +291,14 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     const auto culprit = getErrorCulprit(node, &onNode);
     if (!onNode)
         onNode = culprit;
-    if (!culprit || !node->resolvedSymbolOverload() || !culprit->resolvedSymbolOverload())
+    if (!culprit)
         return Report::internalError(node, "bad access, but cannot find the culprit");
 
     const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
     const auto msg           = formErr(Err0286,
-                                       Naming::kindName(node->resolvedSymbolOverload()).cstr(),
+                                       Naming::kindName(node).cstr(),
                                        node->token.cstr(),
-                                       Naming::kindName(culprit->resolvedSymbolOverload()).cstr(),
+                                       Naming::kindName(culprit).cstr(),
                                        culprit->token.cstr(),
                                        accessCulprit);
 
