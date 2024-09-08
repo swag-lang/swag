@@ -373,7 +373,7 @@ impl StrConv.IConvert for DateTime
     // ``'swag
     // let myDate = DateTime.now()
     // Console.print(Format.toString("%{a}", myDate))
-    // '`'
+    // ```
     // See [[Core.Time.DateTimeFormat]]
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {

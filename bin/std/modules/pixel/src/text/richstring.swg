@@ -21,14 +21,14 @@ struct RichChunk
 // Represents a string with embedded formats.
 // This kind of string is a specific version of [Core.String] but specific for painting. It can contains
 // some special markers to change it's appearence.
-// '`'swag
+// ```swag
 // <b>this is bold</b>
 // <i>this is italic</i>
 // <p1>this will have special color 1</p>
 // <p2>this will have special color 2</p>
 // <p3>this will have special color 3</p>
 // ...
-// '`'swag
+// ```swag
 // See [[RichString.set]] for a list of available markers.
 struct RichString
 {
@@ -116,9 +116,9 @@ impl RichString
     // * `<p2>` => color palette 2
     // * `<p3>` => color palette 3
     // * `<url>` => clickable
-    // '`'swag
+    // ```swag
     // <b>this is bold</b> but this is normal <i>and this is italic</i>
-    // '`'swag
+    // ```swag
     mtd set(text: string)
     {
         if raw == text and chunks.count:

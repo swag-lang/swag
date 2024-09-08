@@ -63,13 +63,13 @@ func replaceString(dest: *String, fmt: string, values: ...)
 
 // Format a string and returns the result as a String.
 // Use '%' as a place holder for a value.
-// '`'swag
+// ```swag
 // let x = Format.toString("my life is %", myLife)
-// '`'
+// ```
 // '%' can be followed by a format option between '{}'.
-// '`'swag
+// ```swag
 // let x = Format.toString("my life in hexadecimal is %{X}", myLife)
-// '`'
+// ```
 // * See [[ConvertFormatInt.setFormat]] for some valid format options
 // * See [[ConvertFormatFloat.setFormat]] for some valid format options
 func toString(fmt: string, values: ...)->String

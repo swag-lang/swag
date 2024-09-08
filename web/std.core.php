@@ -7737,7 +7737,10 @@
 </p>
 <p>Format a string and returns the result as a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p>Use <span class="code-inline">%</span> as a place holder for a value. <span class="code-inline">`</span>swag let x = Format.toString("my life is %", myLife) <span class="code-inline">`</span> <span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. <span class="code-inline">`</span>swag let x = Format.toString("my life in hexadecimal is %{X}", myLife) <span class="code-inline">`</span> </p>
+<p>Use <span class="code-inline">%</span> as a place holder for a value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life is %"</span>, myLife)</span></div>
+<p><span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life in hexadecimal is %{X}"</span>, myLife)</span></div>
 <ul>
 <li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a> for some valid format options</li>
 <li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a> for some valid format options</li>
@@ -19578,7 +19581,9 @@ func grepAll(using self, str: string)-&gt;<a href="#Core_Array">Core.Array</a>'<
 </tr>
 </table>
 <p>This is a high level decoder that needs a specific implementation like <a href="#Core_Serialization_Read_TagBin">Core.Serialization.Read.TagBin</a> or <a href="#Core_Serialization_Read_JSon">Core.Serialization.Read.JSon</a>. </p>
-<p><span class="code-inline">`</span>swag var res = File.readAllBytes(file) var decoder: Decoder'Read.TagBin let myStruct = catch decoder.readAll'MyStruct(res.toSlice()) <span class="code-inline">`</span> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> res = <span class="SCst">File</span>.<span class="SFct">readAllBytes</span>(file)
+<span class="SKwd">var</span> decoder: <span class="SFct">Decoder</span><span class="SStr">'Read.TagBin
+let myStruct = catch decoder.readAll'</span><span class="SFct">MyStruct</span>(res.<span class="SFct">toSlice</span>())</span></div>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -19976,7 +19981,10 @@ func grepAll(using self, str: string)-&gt;<a href="#Core_Array">Core.Array</a>'<
 </tr>
 </table>
 <p>This is a high level encoder that needs a specific implementation like <a href="#Core_Serialization_Write_TagBin">Core.Serialization.Write.TagBin</a> or <a href="#Core_Serialization_Write_JSon">Core.Serialization.Write.JSon</a>. </p>
-<p><span class="code-inline">`</span>swag var buf:     ConcatBuffer var encoder: Encoder'Write.TagBin encoder.writeAll(&buf, myStruct) File.writeAllBytes(file, buf) <span class="code-inline">`</span> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> buf:     <span class="SCst">ConcatBuffer</span>
+<span class="SKwd">var</span> encoder: <span class="SFct">Encoder</span><span class="SStr">'Write.TagBin
+encoder.writeAll(&buf, myStruct)
+File.writeAllBytes(file, buf)</span></span></div>
 <p>Can be serialized: </p>
 <ul>
 <li>All simple types: <span class="code-inline">bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64</span></li>
@@ -26813,7 +26821,8 @@ func indexOf(using const self, what: rune, startByteIndex = 0'</span><span class
 <tr><td> <span class="code-inline">i</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoHM</span></td></tr>
 <tr><td> <span class="code-inline">j</span> </td><td> <span class="code-inline">DateTimeFormat.Date'</code></td></tr>
 </table>
-<p><span class="code-inline"></span>'swag let myDate = DateTime.now() Console.print(Format.toString("%{a}", myDate)) <span class="code-inline">`</span> See <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> </p>
+<p><span class="code-inline"></span>'swag let myDate = DateTime.now() Console.print(Format.toString("%{a}", myDate)) </p>
+<div class="code-block"><span class="SCde">See [[Core.Time.DateTimeFormat]]</span></div>
 <p>
 <table class="api-item">
 <tr>

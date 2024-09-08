@@ -328,7 +328,7 @@ void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Ut
             {
                 blk->kind = UserBlockKind::Blockquote;
             }
-            else if (line.startsWith("|"))
+            else if (line.startsWith("|") && line.length() > 1)
             {
                 blk->kind = UserBlockKind::Table;
             }

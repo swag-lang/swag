@@ -1450,7 +1450,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y == <span class="SNum">666</span>)
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Spaceshift Operator </h4>
-<p>Operator <span class="code-inline">&lt;=&gt;</span> returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right  expression, respectively. The returned type is <span class="code-inline">s32</span>. <span class="code-inline">`</span>swag A &lt;=&gt; B == -1 if A &lt; B A &lt;=&gt; B == 0  if A == B A &lt;=&gt; B == 1  if A &gt; B   <span class="code-inline">`</span> </p>
+<p>Operator <span class="code-inline">&lt;=&gt;</span> returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right  expression, respectively. The returned type is <span class="code-inline">s32</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SCst">A</span> &lt;=&gt; <span class="SCst">B</span> == -<span class="SNum">1</span> <span class="SLgc">if</span> <span class="SCst">A</span> &lt; <span class="SCst">B</span>
+<span class="SCst">A</span> &lt;=&gt; <span class="SCst">B</span> == <span class="SNum">0</span>  <span class="SLgc">if</span> <span class="SCst">A</span> == <span class="SCst">B</span>
+<span class="SCst">A</span> &lt;=&gt; <span class="SCst">B</span> == <span class="SNum">1</span>  <span class="SLgc">if</span> <span class="SCst">A</span> &gt; <span class="SCst">B</span></span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -1521,22 +1524,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
 <h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Operator Precedence </h4>
-<p><span class="code-inline">`</span>swag ~ </p>
-<ul>
-<li>/ %</li>
-</ul>
-<div class="description-list-title"><p>-</p></div>
-<div class="description-list-block">
-</div>
-<div class="blockquote blockquote-default">
-<div class="blockquote blockquote-default">
-<p> &lt;&lt; </p>
-</div>
-</div>
-<p>& </p>
-<table class="table-markdown">
-</table>
-<p>^ &lt;=&gt; == != &lt; &lt;= &gt; &gt;= and or <span class="code-inline">`</span> If two operators have the same precedence, the expression is evaluated from left to right. </p>
+<div class="code-block"><span class="SCde">~
+* / %
++ -
+&gt;&gt; &lt;&lt;
+&
+|
+^
+&lt;=&gt;
+== !=
+&lt; &lt;= &gt; &gt;=
+<span class="SLgc">and</span>
+<span class="SLgc">or</span></span></div>
+<p>If two operators have the same precedence, the expression is evaluated from left to right. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Multiplication before addition</span>

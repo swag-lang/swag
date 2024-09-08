@@ -43,11 +43,11 @@ enum DecoderFlags
 Serialization decoder.
 This is a high level decoder that needs a specific implementation like [[Core.Serialization.Read.TagBin]] or [[Core.Serialization.Read.JSon]].
 
-'`'swag
+```swag
 var res = File.readAllBytes(file)
 var decoder: Decoder'Read.TagBin
 let myStruct = catch decoder.readAll'MyStruct(res.toSlice())
-'`'
+```
 */
 struct(T) Decoder
 {

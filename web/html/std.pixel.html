@@ -9098,7 +9098,14 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 <td>If dirty, <span class="code-inline">Compute</span>. </td>
 </tr>
 </table>
-<p>This kind of string is a specific version of [Core.String] but specific for painting. It can contains some special markers to change it's appearence. <span class="code-inline">`</span>swag &lt;b&gt;this is bold&lt;/b&gt; &lt;i&gt;this is italic&lt;/i&gt; &lt;p1&gt;this will have special color 1&lt;/p&gt; &lt;p2&gt;this will have special color 2&lt;/p&gt; &lt;p3&gt;this will have special color 3&lt;/p&gt; ... <span class="code-inline">`</span>swag See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
+<p>This kind of string is a specific version of [Core.String] but specific for painting. It can contains some special markers to change it's appearence. </p>
+<div class="code-block"><span class="SCde">&lt;b&gt;this <span class="SInv">is</span> bold&lt;/b&gt;
+&lt;i&gt;this <span class="SInv">is</span> italic&lt;/i&gt;
+&lt;p1&gt;this will have special color <span class="SNum">1</span>&lt;/p&gt;
+&lt;p2&gt;this will have special color <span class="SNum">2</span>&lt;/p&gt;
+&lt;p3&gt;this will have special color <span class="SNum">3</span>&lt;/p&gt;
+...</span></div>
+<p>See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -9285,7 +9292,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 <li><span class="code-inline">&lt;p3&gt;</span> =&gt; color palette 3</li>
 <li><span class="code-inline">&lt;url&gt;</span> =&gt; clickable</li>
 </ul>
-<p><span class="code-inline">`</span>swag &lt;b&gt;this is bold&lt;/b&gt; but this is normal &lt;i&gt;and this is italic&lt;/i&gt; <span class="code-inline">`</span>swag </p>
+<div class="code-block"><span class="SCde">&lt;b&gt;this <span class="SInv">is</span> bold&lt;/b&gt; but this <span class="SInv">is</span> normal &lt;i&gt;<span class="SLgc">and</span> this <span class="SInv">is</span> italic&lt;/i&gt;</span></div>
 <p>
 <table class="api-item">
 <tr>

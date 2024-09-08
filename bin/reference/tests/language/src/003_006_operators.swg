@@ -167,11 +167,11 @@ and 'C' is returned if the expression is false.
 # Spaceshift Operator
 Operator '<=>' returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right 
 expression, respectively. The returned type is 's32'.
-'`'swag
+```swag
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
 A <=> B == 1  if A > B
-  '`'
+```
 */
 #test
 {
@@ -267,7 +267,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 
 /**
 # Operator Precedence
-'`'swag
+```swag
 ~
 * / %
 + -
@@ -280,7 +280,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 < <= > >=
 and
 or
-'`'
+```
 If two operators have the same precedence, the expression is evaluated from left to right.
 */
 #test
