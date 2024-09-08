@@ -8834,7 +8834,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 07-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.39.0</div>
+Generated on 08-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
 </div>
 </div>
 </div>
