@@ -41,11 +41,6 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
-
-    // Warnings should be correct without preprocessing, as warning construction can have a little
-    // impact on compile speed (especially if lots of warnings hidden because of various optioons)
-    if (errorLevel != DiagnosticLevel::Warning)
-        textMsg = preprocess(textMsg);
 }
 
 namespace
@@ -582,30 +577,6 @@ void Diagnostic::collectRanges()
     }
 }
 
-void Diagnostic::reportCompact(Log* log)
-{
-    setupColors();
-    printErrorLevel(log);
-
-    Vector<Utf8> tokens;
-    tokenizeError(textMsg, tokens);
-
-    log->print(tokens[0]);
-    log->print(": ");
-
-    log->setColor(sourceFileColor);
-    printSourceLine(log);
-
-    if (tokens.size() > 1)
-    {
-        log->setColor(LogColor::White);
-        log->print(tokens[1]);
-    }
-
-    log->writeEol();
-    log->setDefaultColor();
-}
-
 void Diagnostic::collectSourceCode()
 {
     auto location0 = startLocation;
@@ -873,8 +844,36 @@ void Diagnostic::printRanges(Log* log)
     log->writeEol();
 }
 
+void Diagnostic::reportCompact(Log* log)
+{
+    textMsg = preprocess(textMsg);
+    
+    setupColors();
+    printErrorLevel(log);
+
+    Vector<Utf8> tokens;
+    tokenizeError(textMsg, tokens);
+
+    log->print(tokens[0]);
+    log->print(": ");
+
+    log->setColor(sourceFileColor);
+    printSourceLine(log);
+
+    if (tokens.size() > 1)
+    {
+        log->setColor(LogColor::White);
+        log->print(tokens[1]);
+    }
+
+    log->writeEol();
+    log->setDefaultColor();
+}
+
 void Diagnostic::report(Log* log)
 {
+    textMsg = preprocess(textMsg);
+    
     // Message level
     if (showErrorLevel)
     {
