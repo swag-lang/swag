@@ -104,13 +104,23 @@ bool Semantic::resolveImplForType(SemanticContext* context)
 
     const auto constSegment = back->computedValue()->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
-    const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - sizeof(void*)));
-    const auto addr     = constSegment->address(back->computedValue()->storageOffset);
 
     // :itableHeader
     ScopedLock lk(typeStruct->mutex);
-    *itfTable = addr;
-    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue()->storageOffset, constSegment->kind);
+
+    {
+        const auto addr     = constSegment->address(first->computedValue()->storageOffset);
+        const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - 2 * sizeof(void*)));
+        *itfTable           = addr;
+        constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), first->computedValue()->storageOffset, constSegment->kind);
+    }
+
+    {
+        const auto addr     = constSegment->address(back->computedValue()->storageOffset);
+        const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - sizeof(void*)));
+        *itfTable           = addr;
+        constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue()->storageOffset, constSegment->kind);
+    }
 
     return true;
 }
@@ -326,19 +336,23 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     YIELD();
 
     // Construct itable in the constant segment
-    // - Header of one pointer (the type)
+    // - Header of one pointer (the interface type)
+    // - Header of one pointer (the object type)
     // - Then one pointer for interface functions
+    // - One more void*
     // We have at least one room for a function, even if the interface is empty
     // :itableHeader
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
-    constexpr int  sizeOfHeader = sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve(max(numFctInterface, 1) * sizeof(void*) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
+    constexpr int  sizeOfHeader = 2 * sizeof(void*);
+    const uint32_t itableOffset = constSegment->reserve(sizeOfHeader + (max(numFctInterface, 1) * sizeof(void*)), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader
     // The first value will be the concrete type to the interface
     // The second value will be the concrete type to the corresponding struct
+    *ptrITable++ = nullptr;
+    offset += sizeof(void*);
     *ptrITable++ = nullptr;
     offset += sizeof(void*);
 
