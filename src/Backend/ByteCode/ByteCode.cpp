@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Core/Crc32.h"
-#include "Report/Log.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"

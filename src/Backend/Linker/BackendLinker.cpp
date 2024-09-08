@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/Linker/BackendLinker.h"
 #include "Backend/Backend.h"
-#include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Report/Log.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
