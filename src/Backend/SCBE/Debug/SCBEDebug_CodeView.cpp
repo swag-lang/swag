@@ -499,9 +499,9 @@ namespace
     {
         for (const auto localVar : f.node->extByteCode()->bc->localVars)
         {
-            if (localVar->ownerScope != scope)
+            if (!scope->isSameOrParentOf(localVar->ownerScope))
                 continue;
-
+            
             const SymbolOverload* overload = localVar->resolvedSymbolOverload();
             const auto            typeInfo = overload->typeInfo;
 
