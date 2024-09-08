@@ -146,7 +146,7 @@ bool TypeGenStructJob::computeStruct()
     concreteType->fields.count  = 0;
     if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE) && !realType->isGeneric())
     {
-        SWAG_RACE_CONDITION_READ(realType->raceFields);
+        SWAG_RACE_CONDITION_READ1(realType->raceFields);
         concreteType->fields.count = realType->fields.size();
         if (concreteType->fields.count)
         {
