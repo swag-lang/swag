@@ -51,6 +51,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr NoInline()
 
+    // Disable '@print'
+    #[AttrUsage(AttributeUsage.Function)]
+    attr NoPrint()    
+
     // The following function is a 'macro'
     #[AttrUsage(AttributeUsage.Function)]
     attr Macro()

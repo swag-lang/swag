@@ -1,5 +1,5 @@
 /**
-Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the [Swag standard modules](std.php).
+Let's dig more into the "hello world" example. The most simple version, as already seen, does not require external dependencies like the [Swag standard modules](std.php).
 
 `#main` is the **program entry point**, a special compiler function (that's why the name starts with `#`). It must be defined only once for a native executable.
 `@print` is an **intrinsic**, a special built-in function (that's why the name starts with `@`).
