@@ -8,7 +8,7 @@ All intrinsics are part of the [compiler runtime](std/swag.runtime.php) which co
 ```swag
 #main
 {
-    @print("Hello mad world !\n")
+    @print("Hello mad world!\n")
 }
 ```
 */
@@ -18,8 +18,8 @@ Next, a version that this time uses the `Core.Console.print` function in the [St
 ```swag
 #main
 {
-    Core.Console.print("Hello mad world !", "\n")
-    Core.Console.printf("%\n", "Hello mad world again !")
+    Core.Console.print("Hello mad world!", "\n")
+    Core.Console.printf("%\n", "Hello mad world again!")
 }
 ```
 */
@@ -30,7 +30,7 @@ So in the following example, the famous message will be printed by the compiler 
 ```swag
 #run
 {
-    const Msg = "Hello mad world !\n"   // Creates a compiler constant of type 'string'
+    const Msg = "Hello mad world!\n"   // Creates a compiler constant of type 'string'
     Core.Console.print(Msg)             // And call 'Console.print' at compile time
 }
 ```
@@ -45,7 +45,7 @@ using Core
 #main
 {
     #[Swag.ConstExpr]
-    func nestedFunc() => "Hello mad world !\n"   // Function short syntax
+    func nestedFunc() => "Hello mad world!\n"   // Function short syntax
 
     // nestedFunc() can be called at compile time because it is marked with
     // the 'Swag.ConstExpr' attribute.
@@ -62,7 +62,7 @@ using Core
 
 #main
 {
-    const Msg = "Hello mad world !\n"
+    const Msg = "Hello mad world!\n"
 
     // The result of an '#ast' block is a string that will be compiled in place.
     // So this whole thing is equivalent to a simple 'Console.print(Msg)'.
@@ -94,7 +94,7 @@ using Core
 #[Swag.Compiler]
 func mySillyFunction()->string
 {
-    Console.print("Hello mad world at compile time !\n")
+    Console.print("Hello mad world at compile time!\n")
 
     // This creates a constant named 'MyConst'
     #ast
@@ -102,7 +102,7 @@ func mySillyFunction()->string
         var sb = StrConv.StringBuilder{}
         sb.appendString("const MyConst = \"Hello ")
         sb.appendString("mad world ")
-        sb.appendString("at runtime !\"")
+        sb.appendString("at runtime!\"")
         return sb.toString()
     }
 
@@ -117,7 +117,7 @@ This whole piece of code is equivalent to...
 ```swag
 #main
 {
-    Core.Console.print("Hello mad world at runtime !")
+    Core.Console.print("Hello mad world at runtime!")
 }
 ```
 */

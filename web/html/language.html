@@ -486,18 +486,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>All intrinsics are part of the <a href="std/swag.runtime.php">compiler runtime</a> which comes with the compiler. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
-    <span class="SItr">@print</span>(<span class="SStr">"Hello mad world !\n"</span>)
+    <span class="SItr">@print</span>(<span class="SStr">"Hello mad world!\n"</span>)
 }</span></div>
 <p>Next, a version that this time uses the <span class="code-inline">Core.Console.print</span> function in the <a href="std.core.html">Std.Core</a> module. The <span class="code-inline">Std.Core</span> module would have to be imported in order to be used, but let's keep it simple. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
-    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world !"</span>, <span class="SStr">"\n"</span>)
-    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">printf</span>(<span class="SStr">"%\n"</span>, <span class="SStr">"Hello mad world again !"</span>)
+    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world!"</span>, <span class="SStr">"\n"</span>)
+    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">printf</span>(<span class="SStr">"%\n"</span>, <span class="SStr">"Hello mad world again!"</span>)
 }</span></div>
 <p>A <span class="code-inline">#run</span> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>. So in the following example, the famous message will be printed by the compiler during compilation. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">Msg</span> = <span class="SStr">"Hello mad world !\n"</span>   <span class="SCmt">// Creates a compiler constant of type 'string'</span>
+    <span class="SKwd">const</span> <span class="SCst">Msg</span> = <span class="SStr">"Hello mad world!\n"</span>   <span class="SCmt">// Creates a compiler constant of type 'string'</span>
     <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SCst">Msg</span>)             <span class="SCmt">// And call 'Console.print' at compile time</span>
 }</span></div>
 <p>A version that calls a <b>nested function</b> at compile time (only) to initialize the string constant to print. </p>
@@ -507,7 +507,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SFct">#main</span>
 {
     <span class="SAtr">#[Swag.ConstExpr]</span>
-    <span class="SKwd">func</span> <span class="SFct">nestedFunc</span>() =&gt; <span class="SStr">"Hello mad world !\n"</span>   <span class="SCmt">// Function short syntax</span>
+    <span class="SKwd">func</span> <span class="SFct">nestedFunc</span>() =&gt; <span class="SStr">"Hello mad world!\n"</span>   <span class="SCmt">// Function short syntax</span>
 
     <span class="SCmt">// nestedFunc() can be called at compile time because it is marked with</span>
     <span class="SCmt">// the 'Swag.ConstExpr' attribute.</span>
@@ -519,7 +519,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SFct">#main</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">Msg</span> = <span class="SStr">"Hello mad world !\n"</span>
+    <span class="SKwd">const</span> <span class="SCst">Msg</span> = <span class="SStr">"Hello mad world!\n"</span>
 
     <span class="SCmt">// The result of an '#ast' block is a string that will be compiled in place.</span>
     <span class="SCmt">// So this whole thing is equivalent to a simple 'Console.print(Msg)'.</span>
@@ -546,7 +546,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SAtr">#[Swag.Compiler]</span>
 <span class="SKwd">func</span> <span class="SFct">mySillyFunction</span>()-&gt;<span class="STpe">string</span>
 {
-    <span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at compile time !\n"</span>)
+    <span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at compile time!\n"</span>)
 
     <span class="SCmt">// This creates a constant named 'MyConst'</span>
     <span class="SFct">#ast</span>
@@ -554,7 +554,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">var</span> sb = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
         sb.<span class="SFct">appendString</span>(<span class="SStr">"const MyConst = \"Hello "</span>)
         sb.<span class="SFct">appendString</span>(<span class="SStr">"mad world "</span>)
-        sb.<span class="SFct">appendString</span>(<span class="SStr">"at runtime !\""</span>)
+        sb.<span class="SFct">appendString</span>(<span class="SStr">"at runtime!\""</span>)
         <span class="SLgc">return</span> sb.<span class="SFct">toString</span>()
     }
 
@@ -564,7 +564,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>This whole piece of code is equivalent to... </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
-    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at runtime !"</span>)
+    <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at runtime!"</span>)
 }</span></div>
 
 <h2 id="_002_000_code_structure_swg">Code structure</h2>
