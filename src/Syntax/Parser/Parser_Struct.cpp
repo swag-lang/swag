@@ -531,7 +531,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
             structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
             AstNode* varDecl;
-            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, VAR_DECL_FLAG_FOR_STRUCT));
             varDecl->addAstFlag(AST_DECL_USING);
             FormatAst::inheritFormatBefore(this, varDecl, &savedToken);
             *result = varDecl;
@@ -544,7 +544,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             auto                   savedToken = tokenParse;
             SWAG_CHECK(eatToken());
             AstNode* varDecl;
-            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::ConstDecl, true));
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::ConstDecl, VAR_DECL_FLAG_FOR_STRUCT));
             FormatAst::inheritFormatBefore(this, varDecl, &savedToken);
             *result = varDecl;
             break;
@@ -569,7 +569,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             TokenParse             savedToken = tokenParse;
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   count = parent->children.size();
-            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, VAR_DECL_FLAG_FOR_STRUCT));
             if (*result)
                 FormatAst::inheritFormatBefore(this, *result, &savedToken);
             else

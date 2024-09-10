@@ -1169,12 +1169,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     }
                 }
 
-                // User cannot name its variables itemX
-                if (!node->hasAstFlag(AST_GENERATED) && hasItemName)
-                {
-                    return context->report({child, child->token, formErr(Err0498, child->token.cstr())});
-                }
-
                 if (!hasItemName)
                 {
                     auto  overload = child->resolvedSymbolOverload();

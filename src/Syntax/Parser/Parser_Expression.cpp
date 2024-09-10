@@ -1321,7 +1321,7 @@ bool Parser::isGeneratedName(const Utf8& name)
     return name.length() >= 2 && name[0] == '_' && name[1] == '_';
 }
 
-bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, const AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags, const AstWith* withNode)
 {
     switch (tokenParse.token.id)
     {
@@ -1364,6 +1364,28 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
                 if (multi == nullptr)
                     Ast::removeFromParent(exprNode);
+
+                // Special field name starts with 'item' followed by a number
+                if(varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT))
+                {
+                    bool hasItemName = false;
+                    if (exprNode->token.text.length() > 4 &&
+                        exprNode->token.text[0] == 'i' && exprNode->token.text[1] == 't' && exprNode->token.text[2] == 'e' && exprNode->token.text[3] == 'm')
+                    {
+                        hasItemName = true;
+                        for (uint32_t idx = 4; idx < exprNode->token.text.length(); idx++)
+                        {
+                            if (!isdigit(exprNode->token.text[idx]))
+                                hasItemName = false;
+                        }
+                    }
+
+                    // User cannot name its variables itemX
+                    if (!parent->hasAstFlag(AST_GENERATED) && hasItemName)
+                    {
+                        return context->report({exprNode, exprNode->token, formErr(Err0498, exprNode->token.cstr())});
+                    }
+                }
 
                 // Prepend the 'with' identifier
                 if (withNode && prependWith)
@@ -1424,7 +1446,7 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
         case TokenId::Identifier:
         case TokenId::CompilerUp:
         case TokenId::CompilerSelf:
-            SWAG_CHECK(doLeftExpressionVar(parent, result, 0, withNode));
+            SWAG_CHECK(doLeftExpressionVar(parent, result, IDENTIFIER_ZERO, VAR_DECL_FLAG_ZERO, withNode));
             Ast::removeFromParent(*result);
             return true;
 

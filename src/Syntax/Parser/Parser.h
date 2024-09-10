@@ -36,6 +36,7 @@ using IdentifierFlags = Flags<uint32_t>;
 using ExprFlags       = Flags<uint32_t>;
 using ParserFlags     = Flags<uint32_t>;
 using FuncDeclFlags   = Flags<uint32_t>;
+using VarDeclFlags    = Flags<uint32_t>;
 
 enum class InvalidTokenError
 {
@@ -61,6 +62,7 @@ constexpr ModifierFlags MODIFIER_BACK         = 0x00000040;
 constexpr ModifierFlags MODIFIER_REF          = 0x00000080;
 constexpr ModifierFlags MODIFIER_CONST_REF    = 0x00000100;
 
+constexpr IdentifierFlags IDENTIFIER_ZERO            = 0x00000000;
 constexpr IdentifierFlags IDENTIFIER_NO_CALL_PARAMS  = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 constexpr IdentifierFlags IDENTIFIER_TYPE_DECL       = 0x00000004;
@@ -80,6 +82,10 @@ constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 constexpr ExprFlags EXPR_FLAG_IN_GENERIC_PARAMS     = 0x00000400;
+
+constexpr VarDeclFlags VAR_DECL_FLAG_ZERO       = 0x00000000;
+constexpr VarDeclFlags VAR_DECL_FLAG_FOR_STRUCT = 0x00000001;
+constexpr VarDeclFlags VAR_DECL_FLAG_IS_LET     = 0x00000002;
 
 constexpr ParserFlags PARSER_DEFAULT             = 0x00000000;
 constexpr ParserFlags PARSER_TRACK_DOCUMENTATION = 0x00000001;
@@ -157,7 +163,7 @@ struct Parser
     bool doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
     bool doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet);
     bool doVarDecl(AstNode* parent, AstNode** result);
-    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
+    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarDeclFlags varDeclFlags = 0);
     bool doAlias(AstNode* parent, AstNode** result);
     bool doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags);
     bool doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
@@ -242,7 +248,7 @@ struct Parser
     bool doContinue(AstNode* parent, AstNode** result);
     bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
-    bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, const AstWith* withNode = nullptr);
+    bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, VarDeclFlags varDeclFlags = 0, const AstWith* withNode = nullptr);
     bool doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken);
     bool doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken);

@@ -336,7 +336,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     }
 
     const auto count = parent->children.size();
-    SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
+    SWAG_CHECK(doVarDecl(parent, result, kind, isLet ? VAR_DECL_FLAG_IS_LET : 0));
     if (*result)
         FormatAst::inheritFormatBefore(this, *result, &savedTokenParse);
     else
@@ -344,13 +344,13 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct, bool forLet)
+bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarDeclFlags varDeclFlags)
 {
     AstNode* leftNode;
     bool     first = true;
     while (true)
     {
-        SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS));
+        SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS, varDeclFlags));
         Ast::removeFromParent(leftNode);
 
         if (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::SymEqual))
@@ -403,7 +403,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             ParserPushFreezeFormat ff(this);
             AstNode*               varExpr = nullptr;
-            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, forLet));
+            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, varDeclFlags.has(VAR_DECL_FLAG_IS_LET)));
             leftNode->release();
             if (!first && varExpr)
                 varExpr->addSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL);
@@ -441,7 +441,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         SWAG_CHECK(eatToken());
     }
 
-    if (!forStruct || tokenParse.isNot(TokenId::SymRightCurly))
+    if (!varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT) || tokenParse.isNot(TokenId::SymRightCurly))
     {
         if (!parent || parent->isNot(AstNodeKind::If))
         {
