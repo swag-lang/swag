@@ -140,7 +140,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
 
 bool FormatAst::outputVarName(FormatContext&, const AstVarDecl* varNode) const
 {
-    if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
+    if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
     {
         if (!varNode->multiNames.empty())
         {
@@ -188,7 +188,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
         {
             if (!isSelf)
             {
-                if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME | AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
+                if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
                     if (context.alignVarDecl)

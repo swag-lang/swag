@@ -1153,43 +1153,35 @@ bool Semantic::resolveStruct(SemanticContext* context)
             else if (node->packing)
                 storageOffset += childType->sizeOf;
 
-            // Create a generic alias
-            if (!child->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
+            // Special field name starts with 'item' followed by a number
+            bool hasItemName = false;
+            if (child->token.text.length() > 4 &&
+                child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
             {
-                // Special field name starts with 'item' followed by a number
-                bool hasItemName = false;
-                if (child->token.text.length() > 4 &&
-                    child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
+                hasItemName = true;
+                for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
                 {
-                    hasItemName = true;
-                    for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
-                    {
-                        if (!isdigit(child->token.text[idx]))
-                            hasItemName = false;
-                    }
+                    if (!isdigit(child->token.text[idx]))
+                        hasItemName = false;
                 }
+            }
 
-                if (!hasItemName)
-                {
-                    auto  overload = child->resolvedSymbolOverload();
-                    Utf8  name     = form("item%u", storageIndexField);
-                    auto& symTable = node->scope->symTable;
+            if (!hasItemName)
+            {
+                auto  overload = child->resolvedSymbolOverload();
+                Utf8  name     = form("item%u", storageIndexField);
+                auto& symTable = node->scope->symTable;
 
-                    AddSymbolTypeInfo toAdd;
-                    toAdd.node           = child;
-                    toAdd.typeInfo       = child->typeInfo;
-                    toAdd.kind           = SymbolKind::Variable;
-                    toAdd.flags          = overload->flags;
-                    toAdd.storageOffset  = overload->computedValue.storageOffset;
-                    toAdd.storageSegment = overload->computedValue.storageSegment;
-                    toAdd.aliasName      = name;
+                AddSymbolTypeInfo toAdd;
+                toAdd.node           = child;
+                toAdd.typeInfo       = child->typeInfo;
+                toAdd.kind           = SymbolKind::Variable;
+                toAdd.flags          = overload->flags;
+                toAdd.storageOffset  = overload->computedValue.storageOffset;
+                toAdd.storageSegment = overload->computedValue.storageSegment;
+                toAdd.aliasName      = name;
 
-                    symTable.addSymbolTypeInfo(context, toAdd);
-                }
-                else
-                {
-                    typeParam->flags.add(TYPEINFOPARAM_AUTO_NAME);
-                }
+                symTable.addSymbolTypeInfo(context, toAdd);
             }
             else
             {

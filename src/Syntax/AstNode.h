@@ -635,14 +635,13 @@ struct AstVarDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_GENERATED_SELF   = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_GENERIC_TYPE     = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_GENERIC_CONSTANT = 0x0040;
-    static constexpr SpecFlags SPEC_FLAG_AUTO_NAME        = 0x0080;
+    static constexpr SpecFlags SPEC_FLAG_POST_STACK       = 0x0080;
     static constexpr SpecFlags SPEC_FLAG_LET              = 0x0100;
     static constexpr SpecFlags SPEC_FLAG_TUPLE_AFFECT     = 0x0200;
     static constexpr SpecFlags SPEC_FLAG_PRIVATE_NAME     = 0x0400;
     static constexpr SpecFlags SPEC_FLAG_FORCE_VAR        = 0x0800;
     static constexpr SpecFlags SPEC_FLAG_FORCE_CONST      = 0x1000;
     static constexpr SpecFlags SPEC_FLAG_EXTRA_DECL       = 0x2000;
-    static constexpr SpecFlags SPEC_FLAG_POST_STACK       = 0x4000;
 
     AstNode* clone(CloneContext& context);
     bool     isConstDecl() const;
