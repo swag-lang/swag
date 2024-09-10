@@ -9,7 +9,7 @@
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-bool Parser::checkIsValidVarName(AstNode* node) const
+bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
 {
     if (!checkIsValidUserName(node))
         return false;
@@ -25,6 +25,28 @@ bool Parser::checkIsValidVarName(AstNode* node) const
 
     if (node->token.text == g_LangSpec->name_self)
         return error(node->token, toErr(Err0259));
+
+    // Special field name starts with 'item' followed by a number
+    if(varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT) && !node->hasAstFlag(AST_GENERATED))
+    {
+        bool hasItemName = false;
+        if (node->token.text.length() > 4 &&
+            node->token.text[0] == 'i' && node->token.text[1] == 't' && node->token.text[2] == 'e' && node->token.text[3] == 'm')
+        {
+            hasItemName = true;
+            for (uint32_t idx = 4; idx < node->token.text.length(); idx++)
+            {
+                if (!isdigit(node->token.text[idx]))
+                    hasItemName = false;
+            }
+        }
+
+        // User cannot name its variables itemX
+        if (hasItemName)
+        {
+            return context->report({node, node->token, formErr(Err0498, node->token.cstr())});
+        }
+    }      
 
     if (node->token.text[0] != '#')
         return true;
@@ -87,7 +109,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
     return error(node->token, formErr(Err0737, node->token.cstr()));
 }
 
-bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
+bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref)
 {
     auto parentNode = parent;
     if (acceptDeref || parent->is(AstNodeKind::AttrUse))
@@ -106,7 +128,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
         SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
         const auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
         identifier->computeName();
-        SWAG_CHECK(checkIsValidVarName(identifier));
+        SWAG_CHECK(checkIsValidVarName(identifier, varDeclFlags));
 
         AstVarDecl* varNode  = Ast::newVarDecl(identifier->token.text, this, parentNode);
         varNode->kind        = kind;
@@ -114,7 +136,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
         varNode->token.id    = identifier->token.id;
         varNode->assignToken = assignToken.token;
         varNode->addAstFlag(AST_R_VALUE);
-        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+        varNode->addSpecFlag(varDeclFlags.has(VAR_DECL_FLAG_IS_LET) ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
         if (orgVarNode)
         {
@@ -158,7 +180,7 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
     return true;
 }
 
-bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref)
+bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref)
 {
     SWAG_VERIFY(acceptDeref, error(leftNode, formErr(Err0397, Naming::aKindName(currentScope->kind).cstr())));
 
@@ -170,7 +192,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
     AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode);
     orgVarNode->kind        = kind;
     orgVarNode->assignToken = assignToken.token;
-    orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+    orgVarNode->addSpecFlag(varDeclFlags.has(VAR_DECL_FLAG_IS_LET) ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
     // This will avoid to initialize the tuple before the affectation
     orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
@@ -227,7 +249,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
         varNode->token       = identifier->token;
         varNode->assignToken = assignToken.token;
         varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
-        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+        varNode->addSpecFlag(varDeclFlags.has(VAR_DECL_FLAG_IS_LET) ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
         varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
@@ -240,17 +262,18 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
     return true;
 }
 
-bool Parser::doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
+bool Parser::doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags)
 {
     SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
     const auto identifier = leftNode->lastChild();
-    SWAG_CHECK(checkIsValidVarName(identifier));
+    SWAG_CHECK(checkIsValidVarName(identifier, varDeclFlags));
+    
     AstVarDecl* varNode = Ast::newVarDecl(identifier->token.text, this, parent);
     *result             = varNode;
     varNode->kind       = kind;
     varNode->inheritTokenLocation(leftNode->token);
     varNode->assignToken = assignToken.token;
-    varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
+    varNode->addSpecFlag(varDeclFlags.has(VAR_DECL_FLAG_IS_LET) ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
     Ast::addChildBack(varNode, type);
     varNode->type = type;
@@ -264,7 +287,7 @@ bool Parser::doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNo
     return true;
 }
 
-bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
+bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags)
 {
     bool acceptDeref = true;
     if (currentScope->is(ScopeKind::Struct) || currentScope->is(ScopeKind::File))
@@ -273,19 +296,19 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Multiple affectation
     if (leftNode->is(AstNodeKind::MultiIdentifier))
     {
-        SWAG_CHECK(doVarDeclMultiIdentifier(parent, leftNode, type, assign, assignToken, kind, result, forLet, acceptDeref));
+        SWAG_CHECK(doVarDeclMultiIdentifier(parent, leftNode, type, assign, assignToken, kind, result, varDeclFlags, acceptDeref));
     }
 
     // Tuple dereference
     else if (leftNode->is(AstNodeKind::MultiIdentifierTuple))
     {
-        SWAG_CHECK(doVarDeclMultiIdentifierTuple(parent, leftNode, type, assign, assignToken, kind, result, forLet, acceptDeref));
+        SWAG_CHECK(doVarDeclMultiIdentifierTuple(parent, leftNode, type, assign, assignToken, kind, result, varDeclFlags, acceptDeref));
     }
 
     // Single declaration/affectation
     else
     {
-        SWAG_CHECK(doVarDeclSingleIdentifier(parent, leftNode, type, assign, assignToken, kind, result, forLet));
+        SWAG_CHECK(doVarDeclSingleIdentifier(parent, leftNode, type, assign, assignToken, kind, result, varDeclFlags));
     }
 
     return true;
@@ -403,7 +426,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarD
         {
             ParserPushFreezeFormat ff(this);
             AstNode*               varExpr = nullptr;
-            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, varDeclFlags.has(VAR_DECL_FLAG_IS_LET)));
+            SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, &varExpr, varDeclFlags));
             leftNode->release();
             if (!first && varExpr)
                 varExpr->addSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL);

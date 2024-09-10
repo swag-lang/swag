@@ -1365,28 +1365,6 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 if (multi == nullptr)
                     Ast::removeFromParent(exprNode);
 
-                // Special field name starts with 'item' followed by a number
-                if(varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT))
-                {
-                    bool hasItemName = false;
-                    if (exprNode->token.text.length() > 4 &&
-                        exprNode->token.text[0] == 'i' && exprNode->token.text[1] == 't' && exprNode->token.text[2] == 'e' && exprNode->token.text[3] == 'm')
-                    {
-                        hasItemName = true;
-                        for (uint32_t idx = 4; idx < exprNode->token.text.length(); idx++)
-                        {
-                            if (!isdigit(exprNode->token.text[idx]))
-                                hasItemName = false;
-                        }
-                    }
-
-                    // User cannot name its variables itemX
-                    if (!parent->hasAstFlag(AST_GENERATED) && hasItemName)
-                    {
-                        return context->report({exprNode, exprNode->token, formErr(Err0498, exprNode->token.cstr())});
-                    }
-                }
-
                 // Prepend the 'with' identifier
                 if (withNode && prependWith)
                 {

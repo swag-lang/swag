@@ -125,7 +125,7 @@ struct Parser
     bool        checkIsIdentifier(const TokenParse& myToken, const char* msg) const;
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
-    bool        checkIsValidVarName(AstNode* node) const;
+    bool        checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags = VAR_DECL_FLAG_ZERO) const;
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void setForceTakeAddress(AstNode* node);
@@ -159,9 +159,9 @@ struct Parser
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result);
-    bool doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
-    bool doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet, bool acceptDeref);
-    bool doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet);
+    bool doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref);
+    bool doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref);
+    bool doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags);
     bool doVarDecl(AstNode* parent, AstNode** result);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarDeclFlags varDeclFlags = 0);
     bool doAlias(AstNode* parent, AstNode** result);
@@ -172,7 +172,7 @@ struct Parser
     bool doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl);
     bool doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, AstNode* params);
     bool doDefer(AstNode* parent, AstNode** result);
-    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
+    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags = VAR_DECL_FLAG_ZERO);
     bool doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool doIdentifier(AstNode* parent, IdentifierFlags identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0);
