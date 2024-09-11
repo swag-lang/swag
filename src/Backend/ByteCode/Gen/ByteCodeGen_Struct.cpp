@@ -285,8 +285,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                     continue;
                 const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
                 generateStructAlloc(context, typeStructVar);
-                if (context->result != ContextResult::Done)
-                    return;
+                YIELD_VOID();
                 if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
                     needDrop = true;
                 if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)

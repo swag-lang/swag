@@ -129,7 +129,33 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     }
 }
 
-void Semantic::waitStructStartSolve(Job* job, AstIdentifier* identifier, TypeInfo* typeInfo)
+void Semantic::waitStructUsing(Job* job, TypeInfo* typeInfo)
+{
+    if (typeInfo->isArrayOfStruct())
+        typeInfo = castTypeInfo<TypeInfoArray>(typeInfo)->finalType;
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
+    typeInfo = typeInfo->getConcreteAlias();
+
+    if (!typeInfo->isStruct())
+        return;
+    if (typeInfo->isGeneric())
+        return;
+
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    for (const auto p : typeInfoStruct->fields)
+    {
+        const auto context = job->baseContext;
+        if (!p->flags.has(TYPEINFOPARAM_HAS_USING))
+            continue;
+        waitTypeCompleted(job, p->typeInfo);
+        YIELD_VOID();
+        waitStructUsing(job, p->typeInfo);
+        YIELD_VOID();
+    }
+}
+
+void Semantic::waitStructStartSolve(Job* job, const AstIdentifier* identifier, TypeInfo* typeInfo)
 {
     if (identifier->hasAstFlag(AST_STRUCT_MEMBER))
         return;
@@ -157,7 +183,7 @@ void Semantic::waitStructStartSolve(Job* job, AstIdentifier* identifier, TypeInf
     if (!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_HAS_USING))
         return;
 
-    auto p1 = identifier->findParent(AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+    const auto p1 = identifier->findParent(AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
     if (!p1 || !p1->hasAstFlag(AST_DECL_USING))
         return;
 
@@ -319,8 +345,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
             continue;
 
         waitStructOverloadDefined(context->baseJob, typeInfo);
-        if (context->result == ContextResult::Pending)
-            return;
+        YIELD_VOID();
 
         const auto overload = declNode->resolvedSymbolOverload();
         if (!overload)
@@ -340,8 +365,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
         }
 
         waitOverloadCompleted(context->baseJob, overload);
-        if (context->result == ContextResult::Pending)
-            return;
+        YIELD_VOID();
     }
 }
 

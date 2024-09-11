@@ -138,3 +138,10 @@ struct Job
         if (context->result != ContextResult::Done) \
             return true;                            \
     } while (0)
+
+#define YIELD_VOID()                                \
+    do                                              \
+    {                                               \
+        if (context->result != ContextResult::Done) \
+            return;                                 \
+    } while (0)

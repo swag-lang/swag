@@ -165,7 +165,7 @@ bool TypeGenStructJob::computeStruct()
     // Fields with using
     concreteType->usingFields.buffer = nullptr;
     concreteType->usingFields.count  = 0;
-    if (!realType->isGeneric())
+    if(!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && !realType->isGeneric())
     {
         VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
         realType->collectUsingFields(usingFields);
@@ -277,6 +277,9 @@ JobResult TypeGenStructJob::execute()
         Semantic::waitStructGeneratedAlloc(this, realType);
         if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
+        Semantic::waitStructUsing(this, realType);
+        if (baseContext->result != ContextResult::Done)
+            return JobResult::KeepJobAlive;        
     }
 
     computeStruct();
