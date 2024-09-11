@@ -70,10 +70,10 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     const auto node       = castAst<AstImpl>(context->node, AstNodeKind::Impl);
     const auto sourceFile = node->token.sourceFile;
     const auto module     = sourceFile->module;
-    AstNode*   first;
-    AstNode*   back;
 
     // Race condition in case a templated function is instantiated in the impl block during that access
+    AstNode* first;
+    AstNode* back;
     {
         SharedLock lk(node->mutex);
         first = node->firstChild();
@@ -130,6 +130,15 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto node = castAst<AstImpl>(context->node, AstNodeKind::Impl);
     const auto job  = context->baseJob;
 
+    // Race condition in case a templated function is instantiated in the impl block during that access
+    AstNode* first;
+    AstNode* back;
+    {
+        SharedLock lk(node->mutex);
+        first = node->firstChild();
+        back  = node->secondChild();
+    }
+
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isInterface())
@@ -146,10 +155,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     context->tmpNodes.clear();
     flattenStructChildren(context, node, context->tmpNodes);
 
-    SWAG_ASSERT(node->firstChild()->is(AstNodeKind::IdentifierRef));
-    SWAG_ASSERT(node->secondChild()->is(AstNodeKind::IdentifierRef));
-    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->firstChild()->typeInfo, TypeInfoKind::Interface);
-    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->secondChild()->typeInfo, TypeInfoKind::Struct);
+    SWAG_ASSERT(first->is(AstNodeKind::IdentifierRef));
+    SWAG_ASSERT(back->is(AstNodeKind::IdentifierRef));
+    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
+    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
 
     // Be sure interface has been fully solved
     {
