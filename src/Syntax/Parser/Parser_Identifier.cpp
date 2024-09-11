@@ -11,6 +11,27 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/SourceFile.h"
 
+bool Parser::isItemName(const Utf8& name)
+{
+    if (name.length() <= 4)
+        return false;
+    if (name[0] != 'i' || name[1] != 't' || name[2] != 'e' || name[3] != 'm')
+        return false;
+
+    for (uint32_t idx = 4; idx < name.length(); idx++)
+    {
+        if (!isdigit(name[idx]))
+            return false;
+    }
+
+    return true;
+}
+
+bool Parser::isGeneratedName(const Utf8& name)
+{
+    return name.length() >= 2 && name[0] == '_' && name[1] == '_';
+}
+
 bool Parser::testIsSingleIdentifier(const AstNode* node)
 {
     if (node->isNot(AstNodeKind::IdentifierRef) ||

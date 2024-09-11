@@ -1154,19 +1154,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 storageOffset += childType->sizeOf;
 
             // Special field name starts with 'item' followed by a number
-            bool hasItemName = false;
-            if (child->token.text.length() > 4 &&
-                child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
-            {
-                hasItemName = true;
-                for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
-                {
-                    if (!isdigit(child->token.text[idx]))
-                        hasItemName = false;
-                }
-            }
-
-            if (!hasItemName)
+            if (!Parser::isItemName(child->token.text))
             {
                 auto  overload = child->resolvedSymbolOverload();
                 Utf8  name     = form("item%u", storageIndexField);

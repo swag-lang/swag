@@ -29,23 +29,9 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
     // Special field name starts with 'item' followed by a number
     if(varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT) && !node->hasAstFlag(AST_GENERATED))
     {
-        bool hasItemName = false;
-        if (node->token.text.length() > 4 &&
-            node->token.text[0] == 'i' && node->token.text[1] == 't' && node->token.text[2] == 'e' && node->token.text[3] == 'm')
-        {
-            hasItemName = true;
-            for (uint32_t idx = 4; idx < node->token.text.length(); idx++)
-            {
-                if (!isdigit(node->token.text[idx]))
-                    hasItemName = false;
-            }
-        }
-
         // User cannot name its variables itemX
-        if (hasItemName)
-        {
+        if (isItemName(node->token.text))
             return context->report({node, node->token, formErr(Err0498, node->token.cstr())});
-        }
     }      
 
     if (node->token.text[0] != '#')

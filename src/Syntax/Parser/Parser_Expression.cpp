@@ -1316,11 +1316,6 @@ void Parser::setForceTakeAddress(AstNode* node)
     }
 }
 
-bool Parser::isGeneratedName(const Utf8& name)
-{
-    return name.length() >= 2 && name[0] == '_' && name[1] == '_';
-}
-
 bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags, const AstWith* withNode)
 {
     switch (tokenParse.token.id)
