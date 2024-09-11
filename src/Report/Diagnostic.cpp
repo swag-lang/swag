@@ -1050,7 +1050,9 @@ Utf8 Diagnostic::getErrorId(const Utf8& textMsg)
 {
     if (!hasErrorId(textMsg))
         return "";
-    return Utf8{textMsg.buffer + 1, 7};
+    Utf8 err;
+    err.setView(textMsg.buffer + 1, 7);
+    return err;
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)
