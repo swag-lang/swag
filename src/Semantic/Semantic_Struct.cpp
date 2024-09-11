@@ -1157,7 +1157,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             if (!Parser::isItemName(child->token.text))
             {
                 auto  overload = child->resolvedSymbolOverload();
-                Utf8  name     = form("item%u", storageIndexField);
+                Utf8  varName  = form("item%u", storageIndexField);
                 auto& symTable = node->scope->symTable;
 
                 AddSymbolTypeInfo toAdd;
@@ -1167,7 +1167,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 toAdd.flags          = overload->flags;
                 toAdd.storageOffset  = overload->computedValue.storageOffset;
                 toAdd.storageSegment = overload->computedValue.storageSegment;
-                toAdd.aliasName      = name;
+                toAdd.aliasName      = varName;
 
                 symTable.addSymbolTypeInfo(context, toAdd);
             }

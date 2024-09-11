@@ -221,10 +221,10 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
         {
             auto p1        = typeList->subTypes[i];
             auto typeField = p1->typeInfo;
-            Utf8 nameVar   = p->name;
+            Utf8 varName   = p->name;
             for (const auto& subType : typeList->subTypes)
             {
-                if (nameVar == subType->name)
+                if (varName == subType->name)
                 {
                     p1        = subType;
                     typeField = p1->typeInfo;
@@ -232,8 +232,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
                 }
             }
 
-            if (nameVar.empty())
-                nameVar = form("item%u", i);
+            if (varName.empty())
+                varName = form("item%u", i);
             i++;
 
             if (typeField->isListArray())
@@ -247,7 +247,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (p->typeInfo->isGeneric())
                 typeInfo->deducedGenericParameters.push_back(typeField);
 
-            const auto varNode = newVarDecl(nameVar, nullptr, contentNode);
+            const auto varNode = newVarDecl(varName, nullptr, contentNode);
             SWAG_ASSERT(varNode->token.sourceFile);
             const auto typeNode = newTypeExpression(nullptr, varNode);
             varNode->addAstFlag(AST_GENERATED | AST_STRUCT_MEMBER);
