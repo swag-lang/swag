@@ -444,7 +444,7 @@
 </tr>
 <tr>
 <td>datas</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>

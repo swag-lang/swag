@@ -2886,7 +2886,7 @@
 </tr>
 <tr>
 <td>atlases</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_GlyphAtlas">Pixel.GlyphAtlas</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2896,7 +2896,7 @@
 </tr>
 <tr>
 <td>unicodeRef</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">HashTable</span><span class="SStr">'(rune, *<a href="#Pixel_GlyphDesc">Pixel.GlyphDesc</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">HashTable</span>'(<span class="STpe">rune</span>, *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3065,7 +3065,7 @@
 </table>
 </p>
 <p>Enumerate the font families available in the os. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFromOs</span>()-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_FontFamilyEnumerate">Pixel.FontFamilyEnumerate</a>)</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFromOs</span>()-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3354,7 +3354,7 @@
 </tr>
 <tr>
 <td>datas</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3651,7 +3651,7 @@
 <table class="table-enumeration">
 <tr>
 <td>pixels</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>All the pixels. </td>
 </tr>
 <tr>
@@ -5252,7 +5252,7 @@
 <table class="table-enumeration">
 <tr>
 <td>elements</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_Element">Pixel.Element</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5599,7 +5599,7 @@
 <table class="table-enumeration">
 <tr>
 <td>paths</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_LinePath">Pixel.LinePath</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5931,7 +5931,7 @@
 </tr>
 <tr>
 <td>stackClipRect</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(Core.Math.Rectangle)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5959,17 +5959,17 @@
 <table class="table-enumeration">
 <tr>
 <td>commandBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_Command">Pixel.Command</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>vertexBuffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_VertexLayout">Pixel.VertexLayout</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>triangulateIdx</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(s32)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5999,7 +5999,7 @@
 </tr>
 <tr>
 <td>sharedRoundTmp</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'({factor:f32,pos:Core.Math.Vector2})</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'({factor:<span class="STpe">f32</span>,pos:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>})</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6009,12 +6009,12 @@
 </tr>
 <tr>
 <td>stackState</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_PaintState">Pixel.PaintState</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackTransform</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(Core.Math.Transform2)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6029,7 +6029,7 @@
 </tr>
 <tr>
 <td>stackRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_RenderTarget">Pixel.RenderTarget</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6314,7 +6314,7 @@
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getGlyphs">getGlyphs</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SFct">Array</span><span class="SStr">'(rune), *Font)</span></span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getGlyphs">getGlyphs</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="STpe">rune</span>), *<span class="SCst">Font</span>)</span></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
@@ -6342,7 +6342,7 @@
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureString">measureString</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SFct">Array</span><span class="SStr">'(const *GlyphDesc))</span></span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureString">measureString</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">GlyphDesc</span>))</span></td>
 <td>Returns the bounding rectangle of a given text, at a given position. </td>
 </tr>
 <tr>
@@ -6898,8 +6898,8 @@
 </table>
 </p>
 <p>Returns all the glyphs for a given string and font. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(const *<a href="#Pixel_GlyphDesc">Pixel.GlyphDesc</a>)
-func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(const *<a href="#Pixel_GlyphDesc">Pixel.GlyphDesc</a>)</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)
+<span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="SFct">Array</span>'<span class="STpe">rune</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6977,7 +6977,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 <p>Returns the metrics of a given text. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="STpe">string</span>, font: *<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
 <p>Returns the bounding rectangle of a given text, at a given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="SFct">Array</span><span class="SStr">'(const *<a href="#Pixel_GlyphDesc">GlyphDesc</a>))-&gt;<a href="#Pixel_StringMetrics">Pixel.StringMetrics</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="SFct">Array</span>'(<span class="SKwd">const</span> *<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>))-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7445,7 +7445,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 <tr>
 <td>pattern</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(f32)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7841,7 +7841,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 <tr>
 <td>edges</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_Poly2Tri_Edge">Pixel.Poly2Tri.Edge</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7864,22 +7864,22 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 <table class="table-enumeration">
 <tr>
 <td>triangles</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_Poly2Tri_Triangle">Pixel.Poly2Tri.Triangle</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>edges</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_Poly2Tri_Edge">Pixel.Poly2Tri.Edge</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_Poly2Tri_Point">Pixel.Poly2Tri.Point</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>triIndices</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u64)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8099,7 +8099,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 <table class="table-enumeration">
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(Core.Math.Vector2)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8385,12 +8385,12 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 <tr>
 <td>stackReleasedRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_RenderTarget">Pixel.RenderTarget</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>stackRT</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(*<a href="#Pixel_RenderTarget">Pixel.RenderTarget</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(*<span class="SCst"></span><span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8708,7 +8708,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </table>
 </p>
 <p>Returns the pixels associated to a texture. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTexturePixels</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, pf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTexturePixels</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, texture: <span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, pf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9080,7 +9080,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 <tr>
 <td>chunks</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(<a href="#Pixel_RichChunk">Pixel.RichChunk</a>)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
 <td>The corresponding list of chunks. </td>
 </tr>
 <tr>
@@ -9928,7 +9928,7 @@ func getGlyphs(text: Array'</span><span class="STpe">rune</span>, font: *<span c
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span><span class="SStr">'(u8)</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>

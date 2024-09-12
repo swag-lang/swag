@@ -376,21 +376,29 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
         // Character
         if (c == '\'')
         {
-            result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
-            result += c;
-            while (*pz && *pz != '\'')
+            Utf8 word;
+            word += c;
+            auto pz1 = pz;
+            while (SWAG_IS_AL_NUM(*pz1))
+                word += *pz1++;
+            if (*pz1 && *pz1 == '\'')
             {
-                if (*pz == '\\')
-                    result += *pz++;
-                if (*pz)
-                    result += *pz++;
-            }
+                result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
+                result += c;
+                while (*pz && *pz != '\'')
+                {
+                    if (*pz == '\\')
+                        result += *pz++;
+                    if (*pz)
+                        result += *pz++;
+                }
 
-            if (*pz == '\'')
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-            continue;
+                if (*pz == '\'')
+                    result += *pz++;
+                pz = Utf8::decodeUtf8(pz, c, offset);
+                result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
+                continue;
+            }
         }
 
         // Binary literal
