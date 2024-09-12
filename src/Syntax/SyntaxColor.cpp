@@ -381,7 +381,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             auto pz1 = pz;
             while (SWAG_IS_AL_NUM(*pz1))
                 word += *pz1++;
-            if (*pz1 && *pz1 == '\'')
+            if (*pz1 == '\'')
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxString, mode);
                 result += c;
