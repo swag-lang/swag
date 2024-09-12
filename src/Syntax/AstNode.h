@@ -376,6 +376,17 @@ struct AstNode
     AstNode* lastChild() const { return children.empty() ? nullptr : children.back(); }
     uint32_t childCount() const { return children.size(); }
 
+    AstNode* firstChildSafe() const
+    {
+        SharedLock lk(mutex);
+        return children.empty() ? nullptr : children.front();
+    }
+    AstNode* secondChildSafe() const
+    {
+        SharedLock lk(mutex);
+        return children.size() < 2 ? nullptr : children[1];
+    }
+    
     bool hasAstFlag(const AstNodeFlags& fl) const { return flags.has(fl); }
     void addAstFlag(const AstNodeFlags& fl) { flags.add(fl); }
     void removeAstFlag(const AstNodeFlags& fl) { flags.remove(fl); }
@@ -686,7 +697,7 @@ struct AstIdentifier : AstNode
         IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
     };
 
-    ~AstIdentifier();
+    ~                 AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
     bool              isForcedUFCS() const;
@@ -716,7 +727,7 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_IMPL                 = 0x4000;
     static constexpr SpecFlags SPEC_FLAG_METHOD               = 0x8000;
 
-    ~AstFuncDecl();
+    ~           AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecl(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeignExport();
@@ -861,7 +872,7 @@ struct AstScopeBreakable : AstBreakable
 {
     static constexpr SpecFlags SPEC_FLAG_NAMED = 0x0001;
 
-    AstScopeBreakable();
+             AstScopeBreakable();
     AstNode* clone(CloneContext& context);
 
     AstNode* block;
@@ -877,7 +888,7 @@ struct AstWhile : AstBreakable
 
 struct AstFor : AstBreakable
 {
-    ~AstFor();
+    ~        AstFor();
     AstNode* clone(CloneContext& context);
 
     AstNode* preStatement;
@@ -891,7 +902,7 @@ struct AstLoop : AstBreakable
 {
     static constexpr SpecFlags SPEC_FLAG_BACK = 0x0001;
 
-    ~AstLoop();
+    ~        AstLoop();
     AstNode* clone(CloneContext& context);
 
     AstNode* specificName;
@@ -915,7 +926,7 @@ struct AstVisit : AstNode
 
 struct AstSwitch : AstBreakable
 {
-    AstSwitch();
+             AstSwitch();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstSwitchCase*> cases;
@@ -942,7 +953,7 @@ struct AstSwitchCase : AstNode
 
 struct AstSwitchCaseBlock : AstNode
 {
-    ~AstSwitchCaseBlock();
+    ~        AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
 
     AstSwitchCase* ownerCase;
@@ -1048,7 +1059,7 @@ struct AstStruct : AstNode
     static constexpr SpecFlags SPEC_FLAG_NO_OVERLOAD    = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_USING_SOLVED   = 0x0040;
 
-    ~AstStruct();
+    ~        AstStruct();
     AstNode* clone(CloneContext& context);
 
     DependentJobs dependentJobs;
@@ -1065,7 +1076,7 @@ struct AstStruct : AstNode
 
 struct AstEnum : AstNode
 {
-    ~AstEnum();
+    ~        AstEnum();
     AstNode* clone(CloneContext& context);
 
     Token    tokenName;
@@ -1086,7 +1097,7 @@ struct AstImpl : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_ENUM = 0x0001;
 
-    ~AstImpl();
+    ~        AstImpl();
     AstNode* clone(CloneContext& context);
 
     Scope*   structScope;
@@ -1123,7 +1134,7 @@ struct AstReturn : AstNode
 
 struct AstCompilerMacro : AstNode
 {
-    ~AstCompilerMacro();
+    ~        AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
     Scope* scope;
@@ -1138,7 +1149,7 @@ struct AstCompilerMixin : AstNode
 
 struct AstInline : AstNode
 {
-    ~AstInline();
+    ~        AstInline();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstReturn*> returnList;
@@ -1299,7 +1310,7 @@ struct AstStatement : AstNode
     static constexpr SpecFlags SPEC_FLAG_TUPLE_UNPACKING = 0x0008;
     static constexpr SpecFlags SPEC_FLAG_IS_WHERE        = 0x0010;
 
-    ~AstStatement();
+    ~        AstStatement();
     AstNode* clone(CloneContext& context);
 };
 

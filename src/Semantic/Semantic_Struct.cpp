@@ -72,13 +72,8 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     const auto module     = sourceFile->module;
 
     // Race condition in case a templated function is instantiated in the impl block during that access
-    AstNode* first;
-    AstNode* back;
-    {
-        SharedLock lk(node->mutex);
-        first = node->firstChild();
-        back  = node->secondChild();
-    }
+    const auto first = node->firstChildSafe();
+    const auto back  = node->secondChildSafe();
 
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
 
@@ -131,13 +126,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto job  = context->baseJob;
 
     // Race condition in case a templated function is instantiated in the impl block during that access
-    AstNode* first;
-    AstNode* back;
-    {
-        SharedLock lk(node->mutex);
-        first = node->firstChild();
-        back  = node->secondChild();
-    }
+    const auto first = node->firstChildSafe();
+    const auto back  = node->secondChildSafe();
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
