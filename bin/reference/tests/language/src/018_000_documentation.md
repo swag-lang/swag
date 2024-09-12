@@ -66,29 +66,29 @@ Inside a paragraph, you can end of line with '\\' to force a break without creat
 > Second line is on first line.\
 > But third line has a break before.
 
-A paragraph that starts with `---` is a **verbatim** paragraph where every blanks and end of lines
+A paragraph that starts with `<html>` is a **verbatim** paragraph where every blanks and end of lines
 are respected. The paragraph will be generated **as is** without any markdown change.
 
 ```swag
-// ---
+// <html>
 // Even...
 //
 // ...empty lines are preserved.
 //
-// You end that kind of paragraph with another '---' alone on its line.
+// You end that kind of paragraph with '</html>' alone on its line.
 // Note that **everything** is not bold, put printed 'as it is'.
-// ---
+// </html>
 ```
 
 > EXAMPLE:
-> ---
+> <html>
 > Even...
 >
 > ...empty lines are preserved.
 >
-> You end that kind of paragraph with another '---' alone on its line.
+> You end that kind of paragraph with '</html>' alone on its line.
 > Note that **everything** is not bold, put printed 'as it is'.
-> ---
+> </html>
 
 ## Lists
 

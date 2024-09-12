@@ -1,4 +1,4 @@
----
+<html>
 <div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"><img src="imgs/swag_logo.png" width="50%"></p>
     <p style="color:white; font-size:40px; line-height:1.3em;"><b>SWAG</b> Programming Language</p>
@@ -39,15 +39,15 @@
         <a href="std.php">Standard Modules</a>
     </div>
 </div>
----
----
+</html>
+<html>
 <div align="center">
     <p>Explore a detailed, single-script implementation of the <b>Flappy Bird</b> game.</p>
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div>
----
+</html>
 
 > WARNING:  
 > Swag is still under active development! Everything, including this website, is a **work in progress**. Features and details are subject to change until we officially reach version 1.0.0. Stay tuned and enjoy the ride!
@@ -94,13 +94,13 @@ Swag is **open source** and released under the [MIT license](https://github.com/
 > WARNING:  
 > As the language evolves, some videos might show outdated syntax. However, the corresponding scripts on GitHub are always up-to-date and functional.
 
----
+<html>
 <div style="display:flex; flex-wrap:wrap;">
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/Il0UuJCXTWI" title="Swag Live Coding - The Flappy Bird Game (silent)" frameborder="0" allowfullscreen></iframe>
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/Bqr1pakewaU" title="Swag Live Coding - The Pacman Game (silent)" frameborder="0" allowfullscreen></iframe>
     <iframe style="width:200px; height:200px; flex:200px; padding:10px;" src="https://www.youtube.com/embed/f2rIXoH6H38" title="Swag Live Coding: The 2048 Game (silent)" frameborder="0" allowfullscreen></iframe>
 </div>
----
+</html>
 
 > NOTE:  
 > This website and all related documentation were generated using Swag. The compiler can also produce HTML from markdown files and source code.

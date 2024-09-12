@@ -37,13 +37,13 @@ You can also just specify the script file **with the extension** as a command.
 As examples, you will find a bunch of small scripts in `swag/bin/examples/scripts`.
 To run one of them from the console, go to the folder and type for example `swag flappy.swgs`.
 
----
+<html>
 <div align="center">
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div>
----
+</html>
 
 ## Dependencies
 

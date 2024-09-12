@@ -8757,21 +8757,21 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <div class="blockquote blockquote-example">
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> First line.  Second line is on first line.<br/>  But third line has a break before. </p>
 </div>
-<p>A paragraph that starts with <span class="code-inline">---</span> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <b>as is</b> without any markdown change. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// ---</span>
+<p>A paragraph that starts with <span class="code-inline">&lt;html&gt;</span> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <b>as is</b> without any markdown change. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// &lt;html&gt;</span>
 <span class="SCmt">// Even...</span>
 <span class="SCmt">//</span>
 <span class="SCmt">// ...empty lines are preserved.</span>
 <span class="SCmt">//</span>
-<span class="SCmt">// You end that kind of paragraph with another '---' alone on its line.</span>
+<span class="SCmt">// You end that kind of paragraph with '&lt;/html&gt;' alone on its line.</span>
 <span class="SCmt">// Note that **everything** is not bold, put printed 'as it is'.</span>
-<span class="SCmt">// ---</span></span></div>
+<span class="SCmt">// &lt;/html&gt;</span></span></div>
 <div class="blockquote blockquote-example">
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p style="white-space: break-spaces"> Even...
 
  ...empty lines are preserved.
 
- You end that kind of paragraph with another '---' alone on its line.
+ You end that kind of paragraph with '</html>' alone on its line.
  Note that **everything** is not bold, put printed 'as it is'.</p>
 </div>
 <h4 id="_018_000_documentation_md">Lists </h4>
@@ -9058,7 +9058,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 09-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 12-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
 </div>
 </div>
 </div>

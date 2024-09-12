@@ -289,7 +289,7 @@ void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Ut
             {
                 blk->kind = UserBlockKind::CodeAuto;
             }
-            else if (line.startsWith("---"))
+            else if (line.startsWith("<html>"))
             {
                 blk->kind = UserBlockKind::ParagraphRaw;
                 start++;
@@ -410,7 +410,7 @@ void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Ut
                     break;
 
                 case UserBlockKind::ParagraphRaw:
-                    if (line.startsWith("---"))
+                    if (line.startsWith("</html>"))
                     {
                         mustEnd = true;
                         start++;
