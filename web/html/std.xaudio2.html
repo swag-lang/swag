@@ -42,6 +42,12 @@
     .right h1   { margin-top: 50px; margin-bottom: 50px; }
     .right h2   { margin-top: 35px; }
 
+    .right hr   { margin-top: 50px; margin-bottom: 50px; }
+
+    .right h1 { font-size: 2em; }
+    .right h2 { font-size: 1.75em; }
+    .right h3 { font-size: 1.5em; }
+
     .right ol li { margin-bottom: 10px; }
 
     .strikethrough-text { text-decoration: line-through; }

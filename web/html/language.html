@@ -43,6 +43,12 @@
     .right h1   { margin-top: 50px; margin-bottom: 50px; }
     .right h2   { margin-top: 35px; }
 
+    .right hr   { margin-top: 50px; margin-bottom: 50px; }
+
+    .right h1 { font-size: 2em; }
+    .right h2 { font-size: 1.75em; }
+    .right h3 { font-size: 1.5em; }
+
     .right ol li { margin-bottom: 10px; }
 
     .strikethrough-text { text-decoration: line-through; }
@@ -121,8 +127,9 @@
 <ul>
 <li><a href="#_001_000_introduction_swg">Introduction</a></li>
 <ul>
-<li><a href="#_001_000_introduction_swg__001_001_the_basics_swg">The basics</a></li>
-<li><a href="#_001_000_introduction_swg__001_002_hello_mad_world_swg">Hello mad world</a></li>
+<li><a href="#_001_000_introduction_swg__001_001_the_test_module_swg">The test module</a></li>
+<li><a href="#_001_000_introduction_swg__001_002_the_basics_swg">The basics</a></li>
+<li><a href="#_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello mad world</a></li>
 </ul>
 <li><a href="#_002_000_code_structure_swg">Code structure</a></li>
 <ul>
@@ -249,17 +256,31 @@
 <div class="right-page">
 <h1>Swag Language Reference</h1>
 
-<h2 id="_001_000_introduction_swg">Introduction</h2><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module offers a foundational introduction to the syntax and usage of the Swag programming language, separate from the <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). This documentation is auto-generated from the module's source code. </p>
-<p>For more advanced features, such as dynamic arrays, dynamic strings, or hash maps, please consult the <a href="std.core.php">Std.Core</a> module documentation, as these topics are beyond the scope of the examples covered here. This guide focuses exclusively on the core elements of the Swag language. </p>
-<p>Since <span class="code-inline">reference/language</span> is implemented as a test module, you can run it using the following commands: </p>
+<h2 id="_001_000_introduction_swg">Introduction</h2>
+<h3 id="_001_000_introduction_swg__001_001_the_test_module_swg">The test module</h3><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module provides a foundational introduction to the syntax and essential features of the Swag programming language. It is designed to offer insight into core language elements, separate from the more extensive <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). </p>
+<h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Scope </h4>
+<p>This documentation is auto-generated directly from the module’s source code and serves as a basic guide to Swag’s syntax and functionality. Advanced topics such as dynamic arrays, dynamic strings, and hash maps are covered in the <a href="std.core.php">Std.Core</a> module documentation, which you should reference for more sophisticated implementations beyond the examples covered here. </p>
+<h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Running the Test Module </h4>
+<p>The <span class="code-inline">reference/language</span> module is implemented as a test module to demonstrate the language’s core features in action. You can run the module by executing the following commands from the terminal: </p>
 <div class="code-block"><span class="SCde">swag test --workspace:c:/swag-lang/swag/bin/reference
 swag test -w:c:/swag-lang/swag/bin/reference</span></div>
-<p>These commands will execute all test modules within the specified workspace, including this one. If you are running Swag from the workspace directory, the <span class="code-inline">--workspace</span> flag (or shorthand <span class="code-inline">-w</span>) can be omitted. </p>
-<p>To compile and execute a specific module within the workspace, use the <span class="code-inline">--module</span> (or <span class="code-inline">-m</span>) flag: </p>
+<p>These commands execute all test modules within the specified workspace, including <span class="code-inline">reference/language</span>. If you are already working within the workspace directory, the <span class="code-inline">--workspace</span> flag (or shorthand <span class="code-inline">-w</span>) can be omitted. </p>
+<h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Compiling and Running a Specific Test Module </h4>
+<p>To compile and execute a specific test module, such as <span class="code-inline">test_language</span>, use the <span class="code-inline">--module</span> (or <span class="code-inline">-m</span>) flag in conjunction with the <span class="code-inline">swag test</span> command: </p>
 <div class="code-block"><span class="SCde">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</span></div>
+<p>This will target and run only the specified module, enabling you to focus on individual components for testing and development purposes. </p>
+<p style="white-space: break-spaces"><hr>
+</p>
+<h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Key Features of the <span class="code-inline">reference/language</span> Module: </h4>
+<ol>
+<li><b>Core Syntax</b>: Covers the fundamental elements of the Swag programming language, including variables, control structures, functions, and basic data types.</li>
+<li><b>Test-Driven</b>: All examples and modules are designed to be executable as tests, allowing developers to verify their understanding of core Swag concepts in real time.</li>
+<li><b>Auto-Generated Documentation</b>: This guide is generated directly from the source code, ensuring accuracy and up-to-date information on Swag's core functionality.</li>
+</ol>
+<p>For further exploration of Swag’s advanced features, such as memory management or concurrency, consult the <a href="std.core.php">Std.Core</a> documentation. </p>
 
-<h3 id="_001_000_introduction_swg__001_001_the_basics_swg">The basics</h3><p>Swag is a modern and flexible programming language designed for ease of use, combining a strong type system with an intuitive syntax. In this section, we’ll walk through the fundamental concepts of Swag, using examples to illustrate how to work with variables, functions, control flow, and more. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Constants and Variables </h4>
+<h3 id="_001_000_introduction_swg__001_002_the_basics_swg">The basics</h3><p>Swag is a modern and flexible programming language designed for ease of use, combining a strong type system with an intuitive syntax. In this section, we’ll walk through the fundamental concepts of Swag, using examples to illustrate how to work with variables, functions, control flow, and more. </p>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Constants and Variables </h4>
 <p>In Swag, you use <span class="code-inline">const</span> to define constants, <span class="code-inline">var</span> to define mutable variables, and <span class="code-inline">let</span> to define immutable variables (single-assignment variables that behave like constants after initialization). Constants are immutable and must be initialized when declared, while variables declared with <span class="code-inline">var</span> can be modified after their initial assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -267,7 +288,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> radius = <span class="SNum">10</span>       <span class="SCmt">// A mutable variable, can be modified</span>
     <span class="SKwd">let</span> height = <span class="SNum">100</span>      <span class="SCmt">// An immutable variable, assigned once</span>
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Mutability and Reassignment </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Mutability and Reassignment </h4>
 <p>Variables declared with <span class="code-inline">var</span> can be reassigned, allowing you to update their values as needed: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -283,7 +304,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> width = <span class="SNum">50</span>
     <span class="SCmt">// width = 60     // Error: Cannot reassign an immutable variable</span>
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Type Inference </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Type Inference </h4>
 <p>Swag allows you to omit the type declaration if the compiler can infer it from the assigned value: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -296,9 +317,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> name: <span class="STpe">string</span> = <span class="SStr">"Alice"</span>
     <span class="SKwd">var</span> score: <span class="STpe">s32</span> = <span class="SNum">100</span>
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Constants and Immutability </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Constants and Immutability </h4>
 <p>Swag’s <span class="code-inline">let</span> and <span class="code-inline">const</span> keywords emphasize immutability. The <span class="code-inline">let</span> keyword is particularly useful when you want to define a value that should only be assigned once but may need to be initialized at runtime, as opposed to <span class="code-inline">const</span>, which is usually evaluated at compile-time. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Printing Values </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Printing Values </h4>
 <p>Swag provides the intrinsic <span class="code-inline">@print</span> function for displaying output in the console. Here's an example: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">CanPrint</span> = <span class="SKwd">false</span>  <span class="SCmt">// Must be set to 'true' to show the result of '@print'</span>
 
@@ -314,7 +335,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">print</span>(<span class="SStr">"Welcome to "</span>, name, <span class="SStr">" language!\n"</span>)
 }</span></div>
 <p>This will print: <span class="code-inline">Welcome to Swag language!</span> </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Comments </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Comments </h4>
 <p>Swag supports both single-line and multi-line comments to help you annotate and document your code: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -325,13 +346,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     that spans multiple lines.
     */</span>
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Semicolons </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Semicolons </h4>
 <p>Semicolons in Swag are optional at the end of a statement. They are primarily used when you want to write multiple statements on the same line: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> a = <span class="SNum">5</span>; <span class="SKwd">let</span> b = <span class="SNum">10</span>; <span class="SFct">print</span>(a + b, <span class="SStr">"\n"</span>)  <span class="SCmt">// Outputs 15</span>
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Integers and Floating-Point Numbers </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Integers and Floating-Point Numbers </h4>
 <p>Swag provides several types for representing numbers, including signed and unsigned integers, as well as floating-point numbers: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -342,14 +363,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> result = maxHeight + <span class="SNum">50</span>
     <span class="SFct">print</span>(<span class="SStr">"New height: "</span>, result, <span class="SStr">"\n"</span>)
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Strings </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Strings </h4>
 <p>Strings in Swag are UTF-8 encoded, which allows them to handle international text easily: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> message = <span class="SStr">"Hello, 世界!"</span>  <span class="SCmt">// A string with Unicode characters</span>
     <span class="SFct">print</span>(message, <span class="SStr">"\n"</span>)
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Tuples </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Tuples </h4>
 <p>Tuples allow you to group multiple values into a single compound value. The values in a tuple can be of different types, making tuples a flexible tool for returning multiple results from a function or bundling data. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -361,7 +382,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// You can also access tuple elements by their index:</span>
     <span class="SFct">print</span>(person.item0, <span class="SStr">" is "</span>, person.item1, <span class="SStr">" years old.\n"</span>)
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Control Flow </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Control Flow </h4>
 <p>Swag offers flexible control structures, such as <span class="code-inline">if</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span>, to manage how your program executes based on different conditions. One key feature of Swag is that curly braces <span class="code-inline">{}</span> are not mandatory for control blocks. Instead, you can use <span class="code-inline">:</span> to define a block, much like in Python. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -403,7 +424,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         countdown -= <span class="SNum">1</span>
     }
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg"><span class="code-inline">foreach</span> Loop </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg"><span class="code-inline">foreach</span> Loop </h4>
 <p>Swag provides the <span class="code-inline">foreach</span> loop for iterating over collections such as arrays. This loop automatically assigns each item to a variable as it iterates: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -413,7 +434,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <p>In this example, the <span class="code-inline">foreach</span> loop goes through each element of the array <span class="code-inline">numbers</span> and prints it. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Functions </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Functions </h4>
 <p>Functions in Swag encapsulate reusable blocks of code. Here’s a simple function that adds two numbers: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -436,9 +457,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(firstName == <span class="SStr">"a"</span>)
     <span class="SItr">@assert</span>(lastName == <span class="SStr">"b"</span>)
 }</span></div>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Error Handling </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Error Handling </h4>
 <p>Swag provides robust error handling mechanisms using <span class="code-inline">throw</span>, <span class="code-inline">try</span>, and <span class="code-inline">catch</span>, allowing you to handle errors in a flexible and controlled manner. Unlike traditional exception handling, Swag treats errors as specialized return values rather than exceptions. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Propagating Errors with <span class="code-inline">throw</span> and <span class="code-inline">try</span> </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Propagating Errors with <span class="code-inline">throw</span> and <span class="code-inline">try</span> </h4>
 <p>In Swag, a function can signal that it might encounter an error by being annotated with the <span class="code-inline">throw</span> keyword. This indicates that the function might raise an error during execution, and any function calling it must use the <span class="code-inline">try</span> keyword to handle the potential error. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">divide</span>(a: <span class="STpe">s32</span>, b: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> <span class="SKwd">throw</span> 
 {
@@ -456,7 +477,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">print</span>(<span class="SStr">"Result: "</span>, result, <span class="SStr">"\n"</span>) <span class="SCmt">// Outputs 5</span>
 }</span></div>
 <p>If an error is raised inside the <span class="code-inline">divide</span> function, it will be propagated to the caller. The <span class="code-inline">try</span> keyword ensures that the caller handles or propagates the error further. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Handling Errors with <span class="code-inline">catch</span> </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Handling Errors with <span class="code-inline">catch</span> </h4>
 <p>Instead of propagating errors, you can catch and handle them within the function using the <span class="code-inline">catch</span> keyword. When an error occurs, Swag provides the error through the <span class="code-inline">@err()</span> intrinsic, which can be checked and handled. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span> 
 {
@@ -468,7 +489,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <p>In this case, the <span class="code-inline">catch</span> keyword is used to trap the error and prevent it from being propagated. If an error occurs, it is available through <span class="code-inline">@err()</span>, and you can handle it gracefully. </p>
-<h4 id="_001_000_introduction_swg__001_001_the_basics_swg">Dismissing Errors with <span class="code-inline">trycatch</span> </h4>
+<h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Dismissing Errors with <span class="code-inline">trycatch</span> </h4>
 <p>The <span class="code-inline">trycatch</span> construct allows you to dismiss an error and continue execution without propagating it. When using <span class="code-inline">trycatch</span>, Swag will assign a default value to the variable if an error occurs, allowing the program to continue without disruption. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeDivide</span>(a: <span class="STpe">s32</span>, b: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span> {
     <span class="SLgc">return</span> <span class="SKwd">trycatch</span> <span class="SFct">divide</span>(a, b)
@@ -481,7 +502,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <p>In this example, if an error occurs in <span class="code-inline">divide</span>, the program continues, and <span class="code-inline">result</span> is assigned the default value for its type (0 in this case). This approach is useful when you want to handle errors locally without propagating them. </p>
 
-<h3 id="_001_000_introduction_swg__001_002_hello_mad_world_swg">Hello mad world</h3><p>Let's dig more into the "hello world" example. The most simple version, as already seen, does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
+<h3 id="_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello mad world</h3><p>Let's dig more into the "hello world" example. The most simple version, as already seen, does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
 <p><span class="code-inline">#main</span> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <span class="code-inline">#</span>). It must be defined only once for a native executable. <span class="code-inline">@print</span> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <span class="code-inline">@</span>). </p>
 <p>All intrinsics are part of the <a href="std/swag.runtime.php">compiler runtime</a> which comes with the compiler. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
