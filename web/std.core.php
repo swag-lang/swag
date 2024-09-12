@@ -15294,8 +15294,11 @@ func insertBefore(using self, node: *<a href="#Core_ListNode">ListNode</a>, valu
 </p>
 <p>Returns the minimal segment between two segments (and the minimal distance). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0, p1, q0, q1: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,b:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,dist:<span class="STpe">f32</span>}</span></div>
-<p>--- David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
-<p>--- </p>
+<p style="white-space: break-spaces"><hr>
+</p>
+<p>David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
+<p style="white-space: break-spaces"><hr>
+</p>
 <p>
 <table class="api-item">
 <tr>

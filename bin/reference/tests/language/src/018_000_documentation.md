@@ -90,6 +90,10 @@ are respected. The paragraph will be generated **as is** without any markdown ch
 > Note that **everything** is not bold, put printed 'as it is'.
 > </html>
 
+## Horizontal Lines
+
+Use '---' at the start of a line to create an HTML horizontal line ('<br>')
+
 ## Lists
 
 You can create a **list** of bullet points with `\*`.

@@ -39,6 +39,7 @@ struct GenDoc
         Title4,
         Title5,
         Title6,
+        HorizontalLine,
     };
 
     struct UserBlock

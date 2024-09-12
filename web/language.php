@@ -8774,6 +8774,8 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
  You end that kind of paragraph with '</html>' alone on its line.
  Note that **everything** is not bold, put printed 'as it is'.</p>
 </div>
+<h4 id="_018_000_documentation_md">Horizontal Lines </h4>
+<p>Use <span class="code-inline">---</span> at the start of a line to create an HTML horizontal line (<span class="code-inline">&lt;br&gt;</span>) </p>
 <h4 id="_018_000_documentation_md">Lists </h4>
 <p>You can create a <b>list</b> of bullet points with <span class="code-inline">*</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// * This is a bullet point</span>

@@ -372,6 +372,10 @@ void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Ut
             {
                 blk->kind = UserBlockKind::Title6;
             }
+            else if (line == "---")
+            {
+                blk->kind = UserBlockKind::HorizontalLine;
+            }
             else
             {
                 blk->kind = UserBlockKind::Paragraph;
@@ -397,6 +401,13 @@ void GenDoc::computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Ut
             bool mustEnd = false;
             switch (blk->kind)
             {
+                case UserBlockKind::HorizontalLine:
+                    blk->kind = UserBlockKind::ParagraphRaw;
+                    blk->lines.push_back("<hr>\n");
+                    mustEnd = true;
+                    start++;
+                    break;
+
                 case UserBlockKind::Title1:
                 case UserBlockKind::Title2:
                 case UserBlockKind::Title3:
