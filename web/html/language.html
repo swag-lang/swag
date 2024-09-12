@@ -125,130 +125,130 @@
 <div class="left-page">
 <h2>Table of Contents</h2>
 <ul>
-<li><a href="#_001_000_introduction_swg">Introduction</a></li>
+<li><a href="#_001_000_introduction_swg">Introduction </a></li>
 <ul>
-<li><a href="#_001_000_introduction_swg__001_001_the_test_module_swg">The test module</a></li>
-<li><a href="#_001_000_introduction_swg__001_002_the_basics_swg">The basics</a></li>
-<li><a href="#_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello mad world</a></li>
+<li><a href="#_001_000_introduction_swg__001_001_the_test_module_swg">The Test Module </a></li>
+<li><a href="#_001_000_introduction_swg__001_002_the_basics_swg">The Basics </a></li>
+<li><a href="#_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello Mad World </a></li>
 </ul>
-<li><a href="#_002_000_code_structure_swg">Code structure</a></li>
+<li><a href="#_002_000_code_structure_swg">Code Structure </a></li>
 <ul>
-<li><a href="#_002_000_code_structure_swg__002_002_source_code_organization_swg">Source code organization</a></li>
-<li><a href="#_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global declaration order</a></li>
-<li><a href="#_002_000_code_structure_swg__002_004_comments_swg">Comments</a></li>
-<li><a href="#_002_000_code_structure_swg__002_005_semicolons_swg">Semicolons</a></li>
-<li><a href="#_002_000_code_structure_swg__002_006_identifiers_swg">Identifiers</a></li>
-<li><a href="#_002_000_code_structure_swg__002_007_keywords_swg">Keywords</a></li>
+<li><a href="#_002_000_code_structure_swg__002_002_source_code_organization_swg">Source Code Organization </a></li>
+<li><a href="#_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global Declaration Order </a></li>
+<li><a href="#_002_000_code_structure_swg__002_004_comments_swg">Comments </a></li>
+<li><a href="#_002_000_code_structure_swg__002_005_semicolons_swg">Semicolons </a></li>
+<li><a href="#_002_000_code_structure_swg__002_006_identifiers_swg">Identifiers </a></li>
+<li><a href="#_002_000_code_structure_swg__002_007_keywords_swg">Keywords </a></li>
 </ul>
-<li><a href="#_003_000_fundamentals_swg">Fundamentals</a></li>
+<li><a href="#_003_000_fundamentals_swg">Fundamentals </a></li>
 <ul>
-<li><a href="#_003_000_fundamentals_swg__003_001_basic_types_swg">Basic types</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_002_number_literals_swg">Number literals</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_003_string_swg">String</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_004_constants_swg">Constants</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_005_variables_swg">Variables</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_006_operators_swg">Operators</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_007_cast_swg">Cast</a></li>
-<li><a href="#_003_000_fundamentals_swg__003_008_alias_swg">Alias</a></li>
+<li><a href="#_003_000_fundamentals_swg__003_001_basic_types_swg">Basic Types </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_002_number_literals_swg">Number Literals </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_003_string_swg">String </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_004_constants_swg">Constants </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_005_variables_swg">Variables </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_006_operators_swg">Operators </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_007_cast_swg">Cast </a></li>
+<li><a href="#_003_000_fundamentals_swg__003_008_alias_swg">Alias </a></li>
 </ul>
-<li><a href="#_004_000_data_structures_swg">Data structures</a></li>
+<li><a href="#_004_000_data_structures_swg">Data Structures </a></li>
 <ul>
-<li><a href="#_004_000_data_structures_swg__004_001_array_swg">Array</a></li>
-<li><a href="#_004_000_data_structures_swg__004_002_slice_swg">Slice</a></li>
-<li><a href="#_004_000_data_structures_swg__004_003_tuple_swg">Tuple</a></li>
-<li><a href="#_004_000_data_structures_swg__004_004_enum_swg">Enum</a></li>
-<li><a href="#_004_000_data_structures_swg__004_005_impl_swg">Impl</a></li>
-<li><a href="#_004_000_data_structures_swg__004_006_union_swg">Union</a></li>
-<li><a href="#_004_000_data_structures_swg__004_007_pointers_swg">Pointers</a></li>
-<li><a href="#_004_000_data_structures_swg__004_008_references_swg">References</a></li>
-<li><a href="#_004_000_data_structures_swg__004_009_any_swg">Any</a></li>
+<li><a href="#_004_000_data_structures_swg__004_001_array_swg">Array </a></li>
+<li><a href="#_004_000_data_structures_swg__004_002_slice_swg">Slice </a></li>
+<li><a href="#_004_000_data_structures_swg__004_003_tuple_swg">Tuple </a></li>
+<li><a href="#_004_000_data_structures_swg__004_004_enum_swg">Enum </a></li>
+<li><a href="#_004_000_data_structures_swg__004_005_impl_swg">Impl </a></li>
+<li><a href="#_004_000_data_structures_swg__004_006_union_swg">Union </a></li>
+<li><a href="#_004_000_data_structures_swg__004_007_pointers_swg">Pointers </a></li>
+<li><a href="#_004_000_data_structures_swg__004_008_references_swg">References </a></li>
+<li><a href="#_004_000_data_structures_swg__004_009_any_swg">Any </a></li>
 </ul>
-<li><a href="#_005_000_control_flow_swg">Control flow</a></li>
+<li><a href="#_005_000_control_flow_swg">Control Flow </a></li>
 <ul>
-<li><a href="#_005_000_control_flow_swg__005_001_if_swg">If</a></li>
-<li><a href="#_005_000_control_flow_swg__005_002_loop_swg">Loop</a></li>
-<li><a href="#_005_000_control_flow_swg__005_003_for_swg">For</a></li>
-<li><a href="#_005_000_control_flow_swg__005_004_while_swg">While</a></li>
-<li><a href="#_005_000_control_flow_swg__005_005_switch_swg">Switch</a></li>
-<li><a href="#_005_000_control_flow_swg__005_006_break_swg">Break</a></li>
-<li><a href="#_005_000_control_flow_swg__005_007_visit_swg">Visit</a></li>
+<li><a href="#_005_000_control_flow_swg__005_001_if_swg">If </a></li>
+<li><a href="#_005_000_control_flow_swg__005_002_loop_swg">Loop </a></li>
+<li><a href="#_005_000_control_flow_swg__005_003_for_swg">For </a></li>
+<li><a href="#_005_000_control_flow_swg__005_004_while_swg">While </a></li>
+<li><a href="#_005_000_control_flow_swg__005_005_switch_swg">Switch </a></li>
+<li><a href="#_005_000_control_flow_swg__005_006_break_swg">Break </a></li>
+<li><a href="#_005_000_control_flow_swg__005_007_visit_swg">Visit </a></li>
 </ul>
-<li><a href="#_006_000_structs_swg">Structs</a></li>
+<li><a href="#_006_000_structs_swg">Structs </a></li>
 <ul>
-<li><a href="#_006_000_structs_swg__006_001_declaration_swg">Declaration</a></li>
-<li><a href="#_006_000_structs_swg__006_002_impl_swg">Impl</a></li>
-<li><a href="#_006_000_structs_swg__006_003_offset_swg">Offset</a></li>
-<li><a href="#_006_000_structs_swg__006_004_packing_swg">Packing</a></li>
-<li><a href="#_006_000_structs_swg__006_005_special_functions_swg">Special functions</a></li>
-<li><a href="#_006_000_structs_swg__006_006_custom_assignment_swg">Custom assignment</a></li>
-<li><a href="#_006_000_structs_swg__006_007_custom_loop_swg">Custom loop</a></li>
-<li><a href="#_006_000_structs_swg__006_008_custom_iteration_swg">Custom iteration</a></li>
-<li><a href="#_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom copy and move</a></li>
-<li><a href="#_006_000_structs_swg__006_010_custom_literals_swg">Custom literals</a></li>
-<li><a href="#_006_000_structs_swg__006_011_interface_swg">Interface</a></li>
+<li><a href="#_006_000_structs_swg__006_001_declaration_swg">Declaration </a></li>
+<li><a href="#_006_000_structs_swg__006_002_impl_swg">Impl </a></li>
+<li><a href="#_006_000_structs_swg__006_003_offset_swg">Offset </a></li>
+<li><a href="#_006_000_structs_swg__006_004_packing_swg">Packing </a></li>
+<li><a href="#_006_000_structs_swg__006_005_special_functions_swg">Special Functions </a></li>
+<li><a href="#_006_000_structs_swg__006_006_custom_assignment_swg">Custom Assignment </a></li>
+<li><a href="#_006_000_structs_swg__006_007_custom_loop_swg">Custom Loop </a></li>
+<li><a href="#_006_000_structs_swg__006_008_custom_iteration_swg">Custom Iteration </a></li>
+<li><a href="#_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom Copy and Move </a></li>
+<li><a href="#_006_000_structs_swg__006_010_custom_literals_swg">Custom Literals </a></li>
+<li><a href="#_006_000_structs_swg__006_011_interface_swg">Interface </a></li>
 </ul>
-<li><a href="#_007_000_functions_swg">Functions</a></li>
+<li><a href="#_007_000_functions_swg">Functions </a></li>
 <ul>
-<li><a href="#_007_000_functions_swg__007_001_declaration_swg">Declaration</a></li>
-<li><a href="#_007_000_functions_swg__007_002_lambda_swg">Lambda</a></li>
-<li><a href="#_007_000_functions_swg__007_003_closure_swg">Closure</a></li>
-<li><a href="#_007_000_functions_swg__007_004_mixin_swg">Mixin</a></li>
-<li><a href="#_007_000_functions_swg__007_005_macro_swg">Macro</a></li>
-<li><a href="#_007_000_functions_swg__007_006_variadic_parameters_swg">Variadic parameters</a></li>
-<li><a href="#_007_000_functions_swg__007_007_ufcs_swg">Ufcs</a></li>
-<li><a href="#_007_000_functions_swg__007_008_constexpr_swg">Constexpr</a></li>
-<li><a href="#_007_000_functions_swg__007_009_function_overloading_swg">Function overloading</a></li>
-<li><a href="#_007_000_functions_swg__007_010_discard_swg">Discard</a></li>
-<li><a href="#_007_000_functions_swg__007_011_retval_swg">Retval</a></li>
-<li><a href="#_007_000_functions_swg__007_012_foreign_swg">Foreign</a></li>
-<li><a href="#_007_000_functions_swg__007_013_special_functions_swg">Special functions</a></li>
+<li><a href="#_007_000_functions_swg__007_001_declaration_swg">Declaration </a></li>
+<li><a href="#_007_000_functions_swg__007_002_lambda_swg">Lambda </a></li>
+<li><a href="#_007_000_functions_swg__007_003_closure_swg">Closure </a></li>
+<li><a href="#_007_000_functions_swg__007_004_mixin_swg">Mixin </a></li>
+<li><a href="#_007_000_functions_swg__007_005_macro_swg">Macro </a></li>
+<li><a href="#_007_000_functions_swg__007_006_variadic_parameters_swg">Variadic Parameters </a></li>
+<li><a href="#_007_000_functions_swg__007_007_ufcs_swg">Ufcs </a></li>
+<li><a href="#_007_000_functions_swg__007_008_constexpr_swg">Constexpr </a></li>
+<li><a href="#_007_000_functions_swg__007_009_function_overloading_swg">Function Overloading </a></li>
+<li><a href="#_007_000_functions_swg__007_010_discard_swg">Discard </a></li>
+<li><a href="#_007_000_functions_swg__007_011_retval_swg">Retval </a></li>
+<li><a href="#_007_000_functions_swg__007_012_foreign_swg">Foreign </a></li>
+<li><a href="#_007_000_functions_swg__007_013_special_functions_swg">Special Functions </a></li>
 </ul>
-<li><a href="#_008_000_intrinsics_swg">Intrinsics</a></li>
+<li><a href="#_008_000_intrinsics_swg">Intrinsics </a></li>
 <ul>
-<li><a href="#_008_000_intrinsics_swg__008_001_init_swg">Init</a></li>
-<li><a href="#_008_000_intrinsics_swg__008_002_drop_swg">Drop</a></li>
+<li><a href="#_008_000_intrinsics_swg__008_001_init_swg">Init </a></li>
+<li><a href="#_008_000_intrinsics_swg__008_002_drop_swg">Drop </a></li>
 </ul>
-<li><a href="#_009_000_generics_swg">Generics</a></li>
+<li><a href="#_009_000_generics_swg">Generics </a></li>
 <ul>
-<li><a href="#_009_000_generics_swg__009_001_functions_swg">Functions</a></li>
-<li><a href="#_009_000_generics_swg__009_002_structs_swg">Structs</a></li>
-<li><a href="#_009_000_generics_swg__009_003_where_constraints_swg">Where constraints</a></li>
+<li><a href="#_009_000_generics_swg__009_001_functions_swg">Functions </a></li>
+<li><a href="#_009_000_generics_swg__009_002_structs_swg">Structs </a></li>
+<li><a href="#_009_000_generics_swg__009_003_where_constraints_swg">Where Constraints </a></li>
 </ul>
-<li><a href="#_010_000_attributes_swg">Attributes</a></li>
+<li><a href="#_010_000_attributes_swg">Attributes </a></li>
 <ul>
-<li><a href="#_010_000_attributes_swg__010_001_user_attributes_swg">User attributes</a></li>
-<li><a href="#_010_000_attributes_swg__010_002_predefined_attributes_swg">Predefined attributes</a></li>
+<li><a href="#_010_000_attributes_swg__010_001_user_attributes_swg">User Attributes </a></li>
+<li><a href="#_010_000_attributes_swg__010_002_predefined_attributes_swg">Predefined Attributes </a></li>
 </ul>
-<li><a href="#_011_000_scoping_swg">Scoping</a></li>
+<li><a href="#_011_000_scoping_swg">Scoping </a></li>
 <ul>
-<li><a href="#_011_000_scoping_swg__011_001_namespace_swg">Namespace</a></li>
-<li><a href="#_011_000_scoping_swg__011_002_defer_swg">Defer</a></li>
-<li><a href="#_011_000_scoping_swg__011_003_using_swg">Using</a></li>
-<li><a href="#_011_000_scoping_swg__011_004_with_swg">With</a></li>
+<li><a href="#_011_000_scoping_swg__011_001_namespace_swg">Namespace </a></li>
+<li><a href="#_011_000_scoping_swg__011_002_defer_swg">Defer </a></li>
+<li><a href="#_011_000_scoping_swg__011_003_using_swg">Using </a></li>
+<li><a href="#_011_000_scoping_swg__011_004_with_swg">With </a></li>
 </ul>
-<li><a href="#_012_000_type_reflection_swg">Type reflection</a></li>
-<li><a href="#_013_000_error_management_and_safety_swg">Error management and safety</a></li>
+<li><a href="#_012_000_type_reflection_swg">Type Reflection </a></li>
+<li><a href="#_013_000_error_management_and_safety_swg">Error Management and Safety </a></li>
 <ul>
-<li><a href="#_013_000_error_management_and_safety_swg__013_001_error_management_swg">Error management</a></li>
-<li><a href="#_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety</a></li>
+<li><a href="#_013_000_error_management_and_safety_swg__013_001_error_management_swg">Error Management </a></li>
+<li><a href="#_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety </a></li>
 </ul>
-<li><a href="#_014_000_compile-time_evaluation_swg">Compile-time evaluation</a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg">Compile-time Evaluation </a></li>
 <ul>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr</a></li>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_002_run_swg">Run</a></li>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</a></li>
-<li><a href="#_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg">Code inspection</a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr </a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg__014_002_run_swg">Run </a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler Instructions </a></li>
+<li><a href="#_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg">Code Inspection </a></li>
 </ul>
-<li><a href="#_017_000_meta_programming_swg">Meta programming</a></li>
+<li><a href="#_017_000_meta_programming_swg">Meta Programming </a></li>
 <ul>
-<li><a href="#_017_000_meta_programming_swg__017_001_ast_swg">Ast</a></li>
-<li><a href="#_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler interface</a></li>
+<li><a href="#_017_000_meta_programming_swg__017_001_ast_swg">Ast </a></li>
+<li><a href="#_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler Interface </a></li>
 </ul>
-<li><a href="#_018_000_documentation_md">Documentation</a></li>
+<li><a href="#_018_000_documentation_md">Documentation </a></li>
 <ul>
-<li><a href="#_018_000_documentation_md__018_001_api_swg">Api</a></li>
-<li><a href="#_018_000_documentation_md__018_002_examples_md">Examples</a></li>
-<li><a href="#_018_000_documentation_md__018_003_pages_md">Pages</a></li>
+<li><a href="#_018_000_documentation_md__018_001_api_swg">Api </a></li>
+<li><a href="#_018_000_documentation_md__018_002_examples_md">Examples </a></li>
+<li><a href="#_018_000_documentation_md__018_003_pages_md">Pages </a></li>
 </ul>
 </div>
 </div>
@@ -256,8 +256,8 @@
 <div class="right-page">
 <h1>Swag Language Reference</h1>
 
-<h2 id="_001_000_introduction_swg">Introduction</h2>
-<h3 id="_001_000_introduction_swg__001_001_the_test_module_swg">The test module</h3><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module provides a foundational introduction to the syntax and essential features of the Swag programming language. It is designed to offer insight into core language elements, separate from the more extensive <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). </p>
+<h2 id="_001_000_introduction_swg">Introduction </h2>
+<h3 id="_001_000_introduction_swg__001_001_the_test_module_swg">The Test Module </h3><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module provides a foundational introduction to the syntax and essential features of the Swag programming language. It is designed to offer insight into core language elements, separate from the more extensive <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). </p>
 <h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Scope </h4>
 <p>This documentation is auto-generated directly from the module’s source code and serves as a basic guide to Swag’s syntax and functionality. Advanced topics such as dynamic arrays, dynamic strings, and hash maps are covered in the <a href="std.core.php">Std.Core</a> module documentation, which you should reference for more sophisticated implementations beyond the examples covered here. </p>
 <h4 id="_001_000_introduction_swg__001_001_the_test_module_swg">Running the Test Module </h4>
@@ -279,7 +279,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 </ol>
 <p>For further exploration of Swag’s advanced features, such as memory management or concurrency, consult the <a href="std.core.php">Std.Core</a> documentation. </p>
 
-<h3 id="_001_000_introduction_swg__001_002_the_basics_swg">The basics</h3><p>Swag is a modern and flexible programming language designed for ease of use, combining a strong type system with an intuitive syntax. In this section, we’ll walk through the fundamental concepts of Swag, using examples to illustrate how to work with variables, functions, control flow, and more. </p>
+<h3 id="_001_000_introduction_swg__001_002_the_basics_swg">The Basics </h3><p>Swag is a modern and flexible programming language designed for ease of use, combining a strong type system with an intuitive syntax. In this section, we’ll walk through the fundamental concepts of Swag, using examples to illustrate how to work with variables, functions, control flow, and more. </p>
 <h4 id="_001_000_introduction_swg__001_002_the_basics_swg">Constants and Variables </h4>
 <p>In Swag, you use <span class="code-inline">const</span> to define constants, <span class="code-inline">var</span> to define mutable variables, and <span class="code-inline">let</span> to define immutable variables (single-assignment variables that behave like constants after initialization). Constants are immutable and must be initialized when declared, while variables declared with <span class="code-inline">var</span> can be modified after their initial assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -502,7 +502,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <p>In this example, if an error occurs in <span class="code-inline">divide</span>, the program continues, and <span class="code-inline">result</span> is assigned the default value for its type (0 in this case). This approach is useful when you want to handle errors locally without propagating them. </p>
 
-<h3 id="_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello mad world</h3><p>Let's dig more into the "hello world" example. The most simple version, as already seen, does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
+<h3 id="_001_000_introduction_swg__001_003_hello_mad_world_swg">Hello Mad World </h3><p>Let's dig more into the "hello world" example. The most simple version, as already seen, does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
 <p><span class="code-inline">#main</span> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <span class="code-inline">#</span>). It must be defined only once for a native executable. <span class="code-inline">@print</span> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <span class="code-inline">@</span>). </p>
 <p>All intrinsics are part of the <a href="std/swag.runtime.php">compiler runtime</a> which comes with the compiler. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#main</span>
@@ -588,14 +588,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world at runtime!"</span>)
 }</span></div>
 
-<h2 id="_002_000_code_structure_swg">Code structure</h2>
-<h3 id="_002_000_code_structure_swg__002_002_source_code_organization_swg">Source code organization</h3><p>In Swag, all source files are required to use the <span class="code-inline">.swg</span> extension, with the exception of simple script files, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b> to ensure proper handling of text and symbols. </p>
+<h2 id="_002_000_code_structure_swg">Code Structure </h2>
+<h3 id="_002_000_code_structure_swg__002_002_source_code_organization_swg">Source Code Organization </h3><p>In Swag, all source files are required to use the <span class="code-inline">.swg</span> extension, with the exception of simple script files, which use the <span class="code-inline">.swgs</span> extension. All files must be encoded in <b>UTF-8</b> to ensure proper handling of text and symbols. </p>
 <p>Swag does not support the compilation of individual source files (except for <span class="code-inline">.swgs</span> script files). Instead, source code is structured within a <b>workspace</b> that comprises one or more <b>modules</b>. This approach promotes organized and modular development, allowing for efficient management of complex projects. </p>
 <p>For example, <span class="code-inline">Std</span> is a workspace that includes all the standard modules provided by Swag. </p>
 <p>A module can either be a <span class="code-inline">dll</span> (on Windows) or an executable. A single workspace may contain multiple modules, meaning that a workspace usually includes the modules you develop (such as your main executable) as well as all your dependencies, including any external modules. </p>
 <p>Typically, the entire workspace is compiled together, ensuring that all modules and their dependencies are up to date and correctly integrated. </p>
 
-<h3 id="_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global declaration order</h3><p>The order of all <b>top-level</b> declarations does not matter. This feature allows you to reference constants, variables, or functions before they are defined, either within the same file or even across multiple files. This flexibility can be particularly useful in large codebases, where the natural flow of logic or readability may benefit from organizing code independently of its declaration order. </p>
+<h3 id="_002_000_code_structure_swg__002_003_global_declaration_order_swg">Global Declaration Order </h3><p>The order of all <b>top-level</b> declarations does not matter. This feature allows you to reference constants, variables, or functions before they are defined, either within the same file or even across multiple files. This flexibility can be particularly useful in large codebases, where the natural flow of logic or readability may benefit from organizing code independently of its declaration order. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// In this example, we declare a constant 'A' and initialize it with 'B', </span>
 <span class="SCmt">// even though 'B' has not yet been declared or defined.</span>
 <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SCst">B</span>
@@ -621,7 +621,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">functionDeclaredLater</span>() {}</span></div>
 <p>It is important to note that this flexibility applies not only within the same file but also across multiple files. For instance, you can call a function in one file and define it in another. The global order of declarations in Swag is designed to be non-restrictive, allowing for a more intuitive organization of your code. </p>
 
-<h3 id="_002_000_code_structure_swg__002_004_comments_swg">Comments</h3><p>Swag supports both single-line and multi-line comments, allowing for flexible documentation  and inline explanations within your code. This capability is essential for maintaining clarity  and readability, especially in complex codebases. </p>
+<h3 id="_002_000_code_structure_swg__002_004_comments_swg">Comments </h3><p>Swag supports both single-line and multi-line comments, allowing for flexible documentation  and inline explanations within your code. This capability is essential for maintaining clarity  and readability, especially in complex codebases. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Example of a single-line comment</span>
 <span class="SCmt">// Single-line comments are typically used for brief explanations or notes.</span>
 
@@ -645,7 +645,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     causing errors or ambiguity.
 */</span></div>
 
-<h3 id="_002_000_code_structure_swg__002_005_semicolons_swg">Semicolons</h3><h4 id="_002_000_code_structure_swg__002_005_semicolons_swg">Statement Termination in Swag </h4>
+<h3 id="_002_000_code_structure_swg__002_005_semicolons_swg">Semicolons </h3><h4 id="_002_000_code_structure_swg__002_005_semicolons_swg">Statement Termination in Swag </h4>
 <p>Unlike languages such as C/C++, there is no strict requirement to end statements with a semicolon (<span class="code-inline">;</span>). The default method of terminating a statement in Swag is simply reaching the end of a line (<span class="code-inline">end of line</span>). This feature allows for cleaner and more concise syntax, reducing visual clutter and making the code easier to read. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -685,7 +685,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">1</span>); <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></div>
 
-<h3 id="_002_000_code_structure_swg__002_006_identifiers_swg">Identifiers</h3><h4 id="_002_000_code_structure_swg__002_006_identifiers_swg">Naming </h4>
+<h3 id="_002_000_code_structure_swg__002_006_identifiers_swg">Identifiers </h3><h4 id="_002_000_code_structure_swg__002_006_identifiers_swg">Naming </h4>
 <p>User-defined identifiers, such as variables, constants, and function names, must begin with either an underscore or an ASCII letter. These identifiers can then include underscores, ASCII letters, and digits. </p>
 <p>Examples: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">const</span> thisIsAValidIdentifier0   = <span class="SNum">0</span>
@@ -707,7 +707,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@sqrt</span>()
 <span class="SItr">@print</span>()</span></div>
 
-<h3 id="_002_000_code_structure_swg__002_007_keywords_swg">Keywords</h3><h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Special Keywords </h4>
+<h3 id="_002_000_code_structure_swg__002_007_keywords_swg">Keywords </h3><h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Special Keywords </h4>
 <p>Special keywords are predefined, reserved identifiers that have specific meanings within the Swag compiler. These cannot be used as identifiers in your code as they are integral to the language's structure. </p>
 <div class="code-block"><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
@@ -967,8 +967,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#ref</span>
 <span class="SCmp">#constref</span></span></div>
 
-<h2 id="_003_000_fundamentals_swg">Fundamentals</h2>
-<h3 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Basic types</h3><h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Signed Integers </h4>
+<h2 id="_003_000_fundamentals_swg">Fundamentals </h2>
+<h3 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Basic Types </h3><h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Signed Integers </h4>
 <p>Swag provides various signed integer types: <span class="code-inline">s8</span>, <span class="code-inline">s16</span>, <span class="code-inline">s32</span>, and <span class="code-inline">s64</span>. These types represent signed integers with different bit widths, allowing for both positive and negative values within their respective ranges. Each type is specifically designed to efficiently handle integer operations at varying levels of precision. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1067,7 +1067,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(a) == <span class="STpe">s32</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Number literals</h3><h4 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Number Representations </h4>
+<h3 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Number Literals </h3><h4 id="_003_000_fundamentals_swg__003_002_number_literals_swg">Number Representations </h4>
 <p>Integers can be written in multiple formats: <i>decimal</i>, <i>hexadecimal</i>, or <i>binary</i>. These different representations allow you to express numbers in the format that best suits your needs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1164,7 +1164,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(c) == <span class="STpe">u32</span>      <span class="SCmt">// Verifies that 'c' is of type 'u32'</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_003_string_swg">String</h3><h4 id="_003_000_fundamentals_swg__003_003_string_swg">UTF-8 Encoding </h4>
+<h3 id="_003_000_fundamentals_swg__003_003_string_swg">String </h3><h4 id="_003_000_fundamentals_swg__003_003_string_swg">UTF-8 Encoding </h4>
 <p>Swag uses UTF-8 encoding for strings, which allows representation of a wide range of characters, including those from various languages and symbol sets. </p>
 <h4 id="_003_000_fundamentals_swg__003_003_string_swg">String Comparison </h4>
 <p>Strings can be compared directly for equality using the <span class="code-inline">==</span> operator. </p>
@@ -1393,7 +1393,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#nameof</span>(<span class="SCst">X</span>) == <span class="SStr">"X"</span>                      <span class="SCmt">// Returns the variable name "X"</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants</h3><h4 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants with <span class="code-inline">const</span> </h4>
+<h3 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants </h3><h4 id="_003_000_fundamentals_swg__003_004_constants_swg">Constants with <span class="code-inline">const</span> </h4>
 <p>Using <span class="code-inline">const</span> implies that the value must be <b>known by the compiler</b> at compile time.  This ensures that the value is embedded directly into the compiled code, eliminating any runtime  memory usage for simple types like integers or strings. Essentially, the compiler replaces occurrences  of these constants with their respective values wherever they are referenced in the code, leading to  more optimized and efficient code execution. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1435,7 +1435,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_003_000_fundamentals_swg__003_004_constants_swg">Key Difference Between <span class="code-inline">let</span> and <span class="code-inline">const</span> </h4>
 <p>The primary distinction between <span class="code-inline">let</span> and <span class="code-inline">const</span> lies in the timing of value determination. The value  assigned to a <span class="code-inline">const</span> must be determined at compile time, meaning it is fixed and known before the program  runs. Conversely, a <span class="code-inline">let</span> allows for dynamic assignment, where the value can be computed and assigned  during runtime. Despite this, both <span class="code-inline">let</span> and <span class="code-inline">const</span> ensure that their values are assigned only once,  maintaining immutability. </p>
 
-<h3 id="_003_000_fundamentals_swg__003_005_variables_swg">Variables</h3><h4 id="_003_000_fundamentals_swg__003_005_variables_swg">Variable Declaration </h4>
+<h3 id="_003_000_fundamentals_swg__003_005_variables_swg">Variables </h3><h4 id="_003_000_fundamentals_swg__003_005_variables_swg">Variable Declaration </h4>
 <p>Variables are declared using the <span class="code-inline">let</span> or <span class="code-inline">var</span> keyword, followed by a <span class="code-inline">:</span> and the variable's type. </p>
 <ul>
 <li><b><span class="code-inline">let</span></b>: Used for declaring a constant variable. The value assigned cannot be modified, ensuring immutability.</li>
@@ -1557,7 +1557,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCst">G2</span> += <span class="SNum">5</span>  <span class="SCmt">// This increment occurs at compile-time.</span>
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_006_operators_swg">Operators</h3><h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Arithmetic Operators </h4>
+<h3 id="_003_000_fundamentals_swg__003_006_operators_swg">Operators </h3><h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Arithmetic Operators </h4>
 <p>These operators perform basic arithmetic operations such as addition, subtraction, multiplication, and division. Modulus operation is also supported to get the remainder of a division. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1797,7 +1797,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(((<span class="SNum">10</span> & <span class="SNum">2</span>) &lt;&lt; <span class="SNum">1</span>) == <span class="SNum">4</span>)
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_007_cast_swg">Cast</h3><h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Explicit Cast with <span class="code-inline">cast</span> </h4>
+<h3 id="_003_000_fundamentals_swg__003_007_cast_swg">Cast </h3><h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Explicit Cast with <span class="code-inline">cast</span> </h4>
 <p>Explicit casting is necessary when you need to convert a value from one type to another manually. This can be achieved using the <span class="code-inline">cast(type) value</span> syntax, which transforms the <span class="code-inline">value</span> into the specified <span class="code-inline">type</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1918,7 +1918,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">let</span> smaller_float: <span class="STpe">f32</span> = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) large_float
 }</span></div>
 
-<h3 id="_003_000_fundamentals_swg__003_008_alias_swg">Alias</h3><h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Type Alias </h4>
+<h3 id="_003_000_fundamentals_swg__003_008_alias_swg">Alias </h3><h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Type Alias </h4>
 <p>An <span class="code-inline">alias</span> allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with. </p>
 <h4 id="_003_000_fundamentals_swg__003_008_alias_swg">Basic Type Alias </h4>
 <p>Using <span class="code-inline">alias</span>, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one. </p>
@@ -1975,8 +1975,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)        <span class="SCmt">// The original variable reflects changes made via the alias</span>
 }</span></div>
 
-<h2 id="_004_000_data_structures_swg">Data structures</h2>
-<h3 id="_004_000_data_structures_swg__004_001_array_swg">Array</h3><h4 id="_004_000_data_structures_swg__004_001_array_swg">Static Arrays in Swag </h4>
+<h2 id="_004_000_data_structures_swg">Data Structures </h2>
+<h3 id="_004_000_data_structures_swg__004_001_array_swg">Array </h3><h4 id="_004_000_data_structures_swg__004_001_array_swg">Static Arrays in Swag </h4>
 <p>Static arrays are fixed-size arrays where the size is known and set at compile time. Unlike dynamic arrays from the <span class="code-inline">Std.Core</span> module, static arrays do not change in size during runtime. They are ideal for situations where memory and size constraints are predictable and fixed. </p>
 <h4 id="_004_000_data_structures_swg__004_001_array_swg">Declaring a Static Array </h4>
 <p>A static array is declared using the syntax <span class="code-inline">[N]</span> followed by the type, where <span class="code-inline">N</span> is the number of elements. </p>
@@ -2119,7 +2119,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(arr1[<span class="SNum">4</span>, <span class="SNum">9</span>] == <span class="SStr">"string"</span>)  
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_002_slice_swg">Slice</h3><h4 id="_004_000_data_structures_swg__004_002_slice_swg">Slices in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_002_slice_swg">Slice </h3><h4 id="_004_000_data_structures_swg__004_002_slice_swg">Slices in Swag </h4>
 <p>A slice in Swag provides a dynamic view over a contiguous block of memory. Unlike static arrays, slices  can be resized or point to different segments of memory at runtime. A slice is composed of a pointer to  the data buffer and a <span class="code-inline">u64</span> value that stores the number of elements in the slice. </p>
 <p>This design makes slices a powerful tool for working with subsets of data without the need to copy it,  enabling efficient manipulation of large datasets. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2260,7 +2260,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(slice) == <span class="SNum">2</span>)
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_003_tuple_swg">Tuple</h3><h4 id="_004_000_data_structures_swg__004_003_tuple_swg">Tuples in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_003_tuple_swg">Tuple </h3><h4 id="_004_000_data_structures_swg__004_003_tuple_swg">Tuples in Swag </h4>
 <p>In Swag, a tuple represents an anonymous structure, sometimes referred to as a struct literal. Tuples are particularly useful for grouping together elements of various types without requiring a formally defined structure. The syntax for creating a tuple involves enclosing the elements within curly braces <span class="code-inline">{}</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2340,7 +2340,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y == <span class="SNum">2.0</span>)
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_004_enum_swg">Enum</h3><h4 id="_004_000_data_structures_swg__004_004_enum_swg">Enums in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_004_enum_swg">Enum </h3><h4 id="_004_000_data_structures_swg__004_004_enum_swg">Enums in Swag </h4>
 <p>Enums in Swag allow you to define a set of named values. Unlike C/C++, enum values in Swag can end with <span class="code-inline">;</span>, <span class="code-inline">,</span>, or an end of line (eol). </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2729,7 +2729,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>The <span class="code-inline">foreach val in RGB</span> statement offers a more structured way to iterate over an enum. Each iteration provides the current enum value in the <span class="code-inline">val</span> variable, which can then be used in a <span class="code-inline">switch</span> statement (or other logic) to perform specific actions based on the value. </p>
 <p>In the provided example, the <span class="code-inline">switch</span> statement checks the value of <span class="code-inline">val</span> and executes different blocks of code depending on whether <span class="code-inline">val</span> is <span class="code-inline">R</span>, <span class="code-inline">G</span>, or <span class="code-inline">B</span>. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same. </p>
 
-<h3 id="_004_000_data_structures_swg__004_005_impl_swg">Impl</h3><h4 id="_004_000_data_structures_swg__004_005_impl_swg">Utilizing the <span class="code-inline">impl</span> Keyword with Enums in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_005_impl_swg">Impl </h3><h4 id="_004_000_data_structures_swg__004_005_impl_swg">Utilizing the <span class="code-inline">impl</span> Keyword with Enums in Swag </h4>
 <p>In Swag, the <span class="code-inline">impl</span> keyword allows you to define methods and functions within the scope of an enum.  This is particularly useful for associating specific behaviors directly with the enum values.  The <span class="code-inline">self</span> keyword within these methods refers to the current enum instance, providing a clean  and organized way to encapsulate logic related to the enum. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Define an enum RGB with three possible values</span>
 <span class="SKwd">enum</span> <span class="SCst">RGB</span>
@@ -2781,7 +2781,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(!<span class="SCst">RGB</span>.<span class="SCst">G</span>.<span class="SFct">isRedOrBlue</span>())                            
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_006_union_swg">Union</h3><h4 id="_004_000_data_structures_swg__004_006_union_swg">Understanding <span class="code-inline">union</span> in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_006_union_swg">Union </h3><h4 id="_004_000_data_structures_swg__004_006_union_swg">Understanding <span class="code-inline">union</span> in Swag </h4>
 <p>A <span class="code-inline">union</span> is a specialized type of struct where all fields share the same memory location, meaning  they all start at the same offset (0). This allows multiple fields to occupy the same space in memory,  making it possible to store different types of data in the same memory space at different times.  This feature is particularly useful for memory optimization in scenarios where only one of the  fields needs to be used at any given moment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2801,7 +2801,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_004_000_data_structures_swg__004_006_union_swg">Explanation of Union Behavior </h4>
 <p>In this example, the <span class="code-inline">union</span> type allows you to define multiple fields (<span class="code-inline">x</span>, <span class="code-inline">y</span>, <span class="code-inline">z</span>), all of which  occupy the same memory location. Because these fields overlap in memory, changing the value of one  field automatically changes the others. This behavior is useful in situations where you need to  store and access different data types within the same memory space, albeit not simultaneously.  Here, <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> are all of type <span class="code-inline">f32</span>, so when <span class="code-inline">x</span> is set to 666, both <span class="code-inline">y</span> and <span class="code-inline">z</span> reflect  this change, illustrating the shared memory concept inherent in unions. </p>
 
-<h3 id="_004_000_data_structures_swg__004_007_pointers_swg">Pointers</h3><h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Single Value Pointers </h4>
+<h3 id="_004_000_data_structures_swg__004_007_pointers_swg">Pointers </h3><h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Single Value Pointers </h4>
 <p>A pointer to a <b>single element</b> is declared using the <span class="code-inline">*</span> symbol. This allows you to create a pointer that holds the address of one specific instance of a data type. Pointers can be used to reference any type of data, allowing for efficient memory management and manipulation of variables. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2891,7 +2891,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#typeof</span>(value) == <span class="STpe">s32</span>      <span class="SCmt">// Assert the type of the dereferenced value is 's32'</span>
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_008_references_swg">References</h3><h4 id="_004_000_data_structures_swg__004_008_references_swg">References in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_008_references_swg">References </h3><h4 id="_004_000_data_structures_swg__004_008_references_swg">References in Swag </h4>
 <p>Swag also supports <b>references</b>, which are pointers that behave like values. References in Swag provide a convenient way to work with memory addresses while abstracting away the need for explicit pointer syntax, making them easier and safer to use in many cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2985,7 +2985,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(param.y == <span class="SNum">6</span>)            <span class="SCmt">// Validate field values</span>
 }</span></div>
 
-<h3 id="_004_000_data_structures_swg__004_009_any_swg">Any</h3><h4 id="_004_000_data_structures_swg__004_009_any_swg">The <span class="code-inline">any</span> Type in Swag </h4>
+<h3 id="_004_000_data_structures_swg__004_009_any_swg">Any </h3><h4 id="_004_000_data_structures_swg__004_009_any_swg">The <span class="code-inline">any</span> Type in Swag </h4>
 <p><span class="code-inline">any</span> is a versatile type in Swag that can reference values of any other type. This allows for dynamic type handling within your code. </p>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamically typed <b>reference</b> to an existing value. This means that <span class="code-inline">any</span> does not store a copy of the value, but rather a reference to the actual value, along with its type information. </p>
@@ -3095,8 +3095,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SCst">A</span>)                    <span class="SCmt">// 'x' is of type A</span>
 }</span></div>
 
-<h2 id="_005_000_control_flow_swg">Control flow</h2>
-<h3 id="_005_000_control_flow_swg__005_001_if_swg">If</h3><h4 id="_005_000_control_flow_swg__005_001_if_swg">Basic Usage of <span class="code-inline">if</span> </h4>
+<h2 id="_005_000_control_flow_swg">Control Flow </h2>
+<h3 id="_005_000_control_flow_swg__005_001_if_swg">If </h3><h4 id="_005_000_control_flow_swg__005_001_if_swg">Basic Usage of <span class="code-inline">if</span> </h4>
 <p>A basic test with an <span class="code-inline">if</span> statement. </p>
 <p>In Swag, curly braces <span class="code-inline">{}</span> are optional for control structures like <span class="code-inline">if</span>. However, if you choose to omit them, you must use a colon <span class="code-inline">:</span>. This syntax rule also applies to other control structures such as <span class="code-inline">while</span> and <span class="code-inline">for</span>. </p>
 <p>Unlike in C/C++, the condition in an <span class="code-inline">if</span> statement does not need to be enclosed in parentheses. Parentheses can be used for clarity or grouping, but they are not mandatory. </p>
@@ -3188,7 +3188,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)             <span class="SCmt">// This block will execute since the initial test fails</span>
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_002_loop_swg">Loop</h3><h4 id="_005_000_control_flow_swg__005_002_loop_swg">Introduction to <span class="code-inline">for</span> </h4>
+<h3 id="_005_000_control_flow_swg__005_002_loop_swg">Loop </h3><h4 id="_005_000_control_flow_swg__005_002_loop_swg">Introduction to <span class="code-inline">for</span> </h4>
 <p>The <span class="code-inline">for</span> construct in Swag is a tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the <span class="code-inline">for</span> construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the <span class="code-inline">where</span> clause. </p>
 <h4 id="_005_000_control_flow_swg__005_002_loop_swg">Basic Usage </h4>
 <p>The <span class="code-inline">for</span> expression dictates the number of iterations and is evaluated only <b>once</b> before the loop begins. This value must be a <b>positive integer</b>. </p>
@@ -3448,7 +3448,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(reversedSum == <span class="SNum">50</span> + <span class="SNum">40</span> + <span class="SNum">30</span> + <span class="SNum">20</span> + <span class="SNum">10</span>) <span class="SCmt">// Verify the sum of even values in reverse</span>
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_003_for_swg">For</h3><h4 id="_005_000_control_flow_swg__005_003_for_swg">Introduction to <span class="code-inline">for</span> Loops </h4>
+<h3 id="_005_000_control_flow_swg__005_003_for_swg">For </h3><h4 id="_005_000_control_flow_swg__005_003_for_swg">Introduction to <span class="code-inline">for</span> Loops </h4>
 <p>The <span class="code-inline">for</span> loop also offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a <i>variable declaration statement</i>, a <i>test expression</i>, and an <i>ending statement</i>. This provides fine-grained control over the for's execution, making it a powerful tool for various iteration scenarios. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3542,7 +3542,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(sum == <span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>+<span class="SNum">5</span>)  <span class="SCmt">// Sum is 15</span>
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_004_while_swg">While</h3><h4 id="_005_000_control_flow_swg__005_004_while_swg">Introduction to <span class="code-inline">while</span> Loops </h4>
+<h3 id="_005_000_control_flow_swg__005_004_while_swg">While </h3><h4 id="_005_000_control_flow_swg__005_004_while_swg">Introduction to <span class="code-inline">while</span> Loops </h4>
 <p>A <span class="code-inline">while</span> loop is a control flow statement that allows repeated execution of a block of code as long as the specified condition evaluates to <span class="code-inline">true</span>. Once the condition becomes <span class="code-inline">false</span>, the loop terminates. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3624,7 +3624,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(iterations == <span class="SNum">10</span>)   <span class="SCmt">// Confirm that the loop executed 10 times</span>
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_005_switch_swg">Switch</h3><h4 id="_005_000_control_flow_swg__005_005_switch_swg">Introduction to <span class="code-inline">switch</span> in Swag </h4>
+<h3 id="_005_000_control_flow_swg__005_005_switch_swg">Switch </h3><h4 id="_005_000_control_flow_swg__005_005_switch_swg">Introduction to <span class="code-inline">switch</span> in Swag </h4>
 <p>The <span class="code-inline">switch</span> statement in Swag operates similarly to those in C/C++, with a key distinction: Swag does not require an explicit <span class="code-inline">break</span> statement at the end of each <span class="code-inline">case</span> block. Instead, it prevents unintentional <span class="code-inline">fallthrough</span> behavior by design, except when the <span class="code-inline">case</span> is empty, where a <span class="code-inline">break</span> statement is necessary. This ensures that each <span class="code-inline">case</span> is independent unless explicitly designed otherwise, reducing the risk of errors in control flow. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3941,7 +3941,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_006_break_swg">Break</h3><h4 id="_005_000_control_flow_swg__005_006_break_swg">Introduction to <span class="code-inline">break</span> in Swag </h4>
+<h3 id="_005_000_control_flow_swg__005_006_break_swg">Break </h3><h4 id="_005_000_control_flow_swg__005_006_break_swg">Introduction to <span class="code-inline">break</span> in Swag </h4>
 <p>The <span class="code-inline">break</span> statement is a control structure in Swag, allowing you to exit from <span class="code-inline">for</span>, <span class="code-inline">foreach</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, and <span class="code-inline">switch</span> constructs. Understanding how and when to use <span class="code-inline">break</span> is essential for effective flow control in your programs. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4052,7 +4052,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_005_000_control_flow_swg__005_007_visit_swg">Visit</h3><h4 id="_005_000_control_flow_swg__005_007_visit_swg">Introduction to <span class="code-inline">foreach</span> </h4>
+<h3 id="_005_000_control_flow_swg__005_007_visit_swg">Visit </h3><h4 id="_005_000_control_flow_swg__005_007_visit_swg">Introduction to <span class="code-inline">foreach</span> </h4>
 <p>The <span class="code-inline">foreach</span> statement is designed to iterate over all elements within a collection. It provides a streamlined  and efficient way to process each item in a collection, which can be an array, slice, string and even a struct. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4210,8 +4210,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(result == <span class="SNum">6</span>)                                   <span class="SCmt">// Ensure the sum of even values is correct</span>
 }</span></div>
 
-<h2 id="_006_000_structs_swg">Structs</h2>
-<h3 id="_006_000_structs_swg__006_001_declaration_swg">Declaration</h3><h4 id="_006_000_structs_swg__006_001_declaration_swg">Basic Struct Declaration </h4>
+<h2 id="_006_000_structs_swg">Structs </h2>
+<h3 id="_006_000_structs_swg__006_001_declaration_swg">Declaration </h3><h4 id="_006_000_structs_swg__006_001_declaration_swg">Basic Struct Declaration </h4>
 <p>This section illustrates a basic <span class="code-inline">struct</span> declaration in Swag. Notice that the <span class="code-inline">var</span> keyword is  not required when declaring fields within the struct. Each field is defined with a specific type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4355,7 +4355,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">titi</span>({x: <span class="SNum">5</span>, z: <span class="SNum">5</span>})        <span class="SCmt">// 'y' remains at its default value of 666, 'x' and 'z' are set</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_002_impl_swg">Impl</h3><h4 id="_006_000_structs_swg__006_002_impl_swg">Struct Methods and Constants </h4>
+<h3 id="_006_000_structs_swg__006_002_impl_swg">Impl </h3><h4 id="_006_000_structs_swg__006_002_impl_swg">Struct Methods and Constants </h4>
 <p>In Swag, structs can encapsulate methods and constants within them using the <span class="code-inline">impl</span> block.  This encapsulation allows for better organization and modularity of the code, keeping  the functionality related to the struct within the struct itself. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ExportType("methods")]</span>           <span class="SCmt">// This attribute enables method reflection for this struct type</span>
 <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
@@ -4440,7 +4440,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SFct">fnZ</span>(v) == <span class="SNum">20</span>)  <span class="SCmt">// Calling the function pointer 'fnZ', expected to return 20</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_003_offset_swg">Offset</h3><h4 id="_006_000_structs_swg__006_003_offset_swg">Custom Field Layout with <span class="code-inline">Swag.Offset</span> </h4>
+<h3 id="_006_000_structs_swg__006_003_offset_swg">Offset </h3><h4 id="_006_000_structs_swg__006_003_offset_swg">Custom Field Layout with <span class="code-inline">Swag.Offset</span> </h4>
 <p>You can force the layout of a field within a struct using the <span class="code-inline">Swag.Offset</span> attribute.  This allows you to manually specify the memory offset of a field, which can be useful  for creating custom memory layouts, such as overlapping fields or sharing memory space  between different fields. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4486,7 +4486,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(v.idx[<span class="SNum">2</span>] == v.z)
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_004_packing_swg">Packing</h3><h4 id="_006_000_structs_swg__006_004_packing_swg">Default Struct Packing </h4>
+<h3 id="_006_000_structs_swg__006_004_packing_swg">Packing </h3><h4 id="_006_000_structs_swg__006_004_packing_swg">Default Struct Packing </h4>
 <p>By default, Swag aligns struct fields similarly to the C programming language. Each field is aligned based on the size of its type, ensuring optimal memory access and usage. This default behavior can be explicitly specified using <span class="code-inline">#[Swag.Pack(0)]</span>, meaning no additional packing adjustments are applied. Below is an example illustrating this default alignment strategy. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4595,7 +4595,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">#sizeof</span>(<span class="SCst">MyStruct2</span>) == <span class="SNum">8</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_005_special_functions_swg">Special functions</h3><p>A struct in Swag can define special operations within the <span class="code-inline">impl</span> block. These operations are predefined and recognized by the compiler. This enables the ability to <b>overload operators</b> and customize behavior when interacting with the struct. </p>
+<h3 id="_006_000_structs_swg__006_005_special_functions_swg">Special Functions </h3><p>A struct in Swag can define special operations within the <span class="code-inline">impl</span> block. These operations are predefined and recognized by the compiler. This enables the ability to <b>overload operators</b> and customize behavior when interacting with the struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Struct</span>
 {
     x, y: <span class="STpe">s32</span>   <span class="SCmt">// Define two properties, x and y, of type s32 (signed 32-bit integer)</span>
@@ -4708,7 +4708,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom assignment</h3><h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom Assignment Behavior with <span class="code-inline">opAffect</span> </h4>
+<h3 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom Assignment </h3><h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Custom Assignment Behavior with <span class="code-inline">opAffect</span> </h4>
 <p>The <span class="code-inline">opAffect</span> method in Swag allows you to define custom assignment behaviors for your struct using the <span class="code-inline">=</span> operator. By overloading <span class="code-inline">opAffect</span>, you can handle assignments of different types, enabling you to specify how your struct should  behave when different types of values are assigned. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Struct</span>
 {
@@ -4816,7 +4816,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#assert</span> <span class="SCst">One</span>.x == <span class="SNum">1.0</span>
 <span class="SCmp">#assert</span> <span class="SCst">One</span>.y == <span class="SNum">1.0</span></span></div>
 
-<h3 id="_006_000_structs_swg__006_007_custom_loop_swg">Custom loop</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span> {}</span></div>
+<h3 id="_006_000_structs_swg__006_007_custom_loop_swg">Custom Loop </h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span> {}</span></div>
 <h4 id="_006_000_structs_swg__006_007_custom_loop_swg">Implementing <span class="code-inline">opCount</span> for Iteration </h4>
 <p>The <span class="code-inline">opCount</span> method in Swag allows you to specify the number of iterations when looping over an instance of a struct. By defining this method, you can control how many times a loop executes, effectively treating the struct as an iterable object. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
@@ -4841,7 +4841,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">4</span>)  <span class="SCmt">// Ensure the loop ran 4 times, as specified by 'opCount'</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom iteration</h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
+<h3 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom Iteration </h3><div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
 {
     x:     <span class="STpe">s32</span> = <span class="SNum">10</span>  <span class="SCmt">// Field 'x' initialized with default value 10</span>
     y:     <span class="STpe">s32</span> = <span class="SNum">20</span>  <span class="SCmt">// Field 'y' initialized with default value 20</span>
@@ -5025,7 +5025,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(sum == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span> + <span class="SNum">5</span>)  <span class="SCmt">// Ensuring the sum of the elements is correct</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom copy and move</h3><p>Swag supports both copy and move semantics for structures. In this example, we demonstrate these concepts using a <span class="code-inline">Vector3</span> struct. Although a <span class="code-inline">Vector3</span> struct typically wouldn't require move semantics (as it doesn't involve heap allocation), this example serves to illustrate how these features are implemented and can be utilized within the Swag language. </p>
+<h3 id="_006_000_structs_swg__006_009_custom_copy_and_move_swg">Custom Copy and Move </h3><p>Swag supports both copy and move semantics for structures. In this example, we demonstrate these concepts using a <span class="code-inline">Vector3</span> struct. Although a <span class="code-inline">Vector3</span> struct typically wouldn't require move semantics (as it doesn't involve heap allocation), this example serves to illustrate how these features are implemented and can be utilized within the Swag language. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Vector3</span>
 {
     x, y, z: <span class="STpe">s32</span> = <span class="SNum">666</span>
@@ -5130,7 +5130,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a.x == <span class="SNum">666</span> <span class="SLgc">and</span> a.y == <span class="SNum">666</span> <span class="SLgc">and</span> a.z == <span class="SNum">666</span>)  <span class="SCmt">// 'a' is reset to default values post-move.</span>
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_010_custom_literals_swg">Custom literals</h3><h4 id="_006_000_structs_swg__006_010_custom_literals_swg">User-Defined Literals </h4>
+<h3 id="_006_000_structs_swg__006_010_custom_literals_swg">Custom Literals </h3><h4 id="_006_000_structs_swg__006_010_custom_literals_swg">User-Defined Literals </h4>
 <p>User-defined literals allow you to extend the meaning of literals in the language, enabling the creation of custom types that can be initialized directly using literal values with specific suffixes. This feature is particularly useful for defining types like <span class="code-inline">Duration</span>, where different units of time (e.g., seconds, milliseconds, minutes) can be intuitively represented and manipulated. </p>
 <h4 id="_006_000_structs_swg__006_010_custom_literals_swg">Literal Suffixes </h4>
 <p>A literal suffix is a string of characters that immediately follows a numeric literal to specify a particular unit or type. For example, in <span class="code-inline">4'ms</span>, <span class="code-inline">'ms'</span> is the suffix indicating that the value is in milliseconds. </p>
@@ -5208,7 +5208,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     toto(100'</span>h)
 }</span></div>
 
-<h3 id="_006_000_structs_swg__006_011_interface_swg">Interface</h3><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
+<h3 id="_006_000_structs_swg__006_011_interface_swg">Interface </h3><p>Interfaces in Swag are <b>virtual tables</b> (a list of function pointers) that can be associated with a struct. </p>
 <p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. This allows for implementing an interface for a given struct without altering the struct's definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
@@ -5354,8 +5354,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(!i3.<span class="SFct">isImplemented</span>())
 }</span></div>
 
-<h2 id="_007_000_functions_swg">Functions</h2>
-<h3 id="_007_000_functions_swg__007_001_declaration_swg">Declaration</h3><h4 id="_007_000_functions_swg__007_001_declaration_swg">Introduction to Function Declarations </h4>
+<h2 id="_007_000_functions_swg">Functions </h2>
+<h3 id="_007_000_functions_swg__007_001_declaration_swg">Declaration </h3><h4 id="_007_000_functions_swg__007_001_declaration_swg">Introduction to Function Declarations </h4>
 <p>A function declaration typically starts with the <span class="code-inline">func</span> keyword, followed by the function name and  a pair of parentheses. If no parameters are needed, the parentheses are empty. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overload]</span>
 <span class="SKwd">func</span> <span class="SFct">toto</span>() {}</span></div>
@@ -5448,7 +5448,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(w == <span class="SNum">2.0</span>)                              <span class="SCmt">// Asserts the value of w</span>
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_002_lambda_swg">Lambda</h3><h4 id="_007_000_functions_swg__007_002_lambda_swg">Introduction to Lambdas in Swag </h4>
+<h3 id="_007_000_functions_swg__007_002_lambda_swg">Lambda </h3><h4 id="_007_000_functions_swg__007_002_lambda_swg">Introduction to Lambdas in Swag </h4>
 <p>A lambda in Swag is a <b>pointer to a function</b>. This allows functions to be stored in variables, passed as arguments, or returned from other functions, making them versatile in functional programming. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -5555,7 +5555,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_003_closure_swg">Closure</h3><h4 id="_007_000_functions_swg__007_003_closure_swg">Introduction to Closures in Swag </h4>
+<h3 id="_007_000_functions_swg__007_003_closure_swg">Closure </h3><h4 id="_007_000_functions_swg__007_003_closure_swg">Introduction to Closures in Swag </h4>
 <p>Swag supports a limited implementation of the closure concept. A closure allows capturing variables  from its surrounding scope. Swag currently permits capturing up to 48 bytes, ensuring no hidden  allocations. However, only simple variables (i.e., variables without custom behaviors such as <span class="code-inline">opDrop</span>,  <span class="code-inline">opPostCopy</span>, or <span class="code-inline">opPostMove</span>) are eligible for capture. </p>
 <h4 id="_007_000_functions_swg__007_003_closure_swg">Declaring a Closure </h4>
 <p>A closure is declared similarly to a lambda, with captured variables specified between <span class="code-inline">|...|</span> before  the function parameters. For a type, the syntax is <span class="code-inline">func||(...)</span>. </p>
@@ -5648,7 +5648,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SFct">fct</span>() == <span class="SNum">13</span>)             <span class="SCmt">// Third call, 'x' becomes 13.</span>
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_004_mixin_swg">Mixin</h3><h4 id="_007_000_functions_swg__007_004_mixin_swg">Introduction to Swag Mixins </h4>
+<h3 id="_007_000_functions_swg__007_004_mixin_swg">Mixin </h3><h4 id="_007_000_functions_swg__007_004_mixin_swg">Introduction to Swag Mixins </h4>
 <p>A mixin in Swag is declared similarly to a function but with the attribute <span class="code-inline">#[Swag.Mixin]</span>.  Mixins allow injecting code into the caller's scope, manipulating variables, or executing code as if it were part of that scope. This documentation provides an overview of Swag Mixins with various examples, demonstrating their flexibility and use cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -5774,7 +5774,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(total == <span class="SNum">3</span>)                  <span class="SCmt">// Verifies that 'total' is the sum of all mixin invocations</span>
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_005_macro_swg">Macro</h3><h4 id="_007_000_functions_swg__007_005_macro_swg">Introduction to Swag Macros </h4>
+<h3 id="_007_000_functions_swg__007_005_macro_swg">Macro </h3><h4 id="_007_000_functions_swg__007_005_macro_swg">Introduction to Swag Macros </h4>
 <p>Macros in Swag are defined similarly to functions, with the key distinction being the <span class="code-inline">#[Swag.Macro]</span> attribute. This attribute indicates that the function is intended to be a macro, which can be reused and expanded at compile-time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6042,7 +6042,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Variadic parameters</h3><h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Introduction to Variadic Functions </h4>
+<h3 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Variadic Parameters </h3><h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Introduction to Variadic Functions </h4>
 <p>Variadic functions accept a variable number of arguments using <span class="code-inline">...</span>. This capability enables functions to handle a flexible number of parameters, making them more versatile in scenarios where the exact number of arguments is not known in advance. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6179,7 +6179,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(result == <span class="SNum">1</span> + <span class="SNum">1</span> + <span class="SNum">10</span> + <span class="SNum">1</span> + <span class="SNum">10</span>)
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_007_ufcs_swg">Ufcs</h3><h4 id="_007_000_functions_swg__007_007_ufcs_swg">Introduction to Uniform Function Call Syntax (UFCS) </h4>
+<h3 id="_007_000_functions_swg__007_007_ufcs_swg">Ufcs </h3><h4 id="_007_000_functions_swg__007_007_ufcs_swg">Introduction to Uniform Function Call Syntax (UFCS) </h4>
 <p><i>UFCS</i> stands for <i>Uniform Function Call Syntax</i>. It allows any function to be called using the  <span class="code-inline">param.func()</span> form when the first parameter of <span class="code-inline">func()</span> matches the type of <span class="code-inline">param</span>. This syntax  provides a way to call static functions as if they were methods on an instance, enhancing  readability and method-like behavior. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6263,7 +6263,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(c1.real == -<span class="SNum">14.0</span> <span class="SLgc">and</span> c1.imag == -<span class="SNum">46.0</span>)
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_008_constexpr_swg">Constexpr</h3><h4 id="_007_000_functions_swg__007_008_constexpr_swg"><span class="code-inline">Swag.ConstExpr</span> Functions </h4>
+<h3 id="_007_000_functions_swg__007_008_constexpr_swg">Constexpr </h3><h4 id="_007_000_functions_swg__007_008_constexpr_swg"><span class="code-inline">Swag.ConstExpr</span> Functions </h4>
 <p>A function marked with <span class="code-inline">Swag.ConstExpr</span> can be executed at compile time by the compiler if  the input values are known at that stage. This allows the function's result to be "baked"  into the code, reducing runtime computation and potentially improving performance. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">sum</span>(x, y: <span class="STpe">f32</span>) =&gt; x + y     <span class="SCmt">// This function can be executed at compile time.</span></span></div>
@@ -6323,7 +6323,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span> <span class="SCst">RectArea</span> = <span class="SFct">#run</span> <span class="SFct">area</span>(<span class="SCst">RectStatic</span>)
 <span class="SCmp">#assert</span> <span class="SCst">RectArea</span> == <span class="SNum">50</span>            <span class="SCmt">// The area of the rectangle is computed at compile time.</span></span></div>
 
-<h3 id="_007_000_functions_swg__007_009_function_overloading_swg">Function overloading</h3><h4 id="_007_000_functions_swg__007_009_function_overloading_swg">Function Overloading with <span class="code-inline">Swag.Overload</span> </h4>
+<h3 id="_007_000_functions_swg__007_009_function_overloading_swg">Function Overloading </h3><h4 id="_007_000_functions_swg__007_009_function_overloading_swg">Function Overloading with <span class="code-inline">Swag.Overload</span> </h4>
 <p>In Swag, it is possible to define multiple functions with the same name as long as their parameter signatures differ.  This capability, known as function overloading, allows you to provide different implementations of a function  depending on the number or types of arguments passed. To enable function overloading, the functions must be  decorated with the <span class="code-inline">Swag.Overload</span> attribute. This ensures that the compiler can correctly distinguish between  the different versions based on the arguments provided at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr, Swag.Overload]</span>
 {
@@ -6337,7 +6337,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>) == <span class="SNum">3</span>        <span class="SCmt">// Calls the two-parameter version of `sum`, which returns 3</span>
 <span class="SCmp">#assert</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>) == <span class="SNum">6</span>     <span class="SCmt">// Calls the three-parameter version of `sum`, which returns 6</span></span></div>
 
-<h3 id="_007_000_functions_swg__007_010_discard_swg">Discard</h3><h4 id="_007_000_functions_swg__007_010_discard_swg">Return Value Usage </h4>
+<h3 id="_007_000_functions_swg__007_010_discard_swg">Discard </h3><h4 id="_007_000_functions_swg__007_010_discard_swg">Return Value Usage </h4>
 <p>In Swag, there is a strict requirement that every function's return value must be utilized. This design choice  helps prevent potential bugs that can arise from accidentally ignoring the result of a function call. If a function  is invoked and its return value is not used, the compiler will generate an error. This ensures that developers are  consciously handling all return values, which can be critical for maintaining the correctness of the code. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6362,7 +6362,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">mul</span>(<span class="SNum">2</span>, <span class="SNum">4</span>)                                    
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_011_retval_swg">Retval</h3><h4 id="_007_000_functions_swg__007_011_retval_swg">The <span class="code-inline">retval</span> special type </h4>
+<h3 id="_007_000_functions_swg__007_011_retval_swg">Retval </h3><h4 id="_007_000_functions_swg__007_011_retval_swg">The <span class="code-inline">retval</span> special type </h4>
 <p>In Swag, the <span class="code-inline">retval</span> type acts as an alias to the function's return type. This feature allows developers to handle  the return value within the function in a more convenient and flexible manner. By using <span class="code-inline">retval</span>, you can define  and manipulate the variable intended to be returned, without explicitly specifying its type. This abstraction  simplifies code maintenance and enhances readability, especially when dealing with complex return types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6416,7 +6416,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(arr[<span class="SNum">254</span>] == <span class="SNum">254</span>)                       <span class="SCmt">// Verifies that the last element is correctly set.</span>
 }</span></div>
 
-<h3 id="_007_000_functions_swg__007_012_foreign_swg">Foreign</h3><h4 id="_007_000_functions_swg__007_012_foreign_swg">Interoperability with External Modules </h4>
+<h3 id="_007_000_functions_swg__007_012_foreign_swg">Foreign </h3><h4 id="_007_000_functions_swg__007_012_foreign_swg">Interoperability with External Modules </h4>
 <p>Swag provides the ability to interoperate with external modules, such as Dynamic Link Libraries (DLLs) on Windows,  which export C functions. This interoperability allows Swag code to invoke functions from these external libraries,  enabling seamless integration with system-level APIs and third-party libraries. This feature is particularly  powerful for extending Swag applications with capabilities provided by external systems. </p>
 <h4 id="_007_000_functions_swg__007_012_foreign_swg">Declaring External Functions </h4>
 <p>To use functions from external modules, you declare them in your Swag code with the <span class="code-inline">Swag.Foreign</span> attribute.  This attribute specifies the external module where the function is located. The module name can refer to either  a Swag-compiled module or an external system module, depending on your needs. The exact location of these external  modules varies by operating system, so it is important to specify the correct module name based on the target platform. </p>
@@ -6439,7 +6439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Links the 'kernel32.dll' library to the executable, resolving external function calls.</span>
 <span class="SCmp">#foreignlib</span> <span class="SStr">"kernel32"</span></span></div>
 
-<h3 id="_007_000_functions_swg__007_013_special_functions_swg">Special functions</h3><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
+<h3 id="_007_000_functions_swg__007_013_special_functions_swg">Special Functions </h3><div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
 <h4 id="_007_000_functions_swg__007_013_special_functions_swg">Main Function (<span class="code-inline">#main</span>) </h4>
 <p>The <span class="code-inline">#main</span> function is the primary entry point for the program, similar to the <span class="code-inline">main()</span>  function in languages like C or C++. This function is unique within each module, meaning  you can only define it <b>once</b> per module.  </p>
 <p>In the context of an executable program, <span class="code-inline">#main</span> is where the program's execution begins.  Any code placed within this function will be the first to execute when the program runs. </p>
@@ -6489,7 +6489,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
 }</span></div>
 
-<h2 id="_008_000_intrinsics_swg">Intrinsics</h2><h3 id="_008_000_intrinsics_swg">Intrinsics in Swag </h3>
+<h2 id="_008_000_intrinsics_swg">Intrinsics </h2><h3 id="_008_000_intrinsics_swg">Intrinsics in Swag </h3>
 <p>Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to  specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with <span class="code-inline">@</span>,  which is reserved exclusively for these functions. </p>
 <p>This document provides a categorized list of all intrinsics available in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
@@ -6702,7 +6702,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;     <span class="SCmt">// Performs a multiply-add operation for 32-bit floating-point numbers.</span>
 <span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;     <span class="SCmt">// Performs a multiply-add operation for 64-bit floating-point numbers.</span></span></div>
 
-<h3 id="_008_000_intrinsics_swg__008_001_init_swg">Init</h3><h4 id="_008_000_intrinsics_swg__008_001_init_swg"><span class="code-inline">@init</span> Intrinsic </h4>
+<h3 id="_008_000_intrinsics_swg__008_001_init_swg">Init </h3><h4 id="_008_000_intrinsics_swg__008_001_init_swg"><span class="code-inline">@init</span> Intrinsic </h4>
 <p>The <span class="code-inline">@init</span> intrinsic in Swag is used to reinitialize a variable or a memory block to its default value. This intrinsic is especially useful when you need to reset the state of variables or memory blocks without manually setting each field or element. The ability to reset variables to their default states or to a specific value simplifies state management in Swag applications. </p>
 <h4 id="_008_000_intrinsics_swg__008_001_init_swg">Reinitializing a Single Variable </h4>
 <p>To reinitialize a single variable to its default value, simply pass the variable as an argument to <span class="code-inline">@init</span>. </p>
@@ -6796,7 +6796,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(rgb[<span class="SNum">3</span>].b == <span class="SNum">70</span>)
 }</span></div>
 
-<h3 id="_008_000_intrinsics_swg__008_002_drop_swg">Drop</h3><h4 id="_008_000_intrinsics_swg__008_002_drop_swg"><span class="code-inline">@drop</span> Intrinsic </h4>
+<h3 id="_008_000_intrinsics_swg__008_002_drop_swg">Drop </h3><h4 id="_008_000_intrinsics_swg__008_002_drop_swg"><span class="code-inline">@drop</span> Intrinsic </h4>
 <p>The <span class="code-inline">@drop</span> intrinsic calls the <span class="code-inline">opDrop</span> method if it is defined for the struct. This ensures that any necessary cleanup operations (such as freeing resources) are performed before the variable is reinitialized. <span class="code-inline">@drop</span> is particularly useful in resource management, where explicit cleanup is required before resetting the variable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6813,8 +6813,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(rgb[<span class="SNum">3</span>].b == <span class="SNum">7</span>)
 }</span></div>
 
-<h2 id="_009_000_generics_swg">Generics</h2>
-<h3 id="_009_000_generics_swg__009_001_functions_swg">Functions</h3><h4 id="_009_000_generics_swg__009_001_functions_swg">Generic Functions </h4>
+<h2 id="_009_000_generics_swg">Generics </h2>
+<h3 id="_009_000_generics_swg__009_001_functions_swg">Functions </h3><h4 id="_009_000_generics_swg__009_001_functions_swg">Generic Functions </h4>
 <p>A function can be made generic by specifying type parameters after the <span class="code-inline">func</span> keyword. These type  parameters allow the function to operate on various types using the same implementation. The generic  type parameters are placed within parentheses after <span class="code-inline">func</span>. When calling the function, the generic  types are specified using <span class="code-inline">funcCall'(type1, type2, ...)</span>. If there is only one generic parameter,  you can omit the parentheses. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6917,7 +6917,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h3 id="_009_000_generics_swg__009_002_structs_swg">Structs</h3><h4 id="_009_000_generics_swg__009_002_structs_swg">Generic Structs </h4>
+<h3 id="_009_000_generics_swg__009_002_structs_swg">Structs </h3><h4 id="_009_000_generics_swg__009_002_structs_swg">Generic Structs </h4>
 <p>Structs in Swag can also be made generic, allowing them to operate with different types and constants. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6946,7 +6946,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></span></div>
 
-<h3 id="_009_000_generics_swg__009_003_where_constraints_swg">Where constraints</h3><h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Single Evaluation </h4>
+<h3 id="_009_000_generics_swg__009_003_where_constraints_swg">Where Constraints </h3><h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Single Evaluation </h4>
 <p>The <span class="code-inline">where</span> clause in Swag is a powerful tool for applying constraints on function invocations, ensuring that they can only be called when specific conditions are met. This feature is particularly useful in generic functions where you want to restrict the permissible types or values passed as arguments. </p>
 <p>When the <span class="code-inline">where</span> expression evaluates to <span class="code-inline">false</span>, the function will not be considered during the call. If no alternative overloads match, the compiler will raise an error. Notably, the <span class="code-inline">where</span> expression is evaluated <b>only once</b>, usually during the function's instantiation. This makes it ideal for applying constraints on generic parameters in a consistent and predictable manner. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -7104,9 +7104,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 
-<h2 id="_010_000_attributes_swg">Attributes</h2><p>Attributes are tags associated with functions, structures etc... </p>
+<h2 id="_010_000_attributes_swg">Attributes </h2><p>Attributes are tags associated with functions, structures etc... </p>
 
-<h3 id="_010_000_attributes_swg__010_001_user_attributes_swg">User attributes</h3><h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">User Attributes in Swag </h4>
+<h3 id="_010_000_attributes_swg__010_001_user_attributes_swg">User Attributes </h3><h4 id="_010_000_attributes_swg__010_001_user_attributes_swg">User Attributes in Swag </h4>
 <p>Attributes in Swag serve as a powerful mechanism for annotating various elements of the code, such as functions and structs, with metadata. These annotations, defined using the <span class="code-inline">attr</span> keyword, can be leveraged for a variety of purposes, including code generation, documentation enhancement, and runtime reflection. By attaching attributes, developers can enrich their code with additional information that can be accessed both at compile-time and runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Swag</span>
 <span class="SKwd">attr</span> <span class="SFct">AttributeA</span>()   <span class="SCmt">// A simple attribute without parameters</span></span></div>
@@ -7142,7 +7142,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>)  <span class="SCmt">// Assert that the function has exactly one attribute</span>
 }</span></div>
 
-<h3 id="_010_000_attributes_swg__010_002_predefined_attributes_swg">Predefined attributes</h3><p>This is the list of predefined attributes. All are located in the reserved <span class="code-inline">Swag</span> namespace. </p>
+<h3 id="_010_000_attributes_swg__010_002_predefined_attributes_swg">Predefined Attributes </h3><p>This is the list of predefined attributes. All are located in the reserved <span class="code-inline">Swag</span> namespace. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip
 
 <span class="SCmt">// Can be executed at compile time</span>
@@ -7314,8 +7314,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">attr</span> <span class="SFct">Global</span>()
 <span class="SKwd">attr</span> <span class="SFct">Align</span>(value: <span class="STpe">u8</span>)</span></div>
 
-<h2 id="_011_000_scoping_swg">Scoping</h2>
-<h3 id="_011_000_scoping_swg__011_001_namespace_swg">Namespace</h3><h4 id="_011_000_scoping_swg__011_001_namespace_swg">Namespaces in Swag </h4>
+<h2 id="_011_000_scoping_swg">Scoping </h2>
+<h3 id="_011_000_scoping_swg__011_001_namespace_swg">Namespace </h3><h4 id="_011_000_scoping_swg__011_001_namespace_swg">Namespaces in Swag </h4>
 <p>Namespaces in Swag provide a mechanism to organize and encapsulate symbols such as functions, variables, and types within a specific scope. By grouping related symbols together under a namespace, you can avoid naming conflicts and make your codebase more modular and maintainable. Symbols within a namespace are accessible only through the namespace unless explicitly made available outside of it. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Define a simple namespace 'A'</span>
 <span class="SKwd">namespace</span> <span class="SCst">A</span>
@@ -7358,7 +7358,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_011_000_scoping_swg__011_001_namespace_swg">Exporting Symbols </h4>
 <p>By default, all symbols defined in a Swag source file are exported and can be accessed by other files within the same module. However, using <span class="code-inline">private</span> scopes or explicit namespaces provides a layer of protection against unintentional name conflicts, particularly in larger projects where different files may define symbols with similar or identical names. </p>
 
-<h3 id="_011_000_scoping_swg__011_002_defer_swg">Defer</h3><h4 id="_011_000_scoping_swg__011_002_defer_swg"><span class="code-inline">defer</span> Statement </h4>
+<h3 id="_011_000_scoping_swg__011_002_defer_swg">Defer </h3><h4 id="_011_000_scoping_swg__011_002_defer_swg"><span class="code-inline">defer</span> Statement </h4>
 <p>The <span class="code-inline">defer</span> statement allows you to specify an expression that will be automatically executed when the  current scope is exited. Since <span class="code-inline">defer</span> operates purely at compile time, the deferred expression is not  evaluated until the block of code in which it is defined is left. This feature is useful for managing  resources, ensuring cleanup operations, and maintaining code clarity. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7463,7 +7463,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// The resource is released correctly regardless of the function's outcome.</span>
 }</span></div>
 
-<h3 id="_011_000_scoping_swg__011_003_using_swg">Using</h3><h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> with Enums and Namespaces </h4>
+<h3 id="_011_000_scoping_swg__011_003_using_swg">Using </h3><h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> with Enums and Namespaces </h4>
 <p>The <span class="code-inline">using</span> statement allows you to bring the scope of a namespace, struct, or enum into the current  scope. This makes it possible to reference members directly without the need for full qualification.  For example, when working with enums, this can simplify the code by removing the need to constantly  prefix enum values with the enum type name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7558,7 +7558,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(value.base.y == <span class="SNum">1</span>)  <span class="SCmt">// Ensure 'base.y' was updated.</span>
 }</span></div>
 
-<h3 id="_011_000_scoping_swg__011_004_with_swg">With</h3><h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> Statement </h4>
+<h3 id="_011_000_scoping_swg__011_004_with_swg">With </h3><h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> Statement </h4>
 <p>The <span class="code-inline">with</span> statement is designed to reduce repetition by allowing you to access the fields and methods  of a variable or object within a specified scope. Inside a <span class="code-inline">with</span> block, you can use the <span class="code-inline">.</span> prefix to  refer to the fields or methods of the specified object, making the code more concise and easier to read. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point</span> { x, y: <span class="STpe">s32</span> }
 
@@ -7652,7 +7652,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">inside1</span>() {}        <span class="SCmt">// Define another function inside the namespace.</span>
 }</span></div>
 
-<h2 id="_012_000_type_reflection_swg">Type reflection</h2><h3 id="_012_000_type_reflection_swg">Types as Values in Swag </h3>
+<h2 id="_012_000_type_reflection_swg">Type Reflection </h2><h3 id="_012_000_type_reflection_swg">Types as Values in Swag </h3>
 <p>In Swag, <b>types are treated as first-class values</b> that can be inspected and manipulated  at both compile-time and runtime. This powerful feature enables advanced metaprogramming  capabilities, allowing developers to write more flexible and reusable code. The primary  intrinsics for interacting with types are <span class="code-inline">#typeof</span> and <span class="code-inline">@kindof</span>, which provide the ability  to introspect and work with types dynamically. </p>
 <h3 id="_012_000_type_reflection_swg">Using <span class="code-inline">#typeof</span> to Inspect Types </h3>
 <p>The <span class="code-inline">#typeof</span> intrinsic allows you to retrieve the type information of an expression.  When an expression explicitly represents a type, you can also directly use the type  itself. This is particularly useful for type inspection and validation at compile time. </p>
@@ -7747,8 +7747,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     x1 = <span class="SStr">"0"</span>
 }</span></div>
 
-<h2 id="_013_000_error_management_and_safety_swg">Error management and safety</h2>
-<h3 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Error management</h3><p>A function marked with <span class="code-inline">throw</span> indicates that it can return an error by invoking the <span class="code-inline">throw</span> keyword, followed by an error value. The error value is a struct, which encapsulates the error details. If an error occurs, the caller has the option to either halt execution and propagate the error using <span class="code-inline">try</span>, or handle the error explicitly using the <span class="code-inline">@err()</span> intrinsic. </p>
+<h2 id="_013_000_error_management_and_safety_swg">Error Management and Safety </h2>
+<h3 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Error Management </h3><p>A function marked with <span class="code-inline">throw</span> indicates that it can return an error by invoking the <span class="code-inline">throw</span> keyword, followed by an error value. The error value is a struct, which encapsulates the error details. If an error occurs, the caller has the option to either halt execution and propagate the error using <span class="code-inline">try</span>, or handle the error explicitly using the <span class="code-inline">@err()</span> intrinsic. </p>
 <div class="blockquote blockquote-default">
 <p> It's crucial to understand that these are <b>not</b> exceptions in the traditional sense. Consider <span class="code-inline">throw</span> as a specialized form of <span class="code-inline">return</span> that carries an error value. </p>
 </div>
@@ -7985,7 +7985,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)   <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer&lt;noerr&gt;' and the general 'defer' executed</span>
 }</span></div>
 
-<h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety</h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
+<h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety </h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
 <p>Swag provides various safety checks that can be enabled at different granularity levels—module,  function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
 <p>These safety checks are designed to prevent common programming errors by triggering panics during  unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
 <p>You can also configure safety checks globally based on the build configuration using  <span class="code-inline">buildCfg.safetyGuards</span>. </p>
@@ -8157,9 +8157,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
 <p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation, ensuring that  NaNs do not propagate through calculations. </p>
 
-<h2 id="_014_000_compile-time_evaluation_swg">Compile-time evaluation</h2><p>One of the most powerful features of Swag is its ability to execute <b>everything</b> at compile-time.  This capability allows Swag to function not only as a compiled language but also as a scripting  language, where the compiler effectively acts as an interpreter. This flexibility enables developers  to leverage compile-time execution for tasks that traditionally require runtime evaluation,  resulting in more efficient and versatile code. </p>
+<h2 id="_014_000_compile-time_evaluation_swg">Compile-time Evaluation </h2><p>One of the most powerful features of Swag is its ability to execute <b>everything</b> at compile-time.  This capability allows Swag to function not only as a compiled language but also as a scripting  language, where the compiler effectively acts as an interpreter. This flexibility enables developers  to leverage compile-time execution for tasks that traditionally require runtime evaluation,  resulting in more efficient and versatile code. </p>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr</h3><h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Function Evaluation with <span class="code-inline">#[Swag.ConstExpr]</span> </h4>
+<h3 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Constexpr </h3><h4 id="_014_000_compile-time_evaluation_swg__014_001_constexpr_swg">Compile-Time Function Evaluation with <span class="code-inline">#[Swag.ConstExpr]</span> </h4>
 <p>The <span class="code-inline">#[Swag.ConstExpr]</span> attribute marks a function as capable of being evaluated during compile time.  This enables the compiler to resolve the function's result at compile time, provided that all inputs  are also known at compile time. This approach significantly optimizes the code by precomputing values  and eliminating the need for these calculations at runtime.  </p>
 <p>Functions marked with <span class="code-inline">#[Swag.ConstExpr]</span> are ideal for returning constant values or performing operations  that are determined before runtime, thereby improving efficiency. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisDebug' is annotated with 'Swag.ConstExpr', indicating that </span>
@@ -8267,7 +8267,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmt">// Since 8 in binary is 1000, the check is resolved during compilation.</span>
 <span class="SCmp">#assert</span> <span class="SFct">isBitSet</span>(<span class="SNum">8</span>, <span class="SNum">3</span>) == <span class="SKwd">true</span></span></div>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Run</h3><h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Force Compile-Time Execution with <span class="code-inline">#run</span> </h4>
+<h3 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Run </h3><h4 id="_014_000_compile-time_evaluation_swg__014_002_run_swg">Force Compile-Time Execution with <span class="code-inline">#run</span> </h4>
 <p>The <span class="code-inline">#run</span> directive allows you to invoke a function at compile time, even if that function  is not marked with the <span class="code-inline">#[Swag.ConstExpr]</span> attribute. This powerful feature enables  compile-time execution of any function, regardless of its original design or intent,  whether it comes from external modules, system libraries, or is defined within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// The function 'isThisRelease' is not marked with 'Swag.ConstExpr', which means</span>
 <span class="SCmt">// it is not specifically prepared for compile-time evaluation.</span>
@@ -8384,7 +8384,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> It is possible to convert a complex struct (e.g., one that uses the heap) into  a static array, provided the struct implements the <span class="code-inline">opCount</span> and <span class="code-inline">opSlice</span> methods.  In this case, the resulting type will be a static array. The compiler will invoke  <span class="code-inline">opCount</span> to determine the array size and <span class="code-inline">opSlice</span> to initialize its content.  If the struct also implements <span class="code-inline">opDrop</span>, it will be called after the array  conversion is complete. </p>
 </div>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler instructions</h3><h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#assert</span> </h4>
+<h3 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg">Compiler Instructions </h3><h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#assert</span> </h4>
 <p>The <span class="code-inline">#assert</span> directive is used to perform a static assertion during the compilation process.  It ensures that a particular condition is true at compile time. If the condition evaluates to <span class="code-inline">false</span>,  compilation will fail, providing an error message. This is particularly useful for enforcing  compile-time invariants and validating assumptions within your code. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span> <span class="SCmt">// This assertion always passes, so no error is triggered.</span></span></div>
 <h4 id="_014_000_compile-time_evaluation_swg__014_003_compiler_instructions_swg"><span class="code-inline">#defined(SYMBOL)</span> </h4>
@@ -8447,7 +8447,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <div class="code-block"><span class="SCde"><span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></div>
 <p>This example links the program with the "windows.lib" library, allowing the use of Windows  API functions and resources defined within that library. </p>
 
-<h3 id="_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg">Code inspection</h3><h4 id="_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg"><span class="code-inline">#message</span> Function </h4>
+<h3 id="_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg">Code Inspection </h3><h4 id="_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg"><span class="code-inline">#message</span> Function </h4>
 <p>The <span class="code-inline">#message</span> function in Swag is a special hook that gets invoked by the compiler  when specific events occur during the build process. This function allows you to  intercept certain stages of compilation and execute custom actions or checks.  The parameter of <span class="code-inline">#message</span> is a mask that specifies the compilation stage or  event that should trigger the function. By utilizing these hooks, developers  can gain deeper insights into the compilation process and perform additional  processing when necessary. </p>
 <h4 id="_014_000_compile-time_evaluation_swg__014_004_code_inspection_swg">Function Message Mask </h4>
 <p>For instance, when you use the <span class="code-inline">Swag.CompilerMsgMask.SemFunctions</span> flag, the <span class="code-inline">#message</span>  function will be called each time a function within the module has been successfully  typed. This means the function has been fully analyzed and its type information is  available. Within the <span class="code-inline">@compiler()</span> interface, you can use the <span class="code-inline">getMessage()</span> method  to retrieve details about the event that triggered the call, such as the function's name  and type information. </p>
@@ -8510,10 +8510,10 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
     <span class="SCmt">// Process the message as required, which could include analyzing type attributes or properties</span>
 }</span></div>
 
-<h2 id="_017_000_meta_programming_swg">Meta programming</h2><p>Swag provides the ability to construct and inject source code at compile time.  This powerful feature allows you to dynamically generate code based on compile-time  conditions or inputs, and have that code seamlessly integrated into the final program.  The source code is supplied as a <b>string</b>, and it must be a valid Swag program. </p>
+<h2 id="_017_000_meta_programming_swg">Meta Programming </h2><p>Swag provides the ability to construct and inject source code at compile time.  This powerful feature allows you to dynamically generate code based on compile-time  conditions or inputs, and have that code seamlessly integrated into the final program.  The source code is supplied as a <b>string</b>, and it must be a valid Swag program. </p>
 <p>This technique opens up possibilities for advanced metaprogramming, where code can  be generated, modified, or extended during the compilation process, reducing redundancy  and enabling more flexible, adaptive programs. </p>
 
-<h3 id="_017_000_meta_programming_swg__017_001_ast_swg">Ast</h3><h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> Block </h4>
+<h3 id="_017_000_meta_programming_swg__017_001_ast_swg">Ast </h3><h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#ast</span> Block </h4>
 <p>The <span class="code-inline">#ast</span> block is one of the simplest methods to generate Swag code dynamically at compile time. It allows you to write code that, when executed during compilation, produces a string. This string is then compiled <b>in place</b> as if it were written directly in the source code. </p>
 <h4 id="_017_000_meta_programming_swg__017_001_ast_swg">Basic <span class="code-inline">#ast</span> Usage </h4>
 <p>A <span class="code-inline">#ast</span> block can be as straightforward as a single expression that returns the string to be compiled. This feature is highly useful for injecting dynamically generated code during compilation. </p>
@@ -8643,7 +8643,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <p>Here, thanks to the <span class="code-inline">#placeholder</span>, the <span class="code-inline">#assert</span> will wait for the symbol <span class="code-inline">myGeneratedConst</span> to be replaced with its actual value before performing the assertion. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#assert</span> myGeneratedConst == <span class="SNum">666</span> <span class="SCmt">// Asserts that the generated constant 'myGeneratedConst' equals 666.</span></span></div>
 
-<h3 id="_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler interface</h3><p>The <span class="code-inline">compileString()</span> function within the <span class="code-inline">@compiler()</span> interface is another method to compile  generated code. This function should be invoked at compile time, typically within a <span class="code-inline">#message</span>  call. </p>
+<h3 id="_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler Interface </h3><p>The <span class="code-inline">compileString()</span> function within the <span class="code-inline">@compiler()</span> interface is another method to compile  generated code. This function should be invoked at compile time, typically within a <span class="code-inline">#message</span>  call. </p>
 <p>Below is an example from the <span class="code-inline">Std.Ogl</span> module (an OpenGL wrapper), which utilizes <span class="code-inline">#message</span> to  identify functions annotated with a specific user attribute, <span class="code-inline">Ogl.Extension</span>, and subsequently  generates code for each identified function. </p>
 <p>First, we define a new attribute that can be associated with functions. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
@@ -8735,7 +8735,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
     itf.<span class="SFct">compileString</span>(str.<span class="SFct">toString</span>())
 }</span></div>
 
-<h2 id="_018_000_documentation_md">Documentation</h2><p>The Swag compiler is capable of generating comprehensive documentation for all modules within a specified workspace. </p>
+<h2 id="_018_000_documentation_md">Documentation </h2><p>The Swag compiler is capable of generating comprehensive documentation for all modules within a specified workspace. </p>
 <p>To generate documentation for your workspace, use the following command: </p>
 <div class="code-block"><span class="SCde">swag doc -w:myWorkspaceFolder</span></div>
 <p>Swag supports various documentation generation modes, which should be specified in the module.swg file within the <a href="swag.runtime.php#Swag_BuildCfg">Swag.BuildCfg</a> structure. </p>
@@ -9007,7 +9007,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> This is <span class="code-inline">inline code</span> with back ticks.<br/>  This is inline <span class="code-inline">code</span> with normal ticks, but just for a single word (no blanks).<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This is <b><i>bold and italic</i></b>.<br/>  This is <span class="strikethrough-text">strikethrough</span>.<br/>  This character n is escaped, and <span class="code-inline">n</span> will be output as is.<br/> </p>
 </div>
 
-<h3 id="_018_000_documentation_md__018_001_api_swg">Api</h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
+<h3 id="_018_000_documentation_md__018_001_api_swg">Api </h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <span class="code-inline">module.swg</span> file. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// This is the main module documentation.</span>
 <span class="SFct">#dependencies</span>
@@ -9046,7 +9046,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <span class="SAtr">#[Swag.NoDoc]</span>
 <span class="SKwd">func</span> <span class="SFct">three</span>() {}</span></div>
 
-<h3 id="_018_000_documentation_md__018_002_examples_md">Examples</h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, documentation is generated systematically, with each file representing a chapter or subchapter. The following guidelines outline the structure and formatting required for effective documentation creation. </p>
+<h3 id="_018_000_documentation_md__018_002_examples_md">Examples </h3><p>In <span class="code-inline">Swag.DocKind.Examples</span> mode, documentation is generated systematically, with each file representing a chapter or subchapter. The following guidelines outline the structure and formatting required for effective documentation creation. </p>
 <h4 id="_018_000_documentation_md__018_002_examples_md">File Naming Convention </h4>
 <p>File names must adhere to the format <span class="code-inline">DDD_DDD_name</span>, where each <span class="code-inline">D</span> represents a digit. This naming convention facilitates the hierarchical organization of the documentation. </p>
 <div class="description-list-title"><p>Main Titles</p></div>
@@ -9075,7 +9075,7 @@ const SumValue = #run sum(1, 2, 3, 4) + 10
 <h4 id="_018_000_documentation_md__018_002_examples_md">Source of Documentation </h4>
 <p>The documentation you are reading is generated from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. This directory contains examples and files structured according to these guidelines, showcasing how to effectively create and manage documentation in <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 
-<h3 id="_018_000_documentation_md__018_003_pages_md">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file generates an individual webpage, with the page name matching the file name. Aside from this distinction, the behavior is consistent with that of <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
+<h3 id="_018_000_documentation_md__018_003_pages_md">Pages </h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file generates an individual webpage, with the page name matching the file name. Aside from this distinction, the behavior is consistent with that of <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <h4 id="_018_000_documentation_md__018_003_pages_md">File Naming and Page Generation </h4>
 <p>Each file in this mode generates a separate webpage. The page name will directly correspond to the file name. </p>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>

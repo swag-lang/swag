@@ -70,6 +70,7 @@ struct GenDoc
     static void        computeUserBlocks(VectorNative<UserBlock*>& blocks, const Vector<Utf8>& lines, bool shortDesc);
     static void        computeUserComments(UserComment& result, const Vector<Utf8>& lines, bool shortDesc = true);
     static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
+    static Utf8        makeCorrectTitle(Utf8 title);
     Utf8               getFormattedText(const Utf8& user);
     void               outputCode(const Utf8& code, GenDocFlags flags);
     void               outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);

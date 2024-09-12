@@ -86,6 +86,31 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
     return true;
 }
 
+Utf8 GenDoc::makeCorrectTitle(Utf8 title)
+{
+    title.replace("_", " ");
+
+    Vector<Utf8> tokens;
+    Utf8::tokenize(title, ' ', tokens, false, true);
+
+    Vector<Utf8> exceptions = {"and", "or", "in", "the", "of", "a", "an", "but", "for", "nor", "on", "at", "by", "with", "to"};
+
+    Utf8 newTitle;
+    for (uint32_t i = 0; i < tokens.size(); i++)
+    {
+        auto word = tokens[i];
+        word.makeLower();
+
+        if (i == 0 || i == tokens.size() - 1 || std::ranges::find(exceptions, word) == exceptions.end())
+            word.buffer[0] = static_cast<char>(toupper(word[0]));
+
+        newTitle += word;
+        newTitle += " ";
+    }
+
+    return newTitle;
+}
+
 bool GenDoc::generateExamples()
 {
     std::ranges::sort(module->files, [](const SourceFile* a, const SourceFile* b) { return strcmp(a->name, b->name) < 0; });
@@ -119,9 +144,7 @@ bool GenDoc::generateExamples()
             titleLevel = 2;
         title.remove(0, 8);
 
-        title.buffer[0] = static_cast<char>(toupper(title.buffer[0]));
-        title.replace("_", " ");
-
+        title = makeCorrectTitle(title);
         addTocTitle(name, title, titleLevel);
 
         helpContent += "\n";
