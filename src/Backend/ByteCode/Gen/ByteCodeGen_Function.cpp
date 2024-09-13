@@ -2256,3 +2256,39 @@ bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl,
     context->baseJob->jobsToAdd.push_back(job);
     return true;
 }
+
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
+bool ByteCodeGen::emitCastAs(ByteCodeGenContext* context)
+{
+    const auto node        = context->node;
+    const auto child0      = node->firstChild();
+    const auto child1      = node->secondChild();
+    node->resultRegisterRc = reserveRegisterRC(context);
+
+    const auto r0 = reserveRegisterRC(context);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, child0->resultRegisterRc[0]);
+    SWAG_CHECK(emitKindOf(context, child0, TypeInfoKind::Interface));
+    
+    EMIT_INST4(context, ByteCodeOp::IntrinsicAs, child1->resultRegisterRc, child0->resultRegisterRc, r0, node->resultRegisterRc);
+    freeRegisterRC(context, child0);
+    freeRegisterRC(context, child1);
+    freeRegisterRC(context, r0);
+    
+    return true;
+}
+
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
+bool ByteCodeGen::emitCastIs(ByteCodeGenContext* context)
+{
+    const auto node        = context->node;
+    const auto child0      = node->firstChild();
+    const auto child1      = node->secondChild();
+    node->resultRegisterRc = reserveRegisterRC(context);
+   
+    SWAG_CHECK(emitKindOf(context, child0, TypeInfoKind::Interface));
+    EMIT_INST3(context, ByteCodeOp::IntrinsicIs, child1->resultRegisterRc, child0->resultRegisterRc, node->resultRegisterRc);
+
+    freeRegisterRC(context, child0);
+    freeRegisterRC(context, child1);
+    return true;
+}

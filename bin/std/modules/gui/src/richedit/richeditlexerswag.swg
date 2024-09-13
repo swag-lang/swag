@@ -130,7 +130,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("to", State.Control)
         mapWords.add("until", State.Control)
         mapWords.add("in", State.Control)
-        mapWords.add("as", State.Error)
+        mapWords.add("as", State.Control)
+        mapWords.add("is", State.Control)
 
         mapWords.add("using", State.Keyword)
         mapWords.add("with", State.Keyword)
@@ -169,7 +170,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("null", State.Constant)
         mapWords.add("undefined", State.Constant)
 
-        mapWords.add("is", State.Error)
         mapWords.add("not", State.Error)
         mapWords.add("do", State.Error)
 

@@ -94,7 +94,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
         }
       ]
     },

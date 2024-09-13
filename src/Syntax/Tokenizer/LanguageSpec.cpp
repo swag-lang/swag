@@ -313,6 +313,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("until", TokenId::KwdUntil);
     keywords.add("in", TokenId::KwdIn);
     keywords.add("as", TokenId::KwdAs);
+    keywords.add("is", TokenId::KwdIs);
 
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);
@@ -350,7 +351,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("const", TokenId::KwdConst);
     keywords.add("moveref", TokenId::KwdMoveRef);
 
-    keywords.add("is", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
     keywords.add("do", TokenId::KwdReserved);
 

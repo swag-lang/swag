@@ -151,6 +151,8 @@ namespace ByteCodeGen
     bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams);
     bool emitLambdaCall(ByteCodeGenContext* context);
     bool emitForeignCall(ByteCodeGenContext* context);
+    bool emitCastAs(ByteCodeGenContext* context);
+    bool emitCastIs(ByteCodeGenContext* context);
     bool emitIntrinsicCVaStart(ByteCodeGenContext* context);
     bool emitIntrinsicCVaEnd(ByteCodeGenContext* context);
     bool emitIntrinsicCVaArg(ByteCodeGenContext* context);

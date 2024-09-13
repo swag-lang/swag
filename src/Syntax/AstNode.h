@@ -204,6 +204,8 @@ enum class AstNodeKind : uint8_t
     Namespace,
     NoDrop,
     NullConditionalExpression,
+    CastAs,
+    CastIs,
     PointerRef,
     PostCopy,
     PostMove,

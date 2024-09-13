@@ -390,6 +390,9 @@ namespace Semantic
     bool resolveType(SemanticContext* context);
     bool resolveAlias(SemanticContext* context);
     bool resolveAliasAfterValue(SemanticContext* context);
+    bool resolveCastAsIs(SemanticContext* context);
+    bool resolveCastAs(SemanticContext* context);
+    bool resolveCastIs(SemanticContext* context);
     bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
     bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
     bool resolveTypeLambdaClosure(SemanticContext* context);

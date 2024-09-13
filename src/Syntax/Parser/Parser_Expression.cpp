@@ -1165,10 +1165,11 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         SWAG_CHECK(doExpression(triNode, exprFlags, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymColon, "to specify the ternary expression second argument"));
         SWAG_CHECK(doExpression(triNode, exprFlags, &dummyResult));
+        return true;
     }
 
     // A orelse B
-    else if (tokenParse.is(TokenId::KwdOrElse))
+    if (tokenParse.is(TokenId::KwdOrElse))
     {
         const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::NullConditionalExpression, this, parent);
         triNode->semanticFct = Semantic::resolveNullConditionalOp;
@@ -1176,13 +1177,36 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         Ast::addChildBack(triNode, boolExpression);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(triNode, exprFlags, &dummyResult));
-    }
-    else
-    {
-        Ast::addChildBack(parent, boolExpression);
-        *result = boolExpression;
+        return true;
     }
 
+    // A as B
+    if (tokenParse.is(TokenId::KwdAs))
+    {
+        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastAs, this, parent);
+        triNode->semanticFct = Semantic::resolveCastAs;
+        *result              = triNode;
+        Ast::addChildBack(triNode, boolExpression);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
+        return true;        
+    }
+
+    // A is B
+    if (tokenParse.is(TokenId::KwdIs))
+    {
+        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastIs, this, parent);
+        triNode->semanticFct = Semantic::resolveCastIs;
+        *result              = triNode;
+        Ast::addChildBack(triNode, boolExpression);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
+        return true;        
+    }    
+
+    // Normal expression 
+    Ast::addChildBack(parent, boolExpression);
+    *result = boolExpression;
     return true;
 }
 

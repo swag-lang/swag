@@ -876,3 +876,46 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
     return true;
 }
+
+bool Semantic::resolveCastAsIs(SemanticContext* context)
+{
+    const auto node     = context->node;
+    const auto valNode  = node->firstChild();
+    const auto typeNode = node->secondChild();
+
+    SWAG_VERIFY(valNode->typeInfo->isInterface(), context->report({valNode, formErr(Err0728, "is", valNode->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeNode->typeInfo->isStruct(), context->report({typeNode, formErr(Err0777, "is", typeNode->typeInfo->getDisplayNameC())}));
+
+    SWAG_CHECK(checkIsConcrete(context, valNode));
+    SWAG_CHECK(checkIsConcreteOrType(context, typeNode, true));
+    YIELD();
+
+    return true;
+}
+
+bool Semantic::resolveCastAs(SemanticContext* context)
+{
+    const auto node = context->node;
+    if (!node->hasSemFlag(SEMFLAG_CAST1))
+    {
+        node->typeInfo = g_TypeMgr->makePointerTo(node->secondChild()->typeInfo);
+        node->addSemFlag(SEMFLAG_CAST1);
+    }
+
+    SWAG_CHECK(resolveCastAsIs(context));
+    YIELD();
+
+    node->byteCodeFct = ByteCodeGen::emitCastAs;
+    return true;
+}
+
+bool Semantic::resolveCastIs(SemanticContext* context)
+{
+    SWAG_CHECK(resolveCastAsIs(context));
+    YIELD();
+
+    const auto node   = context->node;
+    node->byteCodeFct = ByteCodeGen::emitCastIs;
+    node->typeInfo    = g_TypeMgr->typeInfoBool;
+    return true;
+}
