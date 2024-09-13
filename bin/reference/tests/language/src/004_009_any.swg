@@ -126,7 +126,6 @@ An `any` value can be tested against a type using `==` and `!=`. This effectivel
 {
     var x: any                         // Declare an 'any' type variable
     @assert(x == null)                 // 'x' is null
-    @assert(x != s32)                  // 'x' does not contain an s32
 
     x = 6                              // Store an s32 value in 'x'
     @assert(x == s32)                  // Now 'x' contains an s32

@@ -138,7 +138,17 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitKindOf(const ByteCodeGenContext* context, AstNode* node, TypeInfoKind from)
+bool ByteCodeGen::emitKindOfAny(ByteCodeGenContext* context, AstNode* node)
+{
+    SWAG_ASSERT(node->resultRegisterRc.size() == 2);
+    ensureCanBeChangedRC(context, node->resultRegisterRc);
+    const auto rc = node->resultRegisterRc[1];
+    freeRegisterRC(context, node->resultRegisterRc[0]);
+    node->resultRegisterRc = rc;
+    return true;
+}
+
+bool ByteCodeGen::emitKindOfInterface(ByteCodeGenContext* context, AstNode* node)
 {
     SWAG_ASSERT(node->resultRegisterRc.size() == 2);
     ensureCanBeChangedRC(context, node->resultRegisterRc);
@@ -147,29 +157,26 @@ bool ByteCodeGen::emitKindOf(const ByteCodeGenContext* context, AstNode* node, T
     node->resultRegisterRc = rc;
 
     // Deref the type from the itable
-    if (from == TypeInfoKind::Interface)
-    {
-        EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc, 2);
-        const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
-        inst->b.u64     = sizeof(void*);
-        inst->addFlag(BCI_IMM_B);
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-    }
+    EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc, 2);
+    const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
+    inst->b.u64     = sizeof(void*);
+    inst->addFlag(BCI_IMM_B);
+    EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
 
     return true;
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-bool ByteCodeGen::emitImplicitKindOfAny(ByteCodeGenContext* context)
+bool ByteCodeGen::emitKindOfAny(ByteCodeGenContext* context)
 {
-    SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Native));
+    SWAG_CHECK(emitKindOfAny(context, context->node));
     return true;
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
+bool ByteCodeGen::emitKindOfInterface(ByteCodeGenContext* context)
 {
-    SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Interface));
+    SWAG_CHECK(emitKindOfInterface(context, context->node));
     return true;
 }
 
@@ -179,7 +186,15 @@ bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto front    = node->firstChild();
     const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
-    SWAG_CHECK(emitKindOf(context, front, typeInfo->kind));
+
+    if (typeInfo->isInterface())
+        SWAG_CHECK(emitKindOfInterface(context, front));
+    else
+    {
+        SWAG_ASSERT(typeInfo->isAny());
+        SWAG_CHECK(emitKindOfAny(context, front));
+    }
+
     node->resultRegisterRc         = front->resultRegisterRc;
     node->parent->resultRegisterRc = node->resultRegisterRc;
     return true;

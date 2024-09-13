@@ -2267,7 +2267,7 @@ bool ByteCodeGen::emitCastAs(ByteCodeGenContext* context)
 
     const auto r0 = reserveRegisterRC(context);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, child0->resultRegisterRc[0]);
-    SWAG_CHECK(emitKindOf(context, child0, TypeInfoKind::Interface));
+    SWAG_CHECK(emitKindOfInterface(context, child0));
     
     EMIT_INST4(context, ByteCodeOp::IntrinsicAs, child1->resultRegisterRc, child0->resultRegisterRc, r0, node->resultRegisterRc);
     freeRegisterRC(context, child0);
@@ -2285,7 +2285,7 @@ bool ByteCodeGen::emitCastIs(ByteCodeGenContext* context)
     const auto child1      = node->secondChild();
     node->resultRegisterRc = reserveRegisterRC(context);
    
-    SWAG_CHECK(emitKindOf(context, child0, TypeInfoKind::Interface));
+    SWAG_CHECK(emitKindOfInterface(context, child0));
     EMIT_INST3(context, ByteCodeOp::IntrinsicIs, child1->resultRegisterRc, child0->resultRegisterRc, node->resultRegisterRc);
 
     freeRegisterRC(context, child0);

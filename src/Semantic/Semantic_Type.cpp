@@ -39,9 +39,9 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 
         node->typeInfo = resultTypeInfo;
         if (typeInfo->isAny())
-            node->byteCodeFct = ByteCodeGen::emitImplicitKindOfAny;
+            node->byteCodeFct = ByteCodeGen::emitKindOfAny;
         else
-            node->byteCodeFct = ByteCodeGen::emitImplicitKindOfInterface;
+            node->byteCodeFct = ByteCodeGen::emitKindOfInterface;
     }
 
     return true;

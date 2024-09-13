@@ -130,10 +130,10 @@ namespace ByteCodeGen
     bool emitLogicalOrAfterLeft(ByteCodeGenContext* context);
     bool emitLogicalOr(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2);
     bool emitBinaryOp(ByteCodeGenContext* context);
-    bool emitCompareOpEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
-    bool emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
-    bool emitCompareOpEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
-    bool emitCompareOpNotEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
+    bool emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
+    bool emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
+    bool emitCompareOpEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
+    bool emitCompareOpNotEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
     bool emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOpLower(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitCompareOpLower(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
@@ -258,9 +258,10 @@ namespace ByteCodeGen
     bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     bool emitIntrinsicDataOf(ByteCodeGenContext* context);
-    bool emitKindOf(const ByteCodeGenContext* context, AstNode* node, TypeInfoKind from);
-    bool emitImplicitKindOfAny(ByteCodeGenContext* context);
-    bool emitImplicitKindOfInterface(ByteCodeGenContext* context);
+    bool emitKindOfAny(ByteCodeGenContext* context, AstNode* node);
+    bool emitKindOfInterface(ByteCodeGenContext* context, AstNode* node);
+    bool emitKindOfAny(ByteCodeGenContext* context);
+    bool emitKindOfInterface(ByteCodeGenContext* context);
     bool emitIntrinsicKindOf(ByteCodeGenContext* context);
     bool emitIntrinsicLocationSI(ByteCodeGenContext* context);
     bool emitIntrinsicIsConstExprSI(ByteCodeGenContext* context);
