@@ -1002,9 +1002,9 @@ void TypeInfoStruct::flattenUsingFields()
 
 void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, uint32_t>>& result, uint32_t offset)
 {
-    if(!flags.has(TYPEINFO_HAS_USING))
+    if (!flags.has(TYPEINFO_HAS_USING))
         return;
-    
+
     ScopedLock lk(mutexCache);
     SWAG_RACE_CONDITION_READ(raceFields);
 
@@ -1013,16 +1013,9 @@ void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, u
         if (!p->flags.has(TYPEINFOPARAM_HAS_USING))
             continue;
 
-        if (p->typeInfo->isStruct())
+        const auto ptrStruct = p->typeInfo->getStructOrPointedStruct();
+        if (ptrStruct)
         {
-            const auto ptrStruct = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
-            ptrStruct->collectUsingFields(result, offset + p->offset);
-            result.push_back({p, offset + p->offset});
-        }
-        else if (p->typeInfo->isPointerTo(TypeInfoKind::Struct))
-        {
-            const auto ptrPointer = castTypeInfo<TypeInfoPointer>(p->typeInfo, TypeInfoKind::Pointer);
-            const auto ptrStruct  = castTypeInfo<TypeInfoStruct>(ptrPointer->pointedType, TypeInfoKind::Struct);
             ptrStruct->collectUsingFields(result, offset + p->offset);
             result.push_back({p, offset + p->offset});
         }
