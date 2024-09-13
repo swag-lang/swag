@@ -860,6 +860,40 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
     return true;
 }
 
+bool Semantic::postResolveStruct(SemanticContext* context)
+{
+    const auto node     = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+
+    waitStructUsing(context->baseJob, typeInfo);
+    YIELD();
+
+    sendCompilerMsgTypeDecl(context);
+
+    // Verify that we have only one possible conversion
+    VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
+    typeInfo->collectUsingFields(usingFields);
+    VectorNative<TypeInfoStruct*> here;
+    VectorNative<AstNode*>        where;
+    for (const auto c : usingFields)
+    {
+        const auto     typeStruct = c.first->typeInfo->getStructOrPointedStruct();
+        const uint32_t idx        = here.find(typeStruct);
+        if (idx != UINT32_MAX)
+        {
+            Diagnostic err(c.first->declNode, formErr(Err0018, typeStruct->getDisplayNameC()));
+            err.addNote(where[idx], toNte(Nte0194));
+            err.addNote(formNte(Nte0011, typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
+            return context->report(err);
+        }
+
+        here.push_back(typeStruct);
+        where.push_back(c.first->declNode);
+    }
+
+    return true;
+}
+
 bool Semantic::resolveStruct(SemanticContext* context)
 {
     auto node       = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -952,7 +986,11 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 typeParam->typeInfo = child->typeInfo;
                 typeParam->offset   = storageOffset;
                 if (varDecl->hasAstFlag(AST_DECL_USING))
+                {
                     typeParam->flags.add(TYPEINFOPARAM_HAS_USING);
+                    typeInfo->flags.add(TYPEINFO_HAS_USING);
+                }
+                
                 SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
                 if (child->is(AstNodeKind::VarDecl))
                     typeInfo->fields.push_back(typeParam);

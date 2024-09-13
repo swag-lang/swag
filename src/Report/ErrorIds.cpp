@@ -162,7 +162,7 @@ void initErrors()
     SWAG_ERROR(Err0015, "already defined switch value                      $ cannot use the [[switch]] value [[%s]] because it already exists                                                                         $ ");
     SWAG_ERROR(Err0016, "already defined switch value                      $ cannot use the [[switch]] value [[\"%s\"]] because it already exists in another [[case]]                                                 $ ");
     SWAG_ERROR(Err0017, "already defined symbol                            $ cannot redefine the %s [[%s]] because it already exists                                                                                  $ ");
-    SWAG_ERROR(Err0018, "ambiguous [[using]]                               $ cannot associate [[using]] with two variables of the same type ([[%s]])                                                                  $ ");
+    SWAG_ERROR(Err0018, "ambiguous [[using]]                               $ cannot use [[using]] on two variables of the same type ([[%s]])                                                                          $ ");
     SWAG_ERROR(Err0019, "ambiguous cast                                    $ cannot cast from the type [[%s]] to the type [[%s]] because it is ambiguous                                                              $ ");
     SWAG_ERROR(Err0020, "ambiguous enum resolution                         $ cannot resolve the enum value [[%s]] because it is ambiguous                                                                             $ ");
     SWAG_ERROR(Err0021, "ambiguous interface conversion                    $ cannot cast from the type [[%s]] to the interface [[%s]] because it is ambiguous                                                         $ ");
@@ -1153,7 +1153,7 @@ void initErrors()
     SWAG_ERROR(Nte0220, "the [[%s]] does not implement the [[%s]]");
     SWAG_ERROR(Nte0221, "this is the last [[%s]]");
     SWAG_ERROR(Nte0222, "consider using [[&%s]] if you want a function pointer for a lambda or a closure");
-    SWAG_ERROR(Nte0011, nullptr);
+    SWAG_ERROR(Nte0011, "this makes the conversion from [[%s]] to [[%s]] ambiguous");
     SWAG_ERROR(Nte0223, nullptr);
     SWAG_ERROR(Nte0224, nullptr);
     SWAG_ERROR(Nte0225, nullptr);

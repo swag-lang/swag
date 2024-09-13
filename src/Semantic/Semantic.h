@@ -376,6 +376,7 @@ namespace Semantic
     bool resolveShiftExpression(SemanticContext* context);
     bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
     bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
+    bool postResolveStruct(SemanticContext* context);
     bool resolveStruct(SemanticContext* context);
     bool resolveSubDeclRef(SemanticContext* context);
     bool resolveSubEnumValue(SemanticContext* context);

@@ -1002,6 +1002,9 @@ void TypeInfoStruct::flattenUsingFields()
 
 void TypeInfoStruct::collectUsingFields(VectorNative<std::pair<TypeInfoParam*, uint32_t>>& result, uint32_t offset)
 {
+    if(!flags.has(TYPEINFO_HAS_USING))
+        return;
+    
     ScopedLock lk(mutexCache);
     SWAG_RACE_CONDITION_READ(raceFields);
 

@@ -1,3 +1,4 @@
+#global testerror "Err0018"
 #global testerror "Err0019"
 
 #test

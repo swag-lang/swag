@@ -28,6 +28,8 @@ AstStruct* Ast::newStructDecl(Parser* parser, AstNode* parent)
 {
     const auto node   = Ast::newNode<AstStruct>(AstNodeKind::StructDecl, parser, parent);
     node->semanticFct = Semantic::resolveStruct;
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extSemantic()->semanticAfterFct = Semantic::postResolveStruct;
     return node;
 }
 

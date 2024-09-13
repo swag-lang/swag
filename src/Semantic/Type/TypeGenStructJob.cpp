@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Semantic/Type/TypeGenStructJob.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Report/Diagnostic.h"
+#include "Report/ErrorIds.h"
 #include "Semantic/Generic/Generic.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
@@ -165,7 +167,7 @@ bool TypeGenStructJob::computeStruct()
     // Fields with using
     concreteType->usingFields.buffer = nullptr;
     concreteType->usingFields.count  = 0;
-    if(!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && !realType->isGeneric())
+    if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL) && !realType->isGeneric())
     {
         VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
         realType->collectUsingFields(usingFields);
@@ -279,7 +281,7 @@ JobResult TypeGenStructJob::execute()
             return JobResult::KeepJobAlive;
         Semantic::waitStructUsing(this, realType);
         if (baseContext->result != ContextResult::Done)
-            return JobResult::KeepJobAlive;        
+            return JobResult::KeepJobAlive;
     }
 
     computeStruct();

@@ -194,7 +194,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     *result                 = structNode;
     structNode->semanticFct = Semantic::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
+    structNode->extSemantic()->semanticAfterFct = Semantic::postResolveStruct;
 
     // Special case
     auto structType = SyntaxStructType::Struct;
