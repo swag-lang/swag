@@ -868,6 +868,9 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
 
 bool Semantic::postResolveStruct(SemanticContext* context)
 {
+    if(context->node->isNot(AstNodeKind::StructDecl))
+        return true;
+    
     const auto node     = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 

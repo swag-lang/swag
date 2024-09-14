@@ -28,9 +28,9 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* /*forCall*/)
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
         return true;
+    
     if (funcDecl->content->is(AstNodeKind::Return))
         return true;
-
     SharedLock lk(funcDecl->content->mutex);
     if (funcDecl->content->firstChild() && funcDecl->content->firstChild()->is(AstNodeKind::Return))
         return true;

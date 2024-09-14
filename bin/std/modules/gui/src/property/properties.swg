@@ -220,7 +220,6 @@ internal impl Properties
         }
     }
 
-    #[Swag.PrintBc]
     func onHookChildEvent(wnd: *Wnd, evt: IEvent)->bool
     {
         let prop = cast(*Properties) wnd
