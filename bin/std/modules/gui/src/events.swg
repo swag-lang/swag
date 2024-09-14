@@ -116,9 +116,9 @@ struct StateEvent
         Show
         Hide
     }
-    
-    using base: Event
-    kind: Kind
+
+    using base:     Event
+    kind:           Kind
 }
 
 impl IEvent for StateEvent
@@ -262,8 +262,6 @@ impl IEvent for SysUserEvent
 
 struct SysCommandEvent
 {
-    using base: Event
-
     enum Kind
     {
         Minimize
@@ -273,7 +271,8 @@ struct SysCommandEvent
         User
     }
 
-    sysKind: Kind
+    using base:     Event
+    kind:           Kind
 }
 
 impl IEvent for SysCommandEvent
@@ -319,8 +318,8 @@ impl IEvent for NotifyEvent
 }
 
 struct InvalidateEvent
-{  
-    using base: Event  
+{
+    using base: Event
 }
 
 impl IEvent for InvalidateEvent

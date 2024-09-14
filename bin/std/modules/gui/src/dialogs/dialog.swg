@@ -12,7 +12,7 @@ impl IWnd for Dialog
 {
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
-        if evt.sysKind == .Close:
+        if evt.kind == .Close:
             validateId(BtnCancel)
         evt.accepted = true
     }

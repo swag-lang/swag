@@ -197,7 +197,7 @@ impl IWnd for SurfaceWnd
 
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
-        switch evt.sysKind
+        switch evt.kind
         {
         case Maximize:
             surface.showMaximized()
@@ -309,21 +309,21 @@ impl SurfaceWnd
     func onMinimize(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
-        evt.sysKind = .Minimize
+        evt.kind = .Minimize
         btn.surface.wnd.postEvent(evt)
     }
 
     func onMaximize(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
-        evt.sysKind = btn.surface.isMaximized ? .Restore : .Maximize
+        evt.kind = btn.surface.isMaximized ? .Restore : .Maximize
         btn.surface.wnd.postEvent(evt)
     }
 
     func onClose(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
-        evt.sysKind = .Close
+        evt.kind = .Close
         btn.surface.wnd.view.postEvent(evt)
     }
 

@@ -152,7 +152,7 @@ impl IWnd for MainWnd
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         evt.accepted = false
-        switch evt.sysKind
+        switch evt.kind
         {
         case Close:
             evt.accepted = true
