@@ -220,22 +220,21 @@ internal impl Properties
         }
     }
 
-    func onHookChildEvent(wnd: *Wnd, evt: *Event)->bool
+    #[Swag.PrintBc]
+    func onHookChildEvent(wnd: *Wnd, evt: IEvent)->bool
     {
         let prop = cast(*Properties) wnd
         if prop.editPopup:
             return false
 
-        switch evt.kind
+        switch evt
         {
-        case .CanSetFocus:
-            let focusEvt = cast(*FocusEvent) evt
+        case let focusEvt as FocusEvent where focusEvt.kind == .CanSetFocus:
             if prop.cursorSet:
                 focusEvt.canChangeFocus = false
 
-        case .MousePressed:
-            let mouseEvt = cast(*MouseEvent) evt
-            var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
+            var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             prop.selItem = prop.hitTest(pt)
             wnd.invalidate()
@@ -260,8 +259,7 @@ internal impl Properties
                 prop.updateStates()
             }
 
-        case .MouseDoubleClick:
-            let mouseEvt = cast(*MouseEvent) evt
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseDoubleClick:
             if mouseEvt.button != .Left:
                 break
 
@@ -274,10 +272,10 @@ internal impl Properties
                 prop.updateStates()
             }
 
-        case .MouseReleased:
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseReleased:
             prop.resizingColumn = false
 
-        case .MouseLeave:
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseLeave:
             if prop.hotItem and prop.kind == .Grid:
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
@@ -289,8 +287,7 @@ internal impl Properties
                 prop.invalidate()
             }
 
-        case .MouseMove:
-            let mouseEvt = cast(*MouseEvent) evt
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove:
             var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             // Resize of the grid column
@@ -418,31 +415,22 @@ internal impl Properties
         }
     }
 
-    mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: *Event)->bool
+    mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: IEvent)->bool
     {
         if wndItem.childs.isEmpty():
             return false
 
-        switch evt.kind
+        switch evt
         {
-        case .MousePressed:
-            let mouseEvt = cast(*MouseEvent) evt
-            if mouseEvt.button == .Right
-            {
-                popupMenu(item, mouseEvt.surfacePos)
-                return true
-            }
+        case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed and mouseEvt.button == .Right:
+            popupMenu(item, mouseEvt.surfacePos)
+            return true
 
-        case Notify:
-            let ntfyEvt = cast(*NotifyEvent) evt
-            if ntfyEvt.ntfyKind == .ChildFocusChanged
-            {
-                wndItem.invalidate()
-                return true
-            }
+        case let ntfyEvt as NotifyEvent where ntfyEvt.ntfyKind == .ChildFocusChanged:
+            wndItem.invalidate()
+            return true
 
-        case PrePaint:
-            let paintEvt = cast(*PaintEvent) evt
+        case let paintEvt as PaintEvent where paintEvt.kind == .PrePaint:        
             paintBackItem(paintEvt.bc.painter, item, wndItem)
         }
 

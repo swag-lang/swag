@@ -103,11 +103,11 @@ func setup()
     fillGrid()
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_FontCell = wnd.getTheme().createDefaultFont(20)
 
         let btn = PushButton.create(wnd, "Again!", {CellSize, (CellSize * 2) + GridSize * CellSize})
@@ -128,8 +128,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         setup()
 
-    case MousePressed:
-        let mouseEvt = cast(*MouseEvent) evt
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
         var pos      = wnd.surfaceToLocal(mouseEvt.surfacePos)
         var x        = cast(s32) (pos.x / CellSize)
         var y        = cast(s32) (pos.y / CellSize)
@@ -156,9 +155,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         wnd.invalidate()
         return true
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
-        let painter  = paintEvt.bc.painter
+    case let paintEvt as PaintEvent:
+        let painter = paintEvt.bc.painter
 
         painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)
         var bk = Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}

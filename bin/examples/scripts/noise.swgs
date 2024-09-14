@@ -88,19 +88,18 @@ func createUI(wnd: *Wnd)
     }
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_Image   = Image.create(W, H, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
         g_Noise.update()
         createUI(wnd)
         compute()
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)

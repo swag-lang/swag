@@ -91,12 +91,11 @@ var g_Rng:      Random.Rng
 var g_Objs:     Array'Verlet
 var g_Time:     f32
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         painter.clear(Argb.Gray)
         painter.setParams(.Antialiased)

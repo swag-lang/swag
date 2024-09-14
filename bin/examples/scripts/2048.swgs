@@ -278,17 +278,16 @@ func keyboard(wnd: *Wnd)
     }
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_Font = wnd.getTheme().createDefaultFont(50)
         randValue()
         randValue()
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         var rect     = wnd.getClientRect()
 

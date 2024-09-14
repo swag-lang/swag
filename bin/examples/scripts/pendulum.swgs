@@ -21,7 +21,7 @@ var cx, cy: f32
 var friction  = 1.0
 var linePath: Array'Vector2
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     func start()
     {
@@ -29,9 +29,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         linePath.clear()
     }
 
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         var rect = wnd.getClientRect()
         cx = rect.width / 3
         cy = 50
@@ -78,8 +78,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
         }
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
 
         var num1 = -g * (2 * m1 + m2) * sin(a1)

@@ -46,11 +46,11 @@ func compute(render: *RenderOgl)
     g_Texture = render.addImage(g_Img)
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         let btn = PushButton.create(wnd, "Load Image", {10, 10, 100})
         btn.sigPressed += func|wnd|(btn)
         {
@@ -61,11 +61,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         g_Font = wnd.getTheme().createDefaultFont(10)
 
-    case Paint:
+    case let paintEvt as PaintEvent:
         if !g_Img.isValid():
             break
 
-        let paintEvt = cast(*PaintEvent) evt
         let painter  = paintEvt.bc.painter
 
         const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. "

@@ -293,24 +293,23 @@ func display()
     g_Painter.drawString(40, 0, Format.toString("score: %", g_Score), g_Font, Argb.White)
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     g_Dt = wnd.getApp().getDt()
 
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_Wnd  = wnd
         g_Rect = wnd.getClientRect()
         loadBindTextures()
         startGame()
 
-    case Resize:
+    case ResizeEvent:
         g_Rect = wnd.getClientRect()
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
-        g_Painter = paintEvt.bc.painter
+    case let ptr as PaintEvent:
+        g_Painter = ptr.bc.painter
         gameLoop()
         display()
         wnd.invalidate()

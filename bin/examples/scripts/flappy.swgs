@@ -208,11 +208,11 @@ This is the callback that will deal with all gui events. This feels like *Window
 
 For a simple script, this is more easy to process events in that way.
 */
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_Rect = wnd.getClientRect()
 
         // 'loadAssets' can raise some errors (we'll see later). So here we 'assume' that
@@ -220,10 +220,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         assume loadAssets(wnd)
 
         start()
-    case Resize:
+
+    case ResizeEvent:
         g_Rect = wnd.getClientRect()
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
 
         // This is the elapsed time between two 'frames', in seconds.

@@ -9,12 +9,14 @@
 using Core, Gui, Pixel, Core.Math
 const NoiseMax = 5.0
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    if evt.kind != .Paint:
+    let paintEvt = evt as PaintEvent
+    if !paintEvt:
+        return false
+    if paintEvt.kind != .Paint:
         return false
 
-    let paintEvt = cast(*PaintEvent) evt
     let painter  = paintEvt.bc.painter
 
     let centerX = wnd.position.width * 0.5

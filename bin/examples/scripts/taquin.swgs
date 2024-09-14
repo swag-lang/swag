@@ -35,14 +35,14 @@ func tilePos(i, j: s32)->Math.Rectangle
     return Math.Rectangle{xd, yd, displayW, displayH}
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Resize:
+    case ResizeEvent:
         g_Rect = wnd.getClientRect()
 
-    case Create:
+    case CreateEvent:
         var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
         dataPath = Path.combine(dataPath, "datas")
         dataPath = Path.combine(dataPath, "taquin")
@@ -80,9 +80,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         let j = Random.shared().nextU64(0, cast(u64) NumElems - 1)
         g_Matrix[i, j].empty = true
 
-    case MouseMove:
-        let mouseEvt = cast(*MouseEvent) evt
-        let pt       = wnd.surfaceToLocal(mouseEvt.surfacePos)
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove:
+        let pt = wnd.surfaceToLocal(mouseEvt.surfacePos)
 
         g_HotX, g_HotY = -1
         #scope Big
@@ -103,7 +102,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
         }
 
-    case MousePressed:
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
         if g_Moving:
             break
         if g_HotX == -1:
@@ -129,8 +128,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             cur.moveDt = 0
         }
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         let dt       = wnd.getApp().getDt()
 

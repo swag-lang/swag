@@ -83,16 +83,16 @@ impl IWnd for IconButton
         invalidate()
     }
 
-    mtd impl onHookEvent(evt: *Event)
+    mtd impl onHookEvent(evt: IEvent)
     {
         if !popup:
             return
 
-        if evt.kind == .MousePressed
+        if let ptr = evt as MouseEvent where ptr.kind == .MousePressed
         {
-            if evt.target == self or evt.target == popup:
+            if ptr.target == self or ptr.target == popup:
                 return
-            if evt.target and popup.isParentOf(evt.target):
+            if ptr.target and popup.isParentOf(ptr.target):
                 return
             hidePopup()
         }

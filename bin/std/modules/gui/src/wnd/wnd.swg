@@ -2,7 +2,7 @@
 using Core, Pixel
 
 alias WndId     = string
-alias HookEvent = func||(*Wnd, *Event)->bool
+alias HookEvent = func||(*Wnd, IEvent)->bool
 
 // Automatic placement and size of the window in the parent client rectangle
 enum DockStyle
@@ -51,8 +51,9 @@ struct KeyShortcut
 
 interface IWnd
 {
-    mtd onEvent(evt: *Event);
-    mtd onHookEvent(evt: *Event);
+    mtd onEvent(evt: IEvent);
+    mtd onHookEvent(evt: IEvent);
+
     mtd onCreateEvent(evt: *CreateEvent);
     mtd onDestroyEvent(evt: *DestroyEvent);
     mtd onStateEvent(evt: *StateEvent);
@@ -134,56 +135,56 @@ struct Wnd
 
 impl IWnd for Wnd
 {
-    mtd impl onEvent(evt: *Event)
+    mtd impl onEvent(evt: IEvent)
     {
-        switch evt.kind
+        switch evt
         {
-        case Create:
-            itf.onCreateEvent(cast(*CreateEvent) evt)
-        case Destroy:
-            itf.onDestroyEvent(cast(*DestroyEvent) evt)
-        case Show, Hide:
-            itf.onStateEvent(cast(*StateEvent) evt)
-        case Resize:
-            itf.onResizeEvent(cast(*ResizeEvent) evt)
-        case PrePaint:
-            itf.onPrePaintEvent(cast(*PaintEvent) evt)
-        case Paint:
-            itf.onPaintEvent(cast(*PaintEvent) evt)
-        case PostPaint:
-            itf.onPostPaintEvent(cast(*PaintEvent) evt)
-        case SysCommand:
-            itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
-        case SysUser:
-            itf.onSysUserEvent(cast(*SysUserEvent) evt)
-        case KeyPressed, KeyReleased, Rune:
-            itf.onKeyEvent(cast(*KeyEvent) evt)
-        case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave, MouseDoubleClick, MouseWheel:
-            itf.onMouseEvent(cast(*MouseEvent) evt)
-        case SetTheme:
-            itf.onSetThemeEvent(cast(*SetThemeEvent) evt)
-        case Timer:
-            itf.onTimerEvent(cast(*TimerEvent) evt)
-        case SetFocus, KillFocus, CanSetFocus, CanKillFocus:
-            itf.onFocusEvent(cast(*FocusEvent) evt)
-        case Command:
-            if executeAction(cast(*CommandEvent) evt):
-                return
-            itf.onCommandEvent(cast(*CommandEvent) evt)
-        case ComputeCommandState:
-            if updateAction(cast(*CommandStateEvent) evt):
-                return
-            itf.onComputeStateEvent(cast(*CommandStateEvent) evt)
-        case ApplyCommandState:
+        case let ptr as CreateEvent:
+            itf.onCreateEvent(ptr)
+        case let ptr as DestroyEvent:
+            itf.onDestroyEvent(ptr)
+        case let ptr as StateEvent:
+            itf.onStateEvent(ptr)
+        case let ptr as ResizeEvent:
+            itf.onResizeEvent(ptr)
+        case let ptr as PaintEvent where ptr.kind == .PrePaint:
+            itf.onPrePaintEvent(ptr)
+        case let ptr as PaintEvent where ptr.kind == .Paint:
+            itf.onPaintEvent(ptr)
+        case let ptr as PaintEvent where ptr.kind == .PostPaint:
+            itf.onPostPaintEvent(ptr)
+        case let ptr as SysCommandEvent:
+            itf.onSysCommandEvent(ptr)
+        case let ptr as SysUserEvent:
+            itf.onSysUserEvent(ptr)
+        case let ptr as KeyEvent:
+            itf.onKeyEvent(ptr)
+        case let ptr as MouseEvent where ptr.kind != .MouseAccept:
+            itf.onMouseEvent(ptr)
+        case let ptr as SetThemeEvent:
+            itf.onSetThemeEvent(ptr)
+        case let ptr as TimerEvent:
+            itf.onTimerEvent(ptr)
+        case let ptr as FocusEvent:
+            itf.onFocusEvent(ptr)
+        case let ptr as CommandEvent:
+            if !executeAction(ptr):
+                itf.onCommandEvent(ptr)
+        case let ptr as CommandStateEvent where ptr.kind == .ComputeCommandState:
+            if !updateAction(ptr):
+                itf.onComputeStateEvent(ptr)
+        case let ptr as CommandStateEvent where ptr.kind == .ApplyCommandState:
             itf.onApplyStateEvent(cast(*CommandStateEvent) evt)
-        case Frame:
-            itf.onFrameEvent(cast(*FrameEvent) evt)
-        case SerializeState:
-            itf.onSerializeStateEvent(cast(*SerializeStateEvent) evt)
-        case Notify:
-            itf.onNotifyEvent(cast(*NotifyEvent) evt)
+        case let ptr as FrameEvent:
+            itf.onFrameEvent(ptr)
+        case let ptr as SerializeStateEvent:
+            itf.onSerializeStateEvent(ptr)
+        case let ptr as NotifyEvent:
+            itf.onNotifyEvent(ptr)
         }
     }
+
+    mtd impl onHookEvent(evt: IEvent) {}
 
     mtd impl onCreateEvent(evt: *CreateEvent) {}
     mtd impl onDestroyEvent(evt: *DestroyEvent) {}
@@ -194,7 +195,6 @@ impl IWnd for Wnd
     mtd impl onPostPaintEvent(evt: *PaintEvent) {}
     mtd impl onSetThemeEvent(evt: *SetThemeEvent) { invalidate(); sendResizeEvent(); }
     mtd impl onTimerEvent(evt: *TimerEvent) {}
-    mtd impl onHookEvent(evt: *Event) {}
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent) {}
     mtd impl onFrameEvent(evt: *FrameEvent) {}
 
@@ -1166,9 +1166,10 @@ impl Wnd
         surface.app.postQuitEvent()
     }
 
-    mtd postEvent(evt: *Event)
+    mtd postEvent(evt: IEvent)
     {
-        evt.target = self
+        let ptr = evt as Event
+        ptr.target = self
         surface.app.postEvent(evt)
     }
 
@@ -1179,9 +1180,10 @@ impl Wnd
         postEvent(evt)
     }
 
-    mtd sendEvent(evt: *Event)
+    mtd sendEvent(evt: IEvent)
     {
-        evt.target = self
+        let ptr = evt as Event
+        ptr.target = self
         surface.app.sendEvent(evt)
     }
 
@@ -1226,7 +1228,7 @@ impl Wnd
         postEvent(evt)
     }
 
-    mtd processEvent(evt: *Event)
+    mtd processEvent(evt: IEvent)
     {
         var eat = false
         if hookOnEvent:

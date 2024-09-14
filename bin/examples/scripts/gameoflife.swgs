@@ -10,20 +10,18 @@ const GridSize = 60
 var g_Grid:   [2, GridSize, GridSize] bool
 var g_CurGen: s32
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     let leftPressed  = wnd.getApp().mouse.isButtonPressed(.Left)
     let rightPressed = wnd.getApp().mouse.isButtonPressed(.Right)
     let cellSize     = Math.min(wnd.position.width, wnd.position.height) / GridSize
 
-    switch evt.kind
+    switch evt
     {
-    case MousePressed, MouseMove:
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed or mouseEvt.kind == .MouseMove:
         if leftPressed or rightPressed
         {
-            let mouseEvt = cast(*MouseEvent) evt
-            let pos      = wnd.surfaceToLocal(mouseEvt.surfacePos)
-
+            let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
             let x = cast(s32) (pos.x / cellSize)
             let y = cast(s32) (pos.y / cellSize)
             if x < 1 or x >= GridSize - 1 or y < 1 or y >= GridSize - 1:
@@ -33,7 +31,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         return true
 
-    case Create:
+    case CreateEvent:
         // Initial population
         for i in 1 until GridSize - 1
         {
@@ -43,8 +41,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
         }
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         let nextGen  = (g_CurGen + 1) % 2
 

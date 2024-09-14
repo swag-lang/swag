@@ -54,11 +54,11 @@ impl C
     }
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         var pl: LinePathList
         assume wnd.getTheme().res.defaultTypeFaceR.getStringOutline(&pl, "Swag", 200)
         foreach path in pl.paths
@@ -75,8 +75,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             }
         }
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
         var rect     = wnd.getClientRect()
 

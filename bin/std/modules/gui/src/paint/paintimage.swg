@@ -13,9 +13,9 @@ public struct PaintImage
 
 impl PaintImage
 {
-    internal func onEvent(wnd: *Wnd, evt: *Event)->bool
+    internal func onEvent(wnd: *Wnd, evt: IEvent)->bool
     {
-        if evt.kind != .Paint:
+        if !(evt is PaintEvent):
             return false
 
         let pt = cast(*PaintImage) wnd.surface.userData

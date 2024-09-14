@@ -16,7 +16,7 @@ struct Application
     keyb:                   Input.Keyboard
     mouse:                  Input.Mouse
     mainSurface:            *Surface
-    postedEvents:           Array'(*Event)
+    postedEvents:           Array'(IEvent)
     surfaces:               Array'(*Surface)
     postDestroy:            Array'(*Wnd)
     hookOnEvent:            Array'(*Wnd)
@@ -51,19 +51,20 @@ struct Application
 internal impl Application
 {
     // Send and process an event
-    mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
+    mtd sendEventPrivate(evt: IEvent, stopAt: *Wnd)
     {
         // Global hook events
         foreach hook in hookOnEvent:
-            hook.itf.onHookEvent(event)
+            hook.itf.onHookEvent(evt)
 
-        if event.kind == .Quit
+        if let ptr = evt as QuitEvent
         {
-            let evt = cast(*QuitEvent) event
             mustQuit = true
-            quitCode = evt.quitCode
+            quitCode = ptr.quitCode
             return
         }
+
+        let event = cast(*Event) evt
 
         // Be sure we have a target
         if !event.target:
@@ -73,7 +74,7 @@ internal impl Application
         var scan = event.target.getOwner()
         while scan
         {
-            if scan.hookOnChildEvent and scan.hookOnChildEvent(scan, event):
+            if scan.hookOnChildEvent and scan.hookOnChildEvent(scan, evt):
                 return
             scan = scan.getOwner()
         }
@@ -81,14 +82,14 @@ internal impl Application
         // Send event to the target
         // If the target does not accept the event, then pass it to the parent
         event.accepted = true
-        event.target.processEvent(event)
+        event.target.processEvent(evt)
         while !event.accepted
         {
             event.target = event.target.owner orelse event.target.parent
             if !event.target or event.target == stopAt:
                 break
             event.accepted = true
-            event.target.processEvent(event)
+            event.target.processEvent(evt)
         }
     }
 
@@ -297,13 +298,13 @@ internal impl Application
         mutexPostedEvents.unlock()
 
         var needUpdateState = false
-        for var i = 0; i < copy.count; i += 1
+        foreach it in copy
         {
-            let evt = copy[i]
+            let evt = it as Event
             if evt.kind == .Invalidate:
                 evt.target.invalidate()
             else:
-                sendEvent(evt)
+                sendEvent(it)
 
             // Special event post process
             if evt.kind == .Command:
@@ -373,8 +374,9 @@ internal impl Application
         // Be sure there's no posted event for that window
         foreach e in postedEvents
         {
-            if e.target == wnd:
-                e.target = null
+            let ptr = e as Event
+            if ptr.target == wnd:
+                ptr.target = null
         }
     }
 
@@ -519,8 +521,13 @@ impl Application
         foreach it in surfaces:
             it.destroy()
         sendDestroyEvents()
-        foreach it in postedEvents:
-            toDelete.add({it, it.type})
+
+        foreach it in postedEvents
+        {
+            let ptr = it as Event
+            toDelete.add({ptr, ptr.type})
+        }
+
         deletePointers()
         theme.freeDefault()
     }
@@ -710,13 +717,13 @@ impl Application
     }
 
     // Post a new event (thread safe)
-    mtd postEvent(event: *Event)
+    mtd postEvent(event: IEvent)
     {
         Sync.scopedLock(&mutexPostedEvents)
         postedEvents.add(event)
     }
 
-    mtd sendEvent(event: *Event)
+    mtd sendEvent(event: IEvent)
     {
         sendEventPrivate(event, null)
     }

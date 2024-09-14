@@ -380,6 +380,15 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
+    // Check public
+    if (!numFctInterface)
+    {
+        SWAG_CHECK(collectAttributes(context, first, nullptr));
+        SWAG_CHECK(collectAttributes(context, back, nullptr));
+        if (first->hasAttribute(ATTRIBUTE_PUBLIC) && back->hasAttribute(ATTRIBUTE_PUBLIC))
+            node->ownerScope->addPublicNode(node);
+    }
+
     // :ItfIsConstantSeg
     // Setup constant segment offset. We put the offset to the start of the functions, not to the concrete type offset (0)
     typeParamItf->offset = itableOffset + sizeOfHeader;
@@ -506,11 +515,8 @@ bool Semantic::resolveInterface(SemanticContext* context)
     }
 
     // Check public
-    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
-    {
-        if (!node->hasAstFlag(AST_FROM_GENERIC))
-            node->ownerScope->addPublicNode(node);
-    }
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAstFlag(AST_FROM_GENERIC))
+        node->ownerScope->addPublicNode(node);
 
     // Register symbol with its type
     node->typeInfo = typeInterface;
@@ -990,7 +996,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     typeParam->flags.add(TYPEINFOPARAM_HAS_USING);
                     typeInfo->flags.add(TYPEINFO_HAS_USING);
                 }
-                
+
                 SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
                 if (child->is(AstNodeKind::VarDecl))
                     typeInfo->fields.push_back(typeParam);

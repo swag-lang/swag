@@ -52,14 +52,14 @@ func compute()
     }
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     let w = cast(s32) wnd.position.width
     let h = cast(s32) wnd.position.height
 
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_Slider = Slider.create(wnd, {0, 0, 200}, range: true)
         g_Slider.setMinMax(-2.5, 2.5)
         g_Slider.setRangeValues(-2.5, 2.5)
@@ -75,8 +75,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         compute()
         return true
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:        
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)

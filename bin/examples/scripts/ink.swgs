@@ -98,18 +98,17 @@ func addInk(x, y, r: f32, col: Color)
     drops.add(drop)
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         break
 
-    case MouseMove, MousePressed:
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove or mouseEvt.kind == .MousePressed:
         return true
 
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
+    case let paintEvt as PaintEvent:
         let painter  = paintEvt.bc.painter
 
         var leftPressed = wnd.getApp().mouse.isButtonPressed(.Left) or Env.hasArg("swag.test")

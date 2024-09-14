@@ -82,11 +82,11 @@ func createBtn(str: string, x, y: s32)
     }
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         g_FontTxt = wnd.getTheme().createDefaultFont(30)
         g_FontBtn = wnd.getTheme().createDefaultFont(30)
 

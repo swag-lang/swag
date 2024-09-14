@@ -386,9 +386,8 @@ func paintCell(painter: *Pixel.Painter, index: s8)
     painter.drawTexture(cellInfo.rect, texture)
 }
 
-func paintBoard(evt: *Event)
+func paintBoard(paintEvt: *PaintEvent)
 {
-    let paintEvt = cast(*PaintEvent) evt
     let painter  = paintEvt.bc.painter
 
     let s = BoardSize
@@ -445,9 +444,8 @@ func paintBoard(evt: *Event)
     }
 }
 
-func paintStates(evt: *Event)
+func paintStates(paintEvt: *PaintEvent)
 {
-    let paintEvt = cast(*PaintEvent) evt
     let painter  = paintEvt.bc.painter
     var str:     String
 
@@ -498,11 +496,11 @@ func pickCell(pos: Math.Point)->s8
     return cast(s8) (y * 12 + x + 2)
 }
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    switch evt.kind
+    switch evt
     {
-    case Create:
+    case CreateEvent:
         Res.font      = wnd.getTheme().createDefaultFont(20)
         Res.smallfont = wnd.getTheme().createDefaultFont(12)
         initGame()
@@ -516,8 +514,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             wnd.invalidate()
         }
 
-    case MousePressed:
-        let mouseEvt = cast(*MouseEvent) evt
+    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
         if mouseEvt.button == .Left
         {
             var pos  = wnd.surfaceToLocal(mouseEvt.surfacePos)
@@ -552,9 +549,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         wnd.invalidate()
         return true
 
-    case Paint:
-        paintBoard(evt)
-        paintStates(evt)
+    case let paintEvt as PaintEvent:
+        paintBoard(paintEvt)
+        paintStates(paintEvt)
     }
 
     return false

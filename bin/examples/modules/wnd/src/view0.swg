@@ -2,57 +2,49 @@ using Core, Gui
 
 var g_Prg: *ProgressBar
 
-func onEvent(wnd: *Wnd, evt: *Event)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
-    if evt.kind == .MouseAccept
+    if let pevt = evt as MouseEvent where pevt.kind == .MouseAccept
     {
-        evt.accepted = true
+        pevt.accepted = true
         return true
     }
 
-    if evt.kind == .Command
+    if let pevt = evt as CommandEvent where pevt.id == "exitBtn"
     {
-        let pevt = cast(*CommandEvent) evt
-        if pevt.id == "exitBtn"
-        {
-            wnd.surface.destroy()
-        }
+        wnd.surface.destroy()
     }
 
-    if evt.kind == .Frame
+    if evt is FrameEvent
     {
         g_Prg.setProgression(g_Prg.progression + wnd.getTiming().dt)
     }
 
-    if evt.kind == .MousePressed
+    if let pevt = evt as MouseEvent where pevt.button == .Right
     {
-        let pevt = cast(*MouseEvent) evt
-        if pevt.button == .Right
-        {
-            let menu = MenuCtrl.createPopup(wnd)
-            menu.addItem("Coucou", "0", rightName: "Ctrl+A")
-            menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled: true)
-            menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
-            menu.addSeparator()
+        let menu = MenuCtrl.createPopup(wnd)
+        menu.addItem("Coucou", "0", rightName: "Ctrl+A")
+        menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled: true)
+        menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
+        menu.addSeparator()
 
-            var popup = MenuCtrl.createPopup(wnd)
-            popup.addItem("Coucou0", "0")
-            popup.addItem("Coucou1", "1")
-            menu.addPopup("Popup1", popup)
+        var popup = MenuCtrl.createPopup(wnd)
+        popup.addItem("Coucou0", "0")
+        popup.addItem("Coucou1", "1")
+        menu.addPopup("Popup1", popup)
 
-            let popup1 = MenuCtrl.createPopup(wnd)
-            popup1.addItem("Coucou0", "0")
-            popup1.addItem("Coucou1", "1")
+        let popup1 = MenuCtrl.createPopup(wnd)
+        popup1.addItem("Coucou0", "0")
+        popup1.addItem("Coucou1", "1")
 
-            popup = MenuCtrl.createPopup(wnd)
-            popup.addItem("Coucou0", "0")
-            popup.addPopup("Coucou1", popup1)
-            menu.addPopup("Popup2", popup)
+        popup = MenuCtrl.createPopup(wnd)
+        popup.addItem("Coucou0", "0")
+        popup.addPopup("Coucou1", popup1)
+        menu.addPopup("Popup2", popup)
 
-            menu.addSeparator()
-            menu.addItem("Foule", "3")
-            discard menu.doModal(pevt.surfacePos)
-        }
+        menu.addSeparator()
+        menu.addItem("Foule", "3")
+        discard menu.doModal(pevt.surfacePos)
     }
 
     return false

@@ -1,6 +1,10 @@
 #global public
 using Core
 
+interface IEvent
+{
+}
+
 enum EventKind
 {
     None
@@ -70,11 +74,20 @@ impl Event
     }
 }
 
+impl IEvent for Event
+{
+}
+
+
 struct CommandEvent
 {
     using base:     Event{kind: EventKind.Command}
     id:             WndId
     source:         *Wnd
+}
+
+impl IEvent for CommandEvent
+{
 }
 
 struct CommandStateEvent
@@ -107,10 +120,18 @@ struct CommandStateEvent
     hidden:         bool
 }
 
+impl IEvent for CommandStateEvent
+{
+}
+
 struct TimerEvent
 {
     using base:     Event{kind: EventKind.Timer}
     timer:          *Timer
+}
+
+impl IEvent for TimerEvent
+{
 }
 
 struct FrameEvent
@@ -119,9 +140,17 @@ struct FrameEvent
     firstFrame:     bool
 }
 
+impl IEvent for FrameEvent
+{
+}
+
 struct CreateEvent
 {
     using base: Event{kind: EventKind.Create}
+}
+
+impl IEvent for CreateEvent
+{
 }
 
 struct StateEvent
@@ -129,9 +158,17 @@ struct StateEvent
     using base: Event
 }
 
+impl IEvent for StateEvent
+{
+}
+
 struct DestroyEvent
 {
     using base: Event{kind: EventKind.Destroy}
+}
+
+impl IEvent for DestroyEvent
+{
 }
 
 struct PaintEvent
@@ -140,10 +177,18 @@ struct PaintEvent
     bc:             *PaintContext
 }
 
+impl IEvent for PaintEvent
+{
+}
+
 struct ResizeEvent
 {
     using base:     Event{kind: EventKind.Resize}
     oldSize:        Math.Point
+}
+
+impl IEvent for ResizeEvent
+{
 }
 
 struct MoveEvent
@@ -152,12 +197,20 @@ struct MoveEvent
     oldPos:         Math.Point
 }
 
+impl IEvent for MoveEvent
+{
+}
+
 struct KeyEvent
 {
     using base:     Event
     modifiers:      Input.KeyModifiers = Zero
     key:            Input.Key = undefined
     char:           rune
+}
+
+impl IEvent for KeyEvent
+{
 }
 
 struct MouseEvent
@@ -169,10 +222,18 @@ struct MouseEvent
     modifiers:      Input.KeyModifiers = Zero
 }
 
+impl IEvent for MouseEvent
+{
+}
+
 struct QuitEvent
 {
     using base:     Event{kind: EventKind.Quit}
     quitCode:       s32
+}
+
+impl IEvent for QuitEvent
+{
 }
 
 struct FocusEvent
@@ -182,12 +243,20 @@ struct FocusEvent
     canChangeFocus     = true
 }
 
+impl IEvent for FocusEvent
+{
+}
+
 struct SysUserEvent
 {
     using base:     Event{kind: EventKind.SysUser}
     userMsg:        u64
     param0:         u64
     param1:         u64
+}
+
+impl IEvent for SysUserEvent
+{
 }
 
 struct SysCommandEvent
@@ -206,6 +275,10 @@ struct SysCommandEvent
     sysKind: Kind = undefined
 }
 
+impl IEvent for SysCommandEvent
+{
+}
+
 struct SetThemeEvent
 {
     using base:     Event{kind: EventKind.SetTheme}
@@ -213,10 +286,18 @@ struct SetThemeEvent
     parent:         *ThemeStyle
 }
 
+impl IEvent for SetThemeEvent
+{
+}
+
 struct SerializeStateEvent
 {
     using base:     Event{kind: EventKind.SerializeState}
     ser:            *Serialization.Serializer
+}
+
+impl IEvent for SerializeStateEvent
+{
 }
 
 struct NotifyEvent
@@ -230,4 +311,8 @@ struct NotifyEvent
 
     ntfyKind:     Kind = undefined
     from:         *Wnd
+}
+
+impl IEvent for NotifyEvent
+{
 }
