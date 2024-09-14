@@ -301,7 +301,7 @@ internal impl Application
         foreach it in copy
         {
             let evt = it as Event
-            
+
             if it is InvalidateEvent:
                 evt.target.invalidate()
             else:

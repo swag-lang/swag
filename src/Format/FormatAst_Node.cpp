@@ -253,6 +253,22 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputIf(context, "if", node));
             break;
 
+        case AstNodeKind::CastAs:
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            concat->addBlank();
+            concat->addString("as");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(context, node->secondChild()));
+            break;
+
+        case AstNodeKind::CastIs:
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            concat->addBlank();
+            concat->addString("is");
+            concat->addBlank();
+            SWAG_CHECK(outputNode(context, node->secondChild()));
+            break;
+
         case AstNodeKind::CompilerMacro:
             concat->addString("#macro");
             SWAG_CHECK(outputNode(context, node->firstChild()));
