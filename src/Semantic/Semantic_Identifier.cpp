@@ -371,7 +371,10 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable) && symbol->isNot(SymbolKind::Attribute))
+            if (symbol->isNot(SymbolKind::Function) &&
+                symbol->isNot(SymbolKind::Variable) &&
+                symbol->isNot(SymbolKind::Attribute) &&
+                symbol->isNot(SymbolKind::Struct))
                 continue;
 
             ScopedLock ls(symbol->mutex);
@@ -385,71 +388,91 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         for (const auto& sm : symbolMatch)
         {
             const auto symbol = sm.symbol;
-            if (symbol->isNot(SymbolKind::Function) && symbol->isNot(SymbolKind::Variable) && symbol->isNot(SymbolKind::Attribute))
+            if (symbol->isNot(SymbolKind::Function) &&
+                symbol->isNot(SymbolKind::Variable) &&
+                symbol->isNot(SymbolKind::Attribute) &&
+                symbol->isNot(SymbolKind::Struct))
                 continue;
 
             SharedLock lk(symbol->mutex);
             for (auto& overload : symbol->overloads)
             {
                 const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
-                if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
-                    continue;
                 if (concrete->isGeneric() || concrete->isFromGeneric())
                     continue;
 
-                testedOver.push_back(overload);
-                const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-
-                // If there's only one corresponding type in the function, then take it
-                // If it's not the correct parameter, the match will not be done, so we do not really care here
-                VectorNative<TypeInfoEnum*> subResult;
-                for (const auto param : typeFunc->parameters)
+                if (concrete->isStruct())
                 {
-                    auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
-                    if (!typeEnum)
+                    testedOver.push_back(overload);
+                    const auto typeStruct = castTypeInfo<TypeInfoStruct>(concrete, TypeInfoKind::Struct);
+
+                    const auto foundName = typeStruct->scope->symTable.find(fctCallParam->token.text);
+                    if(!foundName || foundName->overloads.empty())
                         continue;
-                    has.push_back_once({param->declNode, typeEnum});
+                    auto typeEnum = findEnumTypeInContext(context, foundName->overloads[0]->typeInfo);
+                    if(!typeEnum)
+                        continue;
+                    has.push_back_once({foundName->overloads[0]->node, typeEnum});
                     if (typeEnum->contains(node->token.text))
-                        subResult.push_back_once(typeEnum);
+                        result.push_back_once(typeEnum);
                 }
 
-                if (subResult.size() == 1)
+                else if (concrete->isFuncAttr() || concrete->isLambdaClosure())
                 {
-                    result.push_back_once(subResult.front());
-                }
+                    testedOver.push_back(overload);
+                    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
-                // More that one possible type (at least two different enums with the same identical requested name in the function signature)
-                // We are not lucky...
-                else if (subResult.size() > 1)
-                {
-                    int enumIdx = 0;
-                    for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
+                    // If there's only one corresponding type in the function, then take it
+                    // If it's not the correct parameter, the match will not be done, so we do not really care here
+                    VectorNative<TypeInfoEnum*> subResult;
+                    for (const auto param : typeFunc->parameters)
                     {
-                        const auto child = fctCallParam->parent->children[i];
-                        if (child == fctCallParam)
-                            break;
-                        if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
-                            enumIdx++;
-                        else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
-                            enumIdx++;
+                        auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
+                        if (!typeEnum)
+                            continue;
+                        has.push_back_once({param->declNode, typeEnum});
+                        if (typeEnum->contains(node->token.text))
+                            subResult.push_back_once(typeEnum);
                     }
 
-                    for (const auto p : typeFunc->parameters)
+                    if (subResult.size() == 1)
                     {
-                        const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
-                        if (concreteP->isEnum())
-                        {
-                            if (!enumIdx)
-                            {
-                                auto typeEnum = findEnumTypeInContext(context, concreteP);
-                                if (typeEnum)
-                                    has.push_back_once({p->declNode, typeEnum});
-                                if (typeEnum && typeEnum->contains(node->token.text))
-                                    result.push_back_once(typeEnum);
-                                break;
-                            }
+                        result.push_back_once(subResult.front());
+                    }
 
-                            enumIdx--;
+                    // More that one possible type (at least two different enums with the same identical requested name in the function signature)
+                    // We are not lucky...
+                    else if (subResult.size() > 1)
+                    {
+                        int enumIdx = 0;
+                        for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
+                        {
+                            const auto child = fctCallParam->parent->children[i];
+                            if (child == fctCallParam)
+                                break;
+                            if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
+                                enumIdx++;
+                            else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
+                                enumIdx++;
+                        }
+
+                        for (const auto p : typeFunc->parameters)
+                        {
+                            const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
+                            if (concreteP->isEnum())
+                            {
+                                if (!enumIdx)
+                                {
+                                    auto typeEnum = findEnumTypeInContext(context, concreteP);
+                                    if (typeEnum)
+                                        has.push_back_once({p->declNode, typeEnum});
+                                    if (typeEnum && typeEnum->contains(node->token.text))
+                                        result.push_back_once(typeEnum);
+                                    break;
+                                }
+
+                                enumIdx--;
+                            }
                         }
                     }
                 }

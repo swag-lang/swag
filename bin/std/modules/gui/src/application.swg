@@ -225,7 +225,7 @@ internal impl Application
         if !targetWnd:
             return
 
-        var evt      = MouseEvent{kind: MouseEvent.Kind.MouseWheel}
+        var evt      = MouseEvent{kind: .MouseWheel}
         var mousePos = mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
@@ -252,7 +252,7 @@ internal impl Application
             let curP  = keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                var evt = KeyEvent{kind: KeyEvent.Kind.KeyPressed}
+                var evt = KeyEvent{kind: .KeyPressed}
                 evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -267,7 +267,7 @@ internal impl Application
             }
             elif lastP and !curP
             {
-                var evt = KeyEvent{kind: KeyEvent.Kind.KeyReleased}
+                var evt = KeyEvent{kind: .KeyReleased}
                 evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -282,7 +282,7 @@ internal impl Application
         if !targetWnd:
             return
 
-        var evt = KeyEvent{kind: KeyEvent.Kind.Rune}
+        var evt = KeyEvent{kind: .Rune}
         evt.char      = r
         evt.key       = key
         evt.modifiers = keyb.getPressedModifiers()

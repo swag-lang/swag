@@ -137,8 +137,7 @@ internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LR
             switch wParam
             {
             case SC_RESTORE:
-                var evt = SysCommandEvent{}
-                evt.kind = .Restore
+                var evt = SysCommandEvent{kind: .Restore}
                 surface.wnd.sendEvent(&evt)
             }
         }
