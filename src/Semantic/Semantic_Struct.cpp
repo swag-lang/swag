@@ -868,9 +868,9 @@ bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
 
 bool Semantic::postResolveStruct(SemanticContext* context)
 {
-    if(context->node->isNot(AstNodeKind::StructDecl))
+    if (context->node->isNot(AstNodeKind::StructDecl))
         return true;
-    
+
     const auto node     = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
@@ -880,6 +880,8 @@ bool Semantic::postResolveStruct(SemanticContext* context)
     sendCompilerMsgTypeDecl(context);
 
     // Verify that we have only one possible conversion
+    SharedLock lk(typeInfo->mutex);
+
     VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
     typeInfo->collectUsingFields(usingFields);
     VectorNative<TypeInfoStruct*> here;

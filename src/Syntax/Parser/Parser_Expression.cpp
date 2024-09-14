@@ -550,6 +550,32 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
     }
 
+    // A as B
+    if (tokenParse.is(TokenId::KwdAs))
+    {
+        Ast::removeFromParent(exprNode);
+        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastAs, this, parent);
+        triNode->semanticFct = Semantic::resolveCastAs;
+        *result              = triNode;
+        Ast::addChildBack(triNode, exprNode);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
+        return true;
+    }
+
+    // A is B
+    if (tokenParse.is(TokenId::KwdIs))
+    {
+        Ast::removeFromParent(exprNode);
+        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastIs, this, parent);
+        triNode->semanticFct = Semantic::resolveCastIs;
+        *result              = triNode;
+        Ast::addChildBack(triNode, exprNode);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
+        return true;
+    }
+
     *result = exprNode;
     return true;
 }
@@ -1180,31 +1206,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         return true;
     }
 
-    // A as B
-    if (tokenParse.is(TokenId::KwdAs))
-    {
-        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastAs, this, parent);
-        triNode->semanticFct = Semantic::resolveCastAs;
-        *result              = triNode;
-        Ast::addChildBack(triNode, boolExpression);
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
-        return true;        
-    }
-
-    // A is B
-    if (tokenParse.is(TokenId::KwdIs))
-    {
-        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::CastIs, this, parent);
-        triNode->semanticFct = Semantic::resolveCastIs;
-        *result              = triNode;
-        Ast::addChildBack(triNode, boolExpression);
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(triNode, exprFlags, &dummyResult));
-        return true;        
-    }    
-
-    // Normal expression 
+    // Normal expression
     Ast::addChildBack(parent, boolExpression);
     *result = boolExpression;
     return true;

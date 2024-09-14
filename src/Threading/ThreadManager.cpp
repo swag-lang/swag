@@ -307,11 +307,11 @@ void ThreadManager::executeOneJob(Job* job)
 
 bool ThreadManager::doneWithJobs() const
 {
-    return queueJobs.jobs.empty() &&
-           queueJobsIO.jobs.empty() &&
-           queueJobs.affinityCount == 0 &&
+    return queueJobs.affinityCount == 0 &&
            queueJobsIO.affinityCount == 0 &&
-           jobsInThreads == 0;
+           jobsInThreads == 0 &&
+           queueJobs.jobs.empty() &&
+           queueJobsIO.jobs.empty();
 }
 
 void ThreadManager::clearOptionalJobs()
