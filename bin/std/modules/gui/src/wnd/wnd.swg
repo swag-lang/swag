@@ -1066,7 +1066,7 @@ impl Wnd
         // Ask the window with the current focus if we can steal it
         if last
         {
-            var evt = FocusEvent{kind: EventKind.CanKillFocus, other: self}
+            var evt = FocusEvent{kind: FocusEvent.Kind.CanKillFocus, other: self}
             last.sendEvent(&evt)
             if !evt.canChangeFocus:
                 return
@@ -1074,7 +1074,7 @@ impl Wnd
 
         // Ask the new window if it wants the focus
         {
-            var evt = FocusEvent{kind: EventKind.CanSetFocus, other: last}
+            var evt = FocusEvent{kind: FocusEvent.Kind.CanSetFocus, other: last}
             sendEvent(&evt)
             if !evt.canChangeFocus:
                 return
@@ -1082,7 +1082,7 @@ impl Wnd
 
         if last
         {
-            var evt = FocusEvent{kind: EventKind.KillFocus, other: self}
+            var evt = FocusEvent{kind: FocusEvent.Kind.KillFocus, other: self}
             last.sendEvent(&evt)
             last.invalidate()
 
@@ -1091,7 +1091,7 @@ impl Wnd
 
         surface.setFocus()
 
-        var evt = FocusEvent{kind: EventKind.SetFocus, other: last}
+        var evt = FocusEvent{kind: FocusEvent.Kind.SetFocus, other: last}
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
         invalidate()
@@ -1175,8 +1175,7 @@ impl Wnd
 
     mtd postInvalidateEvent()
     {
-        let evt = Event.create'Event()
-        evt.kind = .Invalidate
+        let evt = Event.create'InvalidateEvent()
         postEvent(evt)
     }
 
@@ -1187,7 +1186,7 @@ impl Wnd
         surface.app.sendEvent(evt)
     }
 
-    mtd sendStateEvent(kind: EventKind)
+    mtd sendStateEvent(kind: StateEvent.Kind)
     {
         var evt = StateEvent{kind: kind}
         sendEvent(&evt)

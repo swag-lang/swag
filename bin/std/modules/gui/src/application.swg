@@ -183,7 +183,7 @@ internal impl Application
         var move = mouse.getMove()
         if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
         {
-            evt.kind = EventKind.MouseMove
+            evt.kind = .MouseMove
             evt.move = move
             targetWnd.sendEvent(&evt)
             ToolTip.resetTimer(evt.surfacePos)
@@ -225,7 +225,7 @@ internal impl Application
         if !targetWnd:
             return
 
-        var evt      = MouseEvent{kind: EventKind.MouseWheel}
+        var evt      = MouseEvent{kind: MouseEvent.Kind.MouseWheel}
         var mousePos = mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
@@ -252,7 +252,7 @@ internal impl Application
             let curP  = keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                var evt = KeyEvent{kind: EventKind.KeyPressed}
+                var evt = KeyEvent{kind: KeyEvent.Kind.KeyPressed}
                 evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -267,7 +267,7 @@ internal impl Application
             }
             elif lastP and !curP
             {
-                var evt = KeyEvent{kind: EventKind.KeyReleased}
+                var evt = KeyEvent{kind: KeyEvent.Kind.KeyReleased}
                 evt.key       = cast(Input.Key) i
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
@@ -282,7 +282,7 @@ internal impl Application
         if !targetWnd:
             return
 
-        var evt = KeyEvent{kind: EventKind.Rune}
+        var evt = KeyEvent{kind: KeyEvent.Kind.Rune}
         evt.char      = r
         evt.key       = key
         evt.modifiers = keyb.getPressedModifiers()
@@ -301,13 +301,14 @@ internal impl Application
         foreach it in copy
         {
             let evt = it as Event
-            if evt.kind == .Invalidate:
+            
+            if it is InvalidateEvent:
                 evt.target.invalidate()
             else:
                 sendEvent(it)
 
             // Special event post process
-            if evt.kind == .Command:
+            if it is CommandEvent:
                 needUpdateState = true
 
             toDelete.add({evt, evt.type})

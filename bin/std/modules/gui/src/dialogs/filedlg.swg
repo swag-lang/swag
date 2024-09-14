@@ -49,7 +49,7 @@ impl IWnd for FileDlg
 {
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if evt.kind == .Destroy and dlgOptions.state
+        if dlgOptions.state
         {
             with dlgOptions.state
             {

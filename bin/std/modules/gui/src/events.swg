@@ -5,50 +5,8 @@ interface IEvent
 {
 }
 
-enum EventKind
-{
-    None
-    Create
-    Destroy
-    Resize
-    Move
-    PrePaint
-    Paint
-    PostPaint
-    KeyPressed
-    KeyReleased
-    Rune
-    MouseAccept
-    MousePressed
-    MouseReleased
-    MouseDoubleClick
-    MouseMove
-    MouseEnter
-    MouseLeave
-    MouseWheel
-    Quit
-    SysCommand
-    SetTheme
-    Timer
-    SetFocus
-    KillFocus
-    CanSetFocus
-    CanKillFocus
-    Command
-    ComputeCommandState
-    ApplyCommandState
-    Frame
-    SerializeState
-    Show
-    Hide
-    Invalidate
-    SysUser
-    Notify
-}
-
 struct Event
 {
-    kind:         EventKind = None
     type:         typeinfo
     target:       *Wnd
     accepted:     bool
@@ -63,25 +21,15 @@ impl Event
         res.type = #typeof(T)
         return res
     }
-
-    #[Swag.Overload]
-    func(T) create(kind: EventKind)->*T
-    {
-        let res = Memory.new'T()
-        res.type = #typeof(T)
-        res.kind = kind
-        return res
-    }
 }
 
 impl IEvent for Event
 {
 }
 
-
 struct CommandEvent
 {
-    using base:     Event{kind: EventKind.Command}
+    using base:     Event
     id:             WndId
     source:         *Wnd
 }
@@ -105,7 +53,15 @@ struct CommandStateEvent
         ToolTip
         Hidden
     }
-    using base:     Event{kind: EventKind.ComputeCommandState}
+
+    enum Kind
+    {
+        ComputeCommandState
+        ApplyCommandState
+    }
+
+    using base:     Event
+    kind:           Kind
     id:             WndId
     source:         *Wnd
 
@@ -126,7 +82,7 @@ impl IEvent for CommandStateEvent
 
 struct TimerEvent
 {
-    using base:     Event{kind: EventKind.Timer}
+    using base:     Event
     timer:          *Timer
 }
 
@@ -136,7 +92,7 @@ impl IEvent for TimerEvent
 
 struct FrameEvent
 {
-    using base:     Event{kind: EventKind.Frame}
+    using base:     Event
     firstFrame:     bool
 }
 
@@ -146,7 +102,7 @@ impl IEvent for FrameEvent
 
 struct CreateEvent
 {
-    using base: Event{kind: EventKind.Create}
+    using base: Event
 }
 
 impl IEvent for CreateEvent
@@ -155,7 +111,14 @@ impl IEvent for CreateEvent
 
 struct StateEvent
 {
+    enum Kind
+    {
+        Show
+        Hide
+    }
+    
     using base: Event
+    kind: Kind
 }
 
 impl IEvent for StateEvent
@@ -164,7 +127,7 @@ impl IEvent for StateEvent
 
 struct DestroyEvent
 {
-    using base: Event{kind: EventKind.Destroy}
+    using base: Event
 }
 
 impl IEvent for DestroyEvent
@@ -173,7 +136,15 @@ impl IEvent for DestroyEvent
 
 struct PaintEvent
 {
-    using base:     Event{kind: EventKind.Paint}
+    enum Kind
+    {
+        PrePaint
+        Paint
+        PostPaint
+    }
+
+    using base:     Event
+    kind:           Kind = .Paint
     bc:             *PaintContext
 }
 
@@ -183,7 +154,7 @@ impl IEvent for PaintEvent
 
 struct ResizeEvent
 {
-    using base:     Event{kind: EventKind.Resize}
+    using base:     Event
     oldSize:        Math.Point
 }
 
@@ -193,7 +164,7 @@ impl IEvent for ResizeEvent
 
 struct MoveEvent
 {
-    using base:     Event{kind: EventKind.Move}
+    using base:     Event
     oldPos:         Math.Point
 }
 
@@ -203,7 +174,15 @@ impl IEvent for MoveEvent
 
 struct KeyEvent
 {
+    enum Kind
+    {
+        KeyPressed
+        KeyReleased
+        Rune
+    }
+
     using base:     Event
+    kind:           Kind
     modifiers:      Input.KeyModifiers = Zero
     key:            Input.Key = undefined
     char:           rune
@@ -215,7 +194,20 @@ impl IEvent for KeyEvent
 
 struct MouseEvent
 {
+    enum Kind
+    {
+        MouseAccept
+        MousePressed
+        MouseReleased
+        MouseDoubleClick
+        MouseMove
+        MouseEnter
+        MouseLeave
+        MouseWheel
+    }
+
     using base:     Event
+    kind:           Kind
     button:         Input.MouseButton = undefined
     surfacePos:     Math.Point
     move:           Math.Point
@@ -228,7 +220,7 @@ impl IEvent for MouseEvent
 
 struct QuitEvent
 {
-    using base:     Event{kind: EventKind.Quit}
+    using base:     Event
     quitCode:       s32
 }
 
@@ -238,7 +230,16 @@ impl IEvent for QuitEvent
 
 struct FocusEvent
 {
+    enum Kind
+    {
+        SetFocus
+        KillFocus
+        CanSetFocus
+        CanKillFocus
+    }
+
     using base:        Event
+    kind:              Kind
     other:             *Wnd
     canChangeFocus     = true
 }
@@ -249,7 +250,7 @@ impl IEvent for FocusEvent
 
 struct SysUserEvent
 {
-    using base:     Event{kind: EventKind.SysUser}
+    using base:     Event
     userMsg:        u64
     param0:         u64
     param1:         u64
@@ -261,7 +262,7 @@ impl IEvent for SysUserEvent
 
 struct SysCommandEvent
 {
-    using base: Event{kind: EventKind.SysCommand}
+    using base: Event
 
     enum Kind
     {
@@ -272,7 +273,7 @@ struct SysCommandEvent
         User
     }
 
-    sysKind: Kind = undefined
+    sysKind: Kind
 }
 
 impl IEvent for SysCommandEvent
@@ -281,7 +282,7 @@ impl IEvent for SysCommandEvent
 
 struct SetThemeEvent
 {
-    using base:     Event{kind: EventKind.SetTheme}
+    using base:     Event
     style:          *ThemeStyle
     parent:         *ThemeStyle
 }
@@ -292,7 +293,7 @@ impl IEvent for SetThemeEvent
 
 struct SerializeStateEvent
 {
-    using base:     Event{kind: EventKind.SerializeState}
+    using base:     Event
     ser:            *Serialization.Serializer
 }
 
@@ -302,7 +303,7 @@ impl IEvent for SerializeStateEvent
 
 struct NotifyEvent
 {
-    using base: Event{kind: EventKind.Notify}
+    using base: Event
 
     enum Kind
     {
@@ -314,5 +315,14 @@ struct NotifyEvent
 }
 
 impl IEvent for NotifyEvent
+{
+}
+
+struct InvalidateEvent
+{  
+    using base: Event  
+}
+
+impl IEvent for InvalidateEvent
 {
 }
