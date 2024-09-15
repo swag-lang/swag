@@ -86,11 +86,11 @@ impl Serializer
 
     // Serialize one value
     #[Swag.Optimize("", false), Swag.Overload]
-    mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
+    mtd(MT) serialize(name: string, crc: u32, res: *MT) throw
     {
         var value: Swag.TypeValue
         value.name        = name
-        value.crc32       = crc32
+        value.crc         = crc
         value.pointedType = #typeof(MT)
 
         if isWrite

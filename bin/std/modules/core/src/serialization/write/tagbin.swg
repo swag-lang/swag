@@ -154,13 +154,13 @@ impl TagBin
         // Register the current seek for the fat generation
         if sec.kind == .Unordered
         {
-            Debug.assert(!sec.mapSeek.contains(val.crc32))
-            sec.mapSeek.add(val.crc32, output.getSeek())
+            Debug.assert(!sec.mapSeek.contains(val.crc))
+            sec.mapSeek.add(val.crc, output.getSeek())
         }
 
         // Write element signature
-        output.addNative(val.crc32)
-        output.addNative(val.pointedType.crc32)
+        output.addNative(val.crc)
+        output.addNative(val.pointedType.crc)
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]

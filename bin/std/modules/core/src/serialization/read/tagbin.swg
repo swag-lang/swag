@@ -336,7 +336,7 @@ impl TagBin
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
-        var reqCrcName = val.crc32
+        var reqCrcName = val.crc
         let sec        = sections.back()
 
         // If section is raw, then we just have values without versionning
@@ -347,7 +347,7 @@ impl TagBin
         // descriptors followed by values
         if sec.kind != .Ordered and !sec.skipFat
         {
-            var ent = sec.mapSeek.find(val.crc32)
+            var ent = sec.mapSeek.find(val.crc)
 
             // If ent is null, then we are requesting a field that does not exist
             // in the stream
@@ -382,7 +382,7 @@ impl TagBin
         // Read type signature.
         // If they match, we are done. The value will be right after this.
         let crcType = stream.readNative'u32()
-        if crcType == val.pointedType.crc32:
+        if crcType == val.pointedType.crc:
             return true
 
         // We try to find a registered type with the crc from the stream.

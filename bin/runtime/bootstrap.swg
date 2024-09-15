@@ -555,7 +555,7 @@ namespace Swag
         value:           const *void              // Pointer to the constant value
         attributes:      const [..] Attribute     // Associated attributes
         offset:          u32                      // Offset, in bytes
-        crc32:           u32                      // Unique crc32
+        crc:             u32                      // Unique CRC
         flags:           TypeValueFlags           // Associated flags
         padding:         u32
     }
@@ -566,7 +566,7 @@ namespace Swag
         fullname:     string                     // The full scoped name of the type
         name:         string                     // The unscoped name
         sizeof:       u32                        // Size in bytes
-        crc32:        u32                        // A unique CRC to identify the type
+        crc:          u32                        // A unique CRC to identify the type
         flags         = TypeInfoFlags.Zero       // Some additional flags
         kind          = TypeInfoKind.Invalid     // The kind of the type
         padding:      [3] u8

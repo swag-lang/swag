@@ -39,7 +39,7 @@ func hasTypedData(fmt: ValueFormat, type: typeinfo)->bool
     let hglob = GetClipboardData(cast(UINT) fmt)
     let pz    = cast(*u32) GlobalLock(hglob)
     defer discard GlobalUnlock(pz)
-    return dref pz == type.crc32
+    return dref pz == type.crc
 }
 
 // Add data of a given format of the given 'type' to the clipboard
@@ -54,9 +54,9 @@ func addTypedData(fmt: ValueFormat, type: typeinfo, data: const [..] u8)
     let pz    = cast(^u8) GlobalLock(hglob)
     defer discard GlobalUnlock(pz)
 
-    // Store type crc32
+    // Store type CRC
     var pzi = cast(^u32) pz
-    dref pzi = type ? type.crc32 : 0
+    dref pzi = type ? type.crc : 0
     pzi += 1
 
     // Store data size
@@ -87,9 +87,9 @@ func getTypedData(fmt: ValueFormat, type: typeinfo)->Array'u8
             let pz = cast(^u8) GlobalLock(hglob)
             defer discard GlobalUnlock(pz)
 
-            // Get type crc32, check this is correct
+            // Get type CRC, check this is correct
             var pzi = cast(^u32) pz
-            if type and dref pzi != type.crc32:
+            if type and dref pzi != type.crc:
                 return result
             pzi += 1
 

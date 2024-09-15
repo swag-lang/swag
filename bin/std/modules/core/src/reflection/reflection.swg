@@ -129,7 +129,7 @@ internal var g_HashLock: Sync.RWLock
     {
         foreach t in m.types
         {
-            g_HashCrcToType.add(t.crc32, t)
+            g_HashCrcToType.add(t.crc, t)
             g_HashNameToType.add(t.fullname, t)
         }
     }

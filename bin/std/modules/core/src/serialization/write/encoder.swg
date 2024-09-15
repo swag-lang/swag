@@ -51,7 +51,7 @@ File.writeAllBytes(file, buf)
 
 Can be serialized:
 * All simple types: `bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64`
-* A type value 'typeinfo', which will be saved as a crc32.
+* A type value 'typeinfo', which will be saved as a CRC.
 * An interface. Will be stored as a type and a typed value.
 * A struct.
 * A `Core.String`.
@@ -137,7 +137,7 @@ impl Encoder
         if Reflection.isType(type)
         {
             let typeType = dref cast(const **TypeInfo) data
-            serializer.writeNative(typeType ? typeType.crc32 : 0'u32)
+            serializer.writeNative(typeType ? typeType.crc : 0'u32)
             return
         }
 

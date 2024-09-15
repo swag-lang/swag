@@ -406,7 +406,7 @@ struct ExportedTypeInfo
     SwagSlice    fullName;
     SwagSlice    name;
     uint32_t     sizeOf;
-    uint32_t     crc32;
+    uint32_t     crc;
     uint32_t     flags;
     TypeInfoKind kind;
     uint8_t      padding[3];
@@ -438,7 +438,7 @@ struct ExportedTypeValue
     void*             value;
     SwagSlice         attributes;
     uint32_t          offsetOf;
-    uint32_t          crc32;
+    uint32_t          crc;
     uint32_t          flags;
     uint32_t          padding;
 };

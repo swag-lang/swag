@@ -145,7 +145,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSET_OF(exportedTypeInfoValue->fullName)));
     SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSET_OF(exportedTypeInfoValue->name)));
-    exportedTypeInfoValue->crc32 = Crc32::compute(static_cast<const uint8_t*>(exportedTypeInfoValue->fullName.buffer), static_cast<uint32_t>(exportedTypeInfoValue->fullName.count));
+    exportedTypeInfoValue->crc = Crc32::compute(static_cast<const uint8_t*>(exportedTypeInfoValue->fullName.buffer), static_cast<uint32_t>(exportedTypeInfoValue->fullName.count));
 
     if (typeInfo->hasFlag(TYPEINFO_FUNC_IS_ATTR))
         exportedTypeInfoValue->kind = TypeInfoKind::Attribute;
@@ -452,7 +452,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         concreteType->offsetOf = param->offset;
 
     SWAG_CHECK(genExportedString(context, &concreteType->name, param->name, storageSegment, OFFSET_OF(concreteType->name)));
-    concreteType->crc32 = Crc32::compute(static_cast<const uint8_t*>(concreteType->name.buffer), static_cast<uint32_t>(concreteType->name.count));
+    concreteType->crc = Crc32::compute(static_cast<const uint8_t*>(concreteType->name.buffer), static_cast<uint32_t>(concreteType->name.count));
     SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, param->typeInfo, genFlags));
     SWAG_CHECK(genExportedAttributes(context, param->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
