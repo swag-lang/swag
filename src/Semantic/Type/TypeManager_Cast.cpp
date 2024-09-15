@@ -2355,7 +2355,12 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, toType, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags.with(CAST_FLAG_TRY_COERCE)));
-
+        if (context->result != ContextResult::Done)
+        {
+            SWAG_ASSERT(castFlags.has(CAST_FLAG_ACCEPT_PENDING));
+            return true;
+        }
+        
         if (child)
         {
             const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
