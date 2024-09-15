@@ -52,10 +52,24 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         }
         else if (assignment)
         {
-            // Store value in constant storageSegment
-            const auto constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
-            uint32_t   storageOffsetValue;
-            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfoCast, assignment));
+            DataSegment* constSegment       = nullptr;
+            uint32_t     storageOffsetValue = UINT32_MAX;
+
+            if (assignment->is(AstNodeKind::Cast))
+                assignment = assignment->secondChild();
+
+            if (assignment->hasComputedValue() && assignment->computedValue()->storageSegment)
+            {
+                SWAG_ASSERT(storageSegment == assignment->computedValue()->storageSegment);
+                constSegment       = assignment->computedValue()->storageSegment;
+                storageOffsetValue = assignment->computedValue()->storageOffset;
+            }
+            else
+            {
+                // Store value in constant storageSegment
+                constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+                SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfoCast, assignment));
+            }
 
             // Then reference that value and the concrete type info
             // Pointer to the value
@@ -93,9 +107,37 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         }
         else if (assignment)
         {
-            SWAG_ASSERT(false);
+            DataSegment* constSegment       = nullptr;
+            uint32_t     storageOffsetValue = UINT32_MAX;
+
+            if (assignment->is(AstNodeKind::Cast))
+                assignment = assignment->secondChild();
+
+            if (assignment->hasComputedValue() && assignment->computedValue()->storageSegment)
+            {
+                SWAG_ASSERT(storageSegment == assignment->computedValue()->storageSegment);
+                constSegment       = assignment->computedValue()->storageSegment;
+                storageOffsetValue = assignment->computedValue()->storageOffset;
+            }
+            else
+            {
+                constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+                SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfoCast, assignment));
+            }
+
+            // Then reference that value and the concrete type info
+            // Pointer to the value
+            const auto ptrStorage = constSegment->address(storageOffsetValue);
+            ptrItf->data          = ptrStorage + assignment->extMisc()->castOffset;
+            storageSegment->addInitPtr(storageOffset, storageOffsetValue + assignment->extMisc()->castOffset, constSegment->kind);
+
+            // :ItfIsConstantSeg
+            SWAG_ASSERT(assignment->hasExtraPointer(ExtraPointerKind::CastItf));
+            const auto castItf = assignment->extraPointer<TypeInfoParam>(ExtraPointerKind::CastItf);
+            ptrItf->itable     = constSegment->address(castItf->offset);
+            storageSegment->addInitPtr(storageOffset + 8, castItf->offset, constSegment->kind);
         }
-        
+
         return true;
     }
 
@@ -523,7 +565,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue(), node->assignment->typeInfo, node->assignment));
         node->assignment->computedValue()->storageOffset  = storageOffset;
         node->assignment->computedValue()->storageSegment = storageSegment;
-    }    
+    }
     else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray()) // :SliceLiteral
     {
         uint32_t storageOffsetValues;
