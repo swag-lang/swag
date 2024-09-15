@@ -74,6 +74,31 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         return true;
     }
 
+    if (typeInfo->isInterface())
+    {
+        const auto ptrItf = reinterpret_cast<SwagInterface*>(ptrDest);
+        if (assignment && !assignment->typeInfoCast)
+        {
+            const auto valueItf           = static_cast<SwagInterface*>(value->getStorageAddr());
+            *ptrItf                       = *valueItf;
+            const auto storageOffsetValue = value->storageSegment->offset(static_cast<uint8_t*>(valueItf->data));
+            const auto storageOffsetType  = value->storageSegment->offset(static_cast<uint8_t*>(valueItf->itable));
+            value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
+            value->storageSegment->addInitPtr(storageOffset + 8, storageOffsetType, value->storageSegment->kind);
+        }
+        else if (assignment && assignment->typeInfoCast && assignment->typeInfoCast->isPointerNull())
+        {
+            ptrItf->data   = nullptr;
+            ptrItf->itable = nullptr;
+        }
+        else if (assignment)
+        {
+            SWAG_ASSERT(false);
+        }
+        
+        return true;
+    }
+
     if (typeInfo->isSlice())
     {
         const auto ptrSlice   = reinterpret_cast<SwagSlice*>(ptrDest);
@@ -492,9 +517,14 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         node->assignment->computedValue()->storageOffset  = storageOffset;
         node->assignment->computedValue()->storageSegment = storageSegment;
     }
-
-    // :SliceLiteral
-    else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray())
+    else if (node->assignment && typeInfo->isInterface())
+    {
+        node->assignment->setFlagsValueIsComputed();
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue(), node->assignment->typeInfo, node->assignment));
+        node->assignment->computedValue()->storageOffset  = storageOffset;
+        node->assignment->computedValue()->storageSegment = storageSegment;
+    }    
+    else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray()) // :SliceLiteral
     {
         uint32_t storageOffsetValues;
         SWAG_CHECK(collectAssignment(context, storageSegment, storageOffsetValues, node, node->assignment->typeInfoCast));
@@ -514,13 +544,6 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         SWAG_CHECK(collectConstantSlice(context, assignNode, assignType, storageSegment, storageOffset));
         assignNode->computedValue()->storageOffset  = storageOffset;
         assignNode->computedValue()->storageSegment = storageSegment;
-    }
-    else if (node->assignment && typeInfo->isInterface() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isPointerNull())
-    {
-        SwagInterface* itr;
-        storageOffset = storageSegment->reserve(sizeof(SwagInterface), reinterpret_cast<uint8_t**>(&itr));
-        itr->data     = nullptr;
-        itr->itable   = nullptr;
     }
     else if (node->assignment && node->assignment->hasFlagComputedValue())
     {
