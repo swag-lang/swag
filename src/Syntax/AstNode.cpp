@@ -396,7 +396,8 @@ void AstNode::setBcNotifyAfter(ByteCodeNotifyFct fct, [[maybe_unused]] ByteCodeN
     allocateExtension(ExtensionKind::ByteCode);
 
 #ifdef SWAG_HAS_ASSERT
-    if (extByteCode()->byteCodeAfterFct != nullptr &&
+    if (fct != nullptr &&
+        extByteCode()->byteCodeAfterFct != nullptr &&
         extByteCode()->byteCodeAfterFct != fct &&
         extByteCode()->byteCodeAfterFct != checkIf)
     {

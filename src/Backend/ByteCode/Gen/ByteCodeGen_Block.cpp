@@ -819,10 +819,14 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 {
     const auto expr = context->node;
-    if (expr->parent->isNot(AstNodeKind::SwitchCase))
-        return true;
 
-    const auto caseNode = castAst<AstSwitchCase>(expr->parent, AstNodeKind::SwitchCase);
+    AstSwitchCase* caseNode = nullptr;
+    if (expr->getParent(1)->is(AstNodeKind::SwitchCase))
+        caseNode = castAst<AstSwitchCase>(expr->getParent(1), AstNodeKind::SwitchCase);
+    else if (expr->getParent(2)->is(AstNodeKind::SwitchCase))
+        caseNode = castAst<AstSwitchCase>(expr->getParent(2), AstNodeKind::SwitchCase);
+    if (!caseNode)
+        return true;
 
     if (caseNode->ownerSwitch->expression)
         caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
@@ -873,8 +877,15 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         }
         else
         {
-            r0 = reserveRegisterRC(context);
-            SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
+            if (!caseNode->matchVarName.text.empty())
+            {
+                r0 = expr->resultRegisterRc;
+            }
+            else
+            {
+                r0 = reserveRegisterRC(context);
+                SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
+            }
         }
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
@@ -891,10 +902,11 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
     }
 
-    freeRegisterRC(context, expr->resultRegisterRc);
+    if (caseNode->matchVarName.text.empty())
+        freeRegisterRC(context, expr->resultRegisterRc);
 
     // If this is the last expression, and it's also false, jump to the next case
-    if (expr == caseNode->expressions.back())
+    if (expr == caseNode->expressions.back() || !caseNode->matchVarName.text.empty())
     {
         caseNode->jumpToNextCase = context->bc->numInstructions;
         const auto inst          = EMIT_INST0(context, ByteCodeOp::Jump);

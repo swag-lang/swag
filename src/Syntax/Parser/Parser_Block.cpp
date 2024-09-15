@@ -277,10 +277,10 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
             const auto front = caseNode->expressions.front();
             SWAG_ASSERT(front->is(AstNodeKind::TypeExpression));
-            CloneContext cxt;
-            cxt.parent = castNode;
-            front->clone(cxt);
-
+            Ast::removeFromParent(front);
+            Ast::addChildBack(castNode, front);
+            front->setBcNotifyAfter(nullptr);
+            castNode->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
             Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
         }
 
