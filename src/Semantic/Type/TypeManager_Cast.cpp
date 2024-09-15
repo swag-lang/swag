@@ -2442,137 +2442,137 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
+bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
-    if (toType->isAny())
+    if (fromType->isPointerNull())
     {
-        if (fromType->isPointerNull())
-        {
-            if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
-            {
-                fromNode->typeInfo     = toType;
-                fromNode->typeInfoCast = fromType;
-            }
-
-            return true;
-        }
-
-        if (castFlags.has(CAST_FLAG_COMMUTATIVE))
-        {
-            if (toNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
-            {
-                // When casting something complex to any, we will copy the value to the stack to be sure
-                // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
-                // See ByteCodeGen::emitCastToNativeAny
-                if (toNode->ownerFct && toType->numRegisters() > 1)
-                {
-                    toNode->allocateExtension(ExtensionKind::Misc);
-                    toNode->extMisc()->stackOffset = toNode->ownerScope->startStackSize;
-                    toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
-                    Semantic::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
-                }
-
-                toNode->typeInfoCast = toType;
-                toNode->typeInfo     = fromType;
-                SWAG_CHECK(toNode->addAnyType(context, fromType));
-                YIELD();
-            }
-
-            return true;
-        }
-
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
+        {
+            fromNode->typeInfo     = toType;
+            fromNode->typeInfoCast = fromType;
+        }
+
+        return true;
+    }
+
+    if (castFlags.has(CAST_FLAG_COMMUTATIVE))
+    {
+        if (toNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
             // When casting something complex to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
-            if (fromNode->ownerFct && fromType->numRegisters() > 1)
+            if (toNode->ownerFct && toType->numRegisters() > 1)
             {
-                fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
-                fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
-                Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
+                toNode->allocateExtension(ExtensionKind::Misc);
+                toNode->extMisc()->stackOffset = toNode->ownerScope->startStackSize;
+                toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
+                Semantic::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
             }
 
-            fromNode->typeInfoCast = fromType;
-            fromNode->typeInfo     = toType;
-            SWAG_CHECK(fromNode->addAnyType(context, fromNode->typeInfoCast));
+            toNode->typeInfoCast = toType;
+            toNode->typeInfo     = fromType;
+            SWAG_CHECK(toNode->addAnyType(context, fromType));
             YIELD();
+        }
+
+        return true;
+    }
+
+    if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
+    {
+        // When casting something complex to any, we will copy the value to the stack to be sure
+        // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
+        // See ByteCodeGen::emitCastToNativeAny
+        if (fromNode->ownerFct && fromType->numRegisters() > 1)
+        {
+            fromNode->allocateExtension(ExtensionKind::Misc);
+            fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
+            fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
+            Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
+        }
+
+        fromNode->typeInfoCast = fromType;
+        fromNode->typeInfo     = toType;
+        SWAG_CHECK(fromNode->addAnyType(context, fromNode->typeInfoCast));
+        YIELD();
+    }
+
+    return true;
+}
+
+bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
+{
+    const auto toRealType = concretePtrRef(toType);
+
+    if (!castFlags.has(CAST_FLAG_EXPLICIT))
+    {
+        // Ambiguous. Do we check for a bool, or do we check for null
+        if (toRealType->isBool())
+            return castError(context, toRealType, fromType, fromNode, castFlags);
+
+        // To convert a simple any to something more complex, need an explicit cast
+        if (toRealType->isSlice() ||
+            toRealType->isArray() ||
+            toRealType->isPointer())
+            return castError(context, toRealType, fromType, fromNode, castFlags);
+    }
+
+    // From a constant
+    if (fromNode && fromNode->hasFlagComputedValue())
+    {
+        if (toType->isPointerRef())
+        {
+            if (!castFlags.has(CAST_FLAG_JUST_CHECK))
+            {
+                fromNode->removeAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDREN);
+                fromNode->extSemantic()->computedValue = nullptr;
+            }
+        }
+        else
+        {
+            const SwagAny* any         = static_cast<SwagAny*>(fromNode->computedValue()->getStorageAddr());
+            const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue()->storageSegment, any->type);
+
+            // need to check the type
+            if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_DYN_CAST, true))
+            {
+                if (!toRealType->isSame(newTypeInfo, castFlags.with(CAST_FLAG_EXACT)))
+                {
+                    if (!castFlags.has(CAST_FLAG_JUST_CHECK))
+                        return castError(context, toRealType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
+                    return false;
+                }
+            }
+
+            if (!castFlags.has(CAST_FLAG_JUST_CHECK))
+            {
+                fromNode->typeInfo     = newTypeInfo;
+                fromNode->typeInfoCast = nullptr;
+                SWAG_CHECK(Semantic::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue()->storageSegment, static_cast<uint8_t*>(any->value)));
+            }
+
+            return true;
         }
     }
-    else if (fromType->isAny())
+
+    if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
-        const auto toRealType = concretePtrRef(toType);
-
-        if (!castFlags.has(CAST_FLAG_EXPLICIT))
+        // When casting something complex to any, we will copy the value to the stack to be sure
+        // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
+        // See ByteCodeGen::emitCastToNativeAny
+        if (fromNode->ownerFct && fromType->numRegisters() > 1)
         {
-            // Ambiguous. Do we check for a bool, or do we check for null
-            if (toRealType->isBool())
-                return castError(context, toRealType, fromType, fromNode, castFlags);
-
-            // To convert a simple any to something more complex, need an explicit cast
-            if (toRealType->isSlice() ||
-                toRealType->isArray() ||
-                toRealType->isPointer())
-                return castError(context, toRealType, fromType, fromNode, castFlags);
+            fromNode->allocateExtension(ExtensionKind::Misc);
+            fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
+            fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
+            Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
         }
 
-        // From a constant
-        if (fromNode && fromNode->hasFlagComputedValue())
-        {
-            if (toType->isPointerRef())
-            {
-                if (!castFlags.has(CAST_FLAG_JUST_CHECK))
-                {
-                    fromNode->removeAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDREN);
-                    fromNode->extSemantic()->computedValue = nullptr;
-                }
-            }
-            else
-            {
-                const SwagAny* any         = static_cast<SwagAny*>(fromNode->computedValue()->getStorageAddr());
-                const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue()->storageSegment, any->type);
-
-                // need to check the type
-                if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_DYN_CAST, true))
-                {
-                    if (!toRealType->isSame(newTypeInfo, castFlags.with(CAST_FLAG_EXACT)))
-                    {
-                        if (!castFlags.has(CAST_FLAG_JUST_CHECK))
-                            return castError(context, toRealType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
-                        return false;
-                    }
-                }
-
-                if (!castFlags.has(CAST_FLAG_JUST_CHECK))
-                {
-                    fromNode->typeInfo     = newTypeInfo;
-                    fromNode->typeInfoCast = nullptr;
-                    SWAG_CHECK(Semantic::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue()->storageSegment, static_cast<uint8_t*>(any->value)));
-                }
-
-                return true;
-            }
-        }
-
-        if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
-        {
-            // When casting something complex to any, we will copy the value to the stack to be sure
-            // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
-            // See ByteCodeGen::emitCastToNativeAny
-            if (fromNode->ownerFct && fromType->numRegisters() > 1)
-            {
-                fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
-                fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
-                Semantic::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
-            }
-
-            fromNode->typeInfoCast = fromType;
-            fromNode->typeInfo     = toType;
-            SWAG_CHECK(fromNode->addAnyType(context, toType));
-            YIELD();
-        }
+        fromNode->typeInfoCast = fromType;
+        fromNode->typeInfo     = toType;
+        SWAG_CHECK(fromNode->addAnyType(context, toType));
+        YIELD();
     }
 
     return true;

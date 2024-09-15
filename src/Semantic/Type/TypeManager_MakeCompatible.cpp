@@ -186,8 +186,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
 
     // Everything can be cast to or from type 'any'
-    if (toType->isAny() || fromType->isAny())
-        return castToFromAny(context, toType, fromType, toNode, fromNode, castFlags);
+    if (toType->isAny())
+        return castToAny(context, toType, fromType, toNode, fromNode, castFlags);
+    if (fromType->isAny())
+        return castFromAny(context, toType, fromType, toNode, fromNode, castFlags);
 
     // Variadic
     if (fromType->isTypedVariadic() && toType->isTypedVariadic())
