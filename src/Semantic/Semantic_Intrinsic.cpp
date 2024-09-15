@@ -384,7 +384,11 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-        node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+        TypeInfoFlags ptrFlags = 0;
+        if (expression->hasAstFlag(AST_CONST_EXPR))
+            ptrFlags.add(TYPEINFO_CONST);
+        node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid, ptrFlags);
+
         if (expression->hasFlagComputedValue())
         {
             node->inheritComputedValue(expression);

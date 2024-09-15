@@ -31,7 +31,7 @@ const A: any = Book{title: "Swift Programming"}
 //#[Swag.PrintBc]
 #test
 {
-    let ptr = cast(*Book) @dataof(A)
+    let ptr = cast(const *Book) @dataof(A)
     @assert(ptr.title == "Swift Programming")
     
     /*let printableItem = items as Book

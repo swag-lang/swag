@@ -1,3 +1,5 @@
+//#global testerror "Err0090"
+
 //#global skip
 interface Printable {
     mtd printDetails();
@@ -24,18 +26,18 @@ impl Printable for Magazine {
 }
 
 //const items: [] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
-const items: Printable = Book{}//{title: "Swift Programming"}
+const items: Printable = Book{title: "Swift Programming"}
 
-const A: any = Book{}//{title: "Swift Programming"}
-
+const A: any = Book{title: "Swift Programming"}
 //#[Swag.PrintBc]
 #test
-{
-    let ptr = cast(const *Book) @dataof(A)
-    @assert(ptr.title == "TOTO")
-    
-    /*let printableItem = items as Book
-    @print(printableItem.title)*/
+{   
+    let ptr = @dataof(A)
+    @assert(#typeof(ptr).flags & .Const == .Const)
+
+    //let printableItem = items as Book
+    //printableItem.title = "toto"
+    //@assert(printableItem.title == "Swift Programming")
 
     //printableItem.Printable.printDetails()
 

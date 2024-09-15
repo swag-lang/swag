@@ -17,6 +17,6 @@ enum A
 
 	let val = ptr.attributes[0].params[0].value
 	@assert(@kindof(val) == #typeof(string))
-	let ptrVal = cast(*string) @dataof(val);
+	let ptrVal = cast(const *string) @dataof(val);
 	@assert(dref ptrVal == "toto")
 }

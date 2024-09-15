@@ -5,6 +5,6 @@
 {
     {
         const vv: any = 6
-        #assert dref cast(*s32) @dataof(vv) == 6
+        #assert dref cast(const *s32) @dataof(vv) == 6
     }
 }
