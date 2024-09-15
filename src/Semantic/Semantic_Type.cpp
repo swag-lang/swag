@@ -899,6 +899,8 @@ bool Semantic::resolveCastAs(SemanticContext* context)
     if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
         node->typeInfo = g_TypeMgr->makePointerTo(node->secondChild()->typeInfo);
+        if(node->firstChild()->hasAstFlag(AST_CONST_EXPR))
+            node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
         node->addSemFlag(SEMFLAG_CAST1);
     }
 
