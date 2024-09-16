@@ -269,10 +269,14 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, caseNode);
             varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_LET);
             varDecl->addAstFlag(AST_GENERATED | AST_NO_BYTECODE);
-            const auto type  = Ast::newTypeExpression(this, varDecl);
-            varDecl->type    = type;
-            type->identifier = Ast::newIdentifierRef(caseNode->expressions.front()->token.text, this, type);
-            type->typeFlags.add(TYPEFLAG_IS_PTR);
+
+            const auto front = caseNode->expressions.front();
+            SWAG_ASSERT(front->is(AstNodeKind::TypeExpression));
+            CloneContext cxt;
+            cxt.parent          = varDecl;
+            varDecl->type       = front->clone(cxt);
+            const auto typeDecl = castAst<AstTypeExpression>(varDecl->type);
+            typeDecl->typeFlags.add(TYPEFLAG_IS_PTR);
         }
 
         // where clause
