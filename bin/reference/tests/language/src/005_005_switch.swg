@@ -282,6 +282,7 @@ The `where` clause can also be applied to a `default` case, providing conditiona
     }
 }
 
+
 /**
 # Switching on Type with `any` or `interface`
 When using a `switch` statement with a variable of type `any` or `interface`, Swag matches cases based on the underlying type of the variable. This behavior is akin to the `@kindof` intrinsic, which allows for dynamic type checking within a switch construct.
@@ -298,6 +299,71 @@ When using a `switch` statement with a variable of type `any` or `interface`, Sw
         break           // Executes if `x` is of type string.
     default:     
         @assert(false)  // Assertion fails if `x` is not a string.
+    }
+}
+
+/**
+# Switch Statement with Type Guard and Variable Binding
+
+You can declare a variable with the 'var' keyword before the case value to bind the matched value to a variable, which can then be used within the corresponding case block. Additionally, you can apply conditional checks directly within the case
+using the `where` clause to further refine the matching logic.
+
+The switch statement implicitly checks the type of the variable `x` using a type guard (`@kindof`), allowing for
+more precise case matching based on the variable's runtime type.
+
+Key Features:
+
+1. Type Guarding: The switch statement evaluates the type of `x`, allowing cases to be matched based on its type.
+2. Variable Binding: The matched value can be bound to a variable using the `var` keyword, making the value accessible within the case block.
+3. Conditional Matching: The `where` clause enables additional conditions to be checked during case matching.
+*/
+
+/**
+Example 1:
+ 
+The first example checks if `x` is a string. If it is, the value is bound to the variable `str`.
+The `@assert` function is then used to ensure that the value of `str` is equal to "value".
+*/
+
+#test
+{
+    let x: any = "value"
+
+    // Switch statement based on the underlying type of 'x'.
+    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    {
+    case let str as string:    // 'str' will contain the value if 'x' is a string
+        @assert(str == "value")
+        break    
+
+    default:     
+        @assert(false)  
+    }
+}
+
+/**
+Example 2:
+ 
+The second example showcases conditional matching using the `where` clause. The switch statement evaluates 
+whether `x` is a string and checks additional conditions specified in each case.
+*/
+
+#test
+{
+    let x: any = "value"
+
+    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    {
+    case let str as string where str == "value":       // Matches if `x` is a string and equals "value"
+        @assert(str == "value")                     // Asserts that `str` is equal to "value"
+        break   
+
+    case let str as string where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
+        @assert(str == "not_a_value")               // Asserts that `str` is equal to "not_a_value"
+        break     
+
+    default:     
+        @assert(false) // Asserts false if no case matches
     }
 }
 

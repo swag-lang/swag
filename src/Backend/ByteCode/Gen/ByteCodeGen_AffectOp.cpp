@@ -116,7 +116,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
     const TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (node->firstChild()->hasSemFlag(SEMFLAG_FROM_REF))
+    if (node->childCount() && node->firstChild()->hasSemFlag(SEMFLAG_FROM_REF))
         typeInfo = TypeManager::concretePtrRefType(typeInfo);
 
     if (typeInfo->isStruct())

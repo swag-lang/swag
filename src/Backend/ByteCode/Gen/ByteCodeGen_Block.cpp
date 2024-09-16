@@ -817,6 +817,65 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
+{
+    r0              = reserveRegisterRC(context);
+    const auto r1   = reserveRegisterRC(context);
+    const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r1);
+    inst->b.u64     = sizeof(void*);
+    inst->addFlag(BCI_IMM_B);
+    EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r1);
+    EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, r1, caseNode->ownerSwitch->resultRegisterRc[0], r0);
+    freeRegisterRC(context, r1);
+
+    if (!caseNode->matchVarName.text.empty())
+    {
+        const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
+        EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
+    }
+
+    return true;
+}
+
+bool ByteCodeGen::emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
+{
+    r0                = reserveRegisterRC(context);
+    const auto rFlags = reserveRegisterRC(context);
+    const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
+    inst->b.u64       = SWAG_TYPECMP_STRICT;
+    EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, caseNode->ownerSwitch->resultRegisterRc[1], expr->resultRegisterRc, rFlags, r0);
+    freeRegisterRC(context, rFlags);
+
+    if (!caseNode->matchVarName.text.empty())
+    {
+        const auto instIdx = context->bc->numInstructions;
+        const auto instJmp = EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r0);
+        instJmp->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+
+        const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
+
+        RegisterList r1;
+        reserveRegisterRC(context, r1, 1);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, caseNode->ownerSwitch->resultRegisterRc[0]);
+
+        if (!resolved->typeInfo->isPointerRef())
+            SWAG_CHECK(ByteCodeGen::emitTypeDeRef(context, r1, resolved->typeInfo));
+
+        RegisterList r2;
+        ByteCodeGen::reserveRegisterRC(context, r2, 1);
+        EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r2, resolved->computedValue.storageOffset);
+
+        SWAG_CHECK(ByteCodeGen::emitAffectEqual(context, r2, r1, resolved->typeInfo, expr));
+
+        freeRegisterRC(context, r1);
+        freeRegisterRC(context, r2);
+
+        context->bc->out[instIdx].b.u64 = context->bc->numInstructions - context->bc->out[instIdx].b.u64;
+    }
+    
+    return true;
+}
+
 bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 {
     const auto expr = context->node;
@@ -847,7 +906,8 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         return true;
     }
 
-    if (caseNode->ownerSwitch->expression)
+    const auto switchExpr = caseNode->ownerSwitch->expression;
+    if (switchExpr)
     {
         RegisterList r0;
         if (expr->is(AstNodeKind::Range))
@@ -865,35 +925,13 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
             context->node = expr;
             YIELD();
         }
-        else if (caseNode->ownerSwitch->expression->typeInfo->isInterface())
+        else if (switchExpr->typeInfo->isInterface())
         {
-            r0              = reserveRegisterRC(context);
-            const auto r1   = reserveRegisterRC(context);
-            const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r1);
-            inst->b.u64     = sizeof(void*);
-            inst->addFlag(BCI_IMM_B);
-            EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r1);
-            EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, r1, caseNode->ownerSwitch->resultRegisterRc[0], r0);
-            freeRegisterRC(context, r1);
-            if (!caseNode->matchVarName.text.empty())
-            {
-                const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
-                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
-            }
+            SWAG_CHECK(emitSwitchCaseInterface(context, expr, caseNode, r0));
         }
-        else if (caseNode->ownerSwitch->expression->typeInfo->isAny())
+        else if (switchExpr->typeInfo->isAny())
         {
-            r0 = reserveRegisterRC(context);
-            const auto rFlags = reserveRegisterRC(context);
-            const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
-            inst->b.u64       = SWAG_TYPECMP_STRICT;
-            EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, caseNode->ownerSwitch->resultRegisterRc[1], expr->resultRegisterRc, rFlags, r0);
-            freeRegisterRC(context, rFlags);
-            /*if (!caseNode->matchVarName.text.empty())
-            {
-                const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
-                SWAG_CHECK(emitTypeDeRef());
-            }   */         
+            SWAG_CHECK(emitSwitchCaseAny(context, expr, caseNode, r0));
         }
         else
         {
@@ -903,7 +941,7 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
 
-        if (caseNode->ownerSwitch->expression->typeInfo->isInterface())
+        if (switchExpr->typeInfo->isInterface())
         {
             const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0);
             inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
@@ -947,6 +985,7 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
