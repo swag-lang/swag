@@ -6,6 +6,7 @@
 #include "Report/ErrorIds.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
@@ -864,17 +865,6 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
             context->node = expr;
             YIELD();
         }
-        else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE))
-        {
-            r0              = reserveRegisterRC(context);
-            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
-            inst->b.u64     = 1;
-        }
-        else if (caseNode->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE))
-        {
-            r0 = reserveRegisterRC(context);
-            EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-        }
         else if (caseNode->ownerSwitch->expression->typeInfo->isInterface())
         {
             r0              = reserveRegisterRC(context);
@@ -890,6 +880,20 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
                 const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
                 EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
             }
+        }
+        else if (caseNode->ownerSwitch->expression->typeInfo->isAny())
+        {
+            r0 = reserveRegisterRC(context);
+            const auto rFlags = reserveRegisterRC(context);
+            const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
+            inst->b.u64       = SWAG_TYPECMP_STRICT;
+            EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, caseNode->ownerSwitch->resultRegisterRc[1], expr->resultRegisterRc, rFlags, r0);
+            freeRegisterRC(context, rFlags);
+            /*if (!caseNode->matchVarName.text.empty())
+            {
+                const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
+                SWAG_CHECK(emitTypeDeRef());
+            }   */         
         }
         else
         {

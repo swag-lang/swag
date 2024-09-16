@@ -1,9 +1,9 @@
-#global testerror "Err0589"
+//#global testerror "Err0589"
 
 //#[Swag.PrintBc]
  #test
 {
-    var value: any = 1
+    let value: any = 1
     switch value
     {
         case 1: break

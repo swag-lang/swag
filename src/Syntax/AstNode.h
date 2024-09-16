@@ -938,8 +938,6 @@ struct AstSwitch : AstBreakable
 struct AstSwitchCase : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_IS_DEFAULT = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_IS_FALSE   = 0x0002;
-    static constexpr SpecFlags SPEC_FLAG_IS_TRUE    = 0x0004;
 
     AstNode* clone(CloneContext& context);
 

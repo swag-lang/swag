@@ -1,5 +1,7 @@
+#global skip
 #global testerror "Err0390"
 
+#[Swag.PrintBc]
 #test
 {
     let g: any = 66

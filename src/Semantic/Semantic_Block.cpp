@@ -267,13 +267,6 @@ bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
         }
     }
 
-    // Auto convert to the underlying type if necessary
-    else if (typeInfo->isAny())
-    {
-        SWAG_CHECK(makeIntrinsicKindof(context, node));
-        YIELD();
-    }
-
     // If we have a match variable, then now we now this is a pointer
     else if (typeInfo->isInterface())
     {
@@ -466,7 +459,7 @@ bool Semantic::resolveCaseBefore(SemanticContext* context)
     if (!caseNode->matchVarName.text.empty())
     {
         const auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->firstChild()->typeInfo);
-        if (!typeInfo->isInterface())
+        if (!typeInfo->isInterface() && !typeInfo->isAny())
         {
             const Diagnostic err{context->sourceFile, caseNode->matchVarName, formErr(Err0390, typeInfo->getDisplayNameC())};
             return context->report(err);
@@ -533,18 +526,6 @@ bool Semantic::resolveCase(SemanticContext* context)
                     PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0147, typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(caseNode->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, caseNode->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
-                }
-
-                // If the switch expression is constant, and the expression is constant too, then we can do the
-                // compare right now
-                if (caseNode->ownerSwitch->expression->hasFlagComputedValue() && oneExpression->hasFlagComputedValue())
-                {
-                    SWAG_CHECK(resolveCompOpEqual(context, caseNode->ownerSwitch->expression, oneExpression));
-                    if (caseNode->computedValue()->reg.b)
-                        caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
-                    else
-                        caseNode->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
-                    caseNode->releaseComputedValue();
                 }
             }
 

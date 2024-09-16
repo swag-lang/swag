@@ -12,38 +12,6 @@
 #include "Syntax/Naming.h"
 #include "Wmf/Module.h"
 
-bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
-{
-    // Automatic convert to 'kindof'
-    // This has no sens to do a switch on an 'any'. So instead of raising an error,
-    // we imply the usage of '@kindof'. That way we have a switch on the underlying type.
-    const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
-    if (typeInfo->isAny() && node->hasFlagComputedValue())
-    {
-        const auto any                       = static_cast<SwagAny*>(node->computedValue()->getStorageAddr());
-        node->computedValue()->storageOffset = node->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
-        node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
-        node->typeInfo = g_TypeMgr->typeInfoTypeType;
-    }
-    else if (typeInfo->isAny())
-    {
-        SWAG_CHECK(checkIsConcrete(context, node));
-
-        node->allocateComputedValue();
-        node->computedValue()->storageSegment = getConstantSegFromContext(node);
-        auto& typeGen                         = node->token.sourceFile->module->typeGen;
-
-        TypeInfo* resultTypeInfo = nullptr;
-        SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &resultTypeInfo));
-        YIELD();
-
-        node->typeInfo = resultTypeInfo;
-        node->byteCodeFct = ByteCodeGen::emitKindOfAny;
-    }
-
-    return true;
-}
-
 bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, const AstNode* left, const AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())

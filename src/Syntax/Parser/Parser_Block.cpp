@@ -273,10 +273,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             const auto front = caseNode->expressions.front();
             SWAG_ASSERT(front->is(AstNodeKind::TypeExpression));
             CloneContext cxt;
-            cxt.parent          = varDecl;
-            varDecl->type       = front->clone(cxt);
-            //const auto typeDecl = castAst<AstTypeExpression>(varDecl->type);
-            //typeDecl->typeFlags.add(TYPE_FLAG_IS_LET_MATCH);
+            cxt.parent    = varDecl;
+            varDecl->type = front->clone(cxt);
         }
 
         // where clause
