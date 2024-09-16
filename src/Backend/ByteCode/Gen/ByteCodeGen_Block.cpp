@@ -875,22 +875,41 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
             r0 = reserveRegisterRC(context);
             EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
         }
-        else
+        else if (caseNode->ownerSwitch->expression->typeInfo->isInterface())
         {
+            r0              = reserveRegisterRC(context);
+            const auto r1   = reserveRegisterRC(context);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r1);
+            inst->b.u64     = sizeof(void*);
+            inst->addFlag(BCI_IMM_B);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r1);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, r1, caseNode->ownerSwitch->resultRegisterRc[0], r0);
+            freeRegisterRC(context, r1);
             if (!caseNode->matchVarName.text.empty())
             {
-                r0 = expr->resultRegisterRc;
+                const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
+                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
             }
-            else
-            {
-                r0 = reserveRegisterRC(context);
-                SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
-            }
+        }
+        else
+        {
+            r0 = reserveRegisterRC(context);
+            SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
         }
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
-        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
-        inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+
+        if (caseNode->ownerSwitch->expression->typeInfo->isInterface())
+        {
+            const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0);
+            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+        }
+        else
+        {
+            const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
+            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+        }
+
         freeRegisterRC(context, r0);
     }
 
@@ -902,11 +921,10 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
     }
 
-    if (caseNode->matchVarName.text.empty())
-        freeRegisterRC(context, expr->resultRegisterRc);
+    freeRegisterRC(context, expr->resultRegisterRc);
 
     // If this is the last expression, and it's also false, jump to the next case
-    if (expr == caseNode->expressions.back() || !caseNode->matchVarName.text.empty())
+    if (expr == caseNode->expressions.back())
     {
         caseNode->jumpToNextCase = context->bc->numInstructions;
         const auto inst          = EMIT_INST0(context, ByteCodeOp::Jump);

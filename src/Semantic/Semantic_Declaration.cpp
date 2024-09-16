@@ -170,7 +170,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
 bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
     const auto node                  = context->node;
-    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
     node->allocateExtension(ExtensionKind::ByteCode);
 
     // Can already been set in some cases... So be sure to not overwrite it.

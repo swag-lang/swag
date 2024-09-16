@@ -268,20 +268,11 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         {
             const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, caseNode);
             varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_LET);
-            varDecl->addAstFlag(AST_GENERATED);
-
-            const auto castNode   = Ast::newNode<AstCast>(AstNodeKind::Cast, this, varDecl);
-            castNode->semanticFct = Semantic::resolveExplicitCast;
-            castNode->addSpecFlag(AstCast::SPEC_FLAG_PATTERN_MATCH);
-            varDecl->assignment = castNode;
-
-            const auto front = caseNode->expressions.front();
-            SWAG_ASSERT(front->is(AstNodeKind::TypeExpression));
-            Ast::removeFromParent(front);
-            Ast::addChildBack(castNode, front);
-            front->setBcNotifyAfter(nullptr);
-            castNode->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
-            Ast::newIdentifierRef(switchNode->expression->token.text, this, castNode);
+            varDecl->addAstFlag(AST_GENERATED | AST_NO_BYTECODE);
+            const auto type  = Ast::newTypeExpression(this, varDecl);
+            varDecl->type    = type;
+            type->identifier = Ast::newIdentifierRef(caseNode->expressions.front()->token.text, this, type);
+            type->typeFlags.add(TYPEFLAG_IS_PTR);
         }
 
         // where clause

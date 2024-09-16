@@ -268,7 +268,7 @@ bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
     }
 
     // Auto convert to the underlying type if necessary
-    else
+    else if(typeInfo->isAny())
     {
         SWAG_CHECK(makeIntrinsicKindof(context, node));
         YIELD();
@@ -312,7 +312,6 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         case TypeInfoKind::Slice:
         case TypeInfoKind::Array:
-        case TypeInfoKind::Interface:
             return context->report({node->expression, formErr(Err0530, typeSwitch->getDisplayNameC())});
     }
 
@@ -323,9 +322,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     VectorNative<AstNode*>       valExpression;
     VectorNative<uint64_t>       val64;
     Vector<Utf8>                 valText;
-    for (const auto switchCase : node->cases)
+    for (const auto caseNode : node->cases)
     {
-        for (auto expr : switchCase->expressions)
+        for (auto expr : caseNode->expressions)
         {
             if (expr->hasFlagComputedValue())
             {
@@ -335,7 +334,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        if (switchCase == valCase[idx] || (!switchCase->whereClause && !valCase[idx]->whereClause))
+                        if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
                             Diagnostic err{expr, formErr(Err0016, expr->computedValue()->text.cstr())};
                             err.addNote(valExpression[idx], toNte(Nte0194));
@@ -346,7 +345,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     }
 
                     valText.push_back(expr->computedValue()->text);
-                    valCase.push_back(switchCase);
+                    valCase.push_back(caseNode);
                     valExpression.push_back(expr);
                 }
                 else
@@ -358,7 +357,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        if (switchCase == valCase[idx] || (!switchCase->whereClause && !valCase[idx]->whereClause))
+                        if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
                             const auto note = Diagnostic::note(valExpression[idx], toNte(Nte0194));
                             if (expr->isConstantGenTypeInfo())
@@ -374,7 +373,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     }
 
                     val64.push_back(expr->computedValue()->reg.u64);
-                    valCase.push_back(switchCase);
+                    valCase.push_back(caseNode);
                     valExpression.push_back(expr);
                 }
             }
@@ -453,7 +452,7 @@ bool Semantic::resolveCaseBefore(SemanticContext* context)
     if (!caseNode->matchVarName.text.empty())
     {
         const auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->firstChild()->typeInfo);
-        if (!typeInfo->isInterface() && !typeInfo->isAny())
+        if (!typeInfo->isInterface())
         {
             const Diagnostic err{context->sourceFile, caseNode->matchVarName, formErr(Err0390, typeInfo->getDisplayNameC())};
             return context->report(err);
@@ -515,7 +514,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, caseNode->ownerSwitch->expression, oneExpression));
                     YIELD();
                 }
-                else
+                else if(!typeInfo->isInterface())
                 {
                     PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0147, typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(caseNode->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);

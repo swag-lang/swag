@@ -1,3 +1,5 @@
+#global testerror "Err0390"
+
 /* salut la foule
     /* */
 */

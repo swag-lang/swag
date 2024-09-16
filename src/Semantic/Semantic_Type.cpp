@@ -25,7 +25,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
         node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
     }
-    else if (typeInfo->isAny() || typeInfo->isInterface())
+    else if (typeInfo->isAny())
     {
         SWAG_CHECK(checkIsConcrete(context, node));
 
@@ -38,10 +38,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
         YIELD();
 
         node->typeInfo = resultTypeInfo;
-        if (typeInfo->isAny())
-            node->byteCodeFct = ByteCodeGen::emitKindOfAny;
-        else
-            node->byteCodeFct = ByteCodeGen::emitKindOfInterface;
+        node->byteCodeFct = ByteCodeGen::emitKindOfAny;
     }
 
     return true;

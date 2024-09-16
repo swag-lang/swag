@@ -1,3 +1,4 @@
+#global testerror "Err0390"
 //#global testerror "Saf0001"
 
 #[Swag.Safety("", true)]
