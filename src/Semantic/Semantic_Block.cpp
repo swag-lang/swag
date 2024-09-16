@@ -268,10 +268,24 @@ bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
     }
 
     // Auto convert to the underlying type if necessary
-    else if(typeInfo->isAny())
+    else if (typeInfo->isAny())
     {
         SWAG_CHECK(makeIntrinsicKindof(context, node));
         YIELD();
+    }
+
+    // If we have a match variable, then now we now this is a pointer
+    else if (typeInfo->isInterface())
+    {
+        for (const auto caseNode : switchNode->cases)
+        {
+            if (caseNode->childCount() > 1 && caseNode->secondChild()->is(AstNodeKind::VarDecl))
+            {
+                const auto varDecl  = castAst<AstVarDecl>(caseNode->secondChild(), AstNodeKind::VarDecl);
+                const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+                typeDecl->typeFlags.add(TYPE_FLAG_IS_PTR);
+            }
+        }
     }
 
     return true;
@@ -514,7 +528,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, caseNode->ownerSwitch->expression, oneExpression));
                     YIELD();
                 }
-                else if(!typeInfo->isInterface())
+                else if (!typeInfo->isInterface())
                 {
                     PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0147, typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(caseNode->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);

@@ -271,7 +271,7 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
     }
 
     const bool isSelf = varNode->token.is(g_LangSpec->name_self);
-    if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPEFLAG_IS_CONST))
+    if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPE_FLAG_IS_CONST))
     {
         concat->addString("const");
         concat->addBlank();

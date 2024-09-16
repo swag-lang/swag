@@ -275,8 +275,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             CloneContext cxt;
             cxt.parent          = varDecl;
             varDecl->type       = front->clone(cxt);
-            const auto typeDecl = castAst<AstTypeExpression>(varDecl->type);
-            typeDecl->typeFlags.add(TYPEFLAG_IS_PTR);
+            //const auto typeDecl = castAst<AstTypeExpression>(varDecl->type);
+            //typeDecl->typeFlags.add(TYPE_FLAG_IS_LET_MATCH);
         }
 
         // where clause

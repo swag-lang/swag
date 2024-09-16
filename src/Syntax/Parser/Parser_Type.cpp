@@ -110,8 +110,8 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
             curIsAlone = false;
             SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0335)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
-            typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
-            typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
+            typeExpr->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
+            typeExpr->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
@@ -143,7 +143,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
         else
         {
             SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
-            typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
+            typeExpr->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
 
             // type...
             if (tokenParse.is(TokenId::SymDotDotDot))
@@ -277,7 +277,7 @@ bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
         if (inTypeVarDecl)
         {
             Utf8 nameVar;
-            if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
+            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_SELF))
             {
                 firstAddedType->token.text = g_LangSpec->name_self;
                 nameVar                    = g_LangSpec->name_self;
@@ -288,7 +288,7 @@ bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
             }
 
             const auto param = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
-            if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
+            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_SELF))
                 param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
 
             param->addExtraPointer(ExtraPointerKind::ExportNode, firstAddedType);
@@ -483,7 +483,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     if (tokenParse.is(TokenId::KwdConst))
     {
         node->locConst = tokenParse.token.startLocation;
-        node->typeFlags.add(TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST);
+        node->typeFlags.add(TYPE_FLAG_IS_CONST | TYPE_FLAG_HAS_LOC_CONST);
         SWAG_CHECK(eatToken());
 
         if (tokenParse.is(TokenId::SymAmpersandAmpersand))
@@ -496,9 +496,9 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     // MoveRef
     if (tokenParse.is(TokenId::SymAmpersandAmpersand))
     {
-        node->typeFlags.add(TYPEFLAG_IS_SUB_TYPE);
-        node->typeFlags.add(TYPEFLAG_IS_REF);
-        node->typeFlags.add(TYPEFLAG_IS_MOVE_REF);
+        node->typeFlags.add(TYPE_FLAG_IS_SUB_TYPE);
+        node->typeFlags.add(TYPE_FLAG_IS_REF);
+        node->typeFlags.add(TYPE_FLAG_IS_MOVE_REF);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
         return true;
@@ -507,8 +507,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     // Reference
     if (tokenParse.is(TokenId::SymAmpersand))
     {
-        node->typeFlags.add(TYPEFLAG_IS_SUB_TYPE);
-        node->typeFlags.add(TYPEFLAG_IS_REF);
+        node->typeFlags.add(TYPE_FLAG_IS_SUB_TYPE);
+        node->typeFlags.add(TYPE_FLAG_IS_REF);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
         return true;
@@ -525,12 +525,12 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             // Slice
             if (tokenParse.is(TokenId::SymDotDot))
             {
-                node->typeFlags.add(TYPEFLAG_IS_SLICE);
+                node->typeFlags.add(TYPE_FLAG_IS_SLICE);
                 SWAG_CHECK(eatToken());
                 break;
             }
 
-            node->typeFlags.add(TYPEFLAG_IS_ARRAY);
+            node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
 
             // Size of array can be nothing
             if (tokenParse.is(TokenId::SymRightSquare))
@@ -558,7 +558,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             return context->report(err);
         }
 
-        node->typeFlags.add(TYPEFLAG_IS_SUB_TYPE);
+        node->typeFlags.add(TYPE_FLAG_IS_SUB_TYPE);
         SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
         return true;
     }
@@ -566,9 +566,9 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     // Pointers
     if (tokenParse.is(TokenId::SymAsterisk) || tokenParse.is(TokenId::SymCircumflex))
     {
-        node->typeFlags.add(TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
+        node->typeFlags.add(TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
         if (tokenParse.is(TokenId::SymCircumflex))
-            node->typeFlags.add(TYPEFLAG_IS_PTR_ARITHMETIC);
+            node->typeFlags.add(TYPE_FLAG_IS_PTR_ARITHMETIC);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
         return true;
@@ -587,7 +587,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         *result         = node;
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
         node->typeInfo = g_TypeMgr->typeInfoCode;
-        node->typeFlags.add(TYPEFLAG_IS_CODE);
+        node->typeFlags.add(TYPE_FLAG_IS_CODE);
         SWAG_CHECK(eatToken());
         return true;
     }
@@ -599,7 +599,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         *result           = node;
         node->semanticFct = Semantic::resolveRetVal;
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-        node->typeFlags.add(TYPEFLAG_IS_RETVAL | TYPEFLAG_IS_RETVAL_TYPE);
+        node->typeFlags.add(TYPE_FLAG_IS_RETVAL | TYPE_FLAG_IS_RETVAL_TYPE);
         SWAG_CHECK(eatToken());
 
         // retval type can be followed by structure initializer, like a normal struct

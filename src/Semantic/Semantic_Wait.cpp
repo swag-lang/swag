@@ -412,13 +412,13 @@ bool Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier*
     if (const auto pr2 = identifier->getParent(2); pr2->is(AstNodeKind::TypeExpression))
     {
         auto typeExprNode = castAst<AstTypeExpression>(pr2, AstNodeKind::TypeExpression);
-        if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
+        if (typeExprNode->typeFlags.has(TYPE_FLAG_IS_PTR))
             return false;
 
         if (const auto pr1 = typeExprNode->getParent(); pr1->is(AstNodeKind::TypeExpression))
         {
             typeExprNode = castAst<AstTypeExpression>(pr1, AstNodeKind::TypeExpression);
-            if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
+            if (typeExprNode->typeFlags.has(TYPE_FLAG_IS_PTR))
                 return false;
         }
     }

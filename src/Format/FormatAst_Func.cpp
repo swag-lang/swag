@@ -67,7 +67,7 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
         {
             const auto varDecl  = castAst<AstVarDecl>(parameters->firstChild());
             const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
-            if (typeDecl->typeFlags.has(TYPEFLAG_IS_CONST))
+            if (typeDecl->typeFlags.has(TYPE_FLAG_IS_CONST))
             {
                 concat->addString("const");
                 concat->addBlank();

@@ -1295,7 +1295,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
         if (parentNode->is(AstNodeKind::Identifier))
             parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
         const auto typeExpr = castAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
-        typeExpr->typeFlags.remove(TYPEFLAG_IS_RETVAL);
+        typeExpr->typeFlags.remove(TYPE_FLAG_IS_RETVAL);
     }
 
     node->typeInfo = typeFct->returnType;

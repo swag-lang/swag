@@ -388,7 +388,7 @@ struct AstNode
         SharedLock lk(mutex);
         return children.size() < 2 ? nullptr : children[1];
     }
-    
+
     bool hasAstFlag(const AstNodeFlags& fl) const { return flags.has(fl); }
     void addAstFlag(const AstNodeFlags& fl) { flags.add(fl); }
     void removeAstFlag(const AstNodeFlags& fl) { flags.remove(fl); }
@@ -970,21 +970,21 @@ struct AstType : AstNode
     static constexpr SpecFlags SPEC_FLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
-constexpr TypeFlags TYPEFLAG_IS_ARRAY          = 0x0001;
-constexpr TypeFlags TYPEFLAG_IS_SLICE          = 0x0002;
-constexpr TypeFlags TYPEFLAG_IS_CONST          = 0x0004;
-constexpr TypeFlags TYPEFLAG_IS_CODE           = 0x0008;
-constexpr TypeFlags TYPEFLAG_FORCE_CONST       = 0x0010;
-constexpr TypeFlags TYPEFLAG_IS_SELF           = 0x0020;
-constexpr TypeFlags TYPEFLAG_IS_RETVAL         = 0x0040;
-constexpr TypeFlags TYPEFLAG_HAS_USING         = 0x0080;
-constexpr TypeFlags TYPEFLAG_IS_REF            = 0x0100;
-constexpr TypeFlags TYPEFLAG_IS_MOVE_REF       = 0x0200;
-constexpr TypeFlags TYPEFLAG_IS_PTR            = 0x0400;
-constexpr TypeFlags TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
-constexpr TypeFlags TYPEFLAG_IS_SUB_TYPE       = 0x1000;
-constexpr TypeFlags TYPEFLAG_HAS_LOC_CONST     = 0x2000;
-constexpr TypeFlags TYPEFLAG_IS_RETVAL_TYPE    = 0x4000;
+constexpr TypeFlags TYPE_FLAG_IS_ARRAY          = 0x0001;
+constexpr TypeFlags TYPE_FLAG_IS_SLICE          = 0x0002;
+constexpr TypeFlags TYPE_FLAG_IS_CONST          = 0x0004;
+constexpr TypeFlags TYPE_FLAG_IS_CODE           = 0x0008;
+constexpr TypeFlags TYPE_FLAG_FORCE_CONST       = 0x0010;
+constexpr TypeFlags TYPE_FLAG_IS_SELF           = 0x0020;
+constexpr TypeFlags TYPE_FLAG_IS_RETVAL         = 0x0040;
+constexpr TypeFlags TYPE_FLAG_HAS_USING         = 0x0080;
+constexpr TypeFlags TYPE_FLAG_IS_REF            = 0x0100;
+constexpr TypeFlags TYPE_FLAG_IS_MOVE_REF       = 0x0200;
+constexpr TypeFlags TYPE_FLAG_IS_PTR            = 0x0400;
+constexpr TypeFlags TYPE_FLAG_IS_PTR_ARITHMETIC = 0x0800;
+constexpr TypeFlags TYPE_FLAG_IS_SUB_TYPE       = 0x1000;
+constexpr TypeFlags TYPE_FLAG_HAS_LOC_CONST     = 0x2000;
+constexpr TypeFlags TYPE_FLAG_IS_RETVAL_TYPE    = 0x4000;
 
 struct AstTypeExpression : AstType
 {

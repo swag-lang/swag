@@ -317,7 +317,7 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
 void Ast::setForceConstType(AstNode* node)
 {
     if (node && node->is(AstNodeKind::TypeExpression))
-        castAst<AstTypeExpression>(node)->typeFlags.add(TYPEFLAG_FORCE_CONST);
+        castAst<AstTypeExpression>(node)->typeFlags.add(TYPE_FLAG_FORCE_CONST);
 }
 
 Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName)

@@ -510,7 +510,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                     {
                         SWAG_ASSERT(varNode->type->is(AstNodeKind::TypeExpression));
                         const auto typeNode = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
-                        typeNode->typeFlags.remove(TYPEFLAG_IS_REF);
+                        typeNode->typeFlags.remove(TYPE_FLAG_IS_REF);
                     }
                 }
 

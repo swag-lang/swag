@@ -61,7 +61,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
     // If this is in a return expression, then force the identifier type to be retval
     if (fromNode->inSimpleReturn())
-        typeNode->typeFlags.add(TYPEFLAG_IS_RETVAL);
+        typeNode->typeFlags.add(TYPE_FLAG_IS_RETVAL);
 
     // And make a reference to that variable
     const auto identifierRef = newIdentifierRef(varNode->token.text, nullptr, parentForRef);
@@ -492,7 +492,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // If this is in a return expression, then force the identifier type to be "retval"
     if (node->parent && node->parent->inSimpleReturn())
-        typeNode->typeFlags.add(TYPEFLAG_IS_RETVAL);
+        typeNode->typeFlags.add(TYPE_FLAG_IS_RETVAL);
 
     // And make a reference to that variable
     const auto identifierRef = identifier->identifierRef();
@@ -556,7 +556,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
     const auto typeExpression = newTypeExpression(nullptr, parent);
     typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN);
     if (childType->isConst())
-        typeExpression->typeFlags.add(TYPEFLAG_IS_CONST);
+        typeExpression->typeFlags.add(TYPE_FLAG_IS_CONST);
 
     if (childType->isListTuple())
     {

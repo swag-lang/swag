@@ -19,13 +19,13 @@ bool FormatAst::outputTypeExpression(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 {
-    if (node->typeFlags.has(TYPEFLAG_IS_CODE))
+    if (node->typeFlags.has(TYPE_FLAG_IS_CODE))
     {
         concat->addString("code");
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_RETVAL_TYPE))
+    if (node->typeFlags.has(TYPE_FLAG_IS_RETVAL_TYPE))
     {
         if (node->firstChild())
             SWAG_CHECK(outputNode(context, node->firstChild()));
@@ -34,7 +34,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_CONST))
+    if (node->typeFlags.has(TYPE_FLAG_IS_CONST))
     {
         concat->addString("const");
         concat->addBlank();
@@ -69,7 +69,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
+    if (node->typeFlags.has(TYPE_FLAG_IS_SLICE))
     {
         concat->addString("[..]");
         concat->addBlank();
@@ -77,28 +77,28 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_PTR) && node->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
+    if (node->typeFlags.has(TYPE_FLAG_IS_PTR) && node->typeFlags.has(TYPE_FLAG_IS_PTR_ARITHMETIC))
     {
         concat->addChar('^');
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_PTR))
+    if (node->typeFlags.has(TYPE_FLAG_IS_PTR))
     {
         concat->addChar('*');
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_REF) && node->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
+    if (node->typeFlags.has(TYPE_FLAG_IS_REF) && node->typeFlags.has(TYPE_FLAG_IS_MOVE_REF))
     {
         concat->addString("&&");
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }
 
-    if (node->typeFlags.has(TYPEFLAG_IS_REF))
+    if (node->typeFlags.has(TYPE_FLAG_IS_REF))
     {
         concat->addChar('&');
         SWAG_CHECK(outputNode(context, node->firstChild()));

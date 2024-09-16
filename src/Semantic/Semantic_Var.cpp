@@ -704,7 +704,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
     if (node->type && node->type->is(AstNodeKind::TypeExpression))
     {
         const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
+        if (typeExpr->typeFlags.has(TYPE_FLAG_IS_RETVAL))
         {
             const auto ownerFct   = getFunctionForReturn(node);
             auto       typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -1295,7 +1295,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
+        while (typeExpression->typeFlags.has(TYPE_FLAG_IS_SUB_TYPE))
             typeExpression = castAst<AstTypeExpression>(typeExpression->lastChild(), AstNodeKind::TypeExpression);
         const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->lastChild(), AstNodeKind::Identifier);
 

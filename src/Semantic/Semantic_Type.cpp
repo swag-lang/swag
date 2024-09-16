@@ -290,9 +290,9 @@ void Semantic::forceConstType(SemanticContext*, AstTypeExpression* node)
         concrete->isPointer() ||
         concrete->isSlice())
     {
-        if (node->typeFlags.has(TYPEFLAG_FORCE_CONST))
-            node->typeFlags.add(TYPEFLAG_IS_CONST);
-        if (node->typeFlags.has(TYPEFLAG_IS_CONST))
+        if (node->typeFlags.has(TYPE_FLAG_FORCE_CONST))
+            node->typeFlags.add(TYPE_FLAG_IS_CONST);
+        if (node->typeFlags.has(TYPE_FLAG_IS_CONST))
             node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
 }
@@ -342,7 +342,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // Code
-    if (typeNode->typeFlags.has(TYPEFLAG_IS_CODE))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_CODE))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0398, "code")}));
@@ -364,7 +364,7 @@ bool Semantic::resolveType(SemanticContext* context)
         typeNode->typeInfo = typeNode->identifier->typeInfo;
         typeNode->inheritAstFlagsOr(typeNode->identifier, AST_GENERIC);
     }
-    else if (typeNode->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
+    else if (typeNode->typeFlags.has(TYPE_FLAG_IS_SUB_TYPE))
     {
         typeNode->typeInfo = typeNode->lastChild()->typeInfo;
     }
@@ -425,16 +425,16 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // In fact, this is a pointer
-    if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_PTR))
     {
         auto ptrFlags = typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC);
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_SELF))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_SELF))
             ptrFlags.add(TYPEINFO_SELF);
-        if (typeNode->typeFlags.has(TYPEFLAG_HAS_USING))
+        if (typeNode->typeFlags.has(TYPE_FLAG_HAS_USING))
             ptrFlags.add(TYPEINFO_HAS_USING);
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))
             ptrFlags.add(TYPEINFO_CONST);
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_PTR_ARITHMETIC))
             ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
         if (ptrFlags.has(TYPEINFO_GENERIC))
             typeNode->addAstFlag(AST_GENERIC);
@@ -442,15 +442,15 @@ bool Semantic::resolveType(SemanticContext* context)
         return true;
     }
 
-    if (!(typeNode->typeFlags.has(TYPEFLAG_IS_REF)))
+    if (!(typeNode->typeFlags.has(TYPE_FLAG_IS_REF)))
         forceConstType(context, typeNode);
 
     // In fact, this is a slice
-    if (typeNode->typeFlags.has(TYPEFLAG_IS_SLICE))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_SLICE))
     {
         const auto ptrSlice   = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))
             ptrSlice->addFlag(TYPEINFO_CONST);
         ptrSlice->flags.add(ptrSlice->pointedType->flags.mask(TYPEINFO_GENERIC));
         typeNode->typeInfo = ptrSlice;
@@ -459,14 +459,14 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // In fact this is a reference
-    if (typeNode->typeFlags.has(TYPEFLAG_IS_REF))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_REF))
     {
         TypeInfoFlags ptrFlags = TYPEINFO_POINTER_REF;
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))
             ptrFlags.add(TYPEINFO_CONST);
         ptrFlags.add(typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC));
 
-        if (typeNode->typeFlags.has(TYPEFLAG_IS_MOVE_REF))
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_MOVE_REF))
         {
             const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
             SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, toErr(Err0391)}));
@@ -479,7 +479,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // In fact, this is an array
-    if (typeNode->typeFlags.has(TYPEFLAG_IS_ARRAY))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_ARRAY))
     {
         SWAG_ASSERT(typeNode->arrayDim);
 
@@ -491,7 +491,7 @@ bool Semantic::resolveType(SemanticContext* context)
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
             ptrArray->finalType   = typeNode->typeInfo;
-            if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
+            if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))
                 ptrArray->flags.add(TYPEINFO_CONST);
             ptrArray->addFlag(ptrArray->finalType->flags.mask(TYPEINFO_GENERIC));
             ptrArray->sizeOf = 0;
@@ -543,7 +543,7 @@ bool Semantic::resolveType(SemanticContext* context)
             ptrArray->pointedType = typeNode->typeInfo;
             ptrArray->finalType   = rawType;
             ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-            if (typeNode->typeFlags.has(TYPEFLAG_IS_CONST))
+            if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))
                 ptrArray->addFlag(TYPEINFO_CONST);
             ptrArray->addFlag(ptrArray->finalType->flags.mask(TYPEINFO_GENERIC));
 
@@ -562,7 +562,7 @@ bool Semantic::resolveType(SemanticContext* context)
 
     // Be sure we do not have a useless user 'const'
     const auto typeC = TypeManager::concreteType(typeNode->typeInfo);
-    if (typeNode->typeFlags.has(TYPEFLAG_HAS_LOC_CONST) &&
+    if (typeNode->typeFlags.has(TYPE_FLAG_HAS_LOC_CONST) &&
         !typeC->isPointer() &&
         !typeC->isArray() &&
         !typeC->isStruct())
