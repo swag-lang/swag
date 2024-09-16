@@ -142,14 +142,15 @@ void Semantic::waitStructUsing(Job* job, TypeInfo* typeInfo)
     if (typeInfo->isGeneric())
         return;
 
+    const auto context = job->baseContext;
+    waitTypeCompleted(job, typeInfo);
+    YIELD_VOID();
+
     const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     for (const auto p : typeInfoStruct->fields)
     {
-        const auto context = job->baseContext;
         if (!p->flags.has(TYPEINFOPARAM_HAS_USING))
             continue;
-        waitTypeCompleted(job, p->typeInfo);
-        YIELD_VOID();
         waitStructUsing(job, p->typeInfo);
         YIELD_VOID();
     }

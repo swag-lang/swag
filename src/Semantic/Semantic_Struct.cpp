@@ -880,26 +880,47 @@ bool Semantic::postResolveStruct(SemanticContext* context)
     sendCompilerMsgTypeDecl(context);
 
     // Verify that we have only one possible conversion
-    SharedLock lk(typeInfo->mutex);
-
-    VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
-    typeInfo->collectUsingFields(usingFields);
-    VectorNative<TypeInfoStruct*> here;
-    VectorNative<AstNode*>        where;
-    for (const auto c : usingFields)
     {
-        const auto     typeStruct = c.first->typeInfo->getStructOrPointedStruct();
-        const uint32_t idx        = here.find(typeStruct);
-        if (idx != UINT32_MAX)
-        {
-            Diagnostic err(c.first->declNode, formErr(Err0018, typeStruct->getDisplayNameC()));
-            err.addNote(where[idx], toNte(Nte0194));
-            err.addNote(formNte(Nte0011, typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
-            return context->report(err);
-        }
+        SharedLock lk(typeInfo->mutex);
 
-        here.push_back(typeStruct);
-        where.push_back(c.first->declNode);
+        VectorNative<std::pair<TypeInfoParam*, uint32_t>> usingFields;
+        typeInfo->collectUsingFields(usingFields);
+        VectorNative<TypeInfoStruct*> here;
+        VectorNative<AstNode*>        where;
+        for (const auto c : usingFields)
+        {
+            const auto     typeStruct = c.first->typeInfo->getStructOrPointedStruct();
+            const uint32_t idx        = here.find(typeStruct);
+            if (idx != UINT32_MAX)
+            {
+                Diagnostic err(c.first->declNode, formErr(Err0018, typeStruct->getDisplayNameC()));
+                err.addNote(where[idx], toNte(Nte0194));
+                err.addNote(formNte(Nte0011, typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
+                return context->report(err);
+            }
+
+            here.push_back(typeStruct);
+            where.push_back(c.first->declNode);
+        }
+    }
+
+    // Generate all functions associated with a struct
+    auto sourceFile = context->sourceFile;
+    if (!typeInfo->isGeneric())
+    {
+        node->removeAstFlag(AST_NO_BYTECODE);
+        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+        SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
+
+        node->allocateExtension(ExtensionKind::ByteCode);
+        auto extByteCode         = node->extByteCode();
+        extByteCode->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
+        node->byteCodeFct        = ByteCodeGen::emitStruct;
+
+        if (node->hasAttribute(ATTRIBUTE_GEN))
+            node->resolvedSymbolName()->addDependentJob(extByteCode->byteCodeJob);
+        else
+            g_ThreadMgr.addJob(extByteCode->byteCodeJob);
     }
 
     return true;
@@ -1303,24 +1324,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // We are parsing the swag module
     if (sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
-
-    // Generate all functions associated with a struct
-    if (!typeInfo->isGeneric())
-    {
-        node->removeAstFlag(AST_NO_BYTECODE);
-        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-        SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
-
-        node->allocateExtension(ExtensionKind::ByteCode);
-        auto extByteCode         = node->extByteCode();
-        extByteCode->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
-        node->byteCodeFct        = ByteCodeGen::emitStruct;
-
-        if (node->hasAttribute(ATTRIBUTE_GEN))
-            node->resolvedSymbolName()->addDependentJob(extByteCode->byteCodeJob);
-        else
-            g_ThreadMgr.addJob(extByteCode->byteCodeJob);
-    }
 
     return true;
 }
