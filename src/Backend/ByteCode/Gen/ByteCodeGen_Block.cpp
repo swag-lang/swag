@@ -822,13 +822,11 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
     r0            = reserveRegisterRC(context);
     const auto r1 = reserveRegisterRC(context);
 
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, caseNode->ownerSwitch->resultRegisterRc[1]);
-
     const auto seekJump = context->bc->numInstructions;
-    const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, r0, 0);
+    const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, caseNode->ownerSwitch->resultRegisterRc[1], 0);
     instJump->b.u64     = context->bc->numInstructions;
 
-    auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, r0, 0, r0);
+    auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r0);
     inst->b.u64 = sizeof(void*);
     inst->addFlag(BCI_IMM_B);
     EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r0);
@@ -842,7 +840,10 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
     }
 
     inst        = context->bc->out + seekJump;
-    inst->b.u64 = context->bc->numInstructions - inst->b.u64;
+
+    // :ItfCaseJump
+    // +1 because no need to do the next JumpIfNotZero64
+    inst->b.u64 = context->bc->numInstructions - inst->b.u64 + 1;
 
     return true;
 }
@@ -951,6 +952,7 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
 
+        // :ItfCaseJump
         if (switchExpr->typeInfo->isInterface())
         {
             const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0);
