@@ -1245,9 +1245,20 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 }
 
                 if (destIp->op == ByteCodeOp::JumpIfNotZero64 &&
-                    ip->a.u32 == destIp->a.u32)
+                    ip->a.u32 == destIp->a.u32 &&
+                    !ip->flags.has(BCI_IMM_A) &&
+                    !destIp->flags.has(BCI_IMM_A))
                 {
                     ip->b.u64 += 1;
+                    context->setDirtyPass();
+                }
+
+                if (destIp->op == ByteCodeOp::JumpIfZero64 &&
+                    ip->a.u32 == destIp->a.u32 &&
+                    !ip->flags.has(BCI_IMM_A) &&
+                    !destIp->flags.has(BCI_IMM_A))
+                {
+                    ip->b.s64 += destIp->b.s64 + 1;
                     context->setDirtyPass();
                 }
 

@@ -822,9 +822,25 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
     r0            = reserveRegisterRC(context);
     const auto r1 = reserveRegisterRC(context);
 
+    // Most of the time (always ?), the instruction before is the type.
+    // We move this after the not zero test, to make better optimizations 
+    ByteCodeInstruction copy;
+    if (context->bc->out[context->bc->numInstructions - 1].op == ByteCodeOp::MakeConstantSegPointer)
+    {
+        copy = context->bc->out[context->bc->numInstructions - 1];
+        context->bc->numInstructions--;
+    }
+
     const auto seekJump = context->bc->numInstructions;
     const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, caseNode->ownerSwitch->resultRegisterRc[1], 0);
     instJump->b.u64     = context->bc->numInstructions;
+
+    // Restore MakeConstantSegPointer after the not zero test
+    if (copy.op == ByteCodeOp::MakeConstantSegPointer)
+    {
+        context->bc->out[context->bc->numInstructions] = copy;
+        context->bc->numInstructions++;
+    }
 
     auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r0);
     inst->b.u64 = sizeof(void*);
@@ -839,7 +855,7 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
         EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
     }
 
-    inst        = context->bc->out + seekJump;
+    inst = context->bc->out + seekJump;
 
     // :ItfCaseJump
     // +1 because no need to do the next JumpIfNotZero64
