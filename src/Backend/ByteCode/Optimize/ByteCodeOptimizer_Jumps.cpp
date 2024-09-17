@@ -1244,6 +1244,13 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                     break;
                 }
 
+                if (destIp->op == ByteCodeOp::JumpIfNotZero64 &&
+                    ip->a.u32 == destIp->a.u32)
+                {
+                    ip->b.u64 += 1;
+                    context->setDirtyPass();
+                }
+
                 break;
 
             case ByteCodeOp::JumpIfEqual8:
