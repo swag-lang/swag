@@ -809,7 +809,7 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     const auto node       = context->node;
     const auto switchNode = castAst<AstSwitch>(node->parent, AstNodeKind::Switch);
 
-    // Get the type once
+    // For a switch on an interface, dereference the type once, to use it later in each case
     if (node->typeInfo->isInterface())
     {
         const auto seekJump = context->bc->numInstructions;
