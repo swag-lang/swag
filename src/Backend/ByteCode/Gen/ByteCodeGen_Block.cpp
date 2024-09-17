@@ -819,12 +819,19 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
 {
-    r0              = reserveRegisterRC(context);
-    const auto r1   = reserveRegisterRC(context);
-    const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r1);
-    inst->b.u64     = sizeof(void*);
+    r0            = reserveRegisterRC(context);
+    const auto r1 = reserveRegisterRC(context);
+
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, caseNode->ownerSwitch->resultRegisterRc[1]);
+
+    const auto seekJump = context->bc->numInstructions;
+    const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, r0, 0);
+    instJump->b.u64     = context->bc->numInstructions;
+
+    auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, r0, 0, r0);
+    inst->b.u64 = sizeof(void*);
     inst->addFlag(BCI_IMM_B);
-    EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r1);
+    EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r0);
     EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, r1, caseNode->ownerSwitch->resultRegisterRc[0], r0);
     freeRegisterRC(context, r1);
 
@@ -833,6 +840,9 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
         const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
         EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
     }
+
+    inst        = context->bc->out + seekJump;
+    inst->b.u64 = context->bc->numInstructions - inst->b.u64;
 
     return true;
 }
@@ -872,7 +882,7 @@ bool ByteCodeGen::emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, 
 
         context->bc->out[instIdx].b.u64 = context->bc->numInstructions - context->bc->out[instIdx].b.u64;
     }
-    
+
     return true;
 }
 

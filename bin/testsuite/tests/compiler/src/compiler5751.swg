@@ -1,4 +1,4 @@
-//#global skip
+#global testerror "Saf0029"
 
 interface I {}
 struct A { v = "a" }
@@ -6,7 +6,7 @@ struct B { v = "b" }
 impl I for A {}
 impl I for B {}
 
-//#[Swag.PrintBc]
+#[Swag.Safety("", true)]
 #test
 {
     var a: A
@@ -14,7 +14,7 @@ impl I for B {}
 
     var i: I //= b
 
-    //#[Swag.Complete]
+    #[Swag.Complete]
     switch i
     {
     case A: 
