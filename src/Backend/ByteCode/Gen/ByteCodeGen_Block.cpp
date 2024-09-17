@@ -784,6 +784,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
         inst->b.s32 = static_cast<int32_t>(diff);
     }
 
+    freeRegisterRC(context, switchNode->regItfType);
     return true;
 }
 
@@ -808,6 +809,24 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     const auto node       = context->node;
     const auto switchNode = castAst<AstSwitch>(node->parent, AstNodeKind::Switch);
 
+    // Get the type once
+    if (node->typeInfo->isInterface())
+    {
+        const auto seekJump = context->bc->numInstructions;
+        const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc[1], 0);
+        instJump->b.u64     = context->bc->numInstructions;
+
+        switchNode->regItfType = reserveRegisterRC(context);
+
+        auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc[1], 0, switchNode->regItfType);
+        inst->b.u64 = sizeof(void*);
+        inst->addFlag(BCI_IMM_B);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, switchNode->regItfType, switchNode->regItfType);
+
+        inst        = context->bc->out + seekJump;
+        inst->b.u64 = context->bc->numInstructions - inst->b.u64 + 1; // +1 because of the following "Jump"
+    }
+
     // Jump to the first case
     EMIT_INST0(context, ByteCodeOp::Jump)->b.s32 = 1;
 
@@ -819,47 +838,14 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
 {
-    r0            = reserveRegisterRC(context);
-    const auto r1 = reserveRegisterRC(context);
-
-    // Most of the time (always ?), the instruction before is the type.
-    // We move this after the not zero test, to make better optimizations 
-    ByteCodeInstruction copy;
-    if (context->bc->out[context->bc->numInstructions - 1].op == ByteCodeOp::MakeConstantSegPointer)
-    {
-        copy = context->bc->out[context->bc->numInstructions - 1];
-        context->bc->numInstructions--;
-    }
-
-    const auto seekJump = context->bc->numInstructions;
-    const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, caseNode->ownerSwitch->resultRegisterRc[1], 0);
-    instJump->b.u64     = context->bc->numInstructions;
-
-    // Restore MakeConstantSegPointer after the not zero test
-    if (copy.op == ByteCodeOp::MakeConstantSegPointer)
-    {
-        context->bc->out[context->bc->numInstructions] = copy;
-        context->bc->numInstructions++;
-    }
-
-    auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, caseNode->ownerSwitch->resultRegisterRc[1], 0, r0);
-    inst->b.u64 = sizeof(void*);
-    inst->addFlag(BCI_IMM_B);
-    EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r0);
-    EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, r1, caseNode->ownerSwitch->resultRegisterRc[0], r0);
-    freeRegisterRC(context, r1);
+    r0 = reserveRegisterRC(context);
+    EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, caseNode->ownerSwitch->regItfType, caseNode->ownerSwitch->resultRegisterRc[0], r0);
 
     if (!caseNode->matchVarName.text.empty())
     {
         const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
         EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
     }
-
-    inst = context->bc->out + seekJump;
-
-    // :ItfCaseJump
-    // +1 because no need to do the next JumpIfNotZero64
-    inst->b.u64 = context->bc->numInstructions - inst->b.u64 + 1;
 
     return true;
 }

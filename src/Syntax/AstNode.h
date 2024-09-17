@@ -933,6 +933,7 @@ struct AstSwitch : AstBreakable
 
     VectorNative<AstSwitchCase*> cases;
     AstNode*                     expression;
+    RegisterList                 regItfType;
 };
 
 struct AstSwitchCase : AstNode

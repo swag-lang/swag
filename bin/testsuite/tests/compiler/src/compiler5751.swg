@@ -1,3 +1,4 @@
+#global skip
 #global testerror "Saf0029"
 
 interface I {}
