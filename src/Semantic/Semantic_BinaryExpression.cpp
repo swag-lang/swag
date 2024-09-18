@@ -1103,6 +1103,12 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         return context->report(err);
     }
 
+    if (leftTypeInfo->isPointerNull() || rightTypeInfo->isPointerNull())
+    {
+        const Diagnostic err{node, node->token, formErr(Err0778, node->token.cstr())};
+        return context->report(err);        
+    }
+
     switch (node->token.id)
     {
         case TokenId::SymPlus:

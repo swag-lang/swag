@@ -924,7 +924,7 @@ void initErrors()
 	
     SWAG_ERROR(Err0728, "invalid type                                      $ expected an [[interface]] as the left expression of a [[%s]] cast, got [[%s]] instead                                                    $ ");
     SWAG_ERROR(Err0777, "invalid type                                      $ expected a [[struct]] type as the right expression of a [[%s]] cast, got [[%s]] instead                                                  $ ");
-    SWAG_ERROR(Err0778, nullptr);
+    SWAG_ERROR(Err0778, "invalid operation                                 $ cannot use operation [['%s']] on type [[null]]                                                                                           $ ");
     SWAG_ERROR(Err0779, nullptr);
     SWAG_ERROR(Err0780, nullptr);
 
