@@ -640,12 +640,18 @@ namespace
                 case ByteCodeOp::ClearRRX:
                     break;
 
+                case ByteCodeOp::GetParam64:
+                    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                    ra->kind = ValueKind::Unknown;
+                    if (ip->node && ip->node->resolvedSymbolOverload())
+                        ra->overload = ip->node->resolvedSymbolOverload();
+                    break;
+
                 // Fake 1 value
                 case ByteCodeOp::InternalGetTlsPtr:
                 case ByteCodeOp::IntrinsicGetContext:
                 case ByteCodeOp::IntrinsicGetProcessInfos:
                 case ByteCodeOp::InternalHasErr:
-                case ByteCodeOp::GetParam64:
                 case ByteCodeOp::GetParam64SI:
                 case ByteCodeOp::MakeBssSegPointer:
                 case ByteCodeOp::MakeConstantSegPointer:
