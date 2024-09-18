@@ -877,13 +877,13 @@ bool ByteCodeGen::emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, 
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, caseNode->ownerSwitch->resultRegisterRc[0]);
 
         if (!resolved->typeInfo->isPointerRef())
-            SWAG_CHECK(ByteCodeGen::emitTypeDeRef(context, r1, resolved->typeInfo));
+            SWAG_CHECK(emitTypeDeRef(context, r1, resolved->typeInfo));
 
         RegisterList r2;
-        ByteCodeGen::reserveRegisterRC(context, r2, 1);
+        reserveRegisterRC(context, r2, 1);
         EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r2, resolved->computedValue.storageOffset);
 
-        SWAG_CHECK(ByteCodeGen::emitAffectEqual(context, r2, r1, resolved->typeInfo, expr));
+        SWAG_CHECK(emitAffectEqual(context, r2, r1, resolved->typeInfo, expr));
 
         freeRegisterRC(context, r1);
         freeRegisterRC(context, r2);
