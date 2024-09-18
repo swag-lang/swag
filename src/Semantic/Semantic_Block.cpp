@@ -373,6 +373,8 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                                 return context->report({expr, formErr(Err0015, expr->token.cstr())}, note);
                             if (typeExpr->isNativeInteger())
                                 return context->report({expr, formErr(Err0013, expr->computedValue()->reg.u64)}, note);
+                            if (typeExpr->isPointerNull())
+                                return context->report({expr, toErr(Err0779)}, note);                            
                             return context->report({expr, formErr(Err0014, expr->computedValue()->reg.f64)}, note);
                         }
 
