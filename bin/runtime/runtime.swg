@@ -22,6 +22,8 @@ func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
 {
     if @typecmp(toType, fromType, .Strict):
         return {0, true}
+    if !toType or !fromType:
+        return {0, false}
 
     foreach ft in fromType.usingFields
     {

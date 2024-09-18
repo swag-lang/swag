@@ -812,19 +812,20 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     // For a switch on an interface, dereference the type once, to use it later in each case
     if (node->typeInfo->isInterface())
     {
+        switchNode->regItfType = reserveRegisterRC(context);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, switchNode->regItfType, node->resultRegisterRc[1]);
+
         const auto seekJump = context->bc->numInstructions;
-        const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc[1], 0);
+        const auto instJump = EMIT_INST2(context, ByteCodeOp::JumpIfZero64, switchNode->regItfType, 0);
         instJump->b.u64     = context->bc->numInstructions;
 
-        switchNode->regItfType = reserveRegisterRC(context);
-
-        auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc[1], 0, switchNode->regItfType);
+        auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, switchNode->regItfType, 0, switchNode->regItfType);
         inst->b.u64 = sizeof(void*);
         inst->addFlag(BCI_IMM_B);
         EMIT_INST2(context, ByteCodeOp::DeRef64, switchNode->regItfType, switchNode->regItfType);
 
         inst        = context->bc->out + seekJump;
-        inst->b.u64 = context->bc->numInstructions - inst->b.u64 + 1; // +1 because of the following "Jump"
+        inst->b.u64 = context->bc->numInstructions - inst->b.u64;
     }
 
     // Jump to the first case
