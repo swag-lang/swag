@@ -155,9 +155,9 @@ bool ByteCodeGen::emitKindOfInterface(ByteCodeGenContext* context, AstNode* node
     const auto rc = node->resultRegisterRc[1];
     freeRegisterRC(context, node->resultRegisterRc[0]);
     node->resultRegisterRc = rc;
-
+    emitSafetyNullCheck(context, node->resultRegisterRc);
+    
     // Deref the type from the itable
-    EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc, 2);
     const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
     inst->b.u64     = sizeof(void*);
     inst->addFlag(BCI_IMM_B);
@@ -170,6 +170,7 @@ bool ByteCodeGen::emitKindOfInterface(ByteCodeGenContext* context, AstNode* node
 bool ByteCodeGen::emitKindOfAny(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitKindOfAny(context, context->node));
+    emitSafetyNullCheck(context, context->node->resultRegisterRc);
     return true;
 }
 
