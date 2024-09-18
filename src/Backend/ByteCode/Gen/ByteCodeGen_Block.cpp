@@ -836,15 +836,20 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
+bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0, uint32_t &sizeofRet)
 {
     r0 = reserveRegisterRC(context);
-    EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, caseNode->ownerSwitch->regItfType, caseNode->ownerSwitch->resultRegisterRc[0], r0);
 
     if (!caseNode->matchVarName.text.empty())
     {
+        sizeofRet = 8;
+        EMIT_INST4(context, ByteCodeOp::IntrinsicAs, expr->resultRegisterRc, caseNode->ownerSwitch->regItfType, caseNode->ownerSwitch->resultRegisterRc[0], r0);
         const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
         EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, resolved->computedValue.storageOffset, r0);
+    }
+    else
+    {
+        EMIT_INST3(context, ByteCodeOp::IntrinsicIs, expr->resultRegisterRc, caseNode->ownerSwitch->regItfType, r0);
     }
 
     return true;
@@ -923,6 +928,8 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
     if (switchExpr)
     {
         RegisterList r0;
+        uint32_t     sizeofRet = 1;
+
         if (expr->is(AstNodeKind::Range))
         {
             context->node        = caseNode->block;
@@ -940,7 +947,7 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         }
         else if (switchExpr->typeInfo->isInterface())
         {
-            SWAG_CHECK(emitSwitchCaseInterface(context, expr, caseNode, r0));
+            SWAG_CHECK(emitSwitchCaseInterface(context, expr, caseNode, r0, sizeofRet));
         }
         else if (switchExpr->typeInfo->isAny())
         {
@@ -954,16 +961,16 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
 
-        // :ItfCaseJump
-        if (switchExpr->typeInfo->isInterface())
+        if (sizeofRet == 8)
         {
             const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0);
-            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+            inst->b.u64     = context->bc->numInstructions;
         }
         else
         {
+            SWAG_ASSERT(sizeofRet == 1);
             const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0);
-            inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+            inst->b.u64     = context->bc->numInstructions;
         }
 
         freeRegisterRC(context, r0);
