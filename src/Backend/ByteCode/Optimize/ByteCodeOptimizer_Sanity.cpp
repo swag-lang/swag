@@ -389,7 +389,7 @@ namespace
 
 namespace
 {
-    bool raiseError(const Context& cxt, const Utf8& msg, const SymbolOverload* overload = nullptr)
+    bool raiseError(const Context& cxt, const Utf8& msg, const SymbolOverload* overload = nullptr, const Utf8& note = "")
     {
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
@@ -410,13 +410,17 @@ namespace
         if (nodeLoc)
         {
             Diagnostic err({nodeLoc, nodeLoc->token, msg});
-            if(nodeLoc != ip->node && ip->node)
-                err.addNote(ip->node, ip->node->token, toNte(Nte0223));    
+            if (nodeLoc != ip->node && ip->node)
+                err.addNote(ip->node, ip->node->token, toNte(Nte0223));
+            if (!note.empty())
+                err.addNote(note);
             return cxt.context->report(err);
         }
 
         const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
-        const Diagnostic err({loc.file, *loc.location, msg});
+        Diagnostic err({loc.file, *loc.location, msg});
+        if (!note.empty())
+            err.addNote(note);
         return cxt.context->report(err);
     }
 
@@ -433,17 +437,20 @@ namespace
             return true;
         if (!isZero)
             return true;
+
+        Utf8 what = "";
         if (overload)
-            return raiseError(cxt, formErr(San0002, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
-        return raiseError(cxt, toErr(San0001));
+            what = form("of %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
+        return raiseError(cxt, formErr(San0002, what.cstr()), overload);
     }
 
     bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const SymbolOverload* overload = nullptr)
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
+        Utf8 what = "a local or a temporary variable";
         if (overload)
-            return raiseError(cxt, formErr(San0004, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
-        return raiseError(cxt, toErr(San0003));
+            what = form("%s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
+        return raiseError(cxt, formErr(San0004, what.cstr()), overload);
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
@@ -453,7 +460,7 @@ namespace
         return true;
     }
 
-    bool checkNotNull(const Context& cxt, const Value* value)
+    bool checkNotNull(const Context& cxt, const Value* value, const Utf8& note = "")
     {
         if (value->kind != ValueKind::Constant)
             return true;
@@ -463,7 +470,7 @@ namespace
         Utf8 what = "pointer";
         if (value->overload)
             what = form("%s [[%s]]", Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr());
-        return raiseError(cxt, formErr(San0006, what.cstr()), value->overload);
+        return raiseError(cxt, formErr(San0006, what.cstr()), value->overload, note);
     }
 
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const SymbolOverload* overload = nullptr)
@@ -718,7 +725,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicCVaStart:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    SWAG_CHECK(checkNotNull(cxt, ra));
+                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@cvastart]] cannot have a null argument"));
                     if (ra->kind == ValueKind::StackAddr)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, 8));
@@ -2272,8 +2279,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra));
-                    SWAG_CHECK(checkNotNull(cxt, rb));
+                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memcpy]] cannot have a null address as first argument"));
+                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memcpy]] cannot have a null address as second argument"));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2290,8 +2297,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra));
-                    SWAG_CHECK(checkNotNull(cxt, rb));
+                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memmove]] cannot have a null address as a first argument"));
+                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memmove]] cannot have a null address as a second argument"));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2308,7 +2315,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra));
+                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memset]] cannot have a null address as a first argument"));
                     if (ra->kind == ValueKind::StackAddr && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2386,6 +2393,9 @@ namespace
                         ra->kind = ValueKind::Constant;
                         SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, {}));
                     }
+                    break;
+
+                case ByteCodeOp::Nop:
                     break;
 
                 default:
