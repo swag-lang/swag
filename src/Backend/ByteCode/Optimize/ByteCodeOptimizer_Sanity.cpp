@@ -8,6 +8,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
+#include <winternl.h>
 
 #define STATE() cxt.states[cxt.state]
 
@@ -406,13 +407,15 @@ namespace
             });
         }
 
+        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
+
         if (nodeLoc)
         {
-            const Diagnostic err({nodeLoc, nodeLoc->token, msg});
+            Diagnostic err({nodeLoc, nodeLoc->token, msg});
+            if (*loc.location != nodeLoc->token.startLocation)
+                err.addNote(*loc.location, *loc.location, toNte(Nte0223));
             return cxt.context->report(err);
         }
-
-        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
 
         const Diagnostic err({loc.file, *loc.location, msg});
         return cxt.context->report(err);
@@ -457,9 +460,11 @@ namespace
             return true;
         if (value->reg.u64)
             return true;
+
+        Utf8 what = "pointer";
         if (value->overload)
-            return raiseError(cxt, formErr(San0006, Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr()), value->overload);
-        return raiseError(cxt, toErr(San0005));
+            what = form("%s [[%s]]", Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr());
+        return raiseError(cxt, formErr(San0006, what.cstr()), value->overload);
     }
 
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const SymbolOverload* overload = nullptr)
@@ -468,9 +473,10 @@ namespace
         SWAG_CHECK(getStackValue(value, cxt, addr, sizeOf));
         if (value.kind == ValueKind::Invalid)
         {
+            Utf8 what = "memory";
             if (overload)
-                return raiseError(cxt, formErr(San0008, Naming::kindName(overload).cstr(), overload->symbol->name.cstr()), overload);
-            return raiseError(cxt, toErr(San0009));
+                what = form("%s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
+            return raiseError(cxt, formErr(San0008, what.cstr()), overload);
         }
 
         return true;
@@ -643,8 +649,18 @@ namespace
                 case ByteCodeOp::GetParam64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     ra->kind = ValueKind::Unknown;
+
                     if (ip->node && ip->node->resolvedSymbolOverload())
+                    {
                         ra->overload = ip->node->resolvedSymbolOverload();
+                        if (ra->overload->typeInfo->isString())
+                        {
+                            /*ra->kind            = ValueKind::Constant;
+                            ra->reg.pointer     = nullptr;
+                            cxt.canSetConstants = false;*/
+                        }
+                    }
+
                     break;
 
                 // Fake 1 value

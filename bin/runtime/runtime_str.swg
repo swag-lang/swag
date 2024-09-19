@@ -4,12 +4,16 @@ using Swag
 
 func __strcat(start: ^u8, max: s32, src: string)
 {
-    let dstLen = @strlen(start)
     var srcLen = @countof(src)
+    if !srcLen:
+        return
+
+    let dstLen = @strlen(start)
     if dstLen + srcLen + 1 > max:
         srcLen = max - (dstLen + 1)
     if !srcLen:
         return
+        
     @memcpy(start + dstLen, @dataof(src), srcLen)
     start[dstLen + srcLen] = 0
 }
