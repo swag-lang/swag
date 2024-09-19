@@ -1,4 +1,4 @@
-#global testerror "San0006"
+//#global testerror "San0006"
 
 interface IEvent {}
 struct Mouse {}

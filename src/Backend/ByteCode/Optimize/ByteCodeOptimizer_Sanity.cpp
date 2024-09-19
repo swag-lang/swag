@@ -394,12 +394,12 @@ namespace
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
 
-        AstNode*   nodeLoc = nullptr;
         const auto ip      = cxt.states[cxt.state]->ip;
+        AstNode*   nodeLoc = ip->node;
         if (overload && ip->node)
         {
             Ast::visit(ip->node, [&](AstNode* n) {
-                if (n->resolvedSymbolOverload() == overload && !nodeLoc)
+                if (n->resolvedSymbolOverload() == overload && n->is(AstNodeKind::Identifier))
                 {
                     nodeLoc = n;
                     return;
@@ -407,16 +407,15 @@ namespace
             });
         }
 
-        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
-
         if (nodeLoc)
         {
             Diagnostic err({nodeLoc, nodeLoc->token, msg});
-            if (*loc.location != nodeLoc->token.startLocation)
-                err.addNote(*loc.location, *loc.location, toNte(Nte0223));
+            if(nodeLoc != ip->node && ip->node)
+                err.addNote(ip->node, ip->node->token, toNte(Nte0223));    
             return cxt.context->report(err);
         }
 
+        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
         const Diagnostic err({loc.file, *loc.location, msg});
         return cxt.context->report(err);
     }
