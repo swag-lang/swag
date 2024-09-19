@@ -122,7 +122,7 @@
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
     SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
-    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)            \
+    if (vb.isConstant() && vb.reg.__reg == 0)                           \
     {                                                                   \
         SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
         rc->kind = ValueKind::Unknown;                                  \
@@ -153,43 +153,43 @@
         }                                                                                     \
     } while (0)
 
-#define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                                      \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
-    if (rc->kind == ValueKind::Constant)                                                                                    \
-    {                                                                                                                       \
-        __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);                                             \
-    }                                                                                                                       \
+#define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                        \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                   \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                   \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                              \
+    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown; \
+    if (rc->isConstant())                                                                     \
+    {                                                                                         \
+        __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);               \
+    }                                                                                         \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define BINOP(__op, __reg)                                                                                                  \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
-    if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
+#define BINOP(__op, __reg)                                                                    \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                   \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                   \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                              \
+    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown; \
+    if (rc->isConstant())                                                                     \
+        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                       \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                                        \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
-    if (rc->kind == ValueKind::Constant)                                                                                    \
-    {                                                                                                                       \
-        SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                    \
-        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
-    }                                                                                                                       \
+#define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                     \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                              \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                              \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                         \
+    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;            \
+    if (rc->isConstant())                                                                                \
+    {                                                                                                    \
+        SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type)); \
+        rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                  \
+    }                                                                                                    \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define BINOP_DIV(__op, __reg)                                          \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
     SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
-    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)            \
+    if (vb.isConstant() && vb.reg.__reg == 0)                           \
     {                                                                   \
         SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
         rc->kind = ValueKind::Unknown;                                  \
@@ -197,13 +197,13 @@
     }                                                                   \
     BINOP(__op, __reg)
 
-#define CMP_OP(__op, __reg)                                                                                                 \
-    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
-    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
-    if (rc->kind == ValueKind::Constant)                                                                                    \
-        rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
+#define CMP_OP(__op, __reg)                                                                   \
+    SWAG_CHECK(getImmediateA(va, cxt, ip));                                                   \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                   \
+    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                              \
+    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown; \
+    if (rc->isConstant())                                                                     \
+        rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                           \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define JUMPT(__expr0, __expr1)                       \
@@ -229,12 +229,12 @@
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(va, cxt, ip)); \
-    JUMPT(va.kind == ValueKind::Constant, __expr)
+    JUMPT(va.isConstant(), __expr)
 
 #define JUMP2(__expr)                       \
     SWAG_CHECK(getImmediateA(va, cxt, ip)); \
     SWAG_CHECK(getImmediateC(vc, cxt, ip)); \
-    JUMPT(va.kind == ValueKind::Constant && vc.kind == ValueKind::Constant, __expr)
+    JUMPT(va.isConstant() && vc.isConstant(), __expr)
 
 enum class RefKind
 {
@@ -248,6 +248,7 @@ enum class ValueKind : uint8_t
     Invalid,
     StackAddr,
     Constant,
+    ZeroParam,
     Unknown,
 };
 
@@ -256,6 +257,8 @@ struct Value
     ValueKind       kind = ValueKind::Invalid;
     Register        reg;
     SymbolOverload* overload = nullptr;
+
+    bool isConstant() const { return kind == ValueKind::Constant || kind == ValueKind::ZeroParam; }
 };
 
 struct State
@@ -291,7 +294,7 @@ namespace
     {
         if (!cxt.canSetConstants)
             return;
-        if (kind != ValueKind::Constant)
+        if (kind != ValueKind::Constant && kind != ValueKind::ZeroParam)
             return;
         if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
             return;
@@ -407,21 +410,31 @@ namespace
             });
         }
 
+        Diagnostic* err = nullptr;
         if (nodeLoc)
         {
-            Diagnostic err({nodeLoc, nodeLoc->token, msg});
+            err = new Diagnostic{nodeLoc, nodeLoc->token, msg};
             if (nodeLoc != ip->node && ip->node)
-                err.addNote(ip->node, ip->node->token, toNte(Nte0223));
-            if (!note.empty())
-                err.addNote(note);
-            return cxt.context->report(err);
+                err->addNote(ip->node, ip->node->token, toNte(Nte0223));
+        }
+        else
+        {
+            const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
+            err            = new Diagnostic{loc.file, *loc.location, msg};
         }
 
-        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
-        Diagnostic err({loc.file, *loc.location, msg});
         if (!note.empty())
-            err.addNote(note);
-        return cxt.context->report(err);
+            err->addNote(note);
+
+        for (uint32_t i = 0; i < cxt.state; i++)
+        {
+            if (cxt.states[i]->branchIp && cxt.states[i]->branchIp->node)
+            {
+                err->addNote(cxt.states[i]->branchIp->node, "when this is true");
+            }
+        }
+
+        return cxt.context->report(*err);
     }
 
     bool checkOverflow(const Context& cxt, bool isValid, const char* msgKind, TypeInfo* type)
@@ -433,7 +446,7 @@ namespace
 
     bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const SymbolOverload* overload = nullptr)
     {
-        if (value.kind != ValueKind::Constant)
+        if (!value.isConstant())
             return true;
         if (!isZero)
             return true;
@@ -462,7 +475,7 @@ namespace
 
     bool checkNotNull(const Context& cxt, const Value* value, const Utf8& note = "")
     {
-        if (value->kind != ValueKind::Constant)
+        if (!value->isConstant())
             return true;
         if (value->reg.u64)
             return true;
@@ -470,6 +483,7 @@ namespace
         Utf8 what = "pointer";
         if (value->overload)
             what = form("%s [[%s]]", Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr());
+
         return raiseError(cxt, formErr(San0006, what.cstr()), value->overload, note);
     }
 
@@ -661,7 +675,7 @@ namespace
                         ra->overload = ip->node->resolvedSymbolOverload();
                         if (ra->overload->typeInfo->isString())
                         {
-                            /*ra->kind            = ValueKind::Constant;
+                            /*ra->kind            = ValueKind::ZeroParam;
                             ra->reg.pointer     = nullptr;
                             cxt.canSetConstants = false;*/
                         }
@@ -867,9 +881,9 @@ namespace
 
                 case ByteCodeOp::JumpIfEqual64:
                     JUMP2(va.reg.u64 == vc.reg.u64);
-                    if (jmpAddState && vc.kind == ValueKind::Constant)
+                    if (jmpAddState && vc.isConstant())
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].kind    = vc.kind;
                         jmpAddState->regs[ip->a.u32].reg.u64 = vc.reg.u64;
                     }
                     break;
@@ -936,8 +950,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.u8 - vb.reg.u8;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -947,8 +961,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.u16 - vb.reg.u16;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -958,8 +972,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.u32 - vb.reg.u32;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -969,8 +983,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.u64 - vb.reg.u64;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -980,8 +994,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.f32 - vb.reg.f32;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -991,8 +1005,8 @@ namespace
                     SWAG_CHECK(getImmediateA(va, cxt, ip));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
-                    rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (rc->kind == ValueKind::Constant)
+                    rc->kind = va.isConstant() && vb.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (rc->isConstant())
                     {
                         auto sub    = va.reg.f64 - vb.reg.f64;
                         rc->reg.s32 = (sub > 0) - (sub < 0);
@@ -2281,7 +2295,7 @@ namespace
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@memcpy]] cannot have a null address as first argument"));
                     SWAG_CHECK(checkNotNull(cxt, rb, "[[@memcpy]] cannot have a null address as second argument"));
-                    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
+                    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
                         SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
@@ -2299,7 +2313,7 @@ namespace
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@memmove]] cannot have a null address as a first argument"));
                     SWAG_CHECK(checkNotNull(cxt, rb, "[[@memmove]] cannot have a null address as a second argument"));
-                    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.kind == ValueKind::Constant)
+                    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
                         SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
@@ -2316,7 +2330,7 @@ namespace
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@memset]] cannot have a null address as a first argument"));
-                    if (ra->kind == ValueKind::StackAddr && vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
+                    if (ra->kind == ValueKind::StackAddr && vb.isConstant() && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
                         setStackValue(cxt, addr, vc.reg.u32, ValueKind::Constant);
@@ -2342,8 +2356,8 @@ namespace
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     SWAG_CHECK(getImmediateD(vd, cxt, ip));
-                    ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (ra->kind == ValueKind::Constant)
+                    ra->kind = vb.isConstant() && vc.isConstant() && vd.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (ra->isConstant())
                         ra->reg.f32 = vb.reg.f32 * vc.reg.f32 + vd.reg.f32;
                     setConstant(cxt, ra->kind, ip, ra->reg.u32, ConstantKind::SetImmediateA);
                     break;
@@ -2352,8 +2366,8 @@ namespace
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     SWAG_CHECK(getImmediateD(vd, cxt, ip));
-                    ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
-                    if (ra->kind == ValueKind::Constant)
+                    ra->kind = vb.isConstant() && vc.isConstant() && vd.isConstant() ? ValueKind::Constant : ValueKind::Unknown;
+                    if (ra->isConstant())
                         ra->reg.f64 = vb.reg.f64 * vc.reg.f64 + vd.reg.f64;
                     setConstant(cxt, ra->kind, ip, ra->reg.u64, ConstantKind::SetImmediateA);
                     break;
@@ -2367,7 +2381,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     ra->kind = ValueKind::Unknown;
-                    if (vb.kind == ValueKind::Constant)
+                    if (vb.isConstant())
                     {
                         ra->kind = ValueKind::Constant;
                         SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, {}, {}));
@@ -2388,7 +2402,7 @@ namespace
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
                     ra->kind = ValueKind::Unknown;
-                    if (vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
+                    if (vb.isConstant() && vc.isConstant())
                     {
                         ra->kind = ValueKind::Constant;
                         SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, {}));
