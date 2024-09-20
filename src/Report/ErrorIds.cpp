@@ -115,13 +115,13 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0002, "[sanity] division by zero    $ possible division by zero %s");
-    SWAG_ERROR(San0004, "[sanity] frame escape        $ attempt to return %s");
-    SWAG_ERROR(San0006, "[sanity] null pointer        $ attempt to use null %s");
+    SWAG_ERROR(San0002, "[sanity] division by zero    $ possible division by zero");
+    SWAG_ERROR(San0004, "[sanity] frame escape        $ attempt to return something from the stack memory");
+    SWAG_ERROR(San0006, "[sanity] null dereference    $ attempt to dereference a null pointer");
     SWAG_ERROR(San0007, "[sanity] stack overwrite     $ attempt to overwrite the stack memory at offset [[%lld]] (stack size is [[%lld]])");
-    SWAG_ERROR(San0008, "[sanity] uninitialized usage $ attempt to use uninitialized %s");
-    SWAG_ERROR(San0010, "[sanity] overflow            $ possible overflow in [[%s]] (type is [[%s]])");
-    SWAG_ERROR(San0001, nullptr);
+    SWAG_ERROR(San0008, "[sanity] uninitialized usage $ attempt to use uninitialized memory");
+    SWAG_ERROR(San0010, "[sanity] overflow            $ possible overflow in [['%s']] (type is [[%s]])");
+    SWAG_ERROR(San0001, "[sanity] null argument       $ invalid null argument when calling [[%s]]");
     SWAG_ERROR(San0003, nullptr);
     SWAG_ERROR(San0005, nullptr);
     SWAG_ERROR(San0009, nullptr);

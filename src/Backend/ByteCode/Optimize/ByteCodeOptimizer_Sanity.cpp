@@ -120,16 +120,16 @@
         }                                                                                                           \
     } while (0)
 
-#define BINOP_EQ_DIV(__cast, __op, __reg)                     \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));              \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                   \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                 \
-    {                                                         \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));          \
-        rc->kind = ValueKind::Unknown;                        \
-        break;                                                \
-    }                                                         \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                      \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));               \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                    \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, &vb)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)                  \
+    {                                                          \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));           \
+        rc->kind = ValueKind::Unknown;                         \
+        break;                                                 \
+    }                                                          \
     BINOP_EQ(__cast, __op, __reg)
 
 #define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                              \
@@ -187,16 +187,16 @@
     }                                                                                                    \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define BINOP_DIV(__op, __reg)                                \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));              \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                   \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                 \
-    {                                                         \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));          \
-        rc->kind = ValueKind::Unknown;                        \
-        break;                                                \
-    }                                                         \
+#define BINOP_DIV(__op, __reg)                                 \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));               \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                    \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, &vb)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)                  \
+    {                                                          \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));           \
+        rc->kind = ValueKind::Unknown;                         \
+        break;                                                 \
+    }                                                          \
     BINOP(__op, __reg)
 
 #define CMP_OP(__op, __reg)                                                                   \
@@ -260,7 +260,6 @@ struct Value
     Register             reg;
     SymbolOverload*      overload = nullptr;
     ByteCodeInstruction* ip       = nullptr;
-    AstNode*             locNode  = nullptr;
 
     bool isConstant() const { return kind == ValueKind::Constant || kind == ValueKind::ZeroParam; }
 };
@@ -397,50 +396,36 @@ namespace
 
 namespace
 {
-    bool raiseError(const Context& cxt, const Utf8& msg, const Value* locValue = nullptr, const Utf8& note = "")
+    bool raiseError(const Context& cxt, const Utf8& msg, AstNode* loc = nullptr, const Value* locValue = nullptr)
     {
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
 
         const auto ip = cxt.states[cxt.state]->ip;
+        if (!ip->node)
+            return true;
 
-        AstNode* locNode = nullptr;
-        if (locValue && locValue->locNode)
-            locNode = locValue->locNode;
-        else
+        AstNode* locNode = loc ? loc : ip->node;
+
+        Diagnostic err{locNode, locNode->token, msg};
+
+        if (locValue && locValue->overload)
         {
-            locNode = ip->node;
-            if (locValue && locValue->overload && ip->node)
-            {
-                Ast::visit(ip->node, [&](AstNode* n) {
-                    if (n->resolvedSymbolOverload() == locValue->overload && n->is(AstNodeKind::Identifier))
-                    {
-                        locNode = n;
-                        return;
-                    }
-                });
-            }
+            auto locNode1 = STATE()->ip->node;
+            Ast::visit(ip->node, [&](AstNode* n) {
+                if (n->resolvedSymbolOverload() == locValue->overload && n->is(AstNodeKind::Identifier))
+                {
+                    locNode1 = n;
+                    return;
+                }
+            });
+
+            const Utf8 what = form("culprit is %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
+            if (locNode != locNode1)
+                err.addNote(locNode1, locNode1->token, what);
+            else
+                err.addNote(what);
         }
-
-        Diagnostic* err = nullptr;
-        if (locNode)
-        {
-            err = new Diagnostic{locNode, locNode->token, msg};
-        }
-        else
-        {
-            const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
-            err            = new Diagnostic{loc.file, *loc.location, msg};
-        }
-
-        if (locNode != ip->node && ip->node)
-            err->addNote(ip->node, ip->node->token, "this is the culprit operation");
-
-        if (locValue && locValue->ip && locValue->ip->node && locValue->ip->node != locNode)
-            err->addNote(locValue->ip->node, locValue->ip->node->token, "this is the origin");
-
-        if (!note.empty())
-            err->addNote(note);
 
         uint32_t curState = cxt.state;
         while (curState != UINT32_MAX)
@@ -465,13 +450,13 @@ namespace
                 where += Log::colorToVTS(LogColor::White);
                 where += ": ";
                 where += code;
-                err->remarks.push_back(where);
+                err.remarks.push_back(where);
             }
 
             curState = cxt.states[curState]->parent;
         }
 
-        return cxt.context->report(*err);
+        return cxt.context->report(err);
     }
 
     bool checkOverflow(const Context& cxt, bool isValid, const char* msgKind, TypeInfo* type)
@@ -487,20 +472,13 @@ namespace
             return true;
         if (!isZero)
             return true;
-
-        Utf8 what = "";
-        if (locValue && locValue->overload)
-            what = form("of %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
-        return raiseError(cxt, formErr(San0002, what.cstr()), locValue);
+        return raiseError(cxt, toErr(San0002), nullptr, locValue);
     }
 
     bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const Value* locValue = nullptr)
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
-        Utf8 what = "a local or a temporary variable";
-        if (locValue && locValue->overload)
-            what = form("%s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
-        return raiseError(cxt, formErr(San0004, what.cstr()), locValue);
+        return raiseError(cxt, toErr(San0004), nullptr, locValue);
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
@@ -510,18 +488,13 @@ namespace
         return true;
     }
 
-    bool checkNotNull(const Context& cxt, const Value* value, const Utf8& note = "")
+    bool checkNotNull(const Context& cxt, const Value* value, AstNode* locNode = nullptr, const Utf8& err = "")
     {
         if (!value->isConstant())
             return true;
         if (value->reg.u64)
             return true;
-
-        Utf8 what = "pointer";
-        if (value->overload)
-            what = form("%s [[%s]]", Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr());
-
-        return raiseError(cxt, formErr(San0006, what.cstr()), value, note);
+        return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value);
     }
 
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const Value* locValue = nullptr)
@@ -529,13 +502,7 @@ namespace
         Value memValue;
         SWAG_CHECK(getStackValue(memValue, cxt, addr, sizeOf));
         if (memValue.kind == ValueKind::Invalid)
-        {
-            Utf8 what = "memory";
-            if (locValue && locValue->overload)
-                what = form("%s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
-            return raiseError(cxt, formErr(San0008, what.cstr()), locValue);
-        }
-
+            return raiseError(cxt, toErr(San0008), nullptr, locValue);
         return true;
     }
 }
@@ -553,12 +520,14 @@ namespace
         return true;
     }
 
-    bool getImmediateA(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateA(Value& result, const Context& cxt, ByteCodeInstruction* ip)
     {
         if (ip->hasFlag(BCI_IMM_A))
         {
-            result.kind = ValueKind::Constant;
-            result.reg  = ip->b;
+            result.kind     = ValueKind::Constant;
+            result.reg      = ip->b;
+            result.overload = nullptr;
+            result.ip       = ip;
             return true;
         }
 
@@ -568,12 +537,14 @@ namespace
         return true;
     }
 
-    bool getImmediateB(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateB(Value& result, const Context& cxt, ByteCodeInstruction* ip)
     {
         if (ip->hasFlag(BCI_IMM_B))
         {
-            result.kind = ValueKind::Constant;
-            result.reg  = ip->b;
+            result.kind     = ValueKind::Constant;
+            result.reg      = ip->b;
+            result.overload = nullptr;
+            result.ip       = ip;
             return true;
         }
 
@@ -583,12 +554,14 @@ namespace
         return true;
     }
 
-    bool getImmediateC(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateC(Value& result, const Context& cxt, ByteCodeInstruction* ip)
     {
         if (ip->hasFlag(BCI_IMM_C))
         {
-            result.kind = ValueKind::Constant;
-            result.reg  = ip->c;
+            result.kind     = ValueKind::Constant;
+            result.reg      = ip->c;
+            result.overload = nullptr;
+            result.ip       = ip;
             return true;
         }
 
@@ -598,12 +571,14 @@ namespace
         return true;
     }
 
-    bool getImmediateD(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateD(Value& result, const Context& cxt, ByteCodeInstruction* ip)
     {
         if (ip->hasFlag(BCI_IMM_D))
         {
-            result.kind = ValueKind::Constant;
-            result.reg  = ip->d;
+            result.kind     = ValueKind::Constant;
+            result.reg      = ip->d;
+            result.overload = nullptr;
+            result.ip       = ip;
             return true;
         }
 
@@ -626,8 +601,9 @@ namespace
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
         for (uint32_t i = offset; i < offset + sizeOf; i++)
         {
-            STATE()->stackValue[i].kind = kind;
-            STATE()->stackValue[i].ip   = STATE()->ip;
+            STATE()->stackValue[i].kind     = kind;
+            STATE()->stackValue[i].ip       = STATE()->ip;
+            STATE()->stackValue[i].overload = STATE()->ip->node ? STATE()->ip->node->resolvedSymbolOverload() : nullptr;
         }
     }
 
@@ -780,8 +756,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicCVaStart:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->locNode = ip->node->firstChild()->firstChild();
-                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@cvastart]] cannot have a null argument"));
+                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@cvastart")));
                     if (ra->kind == ValueKind::StackAddr)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, 8));
@@ -908,16 +883,18 @@ namespace
                     JUMP1(!va.reg.b);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfTrue:
                     JUMP1(va.reg.b);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 1;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 1;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
 
@@ -925,8 +902,9 @@ namespace
                     JUMP2(va.reg.u64 == vc.reg.u64);
                     if (jmpAddState && vc.isConstant())
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = vc.kind;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = vc.reg.u64;
+                        jmpAddState->regs[ip->a.u32].kind     = vc.kind;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = vc.reg.u64;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
 
@@ -934,32 +912,36 @@ namespace
                     JUMP1(va.reg.u8 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero16:
                     JUMP1(va.reg.u16 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero32:
                     JUMP1(va.reg.u32 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero64:
                     JUMP1(va.reg.u64 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
+                        jmpAddState->regs[ip->a.u32].overload = nullptr;
                     }
                     break;
 
@@ -1239,18 +1221,24 @@ namespace
 
                 case ByteCodeOp::SetImmediate32:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind    = ValueKind::Constant;
-                    ra->reg.u64 = ip->b.u32;
+                    ra->kind     = ValueKind::Constant;
+                    ra->reg.u64  = ip->b.u32;
+                    ra->overload = nullptr;
+                    ra->ip       = ip;
                     break;
                 case ByteCodeOp::SetImmediate64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind    = ValueKind::Constant;
-                    ra->reg.u64 = ip->b.u64;
+                    ra->kind     = ValueKind::Constant;
+                    ra->reg.u64  = ip->b.u64;
+                    ra->overload = nullptr;
+                    ra->ip       = ip;
                     break;
                 case ByteCodeOp::ClearRA:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind    = ValueKind::Constant;
-                    ra->reg.u64 = 0;
+                    ra->kind     = ValueKind::Constant;
+                    ra->reg.u64  = 0;
+                    ra->overload = nullptr;
+                    ra->ip       = ip;
                     break;
 
                 case ByteCodeOp::Add64byVB64:
@@ -2337,10 +2325,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    ra->locNode = ip->node->firstChild()->firstChild();
-                    rb->locNode = ip->node->firstChild()->secondChild();
-                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memcpy]] cannot have a null address as a first argument"));
-                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memcpy]] cannot have a null address as a second argument"));
+                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memcpy")));
+                    SWAG_CHECK(checkNotNull(cxt, rb, ip->node->firstChild()->secondChild(), formErr(San0001, "@memcpy")));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2357,10 +2343,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    ra->locNode = ip->node->firstChild()->firstChild();
-                    rb->locNode = ip->node->firstChild()->secondChild();
-                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memmove]] cannot have a null address as a first argument"));
-                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memmove]] cannot have a null address as a second argument"));
+                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memmove")));
+                    SWAG_CHECK(checkNotNull(cxt, rb, ip->node->firstChild()->secondChild(), formErr(San0001, "@memmove")));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2377,8 +2361,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    ra->locNode = ip->node->firstChild()->firstChild();
-                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memset]] cannot have a null address as a first argument"));
+                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memset")));
                     if (ra->kind == ValueKind::StackAddr && vb.isConstant() && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
