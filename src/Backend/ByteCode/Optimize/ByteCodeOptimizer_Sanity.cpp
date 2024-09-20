@@ -14,40 +14,40 @@
 
 #define STATE() cxt.states[cxt.state]
 
-#define MEMCPY(__cast, __sizeof)                                               \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                               \
-    SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                               \
-    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr)  \
-    {                                                                          \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, __sizeof));         \
-        SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, __sizeof));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr2, __sizeof, rb->overload)); \
-        SWAG_CHECK(getStackValue(vb, cxt, addr2, __sizeof));                   \
-        setStackValue(cxt, addr, __sizeof, vb.kind);                           \
-        *(__cast*) addr = *(__cast*) addr2;                                    \
-        break;                                                                 \
-    }                                                                          \
+#define MEMCPY(__cast, __sizeof)                                              \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                              \
+    SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                              \
+    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr) \
+    {                                                                         \
+        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, __sizeof));        \
+        SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, __sizeof));       \
+        SWAG_CHECK(checkStackInitialized(cxt, addr2, __sizeof, rb));          \
+        SWAG_CHECK(getStackValue(vb, cxt, addr2, __sizeof));                  \
+        setStackValue(cxt, addr, __sizeof, vb.kind);                          \
+        *(__cast*) addr = *(__cast*) addr2;                                   \
+        break;                                                                \
+    }                                                                         \
     invalidateCurStateStack(cxt)
 
-#define BINOP_EQ(__cast, __op, __reg)                                                         \
-    do                                                                                        \
-    {                                                                                         \
-        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-        if (ra->kind == ValueKind::StackAddr)                                                 \
-        {                                                                                     \
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
-            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
-                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-            else                                                                              \
-            {                                                                                 \
-                *(__cast*) addr __op vb.reg.__reg;                                            \
-                setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));  \
-            }                                                                                 \
-        }                                                                                     \
+#define BINOP_EQ(__cast, __op, __reg)                                                        \
+    do                                                                                       \
+    {                                                                                        \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                         \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                   \
+        if (ra->kind == ValueKind::StackAddr)                                                \
+        {                                                                                    \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));       \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra));          \
+            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                  \
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                          \
+            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)              \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);          \
+            else                                                                             \
+            {                                                                                \
+                *(__cast*) addr __op vb.reg.__reg;                                           \
+                setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg)); \
+            }                                                                                \
+        }                                                                                    \
     } while (0)
 
 #define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                              \
@@ -58,7 +58,7 @@
         if (ra->kind == ValueKind::StackAddr)                                                                                \
         {                                                                                                                    \
             SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                       \
-            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra));                                          \
             SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                  \
             SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                          \
             if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                              \
@@ -72,27 +72,27 @@
         }                                                                                                                    \
     } while (0)
 
-#define ATOM_EQ(__cast, __op, __reg)                                                          \
-    do                                                                                        \
-    {                                                                                         \
-        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                          \
-        rc->kind = ValueKind::Unknown;                                                        \
-        if (ra->kind == ValueKind::StackAddr)                                                 \
-        {                                                                                     \
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-            SWAG_CHECK(getStackValue(*rc, cxt, addr, sizeof(vb.reg.__reg)));                  \
-            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                      \
-            if (rc->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown)             \
-                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-            else                                                                              \
-            {                                                                                 \
-                rc->reg.__reg = *(__cast*) addr;                                              \
-                *(__cast*) addr __op rb->reg.__reg;                                           \
-            }                                                                                 \
-        }                                                                                     \
+#define ATOM_EQ(__cast, __op, __reg)                                                   \
+    do                                                                                 \
+    {                                                                                  \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                   \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                             \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                   \
+        rc->kind = ValueKind::Unknown;                                                 \
+        if (ra->kind == ValueKind::StackAddr)                                          \
+        {                                                                              \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg))); \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra));    \
+            SWAG_CHECK(getStackValue(*rc, cxt, addr, sizeof(vb.reg.__reg)));           \
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                               \
+            if (rc->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown)      \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);    \
+            else                                                                       \
+            {                                                                          \
+                rc->reg.__reg = *(__cast*) addr;                                       \
+                *(__cast*) addr __op rb->reg.__reg;                                    \
+            }                                                                          \
+        }                                                                              \
     } while (0)
 
 #define ATOM_EQ_XCHG(__cast, __reg)                                                                                 \
@@ -105,7 +105,7 @@
         if (ra->kind == ValueKind::StackAddr)                                                                       \
         {                                                                                                           \
             SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                              \
-            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                       \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra));                                 \
             SWAG_CHECK(getStackValue(*rd, cxt, addr, sizeof(vb.reg.__reg)));                                        \
             SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                                            \
             SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                            \
@@ -120,39 +120,39 @@
         }                                                                                                           \
     } while (0)
 
-#define BINOP_EQ_DIV(__cast, __op, __reg)                               \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                           \
-    {                                                                   \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
-        rc->kind = ValueKind::Unknown;                                  \
-        break;                                                          \
-    }                                                                   \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                     \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));              \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                   \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)                 \
+    {                                                         \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));          \
+        rc->kind = ValueKind::Unknown;                        \
+        break;                                                \
+    }                                                         \
     BINOP_EQ(__cast, __op, __reg)
 
-#define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                                     \
-    do                                                                                        \
-    {                                                                                         \
-        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-        if (ra->kind == ValueKind::StackAddr)                                                 \
-        {                                                                                     \
-            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
-            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
-                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-            else                                                                              \
-            {                                                                                 \
-                Register r;                                                                   \
-                r.__reg = *(__cast*) addr;                                                    \
-                __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                  \
-                *(__cast*) addr = r.__reg;                                                    \
-            }                                                                                 \
-        }                                                                                     \
+#define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                              \
+    do                                                                                 \
+    {                                                                                  \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                   \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                             \
+        if (ra->kind == ValueKind::StackAddr)                                          \
+        {                                                                              \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg))); \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra));    \
+            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));            \
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                    \
+            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)        \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);    \
+            else                                                                       \
+            {                                                                          \
+                Register r;                                                            \
+                r.__reg = *(__cast*) addr;                                             \
+                __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);           \
+                *(__cast*) addr = r.__reg;                                             \
+            }                                                                          \
+        }                                                                              \
     } while (0)
 
 #define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                        \
@@ -187,16 +187,16 @@
     }                                                                                                    \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define BINOP_DIV(__op, __reg)                                          \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                           \
-    {                                                                   \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
-        rc->kind = ValueKind::Unknown;                                  \
-        break;                                                          \
-    }                                                                   \
+#define BINOP_DIV(__op, __reg)                                \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));              \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                   \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)                 \
+    {                                                         \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));          \
+        rc->kind = ValueKind::Unknown;                        \
+        break;                                                \
+    }                                                         \
     BINOP(__op, __reg)
 
 #define CMP_OP(__op, __reg)                                                                   \
@@ -256,9 +256,11 @@ enum class ValueKind : uint8_t
 
 struct Value
 {
-    ValueKind       kind = ValueKind::Invalid;
-    Register        reg;
-    SymbolOverload* overload = nullptr;
+    ValueKind            kind = ValueKind::Invalid;
+    Register             reg;
+    SymbolOverload*      overload = nullptr;
+    ByteCodeInstruction* ip       = nullptr;
+    AstNode*             locNode  = nullptr;
 
     bool isConstant() const { return kind == ValueKind::Constant || kind == ValueKind::ZeroParam; }
 };
@@ -367,6 +369,7 @@ namespace
 
         result.kind     = addrValue->kind;
         result.overload = addrValue->overload;
+        result.ip       = addrValue->ip;
         addrValue++;
 
         for (uint32_t i = 1; i < sizeOf; i++)
@@ -394,36 +397,47 @@ namespace
 
 namespace
 {
-    bool raiseError(const Context& cxt, const Utf8& msg, const SymbolOverload* overload = nullptr, const Utf8& note = "")
+    bool raiseError(const Context& cxt, const Utf8& msg, const Value* locValue = nullptr, const Utf8& note = "")
     {
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
 
-        const auto ip      = cxt.states[cxt.state]->ip;
-        AstNode*   nodeLoc = ip->node;
-        if (overload && ip->node)
+        const auto ip = cxt.states[cxt.state]->ip;
+
+        AstNode* locNode = nullptr;
+        if (locValue && locValue->locNode)
+            locNode = locValue->locNode;
+        else
         {
-            Ast::visit(ip->node, [&](AstNode* n) {
-                if (n->resolvedSymbolOverload() == overload && n->is(AstNodeKind::Identifier))
-                {
-                    nodeLoc = n;
-                    return;
-                }
-            });
+            locNode = ip->node;
+            if (locValue && locValue->overload && ip->node)
+            {
+                Ast::visit(ip->node, [&](AstNode* n) {
+                    if (n->resolvedSymbolOverload() == locValue->overload && n->is(AstNodeKind::Identifier))
+                    {
+                        locNode = n;
+                        return;
+                    }
+                });
+            }
         }
 
         Diagnostic* err = nullptr;
-        if (nodeLoc)
+        if (locNode)
         {
-            err = new Diagnostic{nodeLoc, nodeLoc->token, msg};
-            if (nodeLoc != ip->node && ip->node)
-                err->addNote(ip->node, ip->node->token, toNte(Nte0223));
+            err = new Diagnostic{locNode, locNode->token, msg};
         }
         else
         {
             const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
             err            = new Diagnostic{loc.file, *loc.location, msg};
         }
+
+        if (locNode != ip->node && ip->node)
+            err->addNote(ip->node, ip->node->token, "this is the culprit operation");
+
+        if (locValue && locValue->ip && locValue->ip->node && locValue->ip->node != locNode)
+            err->addNote(locValue->ip->node, locValue->ip->node->token, "this is the origin");
 
         if (!note.empty())
             err->addNote(note);
@@ -467,7 +481,7 @@ namespace
         return raiseError(cxt, formErr(San0010, msgKind, type->getDisplayNameC()));
     }
 
-    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const SymbolOverload* overload = nullptr)
+    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const Value* locValue = nullptr)
     {
         if (!value.isConstant())
             return true;
@@ -475,18 +489,18 @@ namespace
             return true;
 
         Utf8 what = "";
-        if (overload)
-            what = form("of %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
-        return raiseError(cxt, formErr(San0002, what.cstr()), overload);
+        if (locValue && locValue->overload)
+            what = form("of %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
+        return raiseError(cxt, formErr(San0002, what.cstr()), locValue);
     }
 
-    bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const SymbolOverload* overload = nullptr)
+    bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const Value* locValue = nullptr)
     {
         SWAG_ASSERT(stackOffset < UINT32_MAX);
         Utf8 what = "a local or a temporary variable";
-        if (overload)
-            what = form("%s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
-        return raiseError(cxt, formErr(San0004, what.cstr()), overload);
+        if (locValue && locValue->overload)
+            what = form("%s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
+        return raiseError(cxt, formErr(San0004, what.cstr()), locValue);
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
@@ -507,19 +521,19 @@ namespace
         if (value->overload)
             what = form("%s [[%s]]", Naming::kindName(value->overload).cstr(), value->overload->symbol->name.cstr());
 
-        return raiseError(cxt, formErr(San0006, what.cstr()), value->overload, note);
+        return raiseError(cxt, formErr(San0006, what.cstr()), value, note);
     }
 
-    bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const SymbolOverload* overload = nullptr)
+    bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const Value* locValue = nullptr)
     {
-        Value value;
-        SWAG_CHECK(getStackValue(value, cxt, addr, sizeOf));
-        if (value.kind == ValueKind::Invalid)
+        Value memValue;
+        SWAG_CHECK(getStackValue(memValue, cxt, addr, sizeOf));
+        if (memValue.kind == ValueKind::Invalid)
         {
             Utf8 what = "memory";
-            if (overload)
-                what = form("%s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
-            return raiseError(cxt, formErr(San0008, what.cstr()), overload);
+            if (locValue && locValue->overload)
+                what = form("%s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
+            return raiseError(cxt, formErr(San0008, what.cstr()), locValue);
         }
 
         return true;
@@ -611,7 +625,10 @@ namespace
         const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.buffer);
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
         for (uint32_t i = offset; i < offset + sizeOf; i++)
+        {
             STATE()->stackValue[i].kind = kind;
+            STATE()->stackValue[i].ip   = STATE()->ip;
+        }
     }
 
     void invalidateCurStateStack(const Context& cxt)
@@ -696,9 +713,10 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         ra->overload = ip->node->resolvedSymbolOverload();
+                        ra->ip       = ip;
                         if (ra->overload->typeInfo->isString())
                         {
-                            /*ra->kind            = ValueKind::ZeroParam;
+                            /* ra->kind       = ValueKind::ZeroParam;
                             ra->reg.pointer     = nullptr;
                             cxt.canSetConstants = false;*/
                         }
@@ -762,6 +780,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicCVaStart:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+                    ra->locNode = ip->node->firstChild()->firstChild();
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@cvastart]] cannot have a null argument"));
                     if (ra->kind == ValueKind::StackAddr)
                     {
@@ -1072,6 +1091,7 @@ namespace
                     ra->kind     = ValueKind::StackAddr;
                     ra->reg.u64  = ip->b.u32;
                     ra->overload = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
+                    ra->ip       = ip;
                     break;
 
                 case ByteCodeOp::SetZeroStackX:
@@ -1258,7 +1278,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 1));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
-                    SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra->overload));
+                    SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra));
                     ra->reg.u64 = *addr;
                     setConstant(cxt, ra->kind, ip, *addr, ConstantKind::SetImmediateA);
                     break;
@@ -1266,7 +1286,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 2));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 2));
-                    SWAG_CHECK(checkStackInitialized(cxt, addr, 2, ra->overload));
+                    SWAG_CHECK(checkStackInitialized(cxt, addr, 2, ra));
                     ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
                     setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint16_t*>(addr), ConstantKind::SetImmediateA);
                     break;
@@ -1274,7 +1294,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 4));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 4));
-                    SWAG_CHECK(checkStackInitialized(cxt, addr, 4, ra->overload));
+                    SWAG_CHECK(checkStackInitialized(cxt, addr, 4, ra));
                     ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
                     setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint32_t*>(addr), ConstantKind::SetImmediateA);
                     break;
@@ -1282,7 +1302,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 8));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
-                    SWAG_CHECK(checkStackInitialized(cxt, addr, 8, ra->overload));
+                    SWAG_CHECK(checkStackInitialized(cxt, addr, 8, ra));
                     ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                     setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint64_t*>(addr), ConstantKind::SetImmediateA);
                     break;
@@ -1326,7 +1346,7 @@ namespace
                         break;
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     if (ra->kind == ValueKind::StackAddr)
-                        return checkEscapeFrame(cxt, ra->reg.u32, ra->overload);
+                        return checkEscapeFrame(cxt, ra->reg.u32, ra);
                     break;
 
                 case ByteCodeOp::CopyRARBtoRR2:
@@ -1341,7 +1361,7 @@ namespace
                         if (context->bc->node && context->bc->node->hasAstFlag(AST_IN_RUN_BLOCK))
                             break;
 
-                        return checkEscapeFrame(cxt, ra->reg.u32, ra->overload);
+                        return checkEscapeFrame(cxt, ra->reg.u32, ra);
                     }
 
                     break;
@@ -2312,17 +2332,20 @@ namespace
                 case ByteCodeOp::MemCpy64:
                     MEMCPY(uint64_t, 8);
                     break;
+
                 case ByteCodeOp::IntrinsicMemCpy:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memcpy]] cannot have a null address as first argument"));
-                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memcpy]] cannot have a null address as second argument"));
+                    ra->locNode = ip->node->firstChild()->firstChild();
+                    rb->locNode = ip->node->firstChild()->secondChild();
+                    SWAG_CHECK(checkNotNull(cxt, ra, "[[@memcpy]] cannot have a null address as a first argument"));
+                    SWAG_CHECK(checkNotNull(cxt, rb, "[[@memcpy]] cannot have a null address as a second argument"));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
                         SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
-                        SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb->overload));
+                        SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb));
                         SWAG_CHECK(getStackValue(va, cxt, addr2, vc.reg.u32));
                         setStackValue(cxt, addr, vc.reg.u32, va.kind);
                         std::copy_n(addr2, vc.reg.u32, addr);
@@ -2334,13 +2357,15 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
+                    ra->locNode = ip->node->firstChild()->firstChild();
+                    rb->locNode = ip->node->firstChild()->secondChild();
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@memmove]] cannot have a null address as a first argument"));
                     SWAG_CHECK(checkNotNull(cxt, rb, "[[@memmove]] cannot have a null address as a second argument"));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
                         SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
-                        SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb->overload));
+                        SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb));
                         SWAG_CHECK(getStackValue(va, cxt, addr2, vc.reg.u32));
                         setStackValue(cxt, addr, vc.reg.u32, va.kind);
                         memmove(addr, addr2, vc.reg.u32);
@@ -2352,6 +2377,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
+                    ra->locNode = ip->node->firstChild()->firstChild();
                     SWAG_CHECK(checkNotNull(cxt, ra, "[[@memset]] cannot have a null address as a first argument"));
                     if (ra->kind == ValueKind::StackAddr && vb.isConstant() && vc.isConstant())
                     {
