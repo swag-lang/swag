@@ -465,12 +465,6 @@ impl IAllocator for DebugAllocator
 
         case Realloc:
             assertIsAllocated(request.address, request.callerLoc)
-            if request.address
-            {
-            var a = 0
-            let b = -1
-            a /= (b + 1)
-            }
             fallthrough
 
         case Alloc:
