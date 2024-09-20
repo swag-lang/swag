@@ -3,11 +3,13 @@
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Log.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
+#include "Syntax/SyntaxColor.h"
 #include <winternl.h>
 
 #define STATE() cxt.states[cxt.state]
@@ -206,26 +208,26 @@
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                           \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define JUMPT(__expr0, __expr1)                       \
-    jmpAddState = nullptr;                            \
-    if (__expr0)                                      \
-    {                                                 \
-        ip->dynFlags.add(BCID_SAN_PASS);              \
-        if (__expr1)                                  \
-            ip += ip->b.s32 + 1;                      \
-        else                                          \
-            ip = ip + 1;                              \
-        continue;                                     \
-    }                                                 \
-    if (cxt.statesHere.contains(ip + ip->b.s32 + 1))  \
-        return true;                                  \
-    cxt.statesHere.insert(ip + ip->b.s32 + 1);        \
-    cxt.states.push_back(new State);                  \
-    jmpAddState                 = cxt.states.back();  \
-    *cxt.states.back()          = *STATE();           \
-    cxt.states.back()->branchIp = ip;                 \
-    cxt.states.back()->ip       = ip + ip->b.s32 + 1; \
-    cxt.states.back()->parent   = cxt.state
+#define JUMPT(__isCst, __expr1)                      \
+    jmpAddState = nullptr;                           \
+    if (__isCst)                                     \
+    {                                                \
+        ip->dynFlags.add(BCID_SAN_PASS);             \
+        if (__expr1)                                 \
+            ip += ip->b.s32 + 1;                     \
+        else                                         \
+            ip = ip + 1;                             \
+        continue;                                    \
+    }                                                \
+    if (cxt.statesHere.contains(ip + ip->b.s32 + 1)) \
+        return true;                                 \
+    cxt.statesHere.insert(ip + ip->b.s32 + 1);       \
+    jmpAddState = new State;                         \
+    cxt.states.push_back(jmpAddState);               \
+    *jmpAddState          = *STATE();                \
+    jmpAddState->branchIp = ip;                      \
+    jmpAddState->ip       = ip + ip->b.s32 + 1;      \
+    jmpAddState->parent   = cxt.state
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(va, cxt, ip)); \
@@ -268,7 +270,7 @@ struct State
     VectorNative<Value>   regs;
     ByteCodeInstruction*  branchIp = nullptr;
     ByteCodeInstruction*  ip       = nullptr;
-    int                   parent   = -1;
+    uint32_t              parent   = UINT32_MAX;
 };
 
 enum class ConstantKind
@@ -426,12 +428,33 @@ namespace
         if (!note.empty())
             err->addNote(note);
 
-        for (uint32_t i = 0; i < cxt.state; i++)
+        uint32_t curState = cxt.state;
+        while (curState != UINT32_MAX)
         {
-            if (cxt.states[i]->branchIp && cxt.states[i]->branchIp->node)
+            if (cxt.states[curState]->branchIp && cxt.states[curState]->branchIp->node)
             {
-                err->addNote(cxt.states[i]->branchIp->node, "when this is true");
+                const auto node = cxt.states[curState]->branchIp->node;
+
+                auto code = cxt.bc->sourceFile->getLine(node->token.startLocation.line);
+                code.trim();
+                SyntaxColorContext synCxt;
+                code = doSyntaxColor(code, synCxt);
+
+                Utf8 where;
+                where += Log::colorToVTS(LogColor::Location);
+                where += form("%s:%d:%d:%d:%d",
+                              node->token.sourceFile->path.cstr(),
+                              node->token.startLocation.line + 1,
+                              node->token.startLocation.column + 1,
+                              node->token.endLocation.line + 1,
+                              node->token.endLocation.column + 1);
+                where += Log::colorToVTS(LogColor::White);
+                where += ": ";
+                where += code;
+                err->remarks.push_back(where);
             }
+
+            curState = cxt.states[curState]->parent;
         }
 
         return cxt.context->report(*err);
