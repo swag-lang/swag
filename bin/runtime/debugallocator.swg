@@ -368,7 +368,7 @@ impl IAllocator for DebugAllocator
         var copyReq    = dref request
         var prevSize   = 0'u64
         var prevHeader = cast(^DebugAllocatorHeader) request.address
-        if request.mode == AllocatorMode.Realloc and request.address
+        if request.mode == .Realloc and request.address
         {
             prevHeader -= 1
             copyReq.address = prevHeader.allocAddr
@@ -415,7 +415,7 @@ impl IAllocator for DebugAllocator
         footer.magic = MagicAlloc
 
         // Fill with garbage
-        if request.mode == AllocatorMode.Alloc or !request.address:
+        if request.mode == .Alloc or !request.address:
             @memset(userAddr, AllocByte, request.size)
         elif prevSize < request.size:
             @memset(userAddr + prevSize, AllocByte, request.size - prevSize)
