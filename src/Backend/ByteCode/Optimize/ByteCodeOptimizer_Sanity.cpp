@@ -396,7 +396,7 @@ namespace
 
 namespace
 {
-    bool raiseError(const Context& cxt, const Utf8& msg, AstNode* loc = nullptr, const Value* locValue = nullptr)
+    bool raiseError(const Context& cxt, const Utf8& msg, AstNode* locNode = nullptr, const Value* locValue = nullptr, const Utf8& overloadMsg = "")
     {
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
@@ -405,28 +405,43 @@ namespace
         if (!ip->node)
             return true;
 
-        AstNode* locNode = loc ? loc : ip->node;
+        AstNode* loc = locNode ? locNode : ip->node;
 
-        Diagnostic err{locNode, locNode->token, msg};
+        Diagnostic err{loc, loc->token, msg};
 
-        if (locValue && locValue->overload)
+        const SymbolOverload* overload = nullptr;
+        if (locNode)
+            overload = locNode->resolvedSymbolOverload();
+        if (!locNode && locValue)
+            overload = locValue->overload;
+
+        if (overload)
         {
             auto locNode1 = STATE()->ip->node;
-            Ast::visit(ip->node, [&](AstNode* n) {
-                if (n->resolvedSymbolOverload() == locValue->overload && n->is(AstNodeKind::Identifier))
+            Ast::visit(locNode ? locNode : ip->node, [&](AstNode* n) {
+                if (n->resolvedSymbolOverload() == overload && n->is(AstNodeKind::Identifier))
                 {
                     locNode1 = n;
                     return;
                 }
             });
 
-            const Utf8 what = form("culprit is %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
-            if (locNode != locNode1)
-                err.addNote(locNode1, locNode1->token, what);
+            Utf8 what;
+            if (!overloadMsg.empty())
+                what = form("%s [[%s]] %s", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overloadMsg.cstr());
             else
-                err.addNote(what);
+                what = form("culprit is %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
+            err.addNote(locNode1, locNode1->token, what);
+            err.addNote(overload->node, overload->node->token, toNte(Nte0223));
+
+            if (locValue && locValue->overload && overload != locValue->overload)
+            {
+                what = form("original culprit is %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
+                err.addNote(locValue->overload->node, locValue->overload->node->token, what);
+            }
         }
 
+        /*
         uint32_t curState = cxt.state;
         while (curState != UINT32_MAX)
         {
@@ -454,7 +469,7 @@ namespace
             }
 
             curState = cxt.states[curState]->parent;
-        }
+        }*/
 
         return cxt.context->report(err);
     }
@@ -472,7 +487,7 @@ namespace
             return true;
         if (!isZero)
             return true;
-        return raiseError(cxt, toErr(San0002), nullptr, locValue);
+        return raiseError(cxt, toErr(San0002), nullptr, locValue, "could be zero");
     }
 
     bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const Value* locValue = nullptr)
@@ -494,7 +509,7 @@ namespace
             return true;
         if (value->reg.u64)
             return true;
-        return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value);
+        return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value, "could be null");
     }
 
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const Value* locValue = nullptr)
@@ -690,9 +705,9 @@ namespace
                     {
                         ra->overload = ip->node->resolvedSymbolOverload();
                         ra->ip       = ip;
-                        if (ra->overload->typeInfo->isString())
+                        if (ra->overload->typeInfo->isInterface())
                         {
-                            /* ra->kind       = ValueKind::ZeroParam;
+                            /*ra->kind            = ValueKind::ZeroParam;
                             ra->reg.pointer     = nullptr;
                             cxt.canSetConstants = false;*/
                         }
@@ -1296,8 +1311,25 @@ namespace
                     break;
 
                 case ByteCodeOp::IncPointer64:
+                {
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    SWAG_CHECK(checkNotNull(cxt, ra));
+
+                    AstNode* locNode = nullptr;
+                    if (ra->overload && ip->node->is(AstNodeKind::Identifier))
+                    {
+                        const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
+                        const auto idRef = id->identifierRef();
+                        for (auto i = id->childParentIdx() - 1; i != UINT32_MAX; i--)
+                        {
+                            const auto node = idRef->children[i];
+                            if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
+                                continue;
+                            locNode = node;
+                            break;
+                        }
+                    }
+
+                    SWAG_CHECK(checkNotNull(cxt, ra, locNode));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     *rc = *ra;
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
@@ -1306,6 +1338,8 @@ namespace
                     else
                         rc->reg.u64 += vb.reg.s64;
                     break;
+                }
+
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(checkNotNull(cxt, ra));

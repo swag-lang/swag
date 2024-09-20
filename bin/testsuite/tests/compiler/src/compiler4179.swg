@@ -1,4 +1,4 @@
-#global testerror "San0006"
+#global testerror "San0001"
 
 #[Swag.Safety("sanity", true)]
 func toto(str: string, x: cvarargs)

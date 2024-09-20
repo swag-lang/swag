@@ -196,12 +196,10 @@ Utf8 Log::removeFormat(const char* message)
         else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
         {
             pz += 2;
-            m += "'";
         }
         else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
         {
             pz += 2;
-            m += "'";
         }
         else
             m += *pz++;
