@@ -926,7 +926,12 @@ void initErrors()
     SWAG_ERROR(Err0777, "invalid type                                      $ expected a [[struct]] type as the right expression of a [[%s]] cast, got [[%s]] instead                                                  $ ");
     SWAG_ERROR(Err0778, "invalid operation                                 $ cannot use operation [['%s']] on type [[null]]                                                                                           $ ");
     SWAG_ERROR(Err0779, "already defined switch value                      $ cannot use the [[switch]] value [[null]] because it already exists                                                                       $ ");
-    SWAG_ERROR(Err0780, nullptr);
+    SWAG_ERROR(Err0780, "invalid [[expect]] expression                     $ expected an expression compatible with an [[expect]] compile time check                                                                  $ the only valid expression for now is [[param != null]]");
+    SWAG_ERROR(Err0781, "invalid type                                      $ type [[%s]] is not nullable");
+    SWAG_ERROR(Err0782, nullptr);
+    SWAG_ERROR(Err0783, nullptr);
+    SWAG_ERROR(Err0784, nullptr);
+    SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

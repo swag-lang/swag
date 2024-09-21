@@ -185,6 +185,7 @@ struct TypeInfo
     bool isUntypedBinHex() const { return flags.has(TYPEINFO_UNTYPED_BIN_HEX); }
     bool isConstAlias() const { return flags.has(TYPEINFO_CONST_ALIAS); }
     bool isCharacter() const { return flags.has(TYPEINFO_CHARACTER); }
+    bool isNullable() const;
 
     virtual bool      isSame(const TypeInfo* from, CastFlags castFlags) const;
     virtual TypeInfo* clone() = 0;

@@ -294,6 +294,13 @@ bool TypeInfo::isMethod() const
     return true;
 }
 
+bool TypeInfo::isNullable() const
+{
+    if (isString() || isPointer() || isAny() || isInterface())
+        return true;
+    return false;
+}
+
 bool TypeInfo::isSame(const TypeInfo* from, CastFlags castFlags) const
 {
     if (this == from)
