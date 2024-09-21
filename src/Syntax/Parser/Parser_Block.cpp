@@ -33,81 +33,78 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
 
 bool Parser::doWhereVerifyConstraints(AstNode* parent)
 {
-    while (tokenParse.is(TokenId::KwdWhere) || tokenParse.is(TokenId::KwdVerify))
+    auto       what    = AstNodeKind::Invalid;
+    const auto tokenId = tokenParse.token.id;
+    switch (tokenId)
     {
-        auto       what    = AstNodeKind::Invalid;
-        const auto tokenId = tokenParse.token.id;
-        switch (tokenId)
+        case TokenId::KwdWhere:
+            what = AstNodeKind::WhereConstraint;
+            break;
+        case TokenId::KwdVerify:
+            what = AstNodeKind::VerifyConstraint;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
+
+    const auto node = Ast::newNode<AstCompilerSpecFunc>(what, this, parent);
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveWhereVerifyConstraintExpression;
+    parent->addAstFlag(AST_HAS_SELECT_IF);
+    node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+
+    if (parent->is(AstNodeKind::FuncDecl))
+        castAst<AstFuncDecl>(parent, AstNodeKind::FuncDecl)->whereExpressions.push_back(node);
+    else
+        castAst<AstStruct>(parent, AstNodeKind::StructDecl)->whereExpressions.push_back(node);
+
+    SWAG_CHECK(eatToken());
+
+    // Not for the 3 special functions
+    if (parent->token.is(g_LangSpec->name_opDrop) ||
+        parent->token.is(g_LangSpec->name_opPostCopy) ||
+        parent->token.is(g_LangSpec->name_opPostMove))
+    {
+        switch (what)
         {
-            case TokenId::KwdWhere:
-                what = AstNodeKind::WhereConstraint;
-                break;
-            case TokenId::KwdVerify:
-                what = AstNodeKind::VerifyConstraint;
-                break;
+            case AstNodeKind::WhereConstraint:
+                return error(node, formErr(Err0346, parent->token.cstr()));
+            case AstNodeKind::VerifyConstraint:
+                return error(node, formErr(Err0659, parent->token.cstr()));
             default:
                 SWAG_ASSERT(false);
                 break;
         }
+    }
 
-        const auto node = Ast::newNode<AstCompilerSpecFunc>(what, this, parent);
-        node->allocateExtension(ExtensionKind::Semantic);
-        node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-        node->semanticFct                      = Semantic::resolveWhereVerifyConstraintExpression;
-        parent->addAstFlag(AST_HAS_SELECT_IF);
-        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
+    if (tokenParse.is(TokenId::SymLeftCurly))
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
 
-        if (parent->is(AstNodeKind::FuncDecl))
-            castAst<AstFuncDecl>(parent, AstNodeKind::FuncDecl)->whereExpressions.push_back(node);
-        else
-            castAst<AstStruct>(parent, AstNodeKind::StructDecl)->whereExpressions.push_back(node);
-
-        SWAG_CHECK(eatToken());
-
-        // Not for the 3 special functions
-        if (parent->token.is(g_LangSpec->name_opDrop) ||
-            parent->token.is(g_LangSpec->name_opPostCopy) ||
-            parent->token.is(g_LangSpec->name_opPostMove))
+        const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
+        const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
+        identifier->callParameters = Ast::newFuncCallParams(this, identifier);
+        idRef->inheritTokenLocation(node->token);
+        identifier->inheritTokenLocation(node->token);
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+        switch (what)
         {
-            switch (what)
-            {
-                case AstNodeKind::WhereConstraint:
-                    return error(node, formErr(Err0346, parent->token.cstr()));
-                case AstNodeKind::VerifyConstraint:
-                    return error(node, formErr(Err0659, parent->token.cstr()));
-                default:
-                    SWAG_ASSERT(false);
-                    break;
-            }
-        }
-
-        ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
-        if (tokenParse.is(TokenId::SymLeftCurly))
-        {
-            AstNode* funcNode;
-            SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
-
-            const auto idRef           = Ast::newIdentifierRef(funcNode->token.text, this, node);
-            const auto identifier      = castAst<AstIdentifier>(idRef->lastChild(), AstNodeKind::Identifier);
-            identifier->callParameters = Ast::newFuncCallParams(this, identifier);
-            idRef->inheritTokenLocation(node->token);
-            identifier->inheritTokenLocation(node->token);
-        }
-        else
-        {
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-            switch (what)
-            {
-                case AstNodeKind::WhereConstraint:
-                    SWAG_CHECK(eatSemiCol("[[where]] expression"));
-                    break;
-                case AstNodeKind::VerifyConstraint:
-                    SWAG_CHECK(eatSemiCol("[[verify]] expression"));
-                    break;
-                default:
-                    SWAG_ASSERT(false);
-                    break;
-            }
+            case AstNodeKind::WhereConstraint:
+                SWAG_CHECK(eatSemiCol("[[where]] expression"));
+                break;
+            case AstNodeKind::VerifyConstraint:
+                SWAG_CHECK(eatSemiCol("[[verify]] expression"));
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
     }
 
