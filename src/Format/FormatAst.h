@@ -125,7 +125,7 @@ struct FormatAst
     bool outputTypeLambda(FormatContext& context, AstNode* node);
     bool outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod);
     bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
-    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* whereExpr);
+    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *whereExpr);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
     bool outputChildrenTypeAlias(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputTypeAlias(FormatContext& context, AstNode* node, uint32_t maxLenName = 0);

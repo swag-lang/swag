@@ -7,23 +7,20 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
-void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorParam)
+void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* whereExpr)
 {
     AstNode* node;
-    AstNode* whereExpr;
     ErrorID  errID;
 
     if (errorParam.destFuncDecl)
     {
-        errID     = Err0075;
-        node      = errorParam.destFuncDecl;
-        whereExpr = errorParam.destFuncDecl->whereExpression;
+        errID = Err0075;
+        node  = errorParam.destFuncDecl;
     }
     else
     {
-        errID     = Err0076;
-        node      = errorParam.destStructDecl;
-        whereExpr = errorParam.destStructDecl->whereExpression;
+        errID = Err0076;
+        node  = errorParam.destStructDecl;
     }
 
     const auto msg = formErr(errID, whereExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), whereExpr->token.cstr());

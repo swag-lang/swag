@@ -138,7 +138,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
-                case ErrCxtStepKind::DuringWhereCall:
+                case ErrCxtStepKind::DuringVerify:
                     msg             = formNte(Nte0090, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;

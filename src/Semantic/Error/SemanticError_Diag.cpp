@@ -524,7 +524,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     switch (oneTry.symMatchContext.result)
     {
         case MatchResult::WhereFailed:
-            errorWhereFailed(context, errorParam);
+            errorWhereFailed(context, errorParam, bi.failedWhere);
             break;
 
         case MatchResult::MissingNamedArgument:

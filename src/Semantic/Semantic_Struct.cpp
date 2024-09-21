@@ -704,9 +704,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     SWAG_ASSERT(node->is(AstNodeKind::StructDecl) || node->is(AstNodeKind::InterfaceDecl));
 
     // where
-    if (node->whereExpression && !node->hasAstFlag(AST_GENERIC))
+    if (!node->whereExpressions.empty() && !node->hasAstFlag(AST_GENERIC))
     {
-        SWAG_CHECK(solveWhereExpr(context, node));
+        SWAG_CHECK(solveWhereExpressions(context, node));
         YIELD();
     }
 
@@ -825,42 +825,45 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
     }
 }
 
-bool Semantic::solveWhereExpr(SemanticContext* context, AstStruct* structDecl)
+bool Semantic::solveWhereExpressions(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
-    // Execute where/check block
-    const auto expr = structDecl->whereExpression->lastChild();
-
-    if (!expr->hasFlagComputedValue())
+    // Execute where constraints
+    for(const auto it: structDecl->whereExpressions)
     {
-        const auto node          = context->node;
-        context->whereParameters = structDecl->genericParameters;
+        const auto expr = it->lastChild();
 
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::DuringWhere, nullptr);
-        const auto     result    = executeCompilerNode(context, expr, false);
-        context->whereParameters = nullptr;
-        if (!result)
-            return false;
-        YIELD();
-    }
+        if (!expr->hasFlagComputedValue())
+        {
+            const auto node          = context->node;
+            context->whereParameters = structDecl->genericParameters;
 
-    // Result
-    SWAG_ASSERT(expr->computedValue());
-    if (!expr->computedValue()->reg.b)
-    {
-        ErrorParam                errorParam;
-        Vector<const Diagnostic*> diagError;
-        Vector<const Diagnostic*> diagNote;
+            PushErrCxtStep ec(context, node, ErrCxtStepKind::DuringWhere, nullptr);
+            const auto     result    = executeCompilerNode(context, expr, false);
+            context->whereParameters = nullptr;
+            if (!result)
+                return false;
+            YIELD();
+        }
 
-        errorParam.destStructDecl = structDecl;
-        errorParam.diagError      = &diagError;
-        errorParam.diagNote       = &diagNote;
-        errorParam.errorNode      = structDecl->instantiatedFrom;
+        // Result
+        SWAG_ASSERT(expr->hasComputedValue());
+        if (!expr->computedValue()->reg.b)
+        {
+            ErrorParam                errorParam;
+            Vector<const Diagnostic*> diagError;
+            Vector<const Diagnostic*> diagNote;
 
-        SemanticError::errorWhereFailed(context, errorParam);
+            errorParam.destStructDecl = structDecl;
+            errorParam.diagError      = &diagError;
+            errorParam.diagNote       = &diagNote;
+            errorParam.errorNode      = structDecl->instantiatedFrom;
 
-        return context->report(*diagError[0], diagNote);
+            SemanticError::errorWhereFailed(context, errorParam, it);
+
+            return context->report(*diagError[0], diagNote);
+        }
     }
 
     return true;

@@ -27,7 +27,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->content->removeAstFlag(AST_NO_SEMANTIC);
     }
 
-    if (newFunc->whereExpression)
+    if (!newFunc->whereExpressions.empty())
         newFunc->content->addAstFlag(AST_NO_SEMANTIC);
 
     newFunc->originalGeneric = funcNode;

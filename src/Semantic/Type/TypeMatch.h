@@ -49,6 +49,7 @@ struct BadSignatureInfos
 
     AstNode*       badNode                   = nullptr;
     AstNode*       genMatchFromNode          = nullptr;
+    AstNode*       failedWhere               = nullptr;
     TypeInfo*      badSignatureRequestedType = nullptr;
     TypeInfo*      badSignatureGivenType     = nullptr;
     TypeInfo*      castErrorToType           = nullptr;
@@ -71,6 +72,7 @@ struct BadSignatureInfos
         genericReplaceValues.clear();
         badNode                   = nullptr;
         genMatchFromNode          = nullptr;
+        failedWhere               = nullptr;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         castErrorToType           = nullptr;

@@ -68,7 +68,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
 
         if (context.keepSameLineStruct)
-            sameLine = !node->whereExpression && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
+            sameLine = node->whereExpressions.empty() && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
 
         if (!sameLine)
             concat->addIndent(context.indent);
@@ -100,12 +100,12 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     }
 
     // where must be exported
-    if (node->whereExpression)
+    for (const auto it : node->whereExpressions)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputNode(context, node->whereExpression));
+        SWAG_CHECK(outputNode(context, it));
         context.indent--;
     }
 

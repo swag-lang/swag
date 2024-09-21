@@ -85,9 +85,9 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
             !context->node->hasAttribute(ATTRIBUTE_MATCH_WHERE_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
-            if (funcDecl->whereExpression)
+            if (!funcDecl->whereExpressions.empty())
             {
-                SWAG_CHECK(solveWhereExpr(context, curMatch, funcDecl));
+                SWAG_CHECK(solveWhereExpressions(context, curMatch, funcDecl));
                 YIELD();
                 if (curMatch->remove)
                     continue;

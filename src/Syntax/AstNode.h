@@ -748,13 +748,13 @@ struct AstFuncDecl : AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
     SourceLocation         implLoc;
+    VectorNative<AstNode*> whereExpressions;
 
     AstNode*        captureParameters;
     AstNode*        parameters;
     AstNode*        genericParameters;
     AstNode*        returnType;
     AstNode*        content;
-    AstNode*        whereExpression;
     AstNode*        returnTypeDeducedNode;
     AstNode*        originalGeneric;
     AstNode*        requestedGeneric;
@@ -1063,16 +1063,18 @@ struct AstStruct : AstNode
     ~        AstStruct();
     AstNode* clone(CloneContext& context);
 
-    DependentJobs dependentJobs;
-    Token         tokenName;
-    AstNode*      genericParameters;
-    AstNode*      content;
-    Scope*        scope;
-    AstNode*      originalGeneric;
-    AstNode*      instantiatedFrom;
-    AstNode*      originalParent;
-    AstNode*      whereExpression;
-    uint32_t      packing = sizeof(uint64_t);
+    DependentJobs          dependentJobs;
+    Token                  tokenName;
+    VectorNative<AstNode*> whereExpressions;
+
+    AstNode* genericParameters;
+    AstNode* content;
+    Scope*   scope;
+    AstNode* originalGeneric;
+    AstNode* instantiatedFrom;
+    AstNode* originalParent;
+
+    uint32_t packing = sizeof(uint64_t);
 };
 
 struct AstEnum : AstNode

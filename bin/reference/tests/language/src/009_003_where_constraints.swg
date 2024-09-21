@@ -124,8 +124,8 @@ The `where` clause can also be applied to generic structs. If the condition is n
 }
 
 /**
-# Multiple Evaluations
-By utilizing the `verify` mode, the `where` clause is evaluated for **each** function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time.
+# Multiple Evaluations with 'verify'
+By utilizing the `verify` mode, the constraint is evaluated for **each** function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time.
 */
 
 #test

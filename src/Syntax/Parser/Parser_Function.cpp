@@ -653,7 +653,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
     bool isConstMethod   = false;
     bool isIntrinsic     = false;
-    auto funcForCompiler = TOKEN_FLAGS[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC) || typeFuncId == TokenId::KwdWhere;
+    auto funcForCompiler = TOKEN_FLAGS[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC);
+    if (typeFuncId == TokenId::KwdWhere || typeFuncId == TokenId::KwdVerify)
+        funcForCompiler = true;
 
     // Name
     if (funcForCompiler)
@@ -717,6 +719,12 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
                 break;
             case TokenId::KwdWhere:
                 funcNode->token.text = "__where" + std::to_string(id);
+                funcNode->tokenName  = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::KwdVerify:
+                funcNode->token.text = "__verify" + std::to_string(id);
                 funcNode->tokenName  = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
@@ -873,7 +881,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         auto            typeExpression  = Ast::newTypeExpression(this, typeNode);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
-    else if (typeFuncId == TokenId::KwdWhere)
+    else if (typeFuncId == TokenId::KwdWhere || typeFuncId == TokenId::KwdVerify)
     {
         typeNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
         ParserPushScope scoped(this, newScope);
@@ -885,17 +893,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     funcNode->typeInfo->computeName();
 
     // 'where' block
-    if (tokenParse.is(TokenId::KwdWhere))
+    while (tokenParse.is(TokenId::KwdWhere) || tokenParse.is(TokenId::KwdVerify))
     {
         ParserPushScope scoped(this, newScope);
         ParserPushFct   scopedFct(this, funcNode);
-        SWAG_CHECK(doWhereVerifyConstraint(funcNode, &funcNode->whereExpression, AstNodeKind::WhereConstraint));
-    }
-    else if (tokenParse.is(TokenId::KwdVerify))
-    {
-        ParserPushScope scoped(this, newScope);
-        ParserPushFct   scopedFct(this, funcNode);
-        SWAG_CHECK(doWhereVerifyConstraint(funcNode, &funcNode->whereExpression, AstNodeKind::VerifyConstraint));
+        SWAG_CHECK(doWhereVerifyConstraints(funcNode));
     }
 
     // If we have now a semicolon, then this is an empty function, like a forward decl in c++

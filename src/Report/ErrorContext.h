@@ -18,7 +18,7 @@ enum class ErrCxtStepKind
     DuringInline,
     DuringCompileTime,
     DuringWhere,
-    DuringWhereCall,
+    DuringVerify,
 };
 
 struct ErrorCxtStep

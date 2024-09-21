@@ -407,10 +407,10 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     const auto typeStruct = castTypeInfo<TypeInfoStruct>(concrete, TypeInfoKind::Struct);
 
                     const auto foundName = typeStruct->scope->symTable.find(fctCallParam->token.text);
-                    if(!foundName || foundName->overloads.empty())
+                    if (!foundName || foundName->overloads.empty())
                         continue;
                     auto typeEnum = findEnumTypeInContext(context, foundName->overloads[0]->typeInfo);
-                    if(!typeEnum)
+                    if (!typeEnum)
                         continue;
                     has.push_back_once({foundName->overloads[0]->node, typeEnum});
                     if (typeEnum->contains(node->token.text))
@@ -924,7 +924,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
     return true;
 }
 
-bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+bool Semantic::solveWhereExpressions(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
@@ -938,38 +938,42 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
     }
 
     // Execute where/check block
-    const auto expr = funcDecl->whereExpression->lastChild();
-
-    // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
-    // where is evaluated once, so keep it.
-    if (funcDecl->whereExpression->is(AstNodeKind::VerifyConstraint))
-        expr->removeAstFlag(AST_COMPUTED_VALUE);
-
-    if (!expr->hasFlagComputedValue())
+    for (const auto it : funcDecl->whereExpressions)
     {
-        const auto node          = context->node;
-        context->whereParameters = oneMatch->oneOverload->callParameters;
+        const auto expr = it->lastChild();
+        
+        // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
+        // where is evaluated once, so keep it.
+        if (it->is(AstNodeKind::VerifyConstraint))
+            expr->removeAstFlag(AST_COMPUTED_VALUE);
 
-        ErrCxtStepKind type;
-        if (funcDecl->whereExpression->is(AstNodeKind::VerifyConstraint))
-            type = ErrCxtStepKind::DuringWhereCall;
-        else
-            type = ErrCxtStepKind::DuringWhere;
+        if (!expr->hasFlagComputedValue())
+        {
+            const auto node          = context->node;
+            context->whereParameters = oneMatch->oneOverload->callParameters;
 
-        PushErrCxtStep ec(context, node, type, nullptr);
-        const auto     result    = executeCompilerNode(context, expr, false);
-        context->whereParameters = nullptr;
-        if (!result)
-            return false;
-        YIELD();
-    }
+            ErrCxtStepKind type;
+            if (it->is(AstNodeKind::VerifyConstraint))
+                type = ErrCxtStepKind::DuringVerify;
+            else
+                type = ErrCxtStepKind::DuringWhere;
 
-    // Result
-    if (!expr->computedValue()->reg.b)
-    {
-        oneMatch->remove                              = true;
-        oneMatch->oneOverload->symMatchContext.result = MatchResult::WhereFailed;
-        return true;
+            PushErrCxtStep ec(context, node, type, nullptr);
+            const auto     result    = executeCompilerNode(context, expr, false);
+            context->whereParameters = nullptr;
+            if (!result)
+                return false;
+            YIELD();
+        }
+        
+        // Result
+        if (!expr->computedValue()->reg.b)
+        {
+            oneMatch->remove                                                     = true;
+            oneMatch->oneOverload->symMatchContext.badSignatureInfos.failedWhere = it;
+            oneMatch->oneOverload->symMatchContext.result                        = MatchResult::WhereFailed;
+            return true;
+        }
     }
 
     if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))

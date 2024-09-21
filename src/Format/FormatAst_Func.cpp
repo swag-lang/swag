@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const AstNode* whereExpr)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *whereExpr)
 {
     bool isMethod = false;
 
@@ -107,13 +107,16 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
     }
 
     // where must be exported
-    if (whereExpr)
+    if (whereExpr && !whereExpr->empty())
     {
-        concat->addEol();
-        context.indent++;
-        concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, whereExpr));
-        context.indent--;
+        for(const auto it: *whereExpr)
+        {
+            concat->addEol();
+            context.indent++;
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputCompilerExpr(context, it));
+            context.indent--;
+        }
     }
 
     return true;
@@ -183,12 +186,12 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     }
 
     // check block
-    if (funcDecl->whereExpression)
+    for (const auto it : funcDecl->whereExpressions)
     {
         concat->addEol();
         context.indent++;
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, funcDecl->whereExpression));
+        SWAG_CHECK(outputCompilerExpr(context, it));
         context.indent--;
     }
 

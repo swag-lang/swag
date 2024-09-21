@@ -438,7 +438,8 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
-    newNode->whereExpression   = whereExpression ? whereExpression->clone(cloneContext) : nullptr;
+    for (const auto it : whereExpressions)
+        newNode->whereExpressions.push_back(it->clone(cloneContext));
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
 
@@ -857,7 +858,8 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->tokenName         = tokenName;
-    newNode->whereExpression   = whereExpression ? whereExpression->clone(cloneContext) : nullptr;
+    for (const auto it : whereExpressions)
+        newNode->whereExpressions.push_back(it->clone(cloneContext));
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
     newNode->addAstFlag(AST_FROM_GENERIC);
     newNode->content->removeAstFlag(AST_NO_SEMANTIC);
