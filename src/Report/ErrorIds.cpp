@@ -488,7 +488,7 @@ void initErrors()
     SWAG_ERROR(Err0341, "misplaced [[using]] in interface                  $ cannot associate [[using]] with an interface function                                                                                    $ ");
     SWAG_ERROR(Err0342, "misplaced [[var]]                                 $ cannot use [[var]] in struct variable declarations                                                                                       $ a struct variable should be declared as [[fieldName: Type]] without [[var]]");
     SWAG_ERROR(Err0343, "misplaced [[var]]                                 $ cannot use [[var]] to declare a match variable                                                                                           $ consider using [[let]] instead");
-    SWAG_ERROR(Err0344, "misplaced [[where<call>]]                         $ cannot use a [[where<call>]] constraint on structs                                                                                       $ call constraints are only valid for functions; consider using [[where]] alone");
+    SWAG_ERROR(Err0344, "misplaced [[verify]]                              $ cannot use a [[verify]] constraint on structs                                                                                            $ verify constraints are only valid for functions; consider using [[where]] instead");
     SWAG_ERROR(Err0345, "misplaced [[where]]                               $ cannot use a [[where]] clause in a [[switch]] without an expression                                                                      $ ");
     SWAG_ERROR(Err0346, "misplaced [[where]]                               $ cannot use a [[where]] constraint on [[%s]]                                                                                              $ [[where]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
     SWAG_ERROR(Err0347, "misplaced access specifier                        $ cannot make a global variable [[public]]                                                                                                 $ ");
@@ -803,7 +803,7 @@ void initErrors()
     SWAG_ERROR(Err0656, "unknown [[defer]] mode                            $ cannot recognize [[%s]] as a valid [[defer]] mode                                                                                        $ the acceptable modes are [[err]] and [[noerr]]");
     SWAG_ERROR(Err0657, "unknown [[foreach]]                               $ cannot visit the type [[%s]]                                                                                                             $ cannot find [[opVisit]]");
     SWAG_ERROR(Err0658, "unknown [[foreach]] name                          $ cannot find the visit specialization name [[%s]] in [[%s]]                                                                               $ ");
-    SWAG_ERROR(Err0659, "unknown [[where]] mode                            $ cannot recognize [[%s]] as a valid [[where]] mode                                                                                        $ the only acceptable mode is [[call]]");
+    SWAG_ERROR(Err0659, nullptr);
     SWAG_ERROR(Err0660, "unknown attribute                                 $ cannot find the attribute [[%s]]                                                                                                         $ ");
     SWAG_ERROR(Err0661, "unknown attribute                                 $ cannot find the attribute [[%s]] in [[%s]]                                                                                               $ ");
     SWAG_ERROR(Err0662, "unknown compiler instruction                      $ cannot recognize [[%s]] as a valid compiler instruction                                                                                  $ a compiler instruction starts with the symbol [['#']]");
@@ -1020,7 +1020,7 @@ void initErrors()
     SWAG_ERROR(Nte0087, "missing generic parameter [[%s]]");
     SWAG_ERROR(Nte0088, "missing parameter [[%s]] of type [[%s]]");
     SWAG_ERROR(Nte0089, "occurred during compile-time evaluation");
-    SWAG_ERROR(Nte0090, "occurred during the [[where<call>]] check of the call to [[%s]]");
+    SWAG_ERROR(Nte0090, "occurred during the [[verify]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0091, "occurred during the [[where]] check of the call to [[%s]]");
     SWAG_ERROR(Nte0092, "occurred during the [[where]] check of the struct [[%s]]");
     SWAG_ERROR(Nte0093, "occurred during the generic instantiation of [[%s]]");

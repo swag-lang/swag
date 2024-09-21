@@ -178,8 +178,8 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
         concat->addString("#ast");
     else if (node->is(AstNodeKind::WhereConstraint))
         concat->addString("where");
-    else if (node->is(AstNodeKind::WhereCallConstraint))
-        concat->addString("where<call>");
+    else if (node->is(AstNodeKind::VerifyConstraint))
+        concat->addString("verify");
     concat->addBlank();
 
     const auto front = node->firstChild();

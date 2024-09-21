@@ -1,5 +1,5 @@
 func print(f: f32)
-    where<call>
+    verify
     {
         if f != 3.14: @compilererror("'f' should be 3.14", #curlocation)
         return true

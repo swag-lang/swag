@@ -942,7 +942,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
 
     // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // where is evaluated once, so keep it.
-    if (funcDecl->whereExpression->is(AstNodeKind::WhereCallConstraint))
+    if (funcDecl->whereExpression->is(AstNodeKind::VerifyConstraint))
         expr->removeAstFlag(AST_COMPUTED_VALUE);
 
     if (!expr->hasFlagComputedValue())
@@ -951,7 +951,7 @@ bool Semantic::solveWhereExpr(SemanticContext* context, OneMatch* oneMatch, AstF
         context->whereParameters = oneMatch->oneOverload->callParameters;
 
         ErrCxtStepKind type;
-        if (funcDecl->whereExpression->is(AstNodeKind::WhereCallConstraint))
+        if (funcDecl->whereExpression->is(AstNodeKind::VerifyConstraint))
             type = ErrCxtStepKind::DuringWhereCall;
         else
             type = ErrCxtStepKind::DuringWhere;

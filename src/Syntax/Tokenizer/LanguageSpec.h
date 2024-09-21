@@ -189,7 +189,6 @@ struct LanguageSpec
     Utf8 name_sharp_ref;
     Utf8 name_sharp_constref;
 
-    Utf8 name_call;
     Utf8 name_err;
     Utf8 name_noerr;
     Utf8 name_bit;

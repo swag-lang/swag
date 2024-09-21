@@ -371,7 +371,7 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
             return "type";
 
         case AstNodeKind::WhereConstraint:
-        case AstNodeKind::WhereCallConstraint:
+        case AstNodeKind::VerifyConstraint:
             article = "a";
             return "constraint";
 

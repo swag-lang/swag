@@ -154,7 +154,7 @@ enum class AstNodeKind : uint8_t
     CompilerRunExpression,
     CompilerSpecialValue,
     WhereConstraint,
-    WhereCallConstraint,
+    VerifyConstraint,
     CompilerWarning,
     ConditionalExpression,
     ConstDecl,

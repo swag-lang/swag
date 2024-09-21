@@ -163,7 +163,6 @@ void LanguageSpec::setupNames()
     name_sharp_ref      = "#ref";
     name_sharp_constref = "#constref";
 
-    name_call    = "call";
     name_err     = "err";
     name_noerr   = "noerr";
     name_bit     = "bit";
@@ -299,6 +298,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("defer", TokenId::KwdDefer);
     keywords.add("foreach", TokenId::KwdForEach);
     keywords.add("where", TokenId::KwdWhere);
+    keywords.add("verify", TokenId::KwdVerify);
     keywords.add("break", TokenId::KwdBreak);
     keywords.add("fallthrough", TokenId::KwdFallThrough);
     keywords.add("unreachable", TokenId::KwdUnreachable);

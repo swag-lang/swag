@@ -94,7 +94,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|verify|expect|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
         }
       ]
     },
@@ -306,18 +306,7 @@
               "name": "meta.preprocessor"
             }
           }
-        },
-        {
-          "match": "\\b(where)\\<(call)\\>",
-          "captures": {
-            "1": {
-              "name": "keyword.control"
-            },
-            "2": {
-              "name": "meta.preprocessor"
-            }
-          }
-        },        
+        },      
         {
           "match": "\\b(cast)\\<(bit|overflow|unconst)\\>",
           "captures": {

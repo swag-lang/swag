@@ -174,7 +174,7 @@ void AstNode::release()
         case AstNodeKind::CompilerRun:
         case AstNodeKind::CompilerRunExpression:
         case AstNodeKind::WhereConstraint:
-        case AstNodeKind::WhereCallConstraint:
+        case AstNodeKind::VerifyConstraint:
         case AstNodeKind::CompilerAst:
             Allocator::free<AstCompilerSpecFunc>(this);
             break;

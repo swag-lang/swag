@@ -31,36 +31,17 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
     return true;
 }
 
-bool Parser::doWhereConstraint(AstNode* parent, AstNode** result)
+bool Parser::doWhereVerifyConstraint(AstNode* parent, AstNode** result, AstNodeKind what)
 {
-    const auto node = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::WhereConstraint, this, parent);
+    const auto node = Ast::newNode<AstCompilerSpecFunc>(what, this, parent);
     *result         = node;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-    node->semanticFct                      = Semantic::resolveWhereConstraintExpression;
+    node->semanticFct                      = Semantic::resolveWhereVerifyConstraintExpression;
     parent->addAstFlag(AST_HAS_SELECT_IF);
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
     SWAG_CHECK(eatToken());
-
-    // where mode
-    if (tokenParse.is(TokenId::SymLower))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.is(g_LangSpec->name_call))
-        {
-            SWAG_CHECK(eatToken());
-            node->kind = AstNodeKind::WhereCallConstraint;
-        }
-        else
-        {
-            return error(tokenParse, formErr(Err0659, tokenParse.cstr()));
-        }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[where]] mode"));
-    }
 
     // Not for the 3 special functions
     if (parent->token.is(g_LangSpec->name_opDrop) ||

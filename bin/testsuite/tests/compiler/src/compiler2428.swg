@@ -1,5 +1,5 @@
 func print(s: string, f: ...)
-    where<call>
+    verify
     {
         @assert(@countof(f) == 3)
         return true

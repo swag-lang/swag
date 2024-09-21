@@ -889,7 +889,13 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         ParserPushScope scoped(this, newScope);
         ParserPushFct   scopedFct(this, funcNode);
-        SWAG_CHECK(doWhereConstraint(funcNode, &funcNode->whereExpression));
+        SWAG_CHECK(doWhereVerifyConstraint(funcNode, &funcNode->whereExpression, AstNodeKind::WhereConstraint));
+    }
+    else if (tokenParse.is(TokenId::KwdVerify))
+    {
+        ParserPushScope scoped(this, newScope);
+        ParserPushFct   scopedFct(this, funcNode);
+        SWAG_CHECK(doWhereVerifyConstraint(funcNode, &funcNode->whereExpression, AstNodeKind::VerifyConstraint));
     }
 
     // If we have now a semicolon, then this is an empty function, like a forward decl in c++
