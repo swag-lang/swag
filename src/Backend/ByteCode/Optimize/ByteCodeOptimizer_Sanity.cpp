@@ -705,11 +705,15 @@ namespace
                     {
                         ra->overload = ip->node->resolvedSymbolOverload();
                         ra->ip       = ip;
-                        if (ra->overload->typeInfo->isInterface())
+                        if (ra->overload->typeInfo->isNullable() && !ra->overload->typeInfo->isSelf())
                         {
-                            /*ra->kind            = ValueKind::ZeroParam;
-                            ra->reg.pointer     = nullptr;
-                            cxt.canSetConstants = false;*/
+                            const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(ra->overload->storageIndex);
+                            if (!cxt.bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
+                            {
+                                /*ra->kind            = ValueKind::ZeroParam;
+                                ra->reg.pointer     = nullptr;
+                                cxt.canSetConstants = false;*/
+                            }
                         }
                     }
 

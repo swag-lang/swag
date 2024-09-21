@@ -296,7 +296,9 @@ bool TypeInfo::isMethod() const
 
 bool TypeInfo::isNullable() const
 {
-    if (isString() || isPointer() || isAny() || isInterface())
+    if (isString() || isAny() || isInterface())
+        return true;
+    if(isPointer() && !isConstPointerRef() && !isAutoConstPointerRef())
         return true;
     return false;
 }
