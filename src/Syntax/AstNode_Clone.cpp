@@ -291,6 +291,8 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstCompilerGlobal>(this, context);
         case AstNodeKind::CompilerCode:
             return clone<AstCompilerCode>(this, context);
+        case AstNodeKind::ExpectConstraint:
+            return clone<AstExpectConstraint>(this, context);
 
         default:
         {

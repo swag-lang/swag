@@ -1399,3 +1399,10 @@ AstNode* AstCompilerCode::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     return newNode;
 }
+
+AstNode* AstExpectConstraint::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstExpectConstraint>();
+    newNode->copyFrom(context, this);
+    return newNode;
+}

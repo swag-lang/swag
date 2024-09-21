@@ -28,7 +28,7 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* /*forCall*/)
 
     if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM))
         return true;
-    
+
     if (funcDecl->content->is(AstNodeKind::Return))
         return true;
     SharedLock lk(funcDecl->content->mutex);
@@ -841,7 +841,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // Set storageIndex of each parameters
+    // Set storageIndex of each parameter
     setFuncDeclParamsIndex(funcNode);
 
     // To avoid ambiguity, we do not want a function to declare a generic type 'T' if the struct
@@ -927,6 +927,26 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             symbolName->kind = SymbolKind::PlaceHolder;
             return true;
+        }
+    }
+
+    // Constraints
+    for (const auto it : funcNode->constraints)
+    {
+        if (it->isNot(AstNodeKind::ExpectConstraint))
+            continue;
+        const auto expect = castAst<AstExpectConstraint>(it, AstNodeKind::ExpectConstraint);
+        switch (expect->constraintKind)
+        {
+            case ExpectConstraintKind::NotNull:
+            {
+                const auto resolved = expect->resolvedSymbolOverload();
+                SWAG_ASSERT(resolved);
+                const auto idx = typeInfo->registerIdxToParamIdx(resolved->storageIndex);
+                SWAG_ASSERT(idx < typeInfo->parameters.size());
+                typeInfo->parameters[idx]->flags.add(TYPEINFOPARAM_EXPECT_NOT_NULL);
+                break;
+            }
         }
     }
 

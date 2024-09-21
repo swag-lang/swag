@@ -1128,34 +1128,46 @@ bool Semantic::resolveScopeBreakable(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off)
 bool Semantic::resolveExpectConstraint(SemanticContext* context)
 {
-    const auto node = castAst<AstNode>(context->node, AstNodeKind::ExpectConstraint);
+    const auto node = castAst<AstExpectConstraint>(context->node, AstNodeKind::ExpectConstraint);
     const auto expr = node->lastChild();
+
+    // Get the parameter identifier
+    AstNode* param = nullptr;
+    if (expr->is(AstNodeKind::BinaryOp))
+        param = expr->firstChild();
+
+    if (!param)
+    {
+        const Diagnostic err{expr, toErr(Err0780)};
+        return context->report(err);
+    }
+
+    if (param->isNot(AstNodeKind::IdentifierRef) ||
+        param->childCount() != 1 ||
+        param->firstChild()->isNot(AstNodeKind::Identifier) ||
+        !param->resolvedSymbolName() ||
+        param->resolvedSymbolName()->isNot(SymbolKind::Variable) ||
+        !param->resolvedSymbolOverload() ||
+        !param->resolvedSymbolOverload()->flags.has(OVERLOAD_VAR_FUNC_PARAM))
+    {
+        const Diagnostic err{param, toErr(Err0782)};
+        return context->report(err);
+    }
+
+    node->setResolvedSymbolName(param->resolvedSymbolName());
+    node->setResolvedSymbolOverload(param->resolvedSymbolOverload());
 
     // param != null
     if (expr->is(AstNodeKind::BinaryOp) &&
         expr->token.text == "!=" &&
-        expr->firstChild()->is(AstNodeKind::IdentifierRef) &&
-        expr->firstChild()->childCount() == 1 &&
-        expr->firstChild()->firstChild()->is(AstNodeKind::Identifier) &&
-        expr->firstChild()->resolvedSymbolName() &&
-        expr->firstChild()->resolvedSymbolName()->is(SymbolKind::Variable) &&
-        expr->firstChild()->resolvedSymbolOverload() &&
-        expr->firstChild()->resolvedSymbolOverload()->flags.has(OVERLOAD_VAR_FUNC_PARAM) &&
         expr->secondChild()->is(AstNodeKind::Literal))
     {
         if (expr->secondChild()->typeInfo->isPointerNull() ||
             expr->secondChild()->typeInfoCast && expr->secondChild()->typeInfoCast->isPointerNull())
         {
-            const auto typeInfo = expr->firstChild()->typeInfo;
-            if (!typeInfo->isNullable())
-            {
-                const Diagnostic err{expr->firstChild(), formErr(Err0781, typeInfo->getDisplayNameC())};
-                return context->report(err);
-            }
-
+            node->constraintKind = ExpectConstraintKind::NotNull;
             return true;
         }
     }

@@ -33,12 +33,15 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
 
 bool Parser::doExpectConstraint(AstFuncDecl* parent)
 {
-    const auto node = Ast::newNode<AstNode>(AstNodeKind::ExpectConstraint, this, parent);
+    const auto node = Ast::newNode<AstExpectConstraint>(AstNodeKind::ExpectConstraint, this, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->semanticFct = Semantic::resolveExpectConstraint;
     node->addAstFlag(AST_NO_BYTECODE);
     parent->addAstFlag(AST_HAS_CONSTRAINTS);
     SWAG_CHECK(eatToken());
+
+    Ast::removeFromParent(node);
+    Ast::insertChild(parent, node, parent->returnType->childParentIdx());
 
     parent->constraints.push_back(node);
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));

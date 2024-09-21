@@ -1360,3 +1360,16 @@ struct AstCompilerCode : AstNode
 
     AstNode* clone(CloneContext& context);
 };
+
+enum class ExpectConstraintKind
+{
+    Invalid,
+    NotNull,
+};
+
+struct AstExpectConstraint : AstNode
+{
+    AstNode* clone(CloneContext& context);
+
+    ExpectConstraintKind constraintKind = ExpectConstraintKind::Invalid;
+};

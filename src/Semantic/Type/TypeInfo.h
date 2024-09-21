@@ -89,6 +89,7 @@ constexpr TypeParamFlags TYPEINFOPARAM_AUTO_NAME        = 0x00000004;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_TYPE     = 0x00000008;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_CONSTANT = 0x00000010;
 constexpr TypeParamFlags TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
+constexpr TypeParamFlags TYPEINFOPARAM_EXPECT_NOT_NULL  = 0x00000040;
 
 enum class ComputeNameKind
 {
