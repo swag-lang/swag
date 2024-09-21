@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *whereExpr)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *constraints)
 {
     bool isMethod = false;
 
@@ -107,9 +107,9 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
     }
 
     // where must be exported
-    if (whereExpr && !whereExpr->empty())
+    if (constraints && !constraints->empty())
     {
-        for(const auto it: *whereExpr)
+        for(const auto it: *constraints)
         {
             concat->addEol();
             context.indent++;
@@ -185,8 +185,8 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
         return true;
     }
 
-    // check block
-    for (const auto it : funcDecl->whereExpressions)
+    // Constraints
+    for (const auto it : funcDecl->constraints)
     {
         concat->addEol();
         context.indent++;

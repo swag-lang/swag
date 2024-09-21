@@ -183,8 +183,8 @@ namespace Semantic
     bool           setUnRef(AstNode* node);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
     bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
-    bool           solveWhereExpressions(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
-    bool           solveWhereExpressions(SemanticContext* context, AstStruct* structDecl);
+    bool           solveConstraints(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
+    bool           solveConstraints(SemanticContext* context, AstStruct* structDecl);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           waitForStructUserOps(SemanticContext* context, const AstNode* node);
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
@@ -297,7 +297,6 @@ namespace Semantic
     bool resolveCompilerPrint(SemanticContext* context);
     bool resolveCompilerRun(SemanticContext* context);
     bool resolveCompilerSpecialValue(SemanticContext* context);
-    bool resolveWhereVerifyConstraintExpression(SemanticContext* context);
     bool resolveCompilerWarning(SemanticContext* context);
     bool resolveCompilerIntrinsicNameOf(SemanticContext* context);
     bool resolveCompilerIntrinsicStringOf(SemanticContext* context);
@@ -308,6 +307,8 @@ namespace Semantic
     bool resolveCompilerIntrinsicSizeOf(SemanticContext* context);
     bool resolveCompilerIntrinsicAlignOf(SemanticContext* context);
     bool resolveCompilerIntrinsicOffsetOf(SemanticContext* context);
+    bool resolveExpectConstraint(SemanticContext* context);
+    bool resolveWhereVerifyConstraint(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);
     bool resolveDefer(SemanticContext* context);

@@ -7,7 +7,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
-void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* whereExpr)
+void SemanticError::errorConstraintFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* constraintExpr)
 {
     AstNode* node;
     ErrorID  errID;
@@ -23,10 +23,10 @@ void SemanticError::errorWhereFailed(SemanticContext*, const ErrorParam& errorPa
         node  = errorParam.destStructDecl;
     }
 
-    const auto msg = formErr(errID, whereExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), whereExpr->token.cstr());
+    const auto msg = formErr(errID, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
-    errorParam.addNote(Diagnostic::hereIs(whereExpr, formNte(Nte0187, whereExpr->token.cstr())));
+    errorParam.addNote(Diagnostic::hereIs(constraintExpr, formNte(Nte0187, constraintExpr->token.cstr())));
 }
 
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)

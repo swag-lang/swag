@@ -924,7 +924,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
     return true;
 }
 
-bool Semantic::solveWhereExpressions(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+bool Semantic::solveConstraints(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
@@ -937,9 +937,12 @@ bool Semantic::solveWhereExpressions(SemanticContext* context, OneMatch* oneMatc
         return true;
     }
 
-    // Execute where/check block
-    for (const auto it : funcDecl->whereExpressions)
+    // Execute constraint block
+    for (const auto it : funcDecl->constraints)
     {
+        if(it->is(AstNodeKind::ExpectConstraint))
+            continue;
+        
         const auto expr = it->lastChild();
         
         // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.

@@ -154,6 +154,7 @@ enum class AstNodeKind : uint8_t
     CompilerRunExpression,
     CompilerSpecialValue,
     WhereConstraint,
+    ExpectConstraint,
     VerifyConstraint,
     CompilerWarning,
     ConditionalExpression,
@@ -748,7 +749,7 @@ struct AstFuncDecl : AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
     SourceLocation         implLoc;
-    VectorNative<AstNode*> whereExpressions;
+    VectorNative<AstNode*> constraints;
 
     AstNode*        captureParameters;
     AstNode*        parameters;
@@ -1065,7 +1066,7 @@ struct AstStruct : AstNode
 
     DependentJobs          dependentJobs;
     Token                  tokenName;
-    VectorNative<AstNode*> whereExpressions;
+    VectorNative<AstNode*> constraints;
 
     AstNode* genericParameters;
     AstNode* content;

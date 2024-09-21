@@ -311,23 +311,6 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveWhereVerifyConstraintExpression(SemanticContext* context)
-{
-    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::WhereConstraint, AstNodeKind::VerifyConstraint);
-    if (node->hasAstFlag(AST_GENERIC))
-        return true;
-
-    const auto expression = context->node->lastChild();
-    const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    if (!typeInfo->isBool())
-    {
-        const Diagnostic err{expression, formErr(Err0538, typeInfo->getDisplayNameC())};
-        return context->report(err);
-    }
-
-    return true;
-}
-
 bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);

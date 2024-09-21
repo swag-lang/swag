@@ -322,12 +322,12 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     SWAG_CHECK(eatToken());
 
-    // 'where' block
+    // Constraints
     while (tokenParse.is(TokenId::KwdWhere))
     {
         ParserPushScope       scoped(this, newScope);
         ParserPushStructScope scopedStruct(this, newScope);
-        SWAG_CHECK(doConstraint(structNode));
+        SWAG_CHECK(doWhereVerifyConstraint(structNode));
     }
 
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVerify), error(tokenParse, toErr(Err0344)));

@@ -374,7 +374,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             if (typeExpr->isNativeInteger())
                                 return context->report({expr, formErr(Err0013, expr->computedValue()->reg.u64)}, note);
                             if (typeExpr->isPointerNull())
-                                return context->report({expr, toErr(Err0779)}, note);                            
+                                return context->report({expr, toErr(Err0779)}, note);
                             return context->report({expr, formErr(Err0014, expr->computedValue()->reg.f64)}, note);
                         }
 
@@ -1125,5 +1125,27 @@ bool Semantic::resolveScopeBreakable(SemanticContext* context)
     const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->setBcNotifyBefore(ByteCodeGen::emitLabelBeforeBlock);
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
+    return true;
+}
+
+bool Semantic::resolveExpectConstraint(SemanticContext* context)
+{
+    return true;
+}
+
+bool Semantic::resolveWhereVerifyConstraint(SemanticContext* context)
+{
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::WhereConstraint, AstNodeKind::VerifyConstraint);
+    if (node->hasAstFlag(AST_GENERIC))
+        return true;
+
+    const auto expression = context->node->lastChild();
+    const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    if (!typeInfo->isBool())
+    {
+        const Diagnostic err{expression, formErr(Err0538, typeInfo->getDisplayNameC())};
+        return context->report(err);
+    }
+
     return true;
 }

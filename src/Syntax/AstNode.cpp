@@ -614,7 +614,7 @@ bool AstNode::isParentOf(const AstNode* child) const
 
 bool AstNode::isWhereParam(const SymbolOverload* overload) const
 {
-    if (!hasAstFlag(AST_IN_WHERE))
+    if (!hasAstFlag(AST_IN_CONSTRAINT))
         return false;
     if (!overload)
         return false;

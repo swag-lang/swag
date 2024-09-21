@@ -86,7 +86,7 @@ namespace SemanticError
 
     bool unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier);
 
-    void errorWhereFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* whereExpr);
+    void errorConstraintFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* constraintExpr);
     void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, const AstNode* hintType = nullptr);
     bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, const Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);

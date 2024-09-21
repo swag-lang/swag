@@ -31,7 +31,23 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
     return true;
 }
 
-bool Parser::doConstraint(AstNode* parent)
+bool Parser::doExpectConstraint(AstFuncDecl* parent)
+{
+    const auto node = Ast::newNode<AstNode>(AstNodeKind::ExpectConstraint, this, parent);
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->semanticFct = Semantic::resolveExpectConstraint;
+    node->addAstFlag(AST_NO_BYTECODE);
+    parent->addAstFlag(AST_HAS_CONSTRAINTS);
+    SWAG_CHECK(eatToken());
+
+    parent->constraints.push_back(node);
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatSemiCol("[[expect]] expression"));
+
+    return true;
+}
+
+bool Parser::doWhereVerifyConstraint(AstNode* parent)
 {
     auto       what    = AstNodeKind::Invalid;
     const auto tokenId = tokenParse.token.id;
@@ -51,14 +67,14 @@ bool Parser::doConstraint(AstNode* parent)
     const auto node = Ast::newNode<AstCompilerSpecFunc>(what, this, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-    node->semanticFct                      = Semantic::resolveWhereVerifyConstraintExpression;
+    node->semanticFct                      = Semantic::resolveWhereVerifyConstraint;
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
     parent->addAstFlag(AST_HAS_CONSTRAINTS);
 
     if (parent->is(AstNodeKind::FuncDecl))
-        castAst<AstFuncDecl>(parent, AstNodeKind::FuncDecl)->whereExpressions.push_back(node);
+        castAst<AstFuncDecl>(parent, AstNodeKind::FuncDecl)->constraints.push_back(node);
     else
-        castAst<AstStruct>(parent, AstNodeKind::StructDecl)->whereExpressions.push_back(node);
+        castAst<AstStruct>(parent, AstNodeKind::StructDecl)->constraints.push_back(node);
 
     SWAG_CHECK(eatToken());
 
@@ -79,7 +95,7 @@ bool Parser::doConstraint(AstNode* parent)
         }
     }
 
-    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_WHERE);
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_CONSTRAINT);
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         AstNode* funcNode;

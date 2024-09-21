@@ -704,9 +704,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     SWAG_ASSERT(node->is(AstNodeKind::StructDecl) || node->is(AstNodeKind::InterfaceDecl));
 
     // where
-    if (!node->whereExpressions.empty() && !node->hasAstFlag(AST_GENERIC))
+    if (!node->constraints.empty() && !node->hasAstFlag(AST_GENERIC))
     {
-        SWAG_CHECK(solveWhereExpressions(context, node));
+        SWAG_CHECK(solveConstraints(context, node));
         YIELD();
     }
 
@@ -825,12 +825,12 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
     }
 }
 
-bool Semantic::solveWhereExpressions(SemanticContext* context, AstStruct* structDecl)
+bool Semantic::solveConstraints(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
     // Execute where constraints
-    for(const auto it: structDecl->whereExpressions)
+    for(const auto it: structDecl->constraints)
     {
         const auto expr = it->lastChild();
 
@@ -860,7 +860,7 @@ bool Semantic::solveWhereExpressions(SemanticContext* context, AstStruct* struct
             errorParam.diagNote       = &diagNote;
             errorParam.errorNode      = structDecl->instantiatedFrom;
 
-            SemanticError::errorWhereFailed(context, errorParam, it);
+            SemanticError::errorConstraintFailed(context, errorParam, it);
 
             return context->report(*diagError[0], diagNote);
         }

@@ -27,7 +27,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->content->removeAstFlag(AST_NO_SEMANTIC);
     }
 
-    if (!newFunc->whereExpressions.empty())
+    if (!newFunc->constraints.empty())
         newFunc->content->addAstFlag(AST_NO_SEMANTIC);
 
     newFunc->originalGeneric = funcNode;
@@ -53,7 +53,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool whereExpr)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool isConstraint)
 {
     const auto node = context->node;
 
@@ -157,9 +157,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     newFunc->originalGeneric  = funcNode;
     newFunc->requestedGeneric = node;
 
-    // If this is for testing a where match, we must not evaluate the function content until the
+    // If this is for testing a constraint match, we must not evaluate the function content until the
     // where has passed
-    if (whereExpr)
+    if (isConstraint)
         newFunc->content->addAstFlag(AST_NO_SEMANTIC);
     else
         newFunc->content->removeAstFlag(AST_NO_SEMANTIC);
