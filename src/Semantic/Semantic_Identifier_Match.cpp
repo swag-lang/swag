@@ -1511,7 +1511,7 @@ bool Semantic::registerMatch(SemanticContext*            context,
             match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
             match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
             match->ufcs                        = oneOverload.ufcs;
-            if (overload->node->hasAstFlag(AST_HAS_SELECT_IF) && overload->node->is(AstNodeKind::FuncDecl))
+            if (overload->node->hasAstFlag(AST_HAS_CONSTRAINTS) && overload->node->is(AstNodeKind::FuncDecl))
                 genericMatchesSI.push_back(match);
             else
                 genericMatches.push_back(match);

@@ -31,7 +31,7 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
     return true;
 }
 
-bool Parser::doWhereVerifyConstraints(AstNode* parent)
+bool Parser::doConstraint(AstNode* parent)
 {
     auto       what    = AstNodeKind::Invalid;
     const auto tokenId = tokenParse.token.id;
@@ -52,8 +52,8 @@ bool Parser::doWhereVerifyConstraints(AstNode* parent)
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
     node->semanticFct                      = Semantic::resolveWhereVerifyConstraintExpression;
-    parent->addAstFlag(AST_HAS_SELECT_IF);
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+    parent->addAstFlag(AST_HAS_CONSTRAINTS);
 
     if (parent->is(AstNodeKind::FuncDecl))
         castAst<AstFuncDecl>(parent, AstNodeKind::FuncDecl)->whereExpressions.push_back(node);
