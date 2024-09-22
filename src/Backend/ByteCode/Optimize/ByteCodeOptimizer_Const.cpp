@@ -151,13 +151,14 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             {
                 case ByteCodeOp::IntrinsicMulAddF32:
                     SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->a.f32 = ip->b.f32 * ip->c.f32 + ip->d.f32;
+                    ip->b.f32 = ip->b.f32 * ip->c.f32 + ip->d.f32;
+                    context->bc->print({});
                     OK();
                     break;
 
                 case ByteCodeOp::IntrinsicMulAddF64:
                     SET_OP(ip, ByteCodeOp::SetImmediate64);
-                    ip->a.f64 = ip->b.f64 * ip->c.f64 + ip->d.f64;
+                    ip->b.f64 = ip->b.f64 * ip->c.f64 + ip->d.f64;
                     OK();
                     break;
 

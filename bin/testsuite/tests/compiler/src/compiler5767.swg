@@ -1,17 +1,9 @@
 //#global skip
-struct Vector2
-{
-    x, y: f32
-}
 
-impl Vector2
-{
-    mtd const length()->f32 => @sqrt((x * x) + (y * y))
-}
-
+#[Swag.PrintGenBc]
 #test
 {
-    let pt: Vector2{1, 1}
-    let l   = pt.length()
+    let pt = {x: 1'f32, y: 1'f32}
+    let l   = @sqrt((pt.x * pt.x) + (pt.y * pt.y))
     @assert(l > 0)
 }
