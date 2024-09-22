@@ -3,7 +3,7 @@
 struct A {}
 impl A
 {
-    mtd toto()
+    mtd toto(x: s32)
     {
         @print("titi")
     }
@@ -13,5 +13,5 @@ impl A
 #test
 {
     var p: *A
-    A.toto(p)
+    A.toto(p, 0)
 }

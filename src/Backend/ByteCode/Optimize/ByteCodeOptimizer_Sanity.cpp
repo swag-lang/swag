@@ -254,10 +254,10 @@ enum class ValueKind : uint8_t
 
 struct Value
 {
-    ValueKind            kind = ValueKind::Invalid;
-    Register             reg;
-    SymbolOverload*      overload = nullptr;
-    ByteCodeInstruction* ip       = nullptr;
+    VectorNative<ByteCodeInstruction*> fromIps;
+    Register                           reg;
+    SymbolOverload*                    fromOverload = nullptr;
+    ValueKind                          kind         = ValueKind::Invalid;
 
     bool isConstant() const { return kind == ValueKind::Constant || kind == ValueKind::ZeroParam; }
 };
@@ -265,8 +265,8 @@ struct Value
 struct State
 {
     VectorNative<uint8_t> stack;
-    VectorNative<Value>   stackValue;
-    VectorNative<Value>   regs;
+    Vector<Value>         stackValue;
+    Vector<Value>         regs;
     ByteCodeInstruction*  branchIp = nullptr;
     ByteCodeInstruction*  ip       = nullptr;
     uint32_t              parent   = UINT32_MAX;
@@ -293,7 +293,7 @@ namespace
 {
     bool getRegister(Value*& result, const Context& cxt, uint32_t reg)
     {
-        SWAG_ASSERT(reg < STATE()->regs.count);
+        SWAG_ASSERT(reg < STATE()->regs.size());
         result = &STATE()->regs[reg];
         return true;
     }
@@ -368,12 +368,11 @@ namespace
     bool getStackValue(Value& result, const Context& cxt, void* addr, uint32_t sizeOf)
     {
         const auto offset = static_cast<uint8_t*>(addr) - STATE()->stack.buffer;
-        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
-        auto addrValue = STATE()->stackValue.buffer + offset;
+        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
+        auto addrValue = STATE()->stackValue.data() + offset;
 
-        result.kind     = addrValue->kind;
-        result.overload = addrValue->overload;
-        result.ip       = addrValue->ip;
+        result.kind         = addrValue->kind;
+        result.fromOverload = addrValue->fromOverload;
         addrValue++;
 
         for (uint32_t i = 1; i < sizeOf; i++)
@@ -383,8 +382,8 @@ namespace
 
             if (value.kind != result.kind)
             {
-                result.kind     = ValueKind::Unknown;
-                result.overload = nullptr;
+                result.kind         = ValueKind::Unknown;
+                result.fromOverload = nullptr;
                 return true;
             }
 
@@ -418,7 +417,7 @@ namespace
         if (locNode)
             overload = locNode->resolvedSymbolOverload();
         if (!locNode && locValue)
-            overload = locValue->overload;
+            overload = locValue->fromOverload;
 
         if (overload)
         {
@@ -439,10 +438,10 @@ namespace
             err.addNote(locNode1, locNode1->token, what);
             err.addNote(overload->node, overload->node->token, toNte(Nte0223));
 
-            if (locValue && locValue->overload && overload != locValue->overload)
+            if (locValue && locValue->fromOverload && overload != locValue->fromOverload)
             {
-                what = form("original culprit is %s [[%s]]", Naming::kindName(locValue->overload).cstr(), locValue->overload->symbol->name.cstr());
-                err.addNote(locValue->overload->node, locValue->overload->node->token, what);
+                what = form("original culprit is %s [[%s]]", Naming::kindName(locValue->fromOverload).cstr(), locValue->fromOverload->symbol->name.cstr());
+                err.addNote(locValue->fromOverload->node, locValue->fromOverload->node->token, what);
             }
         }
 
@@ -507,7 +506,7 @@ namespace
                     msg = formErr(San0001, "lambda");
                 else
                     msg = formErr(San0001, typeFunc->declNode->token.cstr());
-                return raiseError(cxt, msg, ra->ip->node, ra, "could be null");
+                return raiseError(cxt, msg, nullptr, ra, "could be null");
             }
         }
 
@@ -534,10 +533,9 @@ namespace
     {
         if (ip->hasFlag(BCI_IMM_A))
         {
-            result.kind     = ValueKind::Constant;
-            result.reg      = ip->b;
-            result.overload = nullptr;
-            result.ip       = ip;
+            result.kind         = ValueKind::Constant;
+            result.reg          = ip->b;
+            result.fromOverload = nullptr;
             return true;
         }
 
@@ -551,10 +549,9 @@ namespace
     {
         if (ip->hasFlag(BCI_IMM_B))
         {
-            result.kind     = ValueKind::Constant;
-            result.reg      = ip->b;
-            result.overload = nullptr;
-            result.ip       = ip;
+            result.kind         = ValueKind::Constant;
+            result.reg          = ip->b;
+            result.fromOverload = nullptr;
             return true;
         }
 
@@ -568,10 +565,9 @@ namespace
     {
         if (ip->hasFlag(BCI_IMM_C))
         {
-            result.kind     = ValueKind::Constant;
-            result.reg      = ip->c;
-            result.overload = nullptr;
-            result.ip       = ip;
+            result.kind         = ValueKind::Constant;
+            result.reg          = ip->c;
+            result.fromOverload = nullptr;
             return true;
         }
 
@@ -585,10 +581,9 @@ namespace
     {
         if (ip->hasFlag(BCI_IMM_D))
         {
-            result.kind     = ValueKind::Constant;
-            result.reg      = ip->d;
-            result.overload = nullptr;
-            result.ip       = ip;
+            result.kind         = ValueKind::Constant;
+            result.reg          = ip->d;
+            result.fromOverload = nullptr;
             return true;
         }
 
@@ -608,12 +603,11 @@ namespace
     void setStackValue(const Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
     {
         const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.buffer);
-        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
+        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
         for (uint32_t i = offset; i < offset + sizeOf; i++)
         {
-            STATE()->stackValue[i].kind     = kind;
-            STATE()->stackValue[i].ip       = STATE()->ip;
-            STATE()->stackValue[i].overload = STATE()->ip->node ? STATE()->ip->node->resolvedSymbolOverload() : nullptr;
+            STATE()->stackValue[i].kind         = kind;
+            STATE()->stackValue[i].fromOverload = STATE()->ip->node ? STATE()->ip->node->resolvedSymbolOverload() : nullptr;
         }
     }
 
@@ -717,11 +711,10 @@ namespace
 
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
-                        ra->overload = ip->node->resolvedSymbolOverload();
-                        ra->ip       = ip;
-                        if (ra->overload->typeInfo->isNullable())
+                        ra->fromOverload = ip->node->resolvedSymbolOverload();
+                        if (ra->fromOverload->typeInfo->isNullable())
                         {
-                            const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(ra->overload->storageIndex);
+                            const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(ra->fromOverload->storageIndex);
                             if (!cxt.bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
                             {
                                 /*ra->kind            = ValueKind::ZeroParam;
@@ -916,18 +909,18 @@ namespace
                     JUMP1(!va.reg.b);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 0;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfTrue:
                     JUMP1(va.reg.b);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 1;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 1;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
 
@@ -935,9 +928,9 @@ namespace
                     JUMP2(va.reg.u64 == vc.reg.u64);
                     if (jmpAddState && vc.isConstant())
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = vc.kind;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = vc.reg.u64;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = vc.kind;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = vc.reg.u64;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
 
@@ -945,36 +938,36 @@ namespace
                     JUMP1(va.reg.u8 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 0;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero16:
                     JUMP1(va.reg.u16 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 0;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero32:
                     JUMP1(va.reg.u32 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 0;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
                 case ByteCodeOp::JumpIfZero64:
                     JUMP1(va.reg.u64 == 0);
                     if (jmpAddState)
                     {
-                        jmpAddState->regs[ip->a.u32].kind     = ValueKind::Constant;
-                        jmpAddState->regs[ip->a.u32].reg.u64  = 0;
-                        jmpAddState->regs[ip->a.u32].overload = nullptr;
+                        jmpAddState->regs[ip->a.u32].kind         = ValueKind::Constant;
+                        jmpAddState->regs[ip->a.u32].reg.u64      = 0;
+                        jmpAddState->regs[ip->a.u32].fromOverload = nullptr;
                     }
                     break;
 
@@ -1103,10 +1096,9 @@ namespace
                 case ByteCodeOp::MakeStackPointer:
                     SWAG_CHECK(checkStackOffset(cxt, ip->b.u32));
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind     = ValueKind::StackAddr;
-                    ra->reg.u64  = ip->b.u32;
-                    ra->overload = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
-                    ra->ip       = ip;
+                    ra->kind         = ValueKind::StackAddr;
+                    ra->reg.u64      = ip->b.u32;
+                    ra->fromOverload = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                     break;
 
                 case ByteCodeOp::SetZeroStackX:
@@ -1254,24 +1246,21 @@ namespace
 
                 case ByteCodeOp::SetImmediate32:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind     = ValueKind::Constant;
-                    ra->reg.u64  = ip->b.u32;
-                    ra->overload = nullptr;
-                    ra->ip       = ip;
+                    ra->kind         = ValueKind::Constant;
+                    ra->reg.u64      = ip->b.u32;
+                    ra->fromOverload = nullptr;
                     break;
                 case ByteCodeOp::SetImmediate64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind     = ValueKind::Constant;
-                    ra->reg.u64  = ip->b.u64;
-                    ra->overload = nullptr;
-                    ra->ip       = ip;
+                    ra->kind         = ValueKind::Constant;
+                    ra->reg.u64      = ip->b.u64;
+                    ra->fromOverload = nullptr;
                     break;
                 case ByteCodeOp::ClearRA:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind     = ValueKind::Constant;
-                    ra->reg.u64  = 0;
-                    ra->overload = nullptr;
-                    ra->ip       = ip;
+                    ra->kind         = ValueKind::Constant;
+                    ra->reg.u64      = 0;
+                    ra->fromOverload = nullptr;
                     break;
 
                 case ByteCodeOp::Add64byVB64:
@@ -1333,7 +1322,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
 
                     AstNode* locNode = nullptr;
-                    if (ra->overload && ip->node->is(AstNodeKind::Identifier))
+                    if (ra->fromOverload && ip->node->is(AstNodeKind::Identifier))
                     {
                         const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
                         const auto idRef = id->identifierRef();
@@ -1462,12 +1451,12 @@ namespace
                         SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
                         ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                         if (ip->d.pointer)
-                            ra->overload = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
+                            ra->fromOverload = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
                         break;
                     }
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->kind     = ValueKind::Unknown;
-                    ra->overload = nullptr;
+                    ra->kind         = ValueKind::Unknown;
+                    ra->fromOverload = nullptr;
                     break;
 
                 case ByteCodeOp::AffectOpPlusEqS8:
@@ -2515,8 +2504,8 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     if (!context->bc->node || context->bc->isCompilerGenerated)
         return true;
 
-    Context cxt;
-    auto    state = new State;
+    Context    cxt;
+    const auto state = new State;
 
     cxt.bc      = context->bc;
     state->ip   = nullptr;
@@ -2528,13 +2517,11 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     state->stack.count = funcDecl->stackSize;
     memset(state->stack.buffer, 0, state->stack.count * sizeof(uint8_t));
 
-    state->stackValue.reserve(funcDecl->stackSize);
-    state->stackValue.count = funcDecl->stackSize;
-    memset(state->stackValue.buffer, static_cast<uint8_t>(ValueKind::Invalid), state->stackValue.count * sizeof(Value));
+    state->stackValue.resize(funcDecl->stackSize);
+    memset(state->stackValue.data(), static_cast<uint8_t>(ValueKind::Invalid), state->stackValue.size() * sizeof(Value));
 
-    state->regs.reserve(context->bc->maxReservedRegisterRC);
-    state->regs.count = context->bc->maxReservedRegisterRC;
-    memset(state->regs.buffer, 0, state->regs.count * sizeof(Value));
+    state->regs.resize(context->bc->maxReservedRegisterRC);
+    memset(state->regs.data(), 0, state->regs.size() * sizeof(Value));
 
     state->ip = cxt.bc->out;
 
@@ -2545,12 +2532,12 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         SWAG_ASSERT(over);
         if (over->computedValue.storageOffset == UINT32_MAX)
             continue;
-        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > state->stackValue.count)
+        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > state->stackValue.size())
             continue;
 
         for (uint32_t i = 0; i < over->typeInfo->sizeOf; i++)
         {
-            state->stackValue[i + over->computedValue.storageOffset].overload = over;
+            state->stackValue[i + over->computedValue.storageOffset].fromOverload = over;
         }
     }
 
