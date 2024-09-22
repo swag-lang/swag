@@ -3102,8 +3102,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             if (toTypePointer->pointedType->isVoid() ||
                 toTypePointer->pointedType->isSame(fromType, castFlags.with(CAST_FLAG_CAST)))
             {
-                if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK) && !toTypePointer->isSelf())
-                {
+                if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
+                {                   
                     fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo     = toType;
                 }

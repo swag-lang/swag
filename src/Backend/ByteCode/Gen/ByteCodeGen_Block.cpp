@@ -10,6 +10,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
 
 bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {

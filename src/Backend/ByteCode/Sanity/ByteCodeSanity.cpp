@@ -261,14 +261,11 @@ namespace
 
         return true;
     }
-}
 
-/////////////////////////////////////
-/////////////////////////////////////
-/////////////////////////////////////
+    /////////////////////////////////////
+    /////////////////////////////////////
+    /////////////////////////////////////
 
-namespace
-{
     bool raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr, const Utf8& overloadMsg = "")
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
@@ -299,12 +296,6 @@ namespace
             else
                 what = form("culprit is %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
             err.addNote(locNode, locNode->token, what);
-
-            /*if (locValue && locValue->fromOverload && overload != locValue->fromOverload)
-            {
-                what = form("original culprit is %s [[%s]]", Naming::kindName(locValue->fromOverload).cstr(), locValue->fromOverload->symbol->name.cstr());
-                err.addNote(locValue->fromOverload->node, locValue->fromOverload->node->token, what);
-            }*/
         }
         else if (locValue && locValue->node && locValue->node != ip->node)
         {
@@ -396,14 +387,11 @@ namespace
             return raiseError(context, toErr(San0008), locValue, "could be uninitialized");
         return true;
     }
-}
 
-/////////////////////////////////////
-/////////////////////////////////////
-/////////////////////////////////////
+    /////////////////////////////////////
+    /////////////////////////////////////
+    /////////////////////////////////////
 
-namespace
-{
     bool getImmediateA(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
     {
         const auto ip = STATE()->ip;
@@ -499,7 +487,7 @@ namespace
         setStackValue(context, STATE()->stack.data(), STATE()->stack.size(), SanityValueKind::Unknown);
     }
 
-    bool optimizePassSanityLoop(SanityContext* context)
+    bool sanityLoop(SanityContext* context)
     {
         SanityValue*           ra    = nullptr;
         SanityValue*           rb    = nullptr;
@@ -635,9 +623,6 @@ namespace
                 case ByteCodeOp::CopySPVaargs:
                 case ByteCodeOp::MakeLambda:
                 case ByteCodeOp::CopyRBAddrToRA:
-                case ByteCodeOp::IntrinsicStrLen:
-                case ByteCodeOp::IntrinsicStrCmp:
-                case ByteCodeOp::IntrinsicMemCmp:
                 case ByteCodeOp::IntrinsicMakeCallback:
                 case ByteCodeOp::CloneString:
                 case ByteCodeOp::IntrinsicIsConstExprSI:
@@ -2211,6 +2196,31 @@ namespace
                     ra->reg.u64 = ~rb->reg.u64;
                     break;
 
+                case ByteCodeOp::IntrinsicStrCmp:
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(getRegister(context, rc, ip->c.u32, ip->node->firstChild()->secondChild()));
+                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strcmp")));
+                    SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@strcmp")));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    ra->kind = SanityValueKind::Unknown;
+                    break;
+
+                case ByteCodeOp::IntrinsicStrLen:
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strlen")));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    ra->kind = SanityValueKind::Unknown;
+                    break;
+
+                case ByteCodeOp::IntrinsicMemCmp:
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(getRegister(context, rc, ip->c.u32, ip->node->firstChild()->secondChild()));
+                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcmp")));
+                    SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@memcmp")));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    ra->kind = SanityValueKind::Unknown;
+                    break;
+
                 case ByteCodeOp::MemCpy8:
                 case ByteCodeOp::MemCpy16:
                 case ByteCodeOp::MemCpy32:
@@ -2224,7 +2234,7 @@ namespace
                     {
                         second = ip->node->firstChild();
                     }
-                    else if (ip->node->childCount() && ip->node->firstChild()->childCount() == 2)
+                    else if (ip->node->childCount() && ip->node->firstChild()->childCount() >= 2)
                     {
                         first  = ip->node->firstChild()->firstChild();
                         second = ip->node->firstChild()->secondChild();
@@ -2403,7 +2413,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     for (uint32_t i = 0; i < context.states.size(); i++)
     {
         context.state = i;
-        SWAG_CHECK(optimizePassSanityLoop(&context));
+        SWAG_CHECK(sanityLoop(&context));
         if (i == context.states.size() - 1)
             break;
         for (uint32_t j = 0; j < context.bc->numInstructions; j++)
