@@ -152,7 +152,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 case ByteCodeOp::IntrinsicMulAddF32:
                     SET_OP(ip, ByteCodeOp::SetImmediate32);
                     ip->b.f32 = ip->b.f32 * ip->c.f32 + ip->d.f32;
-                    context->bc->print({});
                     OK();
                     break;
 

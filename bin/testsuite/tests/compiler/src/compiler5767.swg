@@ -1,6 +1,6 @@
 //#global skip
 
-#[Swag.PrintGenBc]
+//#[Swag.PrintGenBc]
 #test
 {
     let pt = {x: 1'f32, y: 1'f32}

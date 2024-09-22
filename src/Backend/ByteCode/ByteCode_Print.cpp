@@ -355,10 +355,10 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
 
     // Parameters
     const auto opFlags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
-    line.instRef += getInstructionReg("A", ip->a, opFlags.has(OPFLAG_WRITE_A), opFlags.has(OPFLAG_READ_A), opFlags.has(OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->hasFlag(BCI_IMM_A));
-    line.instRef += getInstructionReg("B", ip->b, opFlags.has(OPFLAG_WRITE_B), opFlags.has(OPFLAG_READ_B), opFlags.has(OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->hasFlag(BCI_IMM_B));
-    line.instRef += getInstructionReg("C", ip->c, opFlags.has(OPFLAG_WRITE_C), opFlags.has(OPFLAG_READ_C), opFlags.has(OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->hasFlag(BCI_IMM_C));
-    line.instRef += getInstructionReg("D", ip->d, opFlags.has(OPFLAG_WRITE_D), opFlags.has(OPFLAG_READ_D), opFlags.has(OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->hasFlag(BCI_IMM_D));
+    line.instRef += getInstructionReg("A", ip->a, opFlags.has(OPFLAG_WRITE_A), opFlags.has(OPFLAG_READ_A), opFlags.has(OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || (opFlags.has(OPFLAG_IMM_A) && ip->hasFlag(BCI_IMM_A)));
+    line.instRef += getInstructionReg("B", ip->b, opFlags.has(OPFLAG_WRITE_B), opFlags.has(OPFLAG_READ_B), opFlags.has(OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || (opFlags.has(OPFLAG_IMM_B) && ip->hasFlag(BCI_IMM_B)));
+    line.instRef += getInstructionReg("C", ip->c, opFlags.has(OPFLAG_WRITE_C), opFlags.has(OPFLAG_READ_C), opFlags.has(OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || (opFlags.has(OPFLAG_IMM_C) && ip->hasFlag(BCI_IMM_C)));
+    line.instRef += getInstructionReg("D", ip->d, opFlags.has(OPFLAG_WRITE_D), opFlags.has(OPFLAG_READ_D), opFlags.has(OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || (opFlags.has(OPFLAG_IMM_D) && ip->hasFlag(BCI_IMM_D)));
     line.instRef.trim();
 
     // Flags
