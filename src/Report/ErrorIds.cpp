@@ -116,7 +116,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(San0002, "[sanity] division by zero    $ possible division by zero");
-    SWAG_ERROR(San0004, "[sanity] frame escape        $ possible return of something from the stack memory");
+    SWAG_ERROR(San0004, "[sanity] frame escape        $ possible return value from the stack memory");
     SWAG_ERROR(San0006, "[sanity] null dereference    $ possible dereference of a null pointer");
     SWAG_ERROR(San0007, "[sanity] stack overwrite     $ possible overwrite of the stack memory at offset [[%lld]] (stack size is [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] uninitialized usage $ possible usage of uninitialized memory");

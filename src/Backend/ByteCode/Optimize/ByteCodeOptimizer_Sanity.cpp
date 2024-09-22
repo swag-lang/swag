@@ -118,16 +118,16 @@
         }                                                                                                           \
     } while (0)
 
-#define BINOP_EQ_DIV(__cast, __op, __reg)                      \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));               \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                    \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, &vb)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                  \
-    {                                                          \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));           \
-        rc->kind = ValueKind::Unknown;                         \
-        break;                                                 \
-    }                                                          \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                  \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));           \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                \
+    SWAG_CHECK(checkDivZero(cxt, &vb, vb.reg.__reg == 0)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)              \
+    {                                                      \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));       \
+        rc->kind = ValueKind::Unknown;                     \
+        break;                                             \
+    }                                                      \
     BINOP_EQ(__cast, __op, __reg)
 
 #define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                              \
@@ -185,16 +185,16 @@
     }                                                                                                    \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
-#define BINOP_DIV(__op, __reg)                                 \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));               \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                    \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, &vb)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)                  \
-    {                                                          \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));           \
-        rc->kind = ValueKind::Unknown;                         \
-        break;                                                 \
-    }                                                          \
+#define BINOP_DIV(__op, __reg)                             \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));           \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                \
+    SWAG_CHECK(checkDivZero(cxt, &vb, vb.reg.__reg == 0)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)              \
+    {                                                      \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));       \
+        rc->kind = ValueKind::Unknown;                     \
+        break;                                             \
+    }                                                      \
     BINOP(__op, __reg)
 
 #define CMP_OP(__op, __reg)                                                                   \
@@ -405,7 +405,7 @@ namespace
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
 
-        const auto ip = cxt.states[cxt.state]->ip;
+        const auto ip = STATE()->ip;
         if (!ip->node)
             return true;
 
@@ -455,19 +455,17 @@ namespace
         return raiseError(cxt, formErr(San0010, msgKind, type->getDisplayNameC()));
     }
 
-    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const Value* locValue = nullptr)
+    bool checkDivZero(const Context& cxt, const Value* value, bool isZero)
     {
-        if (!value.isConstant())
+        if (!value->isConstant() || !isZero)
             return true;
-        if (!isZero)
-            return true;
-        return raiseError(cxt, toErr(San0002), nullptr, locValue, "could be zero");
+        return raiseError(cxt, toErr(San0002), nullptr, value, "could be zero");
     }
 
-    bool checkEscapeFrame(const Context& cxt, [[maybe_unused]] uint64_t stackOffset, const Value* locValue = nullptr)
+    bool checkEscapeFrame(const Context& cxt, const Value* value)
     {
-        SWAG_ASSERT(stackOffset < UINT32_MAX);
-        return raiseError(cxt, toErr(San0004), nullptr, locValue);
+        SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
+        return raiseError(cxt, toErr(San0004), nullptr, value);
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
@@ -1375,7 +1373,7 @@ namespace
                         break;
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     if (ra->kind == ValueKind::StackAddr)
-                        return checkEscapeFrame(cxt, ra->reg.u32, ra);
+                        return checkEscapeFrame(cxt, ra);
                     break;
 
                 case ByteCodeOp::CopyRARBtoRR2:
@@ -1390,7 +1388,7 @@ namespace
                         if (context->bc->node && context->bc->node->hasAstFlag(AST_IN_RUN_BLOCK))
                             break;
 
-                        return checkEscapeFrame(cxt, ra->reg.u32, ra);
+                        return checkEscapeFrame(cxt, ra);
                     }
 
                     break;
