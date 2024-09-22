@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Main/Statistics.h"
 #include "Syntax/AstNode.h"
@@ -641,17 +642,18 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
 bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
 {
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
-    optContext.bc = bc;
 
-    // Sanity must be done before any optimization, in order to have to deal with all extra instructions.
+    // Sanity must be done before any optimization, in order to not have to deal with all extra instructions.
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
-        bc->sanDone = true;
-        setJumps(&optContext);
-        genTree(&optContext, false);
-        SWAG_CHECK(optimizePassSanity(&optContext));
+        ByteCodeSanityContext sanContext;
+
+        bc->sanDone   = true;
+        sanContext.bc = bc;
+        SWAG_CHECK(ByteCodeSanity::process(&sanContext));
     }
 
+    optContext.bc = bc;
     if (!optContext.module->mustOptimizeBytecode(bc->node))
         return true;
 

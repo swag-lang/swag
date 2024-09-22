@@ -84,8 +84,6 @@ struct ByteCodeOptimizer
     static bool optimizePassReduce(ByteCodeOptContext* context);
     static bool optimizePassReduceX2(ByteCodeOptContext* context);
 
-    static bool optimizePassSanity(ByteCodeOptContext* context);
-
     static bool optimize(Job* job, Module* module, bool& done);
     static bool optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart);
 };

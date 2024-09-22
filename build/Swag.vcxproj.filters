@@ -51,7 +51,6 @@
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Reduce.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_ReduceX2.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_RetCopy.cpp" />
-    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Sanity.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Swap.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Profiler\Profiler.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun.cpp" />
@@ -253,6 +252,7 @@
     <ClCompile Include="..\src\Syntax\Parser\Parser_Error.cpp" />
     <ClCompile Include="..\src\Backend\Linker\BackendLinker.cpp" />
     <ClCompile Include="..\src\Backend\Linker\BackendLinker_Coff.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -383,6 +383,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Gen\ByteCodeGenJob.h" />
     <ClInclude Include="..\src\Core\AtomicFlags.h" />
     <ClInclude Include="..\src\Backend\Linker\BackendLinker.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

@@ -1,6 +1,7 @@
 #include "pch.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
-#include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -8,9 +9,6 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
-#include <winternl.h>
-
-#pragma optimize("", off)
 
 #define STATE() cxt.states[cxt.state]
 
@@ -274,7 +272,7 @@ enum class ConstantKind
 
 struct Context
 {
-    ByteCodeOptContext*       context = nullptr;
+    ByteCodeSanityContext*    context = nullptr;
     ByteCode*                 bc      = nullptr;
     uint32_t                  state   = 0;
     Set<ByteCodeInstruction*> statesHere;
@@ -555,7 +553,7 @@ namespace
         setStackValue(cxt, STATE()->stack.data(), STATE()->stack.size(), ValueKind::Unknown);
     }
 
-    bool optimizePassSanityLoop(ByteCodeOptContext* context, Context& cxt)
+    bool optimizePassSanityLoop(ByteCodeSanityContext* context, Context& cxt)
     {
         Value*                 ra    = nullptr;
         Value*                 rb    = nullptr;
@@ -654,8 +652,8 @@ namespace
                             const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                             if (!cxt.bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
                             {
-                                //ra->kind        = ValueKind::ZeroParam;
-                                //ra->reg.pointer = nullptr;
+                                // ra->kind        = ValueKind::ZeroParam;
+                                // ra->reg.pointer = nullptr;
                             }
                         }
                     }
@@ -2440,7 +2438,7 @@ namespace
     }
 }
 
-bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
+bool ByteCodeSanity::process(ByteCodeSanityContext* context)
 {
     if (!context->bc->node || context->bc->isCompilerGenerated)
         return true;

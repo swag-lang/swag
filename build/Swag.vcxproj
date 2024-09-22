@@ -235,6 +235,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeRun.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeRunContext.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeStack.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.h" />
     <ClInclude Include="..\src\Backend\CallConv.h" />
     <ClInclude Include="..\src\Backend\CompilerItf.h" />
     <ClInclude Include="..\src\Backend\Context.h" />
@@ -401,7 +402,6 @@
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Reduce.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_ReduceX2.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_RetCopy.cpp" />
-    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Sanity.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Swap.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Profiler\Profiler.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun.cpp" />
@@ -410,6 +410,7 @@
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_Math.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeStack.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.cpp" />
     <ClCompile Include="..\src\Backend\CallConv.cpp" />
     <ClCompile Include="..\src\Backend\CompilerItf.cpp" />
     <ClCompile Include="..\src\Backend\Context.cpp" />
