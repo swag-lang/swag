@@ -15,8 +15,6 @@
 #define STATE() cxt.states[cxt.state]
 
 #define MEMCPY(__cast, __sizeof)                                              \
-    SWAG_CHECK(getRegister(cxt, ra, ip->a.u32));                              \
-    SWAG_CHECK(getRegister(cxt, rb, ip->b.u32));                              \
     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr) \
     {                                                                         \
         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, __sizeof));        \
@@ -26,8 +24,7 @@
         setStackValue(cxt, addr, __sizeof, vb.kind);                          \
         *(__cast*) addr = *(__cast*) addr2;                                   \
         break;                                                                \
-    }                                                                         \
-    invalidateCurStateStack(cxt);
+    }
 
 #define BINOP_EQ(__cast, __op, __reg)                                                  \
     do                                                                                 \
@@ -448,7 +445,7 @@ namespace
         Value memValue;
         SWAG_CHECK(getStackValue(cxt, &memValue, addr, sizeOf));
         if (memValue.kind == ValueKind::Invalid)
-            return raiseError(cxt, toErr(San0008), locValue);
+            return raiseError(cxt, toErr(San0008), locValue, "could be uninitialized");
         return true;
     }
 }
@@ -2250,36 +2247,61 @@ namespace
                     break;
 
                 case ByteCodeOp::MemCpy8:
-                    MEMCPY(uint8_t, 1);
-                    break;
                 case ByteCodeOp::MemCpy16:
-                    MEMCPY(uint16_t, 2);
-                    break;
                 case ByteCodeOp::MemCpy32:
-                    MEMCPY(uint32_t, 4);
-                    break;
                 case ByteCodeOp::MemCpy64:
-                    MEMCPY(uint64_t, 8);
-                    break;
-
                 case ByteCodeOp::IntrinsicMemCpy:
-                    SWAG_CHECK(getRegister(cxt, ra, ip->a.u32, ip->node->firstChild()->firstChild()));
-                    SWAG_CHECK(getRegister(cxt, rb, ip->b.u32, ip->node->firstChild()->secondChild()));
-                    SWAG_CHECK(getImmediateC(cxt, vc));
-                    SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@memcpy")));
-                    SWAG_CHECK(checkNotNull(cxt, rb, formErr(San0001, "@memcpy")));
-                    if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
+                {
+                    AstNode* first  = nullptr;
+                    AstNode* second = nullptr;
+
+                    if (ip->node->is(AstNodeKind::VarDecl) && ip->node->childCount())
                     {
-                        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
-                        SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
-                        SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb));
-                        SWAG_CHECK(getStackValue(cxt, &va, addr2, vc.reg.u32));
-                        setStackValue(cxt, addr, vc.reg.u32, va.kind);
-                        std::copy_n(addr2, vc.reg.u32, addr);
-                        break;
+                        second = ip->node->firstChild();
                     }
+                    else if (ip->node->childCount() && ip->node->firstChild()->childCount() == 2)
+                    {
+                        first  = ip->node->firstChild()->firstChild();
+                        second = ip->node->firstChild()->secondChild();
+                    }
+
+                    SWAG_CHECK(getRegister(cxt, ra, ip->a.u32, first));
+                    SWAG_CHECK(getRegister(cxt, rb, ip->b.u32, second));
+
+                    switch (ip->op)
+                    {
+                        case ByteCodeOp::MemCpy8:
+                            MEMCPY(uint8_t, 1);
+                            break;
+                        case ByteCodeOp::MemCpy16:
+                            MEMCPY(uint16_t, 2);
+                            break;
+                        case ByteCodeOp::MemCpy32:
+                            MEMCPY(uint32_t, 4);
+                            break;
+                        case ByteCodeOp::MemCpy64:
+                            MEMCPY(uint64_t, 8);
+                            break;
+                        default:
+                            SWAG_CHECK(getImmediateC(cxt, vc));
+                            SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@memcpy")));
+                            SWAG_CHECK(checkNotNull(cxt, rb, formErr(San0001, "@memcpy")));
+                            if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
+                            {
+                                SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
+                                SWAG_CHECK(getStackAddress(addr2, cxt, rb->reg.u32, vc.reg.u32));
+                                SWAG_CHECK(checkStackInitialized(cxt, addr2, vc.reg.u32, rb));
+                                SWAG_CHECK(getStackValue(cxt, &va, addr2, vc.reg.u32));
+                                setStackValue(cxt, addr, vc.reg.u32, va.kind);
+                                std::copy_n(addr2, vc.reg.u32, addr);
+                            }
+                            break;
+                    }
+
                     invalidateCurStateStack(cxt);
                     break;
+                }
+
                 case ByteCodeOp::IntrinsicMemMove:
                     SWAG_CHECK(getRegister(cxt, ra, ip->a.u32, ip->node->firstChild()->firstChild()));
                     SWAG_CHECK(getRegister(cxt, rb, ip->b.u32, ip->node->firstChild()->secondChild()));
