@@ -264,12 +264,12 @@ struct Value
 
 struct State
 {
-    VectorNative<uint8_t> stack;
-    Vector<Value>         stackValue;
-    Vector<Value>         regs;
-    ByteCodeInstruction*  branchIp = nullptr;
-    ByteCodeInstruction*  ip       = nullptr;
-    uint32_t              parent   = UINT32_MAX;
+    Vector<uint8_t>      stack;
+    Vector<Value>        stackValue;
+    Vector<Value>        regs;
+    ByteCodeInstruction* branchIp = nullptr;
+    ByteCodeInstruction* ip       = nullptr;
+    uint32_t             parent   = UINT32_MAX;
 };
 
 enum class ConstantKind
@@ -367,7 +367,7 @@ namespace
 
     bool getStackValue(Value& result, const Context& cxt, void* addr, uint32_t sizeOf)
     {
-        const auto offset = static_cast<uint8_t*>(addr) - STATE()->stack.buffer;
+        const auto offset = static_cast<uint8_t*>(addr) - STATE()->stack.data();
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
         auto addrValue = STATE()->stackValue.data() + offset;
 
@@ -472,8 +472,8 @@ namespace
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
     {
-        if (stackOffset + sizeOf > static_cast<size_t>(STATE()->stack.count))
-            return raiseError(cxt, formErr(San0007, stackOffset + sizeOf, STATE()->stack.count));
+        if (stackOffset + sizeOf > static_cast<size_t>(STATE()->stack.size()))
+            return raiseError(cxt, formErr(San0007, stackOffset + sizeOf, STATE()->stack.size()));
         return true;
     }
 
@@ -596,13 +596,13 @@ namespace
     bool getStackAddress(uint8_t*& result, const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
     {
         SWAG_CHECK(checkStackOffset(cxt, stackOffset, sizeOf));
-        result = STATE()->stack.buffer + stackOffset;
+        result = STATE()->stack.data() + stackOffset;
         return true;
     }
 
     void setStackValue(const Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
     {
-        const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.buffer);
+        const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.data());
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
         for (uint32_t i = offset; i < offset + sizeOf; i++)
         {
@@ -613,7 +613,7 @@ namespace
 
     void invalidateCurStateStack(const Context& cxt)
     {
-        setStackValue(cxt, STATE()->stack.buffer, STATE()->stack.count, ValueKind::Unknown);
+        setStackValue(cxt, STATE()->stack.data(), STATE()->stack.size(), ValueKind::Unknown);
     }
 
     bool optimizePassSanityLoop(ByteCodeOptContext* context, Context& cxt)
@@ -2513,15 +2513,9 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 
     const auto funcDecl = castAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
-    state->stack.reserve(funcDecl->stackSize);
-    state->stack.count = funcDecl->stackSize;
-    memset(state->stack.buffer, 0, state->stack.count * sizeof(uint8_t));
-
+    state->stack.resize(funcDecl->stackSize);
     state->stackValue.resize(funcDecl->stackSize);
-    memset(state->stackValue.data(), static_cast<uint8_t>(ValueKind::Invalid), state->stackValue.size() * sizeof(Value));
-
     state->regs.resize(context->bc->maxReservedRegisterRC);
-    memset(state->regs.data(), 0, state->regs.size() * sizeof(Value));
 
     state->ip = cxt.bc->out;
 
