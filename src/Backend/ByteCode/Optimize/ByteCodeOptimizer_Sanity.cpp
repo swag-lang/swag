@@ -400,7 +400,7 @@ namespace
 
 namespace
 {
-    bool raiseError(const Context& cxt, const Utf8& msg, AstNode* locNode = nullptr, const Value* locValue = nullptr, const Utf8& overloadMsg = "")
+    bool raiseError(const Context& cxt, const Utf8& msg, const Value* locValue = nullptr, const Utf8& overloadMsg = "")
     {
         if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
@@ -409,20 +409,13 @@ namespace
         if (!ip->node)
             return true;
 
-        AstNode* loc = locNode ? locNode : ip->node;
+        Diagnostic err{ip->node, ip->node->token, msg};
 
-        Diagnostic err{loc, loc->token, msg};
-
-        const SymbolOverload* overload = nullptr;
-        if (locNode)
-            overload = locNode->resolvedSymbolOverload();
-        if (!locNode && locValue)
-            overload = locValue->fromOverload;
-
+        const SymbolOverload* overload = locValue ? locValue->fromOverload : nullptr;
         if (overload)
         {
             auto locNode1 = STATE()->ip->node;
-            Ast::visit(locNode ? locNode : ip->node, [&](AstNode* n) {
+            Ast::visit(ip->node, [&](AstNode* n) {
                 if (n->resolvedSymbolOverload() == overload && n->is(AstNodeKind::Identifier))
                 {
                     locNode1 = n;
@@ -459,13 +452,13 @@ namespace
     {
         if (!value->isConstant() || !isZero)
             return true;
-        return raiseError(cxt, toErr(San0002), nullptr, value, "could be zero");
+        return raiseError(cxt, toErr(San0002), value, "could be zero");
     }
 
     bool checkEscapeFrame(const Context& cxt, const Value* value)
     {
         SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
-        return raiseError(cxt, toErr(San0004), nullptr, value);
+        return raiseError(cxt, toErr(San0004), value);
     }
 
     bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
@@ -475,11 +468,11 @@ namespace
         return true;
     }
 
-    bool checkNotNull(const Context& cxt, const Value* value, AstNode* locNode = nullptr, const Utf8& err = "")
+    bool checkNotNull(const Context& cxt, const Value* value, const Utf8& err = "")
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
-        return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value, "could be null");
+        return raiseError(cxt, err.empty() ? toErr(San0006) : err, value, "could be null");
     }
 
     bool checkNotNullArguments(Context& cxt, VectorNative<uint32_t> pushParams)
@@ -504,7 +497,7 @@ namespace
                     msg = formErr(San0001, "lambda");
                 else
                     msg = formErr(San0001, typeFunc->declNode->token.cstr());
-                return raiseError(cxt, msg, nullptr, ra, "could be null");
+                return raiseError(cxt, msg, ra, "could be null");
             }
         }
 
@@ -516,7 +509,7 @@ namespace
         Value memValue;
         SWAG_CHECK(getStackValue(memValue, cxt, addr, sizeOf));
         if (memValue.kind == ValueKind::Invalid)
-            return raiseError(cxt, toErr(San0008), nullptr, locValue);
+            return raiseError(cxt, toErr(San0008), locValue);
         return true;
     }
 }
@@ -780,7 +773,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicCVaStart:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@cvastart")));
+                    SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@cvastart")));
                     if (ra->kind == ValueKind::StackAddr)
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, 8));
@@ -1316,25 +1309,8 @@ namespace
                     break;
 
                 case ByteCodeOp::IncPointer64:
-                {
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-
-                    AstNode* locNode = nullptr;
-                    if (ra->fromOverload && ip->node->is(AstNodeKind::Identifier))
-                    {
-                        const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
-                        const auto idRef = id->identifierRef();
-                        for (auto i = id->childParentIdx() - 1; i != UINT32_MAX; i--)
-                        {
-                            const auto node = idRef->children[i];
-                            if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
-                                continue;
-                            locNode = node;
-                            break;
-                        }
-                    }
-
-                    SWAG_CHECK(checkNotNull(cxt, ra, locNode));
+                    SWAG_CHECK(checkNotNull(cxt, ra));
                     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));
                     *rc = *ra;
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
@@ -1343,7 +1319,6 @@ namespace
                     else
                         rc->reg.u64 += vb.reg.s64;
                     break;
-                }
 
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -2364,8 +2339,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memcpy")));
-                    SWAG_CHECK(checkNotNull(cxt, rb, ip->node->firstChild()->secondChild(), formErr(San0001, "@memcpy")));
+                    SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@memcpy")));
+                    SWAG_CHECK(checkNotNull(cxt, rb, formErr(San0001, "@memcpy")));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2382,8 +2357,8 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memmove")));
-                    SWAG_CHECK(checkNotNull(cxt, rb, ip->node->firstChild()->secondChild(), formErr(San0001, "@memmove")));
+                    SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@memmove")));
+                    SWAG_CHECK(checkNotNull(cxt, rb, formErr(San0001, "@memmove")));
                     if (ra->kind == ValueKind::StackAddr && rb->kind == ValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
@@ -2400,7 +2375,7 @@ namespace
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
                     SWAG_CHECK(getImmediateC(vc, cxt, ip));
-                    SWAG_CHECK(checkNotNull(cxt, ra, ip->node->firstChild()->firstChild(), formErr(San0001, "@memset")));
+                    SWAG_CHECK(checkNotNull(cxt, ra, formErr(San0001, "@memset")));
                     if (ra->kind == ValueKind::StackAddr && vb.isConstant() && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, vc.reg.u32));
