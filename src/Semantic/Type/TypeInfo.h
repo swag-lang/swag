@@ -28,7 +28,7 @@ using TypeInfoFlagsV = uint64_t;
 using TypeInfoFlags  = AtomicFlags<TypeInfoFlagsV>;
 using TypeParamFlags = Flags<uint32_t>;
 
-constexpr TypeInfoFlagsV TYPEINFO_SELF                     = 0x00000000'00000001;
+constexpr TypeInfoFlagsV TYPEINFO_IS_SELF                     = 0x00000000'00000001;
 constexpr TypeInfoFlagsV TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlagsV TYPEINFO_INTEGER                  = 0x00000000'00000004;
 constexpr TypeInfoFlagsV TYPEINFO_FLOAT                    = 0x00000000'00000008;
@@ -180,7 +180,7 @@ struct TypeInfo
     bool isConstPointerRef() const { return flags.has(TYPEINFO_POINTER_REF) && flags.has(TYPEINFO_CONST); }
     bool isAutoConstPointerRef() const { return flags.has(TYPEINFO_POINTER_REF) && flags.has(TYPEINFO_CONST) && flags.has(TYPEINFO_POINTER_AUTO_REF); }
     bool isPointerArithmetic() const { return flags.has(TYPEINFO_POINTER_ARITHMETIC); }
-    bool isSelf() const { return flags.has(TYPEINFO_SELF); }
+    bool isSelf() const { return flags.has(TYPEINFO_IS_SELF); }
     bool isUntypedInteger() const { return flags.has(TYPEINFO_UNTYPED_INTEGER); }
     bool isUntypedFloat() const { return flags.has(TYPEINFO_UNTYPED_FLOAT); }
     bool isUntypedBinHex() const { return flags.has(TYPEINFO_UNTYPED_BIN_HEX); }

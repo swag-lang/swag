@@ -53,7 +53,7 @@
 #define IMMD_U32(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
 #define IMMD_U64(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
 
-SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     if (++context->curRC > context->maxRecurse)
     {
@@ -83,7 +83,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
     context->pushAlt<uint32_t>(popParamsOnRet * sizeof(void*) + incSPPostCall);
 }
 
-SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc, bool& leave)
+void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc, bool& leave)
 {
     if (--context->curRC != UINT32_MAX)
     {
@@ -132,7 +132,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [
 #endif
 }
 
-SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     SWAG_ASSERT(bc && bc->out);
     SWAG_ASSERT(!bc->node || bc->node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));

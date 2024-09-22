@@ -397,7 +397,7 @@ bool Semantic::resolveType(SemanticContext* context)
     {
         auto ptrFlags = typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC);
         if (typeNode->typeFlags.has(TYPE_FLAG_IS_SELF))
-            ptrFlags.add(TYPEINFO_SELF);
+            ptrFlags.add(TYPEINFO_IS_SELF);
         if (typeNode->typeFlags.has(TYPE_FLAG_HAS_USING))
             ptrFlags.add(TYPEINFO_HAS_USING);
         if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))

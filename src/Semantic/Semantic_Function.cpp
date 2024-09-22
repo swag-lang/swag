@@ -50,7 +50,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 {
     if (!parameters || funcNode->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         return true;
-
+    
     bool     defaultValueDone = false;
     uint32_t index            = 0;
 
@@ -98,8 +98,8 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         typeInfo->parameters.reserve(parameters->childCount());
     }
 
-    AstNode* firstParamWithDef = nullptr;
-    auto     sourceFile        = context->sourceFile;
+    const AstNode* firstParamWithDef = nullptr;
+    auto           sourceFile        = context->sourceFile;
     for (const auto param : parameters->children)
     {
         auto nodeParam        = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -121,6 +121,10 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         if (paramType->isCode())
             SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0399)}));
 
+        // Self should never be null 
+        if(paramType->isSelf())
+            funcParam->flags.add(TYPEINFOPARAM_EXPECT_NOT_NULL);
+        
         // Not everything is possible for types for attributes
         if (param->ownerScope->is(ScopeKind::Attribute))
         {
@@ -182,7 +186,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
                 return context->report(err);
             }
         }
-
+        
         if (forGenerics)
             typeInfo->genericParameters.push_back(funcParam);
         else

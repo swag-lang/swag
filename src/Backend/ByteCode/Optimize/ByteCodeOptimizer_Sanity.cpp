@@ -3,13 +3,11 @@
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Report/Log.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
-#include "Syntax/SyntaxColor.h"
 #include <winternl.h>
 
 #define STATE() cxt.states[cxt.state]
@@ -505,9 +503,7 @@ namespace
 
     bool checkNotNull(const Context& cxt, const Value* value, AstNode* locNode = nullptr, const Utf8& err = "")
     {
-        if (!value->isConstant())
-            return true;
-        if (value->reg.u64)
+        if (!value->isConstant() || value->reg.u64)
             return true;
         return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value, "could be null");
     }
@@ -627,16 +623,17 @@ namespace
         setStackValue(cxt, STATE()->stack.buffer, STATE()->stack.count, ValueKind::Unknown);
     }
 
-    bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
+    bool optimizePassSanityLoop(ByteCodeOptContext* context, Context& cxt)
     {
-        Value*   ra    = nullptr;
-        Value*   rb    = nullptr;
-        Value*   rc    = nullptr;
-        Value*   rd    = nullptr;
-        uint8_t* addr  = nullptr;
-        uint8_t* addr2 = nullptr;
-        Value    va, vb, vc, vd;
-        State*   jmpAddState = nullptr;
+        Value*                 ra    = nullptr;
+        Value*                 rb    = nullptr;
+        Value*                 rc    = nullptr;
+        Value*                 rd    = nullptr;
+        uint8_t*               addr  = nullptr;
+        uint8_t*               addr2 = nullptr;
+        Value                  va, vb, vc, vd;
+        State*                 jmpAddState = nullptr;
+        VectorNative<uint32_t> pushParams;
 
         auto ip = STATE()->ip;
         while (ip->op != ByteCodeOp::End)
@@ -662,13 +659,31 @@ namespace
                 case ByteCodeOp::IntrinsicPanic:
                     return true;
 
+                case ByteCodeOp::PushRAParam:
+                    pushParams.push_back(ip->a.u32);
+                    break;
+
+                case ByteCodeOp::PushRAParam2:
+                    pushParams.push_back(ip->a.u32);
+                    pushParams.push_back(ip->b.u32);
+                    break;
+
+                case ByteCodeOp::PushRAParam3:
+                    pushParams.push_back(ip->a.u32);
+                    pushParams.push_back(ip->b.u32);
+                    pushParams.push_back(ip->c.u32);
+                    break;
+
+                case ByteCodeOp::PushRAParam4:
+                    pushParams.push_back(ip->a.u32);
+                    pushParams.push_back(ip->b.u32);
+                    pushParams.push_back(ip->c.u32);
+                    pushParams.push_back(ip->d.u32);
+                    break;
+
                 case ByteCodeOp::DecSPBP:
                 case ByteCodeOp::IncSPPostCall:
                 case ByteCodeOp::IncSPPostCallCond:
-                case ByteCodeOp::PushRAParam:
-                case ByteCodeOp::PushRAParam2:
-                case ByteCodeOp::PushRAParam3:
-                case ByteCodeOp::PushRAParam4:
                 case ByteCodeOp::PushRAParamCond:
                 case ByteCodeOp::PushRVParam:
                 case ByteCodeOp::InternalInitStackTrace:
@@ -705,7 +720,7 @@ namespace
                     {
                         ra->overload = ip->node->resolvedSymbolOverload();
                         ra->ip       = ip;
-                        if (ra->overload->typeInfo->isNullable() && !ra->overload->typeInfo->isSelf())
+                        if (ra->overload->typeInfo->isNullable())
                         {
                             const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(ra->overload->storageIndex);
                             if (!cxt.bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
@@ -2413,13 +2428,34 @@ namespace
                 case ByteCodeOp::LambdaCall:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                     SWAG_CHECK(checkNotNull(cxt, ra));
-                    invalidateCurStateStack(cxt);
-                    break;
+                    [[fallthrough]];
 
                 case ByteCodeOp::LocalCall:
                 case ByteCodeOp::ForeignCall:
+                {
+                    const auto typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+                    for (uint32_t i = 0; i < pushParams.size(); i++)
+                    {
+                        auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
+                        SWAG_CHECK(getRegister(ra, cxt, pushParams[i]));
+                        if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
+                        {
+                            if (ra->isConstant() && !ra->reg.u64)
+                            {
+                                Utf8 msg;
+                                if(ip->op == ByteCodeOp::LambdaCall)
+                                    msg = formErr(San0001, "lambda");
+                                else
+                                    msg = formErr(San0001, typeFunc->declNode->token.cstr());
+                                return raiseError(cxt, msg, ra->ip->node, ra, "could be null");
+                            }
+                        }
+                    }
+
                     invalidateCurStateStack(cxt);
+                    pushParams.clear();
                     break;
+                }
 
                 case ByteCodeOp::IntrinsicMulAddF32:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -2544,7 +2580,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     for (uint32_t i = 0; i < cxt.states.size(); i++)
     {
         cxt.state = i;
-        SWAG_CHECK(optimizePassSanityStack(context, cxt));
+        SWAG_CHECK(optimizePassSanityLoop(context, cxt));
         if (i == cxt.states.size() - 1)
             break;
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
