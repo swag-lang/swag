@@ -893,7 +893,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
     {
         if (argNo >= parameters.size())
         {
-            SWAG_ASSERT(flags.has(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
+            SWAG_ASSERT(flags.has(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC | TYPEINFO_C_VARIADIC));
             return parameters.size() - 1;
         }
 
