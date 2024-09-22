@@ -291,6 +291,13 @@ struct Context
 
 namespace
 {
+    bool getRegister(Value*& result, const Context& cxt, uint32_t reg)
+    {
+        SWAG_ASSERT(reg < STATE()->regs.count);
+        result = &STATE()->regs[reg];
+        return true;
+    }
+
     void setStackConstant(const Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint32_t offset, uint8_t* value, int sizeOf)
     {
         if (!cxt.canSetConstants)
@@ -439,36 +446,6 @@ namespace
             }
         }
 
-        /*
-        uint32_t curState = cxt.state;
-        while (curState != UINT32_MAX)
-        {
-            if (cxt.states[curState]->branchIp && cxt.states[curState]->branchIp->node)
-            {
-                const auto node = cxt.states[curState]->branchIp->node;
-
-                auto code = cxt.bc->sourceFile->getLine(node->token.startLocation.line);
-                code.trim();
-                SyntaxColorContext synCxt;
-                code = doSyntaxColor(code, synCxt);
-
-                Utf8 where;
-                where += Log::colorToVTS(LogColor::Location);
-                where += form("%s:%d:%d:%d:%d",
-                              node->token.sourceFile->path.cstr(),
-                              node->token.startLocation.line + 1,
-                              node->token.startLocation.column + 1,
-                              node->token.endLocation.line + 1,
-                              node->token.endLocation.column + 1);
-                where += Log::colorToVTS(LogColor::White);
-                where += ": ";
-                where += code;
-                err.remarks.push_back(where);
-            }
-
-            curState = cxt.states[curState]->parent;
-        }*/
-
         return cxt.context->report(err);
     }
 
@@ -508,6 +485,35 @@ namespace
         return raiseError(cxt, err.empty() ? toErr(San0006) : err, locNode, value, "could be null");
     }
 
+    bool checkNotNullArguments(Context& cxt, VectorNative<uint32_t> pushParams)
+    {
+        if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
+            return true;
+
+        const auto ip       = STATE()->ip;
+        const auto typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+        for (uint32_t i = 0; i < pushParams.size(); i++)
+        {
+            const auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
+            if (!typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
+                continue;
+
+            Value* ra = nullptr;
+            SWAG_CHECK(getRegister(ra, cxt, pushParams[i]));
+            if (ra->isConstant() && !ra->reg.u64)
+            {
+                Utf8 msg;
+                if (ip->op == ByteCodeOp::LambdaCall)
+                    msg = formErr(San0001, "lambda");
+                else
+                    msg = formErr(San0001, typeFunc->declNode->token.cstr());
+                return raiseError(cxt, msg, ra->ip->node, ra, "could be null");
+            }
+        }
+
+        return true;
+    }
+
     bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const Value* locValue = nullptr)
     {
         Value memValue;
@@ -524,13 +530,6 @@ namespace
 
 namespace
 {
-    bool getRegister(Value*& result, const Context& cxt, uint32_t reg)
-    {
-        SWAG_ASSERT(reg < STATE()->regs.count);
-        result = &STATE()->regs[reg];
-        return true;
-    }
-
     bool getImmediateA(Value& result, const Context& cxt, ByteCodeInstruction* ip)
     {
         if (ip->hasFlag(BCI_IMM_A))
@@ -2432,30 +2431,10 @@ namespace
 
                 case ByteCodeOp::LocalCall:
                 case ByteCodeOp::ForeignCall:
-                {
-                    const auto typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-                    for (uint32_t i = 0; i < pushParams.size(); i++)
-                    {
-                        auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
-                        SWAG_CHECK(getRegister(ra, cxt, pushParams[i]));
-                        if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
-                        {
-                            if (ra->isConstant() && !ra->reg.u64)
-                            {
-                                Utf8 msg;
-                                if(ip->op == ByteCodeOp::LambdaCall)
-                                    msg = formErr(San0001, "lambda");
-                                else
-                                    msg = formErr(San0001, typeFunc->declNode->token.cstr());
-                                return raiseError(cxt, msg, ra->ip->node, ra, "could be null");
-                            }
-                        }
-                    }
-
+                    SWAG_CHECK(checkNotNullArguments(cxt, pushParams));
                     invalidateCurStateStack(cxt);
                     pushParams.clear();
                     break;
-                }
 
                 case ByteCodeOp::IntrinsicMulAddF32:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
