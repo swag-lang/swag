@@ -61,9 +61,20 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     }
 
     // Replace a type by another one during generic instantiation
-    typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
-    if (typeInfo != from->typeInfo)
-        addAstFlag(AST_FROM_GENERIC);
+    if (!context.cloneFlags.has(CLONE_INLINE))
+    {
+        typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
+        if (typeInfo != from->typeInfo)
+            addAstFlag(AST_FROM_GENERIC);
+    }
+    else if(!context.cloneFlags.has(CLONE_RAW))
+    {
+        typeInfo = from->typeInfoCast ? from->typeInfoCast : from->typeInfo;
+    }
+    else
+    {
+        typeInfo = from->typeInfo;
+    }
 
     // This cannot be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and auto cast, as inline functions are evaluated

@@ -1886,7 +1886,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
     cloneContext.removeFlags.add(AST_R_VALUE);
-    cloneContext.cloneFlags.add(CLONE_FORCE_OWNER_FCT);
+    cloneContext.cloneFlags.add(CLONE_FORCE_OWNER_FCT | CLONE_INLINE);
 
     // Register all aliases
     if (identifier->is(AstNodeKind::Identifier))
