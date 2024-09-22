@@ -67,9 +67,14 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         if (typeInfo != from->typeInfo)
             addAstFlag(AST_FROM_GENERIC);
     }
-    else if(!context.cloneFlags.has(CLONE_RAW))
+    else if (!context.cloneFlags.has(CLONE_RAW))
     {
-        typeInfo = from->typeInfoCast ? from->typeInfoCast : from->typeInfo;
+        if (from->typeInfoCast)
+            typeInfo = from->typeInfoCast;
+        else if (from->hasExtraPointer(ExtraPointerKind::TypeInfoCast))
+            typeInfo = from->extraPointer<TypeInfo>(ExtraPointerKind::TypeInfoCast);
+        else
+            typeInfo = from->typeInfo;
     }
     else
     {

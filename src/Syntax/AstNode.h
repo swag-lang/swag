@@ -288,7 +288,8 @@ enum class ExtraPointerKind
     IsNamed,
     UserOp,
     TokenParse,
-    FromAlias
+    FromAlias,
+    TypeInfoCast,
 };
 
 struct AstNode
@@ -530,9 +531,10 @@ struct AstNode
     {
         if (!hasExtMisc())
             return nullptr;
-        SharedLock lk(mutex);
-        const auto it = extMisc()->extraPointers.find(extraPtrKind);
-        if (it != extMisc()->extraPointers.end())
+        const auto misc = extMisc();
+        SharedLock lk(mutexExt);
+        const auto it = misc->extraPointers.find(extraPtrKind);
+        if (it != misc->extraPointers.end())
             return static_cast<T*>(it->second);
         return nullptr;
     }
@@ -542,47 +544,52 @@ struct AstNode
     {
         if (!hasExtMisc())
             return nullptr;
-        SharedLock lk(mutex);
-        const auto it = extMisc()->extraPointers.find(extraPtrKind);
-        if (it != extMisc()->extraPointers.end())
+        const auto misc = extMisc();
+        SharedLock lk(mutexExt);
+        const auto it = misc->extraPointers.find(extraPtrKind);
+        if (it != misc->extraPointers.end())
             return static_cast<T*>(it->second);
         return nullptr;
-    }
-
-    uint64_t extraValue(ExtraPointerKind extraPtrKind) const
-    {
-        if (!hasExtMisc())
-            return 0;
-        SharedLock lk(mutex);
-        const auto it = extMisc()->extraPointers.find(extraPtrKind);
-        if (it != extMisc()->extraPointers.end())
-            return reinterpret_cast<uint64_t>(it->second);
-        return 0;
     }
 
     void addExtraPointer(ExtraPointerKind extraPtrKind, void* value)
     {
         allocateExtension(ExtensionKind::Misc);
-        ScopedLock lk(mutex);
-        extMisc()->extraPointers[extraPtrKind] = value;
-    }
-
-    void addExtraValue(ExtraPointerKind extraPtrKind, uint64_t value)
-    {
-        allocateExtension(ExtensionKind::Misc);
-        ScopedLock lk(mutex);
-        extMisc()->extraPointers[extraPtrKind] = reinterpret_cast<void*>(value);
+        const auto misc = extMisc();
+        ScopedLock lk(mutexExt);
+        misc->extraPointers[extraPtrKind] = value;
     }
 
     bool hasExtraPointer(ExtraPointerKind extraPtrKind) const
     {
         if (!hasExtMisc())
             return false;
-        SharedLock lk(mutex);
-        const auto it = extMisc()->extraPointers.find(extraPtrKind);
-        if (it == extMisc()->extraPointers.end())
+        const auto misc = extMisc();
+        SharedLock lk(mutexExt);
+        const auto it = misc->extraPointers.find(extraPtrKind);
+        if (it == misc->extraPointers.end())
             return false;
         return it->second != nullptr;
+    }
+
+    void addExtraValue(ExtraPointerKind extraPtrKind, uint64_t value)
+    {
+        allocateExtension(ExtensionKind::Misc);
+        const auto misc = extMisc();
+        ScopedLock lk(mutexExt);
+        misc->extraPointers[extraPtrKind] = reinterpret_cast<void*>(value);
+    }
+
+    uint64_t extraValue(ExtraPointerKind extraPtrKind) const
+    {
+        if (!hasExtMisc())
+            return 0;
+        const auto misc = extMisc();
+        SharedLock lk(mutexExt);
+        const auto it = misc->extraPointers.find(extraPtrKind);
+        if (it != misc->extraPointers.end())
+            return reinterpret_cast<uint64_t>(it->second);
+        return 0;
     }
 
     void setOwnerAttrUse(AstAttrUse* attrUse);
