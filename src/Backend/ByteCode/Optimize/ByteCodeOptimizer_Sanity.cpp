@@ -362,6 +362,10 @@ namespace
                 err.addNote(locValue->fromOverload->node, locValue->fromOverload->node->token, what);
             }*/
         }
+        else if(locValue && locValue->node && locValue->node != ip->node)
+        {
+            err.addNote(locValue->node, locValue->node->token, toNte(Nte0223));
+        }
 
         return cxt.context->report(err);
     }
