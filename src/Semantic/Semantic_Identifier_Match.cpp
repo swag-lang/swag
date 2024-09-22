@@ -1284,6 +1284,12 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         {
             if (prevNode->typeInfo->isStruct() || prevNode->typeInfo->isPointer())
             {
+                if (!prevNode->computedValue()->storageSegment)
+                {
+                    const Diagnostic err{prevNode, toErr(Err0213)};
+                    return context->report(err);
+                }
+
                 const auto ptr = static_cast<uint8_t*>(prevNode->computedValue()->getStorageAddr());
                 if (derefConstant(context, ptr, overload, prevNode->computedValue()->storageSegment))
                 {

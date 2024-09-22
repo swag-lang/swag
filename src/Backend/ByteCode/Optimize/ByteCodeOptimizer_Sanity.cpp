@@ -362,7 +362,7 @@ namespace
                 err.addNote(locValue->fromOverload->node, locValue->fromOverload->node->token, what);
             }*/
         }
-        else if(locValue && locValue->node && locValue->node != ip->node)
+        else if (locValue && locValue->node && locValue->node != ip->node)
         {
             err.addNote(locValue->node, locValue->node->token, toNte(Nte0223));
         }
@@ -648,14 +648,14 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (overload->typeInfo->isNullable())
+                        // if (overload->typeInfo->isNullable())
+                        if (overload->typeInfo->isAny())
                         {
                             const auto idx = cxt.bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                             if (!cxt.bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
                             {
-                                /*ra->kind            = ValueKind::ZeroParam;
-                                ra->reg.pointer     = nullptr;
-                                cxt.canSetConstants = false;*/
+                                //ra->kind        = ValueKind::ZeroParam;
+                                //ra->reg.pointer = nullptr;
                             }
                         }
                     }
@@ -1239,7 +1239,23 @@ namespace
                     break;
 
                 case ByteCodeOp::IncPointer64:
-                    SWAG_CHECK(getRegister(cxt, ra, ip->a.u32, ip->node->firstChild()));
+                {
+                    AstNode* locNode = ip->node->firstChild();
+                    if (ip->node->is(AstNodeKind::Identifier))
+                    {
+                        const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
+                        const auto idRef = id->identifierRef();
+                        for (auto i = id->childParentIdx() - 1; i != UINT32_MAX; i--)
+                        {
+                            const auto node = idRef->children[i];
+                            if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
+                                continue;
+                            locNode = node;
+                            break;
+                        }
+                    }
+
+                    SWAG_CHECK(getRegister(cxt, ra, ip->a.u32, locNode));
                     SWAG_CHECK(checkNotNull(cxt, ra));
                     SWAG_CHECK(getRegister(cxt, rc, ip->c.u32));
                     *rc = *ra;
@@ -1248,7 +1264,8 @@ namespace
                         rc->kind = ValueKind::Unknown;
                     else
                         rc->reg.u64 += vb.reg.s64;
-                    break;
+                }
+                break;
 
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(cxt, ra, ip->a.u32));
