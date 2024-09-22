@@ -10,6 +10,8 @@
 #include "Syntax/Naming.h"
 #include <winternl.h>
 
+#pragma optimize("", off)
+
 #define STATE() cxt.states[cxt.state]
 
 #define MEMCPY(__cast, __sizeof)                                              \
@@ -365,7 +367,6 @@ namespace
             else
                 what = form("culprit is %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
             err.addNote(locNode1, locNode1->token, what);
-            err.addNote(overload->node, overload->node->token, toNte(Nte0223));
 
             if (locValue && locValue->fromOverload && overload != locValue->fromOverload)
             {
@@ -533,8 +534,9 @@ namespace
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
         for (uint32_t i = offset; i < offset + sizeOf; i++)
         {
-            STATE()->stackValue[i].kind         = kind;
-            STATE()->stackValue[i].fromOverload = STATE()->ip->node ? STATE()->ip->node->resolvedSymbolOverload() : nullptr;
+            auto& val        = STATE()->stackValue[i];
+            val.kind         = kind;
+            val.fromOverload = STATE()->ip->node ? STATE()->ip->node->resolvedSymbolOverload() : nullptr;
         }
     }
 
