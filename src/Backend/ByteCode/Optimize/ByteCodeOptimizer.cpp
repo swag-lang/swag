@@ -646,11 +646,8 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     // Sanity must be done before any optimization, in order to not have to deal with all extra instructions.
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
-        ByteCodeSanityContext sanContext;
-
-        bc->sanDone   = true;
-        sanContext.bc = bc;
-        SWAG_CHECK(ByteCodeSanity::process(&sanContext));
+        bc->sanDone = true;
+        SWAG_CHECK(ByteCodeSanity::process(bc));
     }
 
     optContext.bc = bc;
