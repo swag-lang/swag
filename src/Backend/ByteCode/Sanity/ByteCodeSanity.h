@@ -23,13 +23,25 @@ enum class SanityValueKind : uint8_t
 
 struct SanityValue
 {
-    Register        reg;
-    SanityValueKind kind = SanityValueKind::Invalid;
+    VectorNative<ByteCodeInstruction*> ips;
+    Register                           reg;
+    SanityValueKind                    kind = SanityValueKind::Invalid;
 
     bool isConstant() const
     {
         return kind == SanityValueKind::Constant || kind == SanityValueKind::ZeroParam;
     }
+
+    void update(ByteCodeInstruction *ip)
+    {
+        ips.push_back(ip);
+    }
+
+    void set(ByteCodeInstruction *ip)
+    {
+        ips.clear();
+        ips.push_back(ip);
+    }    
 };
 
 struct SanityState

@@ -2,7 +2,7 @@
 
 #[Swag.Safety("", false)]
 {
-    #[Swag.Safety("nullptr", true)]
+    #[Swag.Safety("nullp", true)]
     func titi()
     {
         var x: *s32

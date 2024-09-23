@@ -13,6 +13,7 @@ func __dropErr(err: any)
 }
 
 func __setErr(err: any)
+    expect err != null
 {
     let cxt = @getcontext()
     if cxt.errorIndex >= MaxErrors:

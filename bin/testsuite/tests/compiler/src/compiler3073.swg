@@ -1,6 +1,7 @@
-#global testerror "Err0687"
+#global testerror "San0006"
 
-#[Swag.Safety("nullptr", true)]
+#[Swag.Safety("sanity", true)]
+#[Swag.Safety("null", true)]
 {
     #[Swag.Safety("boundcheck", true)]
     func titi()
