@@ -24,7 +24,6 @@ enum class SanityValueKind : uint8_t
 struct SanityValue
 {
     Register        reg;
-    AstNode*        node = nullptr;
     SanityValueKind kind = SanityValueKind::Invalid;
 
     bool isConstant() const

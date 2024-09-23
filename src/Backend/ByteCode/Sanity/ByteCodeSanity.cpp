@@ -13,6 +13,8 @@
 #define STATE() context->states[context->state]
 
 #define MEMCPY(__cast, __sizeof)                                                          \
+    SWAG_CHECK(getRegister(context, ra, ip->a.u32));                                      \
+    SWAG_CHECK(getRegister(context, rb, ip->b.u32));                                      \
     if (ra->kind == SanityValueKind::StackAddr && rb->kind == SanityValueKind::StackAddr) \
     {                                                                                     \
         SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, __sizeof));                \
@@ -22,12 +24,13 @@
         setStackValue(context, addr, __sizeof, vb.kind);                                  \
         *(__cast*) addr = *(__cast*) addr2;                                               \
         break;                                                                            \
-    }
+    }                                                                                     \
+    invalidateCurStateStack(context);
 
 #define BINOP_EQ(__cast, __op, __reg)                                                         \
     do                                                                                        \
     {                                                                                         \
-        SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));              \
+        SWAG_CHECK(getRegister(context, ra, ip->a.u32));                                      \
         SWAG_CHECK(checkNotNull(context, ra));                                                \
         if (ra->kind == SanityValueKind::StackAddr)                                           \
         {                                                                                     \
@@ -45,7 +48,7 @@
 #define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                                  \
     do                                                                                                                           \
     {                                                                                                                            \
-        SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));                                                 \
+        SWAG_CHECK(getRegister(context, ra, ip->a.u32));                                                                         \
         SWAG_CHECK(checkNotNull(context, ra));                                                                                   \
         if (ra->kind == SanityValueKind::StackAddr)                                                                              \
         {                                                                                                                        \
@@ -66,7 +69,7 @@
 #define ATOM_EQ(__cast, __op, __reg)                                                          \
     do                                                                                        \
     {                                                                                         \
-        SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));              \
+        SWAG_CHECK(getRegister(context, ra, ip->a.u32));                                      \
         SWAG_CHECK(checkNotNull(context, ra));                                                \
         SWAG_CHECK(getRegister(context, rc, ip->c.u32));                                      \
         rc->kind = SanityValueKind::Unknown;                                                  \
@@ -227,11 +230,10 @@
 
 namespace
 {
-    bool getRegister(SanityContext* context, SanityValue*& result, uint32_t reg, AstNode* node = nullptr)
+    bool getRegister(SanityContext* context, SanityValue*& result, uint32_t reg)
     {
         SWAG_ASSERT(reg < STATE()->regs.size());
-        result       = &STATE()->regs[reg];
-        result->node = node ? node : STATE()->ip->node;
+        result = &STATE()->regs[reg];
         return true;
     }
 
@@ -277,6 +279,7 @@ namespace
 
         Diagnostic err{ip->node, ip->node->token, msg};
 
+        /*
         if (locValue && locValue->node && locValue->node->resolvedSymbolOverload())
         {
             const auto overload = locValue->node->resolvedSymbolOverload();
@@ -300,7 +303,7 @@ namespace
         else if (locValue && locValue->node && locValue->node != ip->node)
         {
             err.addNote(locValue->node, locValue->node->token, toNte(Nte0223));
-        }
+        }*/
 
         return context->report(err);
     }
@@ -332,7 +335,7 @@ namespace
         return true;
     }
 
-    bool checkNotNull(SanityContext* context, const SanityValue* value, const Utf8& err = "")
+    bool checkNotNull(SanityContext* context, SanityValue* value, const Utf8& err = "")
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
@@ -359,11 +362,7 @@ namespace
                 continue;
 
             SanityValue* ra = nullptr;
-
-            if (idx < ident->callParameters->childCount())
-                SWAG_CHECK(getRegister(context, ra, pushParams[i], ident->callParameters->children[idx]));
-            else
-                SWAG_CHECK(getRegister(context, ra, pushParams[i]));
+            SWAG_CHECK(getRegister(context, ra, pushParams[i]));
 
             if (ra->isConstant() && !ra->reg.u64)
             {
@@ -395,8 +394,6 @@ namespace
     bool getImmediateA(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
     {
         const auto ip = STATE()->ip;
-        result.node   = node ? node : ip->node;
-
         if (ip->hasFlag(BCI_IMM_A))
         {
             result.kind = SanityValueKind::Constant;
@@ -405,7 +402,7 @@ namespace
         }
 
         SanityValue* ra = nullptr;
-        SWAG_CHECK(getRegister(context, ra, ip->a.u32, node));
+        SWAG_CHECK(getRegister(context, ra, ip->a.u32));
         result = *ra;
         return true;
     }
@@ -413,8 +410,6 @@ namespace
     bool getImmediateB(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
     {
         const auto ip = STATE()->ip;
-        result.node   = node ? node : ip->node;
-
         if (ip->hasFlag(BCI_IMM_B))
         {
             result.kind = SanityValueKind::Constant;
@@ -423,7 +418,7 @@ namespace
         }
 
         SanityValue* rb = nullptr;
-        SWAG_CHECK(getRegister(context, rb, ip->b.u32, node));
+        SWAG_CHECK(getRegister(context, rb, ip->b.u32));
         result = *rb;
         return true;
     }
@@ -431,8 +426,6 @@ namespace
     bool getImmediateC(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
     {
         const auto ip = STATE()->ip;
-        result.node   = node ? node : ip->node;
-
         if (ip->hasFlag(BCI_IMM_C))
         {
             result.kind = SanityValueKind::Constant;
@@ -441,7 +434,7 @@ namespace
         }
 
         SanityValue* rc = nullptr;
-        SWAG_CHECK(getRegister(context, rc, ip->c.u32, node));
+        SWAG_CHECK(getRegister(context, rc, ip->c.u32));
         result = *rc;
         return true;
     }
@@ -449,8 +442,6 @@ namespace
     bool getImmediateD(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
     {
         const auto ip = STATE()->ip;
-        result.node   = node ? node : ip->node;
-
         if (ip->hasFlag(BCI_IMM_D))
         {
             result.kind = SanityValueKind::Constant;
@@ -459,7 +450,7 @@ namespace
         }
 
         SanityValue* rd = nullptr;
-        SWAG_CHECK(getRegister(context, rd, ip->d.u32, node));
+        SWAG_CHECK(getRegister(context, rd, ip->d.u32));
         result = *rd;
         return true;
     }
@@ -646,7 +637,7 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicCVaStart:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@cvastart")));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
@@ -1057,7 +1048,7 @@ namespace
                     break;
 
                 case ByteCodeOp::SetAtPointer8:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
@@ -1068,7 +1059,7 @@ namespace
                     }
                     break;
                 case ByteCodeOp::SetAtPointer16:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
@@ -1079,7 +1070,7 @@ namespace
                     }
                     break;
                 case ByteCodeOp::SetAtPointer32:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
@@ -1090,7 +1081,7 @@ namespace
                     }
                     break;
                 case ByteCodeOp::SetAtPointer64:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
@@ -1168,23 +1159,7 @@ namespace
                     break;
 
                 case ByteCodeOp::IncPointer64:
-                {
-                    AstNode* locNode = ip->node->firstChild();
-                    if (ip->node->is(AstNodeKind::Identifier))
-                    {
-                        const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
-                        const auto idRef = id->identifierRef();
-                        for (auto i = id->childParentIdx() - 1; i != UINT32_MAX; i--)
-                        {
-                            const auto node = idRef->children[i];
-                            if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
-                                continue;
-                            locNode = node;
-                            break;
-                        }
-                    }
-
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, locNode));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(checkNotNull(context, ra));
                     SWAG_CHECK(getRegister(context, rc, ip->c.u32));
                     *rc = *ra;
@@ -1193,8 +1168,7 @@ namespace
                         rc->kind = SanityValueKind::Unknown;
                     else
                         rc->reg.u64 += vb.reg.s64;
-                }
-                break;
+                    break;
 
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
@@ -1245,7 +1219,7 @@ namespace
                     break;
 
                 case ByteCodeOp::DeRef8:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(checkNotNull(context, rb));
                     if (rb->kind == SanityValueKind::StackAddr)
                     {
@@ -1260,7 +1234,7 @@ namespace
                     ra->kind = SanityValueKind::Unknown;
                     break;
                 case ByteCodeOp::DeRef16:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(checkNotNull(context, rb));
                     if (rb->kind == SanityValueKind::StackAddr)
                     {
@@ -1275,7 +1249,7 @@ namespace
                     ra->kind = SanityValueKind::Unknown;
                     break;
                 case ByteCodeOp::DeRef32:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(checkNotNull(context, rb));
                     if (rb->kind == SanityValueKind::StackAddr)
                     {
@@ -1290,7 +1264,7 @@ namespace
                     ra->kind = SanityValueKind::Unknown;
                     break;
                 case ByteCodeOp::DeRef64:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(checkNotNull(context, rb));
                     if (rb->kind == SanityValueKind::StackAddr)
                     {
@@ -2197,8 +2171,8 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicStrCmp:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
-                    SWAG_CHECK(getRegister(context, rc, ip->c.u32, ip->node->firstChild()->secondChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
+                    SWAG_CHECK(getRegister(context, rc, ip->c.u32));
                     SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strcmp")));
                     SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@strcmp")));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
@@ -2206,15 +2180,15 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicStrLen:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strlen")));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     break;
 
                 case ByteCodeOp::IntrinsicMemCmp:
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->firstChild()));
-                    SWAG_CHECK(getRegister(context, rc, ip->c.u32, ip->node->firstChild()->secondChild()));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
+                    SWAG_CHECK(getRegister(context, rc, ip->c.u32));
                     SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcmp")));
                     SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@memcmp")));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
@@ -2222,64 +2196,38 @@ namespace
                     break;
 
                 case ByteCodeOp::MemCpy8:
+                    MEMCPY(uint8_t, 1);
+                    break;
                 case ByteCodeOp::MemCpy16:
+                    MEMCPY(uint16_t, 2);
+                    break;
                 case ByteCodeOp::MemCpy32:
+                    MEMCPY(uint32_t, 4);
+                    break;
                 case ByteCodeOp::MemCpy64:
+                    MEMCPY(uint64_t, 8);
+                    break;
                 case ByteCodeOp::IntrinsicMemCpy:
-                {
-                    AstNode* first  = nullptr;
-                    AstNode* second = nullptr;
-
-                    if (ip->node->is(AstNodeKind::VarDecl) && ip->node->childCount())
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
+                    SWAG_CHECK(getImmediateC(context, vc));
+                    SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memcpy")));
+                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcpy")));
+                    if (ra->kind == SanityValueKind::StackAddr && rb->kind == SanityValueKind::StackAddr && vc.isConstant())
                     {
-                        second = ip->node->firstChild();
+                        SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, vc.reg.u32));
+                        SWAG_CHECK(getStackAddress(addr2, context, rb->reg.u32, vc.reg.u32));
+                        SWAG_CHECK(checkStackInitialized(context, addr2, vc.reg.u32, rb));
+                        SWAG_CHECK(getStackValue(context, &va, addr2, vc.reg.u32));
+                        setStackValue(context, addr, vc.reg.u32, va.kind);
+                        std::copy_n(addr2, vc.reg.u32, addr);
                     }
-                    else if (ip->node->childCount() && ip->node->firstChild()->childCount() >= 2)
-                    {
-                        first  = ip->node->firstChild()->firstChild();
-                        second = ip->node->firstChild()->secondChild();
-                    }
-
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, first));
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, second));
-
-                    switch (ip->op)
-                    {
-                        case ByteCodeOp::MemCpy8:
-                            MEMCPY(uint8_t, 1);
-                            break;
-                        case ByteCodeOp::MemCpy16:
-                            MEMCPY(uint16_t, 2);
-                            break;
-                        case ByteCodeOp::MemCpy32:
-                            MEMCPY(uint32_t, 4);
-                            break;
-                        case ByteCodeOp::MemCpy64:
-                            MEMCPY(uint64_t, 8);
-                            break;
-                        default:
-                            SWAG_CHECK(getImmediateC(context, vc));
-                            SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memcpy")));
-                            SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcpy")));
-                            if (ra->kind == SanityValueKind::StackAddr && rb->kind == SanityValueKind::StackAddr && vc.isConstant())
-                            {
-                                SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, vc.reg.u32));
-                                SWAG_CHECK(getStackAddress(addr2, context, rb->reg.u32, vc.reg.u32));
-                                SWAG_CHECK(checkStackInitialized(context, addr2, vc.reg.u32, rb));
-                                SWAG_CHECK(getStackValue(context, &va, addr2, vc.reg.u32));
-                                setStackValue(context, addr, vc.reg.u32, va.kind);
-                                std::copy_n(addr2, vc.reg.u32, addr);
-                            }
-                            break;
-                    }
-
                     invalidateCurStateStack(context);
                     break;
-                }
 
                 case ByteCodeOp::IntrinsicMemMove:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()->firstChild()));
-                    SWAG_CHECK(getRegister(context, rb, ip->b.u32, ip->node->firstChild()->secondChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(getImmediateC(context, vc));
                     SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memmove")));
                     SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memmove")));
@@ -2296,7 +2244,7 @@ namespace
                     invalidateCurStateStack(context);
                     break;
                 case ByteCodeOp::IntrinsicMemSet:
-                    SWAG_CHECK(getRegister(context, ra, ip->a.u32, ip->node->firstChild()->firstChild()));
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(getImmediateB(context, vb));
                     SWAG_CHECK(getImmediateC(context, vc));
                     SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memset")));
