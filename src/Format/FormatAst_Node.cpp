@@ -243,6 +243,12 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputCompilerExpr(context, node));
             break;
 
+        case AstNodeKind::WhereConstraint:
+        case AstNodeKind::VerifyConstraint:
+        case AstNodeKind::ExpectConstraint:
+            SWAG_CHECK(outputCompilerConstraints(context, {node}));
+            break;
+
         case AstNodeKind::CompilerIf:
             SWAG_CHECK(outputCompilerIf(context, "#if", node));
             break;
