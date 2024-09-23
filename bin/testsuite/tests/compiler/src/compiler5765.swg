@@ -1,5 +1,6 @@
 #global testerror "San0006"
 
+#[Swag.Safety("sanity", true)]
 func setErr1(err: any)
 {
     let cxt = @getcontext()

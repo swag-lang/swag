@@ -204,7 +204,8 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     }
 
     // Content on same line
-    if (context.keepSameLineFuncBody &&
+    if (!concat->eol &&
+        context.keepSameLineFuncBody &&
         funcDecl->subDecl.empty() &&
         funcDecl->content &&
         (funcDecl->content->is(AstNodeKind::Statement) || funcDecl->content->is(AstNodeKind::Try) || funcDecl->content->is(AstNodeKind::Assume)) &&

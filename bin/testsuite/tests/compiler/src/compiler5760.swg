@@ -3,3 +3,5 @@ func toto(x, x1: string)
     expect x1 != null
 {
 }
+
+func titi() {}
