@@ -82,6 +82,7 @@ constexpr ExprFlags EXPR_FLAG_TYPE_EXPR             = 0x00000080;
 constexpr ExprFlags EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
 constexpr ExprFlags EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 constexpr ExprFlags EXPR_FLAG_IN_GENERIC_PARAMS     = 0x00000400;
+constexpr ExprFlags EXPR_FLAG_NO_BINARY             = 0x00000800;
 
 constexpr VarDeclFlags VAR_DECL_FLAG_ZERO       = 0x00000000;
 constexpr VarDeclFlags VAR_DECL_FLAG_FOR_STRUCT = 0x00000001;

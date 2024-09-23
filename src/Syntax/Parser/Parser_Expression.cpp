@@ -1005,22 +1005,26 @@ bool Parser::doBoolExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     bool isBinary = false;
+
     if (tokenParse.is(TokenId::KwdOr) || tokenParse.is(TokenId::KwdAnd))
     {
-        const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, parent);
-        binaryNode->semanticFct = Semantic::resolveBoolExpression;
-        binaryNode->token       = tokenParse.token;
+        if (!exprFlags.has(EXPR_FLAG_NO_BINARY))
+        {
+            const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, parent);
+            binaryNode->semanticFct = Semantic::resolveBoolExpression;
+            binaryNode->token       = tokenParse.token;
 
-        Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(eatToken());
+            Ast::addChildBack(binaryNode, leftNode);
+            SWAG_CHECK(eatToken());
 
-        auto     savedToken = tokenParse;
-        AstNode* expr;
-        SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE, &expr));
-        FormatAst::inheritFormatBefore(this, expr, &savedToken);
+            auto     savedToken = tokenParse;
+            AstNode* expr;
+            SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE, &expr));
+            FormatAst::inheritFormatBefore(this, expr, &savedToken);
 
-        leftNode = binaryNode;
-        isBinary = true;
+            leftNode = binaryNode;
+            isBinary = true;
+        }
     }
     else if (tokenParse.is(TokenId::SymAmpersandAmpersand) || tokenParse.is(TokenId::SymVerticalVertical))
     {

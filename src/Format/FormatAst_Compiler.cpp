@@ -170,18 +170,66 @@ bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
     return true;
 }
 
+bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNative<AstNode*>& constraints)
+{
+    if (constraints.empty())
+        return true;
+
+    concat->addEol();
+    context.indent++;
+    concat->addIndent(context.indent);
+
+    for (uint32_t i = 0; i < constraints.size(); i++)
+    {
+        auto node = constraints[i];
+
+        if (node->is(AstNodeKind::WhereConstraint))
+            concat->addString("where");
+        else if (node->is(AstNodeKind::VerifyConstraint))
+            concat->addString("verify");
+        else if (node->is(AstNodeKind::ExpectConstraint))
+            concat->addString(node->token.text);
+
+        concat->addBlank();
+
+        const auto front = node->firstChild();
+        if (front->is(AstNodeKind::FuncDecl))
+        {
+            const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
+            concat->addEol();
+            concat->addIndent(context.indent);
+            SWAG_CHECK(outputNode(context, funcDecl->content));
+        }
+        else
+        {
+            SWAG_CHECK(outputNode(context, front));
+        }
+
+        if (i == constraints.size() - 1)
+            break;
+        
+        node = constraints[i + 1];
+        if (node->is(AstNodeKind::ExpectConstraint) && node->token.text == "and")
+            concat->addBlank();
+        else
+        {
+            concat->addEol();
+            concat->addIndent(context.indent);
+        }
+    }
+
+    concat->addEol();
+    context.indent--;
+
+    return true;
+}
+
 bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
 {
     if (node->is(AstNodeKind::CompilerRun) || node->is(AstNodeKind::CompilerRunExpression))
         concat->addString("#run");
     else if (node->is(AstNodeKind::CompilerAst))
         concat->addString("#ast");
-    else if (node->is(AstNodeKind::WhereConstraint))
-        concat->addString("where");
-    else if (node->is(AstNodeKind::VerifyConstraint))
-        concat->addString("verify");
-    else if (node->is(AstNodeKind::ExpectConstraint))
-        concat->addString("expect");    
     concat->addBlank();
 
     const auto front = node->firstChild();

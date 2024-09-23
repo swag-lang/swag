@@ -135,6 +135,7 @@ struct FormatAst
     bool outputAttributesGlobalUsing(const FormatContext& context, const AstNode* node) const;
     bool outputCompilerSpecialValue(FormatContext& context, AstNode* node) const;
     bool outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node);
+    bool outputCompilerConstraints(FormatContext& context, const VectorNative<AstNode*> &constraints);
     bool outputCompilerExpr(FormatContext& context, const AstNode* node);
     bool outputCompilerExport(FormatContext& context, AstNode* node) const;
     bool outputCompilerCode(FormatContext& context, AstNode* node);

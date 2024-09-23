@@ -36,7 +36,7 @@ bool FormatAst::outputFuncReturnType(FormatContext& context, const AstFuncDecl* 
     return true;
 }
 
-bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *constraints)
+bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*>* constraints)
 {
     bool isMethod = false;
 
@@ -106,18 +106,9 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
         concat->addString("assume");
     }
 
-    // where must be exported
-    if (constraints && !constraints->empty())
-    {
-        for(const auto it: *constraints)
-        {
-            concat->addEol();
-            context.indent++;
-            concat->addIndent(context.indent);
-            SWAG_CHECK(outputCompilerExpr(context, it));
-            context.indent--;
-        }
-    }
+    // Constraints
+    if (constraints)
+        SWAG_CHECK(outputCompilerConstraints(context, *constraints));
 
     return true;
 }
@@ -186,15 +177,8 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     }
 
     // Constraints
-    for (const auto it : funcDecl->constraints)
-    {
-        concat->addEol();
-        context.indent++;
-        concat->addIndent(context.indent);
-        SWAG_CHECK(outputCompilerExpr(context, it));
-        context.indent--;
-    }
-
+    SWAG_CHECK(outputCompilerConstraints(context, funcDecl->constraints));
+    
     if (!funcDecl->content)
     {
         concat->addChar(';');
