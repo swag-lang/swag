@@ -580,8 +580,7 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        // if (overload->typeInfo->isNullable())
-                        if (overload->typeInfo->isString())
+                        if (overload->typeInfo->couldBeNull())
                         {
                             const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                             if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))

@@ -28,7 +28,7 @@ using TypeInfoFlagsV = uint64_t;
 using TypeInfoFlags  = AtomicFlags<TypeInfoFlagsV>;
 using TypeParamFlags = Flags<uint32_t>;
 
-constexpr TypeInfoFlagsV TYPEINFO_IS_SELF                     = 0x00000000'00000001;
+constexpr TypeInfoFlagsV TYPEINFO_IS_SELF                  = 0x00000000'00000001;
 constexpr TypeInfoFlagsV TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlagsV TYPEINFO_INTEGER                  = 0x00000000'00000004;
 constexpr TypeInfoFlagsV TYPEINFO_FLOAT                    = 0x00000000'00000008;
@@ -82,6 +82,7 @@ constexpr TypeInfoFlagsV TYPEINFO_ENUM_HAS_USING           = 0x00040000'00000000
 constexpr TypeInfoFlagsV TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
+constexpr TypeInfoFlagsV TYPEINFO_NON_NULLABLE             = 0x00400000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;
@@ -186,7 +187,8 @@ struct TypeInfo
     bool isUntypedBinHex() const { return flags.has(TYPEINFO_UNTYPED_BIN_HEX); }
     bool isConstAlias() const { return flags.has(TYPEINFO_CONST_ALIAS); }
     bool isCharacter() const { return flags.has(TYPEINFO_CHARACTER); }
-    bool isNullable() const;
+    bool isNonNullable() const { return flags.has(TYPEINFO_NON_NULLABLE); }
+    bool couldBeNull() const;
 
     virtual bool      isSame(const TypeInfo* from, CastFlags castFlags) const;
     virtual TypeInfo* clone() = 0;

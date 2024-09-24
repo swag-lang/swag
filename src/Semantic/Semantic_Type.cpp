@@ -246,6 +246,9 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 
     node->typeInfo = typeInfo;
 
+    if (node->specFlags.has(AstTypeLambda::SPEC_FLAG_NON_NULLABLE))
+        node->typeInfo = g_TypeMgr->makeNonNullable(node->typeInfo);
+
     return true;
 }
 
@@ -263,6 +266,17 @@ void Semantic::forceConstType(SemanticContext*, AstTypeExpression* node)
         if (node->typeFlags.has(TYPE_FLAG_IS_CONST))
             node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
+}
+
+bool Semantic::postResolveType(SemanticContext* context)
+{
+    const auto typeNode = castAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    if (!typeNode->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
+        return true;
+    const auto concrete = typeNode->typeInfo->getConcreteAlias();
+    SWAG_VERIFY(concrete->couldBeNull(), context->report({typeNode, formErr(Err0781, typeNode->typeInfo->getDisplayNameC())}));
+    typeNode->typeInfo = g_TypeMgr->makeNonNullable(typeNode->typeInfo);
+    return true;
 }
 
 bool Semantic::resolveType(SemanticContext* context)

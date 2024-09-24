@@ -439,6 +439,24 @@ TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)
     return typeUnConst;
 }
 
+TypeInfo* TypeManager::makeNonNullable(TypeInfo* typeInfo)
+{
+    if (typeInfo->isNonNullable())
+        return typeInfo;
+
+    ScopedLock lk(mutex);
+
+    const auto it = mapNonNullable.find(typeInfo);
+    if (it != mapNonNullable.end())
+        return it->second;
+
+    const auto typeNonNullable = typeInfo->clone();
+    typeNonNullable->addFlag(TYPEINFO_NON_NULLABLE);
+    typeNonNullable->forceComputeName();
+    mapNonNullable[typeInfo] = typeNonNullable;
+    return typeNonNullable;
+}
+
 TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 {
     if (typeInfo->isConst())

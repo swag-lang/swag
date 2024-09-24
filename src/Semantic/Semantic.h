@@ -255,6 +255,9 @@ namespace Semantic
     bool preResolveSubstBreakContinue(SemanticContext* context);
     bool preResolveFuncDecl(SemanticContext* context);
 
+    bool postResolveStruct(SemanticContext* context);
+    bool postResolveType(SemanticContext* context);
+    
     bool resolveAffect(SemanticContext* context);
     bool resolveAfterKnownType(SemanticContext* context);
     bool resolveAppend(SemanticContext* context, AstNode* left, AstNode* right);
@@ -376,7 +379,6 @@ namespace Semantic
     bool resolveShiftExpression(SemanticContext* context);
     bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
     bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
-    bool postResolveStruct(SemanticContext* context);
     bool resolveStruct(SemanticContext* context);
     bool resolveSubDeclRef(SemanticContext* context);
     bool resolveSubEnumValue(SemanticContext* context);
