@@ -452,7 +452,7 @@ TypeInfo* TypeManager::makeNonNullable(TypeInfo* typeInfo)
 
     const auto typeNonNullable = typeInfo->clone();
     typeNonNullable->addFlag(TYPEINFO_NON_NULLABLE);
-    typeNonNullable->forceComputeName();
+    typeNonNullable->name += "!";
     mapNonNullable[typeInfo] = typeNonNullable;
     return typeNonNullable;
 }

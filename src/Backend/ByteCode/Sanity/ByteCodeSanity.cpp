@@ -283,8 +283,8 @@ namespace
             return true;
 
         auto start = ip->node->token.startLocation;
-        auto end = ip->node->token.endLocation;
-        
+        auto end   = ip->node->token.endLocation;
+
         Diagnostic err{ip->node, ip->node->token, msg};
 
         if (locValue)
@@ -292,13 +292,13 @@ namespace
             for (uint32_t i = locValue->ips.size() - 1; i != UINT32_MAX; i--)
             {
                 const auto ipn = locValue->ips[i];
-                if(!ipn->node)
+                if (!ipn->node)
                     continue;
-                if(ipn->node->token.startLocation == start && ipn->node->token.endLocation == end)
+                if (ipn->node->token.startLocation == start && ipn->node->token.endLocation == end)
                     continue;
                 start = ipn->node->token.startLocation;
-                end = ipn->node->token.endLocation;
-               
+                end   = ipn->node->token.endLocation;
+
                 err.addNote(ipn->node, ipn->node->token, "history");
                 /*if (ipn->node && ipn->node->resolvedSymbolOverload())
                 {
@@ -308,7 +308,7 @@ namespace
                         what = form("%s [[%s]] %s", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overloadMsg.cstr());
                     else
                         what = form("culprit is %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
-                    err.addNote(ipn->node, ipn->node->token, what);                    
+                    err.addNote(ipn->node, ipn->node->token, what);
                 }*/
             }
         }
@@ -366,20 +366,21 @@ namespace
         for (uint32_t i = 0; i < pushParams.size(); i++)
         {
             const auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
-            if (!typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
-                continue;
-
-            SanityValue* ra = nullptr;
-            SWAG_CHECK(getRegister(context, ra, pushParams[i]));
-
-            if (ra->isConstant() && !ra->reg.u64)
+            if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
+                typeFunc->parameters[idx]->typeInfo->isNonNullable())
             {
-                Utf8 msg;
-                if (ip->op == ByteCodeOp::LambdaCall)
-                    msg = formErr(San0001, "lambda");
-                else
-                    msg = formErr(San0001, typeFunc->declNode->token.cstr());
-                return raiseError(context, msg, ra, "could be null");
+                SanityValue* ra = nullptr;
+                SWAG_CHECK(getRegister(context, ra, pushParams[i]));
+
+                if (ra->isConstant() && !ra->reg.u64)
+                {
+                    Utf8 msg;
+                    if (ip->op == ByteCodeOp::LambdaCall)
+                        msg = formErr(San0001, "lambda");
+                    else
+                        msg = formErr(San0001, typeFunc->declNode->token.cstr());
+                    return raiseError(context, msg, ra, "could be null");
+                }
             }
         }
 
@@ -582,7 +583,7 @@ namespace
                         const auto overload = ip->node->resolvedSymbolOverload();
                         if (!overload->typeInfo->isNonNullable())
                         {
-                            //if (overload->typeInfo->couldBeNull())
+                            // if (overload->typeInfo->couldBeNull())
                             if (overload->typeInfo->isAny())
                             {
                                 const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
