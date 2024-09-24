@@ -352,7 +352,7 @@ impl Color
 
 impl Core.StrConv.IPokeValue for Color
 {
-    mtd impl poke(buf: string)->string throw
+    mtd impl poke(buf: string!)->string throw
     {
         var eat: u64
         var ovf: bool

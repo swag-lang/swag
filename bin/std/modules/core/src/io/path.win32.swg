@@ -65,6 +65,9 @@ func isValidFileName(fullname: string)->bool
 // Returns the length of the root part of the path
 func getRootLength(fullname: string)->u32
 {
+    if fullname == null:
+        return 0
+        
     func startsWithOrdinal(source, value: string)->bool
     {
         let sourceLength = @countof(source)

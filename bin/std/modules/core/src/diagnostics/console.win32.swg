@@ -85,6 +85,8 @@ public func printf(message: string, params: ...)
 {
     if g_SilentMode:
         return
+    if message == null:
+        return
 
     if @countof(params)
     {

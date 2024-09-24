@@ -1,3 +1,4 @@
+//#[Swag.PrintGenBc]
 #test
 {
     let str = "10"

@@ -19,7 +19,7 @@ struct FloatInfo
 const float32info: FloatInfo = {23, 8, -127}
 const f64info: FloatInfo = {52, 11, -1023}
 
-func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
+func readF64(str: string!)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
 {
     var result: retval
 

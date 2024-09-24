@@ -245,6 +245,10 @@ impl RegExp
     public mtd grepAll(str: string)->Array'string
     {
         var result: retval
+        
+        if str == null:
+            return result        
+
         var res     = str
         let end     = @dataof(str) + @countof(str)
         clearMatch()
@@ -274,6 +278,8 @@ impl RegExp
     #[Swag.Overload]
     public mtd grep(str: string)->string
     {
+        if str == null:
+            return null        
         clearMatch()
         return internalGrep(str)
     }
@@ -281,6 +287,8 @@ impl RegExp
     // Try to match the start of the string, and returns the matched value or null.
     public mtd partialMatch(str: string)->string
     {
+        if str == null:
+            return null        
         let beg  = @dataof(str)
         let last = beg + @countof(str)
 
@@ -290,7 +298,7 @@ impl RegExp
         return null
     }
 
-    mtd internalGrep(str: string)->string
+    mtd internalGrep(str: string!)->string
     {
         var beg  = @dataof(str)
         let last = beg + @countof(str)

@@ -50,7 +50,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 {
     if (!parameters || funcNode->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         return true;
-    
+
     bool     defaultValueDone = false;
     uint32_t index            = 0;
 
@@ -121,10 +121,10 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         if (paramType->isCode())
             SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0399)}));
 
-        // Self should never be null 
-        if(paramType->isSelf())
+        // Self should never be null
+        if (paramType->isSelf())
             funcParam->flags.add(TYPEINFOPARAM_EXPECT_NOT_NULL);
-        
+
         // Not everything is possible for types for attributes
         if (param->ownerScope->is(ScopeKind::Attribute))
         {
@@ -186,7 +186,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
                 return context->report(err);
             }
         }
-        
+
         if (forGenerics)
             typeInfo->genericParameters.push_back(funcParam);
         else
@@ -1141,6 +1141,12 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
     for (auto c : node->children)
     {
         auto typeField = c->typeInfo;
+
+        if (typeField->couldBeNull())
+        {
+            c->typeInfo = g_TypeMgr->makeNonNullable(typeField);
+            typeField   = c->typeInfo;
+        }
 
         if (typeField->isArray())
         {

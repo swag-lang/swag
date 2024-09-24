@@ -16,7 +16,7 @@ var g_Op:           String
 var g_Error:        string
 var g_Start:        bool = true
 
-func validateOp(str: string)
+func validateOp(str: string!)
 {
     if Latin1.isDigit(str[0])
     {

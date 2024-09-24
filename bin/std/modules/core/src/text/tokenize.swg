@@ -15,6 +15,8 @@ func eatQuotes(str: string)->string
 // Eat 'count' bytes, and returns the remaining string
 func eatCount(str: string, count: u64)->string
 {
+    if str == null:
+        return str
     let countof = @countof(str)
     let cpt     = Math.min(count, countof)
     return @mkstring(@dataof(str) + cpt, countof - cpt)
