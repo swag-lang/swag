@@ -1,4 +1,4 @@
-func toto(x: any)
+func toto(x: any!)
 {
     let ptr = cast(^s32) @dataof(x)
     @assert(ptr[0] == 1)

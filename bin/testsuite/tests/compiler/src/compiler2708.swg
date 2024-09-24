@@ -1,4 +1,4 @@
-func toto(x: any = 10's64)
+func toto(x: any! = 10's64)
 {
     @assert(cast(s64) x == 10)
 }

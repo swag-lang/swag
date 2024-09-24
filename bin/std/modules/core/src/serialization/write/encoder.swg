@@ -264,7 +264,7 @@ impl Encoder
 
     // Write a full struct.
     // Will call [[Encoder.start]], [[Encoder.writeValue]] and [[Encoder.end]]
-    mtd writeAll(result: *ConcatBuffer, value: any) throw
+    mtd writeAll(result: *ConcatBuffer, value: any!) throw
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
         start(self, result)

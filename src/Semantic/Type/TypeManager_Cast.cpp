@@ -2449,6 +2449,9 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
+    if (fromType->isAny())
+        return true;
+        
     if (fromType->isPointerNull())
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
@@ -2508,6 +2511,9 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
 
 bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
+    if (toType->isAny())
+        return true;
+    
     const auto toRealType = concretePtrRef(toType);
 
     if (!castFlags.has(CAST_FLAG_EXPLICIT))

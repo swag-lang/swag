@@ -3,7 +3,7 @@
 var G : s32 = 0
 
 //#[Swag.PrintBc]
-func average(x: any)
+func average(x: any!)
 {
 	let tt = @kindof(x)
 	if(tt == #typeof(s32))

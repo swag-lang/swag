@@ -256,7 +256,6 @@ namespace Semantic
     bool preResolveFuncDecl(SemanticContext* context);
 
     bool postResolveStruct(SemanticContext* context);
-    bool postResolveType(SemanticContext* context);
     
     bool resolveAffect(SemanticContext* context);
     bool resolveAfterKnownType(SemanticContext* context);
@@ -390,6 +389,7 @@ namespace Semantic
     bool resolveTryCatch(SemanticContext* context);
     bool resolveTupleUnpackBefore(SemanticContext* context);
     bool resolveTupleUnpackBeforeVar(SemanticContext* context);
+    bool resolveType(SemanticContext* context, AstTypeExpression* typeNode);
     bool resolveType(SemanticContext* context);
     bool resolveAlias(SemanticContext* context);
     bool resolveAliasAfterValue(SemanticContext* context);

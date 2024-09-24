@@ -580,13 +580,17 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (overload->typeInfo->couldBeNull())
+                        if (!overload->typeInfo->isNonNullable())
                         {
-                            const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
-                            if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
+                            //if (overload->typeInfo->couldBeNull())
+                            if (overload->typeInfo->isAny())
                             {
-                                //ra->kind        = SanityValueKind::ZeroParam;
-                                //ra->reg.pointer = nullptr;
+                                const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
+                                if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
+                                {
+                                    ra->kind        = SanityValueKind::ZeroParam;
+                                    ra->reg.pointer = nullptr;
+                                }
                             }
                         }
                     }

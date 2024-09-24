@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func convertAny(value: any, strFormat: string)
+func convertAny(value: any!, strFormat: string)
 {
     convertInt(cast(s64) value, strFormat)
 }

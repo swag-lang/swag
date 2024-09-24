@@ -82,8 +82,6 @@ AstTypeExpression* Ast::newTypeExpression(Parser* parser, AstNode* parent)
 {
     const auto node   = Ast::newNode<AstTypeExpression>(AstNodeKind::TypeExpression, parser, parent);
     node->semanticFct = Semantic::resolveType;
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticAfterFct = Semantic::postResolveType;
     return node;
 }
 

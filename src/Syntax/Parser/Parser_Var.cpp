@@ -8,6 +8,7 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
 
 bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
 {

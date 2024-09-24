@@ -268,21 +268,24 @@ void Semantic::forceConstType(SemanticContext*, AstTypeExpression* node)
     }
 }
 
-bool Semantic::postResolveType(SemanticContext* context)
+bool Semantic::resolveType(SemanticContext* context)
 {
     const auto typeNode = castAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
-    if (!typeNode->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
-        return true;
-    const auto concrete = typeNode->typeInfo->getConcreteAlias();
-    SWAG_VERIFY(concrete->couldBeNull(), context->report({typeNode, formErr(Err0781, typeNode->typeInfo->getDisplayNameC())}));
-    typeNode->typeInfo = g_TypeMgr->makeNonNullable(typeNode->typeInfo);
+    SWAG_CHECK(resolveType(context, typeNode));
+    YIELD();
+
+    if (typeNode->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
+    {
+        const auto concrete = typeNode->typeInfo->getConcreteAlias();
+        SWAG_VERIFY(concrete->couldBeNull(), context->report({typeNode, formErr(Err0781, typeNode->typeInfo->getDisplayNameC())}));
+        typeNode->typeInfo = g_TypeMgr->makeNonNullable(typeNode->typeInfo);
+    }
+
     return true;
 }
 
-bool Semantic::resolveType(SemanticContext* context)
+bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode)
 {
-    auto typeNode = castAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
-
     // Array with predefined dimensions, we evaluate all dimensions as const
     // Do it first because of potential pending
     if (typeNode->arrayDim && typeNode->arrayDim != UINT8_MAX)

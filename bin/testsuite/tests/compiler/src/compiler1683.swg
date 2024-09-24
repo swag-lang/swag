@@ -10,7 +10,7 @@ struct TT
 
 //#[Swag.PrintBc]
 #[Swag.Optimize("", false)]
-func C(x: any)
+func C(x: any!)
 {
     #[Swag.Safety("", true)]
     var ptr = cast(s32) x
