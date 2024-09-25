@@ -97,7 +97,7 @@ void TypeInfoNative::computeWhateverName(Utf8& resName, ComputeNameKind nameKind
             break;
         case NativeTypeKind::Undefined:
             resName += "?";
-        break;        
+            break;
     }
 }
 
