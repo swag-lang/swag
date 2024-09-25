@@ -110,7 +110,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(let|var|const)\\b"
+          "match": "\\b(let|var|const|nn)\\b"
         }
       ]
     },
