@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-func average(x, y: any!)
+func average(x, y: nn any)
 {
 	let tx = cast(*s32) @dataof(x)
 	@assert(dref tx == 5)

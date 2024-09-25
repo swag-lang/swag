@@ -36,7 +36,7 @@ func countPercent(fmt: string)->u32
 
 // Format a string in 'dest'.
 // Can be a lot faster than the convenient version which returns a String.
-func replaceString(dest: *String, fmt: string!, values: ...)
+func replaceString(dest: *String, fmt: nn string, values: ...)
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
@@ -72,7 +72,7 @@ func replaceString(dest: *String, fmt: string!, values: ...)
 // ```
 // * See [[ConvertFormatInt.setFormat]] for some valid format options
 // * See [[ConvertFormatFloat.setFormat]] for some valid format options
-func toString(fmt: string!, values: ...)->String
+func toString(fmt: nn string, values: ...)->String
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
@@ -90,7 +90,7 @@ func toString(fmt: string!, values: ...)->String
 }
 
 // Returns a formatted string stored in the temporary allocator.
-func toStringTemp(fmt: string!, values: ...)->string
+func toStringTemp(fmt: nn string, values: ...)->string
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
@@ -109,7 +109,7 @@ func toStringTemp(fmt: string!, values: ...)->string
 }
 
 // Format a string and put the result in a ConcatBuffer.
-func append(buf: *ConcatBuffer, fmt: string!, values: ...)
+func append(buf: *ConcatBuffer, fmt: nn string, values: ...)
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):

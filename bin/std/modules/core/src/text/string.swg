@@ -408,7 +408,7 @@ impl String
     }
 
     // Append a formatted string
-    mtd appendFormat(format: string!, values: ...)
+    mtd appendFormat(format: nn string, values: ...)
     {
         append(Format.toString(format, values))
     }

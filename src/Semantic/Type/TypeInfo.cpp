@@ -74,8 +74,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(ComputeNameKind nameKind)
                 computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 name = std::move(str);
-                if(isNonNullable())
-                    name += "!";
             }
             return name;
 
@@ -85,8 +83,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(ComputeNameKind nameKind)
                 computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 displayName = std::move(str);
-                if(isNonNullable())
-                    displayName += "!";
             }
             return displayName;
 
@@ -96,8 +92,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(ComputeNameKind nameKind)
                 computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 scopedName = std::move(str);
-                if(isNonNullable())
-                    scopedName += "!";                
             }
             return scopedName;
 
@@ -107,8 +101,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(ComputeNameKind nameKind)
                 computeWhateverName(str, nameKind);
                 SWAG_RACE_CONDITION_WRITE(raceName);
                 scopedNameExport = std::move(str);
-                if(isNonNullable())
-                    scopedNameExport += "!";                
             }
             return scopedNameExport;
     }

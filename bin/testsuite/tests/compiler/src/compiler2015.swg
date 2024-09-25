@@ -1,4 +1,4 @@
-func variadic(x: any!)
+func variadic(x: nn any)
 {
     @print(cast(s64) cast(s32) x)
 }

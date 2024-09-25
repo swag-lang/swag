@@ -297,7 +297,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
 }
 
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
-func convertStruct(buf: *ConcatBuffer, value: any!, convFmt: ConvertFormat, strFormat: string)
+func convertStruct(buf: *ConcatBuffer, value: nn any, convFmt: ConvertFormat, strFormat: string)
 {
     let kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
@@ -335,7 +335,7 @@ func convertStruct(buf: *ConcatBuffer, value: any!, convFmt: ConvertFormat, strF
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertFloat(buf: *ConcatBuffer, value: any!, fmt: ConvertFormatFloat)
+func convertFloat(buf: *ConcatBuffer, value: nn any, fmt: ConvertFormatFloat)
 {
     let kindof = cast(const *Swag.TypeInfoNative) @kindof(value)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
@@ -356,7 +356,7 @@ func convertFloat(buf: *ConcatBuffer, value: any!, fmt: ConvertFormatFloat)
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertInt(buf: *ConcatBuffer, value: any!, fmt: ConvertFormatInt)
+func convertInt(buf: *ConcatBuffer, value: nn any, fmt: ConvertFormatInt)
 {
     let kindof = cast(const *Swag.TypeInfoNative) @kindof(value)
     Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
@@ -458,7 +458,7 @@ func convertInt(buf: *ConcatBuffer, value: any!, fmt: ConvertFormatInt)
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertFloat(buf: *ConcatBuffer, value: any!, convFmt: ConvertFormat, strFormat: string)
+func convertFloat(buf: *ConcatBuffer, value: nn any, convFmt: ConvertFormat, strFormat: string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
@@ -469,7 +469,7 @@ func convertFloat(buf: *ConcatBuffer, value: any!, convFmt: ConvertFormat, strFo
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertInt(buf: *ConcatBuffer, value: any!, convFmt: ConvertFormat, strFormat: string)
+func convertInt(buf: *ConcatBuffer, value: nn any, convFmt: ConvertFormat, strFormat: string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 

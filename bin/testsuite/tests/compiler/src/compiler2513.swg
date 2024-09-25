@@ -1,4 +1,4 @@
-func toto(x: string!)-> [100] u8
+func toto(x: nn string)-> [100] u8
 {
     var result: retval
     let len = @countof(x)

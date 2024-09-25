@@ -372,8 +372,8 @@ namespace
             pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU16(0);
 
-            auto nn = SCBEDebug::getScopedName(p);
-            emitTruncatedString(pp, nn);
+            auto scopedName = SCBEDebug::getScopedName(p);
+            emitTruncatedString(pp, scopedName);
             emitEndRecord(pp);
         }
 
@@ -845,8 +845,8 @@ namespace
             concat.addU32(tr->index);                     // FuncID type index
             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-            auto nn = SCBEDebug::getScopedName(f.node);
-            emitTruncatedString(pp, nn);
+            auto scopedName = SCBEDebug::getScopedName(f.node);
+            emitTruncatedString(pp, scopedName);
             emitEndRecord(pp);
 
             // Frame Proc

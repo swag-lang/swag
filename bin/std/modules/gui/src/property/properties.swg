@@ -761,7 +761,7 @@ impl Properties
     }
 
     // Add a new struct to display.
-    mtd addStruct(val: any!, section: string = null)
+    mtd addStruct(val: nn any, section: string = null)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)

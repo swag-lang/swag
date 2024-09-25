@@ -20,7 +20,7 @@ impl Utf8
 		self.buffer = cast(*u8) newPtr;
 	}
 
-	func opAffect(self, from: string!)
+	func opAffect(self, from: nn string)
 	{
 		self.length = @countof(from)
 		self.reserveSize(self.length + 1)

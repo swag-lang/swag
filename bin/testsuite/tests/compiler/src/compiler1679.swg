@@ -14,7 +14,7 @@ func D(x: ...)
 }
 
 //#[Swag.PrintBc]
-func E(x: any!)
+func E(x: nn any)
 {
     var ptr = cast(TT) x
     //C(cast(TT) x)

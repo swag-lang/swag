@@ -13,7 +13,7 @@ impl A
 }
 
 //#[Swag.PrintBc]
-func toto(val: any!)
+func toto(val: nn any)
 {
     let err = cast(const &A) val
     @assert(err.x == 42)

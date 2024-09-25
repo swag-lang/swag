@@ -493,6 +493,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         }
     }
 
+    if (tokenParse.is(TokenId::KwdNonNull))
+    {
+        node->locNonNull = tokenParse.token.startLocation;
+        node->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
+        SWAG_CHECK(eatToken());
+    }
+
     // MoveRef
     if (tokenParse.is(TokenId::SymAmpersandAmpersand))
     {
@@ -626,25 +633,9 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0329)}));
 
     if (tokenParse.is(TokenId::KwdFunc))
-    {
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
-        if(tokenParse.is(TokenId::SymExclam))
-        {
-            SWAG_CHECK(eatToken());
-            const auto typeDecl = castAst<AstTypeLambda>(*result, AstNodeKind::TypeLambda);
-            typeDecl->specFlags.add(AstTypeLambda::SPEC_FLAG_NON_NULLABLE);
-        }        
-    }
     else
-    {
         SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
-        if(tokenParse.is(TokenId::SymExclam))
-        {
-            SWAG_CHECK(eatToken());
-            const auto typeDecl = castAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
-            typeDecl->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
-        }
-    }
     
     return true;
 }

@@ -245,7 +245,7 @@ impl RegExp
     public mtd grepAll(str: string)->Array'string
     {
         var result: retval
-        
+
         if str == null:
             return result        
 
@@ -298,7 +298,7 @@ impl RegExp
         return null
     }
 
-    mtd internalGrep(str: string!)->string
+    mtd internalGrep(str: nn string)->string
     {
         var beg  = @dataof(str)
         let last = beg + @countof(str)

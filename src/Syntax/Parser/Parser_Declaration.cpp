@@ -25,6 +25,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdVar:
         case TokenId::KwdLet:
         case TokenId::KwdConst:
+        case TokenId::KwdNonNull:
         case TokenId::KwdEnum:
         case TokenId::KwdStruct:
         case TokenId::KwdUnion:

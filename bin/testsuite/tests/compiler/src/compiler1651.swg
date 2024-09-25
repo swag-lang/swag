@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto1(x: any!)
+func toto1(x: nn any)
 {
     let v = cast(s32) x
     @assert(v == 100)

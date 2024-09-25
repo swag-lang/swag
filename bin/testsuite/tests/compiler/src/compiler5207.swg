@@ -1,6 +1,6 @@
 struct Err{str: string}
 
-func str(x: string!)->string
+func str(x: nn string)->string
 {
     let cxt = @getcontext()
     let count = cast(u64) @countof(x)

@@ -140,7 +140,7 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
     }
 }
 
-func offset_momentum(bodies: [..] Planet) {
+func offset_momentum(bodies: nn [..] Planet) {
     var px: f64 = 0.0
     var py: f64 = 0.0
     var pz: f64 = 0.0

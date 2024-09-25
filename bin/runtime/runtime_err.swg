@@ -12,7 +12,7 @@ func __dropErr(err: any)
         type.opDrop(data)
 }
 
-func __setErr(err: any!)
+func __setErr(err: nn any)
 {
     let cxt = @getcontext()
     if cxt.errorIndex >= MaxErrors:

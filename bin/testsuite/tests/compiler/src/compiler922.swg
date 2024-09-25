@@ -1,6 +1,6 @@
 
 
-func average(x: any!)
+func average(x: nn any)
 {
 	let t = cast(*f32) @dataof(x)
 	@assert(dref t == 10.0)

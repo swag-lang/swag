@@ -1,4 +1,4 @@
-func foozle(x: any!)
+func foozle(x: nn any)
 {
     let isType = @kindof(x).flags & Swag.TypeInfoFlags.PointerTypeInfo
     @assert(isType ? true : false)

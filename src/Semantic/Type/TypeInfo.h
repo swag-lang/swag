@@ -259,16 +259,17 @@ struct TypeInfoNative final : TypeInfo
         valueInteger = 0;
     }
 
-    TypeInfoNative(NativeTypeKind type, const char* ptrName, int sof, const TypeInfoFlags& fl)
+    TypeInfoNative(NativeTypeKind type, int sof, const TypeInfoFlags& fl)
     {
-        kind       = TypeInfoKind::Native;
-        nativeType = type;
-        name.setView(ptrName, static_cast<uint32_t>(strlen(ptrName)));
+        kind         = TypeInfoKind::Native;
+        nativeType   = type;
         sizeOf       = sof;
         flags        = fl;
         valueInteger = 0;
+        computeWhateverName(name, ComputeNameKind::Name);
     }
 
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 

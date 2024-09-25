@@ -6,7 +6,7 @@ func variadic(x: ...)
 }
 
 //#[Swag.PrintBc]
-func isSorted(values: string!)
+func isSorted(values: nn string)
 {
     variadic(values[0])
 }

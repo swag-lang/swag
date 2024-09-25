@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(val: any!)
+func toto(val: nn any)
 {
     let err = cast(const &s32) val
     @assert(err == 42)

@@ -469,13 +469,13 @@ SCBEDebugTypeRecord* SCBEDebug::addTypeRecord(SCBE_CPU& pp)
 
 Utf8 SCBEDebug::getScopedName(const AstNode* node)
 {
-    const auto nn = node->getScopedName();
+    const auto scopedName = node->getScopedName();
     Utf8       result;
-    result.reserve(nn.allocated);
+    result.reserve(scopedName.allocated);
 
-    auto pz      = nn.buffer;
+    auto pz      = scopedName.buffer;
     bool lastDot = false;
-    for (uint32_t i = 0; i < nn.length(); i++, pz++)
+    for (uint32_t i = 0; i < scopedName.length(); i++, pz++)
     {
         if (*pz == '.')
         {

@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-func average(x: any!)
+func average(x: nn any)
 {
 	let tt = @kindof(x)
 	@assert(tt.fullname == "s32")

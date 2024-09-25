@@ -2,7 +2,7 @@ struct A {}
 
 var G: *void
 
-func toto(x: any!)
+func toto(x: nn any)
 {
     let k = @kindof(x)
     @assert(G != @dataof(x))

@@ -1002,6 +1002,7 @@ struct AstTypeExpression : AstType
     AstNode* clone(CloneContext& context);
 
     SourceLocation locConst;
+    SourceLocation locNonNull;
     AstNode*       identifier;
     TypeInfo*      typeFromLiteral;
 

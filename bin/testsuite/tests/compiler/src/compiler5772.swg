@@ -2,7 +2,7 @@
 
 var G = 0
 
-func toto(x: any!)
+func toto(x: nn any)
 {
     G = 1
 }

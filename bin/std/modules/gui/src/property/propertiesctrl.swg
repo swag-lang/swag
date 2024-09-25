@@ -122,7 +122,7 @@ impl PropertiesCtrl
     }
 
     // Add a new struct to display
-    mtd addStruct(val: any!, category: string = null)
+    mtd addStruct(val: nn any, category: string = null)
     {
         prop.addStruct(val, category)
         fillSections()

@@ -39,6 +39,68 @@ bool TypeInfoNative::isSame(const TypeInfo* to, CastFlags castFlags) const
     return true;
 }
 
+void TypeInfoNative::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
+{
+    if (isConst())
+        resName += "const ";
+    if (isNonNullable())
+        resName += "nn ";
+    switch (nativeType)
+    {
+        case NativeTypeKind::S8:
+            resName += "s8";
+            break;
+        case NativeTypeKind::S16:
+            resName += "s16";
+            break;
+        case NativeTypeKind::S32:
+            resName += "s32";
+            break;
+        case NativeTypeKind::S64:
+            resName += "s64";
+            break;
+        case NativeTypeKind::U8:
+            resName += "u8";
+            break;
+        case NativeTypeKind::U16:
+            resName += "u16";
+            break;
+        case NativeTypeKind::U32:
+            resName += "u32";
+            break;
+        case NativeTypeKind::U64:
+            resName += "u64";
+            break;
+        case NativeTypeKind::Bool:
+            resName += "bool";
+            break;
+        case NativeTypeKind::String:
+            resName += "string";
+            break;
+        case NativeTypeKind::CString:
+            resName += "cstring";
+            break;
+        case NativeTypeKind::Any:
+            resName += "any";
+            break;
+        case NativeTypeKind::F32:
+            resName += "f32";
+            break;
+        case NativeTypeKind::F64:
+            resName += "f64";
+            break;
+        case NativeTypeKind::Rune:
+            resName += "rune";
+            break;
+        case NativeTypeKind::Void:
+            resName += "void";
+            break;
+        case NativeTypeKind::Undefined:
+            resName += "?";
+        break;        
+    }
+}
+
 Utf8 TypeInfoNamespace::getDisplayName()
 {
     Utf8 str;
@@ -162,6 +224,8 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, ComputeNameKind nameKin
     {
         if (isConst())
             resName += "const ";
+        if (isNonNullable())
+            resName += "nn ";
         if (isPointerRef() && hasFlag(TYPEINFO_POINTER_MOVE_REF))
             resName += "&&";
         else if (hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF))
@@ -291,6 +355,8 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (isConst())
         resName += "const ";
+    if (isNonNullable())
+        resName += "nn ";
     resName += "[..] ";
     resName += pointedType->computeWhateverName(nameKind);
 }

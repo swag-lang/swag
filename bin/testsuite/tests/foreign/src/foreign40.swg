@@ -4,7 +4,7 @@ public struct T40
     y: s32 = 666
 }
 
-public func toto40(f: any!)
+public func toto40(f: nn any)
 {
     @assert(@kindof(f) == T40)
     var ptr = cast(*T40) @dataof(f)
