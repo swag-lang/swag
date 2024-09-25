@@ -123,11 +123,9 @@ void AstNode::release()
             Allocator::free<AstSwitchCaseBlock>(this);
             break;
         case AstNodeKind::TypeExpression:
-            Allocator::free<AstTypeExpression>(this);
-            break;
         case AstNodeKind::TypeLambda:
         case AstNodeKind::TypeClosure:
-            Allocator::free<AstTypeLambda>(this);
+            Allocator::free<AstTypeExpression>(this);
             break;
         case AstNodeKind::ArrayPointerSlicing:
             Allocator::free<AstArrayPointerSlicing>(this);

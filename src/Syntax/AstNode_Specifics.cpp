@@ -772,6 +772,8 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->arrayDim        = arrayDim;
     newNode->typeFlags       = typeFlags;
     newNode->locConst        = locConst;
+    newNode->parameters = findChildRef(parameters, newNode);
+    newNode->returnType = findChildRef(returnType, newNode);
 
     // :StructParamsNoSem
     // We need to revaluate the call parameters of the struct initialization, because inside we can have some
@@ -789,16 +791,6 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         }
     }
 
-    return newNode;
-}
-
-AstNode* AstTypeLambda::clone(CloneContext& context)
-{
-    const auto newNode = Ast::newNode<AstTypeLambda>();
-    newNode->copyFrom(context, this);
-
-    newNode->parameters = findChildRef(parameters, newNode);
-    newNode->returnType = findChildRef(returnType, newNode);
     return newNode;
 }
 

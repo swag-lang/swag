@@ -221,10 +221,9 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::SwitchCaseBlock:
             return clone<AstSwitchCaseBlock>(this, context);
         case AstNodeKind::TypeExpression:
-            return clone<AstTypeExpression>(this, context);
         case AstNodeKind::TypeLambda:
         case AstNodeKind::TypeClosure:
-            return clone<AstTypeLambda>(this, context);
+            return clone<AstTypeExpression>(this, context);
         case AstNodeKind::ArrayPointerSlicing:
             return clone<AstArrayPointerSlicing>(this, context);
         case AstNodeKind::ArrayPointerIndex:

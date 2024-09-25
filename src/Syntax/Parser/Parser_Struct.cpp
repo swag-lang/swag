@@ -410,7 +410,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
     Semantic::setVarDeclResolve(varNode);
     varNode->addAstFlag(AST_R_VALUE);
 
-    const auto typeNode   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, this, varNode);
+    const auto typeNode   = Ast::newNode<AstTypeExpression>(AstNodeKind::TypeLambda, this, varNode);
     typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
     varNode->type         = typeNode;
     varNode->type->inheritTokenLocation(funcNode->token);
@@ -435,7 +435,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
     }
 
     if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
-        typeNode->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
+        typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_CAN_THROW);
 
     varNode->addExtraPointer(ExtraPointerKind::ExportNode, funcNode);
     *result = varNode;

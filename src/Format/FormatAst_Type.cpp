@@ -40,6 +40,12 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         concat->addBlank();
     }
 
+    if (node->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
+    {
+        concat->addString("nn");
+        concat->addBlank();
+    }    
+
     if (node->arrayDim == UINT8_MAX)
     {
         concat->addString("[]");

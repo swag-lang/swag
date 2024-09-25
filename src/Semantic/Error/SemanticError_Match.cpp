@@ -134,7 +134,7 @@ namespace
             else if (tryResult[i]->overload->node->is(AstNodeKind::VarDecl))
             {
                 const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
-                const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+                const auto lambda  = castAst<AstTypeExpression>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
                 fmtAst.outputFuncSignature(fmtContext, varNode, nullptr, lambda->parameters, nullptr);
             }
             else

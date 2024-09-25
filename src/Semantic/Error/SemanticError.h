@@ -3,7 +3,7 @@
 
 struct AstStruct;
 struct AstAttrDecl;
-struct AstTypeLambda;
+struct AstTypeExpression;
 struct AstFuncDecl;
 struct AstFuncCallParam;
 struct BadSignatureInfos;
@@ -50,7 +50,7 @@ struct ErrorParam
     AstFuncCallParam*  failedParam           = nullptr;
     uint32_t           badParamIdx           = 0;
     AstFuncDecl*       destFuncDecl          = nullptr;
-    AstTypeLambda*     destLambdaDecl        = nullptr;
+    AstTypeExpression*     destLambdaDecl        = nullptr;
     AstAttrDecl*       destAttrDecl          = nullptr;
     AstStruct*         destStructDecl        = nullptr;
     AstNode*           destParameters        = nullptr;

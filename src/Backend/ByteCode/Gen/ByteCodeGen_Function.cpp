@@ -1737,7 +1737,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     }
                     else
                     {
-                        auto funcDesc = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+                        auto funcDesc = castAst<AstTypeExpression>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
                         parameters    = funcDesc->firstChild();
                     }
                 }

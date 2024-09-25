@@ -359,7 +359,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 {
-    const auto typeNode = castAst<AstTypeLambda>(node);
+    const auto typeNode = castAst<AstTypeExpression>(node);
 
     if (typeNode->hasSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE))
     {
@@ -382,15 +382,10 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
         SWAG_CHECK(outputNode(context, typeNode->returnType));
     }
 
-    if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
+    if (node->hasSpecFlag(AstTypeExpression::SPEC_FLAG_CAN_THROW))
     {
         concat->addBlank();
         concat->addString("throw");
-    }
-    else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-    {
-        concat->addBlank();
-        concat->addString("assume");
     }
 
     return true;

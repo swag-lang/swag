@@ -439,7 +439,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         }
         else
         {
-            const auto funcDecl = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+            const auto funcDecl = castAst<AstTypeExpression>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
             parameters          = funcDecl->firstChild();
         }
 

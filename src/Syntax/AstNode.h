@@ -997,7 +997,9 @@ constexpr TypeFlags TYPE_FLAG_NON_NULLABLE      = 0x8000;
 
 struct AstTypeExpression : AstType
 {
-    static constexpr SpecFlags SPEC_FLAG_DONE_GEN = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_DONE_GEN     = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CAN_THROW    = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_NON_NULLABLE = 0x0004;
 
     AstNode* clone(CloneContext& context);
 
@@ -1005,21 +1007,12 @@ struct AstTypeExpression : AstType
     SourceLocation locNonNull;
     AstNode*       identifier;
     TypeInfo*      typeFromLiteral;
+    AstNode*       parameters;
+    AstNode*       returnType;
 
     TypeFlags   typeFlags;
     LiteralType literalType;
     uint8_t     arrayDim;
-};
-
-struct AstTypeLambda : AstType
-{
-    static constexpr SpecFlags SPEC_FLAG_CAN_THROW    = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_NON_NULLABLE = 0x0002;
-
-    AstNode* clone(CloneContext& context);
-
-    AstNode* parameters;
-    AstNode* returnType;
 };
 
 struct AstArrayPointerIndex : AstNode

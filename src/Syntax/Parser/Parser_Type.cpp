@@ -12,7 +12,7 @@
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-    const auto node   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, this, parent);
+    const auto node   = Ast::newNode<AstTypeExpression>(AstNodeKind::TypeLambda, this, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
@@ -31,7 +31,7 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     return true;
 }
 
-bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, AstNode* params)
+bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDecl, AstNode* params)
 {
     if (!params)
     {
@@ -247,7 +247,7 @@ bool Parser::doLambdaClosureParameters(AstTypeLambda* node, bool inTypeVarDecl, 
     return true;
 }
 
-bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
+bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
 {
     SWAG_ASSERT(tokenParse.token.id == TokenId::KwdFunc);
 
@@ -319,7 +319,7 @@ bool Parser::doLambdaClosureType(AstTypeLambda* node, bool inTypeVarDecl)
     if (tokenParse.is(TokenId::KwdThrow))
     {
         SWAG_CHECK(eatToken());
-        node->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
+        node->addSpecFlag(AstTypeExpression::SPEC_FLAG_CAN_THROW);
     }
 
     return true;

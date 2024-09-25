@@ -117,7 +117,7 @@ func __failedAssume(loc: SourceCodeLocation)
                 str[len] = '$'
                 len += 1
                 str[len] = ' '
-                len += 1                                
+                len += 1
                 @memcpy(&str[len], @dataof(val.message), maxLen)
                 len += maxLen
             }

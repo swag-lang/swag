@@ -1,4 +1,3 @@
-
 #global testpass syntax
 
 //#[Swag.PrintBc]

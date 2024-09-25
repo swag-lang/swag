@@ -170,11 +170,11 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
 
 bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 {
-    const auto node     = castAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+    const auto node     = castAst<AstTypeExpression>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
     const auto typeInfo = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode  = node;
 
-    if (node->hasSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW))
+    if (node->hasSpecFlag(AstTypeExpression::SPEC_FLAG_CAN_THROW))
         typeInfo->addFlag(TYPEINFO_CAN_THROW);
 
     if (node->returnType)
@@ -246,7 +246,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 
     node->typeInfo = typeInfo;
 
-    if (node->specFlags.has(AstTypeLambda::SPEC_FLAG_NON_NULLABLE))
+    if (node->specFlags.has(AstTypeExpression::SPEC_FLAG_NON_NULLABLE))
         node->typeInfo = g_TypeMgr->makeNonNullable(node->typeInfo);
 
     return true;
