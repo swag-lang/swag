@@ -588,7 +588,10 @@ namespace
                         if (!overload->typeInfo->isNonNullable())
                         {
                             // if (overload->typeInfo->couldBeNull())
-                            if (overload->typeInfo->isAny() || overload->typeInfo->isString() || overload->typeInfo->isSlice())
+                            if (overload->typeInfo->isAny() ||
+                                overload->typeInfo->isString() ||
+                                overload->typeInfo->isSlice() ||
+                                overload->typeInfo->isCString())
                             {
                                 const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                                 if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
