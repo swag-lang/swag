@@ -322,7 +322,7 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: nn IForm, zoom: f32, quickMode = false, snapMode = false)
     {
         let render = &app.renderer
 

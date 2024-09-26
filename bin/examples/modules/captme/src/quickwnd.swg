@@ -10,12 +10,12 @@ impl QuickStyle
         clear()
     }
 
-    func deleteOne(itf: IForm)
+    func deleteOne(itf: nn IForm)
     {
         Memory.delete(@dataof(itf), @kindof(itf))
     }
 
-    mtd remove(itf: IForm)
+    mtd remove(itf: nn IForm)
     {
         deleteOne(itf)
         forms.remove(itf)

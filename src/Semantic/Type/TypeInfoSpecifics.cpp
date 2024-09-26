@@ -1346,8 +1346,13 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, ComputeNameKind nameKind
         return;
     }
 
+    if(isNonNullable())
+        resName += "nn ";
+    
     if (nameKind != ComputeNameKind::Name && nameKind != ComputeNameKind::DisplayName)
         computeScopedName(resName);
+
     resName += structName;
+    
     computeNameGenericParameters(genericParameters, resName, nameKind);
 }

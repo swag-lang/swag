@@ -201,7 +201,7 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
-    mtd updateEditMode(f: IForm)
+    mtd updateEditMode(f: nn IForm)
     {
         let t    = @kindof(f)
         let form = cast(*BaseForm) @dataof(f)

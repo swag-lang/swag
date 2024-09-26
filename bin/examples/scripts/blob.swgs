@@ -9,7 +9,7 @@
 using Core, Gui, Pixel, Core.Math
 const NoiseMax = 5.0
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: nn IEvent)->bool
 {
     let paintEvt = evt as PaintEvent
     if !paintEvt:

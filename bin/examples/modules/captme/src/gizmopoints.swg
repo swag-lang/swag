@@ -86,7 +86,7 @@ impl GizmoPoints
         }
     }
 
-    func apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
+    func apply(iform: nn IForm, diff: Math.Point, pt: u32, first: bool)
     {
         let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture

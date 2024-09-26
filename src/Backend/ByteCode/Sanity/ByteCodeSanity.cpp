@@ -591,7 +591,8 @@ namespace
                             if (overload->typeInfo->isAny() ||
                                 overload->typeInfo->isString() ||
                                 overload->typeInfo->isSlice() ||
-                                overload->typeInfo->isCString())
+                                overload->typeInfo->isCString() ||
+                                overload->typeInfo->isInterface())
                             {
                                 const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                                 if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))

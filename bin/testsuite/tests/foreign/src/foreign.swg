@@ -287,7 +287,7 @@ struct TT
     x: IAllocator
 }
 
-func all(itf: IAllocator)
+func all(itf: nn IAllocator)
 {
     var req: AllocatorRequest
     req.mode = AllocatorMode.Alloc

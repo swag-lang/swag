@@ -24,7 +24,7 @@ impl IEvent for Evt1 {}
 impl IEvent for Evt2 {}
 impl IEvent for Evt3 {}
 
-func toto(v: IEvent)
+func toto(v: nn IEvent)
 {
     @assert(@is(Evt1, @kindof(v)) == false)
     @assert(@is(Evt2, @kindof(v)) == true)

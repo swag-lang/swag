@@ -2,7 +2,7 @@
 using Core, Pixel
 
 alias WndId     = string
-alias HookEvent = func||(*Wnd, IEvent)->bool
+alias HookEvent = func||(*Wnd, nn IEvent)->bool
 
 // Automatic placement and size of the window in the parent client rectangle
 enum DockStyle
@@ -51,8 +51,8 @@ struct KeyShortcut
 
 interface IWnd
 {
-    mtd onEvent(evt: IEvent);
-    mtd onHookEvent(evt: IEvent);
+    mtd onEvent(evt: nn IEvent);
+    mtd onHookEvent(evt: nn IEvent);
 
     mtd onCreateEvent(evt: *CreateEvent);
     mtd onDestroyEvent(evt: *DestroyEvent);
@@ -135,7 +135,7 @@ struct Wnd
 
 impl IWnd for Wnd
 {
-    mtd impl onEvent(evt: IEvent)
+    mtd impl onEvent(evt: nn IEvent)
     {
         switch evt
         {
@@ -1166,7 +1166,7 @@ impl Wnd
         surface.app.postQuitEvent()
     }
 
-    mtd postEvent(evt: IEvent)
+    mtd postEvent(evt: nn IEvent)
     {
         let ptr = evt as Event
         ptr.target = self
@@ -1179,7 +1179,7 @@ impl Wnd
         postEvent(evt)
     }
 
-    mtd sendEvent(evt: IEvent)
+    mtd sendEvent(evt: nn IEvent)
     {
         let ptr = evt as Event
         ptr.target = self
@@ -1227,7 +1227,7 @@ impl Wnd
         postEvent(evt)
     }
 
-    mtd processEvent(evt: IEvent)
+    mtd processEvent(evt: nn IEvent)
     {
         var eat = false
         if hookOnEvent:

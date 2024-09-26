@@ -234,7 +234,7 @@ impl GizmoRect
         }
     }
 
-    mtd apply(iform: IForm, first: bool, hitMove: u32)
+    mtd apply(iform: nn IForm, first: bool, hitMove: u32)
     {
         let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture

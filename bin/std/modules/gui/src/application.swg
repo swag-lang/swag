@@ -51,7 +51,7 @@ struct Application
 internal impl Application
 {
     // Send and process an event
-    mtd sendEventPrivate(evt: IEvent, stopAt: *Wnd)
+    mtd sendEventPrivate(evt: nn IEvent, stopAt: *Wnd)
     {
         // Global hook events
         foreach hook in hookOnEvent:
@@ -718,13 +718,13 @@ impl Application
     }
 
     // Post a new event (thread safe)
-    mtd postEvent(event: IEvent)
+    mtd postEvent(event: nn IEvent)
     {
         Sync.scopedLock(&mutexPostedEvents)
         postedEvents.add(event)
     }
 
-    mtd sendEvent(event: IEvent)
+    mtd sendEvent(event: nn IEvent)
     {
         sendEventPrivate(event, null)
     }

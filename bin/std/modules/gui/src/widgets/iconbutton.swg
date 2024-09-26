@@ -83,7 +83,7 @@ impl IWnd for IconButton
         invalidate()
     }
 
-    mtd impl onHookEvent(evt: IEvent)
+    mtd impl onHookEvent(evt: nn IEvent)
     {
         if !popup:
             return

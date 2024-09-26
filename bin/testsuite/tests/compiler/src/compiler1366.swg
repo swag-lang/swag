@@ -29,7 +29,7 @@ impl IIncrementable for TITI
 }
 
 //#[Swag.PrintBc]
-func Loop(x: IIncrementable)
+func Loop(x: nn IIncrementable)
 {
     while !x.done():
         x.decr()

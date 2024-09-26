@@ -13,7 +13,7 @@ public struct PaintImage
 
 impl PaintImage
 {
-    internal func onEvent(wnd: *Wnd, evt: IEvent)->bool
+    internal func onEvent(wnd: *Wnd, evt: nn IEvent)->bool
     {
         if !(evt is PaintEvent):
             return false

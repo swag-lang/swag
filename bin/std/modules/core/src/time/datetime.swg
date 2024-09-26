@@ -317,7 +317,7 @@ impl DateTime
 
 impl Serialization.ISerialize for DateTime
 {
-    mtd impl read(decoder: Serialization.IDecoder)->bool throw
+    mtd impl read(decoder: nn Serialization.IDecoder)->bool throw
     {
         if decoder.isTextual()
         {
@@ -329,7 +329,7 @@ impl Serialization.ISerialize for DateTime
         return false
     }
 
-    mtd impl write(encoder: Serialization.IEncoder)->bool throw
+    mtd impl write(encoder: nn Serialization.IEncoder)->bool throw
     {
         if encoder.isTextual()
         {

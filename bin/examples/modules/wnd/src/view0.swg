@@ -2,7 +2,7 @@ using Core, Gui
 
 var g_Prg: *ProgressBar
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: nn IEvent)->bool
 {
     if let pevt = evt as MouseEvent where pevt.kind == .MouseAccept
     {
