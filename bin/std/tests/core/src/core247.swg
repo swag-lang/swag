@@ -1,5 +1,6 @@
 using Core, Core.Hash
 
+//#[Swag.PrintGenBc]
 #test
 {
     {

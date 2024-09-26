@@ -1,4 +1,4 @@
-func toto(x: const [..] s32 = [1, 2, 3])
+func toto(x: const nn [..] s32 = [1, 2, 3])
 {
     @assert(x[0] == 10)
     @assert(x[1] == 20)

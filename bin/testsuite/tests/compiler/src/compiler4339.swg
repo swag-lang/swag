@@ -1,4 +1,4 @@
-func largest(list: [..] u8)
+func largest(list: nn [..] u8)
 {
     let largest = #ref &list[0]
     if largest > 4'u8:

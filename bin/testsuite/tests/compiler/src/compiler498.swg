@@ -1,7 +1,4 @@
-
-
-
-func T(a: const [..] s32)
+func T(a: const nn [..] s32)
 {
 	@assert(@countof(a) == 2)
 	@assert(a[0] == 0)

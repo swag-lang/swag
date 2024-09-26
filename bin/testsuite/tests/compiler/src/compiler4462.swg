@@ -93,7 +93,7 @@ func energy(bodies: ^Planet)->f64
     return e
 }
 
-func advance(bodies: [..] Planet, dt: f64, steps: u64)
+func advance(bodies: nn [..] Planet, dt: f64, steps: u64)
 {
     for s in steps
     {

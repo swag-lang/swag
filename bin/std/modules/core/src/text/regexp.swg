@@ -957,7 +957,7 @@ impl RegExp
     }
 
     #[Swag.Discardable]
-    mtd preprocessInter(sl: const [..] rune)->const ^rune throw
+    mtd preprocessInter(sl: const nn [..] rune)->const ^rune throw
     {
         var pz      = @dataof(sl)
         let pzStart = pz
@@ -1122,7 +1122,7 @@ impl RegExp
         return pzStart
     }
 
-    mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
+    mtd preprocessEnum(sl: const nn [..] rune)->const ^rune throw
     {
         var pz    = @dataof(sl)
         let pzEnd = pz + @countof(sl)
@@ -1225,7 +1225,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
+    mtd preprocessUnicode(sl: const nn [..] rune)->const ^rune throw
     {
         let pz = @dataof(sl) + 2
         if pz[0] == '{'
@@ -1269,7 +1269,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessEscape(sl: const [..] rune, inInter = false)->const ^rune throw
+    mtd preprocessEscape(sl: const nn [..] rune, inInter = false)->const ^rune throw
     {
         var pz = @dataof(sl)
         let c  = dref pz

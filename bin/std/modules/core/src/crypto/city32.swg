@@ -19,7 +19,7 @@ impl City32
     func fetch(buf: const ^u8) => Math.littleEndianToNative(dref cast(const ^u32) buf)
 
     #[Swag.Safety("overflow", false)]
-    mtd len0to4(data: const [..] u8)
+    mtd len0to4(data: const nn [..] u8)
     {
         var b = crc
         var c = 9'u32
@@ -33,7 +33,7 @@ impl City32
     }
 
     #[Swag.Safety("overflow", false)]
-    mtd len5to12(data: const [..] u8)
+    mtd len5to12(data: const nn [..] u8)
     {
         let s   = @dataof(data)
         let len = cast(u32) @countof(data)
@@ -48,7 +48,7 @@ impl City32
     }
 
     #[Swag.Safety("overflow", false)]
-    mtd len13to24(data: const [..] u8)
+    mtd len13to24(data: const nn [..] u8)
     {
         let s   = @dataof(data)
         let len = cast(u32) @countof(data)
@@ -70,7 +70,7 @@ impl City32
 
     // Update the hash value with 'buffer' content
     #[Swag.Safety("overflow", false)]
-    public mtd update(data: const [..] u8)
+    public mtd update(data: const nn [..] u8)
     {
         let len = cast(u32) @countof(data)
 
@@ -156,7 +156,7 @@ impl City32
 
     // Returns the hash value for the given buffer
     #[Swag.ConstExpr]
-    public func compute(buffer: const [..] u8)->u32
+    public func compute(buffer: const nn [..] u8)->u32
     {
         var v: City32
         v.init()

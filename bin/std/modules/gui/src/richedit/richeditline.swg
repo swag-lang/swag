@@ -51,7 +51,7 @@ impl RichEditLine
     }
 
     #[Swag.Overload]
-    mtd insertRunes(insIndex: u64, runes: const [..] rune, styles: const [..] u8)
+    mtd insertRunes(insIndex: u64, runes: const nn [..] rune, styles: const nn [..] u8)
     {
         dirtyStyle = true
         var srcI = 0'u64

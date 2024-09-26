@@ -95,9 +95,9 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 // This code is based on 'natsort' by Martin Pool (https://github.com/sourcefrog/natsort)
 // The original code has been modified for Swag
 // See LICENCE.md for the corresponding licence.
-func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
+func compareNatural(src, dst: const nn [..] u8, ignoreCase = false)->s32
 {
-    func compareLeft(src, dst: const [..] u8)->s32
+    func compareLeft(src, dst: const nn [..] u8)->s32
     {
         var csrc = @countof(src)
         var cdst = @countof(dst)
@@ -128,7 +128,7 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         return 0
     }
 
-    func compareRight(src, dst: const [..] u8)->s32
+    func compareRight(src, dst: const nn [..] u8)->s32
     {
         var bias = 0
         var csrc = @countof(src)

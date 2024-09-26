@@ -1,4 +1,4 @@
-func toto(x: const [..] s32)
+func toto(x: const nn [..] s32)
 {
     @assert(@countof(x) == 3)
     @assert(x[0] == 1)

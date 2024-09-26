@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 
-func(T) toto(x: const [..] T)
+func(T) toto(x: const nn [..] T)
 {
 	@assert(x[0] == 1)
 	@assert(x[1] == 2)

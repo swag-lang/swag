@@ -242,7 +242,7 @@ func decodeRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
 // the number of bytes that were needed to make the conversion.
 //
 // 'dest' must be at least 4 bytes long
-func encodeRune(dest: [..] u8, src: rune)->u32
+func encodeRune(dest: nn [..] u8, src: rune)->u32
 {
     Debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
@@ -672,6 +672,8 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
 func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     let length  = @countof(src)
+    if !length:
+        return false
     let countof = @countof(str)
     if countof > length:
         return false
@@ -683,6 +685,8 @@ func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType
 func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     let length  = @countof(src)
+    if !length:
+        return false
     let countof = @countof(str)
     if countof > length:
         return false

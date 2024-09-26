@@ -358,7 +358,7 @@ impl Decimal
         }
     }
 
-    mtd readF64(str: const [..] u8)->u32 throw
+    mtd readF64(str: const nn [..] u8)->u32 throw
     {
         var cpt     = 0'u32
         let countof = @countof(str)

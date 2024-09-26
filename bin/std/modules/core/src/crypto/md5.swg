@@ -39,7 +39,7 @@ public impl Md5
     }
 
     // Update the hash value with 'buffer' content
-    mtd update(data: const [..] u8)
+    mtd update(data: const nn [..] u8)
     {
         // Only deal with 32 bits size
         Debug.assert(@countof(data) <= Swag.U32.Max)
@@ -73,7 +73,7 @@ public impl Md5
     }
 
     // Returns the md5 value for the given buffer
-    func compute(buffer: const [..] u8)->Digest
+    func compute(buffer: const nn [..] u8)->Digest
     {
         var v: Md5
         v.init()

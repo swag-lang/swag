@@ -5,7 +5,7 @@ struct Array
 impl Array
 {
     #[Swag.Implicit]
-    mtd opAffect(v: const [..] f32)
+    mtd opAffect(v: const nn [..] f32)
     {
         @assert(v[0] == 1)
         @assert(v[1] == 15)

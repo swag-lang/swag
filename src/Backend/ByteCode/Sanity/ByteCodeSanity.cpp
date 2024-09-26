@@ -343,7 +343,7 @@ namespace
         return true;
     }
 
-    bool checkNotNull(SanityContext* context, SanityValue* value, const Utf8& err = "")
+    bool checkNotNull(SanityContext* context, const SanityValue* value, const Utf8& err = "")
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
@@ -362,10 +362,14 @@ namespace
         if (!ident->callParameters)
             return true;
 
-        const auto typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-        for (uint32_t i = 0; i < pushParams.size(); i++)
+        const auto             typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+        VectorNative<uint32_t> done;
+        for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
         {
             const auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
+            if(done.contains(idx))
+                continue;
+            done.push_back(idx);
             if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
                 typeFunc->parameters[idx]->typeInfo->isNonNullable())
             {
@@ -584,7 +588,7 @@ namespace
                         if (!overload->typeInfo->isNonNullable())
                         {
                             // if (overload->typeInfo->couldBeNull())
-                            if (overload->typeInfo->isAny() || overload->typeInfo->isString())
+                            if (overload->typeInfo->isAny() || overload->typeInfo->isString() || overload->typeInfo->isSlice())
                             {
                                 const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                                 if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
