@@ -296,7 +296,7 @@ bool TypeInfo::isMethod() const
 
 bool TypeInfo::couldBeNull() const
 {
-    if (isString() || isAny() || isInterface() || isSlice() || isCString())
+    if (isString() || isAny() || isInterface() || isSlice() || isCString() || isLambdaClosure())
         return true;
     if(isPointer() && !isConstPointerRef() && !isAutoConstPointerRef() && !isPointerRef())
         return true;

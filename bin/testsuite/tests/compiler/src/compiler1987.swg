@@ -1,4 +1,4 @@
-func(T) sort(values: [..] T, cb: func(T, T)->s32)
+func(T) sort(values: [..] T, cb: nn func(T, T)->s32)
 {
     let buffer = @dataof(values)
     let count = @countof(values)

@@ -246,7 +246,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 
     node->typeInfo = typeInfo;
 
-    if (node->specFlags.has(AstTypeExpression::SPEC_FLAG_NON_NULLABLE))
+    if (node->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
         node->typeInfo = g_TypeMgr->makeNonNullable(node->typeInfo);
 
     return true;

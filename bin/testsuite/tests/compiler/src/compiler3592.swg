@@ -1,6 +1,6 @@
 #test
 {
-    func toto(cb: func||())
+    func toto(cb: nn func||())
     {
         @assert(cb == null)
         if cb:

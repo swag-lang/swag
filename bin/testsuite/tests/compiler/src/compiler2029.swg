@@ -4,7 +4,7 @@ func(T) inc(x: nn *T)
 }
 
 //#[Swag.PrintBc]
-func(T) map(values: [..] T, cb: func(nn *T))
+func(T) map(values: [..] T, cb: nn func(nn *T))
 {
     for values:
         cb(&values[#index])

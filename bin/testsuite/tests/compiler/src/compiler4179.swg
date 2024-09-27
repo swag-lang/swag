@@ -1,6 +1,6 @@
 #global testerror "San0001"
 
-#[Swag.Safety("sanity", true)]
+#[Swag.Safety("", true)]
 func toto(str: string, x: cvarargs)
 {
     var valist: Swag.CVaList

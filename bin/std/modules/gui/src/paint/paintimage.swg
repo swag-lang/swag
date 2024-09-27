@@ -57,7 +57,7 @@ impl PaintImage
 
     // Draw to an image by calling the func
     #[Swag.Overload]
-    public mtd draw(call: func||(nn *Application, nn *Painter))->Image
+    public mtd draw(call: nn func||(nn *Application, nn *Painter))->Image
     {
         paint = call
         surface.invalidate()
@@ -67,7 +67,7 @@ impl PaintImage
 
     // One shot paint to image
     #[Swag.Overload]
-    public func draw(w, h: s32, call: func||(*Application, *Painter))->Image
+    public func draw(w, h: s32, call: nn func||(*Application, *Painter))->Image
     {
         var pt: PaintImage
         pt.init(w, h)

@@ -295,15 +295,17 @@ namespace
                 const auto ipn = locValue->ips[i];
                 if (!ipn->node)
                     continue;
+                if (ipn->node->resolvedSymbolOverload())
+                    lastOverload = ipn->node->resolvedSymbolOverload();
+                
                 if (ipn->node->token.startLocation == start && ipn->node->token.endLocation == end)
                     continue;
                 start = ipn->node->token.startLocation;
                 end   = ipn->node->token.endLocation;
 
-                if (ipn->node && ipn->node->resolvedSymbolOverload())
+                if (ipn->node->resolvedSymbolOverload())
                 {
-                    lastOverload = ipn->node->resolvedSymbolOverload();
-                    Utf8 what    = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
+                    Utf8 what = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
                     if (ipn->op == ByteCodeOp::CopyRTtoRA || ipn->op == ByteCodeOp::CopyRT2toRARB)
                         what += " can return a null value";
                     err.addNote(ipn->node, ipn->node->token, what);
@@ -611,8 +613,8 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (!returnType->isNonNullable() && returnType->couldBeNull())
                     {
-                        //ra->kind        = SanityValueKind::ZeroParam;
-                        //ra->reg.pointer = nullptr;
+                        // ra->kind        = SanityValueKind::ZeroParam;
+                        // ra->reg.pointer = nullptr;
                     }
                     break;
                 }
@@ -630,10 +632,10 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (!returnType->isNonNullable() && returnType->couldBeNull())
                     {
-                        //ra->kind        = SanityValueKind::ZeroParam;
-                        //ra->reg.pointer = nullptr;
-                        //rb->kind        = SanityValueKind::ZeroParam;
-                        //rb->reg.pointer = nullptr;
+                        // ra->kind        = SanityValueKind::ZeroParam;
+                        // ra->reg.pointer = nullptr;
+                        // rb->kind        = SanityValueKind::ZeroParam;
+                        // rb->reg.pointer = nullptr;
                     }
                     break;
                 }
@@ -646,7 +648,7 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (!overload->typeInfo->isNonNullable() && overload->typeInfo->couldBeNull())
+                        if (!overload->typeInfo->isNonNullable() && overload->typeInfo->couldBeNull() && !overload->typeInfo->isClosure())
                         {
                             const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                             if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))

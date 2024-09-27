@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func insertionSort(cb: func||(s32, s32)->s32)
+func insertionSort(cb: nn func||(s32, s32)->s32)
 {
     discard cb(0, 1)
 }

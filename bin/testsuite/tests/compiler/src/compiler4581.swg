@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: func||() = null)
+func toto(x: nn func||() = null)
 {
     var y: func||()
     y = x

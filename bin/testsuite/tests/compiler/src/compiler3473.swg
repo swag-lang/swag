@@ -1,5 +1,5 @@
 #[Swag.Inline]
-func toto(x: func(...))
+func toto(x: nn func(...))
 {
     x(40, 50, 60, 70)
 }

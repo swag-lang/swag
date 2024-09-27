@@ -4,7 +4,7 @@ func(T) inc(x: T)->T
     return x * x
 }
 
-func(T) map(values: [..] T, cb: func(T)->T)
+func(T) map(values: [..] T, cb: nn func(T)->T)
 {
     for values:
         values[#index] = cb(values[#index])

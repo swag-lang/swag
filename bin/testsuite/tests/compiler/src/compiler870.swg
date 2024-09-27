@@ -5,7 +5,7 @@ var G: s32 = 0
 //#[Swag.PrintBc]
 #test
 {
-	func myFunc(val: s32, x: func(s32))
+	func myFunc(val: s32, x: nn func(s32))
 	{
 		x(val);
 	}

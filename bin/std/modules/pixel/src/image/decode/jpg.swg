@@ -1488,7 +1488,7 @@ impl Decoder
         }
     }
 
-    mtd decodeScan(fn: func(*Decoder, u32, s32, s32) throw) throw
+    mtd decodeScan(fn: nn func(*Decoder, u32, s32, s32) throw) throw
     {
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32

@@ -54,10 +54,9 @@ impl Thread
     }
 
     // Initialize a thread in pause state
-    mtd init(lambda: func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+    mtd init(lambda: nn func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
         Debug.assert(!isValid(), "thread already created")
-        Debug.assert(lambda != null, "lambda parameter is null")
 
         // Get a copy of current context, and initialize a temporary allocator for that thread
         context = dref @getcontext()

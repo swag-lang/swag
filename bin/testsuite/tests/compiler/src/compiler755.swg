@@ -14,7 +14,7 @@ func concrete1()->*f32
 }
 
 //#[Swag.PrintBc]
-func(T) toto(x: func()->*T)->T
+func(T) toto(x: nn func()->*T)->T
 {
 	let ptr = x()
 	return dref ptr

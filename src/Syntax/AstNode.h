@@ -999,12 +999,10 @@ struct AstTypeExpression : AstType
 {
     static constexpr SpecFlags SPEC_FLAG_DONE_GEN     = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_CAN_THROW    = 0x0002;
-    static constexpr SpecFlags SPEC_FLAG_NON_NULLABLE = 0x0004;
 
     AstNode* clone(CloneContext& context);
 
     SourceLocation locConst;
-    SourceLocation locNonNull;
     AstNode*       identifier;
     TypeInfo*      typeFromLiteral;
     AstNode*       parameters;

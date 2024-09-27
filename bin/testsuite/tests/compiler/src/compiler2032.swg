@@ -4,7 +4,7 @@ func(T) inc(x: nn *T)
 }
 
 //#[Swag.PrintBc]
-func(T) map(cb: func(nn *T))
+func(T) map(cb: nn func(nn *T))
 {
     var x: T
     cb(&x)

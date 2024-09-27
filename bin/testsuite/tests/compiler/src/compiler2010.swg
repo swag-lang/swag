@@ -1,6 +1,6 @@
 var G = 0
 
-func(T) toto(y: func(s32)->s32)
+func(T) toto(y: nn func(s32)->s32)
 {
     @assert(y(6) == 6)
     G = y(5)

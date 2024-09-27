@@ -1,5 +1,6 @@
+//#[Swag.Safety("", false)]
 //#[Swag.PrintBc]
-func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
+func(T) insertionSort(values: [..] T, cb: nn func||(T, T)->s32)
 {
     let buffer = @dataof(values)
     for var i = 1'u32; i < 2; i += 1
@@ -10,6 +11,8 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
     }
 }
 
+//#[Swag.Optimize("", false)]
+//#[Swag.Safety("", false)]
 #test
 {
     var x = [1,2]
@@ -19,5 +22,6 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
         return 0
     }
 
+                //@breakpoint()
     insertionSort(cast() x,&toto)
 }

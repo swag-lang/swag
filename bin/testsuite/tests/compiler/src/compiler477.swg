@@ -18,7 +18,7 @@ func T(param: s32)
 }
 
 //#[Swag.PrintBc]
-func F(param: s32, b: func(s32))
+func F(param: s32, b: nn func(s32))
 {
 	b(param)
 }

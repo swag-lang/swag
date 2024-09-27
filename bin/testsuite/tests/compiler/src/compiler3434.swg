@@ -1,7 +1,7 @@
 var G = 0
 
 //#[Swag.PrintBc]
-func toto(v: func||(s32))
+func toto(v: nn func||(s32))
 {
     v(5)
 }

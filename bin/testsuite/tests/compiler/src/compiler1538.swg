@@ -1,4 +1,4 @@
-func(T) one(x: T, print: func(T))
+func(T) one(x: T, print: nn func(T))
 {
     print(x)
 }

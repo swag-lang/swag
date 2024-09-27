@@ -5,7 +5,7 @@ func entry(param: u64)
     G = param
 }
 
-func create(lambda: func(u64), userParam: u64)
+func create(lambda: nn func(u64), userParam: u64)
 {
     lambda(userParam)
 }
