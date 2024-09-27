@@ -2054,7 +2054,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             if (numRegs == 1)
             {
                 auto returnType = typeInfoFunc->concreteReturnType();
-                EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRc[0]);
+                const auto ip = EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRc[0]);
+                ip->c.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
                 if (node->hasSemFlag(SEMFLAG_FROM_REF) && !node->isForceTakeAddress())
                 {
@@ -2075,7 +2076,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             else
             {
                 SWAG_ASSERT(numRegs == 2);
-                EMIT_INST2(context, ByteCodeOp::CopyRT2toRARB, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+                const auto ip = EMIT_INST2(context, ByteCodeOp::CopyRT2toRARB, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+                ip->c.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
             }
         }
     }

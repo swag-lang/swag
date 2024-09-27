@@ -312,7 +312,7 @@ namespace
                 }
             }
 
-            if(lastOverload && lastOverload->node)
+            if (lastOverload && lastOverload->node)
             {
                 err.addNote(lastOverload->node, lastOverload->node->token, "declaration");
             }
@@ -348,37 +348,46 @@ namespace
         return true;
     }
 
-    bool checkNotNull(SanityContext* context, const SanityValue* value, const Utf8& err = "")
+    bool checkNotNull(SanityContext* context, const SanityValue* value)
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
-        return raiseError(context, err.empty() ? toErr(San0006) : err, value);
+        return raiseError(context, toErr(San0006), value);
     }
 
-    // - Revoir remonté d'erreurs
-    // - Appels inline ne sont pas faits
-    // - Retourn de fonction
-    bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams)
+    bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
             return true;
 
-        const auto ip = STATE()->ip;
-        if (!ip->node || !ip->node->is(AstNodeKind::Identifier))
-            return true;
-        const auto ident = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
-        if (!ident->callParameters)
-            return true;
+        const auto        ip       = STATE()->ip;
+        TypeInfoFuncAttr* typeFunc = nullptr;
 
-        const auto             typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+        if (intrinsic.empty())
+        {
+            if (!ip->node || !ip->node->is(AstNodeKind::Identifier))
+                return true;
+            const auto ident = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
+            if (!ident->callParameters)
+                return true;
+            typeFunc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+        }
+
         VectorNative<uint32_t> done;
         for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
         {
-            const auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
+            uint32_t idx;
+            if (typeFunc)
+                idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
+            else
+                idx = pushParams.size() - i - 1;
+
             if (done.contains(idx))
                 continue;
             done.push_back(idx);
-            if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
+
+            if (!typeFunc ||
+                typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
                 typeFunc->parameters[idx]->typeInfo->isNonNullable())
             {
                 SanityValue* ra = nullptr;
@@ -389,8 +398,10 @@ namespace
                     Utf8 msg;
                     if (ip->op == ByteCodeOp::LambdaCall)
                         msg = formErr(San0001, "lambda");
-                    else
+                    else if (typeFunc)
                         msg = formErr(San0001, typeFunc->declNode->token.cstr());
+                    else
+                        msg = formErr(San0001, intrinsic.cstr());
                     return raiseError(context, msg, ra);
                 }
             }
@@ -588,6 +599,22 @@ namespace
                 case ByteCodeOp::ClearRRX:
                     break;
 
+                case ByteCodeOp::CopyRTtoRA:
+                {
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    ra->kind = SanityValueKind::Unknown;
+                    ra->set(ip);
+                    const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
+                    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                    const auto returnType   = typeInfoFunc->concreteReturnType();
+                    if (!returnType->isNonNullable() && returnType->couldBeNull())
+                    {
+                        // ra->kind        = SanityValueKind::ZeroParam;
+                        // ra->reg.pointer = nullptr;
+                    }
+                    break;
+                }
+
                 case ByteCodeOp::GetParam64:
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
@@ -596,16 +623,13 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (!overload->typeInfo->isNonNullable())
+                        if (!overload->typeInfo->isNonNullable() && overload->typeInfo->couldBeNull())
                         {
-                            if (overload->typeInfo->couldBeNull())
+                            const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
+                            if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
                             {
-                                const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
-                                if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
-                                {
-                                    ra->kind        = SanityValueKind::ZeroParam;
-                                    ra->reg.pointer = nullptr;
-                                }
+                                ra->kind        = SanityValueKind::ZeroParam;
+                                ra->reg.pointer = nullptr;
                             }
                         }
                     }
@@ -635,7 +659,6 @@ namespace
                 case ByteCodeOp::GetFromCompilerSeg32:
                 case ByteCodeOp::GetFromCompilerSeg64:
                 case ByteCodeOp::CopySP:
-                case ByteCodeOp::CopyRTtoRA:
                 case ByteCodeOp::SaveRRtoRA:
                 case ByteCodeOp::CopyRRtoRA:
                 case ByteCodeOp::CopySPVaargs:
@@ -666,7 +689,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicCVaStart:
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
-                    SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@cvastart")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->a.u32}, "@cvastart"));
                     if (ra->kind == SanityValueKind::StackAddr)
                     {
                         SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, 8));
@@ -2290,8 +2313,7 @@ namespace
                 case ByteCodeOp::IntrinsicStrCmp:
                     SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(getRegister(context, rc, ip->c.u32));
-                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strcmp")));
-                    SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@strcmp")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->b.u32, ip->c.u32}, "@strcmp"));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->update(ip);
@@ -2299,7 +2321,7 @@ namespace
 
                 case ByteCodeOp::IntrinsicStrLen:
                     SWAG_CHECK(getRegister(context, rb, ip->b.u32));
-                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@strlen")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->b.u32}, "@strlen"));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->update(ip);
@@ -2308,8 +2330,7 @@ namespace
                 case ByteCodeOp::IntrinsicMemCmp:
                     SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(getRegister(context, rc, ip->c.u32));
-                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcmp")));
-                    SWAG_CHECK(checkNotNull(context, rc, formErr(San0001, "@memcmp")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->b.u32, ip->c.u32}, "@memcmp"));
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->update(ip);
@@ -2331,8 +2352,7 @@ namespace
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(getImmediateC(context, vc));
-                    SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memcpy")));
-                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memcpy")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->a.u32, ip->b.u32}, "@memcpy"));
                     if (ra->kind == SanityValueKind::StackAddr && rb->kind == SanityValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, vc.reg.u32));
@@ -2349,8 +2369,7 @@ namespace
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(getRegister(context, rb, ip->b.u32));
                     SWAG_CHECK(getImmediateC(context, vc));
-                    SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memmove")));
-                    SWAG_CHECK(checkNotNull(context, rb, formErr(San0001, "@memmove")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->a.u32, ip->b.u32}, "@memmove"));
                     if (ra->kind == SanityValueKind::StackAddr && rb->kind == SanityValueKind::StackAddr && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, vc.reg.u32));
@@ -2367,7 +2386,7 @@ namespace
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     SWAG_CHECK(getImmediateB(context, vb));
                     SWAG_CHECK(getImmediateC(context, vc));
-                    SWAG_CHECK(checkNotNull(context, ra, formErr(San0001, "@memset")));
+                    SWAG_CHECK(checkNotNullArguments(context, {ip->a.u32}, "@memset"));
                     if (ra->kind == SanityValueKind::StackAddr && vb.isConstant() && vc.isConstant())
                     {
                         SWAG_CHECK(getStackAddress(addr, context, ra->reg.u32, vc.reg.u32));
@@ -2385,7 +2404,7 @@ namespace
 
                 case ByteCodeOp::LocalCall:
                 case ByteCodeOp::ForeignCall:
-                    SWAG_CHECK(checkNotNullArguments(context, pushParams));
+                    SWAG_CHECK(checkNotNullArguments(context, pushParams, ""));
                     invalidateCurStateStack(context);
                     pushParams.clear();
                     break;
