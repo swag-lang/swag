@@ -304,6 +304,8 @@ namespace
                 {
                     lastOverload = ipn->node->resolvedSymbolOverload();
                     Utf8 what    = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
+                    if (ipn->op == ByteCodeOp::CopyRTtoRA || ipn->op == ByteCodeOp::CopyRT2toRARB)
+                        what += " can return a null value";
                     err.addNote(ipn->node, ipn->node->token, what);
                 }
                 else
@@ -314,7 +316,7 @@ namespace
 
             if (lastOverload && lastOverload->node)
             {
-                err.addNote(lastOverload->node, lastOverload->node->token, "declaration");
+                err.addNote(lastOverload->node, lastOverload->node->getTokenName(), "declaration");
             }
         }
 
@@ -609,8 +611,29 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (!returnType->isNonNullable() && returnType->couldBeNull())
                     {
-                        // ra->kind        = SanityValueKind::ZeroParam;
-                        // ra->reg.pointer = nullptr;
+                        //ra->kind        = SanityValueKind::ZeroParam;
+                        //ra->reg.pointer = nullptr;
+                    }
+                    break;
+                }
+
+                case ByteCodeOp::CopyRT2toRARB:
+                {
+                    SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+                    SWAG_CHECK(getRegister(context, rb, ip->b.u32));
+                    ra->kind = SanityValueKind::Unknown;
+                    rb->kind = SanityValueKind::Unknown;
+                    ra->set(ip);
+                    rb->set(ip);
+                    const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
+                    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                    const auto returnType   = typeInfoFunc->concreteReturnType();
+                    if (!returnType->isNonNullable() && returnType->couldBeNull())
+                    {
+                        //ra->kind        = SanityValueKind::ZeroParam;
+                        //ra->reg.pointer = nullptr;
+                        //rb->kind        = SanityValueKind::ZeroParam;
+                        //rb->reg.pointer = nullptr;
                     }
                     break;
                 }
@@ -801,7 +824,6 @@ namespace
                 case ByteCodeOp::IntrinsicGetErr:
                 case ByteCodeOp::IntrinsicModules:
                 case ByteCodeOp::DeRefStringSlice:
-                case ByteCodeOp::CopyRT2toRARB:
                 case ByteCodeOp::IntrinsicArguments:
                 case ByteCodeOp::IntrinsicCompiler:
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
