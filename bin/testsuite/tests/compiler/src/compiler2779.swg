@@ -1,6 +1,6 @@
 #[Swag.Inline, Swag.Discardable]
-func atomor(ptr: *u32)->u32 => @atomor(ptr, 0)
-func titi(ptr: *u32)
+func atomor(ptr: nn *u32)->u32 => @atomor(ptr, 0)
+func titi(ptr: nn *u32)
 {
     atomor(ptr)
 }

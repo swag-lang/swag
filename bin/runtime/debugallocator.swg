@@ -89,7 +89,7 @@ impl DebugAllocator
         return (value + toAlign) & ~toAlign
     }
 
-    mtd checkIsFreed(ptrHeader: ^DebugAllocatorHeader)
+    mtd checkIsFreed(ptrHeader: nn ^DebugAllocatorHeader)
     {
         let ptrEnd    = cast(^u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
@@ -112,7 +112,7 @@ impl DebugAllocator
         }
     }
 
-    mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
+    mtd checkIsAllocated(ptrHeader: nn ^DebugAllocatorHeader, callerLoc = #callerlocation)
     {
         let ptrEnd    = cast(^u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
@@ -255,7 +255,7 @@ impl DebugAllocator
 
 impl IAllocator for DebugAllocator
 {
-    mtd free(request: *AllocatorRequest)
+    mtd free(request: nn *AllocatorRequest)
     {
         if !request.address:
             return
@@ -352,7 +352,7 @@ impl IAllocator for DebugAllocator
         allocator.req(&req)
     }
 
-    mtd alloc(request: *AllocatorRequest)
+    mtd alloc(request: nn *AllocatorRequest)
     {
         // Special case
         if request.size == 0
@@ -447,7 +447,7 @@ impl IAllocator for DebugAllocator
         self.firstAlloc = header
     }
 
-    mtd impl req(request: *AllocatorRequest)
+    mtd impl req(request: nn *AllocatorRequest)
     {
         @assert(allocator != null)
         mutex.lock()

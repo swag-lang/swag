@@ -32,7 +32,7 @@ struct FormStep
 
 impl IForm for FormStep
 {
-    mtd impl isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: nn *BaseForm)->bool
     {
         let other = cast(*FormStep) ptr
         return borderColor == other.borderColor and
@@ -43,7 +43,7 @@ impl IForm for FormStep
                typeIndex == other.typeIndex
     }
 
-    mtd impl copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: nn *BaseForm)
     {
         let dstf = cast(*FormStep) dst
         let srcf = cast(*FormStep) src
@@ -125,12 +125,12 @@ impl IForm for FormStep
         return Math.Rectangle{x, y, w, h}
     }
 
-    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -166,7 +166,7 @@ impl IForm for FormStep
         return true
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: nn *Painter, z: f32, quickMode: bool)
     {
         var pp    = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         var fSize = Math.min(w, h) * 0.6

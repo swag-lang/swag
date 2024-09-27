@@ -1,6 +1,6 @@
 impl Properties
 {
-    func refreshNative(item: *PropertiesItem)
+    func refreshNative(item: nn *PropertiesItem)
     {
         let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
@@ -75,7 +75,7 @@ impl Properties
         }
     }
 
-    mtd validateNative(item: *PropertiesItem)
+    mtd validateNative(item: nn *PropertiesItem)
     {
         let typeNative = cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         let data       = item.data
@@ -151,7 +151,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
+    mtd constructNative(value: Swag.TypeValue, typeNative: nn const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem)
 

@@ -48,6 +48,7 @@ func genInit()
     // Sort solutions from best to worst
     g_Gen[0].all.sort(func(x, y)
     {
+        if !x or !y: return 0
         return x.score <=> y.score
     })
 
@@ -79,7 +80,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 }
 
 #[Swag.Overload]
-func evaluateSolution(soluce: *Solution)
+func evaluateSolution(soluce: nn *Solution)
 {
     soluce.score = 0
     for i in soluce.genes:
@@ -100,7 +101,7 @@ func pickToMate(other: *Solution = null)->*Solution
     return g_Gen[g_CurGen].all[0]
 }
 
-func mutate(child: *Solution, idx: u32)
+func mutate(child: nn *Solution, idx: u32)
 {
     var mutRate, mutNum: u32
 
@@ -255,6 +256,7 @@ func genGo()->*u8
     // Mutate
     g_Gen[nextGenIdx].all.sort(func(x, y)
     {
+        if !x or !y: return 0
         return x.score <=> y.score
     })
 
@@ -269,6 +271,7 @@ func genGo()->*u8
     // Sort solutions from best to worst
     g_Gen[g_CurGen].all.sort(func(x, y)
     {
+        if !x or !y: return 0
         return x.score <=> y.score
     })
 

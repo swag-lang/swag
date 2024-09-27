@@ -5,19 +5,19 @@ struct Dialog
     using wnd:            Wnd
     wndBottom:            *StackLayoutCtrl
     buttons:              Array'(*PushButton)
-    sigPressedButton:     func||(*Dialog, WndId)->bool
+    sigPressedButton:     func||(nn *Dialog, WndId)->bool
 }
 
 impl IWnd for Dialog
 {
-    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: nn *SysCommandEvent)
     {
         if evt.kind == .Close:
             validateId(BtnCancel)
         evt.accepted = true
     }
 
-    mtd impl onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: nn *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {
@@ -92,7 +92,7 @@ impl Dialog
     const BtnCancel = "Dialog.cancel"
 
     // Creates a simple dialog box
-    func createDialog(from: *Surface, width = 512, height = 300, title: string = null, flags = SurfaceFlags.Zero)->*Dialog
+    func createDialog(from: nn *Surface, width = 512, height = 300, title: string = null, flags = SurfaceFlags.Zero)->*Dialog
     {
         let dlg = Wnd.create'Dialog()
         let srf = dlg.createSurface(from, 0, 0, width, height, flags)
@@ -102,7 +102,7 @@ impl Dialog
     }
 
     // Creates an associated surface
-    mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
+    mtd createSurface(from: nn *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
     {
         let surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
         let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)

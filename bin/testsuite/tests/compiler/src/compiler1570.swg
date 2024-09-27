@@ -11,7 +11,7 @@ impl Point
     }
 }
 
-func toto(val: *Point)
+func toto(val: nn *Point)
 {
     @assert(val.x == 666)
     var y: Point = #move dref val

@@ -61,7 +61,7 @@ struct ImageInfo
     rank:          s32
 }
 
-func loadRes(app: *Application)
+func loadRes(app: nn *Application)
 {
     var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards", "res")
@@ -123,7 +123,7 @@ func loadRes(app: *Application)
     g_BackTitle[4] = app.renderer.addImage(img)
 }
 
-func paintBadge(dc: *Painter, x, y: f32, m: bool)
+func paintBadge(dc: nn *Painter, x, y: f32, m: bool)
 {
     var texture: Texture
     var color:   Color
@@ -148,7 +148,7 @@ func paintBadge(dc: *Painter, x, y: f32, m: bool)
     dc.drawCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, Argb.Black, BADGE_BORDER)
 }
 
-func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
+func paintOne(app: nn *Application, dc: nn *Painter, x, y: u32, fi: ImageInfo)
 {
     if !g_InitDone
     {

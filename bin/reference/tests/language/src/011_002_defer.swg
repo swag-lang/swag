@@ -81,9 +81,9 @@ early exit.
 */
 #test
 {
-    func createResource()                 => true
-    func releaseResource(resource: *bool) = dref resource = false
-    func isResourceCreated(b: bool)       => b
+    func createResource()                    => true
+    func releaseResource(resource: nn *bool) = dref resource = false
+    func isResourceCreated(b: bool)          => b
 
     var resource = false
     for 10
@@ -111,9 +111,9 @@ cleanup is performed.
 */
 #test
 {
-    func createResource()                 => true
-    func releaseResource(resource: *bool) = dref resource = false
-    func isResourceCreated(b: bool)       => b
+    func createResource()                    => true
+    func releaseResource(resource: nn *bool) = dref resource = false
+    func isResourceCreated(b: bool)          => b
 
     func performTask() -> bool
     {

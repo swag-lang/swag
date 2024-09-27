@@ -197,7 +197,7 @@ impl Decoder
     }
 
     // Expand 1, 2, 4 bits to 8 bits
-    mtd expand8(width, height: u32, output: ^u8)
+    mtd expand8(width, height: u32, output: nn ^u8)
     {
         let rowStrideIn  = getStrideIn(width)
         let rowStrideOut = inChannels * width
@@ -391,7 +391,7 @@ impl Decoder
     }
 
     #[Swag.Overload]
-    mtd defilter(width, height: u32, input, output: ^u8)
+    mtd defilter(width, height: u32, input, output: nn ^u8)
     {
         if header.bitDepth < 8
         {
@@ -588,7 +588,7 @@ impl Decoder
         return result
     }
 
-    mtd convert(result: *Image)
+    mtd convert(result: nn *Image)
     {
         defer Memory.free(dstPixels, dstPixelsSize)
 

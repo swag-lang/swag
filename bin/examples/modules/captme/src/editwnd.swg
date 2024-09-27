@@ -31,7 +31,7 @@ impl EditWnd
 
 impl IWnd for EditView
 {
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         evt.accepted = false
         if !capture:
@@ -56,7 +56,7 @@ impl IWnd for EditView
         }
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         if firstPaint
         {

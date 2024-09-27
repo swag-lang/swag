@@ -150,13 +150,13 @@ public struct Encoder
 impl Encoder
 {
     #[Swag.Overload]
-    func writeU32(dst: *u8, val: u32)
+    func writeU32(dst: nn *u8, val: u32)
     {
         let v = Math.nativeToBigEndian(val)
         dref cast(*u32) dst = v
     }
 
-    mtd writeData(buf: const ^u8, bytes: u32)
+    mtd writeData(buf: nn const ^u8, bytes: u32)
     {
         stream.addBytes(@mkslice(buf, bytes))
     }
@@ -197,7 +197,7 @@ impl Encoder
         writeU32(currentChunk.crc)
     }
 
-    mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: u64)
+    mtd writeChunk(chunkType: const [4] u8, buf: nn const *u8, length: u64)
     {
         writePtr = writeHeader(chunkType, length)
         if length:
@@ -307,7 +307,7 @@ impl Encoder
         bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd encodeRow(row: ^u8)->bool throw
+    mtd encodeRow(row: nn ^u8)->bool throw
     {
         let pass = rowInfo.pass
 
@@ -455,7 +455,7 @@ impl Encoder
         return sum
     }
 
-    mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
+    mtd filterScanline(filtered: nn ^u8, size: u32, filter: Filter)
     {
         for i in size
         {
@@ -492,7 +492,7 @@ impl Encoder
         }
     }
 
-    mtd encodeScanLine(sl: ^u8)->bool throw
+    mtd encodeScanLine(sl: nn ^u8)->bool throw
     {
         let pass = rowInfo.pass
 

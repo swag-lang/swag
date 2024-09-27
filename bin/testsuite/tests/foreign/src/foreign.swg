@@ -318,7 +318,7 @@ public alias ThreadProc = func(*void)->u32;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-public func tcf_entry(param: ^void)->u32
+public func tcf_entry(param: nn ^void)->u32
 {
     var ptr = cast(^u64) param
     @assert(ptr[1] == 666)

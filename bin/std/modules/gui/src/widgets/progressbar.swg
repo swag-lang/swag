@@ -18,7 +18,7 @@ struct ProgressBar
 
 impl IWnd for ProgressBar
 {
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let bc      = evt.bc
         let painter = bc.painter
@@ -90,7 +90,7 @@ impl IWnd for ProgressBar
 impl ProgressBar
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ProgressBar
+    func create(parent: nn *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ProgressBar
     {
         Debug.assert(parent != null)
         var pos = position

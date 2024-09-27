@@ -479,6 +479,14 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     *result         = node;
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
+    // Non null keyword
+    if (tokenParse.is(TokenId::KwdNonNull))
+    {
+        node->locNonNull = tokenParse.token.startLocation;
+        node->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
+        SWAG_CHECK(eatToken());
+    }
+    
     // Const keyword
     if (tokenParse.is(TokenId::KwdConst))
     {
@@ -491,13 +499,6 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             const Diagnostic err{sourceFile, tokenParse, toErr(Err0168)};
             return context->report(err);
         }
-    }
-
-    if (tokenParse.is(TokenId::KwdNonNull))
-    {
-        node->locNonNull = tokenParse.token.startLocation;
-        node->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
-        SWAG_CHECK(eatToken());
     }
 
     // MoveRef

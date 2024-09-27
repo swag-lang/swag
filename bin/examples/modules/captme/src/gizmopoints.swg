@@ -17,7 +17,7 @@ struct GizmoPoints
 
 impl GizmoPoints
 {
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         switch evt.kind
         {
@@ -75,7 +75,7 @@ impl GizmoPoints
         return false
     }
 
-    mtd paint(_app: *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
+    mtd paint(_app: *Application, painter: nn *Painter, hot: bool, col: Color = Argb.White)
     {
         let anchorSize2 = anchorSize * 0.5
         let color       = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)

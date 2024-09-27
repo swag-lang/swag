@@ -115,7 +115,7 @@ private
     func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
     func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT) {}
 
-    func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void)
+    func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: nn *void)
     {
         let voice = cast(*Voice) pBufferContext
         if voice.hasState(.PendingDestroy):
@@ -149,7 +149,7 @@ public alias VoiceHandle = *IXAudio2SourceVoice
 
 impl Voice
 {
-    func createNative(voice: *Voice, createFlags = VoiceCreateFlags.Default) throw
+    func createNative(voice: nn *Voice, createFlags = VoiceCreateFlags.Default) throw
     {
         Debug.assert(g_Driver.xAudio2 != null, "driver should be created first")
 

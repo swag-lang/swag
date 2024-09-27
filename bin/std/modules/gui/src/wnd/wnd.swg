@@ -2,7 +2,7 @@
 using Core, Pixel
 
 alias WndId     = string
-alias HookEvent = func||(*Wnd, nn IEvent)->bool
+alias HookEvent = func||(nn *Wnd, nn IEvent)->bool
 
 // Automatic placement and size of the window in the parent client rectangle
 enum DockStyle
@@ -54,26 +54,26 @@ interface IWnd
     mtd onEvent(evt: nn IEvent);
     mtd onHookEvent(evt: nn IEvent);
 
-    mtd onCreateEvent(evt: *CreateEvent);
-    mtd onDestroyEvent(evt: *DestroyEvent);
-    mtd onStateEvent(evt: *StateEvent);
-    mtd onResizeEvent(evt: *ResizeEvent);
-    mtd onPrePaintEvent(evt: *PaintEvent);
-    mtd onPaintEvent(evt: *PaintEvent);
-    mtd onPostPaintEvent(evt: *PaintEvent);
-    mtd onKeyEvent(evt: *KeyEvent);
-    mtd onMouseEvent(evt: *MouseEvent);
-    mtd onSysCommandEvent(evt: *SysCommandEvent);
-    mtd onSysUserEvent(evt: *SysUserEvent);
-    mtd onSetThemeEvent(evt: *SetThemeEvent);
-    mtd onTimerEvent(evt: *TimerEvent);
-    mtd onFocusEvent(evt: *FocusEvent);
-    mtd onCommandEvent(evt: *CommandEvent);
-    mtd onComputeStateEvent(evt: *CommandStateEvent);
-    mtd onApplyStateEvent(evt: *CommandStateEvent);
-    mtd onFrameEvent(evt: *FrameEvent);
-    mtd onSerializeStateEvent(evt: *SerializeStateEvent);
-    mtd onNotifyEvent(evt: *NotifyEvent);
+    mtd onCreateEvent(evt: nn *CreateEvent);
+    mtd onDestroyEvent(evt: nn *DestroyEvent);
+    mtd onStateEvent(evt: nn *StateEvent);
+    mtd onResizeEvent(evt: nn *ResizeEvent);
+    mtd onPrePaintEvent(evt: nn *PaintEvent);
+    mtd onPaintEvent(evt: nn *PaintEvent);
+    mtd onPostPaintEvent(evt: nn *PaintEvent);
+    mtd onKeyEvent(evt: nn *KeyEvent);
+    mtd onMouseEvent(evt: nn *MouseEvent);
+    mtd onSysCommandEvent(evt: nn *SysCommandEvent);
+    mtd onSysUserEvent(evt: nn *SysUserEvent);
+    mtd onSetThemeEvent(evt: nn *SetThemeEvent);
+    mtd onTimerEvent(evt: nn *TimerEvent);
+    mtd onFocusEvent(evt: nn *FocusEvent);
+    mtd onCommandEvent(evt: nn *CommandEvent);
+    mtd onComputeStateEvent(evt: nn *CommandStateEvent);
+    mtd onApplyStateEvent(evt: nn *CommandStateEvent);
+    mtd onFrameEvent(evt: nn *FrameEvent);
+    mtd onSerializeStateEvent(evt: nn *SerializeStateEvent);
+    mtd onNotifyEvent(evt: nn *NotifyEvent);
 }
 
 #[Swag.EnumFlags]
@@ -186,27 +186,27 @@ impl IWnd for Wnd
 
     mtd impl onHookEvent(evt: IEvent) {}
 
-    mtd impl onCreateEvent(evt: *CreateEvent) {}
-    mtd impl onDestroyEvent(evt: *DestroyEvent) {}
-    mtd impl onStateEvent(evt: *StateEvent) {}
-    mtd impl onResizeEvent(evt: *ResizeEvent) {}
-    mtd impl onPrePaintEvent(evt: *PaintEvent) {}
-    mtd impl onPaintEvent(evt: *PaintEvent) {}
-    mtd impl onPostPaintEvent(evt: *PaintEvent) {}
-    mtd impl onSetThemeEvent(evt: *SetThemeEvent) { invalidate(); sendResizeEvent(); }
-    mtd impl onTimerEvent(evt: *TimerEvent) {}
-    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent) {}
-    mtd impl onFrameEvent(evt: *FrameEvent) {}
+    mtd impl onCreateEvent(evt: nn *CreateEvent) {}
+    mtd impl onDestroyEvent(evt: nn *DestroyEvent) {}
+    mtd impl onStateEvent(evt: nn *StateEvent) {}
+    mtd impl onResizeEvent(evt: nn *ResizeEvent) {}
+    mtd impl onPrePaintEvent(evt: nn *PaintEvent) {}
+    mtd impl onPaintEvent(evt: nn *PaintEvent) {}
+    mtd impl onPostPaintEvent(evt: nn *PaintEvent) {}
+    mtd impl onSetThemeEvent(evt: nn *SetThemeEvent) { invalidate(); sendResizeEvent(); }
+    mtd impl onTimerEvent(evt: nn *TimerEvent) {}
+    mtd impl onSerializeStateEvent(evt: nn *SerializeStateEvent) {}
+    mtd impl onFrameEvent(evt: nn *FrameEvent) {}
 
-    mtd impl onSysCommandEvent(evt: *SysCommandEvent) { evt.accepted = false; }
-    mtd impl onSysUserEvent(evt: *SysUserEvent) { evt.accepted = false; }
-    mtd impl onKeyEvent(evt: *KeyEvent) { evt.accepted = false; }
-    mtd impl onMouseEvent(evt: *MouseEvent) { evt.accepted = false; }
-    mtd impl onFocusEvent(evt: *FocusEvent) { evt.accepted = false; }
-    mtd impl onCommandEvent(evt: *CommandEvent) { evt.accepted = false; }
-    mtd impl onComputeStateEvent(evt: *CommandStateEvent) { evt.accepted = false; }
-    mtd impl onApplyStateEvent(evt: *CommandStateEvent) { evt.accepted = false; }
-    mtd impl onNotifyEvent(evt: *NotifyEvent) { evt.accepted = false; }
+    mtd impl onSysCommandEvent(evt: nn *SysCommandEvent) { evt.accepted = false; }
+    mtd impl onSysUserEvent(evt: nn *SysUserEvent) { evt.accepted = false; }
+    mtd impl onKeyEvent(evt: nn *KeyEvent) { evt.accepted = false; }
+    mtd impl onMouseEvent(evt: nn *MouseEvent) { evt.accepted = false; }
+    mtd impl onFocusEvent(evt: nn *FocusEvent) { evt.accepted = false; }
+    mtd impl onCommandEvent(evt: nn *CommandEvent) { evt.accepted = false; }
+    mtd impl onComputeStateEvent(evt: nn *CommandStateEvent) { evt.accepted = false; }
+    mtd impl onApplyStateEvent(evt: nn *CommandStateEvent) { evt.accepted = false; }
+    mtd impl onNotifyEvent(evt: nn *NotifyEvent) { evt.accepted = false; }
 }
 
 impl Wnd
@@ -455,7 +455,7 @@ impl Wnd
             style.compute(self, &surface.app.style)
     }
 
-    mtd paint(bc: *PaintContext)
+    mtd paint(bc: nn *PaintContext)
     {
         let painter = bc.painter
         if painter.isEmptyClippingRect():
@@ -777,7 +777,7 @@ impl Wnd
         sendEvent(&evt)
     }
 
-    internal mtd clampSize(pos: *Math.Rectangle)
+    internal mtd clampSize(pos: nn *Math.Rectangle)
     {
         if minSize.x > 0:
             pos.width = Math.max(pos.width, minSize.x)
@@ -1334,7 +1334,7 @@ impl Wnd
         actions.add(itfAct)
     }
 
-    internal mtd updateAction(evt: *CommandStateEvent)->bool
+    internal mtd updateAction(evt: nn *CommandStateEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self
@@ -1353,7 +1353,7 @@ impl Wnd
         return false
     }
 
-    internal mtd executeAction(evt: *CommandEvent)->bool
+    internal mtd executeAction(evt: nn *CommandEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self

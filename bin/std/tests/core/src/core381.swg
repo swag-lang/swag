@@ -18,7 +18,7 @@ var toto2: Toto1
     var buf: ConcatBuffer
 
     //#[Swag.PrintBc]
-    func readWrite(wh: *Toto1, ser: *Serializer) throw
+    func readWrite(wh: nn *Toto1, ser: nn *Serializer) throw
     {
         ser.beginSection(.Unordered)
         ser.serialize("x", &wh.x)

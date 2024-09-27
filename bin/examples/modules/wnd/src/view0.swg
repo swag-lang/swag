@@ -2,7 +2,7 @@ using Core, Gui
 
 var g_Prg: *ProgressBar
 
-func onEvent(wnd: *Wnd, evt: nn IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: nn IEvent)->bool
 {
     if let pevt = evt as MouseEvent where pevt.kind == .MouseAccept
     {
@@ -50,7 +50,7 @@ func onEvent(wnd: *Wnd, evt: nn IEvent)->bool
     return false
 }
 
-func createView0(tabView: *Tab, view: *Wnd)
+func createView0(tabView: *Tab, view: nn *Wnd)
 {
     let theme = app.theme
     view.hookOnEvent = &onEvent
@@ -483,7 +483,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        func setStyle(btn: *IconButton)
+        func setStyle(btn: nn *IconButton)
         {
             btn.setForm(.RoundSquare)
             btn.style.addStyleSheetColors("btnIcon_Icon             $disabled")

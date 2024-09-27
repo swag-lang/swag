@@ -93,7 +93,7 @@ impl Surface
     }
 
     // Creates the surface
-    func create(surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    func create(surface: nn *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         with surface
         {
@@ -170,7 +170,7 @@ impl Surface
     }
 
     // Center this surface relative to 'from'
-    mtd center(from: *Surface)
+    mtd center(from: nn *Surface)
     {
         var pos = position
         pos.x = from.position.horzCenter()
@@ -307,7 +307,7 @@ impl Surface
         wnd.sendResizeEvent()
     }
 
-    internal mtd serializeState(ser: *Serializer) throw
+    internal mtd serializeState(ser: nn *Serializer) throw
     {
         // Save position and surface state
         if wnd.view != null and wnd.view.id != null

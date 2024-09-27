@@ -3,7 +3,7 @@ using Core, Core.Math
 public impl Painter
 {
     #[Swag.Overload]
-    internal mtd fillPath(t: *Poly2Tri.Tessellate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
+    internal mtd fillPath(t: nn *Poly2Tri.Tessellate, p: nn *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
@@ -49,7 +49,7 @@ public impl Painter
 
     // Fill a list of paths.
     #[Swag.Overload]
-    mtd fillPath(pathList: *LinePathList, color: Color)
+    mtd fillPath(pathList: nn *LinePathList, color: Color)
     {
         if !pathList.paths.count:
             return
@@ -59,7 +59,7 @@ public impl Painter
     }
 
     #[Swag.Overload]
-    mtd fillPath(path: *LinePath, brush: Brush)
+    mtd fillPath(path: nn *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen):
@@ -145,7 +145,7 @@ public impl Painter
     }
 
     #[Swag.Overload]
-    mtd fillPath(path: *LinePath, color: Color)
+    mtd fillPath(path: nn *LinePath, color: Color)
     {
         sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
@@ -155,7 +155,7 @@ public impl Painter
     // Fill a list of paths.
     // If the path is clockwise, it will be filled. If the path is anti-clockwise, it will be considered as a hole.
     #[Swag.Overload]
-    mtd fillPath(pathList: *LinePathList, brush: Brush)
+    mtd fillPath(pathList: nn *LinePathList, brush: Brush)
     {
         // Flatten all paths
         pathList.flatten(curState.paintQuality)
@@ -215,7 +215,7 @@ public impl Painter
 
     // Fill the polygon with the given color
     #[Swag.Overload]
-    mtd fillPolygon(path: *LinePath, color: Color)
+    mtd fillPolygon(path: nn *LinePath, color: Color)
     {
         sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
@@ -224,7 +224,7 @@ public impl Painter
 
     // Fill the polygon with the given 'brush'
     #[Swag.Overload]
-    mtd fillPolygon(path: *LinePath, brush: Brush)
+    mtd fillPolygon(path: nn *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
         if path.polygon.isConvex

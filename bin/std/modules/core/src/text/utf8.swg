@@ -729,7 +729,7 @@ public enum ComparisonType
 }
 
 // Compare two utf8 buffers with the given algorithm
-func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
+func compare(src, dst: nn const [..] u8, comparisonType = ComparisonType.Latin1)->s32
 {
     using ComparisonType
 

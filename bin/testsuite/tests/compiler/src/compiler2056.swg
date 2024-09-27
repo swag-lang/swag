@@ -1,5 +1,5 @@
 #[Swag.Discardable]
-func swag_runtime_itoa(result: ^u8, value: s64)->*u8
+func swag_runtime_itoa(result: nn ^u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 

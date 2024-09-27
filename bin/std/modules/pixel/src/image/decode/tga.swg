@@ -30,7 +30,7 @@ public struct Decoder {}
 
 impl Decoder
 {
-    func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
+    func uncompress(bpp: u8, dstBuffer: nn ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
     {
         let lastDest = dstBuffer + length
         var dest     = dstBuffer
@@ -111,7 +111,7 @@ public impl IImageDecoder for Decoder
         return Path.getExtensionLowerCase(fileName) == ".tga"
     }
 
-    func impl decode(using self, buffer: const nn [..] u8, options: DecodeOptions)->Image throw
+    func impl decode(using self, buffer: nn const [..] u8, options: DecodeOptions)->Image throw
     {
         var dataof  = @dataof(buffer)
         let countof = @countof(buffer)

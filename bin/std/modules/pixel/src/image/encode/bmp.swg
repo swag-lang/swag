@@ -10,7 +10,7 @@ public impl IImageEncoder for Encoder
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    mtd impl encode(result: *ConcatBuffer, image: Image, options: any) throw
+    mtd impl encode(result: nn *ConcatBuffer, image: Image, options: any) throw
     {
         var fileHeader: FileHeader
         fileHeader.bfType    = 0x4d42

@@ -10,7 +10,7 @@ struct Monster
     using entity: *Entity
 }
 
-func set(entity: *Entity)
+func set(entity: nn *Entity)
 {
     entity.position[0] = 666
 }

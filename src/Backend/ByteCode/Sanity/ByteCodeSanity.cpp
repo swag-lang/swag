@@ -350,6 +350,9 @@ namespace
         return raiseError(context, err.empty() ? toErr(San0006) : err, value, "could be null");
     }
 
+    // - Revoir remonté d'erreurs
+    // - Appels inline ne sont pas faits
+    // - Retourn de fonction
     bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
@@ -367,7 +370,7 @@ namespace
         for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
         {
             const auto idx = typeFunc->registerIdxToParamIdx(pushParams.size() - i - 1);
-            if(done.contains(idx))
+            if (done.contains(idx))
                 continue;
             done.push_back(idx);
             if (typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
@@ -524,6 +527,10 @@ namespace
                 case ByteCodeOp::IntrinsicPanic:
                     return true;
 
+                case ByteCodeOp::PushRAParamCond:
+                    pushParams.push_back(ip->b.u32);
+                    break;
+
                 case ByteCodeOp::PushRAParam:
                     pushParams.push_back(ip->a.u32);
                     break;
@@ -549,7 +556,6 @@ namespace
                 case ByteCodeOp::DecSPBP:
                 case ByteCodeOp::IncSPPostCall:
                 case ByteCodeOp::IncSPPostCallCond:
-                case ByteCodeOp::PushRAParamCond:
                 case ByteCodeOp::PushRVParam:
                 case ByteCodeOp::InternalInitStackTrace:
                 case ByteCodeOp::InternalStackTrace:
@@ -581,18 +587,13 @@ namespace
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->set(ip);
-
+                
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
                         if (!overload->typeInfo->isNonNullable())
                         {
-                            // if (overload->typeInfo->couldBeNull())
-                            if (overload->typeInfo->isAny() ||
-                                overload->typeInfo->isString() ||
-                                overload->typeInfo->isSlice() ||
-                                overload->typeInfo->isCString() ||
-                                overload->typeInfo->isInterface())
+                            if (overload->typeInfo->couldBeNull())
                             {
                                 const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
                                 if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))

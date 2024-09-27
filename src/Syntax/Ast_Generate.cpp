@@ -146,7 +146,10 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             content += ", ";
             const auto type = typeFunc->parameters[i]->typeInfo;
             type->computeScopedNameExport();
-            content += form("p%d: %s", i, type->scopedNameExport.cstr());
+            if (type->isNonNullable())
+                content += form("p%d: nn %s", i, type->scopedNameExport.cstr());
+            else
+                content += form("p%d: %s", i, type->scopedNameExport.cstr());
         }
         content += ")";
 

@@ -57,14 +57,14 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readTypeValue(typeVal: TypeValue, data: ^void) throw
+    mtd readTypeValue(typeVal: TypeValue, data: nn ^void) throw
     {
         discard serializer.beginElement(typeVal)
         readValue(data, typeVal.pointedType)
         serializer.endElement()
     }
 
-    mtd readValue(data: ^void, dataType: typeinfo) throw
+    mtd readValue(data: nn ^void, dataType: nn typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -315,7 +315,7 @@ impl IDecoder for Decoder
         return serializer.isTextual()
     }
 
-    mtd impl read(data: *void, dataType: typeinfo) throw
+    mtd impl read(data: nn *void, dataType: nn typeinfo) throw
     {
         readValue(data, dataType)
     }

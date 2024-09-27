@@ -44,7 +44,7 @@ func hasTypedData(fmt: ValueFormat, type: typeinfo)->bool
 
 // Add data of a given format of the given 'type' to the clipboard
 // 'type' can be null to just check for the given clipboard format.
-func addTypedData(fmt: ValueFormat, type: typeinfo, data: const [..] u8)
+func addTypedData(fmt: ValueFormat, type: typeinfo, data: nn const [..] u8)
 {
     if !OpenClipboard(GetDesktopWindow()):
         return
@@ -237,7 +237,7 @@ func hasString()->bool
 }
 
 // Add string to clipboard
-func addString(str: string)
+func addString(str: nn string)
 {
     if !OpenClipboard(GetDesktopWindow()):
         return

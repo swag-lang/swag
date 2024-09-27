@@ -5,8 +5,8 @@ public struct Button
     icon:                Icon
     iconSizeX:           f32
     iconSizeY:           f32
-    sigPressed:          SigArray'func||(*Self)
-    sigRightPressed:     SigArray'func||(*Self)
+    sigPressed:          SigArray'func||(nn *Self)
+    sigRightPressed:     SigArray'func||(nn *Self)
     isPressed:           bool
     isPressing:          bool
     isHot:               bool
@@ -15,7 +15,7 @@ public struct Button
 
 impl IWnd for Button
 {
-    mtd impl onApplyStateEvent(evt: *CommandStateEvent)
+    mtd impl onApplyStateEvent(evt: nn *CommandStateEvent)
     {
         if evt.id != id:
             return
@@ -44,7 +44,7 @@ impl IWnd for Button
 
 impl Button
 {
-    mtd processMouseEvent(evt: *MouseEvent)->bool
+    mtd processMouseEvent(evt: nn *MouseEvent)->bool
     {
         var pos = surfaceToLocal(evt.surfacePos)
         switch evt.kind

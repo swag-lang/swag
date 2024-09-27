@@ -24,7 +24,7 @@ impl FormPolygon
 
 impl IForm for FormPolygon
 {
-    mtd impl isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: nn *BaseForm)->bool
     {
         let other = cast(*FormPolygon) ptr
         return borderColor == other.borderColor and
@@ -34,7 +34,7 @@ impl IForm for FormPolygon
                paintShadow == other.paintShadow
     }
 
-    mtd impl copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: nn *BaseForm)
     {
         let dstf = cast(*FormPolygon) dst
         let srcf = cast(*FormPolygon) src
@@ -45,7 +45,7 @@ impl IForm for FormPolygon
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: nn *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
@@ -166,12 +166,12 @@ impl IForm for FormPolygon
         }
     }
 
-    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -214,7 +214,7 @@ impl IForm for FormPolygon
         return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nn *Application, painter: nn *Painter, z: f32, quickMode: bool)
     {
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)

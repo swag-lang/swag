@@ -74,7 +74,7 @@ struct AA
 
 var aa: AA
 
-func createView7(_tabView: *Tab, view: *Wnd)
+func createView7(_tabView: *Tab, view: nn *Wnd)
 {
     let lt = Properties.create(view, {5, 55, 480, 600}, .Grid)
     aa.str = "String content"

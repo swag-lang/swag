@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    func toto(s: *Self, _v: u32)
+    func toto(s: nn *Self, _v: u32)
     {
         s.v = _v
     }

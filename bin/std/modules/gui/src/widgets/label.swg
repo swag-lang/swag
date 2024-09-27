@@ -32,7 +32,7 @@ struct Label
 
 impl IWnd for Label
 {
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         var pos = surfaceToLocal(evt.surfacePos)
         switch evt.kind
@@ -77,7 +77,7 @@ impl IWnd for Label
         }
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let bc      = evt.bc
         let theme   = getTheme()
@@ -170,7 +170,7 @@ impl Label
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null, flags: LabelFlags = .Zero)->*Label
+    func create(parent: nn *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null, flags: LabelFlags = .Zero)->*Label
     {
         Debug.assert(parent != null)
         var pos = position

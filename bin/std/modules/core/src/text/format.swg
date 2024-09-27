@@ -36,7 +36,7 @@ func countPercent(fmt: string)->u32
 
 // Format a string in 'dest'.
 // Can be a lot faster than the convenient version which returns a String.
-func replaceString(dest: *String, fmt: nn string, values: ...)
+func replaceString(dest: nn *String, fmt: nn string, values: ...)
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
@@ -109,7 +109,7 @@ func toStringTemp(fmt: nn string, values: ...)->string
 }
 
 // Format a string and put the result in a ConcatBuffer.
-func append(buf: *ConcatBuffer, fmt: nn string, values: ...)
+func append(buf: nn *ConcatBuffer, fmt: nn string, values: ...)
     verify
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):

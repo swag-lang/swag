@@ -4,7 +4,7 @@ struct SystemAllocator {}
 
 impl IAllocator for SystemAllocator
 {
-    func free(request: *AllocatorRequest)
+    func free(request: nn *AllocatorRequest)
     {
         if !request.address:
             return
@@ -13,7 +13,7 @@ impl IAllocator for SystemAllocator
         request.address = null
     }
 
-    mtd impl req(request: *AllocatorRequest)
+    mtd impl req(request: nn *AllocatorRequest)
     {
         // We are considering that the default system heap alloc does not align
         // So we need to trick it to respect the user wanted alignment.

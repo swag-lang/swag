@@ -107,7 +107,7 @@ impl PropWnd
         return capture.getSelectedFormType()
     }
 
-    mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool, common = false)
+    mtd pushTypedValue(val: u32, type: nn typeinfo, name: string, first: bool, common = false)
     {
         let capture = main.getCapture()
 
@@ -149,7 +149,7 @@ impl PropWnd
         return ctrl
     }
 
-    func createArrowButton(stack: *Wnd, w, h: f32)->*IconButton
+    func createArrowButton(stack: nn *Wnd, w, h: f32)->*IconButton
     {
         with let btn = IconButton.create(stack, {}, {0, 0, w, h})
         {
@@ -166,7 +166,7 @@ impl PropWnd
         return btn
     }
 
-    func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
+    func createColorPicker(btn: nn *IconButton, color: Color)->*ColorPickerCtrl
     {
         let frame  = btn.createAnchorPopup(356, 382)
         var pal:   Array'Color
@@ -175,14 +175,14 @@ impl PropWnd
         return picker
     }
 
-    mtd createPopupShapeKind(btn: *IconButton)
+    mtd createPopupShapeKind(btn: nn *IconButton)
     {
         let frame  = btn.createAnchorPopup(180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
         layout.wrapWidth, layout.wrapHeight = 48
         layout.padding = 4
 
-        mtd updateBtnState(layout: *Wnd)
+        mtd updateBtnState(layout: nn *Wnd)
         {
             let curSel = cast(*FormShape) getSelectedBaseForm()
             foreach c in layout.childs
@@ -239,7 +239,7 @@ impl PropWnd
         layout.computeLayout()
     }
 
-    mtd createPopupStepKind(btn: *IconButton)
+    mtd createPopupStepKind(btn: nn *IconButton)
     {
         let frame  = btn.createAnchorPopup(180, 66)
         let layout = frame.createView'WrapLayoutCtrl()
@@ -285,13 +285,13 @@ impl PropWnd
         layout.computeLayout()
     }
 
-    mtd createPopupStartCapStyle(btn: *IconButton)
+    mtd createPopupStartCapStyle(btn: nn *IconButton)
     {
         let frame  = btn.createAnchorPopup(100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
-        mtd updateBtnState(layout: *Wnd)
+        mtd updateBtnState(layout: nn *Wnd)
         {
             let curSel = cast(*FormLine) getSelectedBaseForm()
             foreach c in layout.childs
@@ -338,13 +338,13 @@ impl PropWnd
         layout.computeLayout()
     }
 
-    mtd createPopupEndCapStyle(btn: *IconButton)
+    mtd createPopupEndCapStyle(btn: nn *IconButton)
     {
         let frame  = btn.createAnchorPopup(100, @countof(LineCapStyle) * 46.0)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
-        mtd updateBtnState(layout: *Wnd)
+        mtd updateBtnState(layout: nn *Wnd)
         {
             let curSel = cast(*FormLine) getSelectedBaseForm()
             foreach c in layout.childs
@@ -391,13 +391,13 @@ impl PropWnd
         layout.computeLayout()
     }
 
-    mtd createPopupDashStyle(btn: *IconButton)
+    mtd createPopupDashStyle(btn: nn *IconButton)
     {
         let frame  = btn.createAnchorPopup(180, 170)
         let layout = StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
-        mtd updateBtnState(layout: *Wnd)
+        mtd updateBtnState(layout: nn *Wnd)
         {
             let curSel = getSelectedBaseForm()
             foreach c in layout.childs
@@ -443,7 +443,7 @@ impl PropWnd
         layout.computeLayout()
     }
 
-    mtd propBorderColor(stack: *Wnd)
+    mtd propBorderColor(stack: nn *Wnd)
     {
         let curSel = cast(*FormText) getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
@@ -489,7 +489,7 @@ impl PropWnd
         }
     }
 
-    mtd propBackColor(stack: *Wnd)
+    mtd propBackColor(stack: nn *Wnd)
     {
         let curSel = getSelectedBaseForm()
         if curSel.subKind != .PixSel
@@ -550,7 +550,7 @@ impl PropWnd
         }
     }
 
-    mtd propShape(stack: *Wnd)
+    mtd propShape(stack: nn *Wnd)
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormShape:
@@ -592,7 +592,7 @@ impl PropWnd
         }
     }
 
-    mtd propStep(stack: *Wnd)
+    mtd propStep(stack: nn *Wnd)
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormStep:
@@ -631,7 +631,7 @@ impl PropWnd
         }
     }
 
-    mtd propStartCapStyle(stack: *Wnd)
+    mtd propStartCapStyle(stack: nn *Wnd)
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
@@ -661,7 +661,7 @@ impl PropWnd
         }
     }
 
-    mtd propEndCapStyle(stack: *Wnd)
+    mtd propEndCapStyle(stack: nn *Wnd)
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
@@ -691,7 +691,7 @@ impl PropWnd
         }
     }
 
-    mtd propDashStyle(stack: *Wnd)
+    mtd propDashStyle(stack: nn *Wnd)
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:

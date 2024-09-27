@@ -5,7 +5,7 @@ const Txt1 = #include("view4.swg")
 
 var g_LexerSwag: RichEditLexerSwag
 
-func createView4(_tabView: *Tab, view: *Wnd)
+func createView4(_tabView: *Tab, view: nn *Wnd)
 {
     {
         let ed = RichEditCtrl.create(view, {10, 10, 600, 500})

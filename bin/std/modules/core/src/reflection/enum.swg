@@ -4,7 +4,7 @@ using Swag
 
 // Transform an enum type to its underling real native type
 #[ConstExpr]
-func makeConcreteEnum(type: typeinfo)->typeinfo
+func makeConcreteEnum(type: nn typeinfo)->typeinfo
 {
     if !isEnum(type):
         return type
@@ -16,7 +16,7 @@ func makeConcreteEnum(type: typeinfo)->typeinfo
 // Get information about a specific value in a given enum
 // Returns null if the value does not exist
 #[ConstExpr]
-func getEnumValue(type: typeinfo, name: string)->const *TypeValue
+func getEnumValue(type: nn typeinfo, name: nn string)->const *TypeValue
 {
     if !isEnum(type):
         return null
@@ -30,7 +30,7 @@ func getEnumValue(type: typeinfo, name: string)->const *TypeValue
 // Returns the enum value name corresponding to the value pointed by 'valueAddr'
 // Can have multiple names if the enum is tagged with #[Swag.EnumFlags]
 #[ConstExpr]
-func getEnumName(type: typeinfo, valueAddr: const *void, fullname = true)->String
+func getEnumName(type: nn typeinfo, valueAddr: nn const *void, fullname = true)->String
 {
     var result: String
     if !isEnum(type):

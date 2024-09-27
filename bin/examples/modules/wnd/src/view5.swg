@@ -1,6 +1,6 @@
 using Core, Gui, Pixel
 
-func createView5(_tabView: *Tab, view: *Wnd)
+func createView5(_tabView: *Tab, view: nn *Wnd)
 {
     {
         let btn = PushButton.create(view, "AnchorR", {600, 400})

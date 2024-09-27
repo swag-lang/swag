@@ -9,13 +9,13 @@ struct PalettePicker
     palPos:            Array'Math.Rectangle
     boxSize:           s32 = 24
     boxMargin:         s32 = 3
-    sigChanged:        SigArray'func||(*Self)
+    sigChanged:        SigArray'func||(nn *Self)
     hotIdx:            s32 = Swag.S32.Max
 }
 
 impl IWnd for PalettePicker
 {
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let bc      = evt.bc
         let painter = bc.painter
@@ -55,7 +55,7 @@ impl IWnd for PalettePicker
         }
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         var pos = surfaceToLocal(evt.surfacePos)
         evt.accepted = false

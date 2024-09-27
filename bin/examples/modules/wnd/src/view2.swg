@@ -82,7 +82,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     return tree
 }
 
-func createView2(_tabView: *Tab, view: *Wnd)
+func createView2(_tabView: *Tab, view: nn *Wnd)
 {
     {
         let tree = createTreeSimple(view, 10)

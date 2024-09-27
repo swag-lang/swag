@@ -194,7 +194,7 @@ impl RichEditCtrl
         }
     }
 
-    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: RichEditStyleRef)
+    mtd insertRunePrivate(cp: nn *RichEditCursor, c: rune, txtStyle: RichEditStyleRef)
     {
         if c == '\r':
             return
@@ -232,7 +232,7 @@ impl RichEditCtrl
     }
 
     #[Swag.Overload]
-    mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
+    mtd insertTextPrivate(cp: nn *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
     {
         if runes.isEmpty():
             return
@@ -292,7 +292,7 @@ impl RichEditCtrl
     }
 
     #[Swag.Overload]
-    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef)
+    mtd insertTextPrivate(cp: nn *RichEditCursor, text: string, txtStyle: RichEditStyleRef)
     {
         if lines.isEmpty():
             newLine(0)

@@ -298,7 +298,7 @@ bool TypeInfo::couldBeNull() const
 {
     if (isString() || isAny() || isInterface() || isSlice() || isCString())
         return true;
-    if(isPointer() && !isConstPointerRef() && !isAutoConstPointerRef())
+    if(isPointer() && !isConstPointerRef() && !isAutoConstPointerRef() && !isPointerRef())
         return true;
     return false;
 }

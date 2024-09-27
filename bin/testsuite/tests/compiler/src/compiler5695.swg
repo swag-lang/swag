@@ -23,7 +23,7 @@ impl IEvent for Evt {}
 impl IEvent for Evt1 {}
 impl IEvent for Evt2 {}
 
-func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
+func can(toType, fromType: nn const *Swag.TypeInfoStruct)->bool
 {
     if @typecmp(toType, fromType, .Strict):
         return true

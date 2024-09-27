@@ -160,10 +160,8 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertBefore(node: *ListNode, value: T)->*ListNode
+    mtd insertBefore(node: nn *ListNode, value: T)->*ListNode
     {
-        Debug.assert(node != null)
-
         let n = Memory.new'ListNode()
         n.value = value
         count += 1
@@ -179,10 +177,8 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertBefore(node: *ListNode, value: &&T)->*ListNode
+    mtd insertBefore(node: nn *ListNode, value: &&T)->*ListNode
     {
-        Debug.assert(node != null)
-
         let n = Memory.new'ListNode()
         n.value = #move value
         count += 1
@@ -199,10 +195,8 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertAfter(node: *ListNode, value: T)->*ListNode
+    mtd insertAfter(node: nn *ListNode, value: T)->*ListNode
     {
-        Debug.assert(node != null)
-
         let n = Memory.new'ListNode()
         n.value = value
         count += 1
@@ -218,10 +212,8 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertAfter(node: *ListNode, value: &&T)->*ListNode
+    mtd insertAfter(node: nn *ListNode, value: &&T)->*ListNode
     {
-        Debug.assert(node != null)
-
         let n = Memory.new'ListNode()
         n.value = #move value
         count += 1

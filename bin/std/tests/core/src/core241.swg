@@ -8,6 +8,8 @@ using Core
 
     Jobs.parallelVisit(|buffer| x.toSlice())
     {
+        if !buffer:
+            return
         buffer[0] = 666
     }
 

@@ -79,7 +79,7 @@ impl Decoder
         streamLen -= len
     }
 
-    mtd read(dest: *u8, len: u64) throw
+    mtd read(dest: nn *u8, len: u64) throw
     {
         if len > streamLen:
             throw InvalidFormatError{"read error"}
@@ -200,7 +200,7 @@ impl Decoder
             table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
 
-    mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
+    mtd getKey(keySize: s32, subLen, shift, byte: nn *u8)->u16 throw
     {
         var key       = 0'u16
         var frag_size = 0
@@ -377,7 +377,7 @@ impl Decoder
         readImageData(interlace)
     }
 
-    mtd renderFrame(buffer: ^u8, pf: PixelFormat)
+    mtd renderFrame(buffer: nn ^u8, pf: PixelFormat)
     {
         var i = cast(u32) fy * width + fx
 
@@ -507,7 +507,7 @@ public impl Decoder
 
     // Create an image for the current frame
     #[Swag.Overload]
-    mtd getFrame(image: *Image, decodePixels = true)
+    mtd getFrame(image: nn *Image, decodePixels = true)
     {
         Debug.assert(initDone)
         image.init(width, height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
@@ -517,7 +517,7 @@ public impl Decoder
     }
 
     // Get the next frame. Returns false if we have reached the end
-    mtd nextFrame(img: *Image)->bool throw
+    mtd nextFrame(img: nn *Image)->bool throw
     {
         Debug.assert(initDone)
         if reachEnd:

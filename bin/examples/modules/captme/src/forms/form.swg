@@ -1,8 +1,8 @@
 interface IForm
 {
-    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags);
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool);
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool;
+    mtd paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags);
+    mtd paint(app: nn *Application, painter: nn *Painter, z: f32, quickMode: bool);
+    mtd mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool;
     mtd isInside(pt: Math.Point)->bool;
     mtd hitTest(pt: Math.Point, z: f32)->bool;
     mtd boundRect()->Math.Rectangle;
@@ -10,10 +10,10 @@ interface IForm
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd movePoint(pt: u32, newPosX, newPosY: s32);
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;
+    mtd edit(evt: nn *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;
     mtd setup(capt: *Capture);
-    mtd isSame(ptr: *BaseForm)->bool;
-    mtd copy(dst, src: *BaseForm);
+    mtd isSame(ptr: nn *BaseForm)->bool;
+    mtd copy(dst, src: nn *BaseForm);
 }
 
 #[Swag.EnumFlags]

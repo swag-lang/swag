@@ -375,7 +375,7 @@ impl StrConv.IConvert for DateTime
     // Console.print(Format.toString("%{a}", myDate))
     // ```
     // See [[Core.Time.DateTimeFormat]]
-    mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: nn *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
         if @countof(strFormat) == 0 or @countof(strFormat) > 1:

@@ -7,7 +7,7 @@ struct Point
 }
 
 //#[Swag.PrintBc]
-func toto(using pt: *Point)
+func toto(using pt: nn *Point)
 {
 	x = 10
 	y = 20

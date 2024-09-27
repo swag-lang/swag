@@ -22,7 +22,7 @@ func(T, R) map(values: const [..] T, cb: func||(T)->R)->Array'R
 // Reduce the content of a slice to one single value.
 // The lambda is called with the previous reduced value and each element of the slice.
 // The first reduced value is the first element of the slice.
-func(T) reduce(values: const nn [..] T, cb: func||(T, T)->T)->T
+func(T) reduce(values: nn const [..] T, cb: func||(T, T)->T)->T
 {
     var result = values[0]
     for i in 1 to @countof(values) - 1:
@@ -31,7 +31,7 @@ func(T) reduce(values: const nn [..] T, cb: func||(T, T)->T)->T
 }
 
 // Get the minimum value of a slice, and the corresponding value index.
-func(T) min(values: const nn [..] T)->{ value: T, index: u64 }
+func(T) min(values: nn const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
@@ -52,7 +52,7 @@ func(T) min(values: const nn [..] T)->{ value: T, index: u64 }
 }
 
 // Get the maximum value of a slice, and the corresponding value index.
-func(T) max(values: const nn [..] T)->{ value: T, index: u64 }
+func(T) max(values: nn const [..] T)->{ value: T, index: u64 }
 {
     var result: retval
     result.value = values[0]
@@ -73,7 +73,7 @@ func(T) max(values: const nn [..] T)->{ value: T, index: u64 }
 }
 
 // Returns true if 'cb' returns true for all values
-func(T) allOf(values: const nn [..] T, cb: func||(T)->bool)->bool
+func(T) allOf(values: nn const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {
@@ -85,7 +85,7 @@ func(T) allOf(values: const nn [..] T, cb: func||(T)->bool)->bool
 }
 
 // Returns true if 'cb' returns true for at least one value
-func(T) anyOf(values: const nn [..] T, cb: func||(T)->bool)->bool
+func(T) anyOf(values: nn const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {
@@ -97,7 +97,7 @@ func(T) anyOf(values: const nn [..] T, cb: func||(T)->bool)->bool
 }
 
 // Returns true if 'cb' returns false for all values
-func(T) noneOf(values: const nn [..] T, cb: func||(T)->bool)->bool
+func(T) noneOf(values: nn const [..] T, cb: func||(T)->bool)->bool
 {
     foreach v in values
     {

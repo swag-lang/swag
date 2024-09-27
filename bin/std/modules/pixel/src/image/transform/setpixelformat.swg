@@ -138,7 +138,7 @@ impl Image
         }
     }
 
-    mtd const doChangePf(dstImage: *Image)
+    mtd const doChangePf(dstImage: nn *Image)
     {
         #[Swag.Complete]
         switch dstImage.pf

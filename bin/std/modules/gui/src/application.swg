@@ -336,7 +336,7 @@ internal impl Application
 
     // Remove and destroy the given surface
     // To cleanly close a surface, you should call surface.destroy()
-    mtd destroySurface(surface: *Surface)
+    mtd destroySurface(surface: nn *Surface)
     {
         surfaces.remove(surface)
         if surface == mainSurface:
@@ -349,7 +349,7 @@ internal impl Application
         Memory.delete(surface)
     }
 
-    mtd unregisterWnd(wnd: *Wnd)
+    mtd unregisterWnd(wnd: nn *Wnd)
     {
         if wnd == mouseEnterWnd or wnd.isOwnerOf(mouseEnterWnd):
             mouseEnterWnd = null
@@ -462,7 +462,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: *Surface, cb: func||(*Application) = null)->WndId
+    public mtd doModalLoop(surface: *Surface, cb: func||(nn *Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1
@@ -610,7 +610,7 @@ impl Application
         appIcon = img
     }
 
-    internal mtd serializeState(ser: *Serializer) throw
+    internal mtd serializeState(ser: nn *Serializer) throw
     {
         ser.beginSection(.Unordered)
         foreach s in surfaces:
@@ -657,7 +657,7 @@ impl Application
 
     // Destroy a window
     // To cleanly close a window, you should call wnd.destroy()
-    mtd destroyWnd(wnd: *Wnd)
+    mtd destroyWnd(wnd: nn *Wnd)
     {
         var evt = DestroyEvent{}
         wnd.sendEvent(&evt)
@@ -743,7 +743,7 @@ impl Application
     }
 
     // Delete and unregister timer
-    mtd deleteTimer(timer: *Timer)
+    mtd deleteTimer(timer: nn *Timer)
     {
         if duringTimerEvents
         {
@@ -760,27 +760,27 @@ impl Application
     }
 
     // Register a window to receive a FrameEvent each running for
-    mtd registerFrameEvent(target: *Wnd)
+    mtd registerFrameEvent(target: nn *Wnd)
     {
         Debug.assert(!frameEvents.contains(target))
         frameEvents.add(target)
     }
 
     // Unregister a window that receives a FrameEvent each running for
-    mtd unregisterFrameEvent(target: *Wnd)
+    mtd unregisterFrameEvent(target: nn *Wnd)
     {
         frameEvents.remove(target)
     }
 
     // Register a window to receive hook events
-    mtd registerHookEvents(target: *Wnd)
+    mtd registerHookEvents(target: nn *Wnd)
     {
         Debug.assert(!hookOnEvent.contains(target))
         hookOnEvent.add(target)
     }
 
     // Unregister a window to receive hook events
-    mtd unregisterHookEvents(target: *Wnd)
+    mtd unregisterHookEvents(target: nn *Wnd)
     {
         hookOnEvent.remove(target)
     }

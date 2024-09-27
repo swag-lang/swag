@@ -2055,7 +2055,7 @@ func gameLoop()
         g_Ticks += 1
 }
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -2227,7 +2227,7 @@ func loadBindTextures()
     assume Audio.createEngine()
     defer Audio.destroyEngine()
 
-    func test(app: *Application)
+    func test(app: nn *Application)
     {
         if Env.hasArg("swag.test")
         {

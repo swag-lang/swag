@@ -16,13 +16,13 @@ struct MyView
 
 impl IWnd for MyView
 {
-    mtd impl onKeyEvent(event: *KeyEvent)
+    mtd impl onKeyEvent(event: nn *KeyEvent)
     {
         if event.key == .Escape:
             event.target.postQuitEvent()
     }
 
-    mtd impl onPaintEvent(event: *PaintEvent)
+    mtd impl onPaintEvent(event: nn *PaintEvent)
     {
         let painter = event.bc.painter
         painter.clear(Argb.White)

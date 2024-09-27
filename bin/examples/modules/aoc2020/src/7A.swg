@@ -78,7 +78,7 @@ func day7A0()
         }
     }
 
-    func contains(id: *HashTable'(string, Array'string), what: string)->bool
+    func contains(id: nn *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
         if !it:
@@ -123,7 +123,7 @@ func day7A1()
         }
     }
 
-    func contains(id: *HashTable'(string, Array'string), what: string)->bool
+    func contains(id: nn *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
         if !it:

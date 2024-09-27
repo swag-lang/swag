@@ -293,7 +293,7 @@ func display()
     g_Painter.drawString(40, 0, Format.toString("score: %", g_Score), g_Font, Argb.White)
 }
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     g_Dt = wnd.getApp().getDt()
 
@@ -346,7 +346,7 @@ func loadBindTextures() assume
     assume Audio.createEngine()
     defer Audio.destroyEngine()
 
-    func test(app: *Application)
+    func test(app: nn *Application)
     {
         if Env.hasArg("swag.test")
         {

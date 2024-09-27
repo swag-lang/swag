@@ -1,6 +1,6 @@
 using Libc
 
-func titi(x, y: *s32)->s32
+func titi(x, y: nn *s32)->s32
 {
     return dref x <=> dref y
 }

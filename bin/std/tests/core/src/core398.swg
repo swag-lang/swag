@@ -7,7 +7,7 @@ struct Node
     kids:     Array'*Node
 }
 
-func release(node: *Node)
+func release(node: nn *Node)
 {
     foreach kid in node.kids:
         kid.release()
@@ -16,7 +16,7 @@ func release(node: *Node)
 
 alias WalkAction = func||(const *Node, s32)
 
-func walk(tree: const *Node, action: WalkAction, depth = 0)
+func walk(tree: nn const *Node, action: WalkAction, depth = 0)
 {
     action(tree, depth)
     foreach kid in tree.kids
@@ -25,7 +25,7 @@ func walk(tree: const *Node, action: WalkAction, depth = 0)
     }
 }
 
-func print(tree: const *Node)
+func print(tree: nn const *Node)
 {
     walk(tree, func(node, depth)
     {
@@ -33,7 +33,7 @@ func print(tree: const *Node)
     })
 }
 
-func calcTotalDepth(tree: *Node)->s32
+func calcTotalDepth(tree: nn *Node)->s32
 {
     var total = 0
     walk(tree, func|&total|(node, depth)
@@ -45,7 +45,7 @@ func calcTotalDepth(tree: *Node)->s32
 }
 
 #[Swag.Discardable]
-func process(intro: *Node)->*Node
+func process(intro: nn *Node)->*Node
 {
     let tree = Memory.new'Node()
     tree.name = "root"

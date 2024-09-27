@@ -104,7 +104,7 @@ impl BitStream
         codeBuffer = 0
     }
 
-    mtd peekBytes(width: u8, dest: ^u8)
+    mtd peekBytes(width: u8, dest: nn ^u8)
     {
         // To optim
         for i in width
@@ -114,7 +114,7 @@ impl BitStream
         }
     }
 
-    mtd peek32(dest: ^u8)
+    mtd peek32(dest: nn ^u8)
     {
         dest[0] = cast(u8) peekBits(8)
         consumeBits(8)
@@ -126,7 +126,7 @@ impl BitStream
         consumeBits(8)
     }
 
-    mtd peek32Be(dest: ^u8)
+    mtd peek32Be(dest: nn ^u8)
     {
         #if BIG_ENDIAN:
             peek32(dest)

@@ -29,7 +29,7 @@ impl IWnd for EditCtrl
 impl EditCtrl
 {
     // Create the popup list, but: not display it
-    func create(parent: *Wnd, name: string, text: string, position: Math.Rectangle = {}, id: WndId = null, flags: EditBoxFlags = Zero)->*EditCtrl
+    func create(parent: nn *Wnd, name: string, text: string, position: Math.Rectangle = {}, id: WndId = null, flags: EditBoxFlags = Zero)->*EditCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position

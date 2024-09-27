@@ -1,4 +1,4 @@
-func foozle(ptr: const *Swag.TypeInfo)->bool
+func foozle(ptr: nn const *Swag.TypeInfo)->bool
 {
     return ptr.flags & Swag.TypeInfoFlags.Integer ? true : false
 }

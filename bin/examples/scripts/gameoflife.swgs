@@ -10,7 +10,7 @@ const GridSize = 60
 var g_Grid:   [2, GridSize, GridSize] bool
 var g_CurGen: s32
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     let leftPressed  = wnd.getApp().mouse.isButtonPressed(.Left)
     let rightPressed = wnd.getApp().mouse.isButtonPressed(.Right)
@@ -110,7 +110,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Game of Life", hook: &onEvent, init: &test)
 }

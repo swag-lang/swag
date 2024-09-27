@@ -35,8 +35,8 @@ struct Header
     form                  = HeaderForm.Flat
     headerFlags           = HeaderFlags.Clickable
     marginItems:          f32 = 5
-    sigLayoutChanged:     func||(*Self)
-    sigClicked:           func||(*Self, u32)
+    sigLayoutChanged:     func||(nn *Self)
+    sigClicked:           func||(nn *Self, u32)
 
     items:                ArrayPtr'HeaderItem
     hotIdx                = Swag.U32.Max
@@ -50,7 +50,7 @@ struct Header
 
 impl IWnd for Header
 {
-    mtd paintItem(bc: PaintContext, item: *HeaderItem, idx: u32, x: f32)
+    mtd paintItem(bc: PaintContext, item: nn *HeaderItem, idx: u32, x: f32)
     {
         let painter = bc.painter
 
@@ -111,7 +111,7 @@ impl IWnd for Header
         Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let painter = evt.bc.painter
         let theme   = getTheme()
@@ -155,7 +155,7 @@ impl IWnd for Header
         }
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         if evt.kind == .MouseReleased and evt.button == .Left
         {
@@ -279,7 +279,7 @@ internal impl Header
 impl Header
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Header
+    func create(parent: nn *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*Header
     {
         Debug.assert(parent != null)
 

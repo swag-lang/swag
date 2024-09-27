@@ -354,7 +354,7 @@ namespace ResizeTools
     }
 
     #[Swag.Overload]
-    func scaleCol(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
+    func scaleCol(imgDst: nn *Image, imgSrc: nn const *Image, rmode: Image.ResizeMode)
     {
         let sh      = cast(s64) imgSrc.height
         let dh      = cast(s64) imgDst.height
@@ -363,13 +363,14 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
+            if !data: return
             let params = cast(*#decltype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
     #[Swag.Overload]
-    func scaleRow(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
+    func scaleRow(imgDst: nn *Image, imgSrc: nn const *Image, rmode: Image.ResizeMode)
     {
         let sw      = cast(s64) imgSrc.width
         let dw      = cast(s64) imgDst.width
@@ -378,19 +379,20 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
+            if !data: return
             let params = cast(*#decltype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
     }
 
-    func doResizeFilter(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
+    func doResizeFilter(dstImage: nn *Image, srcImage: nn const *Image, mode: Image.ResizeMode)
     {
         var tmp = Image.create(dstImage.width, srcImage.height, srcImage.pf)
         scaleRow(&tmp, srcImage, mode)
         scaleCol(dstImage, &tmp, mode)
     }
 
-    func doResizeRaw(dstImage: *Image, srcImage: const *Image)
+    func doResizeRaw(dstImage: nn *Image, srcImage: nn const *Image)
     {
         let xscale = srcImage.width / cast(f32) dstImage.width
         let yscale = srcImage.height / cast(f32) dstImage.height
@@ -420,7 +422,7 @@ namespace ResizeTools
         }
     }
 
-    func doResize(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
+    func doResize(dstImage: nn *Image, srcImage: nn const *Image, mode: Image.ResizeMode)
     {
         switch mode
         {

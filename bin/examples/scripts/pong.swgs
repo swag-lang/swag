@@ -46,7 +46,7 @@ func resetBall()
         g_Ball.speed = -g_Ball.speed
 }
 
-func updatePaddles(wnd: *Wnd)
+func updatePaddles(wnd: nn *Wnd)
 {
     let dt = wnd.getApp().getDt()
     let kb = wnd.getApp().getKeyboard()
@@ -64,7 +64,7 @@ func updatePaddles(wnd: *Wnd)
     g_PaddleRight.pos.y = clamp(g_PaddleRight.pos.y, g_Rect.y + PaddleHeight, g_Rect.bottom() - PaddleHeight)
 }
 
-func updateBall(wnd: *Wnd)
+func updateBall(wnd: nn *Wnd)
 {
     let dt = wnd.getApp().getDt()
 
@@ -115,7 +115,7 @@ func updateBall(wnd: *Wnd)
     g_Ball.pos += g_Ball.speed * dt
 }
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -162,7 +162,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Pong (left: A Q right: P M)", hook: &onEvent, init: &test)
 }

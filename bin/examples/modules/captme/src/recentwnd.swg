@@ -60,7 +60,7 @@ impl RecentView
 
 impl IWnd for RecentView
 {
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         if evt.kind == .MouseWheel:
             evt.accepted = false
@@ -108,7 +108,7 @@ impl IWnd for RecentView
         }
     }
 
-    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
+    func paintRecent(parent: nn *Wnd, painter: nn *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
     {
         let colors = parent.getThemeColors()
 
@@ -139,7 +139,7 @@ impl IWnd for RecentView
         painter.drawTexture(txtRect, texture)
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()
@@ -171,7 +171,7 @@ struct RecentWnd
 
 impl IWnd for RecentWnd
 {
-    mtd impl onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: nn *TimerEvent)
     {
         let capture = main.getCapture()
         if !capture:
@@ -191,7 +191,7 @@ impl IWnd for RecentWnd
 
 impl RecentWnd
 {
-    func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
+    func create(parent: *Wnd, main: nn *MainWnd)->*RecentWnd
     {
         with let recent = Wnd.create'RecentWnd(parent, {0, 0, 0, PreviewHeight + RecentPadding * 2})
         {

@@ -97,7 +97,7 @@ public impl ByteStream
     }
 
     // Read the given amount of bytes
-    mtd readBytes(dest: *u8, count: u64) throw
+    mtd readBytes(dest: nn *u8, count: u64) throw
     {
         if seek + count > length():
             throw OverflowError{"byte stream overflow"}

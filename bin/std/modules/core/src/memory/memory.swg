@@ -3,21 +3,21 @@
 using Swag
 
 // Copy one block of memory to a given address
-func copy(dest: ^void, src: const ^void, size: u64)
+func copy(dest: nn ^void, src: nn const ^void, size: u64)
 {
     if size:
         @memcpy(dest, src, size)
 }
 
 // Move one block of memory to a given address
-func copyOver(dest: ^void, src: const ^void, size: u64)
+func copyOver(dest: nn ^void, src: nn const ^void, size: u64)
 {
     if size:
         @memmove(dest, src, size)
 }
 
 // Compare two blocks of memory
-func compare(dest, src: const ^void, size: u64)->s32
+func compare(dest, src: nn const ^void, size: u64)->s32
 {
     if !size:
         return 0
@@ -25,20 +25,20 @@ func compare(dest, src: const ^void, size: u64)->s32
 }
 
 // Compare two blocks of memory
-func(T) equals(dest, src: const *T)->bool
+func(T) equals(dest, src: nn const *T)->bool
 {
     return @memcmp(dest, src, #sizeof(T)) == 0
 }
 
 // Clear one block of memory
-func clear(dest: ^void, size: u64)
+func clear(dest: nn ^void, size: u64)
 {
     if size:
         @memset(dest, 0, size)
 }
 
 // Set the content of one block of memory to a specific byte value
-func set(dest: ^void, value: u8, size: u64)
+func set(dest: nn ^void, value: u8, size: u64)
 {
     if size:
         @memset(dest, value, size)
@@ -54,7 +54,7 @@ func align(value: u64, alignment: u32)->u64
 
 // Align a pointer to the given amount
 #[Swag.Overload]
-func align(value: const ^void, alignment: u32)->const ^void
+func align(value: nn const ^void, alignment: u32)->const ^void
 {
     return cast() align(cast(u64) value, alignment)
 }

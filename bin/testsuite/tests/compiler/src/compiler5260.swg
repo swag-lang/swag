@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #[Swag.Safety("overflow", false)]
-func toto(buffer: *bool)
+func toto(buffer: nn *bool)
 {
     var total: u64
     let c = #ref buffer

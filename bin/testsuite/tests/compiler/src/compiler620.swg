@@ -5,7 +5,7 @@ struct Point
 
 impl Point
 {
-	func toto(st: *Self)
+	func toto(st: nn *Self)
 	{
 		st.x = 0
 	}

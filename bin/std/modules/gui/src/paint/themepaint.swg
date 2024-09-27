@@ -106,7 +106,7 @@ impl Theme
         }
     }
 
-    func drawIconText(painter: *Painter, position: Math.Rectangle, icon: Icon, name: *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
+    func drawIconText(painter: nn *Painter, position: Math.Rectangle, icon: Icon, name: nn *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
     {
         let count = @countof(dref name)
         if count == 0 and !icon.isValid():
@@ -134,7 +134,7 @@ impl Theme
             icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
     }
 
-    mtd setTextColors(fmt: *RichStringFormat, mainColor: Color)
+    mtd setTextColors(fmt: nn *RichStringFormat, mainColor: Color)
     {
         fmt.palette[0] = mainColor
         fmt.palette[1] = colors.richColor1

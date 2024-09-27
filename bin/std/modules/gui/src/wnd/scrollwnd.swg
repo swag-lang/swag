@@ -75,7 +75,7 @@ public impl IWnd for ScrollWnd
         view.setPosition(rect)
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         var clientRect = getClientRect()
         var pos        = surfaceToLocal(evt.surfacePos)
@@ -194,7 +194,7 @@ public impl IWnd for ScrollWnd
         }
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         if smoothScroll
         {

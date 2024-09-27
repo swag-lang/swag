@@ -14,7 +14,7 @@ struct GizmoRect
     firstMoving:           bool
     movingRect:            Math.Rectangle
     movingStart:           Math.Point
-    sigChanged:            func||(*GizmoRect, bool, u32)
+    sigChanged:            func||(nn *GizmoRect, bool, u32)
 
     minSizeX:              f32 = 2
     minSizeY:              f32 = 2
@@ -22,7 +22,7 @@ struct GizmoRect
 
 impl GizmoRect
 {
-    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         let prop = (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
 
@@ -185,7 +185,7 @@ impl GizmoRect
         return false
     }
 
-    mtd paint(painter: *Painter, hot: bool, col: Color = Argb.White)
+    mtd paint(painter: nn *Painter, hot: bool, col: Color = Argb.White)
     {
         let anchorSize2 = anchorSize * 0.5
 

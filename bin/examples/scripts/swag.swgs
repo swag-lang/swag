@@ -21,7 +21,7 @@ struct C
 
 impl C
 {
-    mtd update(wnd: *Wnd)
+    mtd update(wnd: nn *Wnd)
     {
         let app = wnd.getApp()
 
@@ -54,7 +54,7 @@ impl C
     }
 }
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -98,7 +98,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 50
     Application.runSurface(100, 100, 800, 512, title: "Swag (move mouse on me!)", hook: &onEvent, init: &test)
 }

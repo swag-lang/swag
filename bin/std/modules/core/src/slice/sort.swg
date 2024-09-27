@@ -108,14 +108,14 @@ func(T) sort(values: nn [..] T, cb: func||(T, T)->s32)
 
 // Returns true if the slice is sorted
 #[Swag.Overload]
-func(T) isSorted(values: const nn [..] T)->bool
+func(T) isSorted(values: nn const [..] T)->bool
 {
     return isSorted(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Returns true if the slice is sorted
 #[Swag.Overload]
-func(T) isSorted(values: const nn [..] T, cb: func||(T, T)->s32)->bool
+func(T) isSorted(values: nn const [..] T, cb: func||(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
     let countof = @countof(values)

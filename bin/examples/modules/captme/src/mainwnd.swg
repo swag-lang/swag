@@ -133,7 +133,7 @@ impl IWnd for MainWnd
         sf.destroy()
     }
 
-    mtd impl onSysUserEvent(evt: *SysUserEvent)
+    mtd impl onSysUserEvent(evt: nn *SysUserEvent)
     {
         #if #os == Swag.TargetOs.Windows
         {
@@ -149,7 +149,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: nn *SysCommandEvent)
     {
         evt.accepted = false
         switch evt.kind
@@ -160,7 +160,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: nn *SerializeStateEvent)
     {
         catch
         {
@@ -190,7 +190,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onFrameEvent(evt: *FrameEvent)
+    mtd impl onFrameEvent(evt: nn *FrameEvent)
     {
         if evt.firstFrame
         {
@@ -629,7 +629,7 @@ impl MainWnd
         applyLayout()
     }
 
-    func create(parent: *Wnd)->*MainWnd
+    func create(parent: nn *Wnd)->*MainWnd
     {
         parent.surface.minSize = {1024, 512}
 

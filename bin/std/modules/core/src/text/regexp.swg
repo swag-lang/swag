@@ -314,7 +314,7 @@ impl RegExp
         return null
     }
 
-    func setCapture(state: *DfaState, rank: s32, str: string)
+    func setCapture(state: nn *DfaState, rank: s32, str: string)
     {
         foreach &v in state.groups
         {
@@ -413,7 +413,7 @@ impl RegExp
         return result
     }
 
-    mtd closeGroup(state: *DfaState)
+    mtd closeGroup(state: nn *DfaState)
     {
         let ptr = bufStart + state.parseIdx
         if state.lastGroup
@@ -426,7 +426,7 @@ impl RegExp
         state.groupStart = ptr
     }
 
-    mtd backward(out: *Array'DfaState, what: rune, state: *DfaState)
+    mtd backward(out: nn *Array'DfaState, what: rune, state: nn *DfaState)
     {
         let grp = state.node.transitions.find(what)
         if grp
@@ -457,7 +457,7 @@ impl RegExp
         }
     }
 
-    mtd dfaMatch(out: *Array'DfaState, c: rune, eat: s32, curState: *DfaState)
+    mtd dfaMatch(out: nn *Array'DfaState, c: rune, eat: s32, curState: nn *DfaState)
     {
         var ok = false
 
@@ -581,7 +581,7 @@ impl RegExp
         checkTr(0'rune, eat)
     }
 
-    func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
+    func addTransition(node: nn *NfaNode, c: rune, toNode: nn *NfaNode)
     {
         var here = node.transitions.find(c)
         if !here
@@ -820,7 +820,7 @@ impl RegExp
         operatorConcat(nfaStack.count)
     }
 
-    func dfaEClosure(inH, outH: *Array'(*NfaNode))
+    func dfaEClosure(inH, outH: nn *Array'(*NfaNode))
     {
         outH.clear()
 
@@ -845,7 +845,7 @@ impl RegExp
         }
     }
 
-    mtd setTable(node: *DfaNode, tbl: *Array'(*NfaNode))
+    mtd setTable(node: nn *DfaNode, tbl: nn *Array'(*NfaNode))
     {
         node.table = #move dref tbl
         foreach n in node.table
@@ -858,7 +858,7 @@ impl RegExp
         }
     }
 
-    func dfaMoveNode(out: *Array'(*NfaNode), c: rune, inH: Array'(*NfaNode))
+    func dfaMoveNode(out: nn *Array'(*NfaNode), c: rune, inH: Array'(*NfaNode))
     {
         out.clear()
         foreach state in inH
@@ -873,7 +873,7 @@ impl RegExp
         }
     }
 
-    func equals(s1, s2: *Array'(*NfaNode))->bool
+    func equals(s1, s2: nn *Array'(*NfaNode))->bool
     {
         if s1.count != s2.count:
             return false
@@ -957,7 +957,7 @@ impl RegExp
     }
 
     #[Swag.Discardable]
-    mtd preprocessInter(sl: const nn [..] rune)->const ^rune throw
+    mtd preprocessInter(sl: nn const [..] rune)->const ^rune throw
     {
         var pz      = @dataof(sl)
         let pzStart = pz
@@ -1104,7 +1104,7 @@ impl RegExp
         return pz
     }
 
-    func toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
+    func toI32(pz, pzEnd: nn const ^rune, val: nn *s32)->const ^rune throw
     {
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0]):
             throw SyntaxError{}
@@ -1122,7 +1122,7 @@ impl RegExp
         return pzStart
     }
 
-    mtd preprocessEnum(sl: const nn [..] rune)->const ^rune throw
+    mtd preprocessEnum(sl: nn const [..] rune)->const ^rune throw
     {
         var pz    = @dataof(sl)
         let pzEnd = pz + @countof(sl)
@@ -1225,7 +1225,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessUnicode(sl: const nn [..] rune)->const ^rune throw
+    mtd preprocessUnicode(sl: nn const [..] rune)->const ^rune throw
     {
         let pz = @dataof(sl) + 2
         if pz[0] == '{'
@@ -1269,7 +1269,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessEscape(sl: const nn [..] rune, inInter = false)->const ^rune throw
+    mtd preprocessEscape(sl: nn const [..] rune, inInter = false)->const ^rune throw
     {
         var pz = @dataof(sl)
         let c  = dref pz

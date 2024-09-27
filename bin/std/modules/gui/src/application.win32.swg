@@ -29,7 +29,7 @@ impl Application
         return Color.fromAbgr(col)
     }
 
-    mtd captureMouse(wnd: *Wnd)
+    mtd captureMouse(wnd: nn *Wnd)
     {
         mouseCaptureWnd = wnd
         SetCapture(wnd.surface.native.hWnd)

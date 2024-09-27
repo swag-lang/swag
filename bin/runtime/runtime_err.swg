@@ -273,7 +273,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     __panicBox(cast(string) str, title)
 }
 
-func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
+func __panic(file: nn const ^u8, line: u32, col: u32, message: nn const ^u8)
 {
     var loc: SourceCodeLocation
     loc.fileName = @mkstring(file, @strlen(file))
@@ -284,7 +284,7 @@ func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
     @panic(msg, loc)
 }
 
-func __compilerError(file: const ^u8, line: u32, col: u32, message: const ^u8)
+func __compilerError(file: nn const ^u8, line: u32, col: u32, message: nn const ^u8)
 {
     var loc: SourceCodeLocation
     loc.fileName = @mkstring(file, @strlen(file))

@@ -13,7 +13,7 @@ const INFINITE = 0xFFFFFFFF
 
 var G: u64
 
-func entry(param: ^void)->u32
+func entry(param: nn ^void)->u32
 {
     let ptr = cast(^u64) param
     G = ptr[1]

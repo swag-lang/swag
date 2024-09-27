@@ -1,4 +1,4 @@
-func toto(x: const nn [..] f32)
+func toto(x: nn const [..] f32)
 {
 	@assert(x[0] == 1)
 }

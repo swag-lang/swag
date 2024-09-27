@@ -86,7 +86,7 @@ impl ScratchAllocator
 
 impl IAllocator for ScratchAllocator
 {
-    mtd free(request: *AllocatorRequest)
+    mtd free(request: nn *AllocatorRequest)
     {
         if !request.address:
             return
@@ -123,7 +123,7 @@ impl IAllocator for ScratchAllocator
         request.address = null
     }
 
-    mtd alloc(request: *AllocatorRequest)
+    mtd alloc(request: nn *AllocatorRequest)
     {
         // Special case
         if request.size == 0
@@ -164,7 +164,7 @@ impl IAllocator for ScratchAllocator
         maxLeak = @max(maxLeak, totalLeak)
     }
 
-    mtd impl req(request: *AllocatorRequest)
+    mtd impl req(request: nn *AllocatorRequest)
     {
         @assert(block != null)
         switch request.mode

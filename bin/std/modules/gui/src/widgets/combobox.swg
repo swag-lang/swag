@@ -21,7 +21,7 @@ struct ComboBox
     kind                = ComboBoxKind.Select
     minWidthPopup:      f32 = 100
     maxHeightPopup:     f32 = 300
-    sigChanged:         SigArray'func||(*Self, u32)
+    sigChanged:         SigArray'func||(nn *Self, u32)
 
     editBox:            *EditBox
     isHot:              bool
@@ -37,7 +37,7 @@ struct ComboBox
 
 impl IWnd for ComboBox
 {
-    mtd impl onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: nn *ResizeEvent)
     {
         if editBox
         {
@@ -49,7 +49,7 @@ impl IWnd for ComboBox
         }
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let bc      = evt.bc
         let painter = evt.bc.painter
@@ -122,7 +122,7 @@ impl IWnd for ComboBox
         icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.sizeY * 0.5, colorText)
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         switch evt.kind
         {
@@ -190,7 +190,7 @@ internal impl ComboBox
 impl ComboBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
+    func create(parent: nn *Wnd, position: Math.Rectangle = {}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
     {
         Debug.assert(parent != null)
         var pos = position

@@ -339,7 +339,7 @@ impl Deflate
         }
     }
 
-    func radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->^SymFreq
+    func radixSortSyms(numSyms: u32, sym0, sym1: nn ^SymFreq)->^SymFreq
     {
         var hist: [256 * 2] u32
         for i in numSyms
@@ -382,7 +382,7 @@ impl Deflate
         return curSym
     }
 
-    func calculateMinimumRedundancy(symFreq: ^SymFreq, n: u32)
+    func calculateMinimumRedundancy(symFreq: nn ^SymFreq, n: u32)
     {
         if n == 0:
             return
@@ -453,7 +453,7 @@ impl Deflate
         }
     }
 
-    func huffmanEnforceMaxCodeSize(numCodes: ^s32, codeListLen, maxCodeSize: u32)
+    func huffmanEnforceMaxCodeSize(numCodes: nn ^s32, codeListLen, maxCodeSize: u32)
     {
         if codeListLen <= 1:
             return
@@ -1137,7 +1137,7 @@ public impl Deflate
 
     // Compress the source buffer
     #[Swag.Overload]
-    mtd compress(result: *Array'u8, src: const [..] u8) throw
+    mtd compress(result: nn *Array'u8, src: const [..] u8) throw
     {
         if @countof(src) > Swag.U32.Max:
             throw UnsupportedFormatError{"source buffer too big"}

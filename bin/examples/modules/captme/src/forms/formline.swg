@@ -17,7 +17,7 @@ struct FormLine
 
 impl IForm for FormLine
 {
-    mtd impl isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: nn *BaseForm)->bool
     {
         let other = cast(*FormLine) ptr
         return borderColor == other.borderColor and
@@ -32,7 +32,7 @@ impl IForm for FormLine
                paintShadow == other.paintShadow
     }
 
-    mtd impl copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: nn *BaseForm)
     {
         let dstf = cast(*FormLine) dst
         let srcf = cast(*FormLine) src
@@ -48,7 +48,7 @@ impl IForm for FormLine
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: nn *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -163,12 +163,12 @@ impl IForm for FormLine
         y1 = (yb * z) - (rect.y * z) + paintPos.y
     }
 
-    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -210,7 +210,7 @@ impl IForm for FormLine
         return false
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: nn *Painter, z: f32, quickMode: bool)
     {
         computePaintCoords(z)
 

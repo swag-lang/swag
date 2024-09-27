@@ -19,14 +19,14 @@ struct Thread
     param:  u64
 }
 
-func entry(param: *void)->u32
+func entry(param: nn *void)->u32
 {
     let th = cast(*Thread) param
     th.lambda()
     return 0
 }
 
-func userEntry(param: *Thread)
+func userEntry(param: nn *Thread)
 {
     G = param.param
 }

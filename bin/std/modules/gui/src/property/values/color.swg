@@ -44,6 +44,8 @@ impl Properties
 
         btn.sigShowPopup += func|self, color, item|(btn)
         {
+            if !btn:
+                return
             let frame = btn.createAnchorPopup(356, 382)
             self.editPopup = frame
 
@@ -80,7 +82,7 @@ impl Properties
 
 public impl IPropertyValue for Color
 {
-    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: nn *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructColor(value, data, parent)
     }

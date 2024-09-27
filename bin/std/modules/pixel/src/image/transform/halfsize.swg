@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtd const doHalfSize(dstImage: *Image)
+    mtd const doHalfSize(dstImage: nn *Image)
     {
         var f = {img: self}
         dstImage.visitPixels(&f)

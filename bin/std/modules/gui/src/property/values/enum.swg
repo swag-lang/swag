@@ -1,6 +1,6 @@
 impl Properties
 {
-    func refreshEnumFlags(item: *PropertiesItem)
+    func refreshEnumFlags(item: nn *PropertiesItem)
     {
         if item.checkBox
         {
@@ -26,7 +26,7 @@ impl Properties
         }
     }
 
-    func refreshEnum(item: *PropertiesItem)
+    func refreshEnum(item: nn *PropertiesItem)
     {
         if item.comboBox
         {
@@ -73,7 +73,7 @@ impl Properties
         }
     }
 
-    mtd validateEnumFlags(item: *PropertiesItem)
+    mtd validateEnumFlags(item: nn *PropertiesItem)
     {
         if item.checkBox
         {
@@ -104,7 +104,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd validateEnum(item: *PropertiesItem)
+    mtd validateEnum(item: nn *PropertiesItem)
     {
         if item.comboBox
         {
@@ -136,7 +136,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: nn const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
@@ -206,7 +206,7 @@ impl Properties
         }
     }
 
-    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: nn const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {

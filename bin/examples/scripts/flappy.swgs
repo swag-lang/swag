@@ -90,7 +90,7 @@ The '#main' special function is usually the entry point of an executable. It's e
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
     // to exit after 100 frames. This is usefull for batch testing.
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
 
     // Creates and run one surface (i.e. window) at the given position and with the given size and title.
@@ -208,7 +208,7 @@ This is the callback that will deal with all gui events. This feels like *Window
 
 For a simple script, this is more easy to process events in that way.
 */
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -246,7 +246,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 /**
 This is the function to paint the game. Here we are mostly using functions from the 'Pixel' module.
 */
-func paint(painter: *Painter)
+func paint(painter: nn *Painter)
 {
     // Draw the background texture at position (0, 0). The size of the texture is preserved.
     painter.drawTexture(0, 0, g_BackTexture)
@@ -332,7 +332,7 @@ func paint(painter: *Painter)
 /**
 Test IO.
 */
-func input(wnd: *Wnd)
+func input(wnd: nn *Wnd)
 {
     let kb = wnd.getApp().getKeyboard()
 
@@ -481,7 +481,7 @@ Load all assets.
 
 You can notice that the function has 'throw' after its declaration. This indicated that it can return some errors, and that the caller will have to deal with it.
 */
-func loadAssets(wnd: *Wnd) throw
+func loadAssets(wnd: nn *Wnd) throw
 {
     let render = &wnd.getApp().renderer
 

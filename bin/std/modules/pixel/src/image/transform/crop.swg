@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtd const doCrop(dstImage: *Image, x, y, w, h: s32)
+    mtd const doCrop(dstImage: nn *Image, x, y, w, h: s32)
     {
         var f = {x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)

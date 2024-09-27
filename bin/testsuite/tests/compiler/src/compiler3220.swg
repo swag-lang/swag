@@ -18,7 +18,7 @@ func toto(using vv: C)
     @assert(x == 555)
 }
 
-func toto1(using vv: *C)
+func toto1(using vv: nn *C)
 {
     @assert(x == 555)
 }

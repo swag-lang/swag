@@ -24,7 +24,7 @@ impl IActionUI for ActionFile
         return false
     }
 
-    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: nn *CommandStateEvent)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()

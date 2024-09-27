@@ -13,7 +13,7 @@ var g = 0
 	@assert(g == 6)
 }
 
-func T(param: *s32)
+func T(param: nn *s32)
 {
 	g += dref param
 }

@@ -11,7 +11,7 @@ func(T, N: u32) new()->^T
 	return cast() req.address
 }
 
-func(T, N: u32) delete(addr: ^T)
+func(T, N: u32) delete(addr: nn ^T)
 {
 	@drop(addr, N)
 

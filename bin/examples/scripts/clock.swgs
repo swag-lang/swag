@@ -8,7 +8,7 @@
 
 using Core, Gui, Pixel
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -41,7 +41,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Clock", hook: &onEvent, init: &test)
 }

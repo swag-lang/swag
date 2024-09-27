@@ -66,15 +66,15 @@ struct ListCtrl
     selectionMode           = ListSelectionMode.Single
     leftTextMargin:         f32
 
-    sigSelChanged:          SigArray'func||(*Self)
-    sigCheckChanged:        SigArray'func||(*Self)
-    sigRightClick:          SigArray'func||(*Self, Math.Point)
-    sigLeftDoubleClick:     SigArray'func||(*Self, Math.Point)
-    sigExpand:              SigArray'func||(*Self, *ListLine)
-    sigCollapse:            SigArray'func||(*Self, *ListLine)
-    sigKeyPressed:          SigArray'func||(*Self, *KeyEvent)
-    sigVirtualFill:         func(*Self, *ListLine, u32)
-    sigSort:                func(*ListLine, *ListLine, u32, bool)->s32
+    sigSelChanged:          SigArray'func||(nn *Self)
+    sigCheckChanged:        SigArray'func||(nn *Self)
+    sigRightClick:          SigArray'func||(nn *Self, Math.Point)
+    sigLeftDoubleClick:     SigArray'func||(nn *Self, Math.Point)
+    sigExpand:              SigArray'func||(nn *Self, nn *ListLine)
+    sigCollapse:            SigArray'func||(nn *Self, nn *ListLine)
+    sigKeyPressed:          SigArray'func||(nn *Self, nn *KeyEvent)
+    sigVirtualFill:         func(nn *Self, nn *ListLine, u32)
+    sigSort:                func(nn *ListLine, nn *ListLine, u32, bool)->s32
 
     toFreeLines:            ArrayPtr'ListLine
     lines:                  Array'*ListLine
@@ -99,7 +99,7 @@ struct ListView
 
 impl ListLine
 {
-    mtd isParentOf(other: *ListLine)->bool
+    mtd isParentOf(other: nn *ListLine)->bool
     {
         var l = other.parent
         while l and l != self:
@@ -150,13 +150,13 @@ impl ListLine
 
 impl IWnd for ListView
 {
-    mtd impl onResizeEvent(evt: *ResizeEvent)
+    mtd impl onResizeEvent(evt: nn *ResizeEvent)
     {
         if list:
             list.computeLayout()
     }
 
-    mtd impl onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: nn *KeyEvent)
     {
         evt.accepted = true
         if evt.kind != .KeyPressed:
@@ -299,7 +299,7 @@ impl IWnd for ListView
         }
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         if evt.kind == .MouseLeave
         {
@@ -487,7 +487,7 @@ impl IWnd for ListView
             list.sigSelChanged.call(list)
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         if list.getLineCount() == 0:
             return
@@ -572,7 +572,7 @@ internal impl ListView
         return x
     }
 
-    mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
+    mtd paintLine(bc: PaintContext, idx: u32, line: nn *ListLine, rect: Math.Rectangle)
     {
         let painter = bc.painter
         let theme   = getTheme()
@@ -1128,9 +1128,9 @@ impl ListCtrl
     }
 
     #[Swag.Overload]
-    internal mtd sort(column: u32, descentOrder: bool, toSort: *Array'*ListLine)
+    internal mtd sort(column: u32, descentOrder: bool, toSort: nn *Array'*ListLine)
     {
-        func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
+        func sortFunc(column: u32, descentOrder: bool, a, b: nn *ListLine)->s32
         {
             let it0   = a.getItem(column)
             let it1   = b.getItem(column)
@@ -1142,7 +1142,7 @@ impl ListCtrl
             return res
         }
 
-        let cb = func|self, column, descentOrder|(a, b: *ListLine)->s32
+        let cb = func|self, column, descentOrder|(a, b: nn *ListLine)->s32
         {
             if self.sigSort:
                 return self.sigSort(a, b, column, descentOrder)
@@ -1208,7 +1208,7 @@ impl ListCtrl
     }
 
     // Expand the given line
-    mtd expand(line: *ListLine)
+    mtd expand(line: nn *ListLine)
     {
         if !line.canExpand() or line.expanded:
             return
@@ -1250,7 +1250,7 @@ impl ListCtrl
     }
 
     // Collapse the given line
-    mtd collapse(line: *ListLine)
+    mtd collapse(line: nn *ListLine)
     {
         if !line.canExpand() or !line.expanded:
             return
@@ -1314,7 +1314,7 @@ impl ListCtrl
     }
 
     // Collapse the given line
-    mtd toggleExpand(line: *ListLine)
+    mtd toggleExpand(line: nn *ListLine)
     {
         if line.expanded:
             collapse(line)

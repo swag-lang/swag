@@ -9,7 +9,7 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'RuneError' for an invalid utf16 sequence
-func decodeRune(buffer: const nn [..] u16)->{ c: rune, eat: u32 }
+func decodeRune(buffer: nn const [..] u16)->{ c: rune, eat: u32 }
 {
     var result: retval
 
@@ -134,7 +134,7 @@ func toZeroTerminated(src: string)->Array'u16
 }
 
 // Compute the string length of a zero terminated utf16 buffer
-func lengthZeroTerminated(buf: const ^u16)->u64
+func lengthZeroTerminated(buf: nn const ^u16)->u64
 {
     var ptr   = buf
     var count = 0'u64

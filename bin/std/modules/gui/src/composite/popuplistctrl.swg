@@ -37,7 +37,7 @@ struct PopupListView
 
 impl IWnd for PopupListView
 {
-    mtd impl onFocusEvent(evt: *FocusEvent)
+    mtd impl onFocusEvent(evt: nn *FocusEvent)
     {
         switch evt.kind
         {
@@ -52,7 +52,7 @@ impl IWnd for PopupListView
         }
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         var hit: u32
 
@@ -123,7 +123,7 @@ impl IWnd for PopupListView
             evt.accepted = false
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let painter = evt.bc.painter
 
@@ -211,7 +211,7 @@ impl IWnd for PopupListView
 impl PopupListCtrl
 {
     // Create the popup list, but: not display it
-    func create(owner: *Wnd)->*PopupListCtrl
+    func create(owner: nn *Wnd)->*PopupListCtrl
     {
         let popup = Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
 

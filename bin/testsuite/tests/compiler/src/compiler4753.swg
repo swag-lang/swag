@@ -3,7 +3,7 @@ struct E
     next: *E
 }
 
-func toto(edge: *E)->*E
+func toto(edge: nn *E)->*E
 {
     return edge.next
 }

@@ -20,7 +20,7 @@ public struct AboutDlgParams
 public impl AboutDlg
 {
     // Creates the message box
-    func create(from: *Surface, params: AboutDlgParams, width, height: s32 = 0)->*AboutDlg
+    func create(from: nn *Surface, params: AboutDlgParams, width, height: s32 = 0)->*AboutDlg
     {
         let dlg = Wnd.create'AboutDlg()
         let w   = cast(s32) width orelse 500
@@ -78,7 +78,7 @@ public impl AboutDlg
     }
 
     // Display the box, centered, and returns the id of the pressed button
-    mtd doModal(from: *Surface)
+    mtd doModal(from: nn *Surface)
     {
         surface.center(from)
         discard Dialog.doModal(self)

@@ -1,6 +1,6 @@
 // Swap two values
 #[Swag.Inline]
-func(T) swap(x, y: *T)
+func(T) swap(x, y: nn *T)
 {
     var tmp = #moveraw dref x
     dref x = #nodrop #moveraw dref y
@@ -9,7 +9,7 @@ func(T) swap(x, y: *T)
 
 // Be sure that 'a' is lower or equal than 'b'
 #[Swag.Inline]
-func(T) orderMinMax(x, y: *T)
+func(T) orderMinMax(x, y: nn *T)
 {
     if dref x > dref y:
         swap(x, y)

@@ -202,14 +202,14 @@ func combine(fullnames: string...)->String
 }
 
 // Returns true if the two paths are equal
-func equals(path1, path2: string)->bool
+func equals(path1, path2: nn string)->bool
 {
     return Utf8.compare(path1, path2, .Latin1NoCase) == 0
 }
 
 // Normalize path
 // '\' are replaced with '/' as this is the std norm for paths
-func normalize(fullname: *String)
+func normalize(fullname: nn *String)
 {
     fullname.replace("\\", "/")
 }

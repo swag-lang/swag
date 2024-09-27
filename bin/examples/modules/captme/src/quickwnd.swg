@@ -59,7 +59,7 @@ struct QuickWnd
 
 impl IWnd for QuickWnd
 {
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         if evt.kind == .MousePressed and evt.button == .Right
         {
@@ -71,7 +71,7 @@ impl IWnd for QuickWnd
         scrollWnd.IWnd.onMouseEvent(evt)
     }
 
-    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: nn *SerializeStateEvent)
     {
         catch
         {
@@ -127,7 +127,7 @@ impl QuickWnd
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)
         let res = menu.doModal(pos, autoDestroy: true)
-        if res == "0"
+        if res == "0" and btn
         {
             let qbtn = cast(*QuickButton) btn
             currentStyle.remove(qbtn.formItf)
@@ -552,7 +552,7 @@ impl QuickWnd
 
     mtd updateQuickStyles()
     {
-        func paintForm(painter: *Painter, btnp: *QuickButton)
+        func paintForm(painter: nn *Painter, btnp: nn *QuickButton)
         {
             painter.setParams(.Antialiased)
             let sel  = cast(*BaseForm) @dataof(btnp.formItf)

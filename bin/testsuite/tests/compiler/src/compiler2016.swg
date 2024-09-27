@@ -3,7 +3,7 @@ func variadic(x: ...)
     @assert(cast(s64) cast(s32) x[0] == 666)
 }
 
-func(T) isSorted(values: const nn [..] T)
+func(T) isSorted(values: nn const [..] T)
 {
     variadic(values[0])
 }

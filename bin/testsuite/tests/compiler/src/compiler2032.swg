@@ -1,10 +1,10 @@
-func(T) inc(x: *T)
+func(T) inc(x: nn *T)
 {
     dref x += 1
 }
 
 //#[Swag.PrintBc]
-func(T) map(cb: func(*T))
+func(T) map(cb: func(nn *T))
 {
     var x: T
     cb(&x)

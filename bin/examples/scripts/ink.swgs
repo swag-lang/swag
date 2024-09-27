@@ -76,7 +76,7 @@ impl Drop
         }
     }
 
-    mtd show(painter: *Painter)
+    mtd show(painter: nn *Painter)
     {
         painter.fillPath(&lp, col)
     }
@@ -98,7 +98,7 @@ func addInk(x, y, r: f32, col: Color)
     drops.add(drop)
 }
 
-func onEvent(wnd: *Wnd, evt: IEvent)->bool
+func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -159,7 +159,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test"):
+    func test(app: nn *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ink", canSize: false, hook: &onEvent, init: &test)
 }

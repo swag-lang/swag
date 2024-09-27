@@ -1,6 +1,6 @@
 impl Properties
 {
-    func refreshBool(item: *PropertiesItem)
+    func refreshBool(item: nn *PropertiesItem)
     {
         if item.checkBox
         {
@@ -9,7 +9,7 @@ impl Properties
         }
     }
 
-    mtd validateBool(item: *PropertiesItem)
+    mtd validateBool(item: nn *PropertiesItem)
     {
         var data = cast(*bool) item.data
         if item.checkBox:

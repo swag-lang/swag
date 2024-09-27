@@ -38,7 +38,7 @@ func imagePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
-func displayPage0(painter: *Pixel.Painter)
+func displayPage0(painter: nn *Pixel.Painter)
 {
     var pen = Pen.createSolid(Argb.Black, 20)
 
@@ -211,7 +211,7 @@ func displayPage0(painter: *Pixel.Painter)
     painter.fillPath(&lpl, Argb.Red)
 }
 
-func displayPage1(painter: *Pixel.Painter)
+func displayPage1(painter: nn *Pixel.Painter)
 {
     var brush: Brush
     brush.color = Argb.Black
@@ -241,7 +241,7 @@ func displayPage1(painter: *Pixel.Painter)
     }
 }
 
-func displayPage2(painter: *Pixel.Painter)
+func displayPage2(painter: nn *Pixel.Painter)
 {
     var trs = painter.getTransform()
 
@@ -264,7 +264,7 @@ func displayPage2(painter: *Pixel.Painter)
     painter.drawTexture(50, 700, {228, 103, 206, 167}, Res.image1)
 }
 
-func displayPage3(painter: *Pixel.Painter)
+func displayPage3(painter: nn *Pixel.Painter)
 {
     var trs = painter.getTransform()
 
@@ -355,7 +355,7 @@ func displayPage3(painter: *Pixel.Painter)
     }
 }
 
-func displayPage4(painter: *Pixel.Painter)
+func displayPage4(painter: nn *Pixel.Painter)
 {
     var trs = painter.getTransform()
 
@@ -494,7 +494,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 }
 
-func displayPage5(painter: *Pixel.Painter)
+func displayPage5(painter: nn *Pixel.Painter)
 {
     var trs = painter.getTransform()
 
@@ -542,7 +542,7 @@ func displayPage5(painter: *Pixel.Painter)
     }
 }
 
-func displayPage6(painter: *Pixel.Painter)
+func displayPage6(painter: nn *Pixel.Painter)
 {
     var str:    RichString
     var format: RichStringFormat
@@ -576,7 +576,7 @@ func displayPage6(painter: *Pixel.Painter)
     painter.drawRichString({220, 200, 200, 100}, &str, format, true)
 }
 
-func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
+func displayPage7(renderer: nn *Pixel.RenderOgl, painter: nn *Pixel.Painter)
 {
     let tgt = renderer.getRenderTarget(256, 256)
     painter.drawRoundRect(200, 20, 100, 100, 10, 10, Color.fromArgb(80, Argb.Red), 15)
@@ -621,7 +621,7 @@ struct MyView
 
 impl IWnd for MyView
 {
-    mtd impl onPaintEvent(event: *PaintEvent)
+    mtd impl onPaintEvent(event: nn *PaintEvent)
     {
         let painter = event.bc.painter
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
@@ -663,7 +663,7 @@ impl IWnd for MyView
         }
     }
 
-    mtd impl onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: nn *KeyEvent)
     {
         if evt.kind != .KeyPressed:
             return

@@ -48,7 +48,7 @@ struct FormText
 
 impl IForm for FormText
 {
-    mtd impl isSame(ptr: *BaseForm)->bool
+    mtd impl isSame(ptr: nn *BaseForm)->bool
     {
         let other = cast(*FormText) ptr
         return borderColor == other.borderColor and
@@ -63,7 +63,7 @@ impl IForm for FormText
                joinStyle == other.joinStyle
     }
 
-    mtd impl copy(dst, src: *BaseForm)
+    mtd impl copy(dst, src: nn *BaseForm)
     {
         let dstf = cast(*FormText) dst
         let srcf = cast(*FormText) src
@@ -79,7 +79,7 @@ impl IForm for FormText
         dstf.fontStyle   = srcf.fontStyle
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: nn *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         let xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
         let ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
@@ -137,12 +137,12 @@ impl IForm for FormText
         return Math.Rectangle{x, y, w, h}
     }
 
-    mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd impl mouse(view: nn *EditView, pos: Math.Point, evt: nn *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -161,7 +161,7 @@ impl IForm for FormText
         return true
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nn *Application, painter: nn *Painter, z: f32, quickMode: bool)
     {
         let bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
         let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)

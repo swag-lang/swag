@@ -50,11 +50,11 @@ struct EditBox
     maxLength:            s32
     rightMargin:          f32
 
-    sigChanged:           SigArray'func||(*Self)
-    sigLoseFocus:         SigArray'func||(*Self)
-    sigEnterPressed:      SigArray'func||(*Self)
-    sigEscapePressed:     SigArray'func||(*Self)
-    sigCheckContent:      func||(*Self)->EditBoxCheckResult
+    sigChanged:           SigArray'func||(nn *Self)
+    sigLoseFocus:         SigArray'func||(nn *Self)
+    sigEnterPressed:      SigArray'func||(nn *Self)
+    sigEscapePressed:     SigArray'func||(nn *Self)
+    sigCheckContent:      func||(nn *Self)->EditBoxCheckResult
     using minMax: union
     {
         minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}
@@ -80,7 +80,7 @@ struct EditBox
 
 impl IWnd for EditBox
 {
-    mtd impl onFocusEvent(evt: *FocusEvent)
+    mtd impl onFocusEvent(evt: nn *FocusEvent)
     {
         switch evt.kind
         {
@@ -100,7 +100,7 @@ impl IWnd for EditBox
         }
     }
 
-    mtd impl onPaintEvent(evt: *PaintEvent)
+    mtd impl onPaintEvent(evt: nn *PaintEvent)
     {
         let bc      = evt.bc
         let painter = evt.bc.painter
@@ -238,7 +238,7 @@ impl IWnd for EditBox
         painter.translateTransform(scrollPosX, 0)
     }
 
-    mtd impl onMouseEvent(evt: *MouseEvent)
+    mtd impl onMouseEvent(evt: nn *MouseEvent)
     {
         var pos = surfaceToLocal(evt.surfacePos)
         switch evt.kind
@@ -289,7 +289,7 @@ impl IWnd for EditBox
         }
     }
 
-    mtd impl onTimerEvent(evt: *TimerEvent)
+    mtd impl onTimerEvent(evt: nn *TimerEvent)
     {
         visibleCaret = !visibleCaret
         var pos = getCaretPos()
@@ -297,7 +297,7 @@ impl IWnd for EditBox
         invalidateRect(pos)
     }
 
-    mtd impl onKeyEvent(evt: *KeyEvent)
+    mtd impl onKeyEvent(evt: nn *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {
@@ -836,7 +836,7 @@ internal impl EditBox
 impl EditBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, content: string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
+    func create(parent: nn *Wnd, content: string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
     {
         Debug.assert(parent != null)
         var pos = position

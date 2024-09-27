@@ -43,8 +43,6 @@ void TypeInfoNative::computeWhateverName(Utf8& resName, ComputeNameKind nameKind
 {
     if (isConst())
         resName += "const ";
-    if (isNonNullable())
-        resName += "nn ";
     switch (nativeType)
     {
         case NativeTypeKind::S8:
@@ -224,8 +222,6 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, ComputeNameKind nameKin
     {
         if (isConst())
             resName += "const ";
-        if (isNonNullable())
-            resName += "nn ";
         if (isPointerRef() && hasFlag(TYPEINFO_POINTER_MOVE_REF))
             resName += "&&";
         else if (hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF))
@@ -355,8 +351,6 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     if (isConst())
         resName += "const ";
-    if (isNonNullable())
-        resName += "nn ";
     resName += "[..] ";
     resName += pointedType->computeWhateverName(nameKind);
 }
@@ -1345,9 +1339,6 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, ComputeNameKind nameKind
         resName = computeTupleDisplayName(fields, nameKind);
         return;
     }
-
-    if(isNonNullable())
-        resName += "nn ";
     
     if (nameKind != ComputeNameKind::Name && nameKind != ComputeNameKind::DisplayName)
         computeScopedName(resName);

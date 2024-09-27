@@ -10,7 +10,7 @@ namespace Swag
 
 ////////////////////////////////////////////////////////////
 
-func __concreteAlias(type1: typeinfo)->typeinfo
+func __concreteAlias(type1: nn typeinfo)->typeinfo
 {
     if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict:
         return type1
@@ -45,7 +45,7 @@ func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
     return {0, false}
 }
 
-func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->*void
+func @as(toType, fromType: nn const *TypeInfoStruct, ptr: nn *void)->*void
 {
     let (offset, yes) = __is(toType, fromType)
     if !yes:
@@ -53,7 +53,7 @@ func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->*void
     return cast(^u8) ptr + offset
 }
 
-func @is(toType, fromType: const *TypeInfoStruct)->bool
+func @is(toType, fromType: nn const *TypeInfoStruct)->bool
 {
     let (?, yes) = __is(toType, fromType)
     return yes
@@ -135,7 +135,7 @@ const __MAX_ARGUMENTS = 512
 var __argv:           [__MAX_ARGUMENTS] string
 var __argc            = 0'u32
 
-func __convertArgcArgv(args: const ^u8)
+func __convertArgcArgv(args: nn const ^u8)
 {
     var cmdLine = args
     __argc = 0
