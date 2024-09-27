@@ -273,7 +273,7 @@ namespace
     /////////////////////////////////////
     /////////////////////////////////////
 
-    bool raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr, const Utf8& overloadMsg = "")
+    bool raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return true;
@@ -289,6 +289,7 @@ namespace
 
         if (locValue)
         {
+            SymbolOverload* lastOverload = nullptr;
             for (uint32_t i = locValue->ips.size() - 1; i != UINT32_MAX; i--)
             {
                 const auto ipn = locValue->ips[i];
@@ -299,17 +300,21 @@ namespace
                 start = ipn->node->token.startLocation;
                 end   = ipn->node->token.endLocation;
 
-                err.addNote(ipn->node, ipn->node->token, "history");
-                /*if (ipn->node && ipn->node->resolvedSymbolOverload())
+                if (ipn->node && ipn->node->resolvedSymbolOverload())
                 {
-                    const auto overload = ipn->node->resolvedSymbolOverload();
-                    Utf8 what;
-                    if (!overloadMsg.empty())
-                        what = form("%s [[%s]] %s", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overloadMsg.cstr());
-                    else
-                        what = form("culprit is %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
+                    lastOverload = ipn->node->resolvedSymbolOverload();
+                    Utf8 what    = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
                     err.addNote(ipn->node, ipn->node->token, what);
-                }*/
+                }
+                else
+                {
+                    err.addNote(ipn->node, ipn->node->token, "history");
+                }
+            }
+
+            if(lastOverload && lastOverload->node)
+            {
+                err.addNote(lastOverload->node, lastOverload->node->token, "declaration");
             }
         }
 
@@ -327,7 +332,7 @@ namespace
     {
         if (!value->isConstant() || !isZero)
             return true;
-        return raiseError(context, toErr(San0002), value, "could be zero");
+        return raiseError(context, toErr(San0002), value);
     }
 
     bool checkEscapeFrame(SanityContext* context, const SanityValue* value)
@@ -347,7 +352,7 @@ namespace
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
-        return raiseError(context, err.empty() ? toErr(San0006) : err, value, "could be null");
+        return raiseError(context, err.empty() ? toErr(San0006) : err, value);
     }
 
     // - Revoir remonté d'erreurs
@@ -386,7 +391,7 @@ namespace
                         msg = formErr(San0001, "lambda");
                     else
                         msg = formErr(San0001, typeFunc->declNode->token.cstr());
-                    return raiseError(context, msg, ra, "could be null");
+                    return raiseError(context, msg, ra);
                 }
             }
         }
@@ -399,7 +404,7 @@ namespace
         SanityValue memValue;
         SWAG_CHECK(getStackValue(context, &memValue, addr, sizeOf));
         if (memValue.kind == SanityValueKind::Invalid)
-            return raiseError(context, toErr(San0008), locValue, "could be uninitialized");
+            return raiseError(context, toErr(San0008), locValue);
         return true;
     }
 
@@ -587,7 +592,7 @@ namespace
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->set(ip);
-                
+
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
