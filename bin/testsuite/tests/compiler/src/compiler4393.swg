@@ -1,6 +1,6 @@
 //#global testerror "Err0016"
 //#[Swag.PrintBc]
-func(T) insertionSort(x: nn const [..] T, cb: func||(T, T)->s32)
+func(T) insertionSort(x: const [..] T, cb: func||(T, T)->s32)
 {
     @assert(x[0] == 1)
     @assert(x[1] == 2)

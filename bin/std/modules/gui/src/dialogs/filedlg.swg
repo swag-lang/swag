@@ -202,7 +202,7 @@ internal impl FileDlg
 impl FileDlg
 {
     // Creates the message box
-    func create(from: nn *Surface, opt: FileDlgOptions = {})->*FileDlg
+    func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
         let dlg = Wnd.create'FileDlg()
         with let srf = dlg.createSurface(from, 100, 100, 700, 500)

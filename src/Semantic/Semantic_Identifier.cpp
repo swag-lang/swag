@@ -940,9 +940,6 @@ bool Semantic::solveConstraints(SemanticContext* context, OneMatch* oneMatch, As
     // Execute constraint block
     for (const auto it : funcDecl->constraints)
     {
-        if(it->is(AstNodeKind::ExpectConstraint))
-            continue;
-        
         const auto expr = it->lastChild();
         
         // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.

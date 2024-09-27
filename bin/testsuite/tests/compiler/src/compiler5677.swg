@@ -15,7 +15,7 @@ interface IEvent
 impl IEvent for BaseEvent {}
 impl IEvent for MouseEvent {}
 
-func toto(x: nn IEvent)
+func toto(x: IEvent)
 {
     var g = 0
     switch x

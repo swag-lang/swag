@@ -242,7 +242,7 @@ impl FloatExt
     }
 
     // frexp10Many applies a common shift by a power of ten to a, b, c.
-    func frexp10Many(a, b, c: nn *FloatExt)->s64
+    func frexp10Many(a, b, c: *FloatExt)->s64
     {
         let (exp10, i) = c.frexp10()
         a.multiply(powersOfTen[i])
@@ -253,7 +253,7 @@ impl FloatExt
     // FixedDecimal stores in d the first n significant digits
     // of the decimal representation of f. It returns false
     // if it cannot be sure of the answer.
-    mtd fixedDecimal(d: nn *DecimalSlice, n: s64)->bool
+    mtd fixedDecimal(d: *DecimalSlice, n: s64)->bool
     {
         if mant == 0
         {
@@ -386,7 +386,7 @@ impl FloatExt
     // It will increase the last digit by one to account for correct rounding, typically
     // when the fractional part is greater than 1/2, and will return false if e is such
     // that no correct answer can be given.
-    func adjustLastDigitFixed(d: nn *DecimalSlice, num, den: u64, shift: u32, e: u64)->bool
+    func adjustLastDigitFixed(d: *DecimalSlice, num, den: u64, shift: u32, e: u64)->bool
     {
         if 2 * (num + e) < (den << shift):
             return true
@@ -422,7 +422,7 @@ impl FloatExt
     // which belongs to the open interval (lower, upper), where f is supposed
     // to lie. It returns false whenever the result is unsure. The implementation
     // uses the Grisu3 algorithm.
-    mtd shortestDecimal(d: nn *DecimalSlice, lower, upper: nn *FloatExt)->bool
+    mtd shortestDecimal(d: *DecimalSlice, lower, upper: *FloatExt)->bool
     {
         if mant == 0
         {
@@ -561,7 +561,7 @@ impl FloatExt
     // d = x-targetDiff*ε, without becoming smaller than x-maxDiff*ε.
     // It assumes that a decimal digit is worth ulpDecimal*ε, and that
     // all data is known with an error estimate of ulpBinary*ε.
-    func adjustLastDigit(d: nn *DecimalSlice, cdiff, targetDiff, maxDiff, ulpDecimal, ulpBinary: u64)->bool
+    func adjustLastDigit(d: *DecimalSlice, cdiff, targetDiff, maxDiff, ulpDecimal, ulpBinary: u64)->bool
     {
         var currentDiff = cdiff
 

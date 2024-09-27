@@ -146,7 +146,7 @@ impl Inflate
 {
     public const InflateMaxDistance = 32768'u32
 
-    mtd decode(ht: nn *HuffmanTable)->u16 throw
+    mtd decode(ht: *HuffmanTable)->u16 throw
     {
         if stream.numBits < 16
         {
@@ -182,7 +182,7 @@ impl Inflate
         return ht.value[b1]
     }
 
-    mtd parseBlock(repeatHt, repeatZ: nn *HuffmanTable, dest: nn *Array'u8) throw
+    mtd parseBlock(repeatHt, repeatZ: *HuffmanTable, dest: *Array'u8) throw
     {
         let startBufCount = dest.count
         for

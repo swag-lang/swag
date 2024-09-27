@@ -74,7 +74,7 @@ internal impl TagBin
         freeSections.add(ptr)
     }
 
-    mtd canConvertType(toType, fromType: nn typeinfo)->bool
+    mtd canConvertType(toType, fromType: typeinfo)->bool
     {
         if toType == fromType:
             return true
@@ -280,7 +280,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginStruct(structType: nn typeinfo, _structData: const *u8)->bool throw
+    mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
         var sig = stream.readNative'u32()
         if sig == Write.TagBinSignatures.Raw
@@ -426,7 +426,7 @@ impl TagBin
     {
     }
 
-    mtd beginSequence(typeElem: nn typeinfo, data: nn *u8, countElem: nn *u64)->bool throw
+    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
         let orgCount = dref countElem
         if convertValToArray
@@ -510,7 +510,7 @@ impl TagBin
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd toNextSequenceElement(countElem: nn *u64)->bool
+    mtd toNextSequenceElement(countElem: *u64)->bool
     {
         if dref countElem == 0:
             return false

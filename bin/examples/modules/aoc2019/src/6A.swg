@@ -65,7 +65,7 @@ func day6A()
         map.add(split[1], split[0])
     }
 
-    func count(m: nn *#decltype(map), name: string)->u32
+    func count(m: *#decltype(map), name: string)->u32
     {
         let it = m.find(name)
         if !it:

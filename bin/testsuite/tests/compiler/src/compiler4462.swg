@@ -67,7 +67,7 @@ const solar_bodies: [] Planet = [
 
 //#[Swag.PrintBc]
 //#[Swag.Optimize("", false)]
-func energy(bodies: nn ^Planet)->f64
+func energy(bodies: ^Planet)->f64
 {
     //return bodies.vx * bodies.vx + bodies.vy
     var e: f64 = 0.0
@@ -93,7 +93,7 @@ func energy(bodies: nn ^Planet)->f64
     return e
 }
 
-func advance(bodies: nn [..] Planet, dt: f64, steps: u64)
+func advance(bodies: [..] Planet, dt: f64, steps: u64)
 {
     for s in steps
     {
@@ -140,7 +140,7 @@ func advance(bodies: nn [..] Planet, dt: f64, steps: u64)
     }
 }
 
-func offset_momentum(bodies: nn [..] Planet) {
+func offset_momentum(bodies: [..] Planet) {
     var px: f64 = 0.0
     var py: f64 = 0.0
     var pz: f64 = 0.0

@@ -354,7 +354,7 @@ namespace ResizeTools
     }
 
     #[Swag.Overload]
-    func scaleCol(imgDst: nn *Image, imgSrc: nn const *Image, rmode: Image.ResizeMode)
+    func scaleCol(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
         let sh      = cast(s64) imgSrc.height
         let dh      = cast(s64) imgDst.height
@@ -370,7 +370,7 @@ namespace ResizeTools
     }
 
     #[Swag.Overload]
-    func scaleRow(imgDst: nn *Image, imgSrc: nn const *Image, rmode: Image.ResizeMode)
+    func scaleRow(imgDst: *Image, imgSrc: const *Image, rmode: Image.ResizeMode)
     {
         let sw      = cast(s64) imgSrc.width
         let dw      = cast(s64) imgDst.width
@@ -385,14 +385,14 @@ namespace ResizeTools
         }
     }
 
-    func doResizeFilter(dstImage: nn *Image, srcImage: nn const *Image, mode: Image.ResizeMode)
+    func doResizeFilter(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
     {
         var tmp = Image.create(dstImage.width, srcImage.height, srcImage.pf)
         scaleRow(&tmp, srcImage, mode)
         scaleCol(dstImage, &tmp, mode)
     }
 
-    func doResizeRaw(dstImage: nn *Image, srcImage: nn const *Image)
+    func doResizeRaw(dstImage: *Image, srcImage: const *Image)
     {
         let xscale = srcImage.width / cast(f32) dstImage.width
         let yscale = srcImage.height / cast(f32) dstImage.height
@@ -422,7 +422,7 @@ namespace ResizeTools
         }
     }
 
-    func doResize(dstImage: nn *Image, srcImage: nn const *Image, mode: Image.ResizeMode)
+    func doResize(dstImage: *Image, srcImage: const *Image, mode: Image.ResizeMode)
     {
         switch mode
         {

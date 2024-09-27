@@ -4,29 +4,29 @@ using Swag
 
 #[ConstExpr, Inline]
 {
-    func isNative(t: nn typeinfo)      => t.kind == .Native
-    func isPointer(t: nn typeinfo)     => t.kind == .Pointer
-    func isEnum(t: nn typeinfo)        => t.kind == .Enum
-    func isStruct(t: nn typeinfo)      => t.kind == .Struct
-    func isStaticArray(t: nn typeinfo) => t.kind == .Array
-    func isSlice(t: nn typeinfo)       => t.kind == .Slice
-    func isTypeAlias(t: nn typeinfo)   => t.kind == .Alias
-    func isInterface(t: nn typeinfo)   => t.kind == .Interface
+    func isNative(t: typeinfo)      => t.kind == .Native
+    func isPointer(t: typeinfo)     => t.kind == .Pointer
+    func isEnum(t: typeinfo)        => t.kind == .Enum
+    func isStruct(t: typeinfo)      => t.kind == .Struct
+    func isStaticArray(t: typeinfo) => t.kind == .Array
+    func isSlice(t: typeinfo)       => t.kind == .Slice
+    func isTypeAlias(t: typeinfo)   => t.kind == .Alias
+    func isInterface(t: typeinfo)   => t.kind == .Interface
 
-    func isInteger(t: nn typeinfo)           => t.flags & .Integer
-    func isFloat(t: nn typeinfo)             => t.flags & .Float
-    func isGeneric(t: nn typeinfo)           => t.flags & .Generic
-    func isTuple(t: nn typeinfo)             => t.flags & .Tuple
-    func isType(t: nn typeinfo)              => t.flags & .PointerTypeInfo
-    func isPointerRef(t: nn typeinfo)        => t.flags & .PointerRef
-    func isPointerArithmetic(t: nn typeinfo) => t.flags & .PointerArithmetic
+    func isInteger(t: typeinfo)           => t.flags & .Integer
+    func isFloat(t: typeinfo)             => t.flags & .Float
+    func isGeneric(t: typeinfo)           => t.flags & .Generic
+    func isTuple(t: typeinfo)             => t.flags & .Tuple
+    func isType(t: typeinfo)              => t.flags & .PointerTypeInfo
+    func isPointerRef(t: typeinfo)        => t.flags & .PointerRef
+    func isPointerArithmetic(t: typeinfo) => t.flags & .PointerArithmetic
 
-    func isEnumFlags(t: nn typeinfo)->bool
+    func isEnumFlags(t: typeinfo)->bool
     {
         return isEnum(t)
     }
 
-    func isSimpleNative(t: nn typeinfo)->bool
+    func isSimpleNative(t: typeinfo)->bool
     {
         if !isNative(t):
             return false
@@ -35,7 +35,7 @@ using Swag
         return tt.nativeKind != .Any and tt.nativeKind != .String
     }
 
-    func isRune(t: nn typeinfo)->bool
+    func isRune(t: typeinfo)->bool
     {
         if !isNative(t):
             return false
@@ -44,7 +44,7 @@ using Swag
         return tt.nativeKind == .Rune
     }
 
-    func isAny(t: nn typeinfo)->bool
+    func isAny(t: typeinfo)->bool
     {
         if !isNative(t):
             return false
@@ -53,7 +53,7 @@ using Swag
         return tt.nativeKind == .Any
     }
 
-    func isBool(t: nn typeinfo)->bool
+    func isBool(t: typeinfo)->bool
     {
         if !isNative(t):
             return false
@@ -62,7 +62,7 @@ using Swag
         return tt.nativeKind == .Bool
     }
 
-    func isString(t: nn typeinfo)->bool
+    func isString(t: typeinfo)->bool
     {
         if !isNative(t):
             return false
@@ -75,7 +75,7 @@ using Swag
 #[ConstExpr]
 {
     // In case this is a type alias, need to go deep inside it to find the right type
-    func makeConcreteAlias(type: nn typeinfo)->typeinfo
+    func makeConcreteAlias(type: typeinfo)->typeinfo
     {
         var result = type
         while isTypeAlias(result)
@@ -105,7 +105,7 @@ using Swag
         return res
     }
 
-    func copy(dst, src: nn *void, type: nn typeinfo)
+    func copy(dst, src: *void, type: typeinfo)
     {
         Memory.copy(dst, src, cast(u64) type.sizeof)
         if hasPostCopy(type)

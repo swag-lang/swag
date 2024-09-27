@@ -85,7 +85,7 @@ impl Encoder
     }
 
     // Write a given Swag.TypeValue.
-    mtd writeTypeValue(typeVal: TypeValue, data: nn const ^void) throw
+    mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
     {
         serializer.beginElement(typeVal)
         writeValue(data, typeVal.pointedType)
@@ -93,7 +93,7 @@ impl Encoder
     }
 
     // Write a given value with a given type.
-    mtd writeValue(data: nn const ^void, dataType: nn typeinfo) throw
+    mtd writeValue(data: const ^void, dataType: typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -264,7 +264,7 @@ impl Encoder
 
     // Write a full struct.
     // Will call [[Encoder.start]], [[Encoder.writeValue]] and [[Encoder.end]]
-    mtd writeAll(result: *ConcatBuffer, value: nn any) throw
+    mtd writeAll(result: *ConcatBuffer, value: any) throw
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
         start(self, result)
@@ -315,12 +315,12 @@ impl IEncoder for Encoder
         serializer.endSection()
     }
 
-    mtd impl write(data: nn const ^void, type: nn typeinfo) throw
+    mtd impl write(data: const ^void, type: typeinfo) throw
     {
         writeValue(data, type)
     }
 
-    mtd impl writeBufferU8(data: nn const ^u8, count: u64) throw
+    mtd impl writeBufferU8(data: const ^u8, count: u64) throw
     {
         let treated = serializer.beginSequence(u8, data, count)
         defer<noerr> serializer.endSequence()

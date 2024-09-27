@@ -1,4 +1,4 @@
-func(T) titi(v: T, cb: nn func(T)->T)
+func(T) titi(v: T, cb: func(T)->T)
 {
     @assert(cb(v) == v)
 }

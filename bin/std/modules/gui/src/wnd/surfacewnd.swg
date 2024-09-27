@@ -68,7 +68,7 @@ impl IWnd for SurfaceWnd
         return newSizingBorder
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         switch evt.kind
         {
@@ -190,12 +190,12 @@ impl IWnd for SurfaceWnd
         }
     }
 
-    mtd impl onDestroyEvent(evt: nn *DestroyEvent)
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
         surface.app.destroySurface(surface)
     }
 
-    mtd impl onSysCommandEvent(evt: nn *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         switch evt.kind
         {
@@ -241,7 +241,7 @@ impl IWnd for SurfaceWnd
         base.IWnd.onResizeEvent(evt)
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if isPendingDestroy:
             return
@@ -306,21 +306,21 @@ impl IWnd for SurfaceWnd
 
 impl SurfaceWnd
 {
-    func onMinimize(btn: nn *Button)
+    func onMinimize(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
         evt.kind = .Minimize
         btn.surface.wnd.postEvent(evt)
     }
 
-    func onMaximize(btn: nn *Button)
+    func onMaximize(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
         evt.kind = btn.surface.isMaximized ? .Restore : .Maximize
         btn.surface.wnd.postEvent(evt)
     }
 
-    func onClose(btn: nn *Button)
+    func onClose(btn: *Button)
     {
         let evt = Event.create'SysCommandEvent()
         evt.kind = .Close

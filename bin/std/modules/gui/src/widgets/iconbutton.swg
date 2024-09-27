@@ -58,10 +58,10 @@ struct IconButton
     arrowPos             = IconButtonArrowPos.None
     textPos              = IconButtonTextPos.Bottom
 
-    sigHidePopup:        SigArray'func||(nn *Self)
-    sigShowPopup:        SigArray'func||(nn *Self)
-    sigCheckChanged:     SigArray'func||(nn *Self)
-    sigPaintIcon:        func||(nn *Self, nn *PaintContext, Math.Rectangle)
+    sigHidePopup:        SigArray'func||(*Self)
+    sigShowPopup:        SigArray'func||(*Self)
+    sigCheckChanged:     SigArray'func||(*Self)
+    sigPaintIcon:        func||(*Self, *PaintContext, Math.Rectangle)
 
     aniBk:               BlendColor
     isChecked:           bool
@@ -83,7 +83,7 @@ impl IWnd for IconButton
         invalidate()
     }
 
-    mtd impl onHookEvent(evt: nn IEvent)
+    mtd impl onHookEvent(evt: IEvent)
     {
         if !popup:
             return
@@ -103,7 +103,7 @@ impl IWnd for IconButton
         hidePopup()
     }
 
-    mtd impl onApplyStateEvent(evt: nn *CommandStateEvent)
+    mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
         if evt.id != id:
             return
@@ -123,7 +123,7 @@ impl IWnd for IconButton
         button.IWnd.onApplyStateEvent(evt)
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
         let theme   = getTheme()
@@ -433,7 +433,7 @@ impl IWnd for IconButton
         }
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {
@@ -474,7 +474,7 @@ impl IWnd for IconButton
 impl IconButton
 {
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, icon: Icon, position: Math.Rectangle = {}, id: WndId = null)->*IconButton
+    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle = {}, id: WndId = null)->*IconButton
     {
         Debug.assert(parent != null)
         var pos = position

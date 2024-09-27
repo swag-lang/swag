@@ -16,7 +16,7 @@ impl I for B
     mtd impl toto() {}
 }
 
-func toto(y: nn I, what: typeinfo)->bool
+func toto(y: I, what: typeinfo)->bool
 {
     return y == what
 }

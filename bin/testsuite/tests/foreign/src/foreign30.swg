@@ -1,4 +1,4 @@
-public func toto30(f: nn func||(s32))
+public func toto30(f: func||(s32))
 {
     f(10)
 }

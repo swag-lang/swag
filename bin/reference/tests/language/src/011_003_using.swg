@@ -64,7 +64,7 @@ function logic clearer and easier to follow.
 {
     struct Point { x: s32, y: s32 }
 
-    func setOne(using point: nn *Point)
+    func setOne(using point: *Point)
     {
         // Access the fields of 'point' directly without prefixing with 'point->'.
         x, y = 1
@@ -110,7 +110,7 @@ removing unnecessary layers of field access.
     @assert(&value.y == &value.base.y)  // Validate that 'y' refers to the correct memory location.
 
     // The compiler can automatically cast 'Point3' to 'Point2' due to the `using` statement.
-    func set1(using ptr: nn *Point2)
+    func set1(using ptr: *Point2)
     {
         x, y = 1          // Direct access to 'x' and 'y' fields.
     }

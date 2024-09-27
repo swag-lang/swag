@@ -16,7 +16,7 @@ impl CStr
 
 //#[Swag.Macro]
 //#[Swag.PrintBc]
-func cstr(x: nn string)->CStr
+func cstr(x: string)->CStr
 {
     //@breakpoint()
     var tmp: retval = undefined

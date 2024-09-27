@@ -147,7 +147,7 @@ impl Polygon
     }
 
     #[Swag.Overload]
-    internal mtd offset(res: nn *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
+    internal mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
         if Math.isZeroEpsilon(value):
             return
@@ -213,7 +213,7 @@ impl Polygon
     }
 
     #[Swag.Overload]
-    internal mtd clean(res: nn *Clipper.ClipperPaths)
+    internal mtd clean(res: *Clipper.ClipperPaths)
     {
         if !points.count:
             return

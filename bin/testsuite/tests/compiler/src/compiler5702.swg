@@ -28,7 +28,7 @@ impl IEvent for Evt2 {}
 impl IEvent for Evt3 {}
 
 #[Swag.Safety("dyncast", true)]
-func toto(v: nn IEvent)
+func toto(v: IEvent)
 {
     let ptr0 = cast(*Evt1) v
     @assert(!ptr0)

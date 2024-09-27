@@ -154,7 +154,7 @@ internal impl Surface
     }
 
     // Creates a new (invisible) surface
-    func createNative(app: nn *Application, result: nn *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         // Create class
         #[Swag.Global]
@@ -312,7 +312,7 @@ impl Surface
     }
 
     // Transform a point in screen space relative to the surface
-    mtd screenToSurface(pt: nn *Math.Point)
+    mtd screenToSurface(pt: *Math.Point)
     {
         var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
         ScreenToClient(hWnd, &wpt)
@@ -321,7 +321,7 @@ impl Surface
     }
 
     // Transform a point relative to the surface in screen space
-    mtd surfaceToScreen(pt: nn *Math.Point)
+    mtd surfaceToScreen(pt: *Math.Point)
     {
         var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
         ClientToScreen(hWnd, &wpt)

@@ -1163,14 +1163,14 @@ private namespace User32Priv
             throwWinError(GetLastError())
     }
 
-    func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: nn *MONITORINFO) throw
+    func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
     {
         lpmi.cbSize = #sizeof(MONITORINFO)
         if !User32Priv.GetMonitorInfoA(hMonitor, lpmi):
             throwWinError(GetLastError())
     }
 
-    func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: nn *MONITORINFO) throw
+    func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
     {
         lpmi.cbSize = #sizeof(MONITORINFO)
         if !User32Priv.GetMonitorInfoW(hMonitor, lpmi):

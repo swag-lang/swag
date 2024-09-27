@@ -1128,54 +1128,6 @@ bool Semantic::resolveScopeBreakable(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveExpectConstraint(SemanticContext* context)
-{
-    const auto node = castAst<AstExpectConstraint>(context->node, AstNodeKind::ExpectConstraint);
-    const auto expr = node->lastChild();
-
-    // Get the parameter identifier
-    AstNode* param = nullptr;
-    if (expr->is(AstNodeKind::BinaryOp))
-        param = expr->firstChild();
-
-    if (!param)
-    {
-        const Diagnostic err{expr, toErr(Err0780)};
-        return context->report(err);
-    }
-
-    if (param->isNot(AstNodeKind::IdentifierRef) ||
-        param->childCount() != 1 ||
-        param->firstChild()->isNot(AstNodeKind::Identifier) ||
-        !param->resolvedSymbolName() ||
-        param->resolvedSymbolName()->isNot(SymbolKind::Variable) ||
-        !param->resolvedSymbolOverload() ||
-        !param->resolvedSymbolOverload()->flags.has(OVERLOAD_VAR_FUNC_PARAM))
-    {
-        const Diagnostic err{param, toErr(Err0782)};
-        return context->report(err);
-    }
-
-    node->setResolvedSymbolName(param->resolvedSymbolName());
-    node->setResolvedSymbolOverload(param->resolvedSymbolOverload());
-
-    // param != null
-    if (expr->is(AstNodeKind::BinaryOp) &&
-        expr->token.text == "!=" &&
-        expr->secondChild()->is(AstNodeKind::Literal))
-    {
-        if (expr->secondChild()->typeInfo->isPointerNull() ||
-            expr->secondChild()->typeInfoCast && expr->secondChild()->typeInfoCast->isPointerNull())
-        {
-            node->constraintKind = ExpectConstraintKind::NotNull;
-            return true;
-        }
-    }
-
-    const Diagnostic err{expr, toErr(Err0780)};
-    return context->report(err);
-}
-
 bool Semantic::resolveWhereVerifyConstraint(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::WhereConstraint, AstNodeKind::VerifyConstraint);

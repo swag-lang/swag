@@ -30,7 +30,7 @@ var g_GameOver: bool
 var g_Score:    s32
 
 const RoundCorners = 8.0
-func paintGrid(wnd: nn *Wnd, painter: nn *Painter)
+func paintGrid(wnd: *Wnd, painter: *Painter)
 {
     var rect = wnd.getClientRect()
 
@@ -117,7 +117,7 @@ func randValue()
     }
 }
 
-func animate(wnd: nn *Wnd)
+func animate(wnd: *Wnd)
 {
     let dt = wnd.getApp().getDt()
 
@@ -206,7 +206,7 @@ func canMoveTo(val, x, y: s32)->bool
     return true
 }
 
-func keyboard(wnd: nn *Wnd)
+func keyboard(wnd: *Wnd)
 {
     if g_IsMoving or g_GameOver:
         return
@@ -278,7 +278,7 @@ func keyboard(wnd: nn *Wnd)
     }
 }
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -309,7 +309,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application)
+    func test(app: *Application)
     {
         if Env.hasArg("swag.test"):
             app.maxRunFrame = 100

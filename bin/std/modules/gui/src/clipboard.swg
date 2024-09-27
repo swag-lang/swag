@@ -4,7 +4,7 @@ using Serialization
 var g_ValueFormat: ValueFormat
 
 // Add whatever value with a given 'type'
-public func addTypedValue(value: nn *void, type: nn typeinfo)
+public func addTypedValue(value: *void, type: typeinfo)
 {
     switch type
     {
@@ -45,7 +45,7 @@ public func hasTypedValue(type: typeinfo)->bool
 }
 
 // Get whatever value with a given 'type'
-public func getTypedValue(value: nn *void, type: nn typeinfo)->bool
+public func getTypedValue(value: *void, type: typeinfo)->bool
 {
     if !hasTypedValue(type):
         return false

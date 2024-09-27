@@ -210,19 +210,19 @@ func memset(dst: *void, value: s32, size: u64)
 }
 
 #[Swag.NoDoc]
-func memcpy(dst: *void, src: nn const *void, size: u64)
+func memcpy(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlCopyMemory(dst, src, size)
 }
 
 #[Swag.NoDoc]
-func memmove(dst: *void, src: nn const *void, size: u64)
+func memmove(dst: *void, src: const *void, size: u64)
 {
     __Win32RT.RtlMoveMemory(dst, src, size)
 }
 
 #[Swag.NoDoc]
-func memcmp(dst, src: nn const ^void, size: u64)->s32
+func memcmp(dst, src: const ^void, size: u64)->s32
 {
     let len = __Win32RT.RtlCompareMemory(dst, src, size)
     if len == size:
@@ -263,7 +263,7 @@ func __tlsSetValue(id: u64, value: *void) => __Win32RT.TlsSetValue(cast(u32) id,
 func __tlsGetValue(id: u64)->*void        => __Win32RT.TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
-func __tlsGetPtr(id: u64, size: u64, init: nn const *void)->*void
+func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 {
     using __Win32RT
     var ptr = TlsGetValue(cast(u32) id)

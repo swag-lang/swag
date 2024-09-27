@@ -56,7 +56,7 @@ public impl IImageDecoder for Decoder
         return Path.getExtensionLowerCase(fileName) == ".bmp"
     }
 
-    mtd impl decode(buffer: nn const [..] u8, options: DecodeOptions)->Image throw
+    mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         var dataof  = @dataof(buffer)
         let countof = @countof(buffer)

@@ -36,7 +36,7 @@ struct SplitterCtrl
 
 impl IWnd for SplitterCtrl
 {
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = true
         var local = surfaceToLocal(evt.surfacePos)
@@ -154,7 +154,7 @@ impl IWnd for SplitterCtrl
         }
     }
 
-    mtd impl onPostPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
         if !items.count:
             return
@@ -419,7 +419,7 @@ impl SplitterCtrl
 
     // Add a new pane
     #[Swag.Discardable]
-    mtd addPane(pane: nn *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
+    mtd addPane(pane: *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
     {
         pane.setParent(self)
         numVisiblePanes += 1

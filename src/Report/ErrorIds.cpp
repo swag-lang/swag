@@ -928,7 +928,7 @@ void initErrors()
     SWAG_ERROR(Err0779, "already defined switch value                      $ cannot use the [[switch]] value [[null]] because it already exists                                                                       $ ");
     SWAG_ERROR(Err0780, "invalid [[expect]] expression                     $ expected an expression compatible with an [[expect]] compile time check                                                                  $ the only valid expression for now is [[param != null]]");
     SWAG_ERROR(Err0782, "invalid [[expect]] expression                     $ expected a function parameter name                                                                                                       $ ");
-    SWAG_ERROR(Err0781, "invalid non nullable type                         $ cannot make the type [[%s]] non nullable with [['!']]                                                                                    $ ");
+    SWAG_ERROR(Err0781, "invalid nullable type                             $ cannot make the type [[%s]] nullable                                                                                                     $ ");
     SWAG_ERROR(Err0783, nullptr);
     SWAG_ERROR(Err0784, nullptr);
     SWAG_ERROR(Err0785, nullptr);

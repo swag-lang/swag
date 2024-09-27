@@ -16,13 +16,13 @@ struct IconBar
     iconSize:            f32
     iconPadding:         f32 = 4
 
-    sigUpdateState:      SigArray'func||(nn *CommandStateEvent)
-    sigCheckChanged:     SigArray'func||(nn *IconButton)
+    sigUpdateState:      SigArray'func||(*CommandStateEvent)
+    sigCheckChanged:     SigArray'func||(*IconButton)
 }
 
 impl IWnd for IconBar
 {
-    mtd impl onComputeStateEvent(evt: nn *CommandStateEvent)
+    mtd impl onComputeStateEvent(evt: *CommandStateEvent)
     {
         evt.accepted = false
         sigUpdateState.call(evt)

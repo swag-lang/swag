@@ -42,7 +42,7 @@ impl Image
 
     // Decode the given image buffer with the given decoder
     #[Swag.Overload]
-    func decode(decoder: nn *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
+    func decode(decoder: *ImageDecoder, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         // Create a decoder instance
         let ptrDecoder = Memory.new(decoder.type)

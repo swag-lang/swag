@@ -56,7 +56,7 @@ func day7B0()
     }
 
     alias T = #decltype(id)
-    func count(id: nn *T, what: string)->u32
+    func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
         if !it:
@@ -96,7 +96,7 @@ func day7B1()
     }
 
     alias T = #decltype(id)
-    func count(id: nn *T, what: string)->u32
+    func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
         if !it:

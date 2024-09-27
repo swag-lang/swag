@@ -54,7 +54,7 @@ public struct MenuCtrl
 
 public impl IWnd for MenuCtrl
 {
-    internal mtd paintBar(painter: nn *Painter)
+    internal mtd paintBar(painter: *Painter)
     {
         let theme   = getTheme()
         let colors  = getThemeColors()
@@ -129,7 +129,7 @@ public impl IWnd for MenuCtrl
         }
     }
 
-    internal mtd paintPopup(painter: nn *Painter)
+    internal mtd paintPopup(painter: *Painter)
     {
         let theme   = getTheme()
         let colors  = getThemeColors()
@@ -246,7 +246,7 @@ public impl IWnd for MenuCtrl
         }
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         frameWnd.IWnd.onPaintEvent(evt)
         if bar:
@@ -262,7 +262,7 @@ public impl IWnd for MenuCtrl
         showHotPopup()
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         let hit = hitTest(evt.surfacePos)
         if hit != hotIdx
@@ -644,7 +644,7 @@ impl MenuCtrl
 public impl MenuCtrl
 {
     #[Swag.Discardable]
-    func createPopup(parent: nn *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
+    func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
@@ -657,7 +657,7 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: nn *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent, null, pos, id)
         {
@@ -699,14 +699,14 @@ public impl MenuCtrl
 
     // Add a new popup item
     #[Swag.Overload]
-    mtd addPopup(popup: nn *MenuCtrl, id: WndId)
+    mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
         self.addPopup(null, popup, id: #self.id)
     }
 
     // Add a new popup item
     #[Swag.Overload]
-    mtd addPopup(name: string, popup: nn *MenuCtrl, icon: Icon = {}, id: WndId = null)
+    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
     {
         with let mitem = items.newPtr()
         {

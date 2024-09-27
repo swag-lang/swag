@@ -1,4 +1,4 @@
-func strlen(value: nn const ^u8)->u32
+func strlen(value: const ^u8)->u32
 {
     var idx = 0'u32
     while value[idx]: idx += 1

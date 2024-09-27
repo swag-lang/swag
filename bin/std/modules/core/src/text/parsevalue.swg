@@ -12,7 +12,7 @@ using Swag, Core.Errors
 // 'buf' can contain multiple values separated with blanks if 'type' is:
 // * a static array of the types above
 // * a dynamic 'Core.Array' of the types above
-public func parseValue(addr: nn *void, type: nn typeinfo, buf: string)->string throw
+public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
 {
     var patch = cast(*u8) addr
     var one   = Tokenize.eatSpaces(buf)

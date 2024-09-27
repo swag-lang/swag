@@ -160,7 +160,7 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertBefore(node: nn *ListNode, value: T)->*ListNode
+    mtd insertBefore(node: *ListNode, value: T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value = value
@@ -177,7 +177,7 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertBefore(node: nn *ListNode, value: &&T)->*ListNode
+    mtd insertBefore(node: *ListNode, value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value = #move value
@@ -195,7 +195,7 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertAfter(node: nn *ListNode, value: T)->*ListNode
+    mtd insertAfter(node: *ListNode, value: T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value = value
@@ -212,7 +212,7 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertAfter(node: nn *ListNode, value: &&T)->*ListNode
+    mtd insertAfter(node: *ListNode, value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value = #move value

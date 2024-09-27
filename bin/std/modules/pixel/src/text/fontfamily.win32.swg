@@ -15,7 +15,7 @@ public struct FontFamilyEnumerate
 
 impl FontFamily
 {
-    func enumSubFamily(fa: nn const *LOGFONTW, _tm: nn const *TEXTMETRICW, _fontType: DWORD, lParam: LPARAM)->BOOL
+    func enumSubFamily(fa: const *LOGFONTW, _tm: const *TEXTMETRICW, _fontType: DWORD, lParam: LPARAM)->BOOL
     {
         let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
         if !len:
@@ -40,7 +40,7 @@ impl FontFamily
         return TRUE
     }
 
-    func enumFamily(fa: nn const *LOGFONTW, _tm: nn const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
+    func enumFamily(fa: const *LOGFONTW, _tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
         if fontType & TRUETYPE_FONTTYPE
         {

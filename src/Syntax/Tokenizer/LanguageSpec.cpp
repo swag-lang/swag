@@ -299,7 +299,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("foreach", TokenId::KwdForEach);
     keywords.add("where", TokenId::KwdWhere);
     keywords.add("verify", TokenId::KwdVerify);
-    keywords.add("expect", TokenId::KwdExpect);
     keywords.add("break", TokenId::KwdBreak);
     keywords.add("fallthrough", TokenId::KwdFallThrough);
     keywords.add("unreachable", TokenId::KwdUnreachable);

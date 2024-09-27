@@ -51,7 +51,7 @@ struct Application
 internal impl Application
 {
     // Send and process an event
-    mtd sendEventPrivate(evt: nn IEvent, stopAt: *Wnd)
+    mtd sendEventPrivate(evt: IEvent, stopAt: *Wnd)
     {
         // Global hook events
         foreach hook in hookOnEvent:
@@ -336,7 +336,7 @@ internal impl Application
 
     // Remove and destroy the given surface
     // To cleanly close a surface, you should call surface.destroy()
-    mtd destroySurface(surface: nn *Surface)
+    mtd destroySurface(surface: *Surface)
     {
         surfaces.remove(surface)
         if surface == mainSurface:
@@ -349,7 +349,7 @@ internal impl Application
         Memory.delete(surface)
     }
 
-    mtd unregisterWnd(wnd: nn *Wnd)
+    mtd unregisterWnd(wnd: *Wnd)
     {
         if wnd == mouseEnterWnd or wnd.isOwnerOf(mouseEnterWnd):
             mouseEnterWnd = null
@@ -462,7 +462,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: *Surface, cb: func||(nn *Application) = null)->WndId
+    public mtd doModalLoop(surface: *Surface, cb: func||(*Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1
@@ -610,7 +610,7 @@ impl Application
         appIcon = img
     }
 
-    internal mtd serializeState(ser: nn *Serializer) throw
+    internal mtd serializeState(ser: *Serializer) throw
     {
         ser.beginSection(.Unordered)
         foreach s in surfaces:
@@ -657,7 +657,7 @@ impl Application
 
     // Destroy a window
     // To cleanly close a window, you should call wnd.destroy()
-    mtd destroyWnd(wnd: nn *Wnd)
+    mtd destroyWnd(wnd: *Wnd)
     {
         var evt = DestroyEvent{}
         wnd.sendEvent(&evt)
@@ -718,13 +718,13 @@ impl Application
     }
 
     // Post a new event (thread safe)
-    mtd postEvent(event: nn IEvent)
+    mtd postEvent(event: IEvent)
     {
         Sync.scopedLock(&mutexPostedEvents)
         postedEvents.add(event)
     }
 
-    mtd sendEvent(event: nn IEvent)
+    mtd sendEvent(event: IEvent)
     {
         sendEventPrivate(event, null)
     }
@@ -743,7 +743,7 @@ impl Application
     }
 
     // Delete and unregister timer
-    mtd deleteTimer(timer: nn *Timer)
+    mtd deleteTimer(timer: *Timer)
     {
         if duringTimerEvents
         {
@@ -760,27 +760,27 @@ impl Application
     }
 
     // Register a window to receive a FrameEvent each running for
-    mtd registerFrameEvent(target: nn *Wnd)
+    mtd registerFrameEvent(target: *Wnd)
     {
         Debug.assert(!frameEvents.contains(target))
         frameEvents.add(target)
     }
 
     // Unregister a window that receives a FrameEvent each running for
-    mtd unregisterFrameEvent(target: nn *Wnd)
+    mtd unregisterFrameEvent(target: *Wnd)
     {
         frameEvents.remove(target)
     }
 
     // Register a window to receive hook events
-    mtd registerHookEvents(target: nn *Wnd)
+    mtd registerHookEvents(target: *Wnd)
     {
         Debug.assert(!hookOnEvent.contains(target))
         hookOnEvent.add(target)
     }
 
     // Unregister a window to receive hook events
-    mtd unregisterHookEvents(target: nn *Wnd)
+    mtd unregisterHookEvents(target: *Wnd)
     {
         hookOnEvent.remove(target)
     }

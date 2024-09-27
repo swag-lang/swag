@@ -17,7 +17,7 @@ enum class SanityValueKind : uint8_t
     Invalid,
     StackAddr,
     Constant,
-    ZeroParam,
+    ForceNull,
     Unknown,
 };
 
@@ -29,7 +29,7 @@ struct SanityValue
 
     bool isConstant() const
     {
-        return kind == SanityValueKind::Constant || kind == SanityValueKind::ZeroParam;
+        return kind == SanityValueKind::Constant || kind == SanityValueKind::ForceNull;
     }
 
     void update(ByteCodeInstruction *ip)

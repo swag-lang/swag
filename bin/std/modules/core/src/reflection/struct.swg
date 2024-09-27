@@ -4,7 +4,7 @@ using Swag
 
 // Returns true if this is a struct of the given 'name'.
 #[ConstExpr]
-func isStructOfName(type: nn typeinfo, name: string)->bool
+func isStructOfName(type: typeinfo, name: string)->bool
 {
     if !isStruct(type):
         return false
@@ -16,7 +16,7 @@ func isStructOfName(type: nn typeinfo, name: string)->bool
 // Get information about a specific method in a given struct.
 // Returns null if the method does not exist
 #[ConstExpr]
-func getMethod(type: nn typeinfo, name: string)->const *TypeValue
+func getMethod(type: typeinfo, name: string)->const *TypeValue
 {
     if !isStruct(type):
         return null
@@ -30,7 +30,7 @@ func getMethod(type: nn typeinfo, name: string)->const *TypeValue
 // Get information about a specific field in a given struct
 // Returns null if the field does not exist
 #[ConstExpr]
-func getField(type: nn typeinfo, name: string)->const *TypeValue
+func getField(type: typeinfo, name: string)->const *TypeValue
 {
     if !isStruct(type):
         return null
@@ -43,7 +43,7 @@ func getField(type: nn typeinfo, name: string)->const *TypeValue
 
 // Get a field value with a given runtime type.
 #[ConstExpr]
-func getFieldValue(dest: nn *void, type: nn const *TypeValue, src: nn *void, hardCast: bool = false)
+func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
 {
     let patch = cast(^u8) src + type.offset
     switch type.pointedType
@@ -79,7 +79,7 @@ func getFieldValue(dest: nn *void, type: nn const *TypeValue, src: nn *void, har
 
 // Set a field value with a given runtime type.
 #[ConstExpr]
-func setFieldValue(dest: nn *void, type: nn const *TypeValue, src: nn const *void, hardCast: bool = false)
+func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
 {
     var patch = cast(^u8) dest + type.offset
     switch type.pointedType
@@ -115,20 +115,20 @@ func setFieldValue(dest: nn *void, type: nn const *TypeValue, src: nn const *voi
 
 // Helper function to know if a struct has a special method
 #[ConstExpr]
-func hasMethod(type: nn typeinfo, name: nn string)->bool => getMethod(type, name) != null
+func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != null
 
 #[ConstExpr, Inline]
 {
-    func hasDrop(type: nn typeinfo)->bool     => (type.flags & TypeInfoFlags.HasDrop) ? true : false
-    func hasPostMove(type: nn typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
-    func hasPostCopy(type: nn typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
-    func canCopy(type: nn typeinfo)->bool     => (type.flags & TypeInfoFlags.CanCopy) ? true : false
-    func isPod(type: nn typeinfo)->bool       => (type.flags & (TypeInfoFlags.HasDrop | TypeInfoFlags.HasPostMove | TypeInfoFlags.HasPostCopy) ? false : true)
+    func hasDrop(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.HasDrop) ? true : false
+    func hasPostMove(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
+    func hasPostCopy(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
+    func canCopy(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.CanCopy) ? true : false
+    func isPod(type: typeinfo)->bool       => (type.flags & (TypeInfoFlags.HasDrop | TypeInfoFlags.HasPostMove | TypeInfoFlags.HasPostCopy) ? false : true)
 }
 
 // Returns true if the interface 'itf' is implemented in the given structure type.
 #[ConstExpr]
-func hasInterface(type: nn typeinfo, itf: nn typeinfo)->bool
+func hasInterface(type: typeinfo, itf: typeinfo)->bool
 {
     if !isStruct(type):
         return false

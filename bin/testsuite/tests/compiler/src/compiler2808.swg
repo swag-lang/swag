@@ -1,5 +1,5 @@
 // Swap two values
-func swap(x, y: nn *s32)
+func swap(x, y: *s32)
 {
     let tmp = #moveraw dref x
     dref x = #nodrop #moveraw dref y

@@ -27,7 +27,7 @@ struct GridLayoutCtrl
 
 impl IWnd for GridLayoutCtrl
 {
-    mtd impl onResizeEvent(evt: nn *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if !childs.count
         {
@@ -154,7 +154,7 @@ impl GridLayoutCtrl
 
     // Set the wnd associated with the given 'col' and 'row'.
     // Window can cover multiple columns and rows.
-    mtd setColRowChild(child: nn *Wnd, col, row: s32, spanH, spanV: s32 = 1)
+    mtd setColRowChild(child: *Wnd, col, row: s32, spanH, spanV: s32 = 1)
     {
         Debug.assert(child.parent == self)
         Debug.assert(col + spanH <= numColumns and row + spanV <= numRows)

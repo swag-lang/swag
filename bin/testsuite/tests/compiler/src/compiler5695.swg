@@ -23,7 +23,7 @@ impl IEvent for Evt {}
 impl IEvent for Evt1 {}
 impl IEvent for Evt2 {}
 
-func can(toType, fromType: nn const *Swag.TypeInfoStruct)->bool
+func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
     if @typecmp(toType, fromType, .Strict):
         return true
@@ -37,7 +37,7 @@ func can(toType, fromType: nn const *Swag.TypeInfoStruct)->bool
     return false
 }
 
-func toto(v: nn IEvent)
+func toto(v: IEvent)
 {
     @assert(can(Evt1, @kindof(v)) == true)
     @assert(can(Evt2, @kindof(v)) == false)

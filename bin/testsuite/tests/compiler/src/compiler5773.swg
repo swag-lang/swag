@@ -1,4 +1,4 @@
-var sigChanged: func||(nn *void, bool)
+var sigChanged: func||(*void, bool)
 
 //#[Swag.PrintGenBc]
 func toto()

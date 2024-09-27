@@ -23,7 +23,7 @@ impl FormDraw
 
 impl IForm for FormDraw
 {
-    mtd impl isSame(ptr: nn *BaseForm)->bool
+    mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormDraw) ptr
         return borderColor == other.borderColor and
@@ -32,7 +32,7 @@ impl IForm for FormDraw
                paintShadow == paintShadow
     }
 
-    mtd impl copy(dst, src: nn *BaseForm)
+    mtd impl copy(dst, src: *BaseForm)
     {
         let dstf = cast(*FormDraw) dst
         let srcf = cast(*FormDraw) src
@@ -42,7 +42,7 @@ impl IForm for FormDraw
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: nn *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseReleased and evt.button == .Left:
             return false
@@ -160,7 +160,7 @@ impl IForm for FormDraw
         return false
     }
 
-    mtd impl paintGizmo(painter: nn *Painter, z: f32, flags: FormFlags)
+    mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -203,7 +203,7 @@ impl IForm for FormDraw
         return false
     }
 
-    mtd impl paint(app: *Application, painter: nn *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         bSize = Math.max(bSize, 2)

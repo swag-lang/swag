@@ -1,4 +1,4 @@
-func(T) largest(list: nn [..] T)->&T
+func(T) largest(list: [..] T)->&T
 {
     var largest = #ref &list[0]
     foreach item in list

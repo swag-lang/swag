@@ -1,4 +1,4 @@
-func getChar(buffer: nn const ^u8)->{a:const ^u8, b:rune}
+func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 {
 	var ptr = buffer
 	var c = cast(rune) dref ptr

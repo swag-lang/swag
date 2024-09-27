@@ -246,8 +246,8 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 
     node->typeInfo = typeInfo;
 
-    if (node->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
-        node->typeInfo = g_TypeMgr->makeNonNullable(node->typeInfo);
+    if (node->typeFlags.has(TYPE_FLAG_NULLABLE))
+        node->typeInfo = g_TypeMgr->makeNullable(node->typeInfo);
 
     return true;
 }
@@ -274,11 +274,11 @@ bool Semantic::resolveType(SemanticContext* context)
     SWAG_CHECK(resolveType(context, typeNode));
     YIELD();
 
-    if (typeNode->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
+    if (typeNode->typeFlags.has(TYPE_FLAG_NULLABLE))
     {
         const auto concrete = typeNode->typeInfo->getConcreteAlias();
         SWAG_VERIFY(concrete->couldBeNull(), context->report({typeNode, formErr(Err0781, typeNode->typeInfo->getDisplayNameC())}));
-        typeNode->typeInfo = g_TypeMgr->makeNonNullable(typeNode->typeInfo);
+        typeNode->typeInfo = g_TypeMgr->makeNullable(typeNode->typeInfo);
     }
 
     return true;

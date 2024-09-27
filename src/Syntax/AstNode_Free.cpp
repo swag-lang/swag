@@ -242,9 +242,6 @@ void AstNode::release()
         case AstNodeKind::CompilerCode:
             Allocator::free<AstCompilerCode>(this);
             break;
-        case AstNodeKind::ExpectConstraint:
-            Allocator::free<AstExpectConstraint>(this);
-            break;
         default:
             Allocator::free<AstNode>(this);
             break;

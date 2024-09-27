@@ -662,7 +662,7 @@ impl Array
 
     // Sort array
     #[Overload]
-    mtd sort(cb: nn func||(T, T)->s32)
+    mtd sort(cb: func||(T, T)->s32)
     {
         Debug.assert(cb != null)
         Slice.sort(toSlice(), cb)
@@ -719,7 +719,7 @@ impl Array
 
 impl StrConv.IConvert for Array
 {
-    mtd impl convert(buf: nn *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
         for i in count

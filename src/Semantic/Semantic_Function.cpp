@@ -121,10 +121,6 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         if (paramType->isCode())
             SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, toErr(Err0399)}));
 
-        // Self should never be null
-        if (paramType->isSelf())
-            funcParam->flags.add(TYPEINFOPARAM_EXPECT_NOT_NULL);
-
         // Not everything is possible for types for attributes
         if (param->ownerScope->is(ScopeKind::Attribute))
         {
@@ -933,27 +929,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             return true;
         }
     }
-
-    // Constraints
-    for (const auto it : funcNode->constraints)
-    {
-        if (it->isNot(AstNodeKind::ExpectConstraint))
-            continue;
-        const auto expect = castAst<AstExpectConstraint>(it, AstNodeKind::ExpectConstraint);
-        switch (expect->constraintKind)
-        {
-            case ExpectConstraintKind::NotNull:
-            {
-                const auto resolved = expect->resolvedSymbolOverload();
-                SWAG_ASSERT(resolved);
-                const auto idx = typeInfo->registerIdxToParamIdx(resolved->storageIndex);
-                SWAG_ASSERT(idx < typeInfo->parameters.size());
-                typeInfo->parameters[idx]->flags.add(TYPEINFOPARAM_EXPECT_NOT_NULL);
-                break;
-            }
-        }
-    }
-
+    
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
     OverloadFlags overFlags = 0;
@@ -1144,7 +1120,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 
         if (typeField->couldBeNull())
         {
-            c->typeInfo = g_TypeMgr->makeNonNullable(typeField);
+            c->typeInfo = g_TypeMgr->makeNullable(typeField);
             typeField   = c->typeInfo;
         }
 

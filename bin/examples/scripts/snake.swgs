@@ -14,7 +14,7 @@ var g_SnakeSpeed: Vector2
 var g_Rect:       Rectangle
 var g_Time:       u64
 
-func paintSnake(painter: nn *Painter)
+func paintSnake(painter: *Painter)
 {
     var scale = 0.52
     foreach p in g_Snake
@@ -30,7 +30,7 @@ func paintSnake(painter: nn *Painter)
     }
 }
 
-func paintApple(painter: nn *Painter)
+func paintApple(painter: *Painter)
 {
     let x = g_ApplePos.x * ElemSize
     let y = g_ApplePos.y * ElemSize
@@ -90,7 +90,7 @@ func updateSnakePosition()
     g_Snake.removeBack()
 }
 
-func updateSpeed(wnd: nn *Wnd)
+func updateSpeed(wnd: *Wnd)
 {
     let kb = wnd.getApp().getKeyboard()
 
@@ -150,7 +150,7 @@ func startGame()
     generateApplePos()
 }
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -177,7 +177,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Snake", hook: &onEvent, init: &test)
 }

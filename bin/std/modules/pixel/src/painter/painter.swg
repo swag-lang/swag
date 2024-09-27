@@ -394,7 +394,7 @@ impl Painter
         return ptr
     }
 
-    internal mtd updateFont(fontRef: nn *Font)
+    internal mtd updateFont(fontRef: *Font)
     {
         if !fontRef.dirty:
             return

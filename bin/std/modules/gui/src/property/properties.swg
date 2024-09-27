@@ -42,7 +42,7 @@ struct Properties
     listNameMarginAfter:      s32 = 5
     listDescMarginAfter:      s32 = 5
 
-    sigChanged:               SigArray'func||(nn *Self, nn *PropertiesItem)
+    sigChanged:               SigArray'func||(*Self, *PropertiesItem)
 
     leftMargin:               s32 = 15
     rightMargin:              s32 = 15
@@ -148,7 +148,7 @@ internal impl Properties
         return null
     }
 
-    mtd popupMenu(item: nn *PropertiesItem, pt: Math.Point)
+    mtd popupMenu(item: *PropertiesItem, pt: Math.Point)
     {
         ToolTip.hide(item.line)
 
@@ -220,7 +220,7 @@ internal impl Properties
         }
     }
 
-    func onHookChildEvent(wnd: nn *Wnd, evt: IEvent)->bool
+    func onHookChildEvent(wnd: *Wnd, evt: IEvent)->bool
     {
         let prop = cast(*Properties) wnd
         if prop.editPopup:
@@ -334,7 +334,7 @@ internal impl Properties
         return false
     }
 
-    mtd paintBackItem(painter: nn *Painter, item: nn *PropertiesItem, wndItem: nn *Wnd)
+    mtd paintBackItem(painter: *Painter, item: *PropertiesItem, wndItem: *Wnd)
     {
         var colBkBk, colBk, colBorder: Color
 
@@ -414,7 +414,7 @@ internal impl Properties
         }
     }
 
-    mtd onItemEvent(item: nn *PropertiesItem, wndItem: nn *Wnd, evt: IEvent)->bool
+    mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: IEvent)->bool
     {
         if wndItem.childs.isEmpty():
             return false
@@ -463,7 +463,7 @@ internal impl Properties
         return result
     }
 
-    mtd refreshItem(item: nn *PropertiesItem)
+    mtd refreshItem(item: *PropertiesItem)
     {
         if !item.sigRefresh.isEmpty()
         {
@@ -603,7 +603,7 @@ internal impl Properties
         return item
     }
 
-    mtd addValue(value: Swag.TypeValue, data: nn ^u8, parentItem: nn *PropertiesItem)
+    mtd addValue(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)
     {
         // Value
         switch
@@ -671,7 +671,7 @@ internal impl Properties
         }
     }
 
-    mtd addStructInternal(typeStruct: nn const *Swag.TypeInfoStruct, addr: nn ^u8, parentItem: *PropertiesItem)
+    mtd addStructInternal(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertiesItem)
     {
         var newParent = parentItem
 
@@ -708,7 +708,7 @@ impl Properties
 {
     // Creates a new Properties instance
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, position: Math.Rectangle = {}, kind = PropertiesKind.List, id: WndId = null)->*Properties
+    func create(parent: *Wnd, position: Math.Rectangle = {}, kind = PropertiesKind.List, id: WndId = null)->*Properties
     {
         let ed = Wnd.create'Properties(parent, "", position, id)
 
@@ -761,7 +761,7 @@ impl Properties
     }
 
     // Add a new struct to display.
-    mtd addStruct(val: nn any, section: string = null)
+    mtd addStruct(val: any, section: string = null)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)
@@ -806,7 +806,7 @@ impl Properties
     }
 
     // To be called when a value has changed.
-    mtd hasChanged(item: nn *PropertiesItem)
+    mtd hasChanged(item: *PropertiesItem)
     {
         refresh()
         sigChanged.call(self, item)
@@ -842,7 +842,7 @@ impl Properties
     }
 
     // Returns true if the given item can be changed
-    func canChangeItem(item: nn *PropertiesItem)->bool
+    func canChangeItem(item: *PropertiesItem)->bool
     {
         if !item.data or !item.type:
             return false
@@ -862,7 +862,7 @@ impl Properties
     }
 
     // Update the state of the given item
-    mtd updateItemState(item: nn *PropertiesItem)
+    mtd updateItemState(item: *PropertiesItem)
     {
         var mustShow   = false
         var mustEnable = false

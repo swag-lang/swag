@@ -133,7 +133,7 @@ impl IWnd for MainWnd
         sf.destroy()
     }
 
-    mtd impl onSysUserEvent(evt: nn *SysUserEvent)
+    mtd impl onSysUserEvent(evt: *SysUserEvent)
     {
         #if #os == Swag.TargetOs.Windows
         {
@@ -149,7 +149,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onSysCommandEvent(evt: nn *SysCommandEvent)
+    mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         evt.accepted = false
         switch evt.kind
@@ -160,7 +160,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onSerializeStateEvent(evt: nn *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch
         {
@@ -190,7 +190,7 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd impl onFrameEvent(evt: nn *FrameEvent)
+    mtd impl onFrameEvent(evt: *FrameEvent)
     {
         if evt.firstFrame
         {
@@ -201,7 +201,7 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
-    mtd updateEditMode(f: nn IForm)
+    mtd updateEditMode(f: IForm)
     {
         let t    = @kindof(f)
         let form = cast(*BaseForm) @dataof(f)
@@ -629,7 +629,7 @@ impl MainWnd
         applyLayout()
     }
 
-    func create(parent: nn *Wnd)->*MainWnd
+    func create(parent: *Wnd)->*MainWnd
     {
         parent.surface.minSize = {1024, 512}
 

@@ -13,7 +13,7 @@ public struct PaintImage
 
 impl PaintImage
 {
-    internal func onEvent(wnd: nn *Wnd, evt: nn IEvent)->bool
+    internal func onEvent(wnd: *Wnd, evt: IEvent)->bool
     {
         if !(evt is PaintEvent):
             return false
@@ -57,7 +57,7 @@ impl PaintImage
 
     // Draw to an image by calling the func
     #[Swag.Overload]
-    public mtd draw(call: nn func||(nn *Application, nn *Painter))->Image
+    public mtd draw(call: func||(*Application, *Painter))->Image
     {
         paint = call
         surface.invalidate()
@@ -67,7 +67,7 @@ impl PaintImage
 
     // One shot paint to image
     #[Swag.Overload]
-    public func draw(w, h: s32, call: nn func||(*Application, *Painter))->Image
+    public func draw(w, h: s32, call: func||(*Application, *Painter))->Image
     {
         var pt: PaintImage
         pt.init(w, h)

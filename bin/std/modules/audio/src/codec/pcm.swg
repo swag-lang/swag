@@ -34,7 +34,7 @@ impl ICodec for CodecPcmToPcm16
         return 0
     }
 
-    mtd impl decode(destBuffer: nn ^void, destLength: u64, srcBuffer: nn ^void, srcLength: u64)->{ write, read: u64 } throw
+    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 } throw
     {
         if srcEncoding == dstEncoding
         {
@@ -42,7 +42,7 @@ impl ICodec for CodecPcmToPcm16
             return {srcLength, srcLength}
         }
 
-        func(TS: s32, EN: SoundFileEncoding) doIt(destBuffer: nn ^void, destLength: u64, srcBuffer: nn ^void, srcLength: u64)->{ write, read: u64 }
+        func(TS: s32, EN: SoundFileEncoding) doIt(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 }
         {
             var dst = cast(^s16) destBuffer
             var src = cast(^s8) srcBuffer

@@ -6,7 +6,7 @@ struct RadioButton
     using button:        Button
     checked:             bool
     radioButtonFlags     = RadioButtonFlags.Zero
-    sigChanged:          SigArray'func||(nn *Self)
+    sigChanged:          SigArray'func||(*Self)
 }
 
 #[Swag.EnumFlags]
@@ -18,7 +18,7 @@ enum RadioButtonFlags
 
 impl IWnd for RadioButton
 {
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
         let theme   = getTheme()
@@ -104,7 +104,7 @@ impl IWnd for RadioButton
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt) and !checked
         {
@@ -118,7 +118,7 @@ impl IWnd for RadioButton
 impl RadioButton
 {
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*RadioButton
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*RadioButton
     {
         Debug.assert(parent != null)
         var pos = position

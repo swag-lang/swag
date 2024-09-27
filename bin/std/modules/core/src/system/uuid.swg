@@ -56,7 +56,7 @@ impl UUID
 
     // Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
     #[Swag.Safety("boundcheck", false), Swag.Overload]
-    mtd toString(result: nn [..] u8)
+    mtd toString(result: [..] u8)
     {
         Debug.assert(@countof(result) == 36)
 
@@ -118,7 +118,7 @@ impl UUID
 
 impl StrConv.IConvert for UUID
 {
-    mtd impl convert(buf: nn *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(toString())
     }

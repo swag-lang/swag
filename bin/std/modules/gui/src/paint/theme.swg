@@ -66,7 +66,7 @@ impl Theme
         Memory.delete(res.spin)
     }
 
-    internal mtd setupDefault(renderer: nn *RenderOgl)
+    internal mtd setupDefault(renderer: *RenderOgl)
     {
         intialized = true
 

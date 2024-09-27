@@ -201,7 +201,7 @@ public func makeLower(buffer: [..] rune)
 }
 
 // Compare two unicode strings, and returns -1, 0 or 1
-func compare(src, dst: nn const [..] rune, ignoreCase = false, len: u64 = 0)->s32
+func compare(src, dst: const [..] rune, ignoreCase = false, len: u64 = 0)->s32
 {
     let length      = @countof(src)
     let otherLength = @countof(dst)

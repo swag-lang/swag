@@ -76,7 +76,7 @@ func workerEntry(_th: Thread)
     g_eventPendingJobs.signal()
 }
 
-func runJob(job: nn *Job)
+func runJob(job: *Job)
 {
     // Execute job
     job.lambda(job.data)
@@ -110,7 +110,7 @@ func getJobToExec()->*Job
     return job
 }
 
-func removeJobNoLock(job: nn *Job)
+func removeJobNoLock(job: *Job)
 {
     g_pendingJobs.removeAt(cast(u64) job.pendingIndex)
     if job.pendingIndex < g_pendingJobs.count:
@@ -119,9 +119,9 @@ func removeJobNoLock(job: nn *Job)
     job.clearState(JobState.InPending)
 }
 
-func clearState(job: nn *Job, state: JobState) = Atomic.logicAnd(cast(*u32) &job.state, cast(u32) ~state)
-func setState(job: nn *Job, state: JobState)   = Atomic.logicOr(cast(*u32) &job.state, cast(u32) state)
-func testState(job: nn *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
+func clearState(job: *Job, state: JobState) = Atomic.logicAnd(cast(*u32) &job.state, cast(u32) ~state)
+func setState(job: *Job, state: JobState)   = Atomic.logicOr(cast(*u32) &job.state, cast(u32) state)
+func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
 public func isSynchrone()->bool => g_numWorkers == 0
@@ -150,7 +150,7 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 }
 
 // Schedule a job to execute
-public func scheduleJob(job: nn *Job)
+public func scheduleJob(job: *Job)
 {
     Sync.scopedLock(&g_mutexPendingJobs)
     job.setState(JobState.InPending)
@@ -171,7 +171,7 @@ public func waitDone()
 }
 
 // Wait for a given job to be finished
-public func waitJob(job: nn *Job)
+public func waitJob(job: *Job)
 {
     // Fast exit, without lock
     if job.testState(JobState.Done):
@@ -210,19 +210,19 @@ public func waitJob(job: nn *Job)
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
 #[Swag.Macro]
-public func(T) parallelVisit(range: nn [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
+public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
     if !@countof(range):
         return
     Debug.assert(offset != 0)
 
-    func jobEntry(jobData: nn *void)
+    func jobEntry(jobData: *void)
     {
         let oneJob = cast(*SliceJob'T) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
-    func visitSlice(buffer: nn [..] T, offset: u32, userData: *void)
+    func visitSlice(buffer: [..] T, offset: u32, userData: *void)
     {
         var scan    = @dataof(buffer)
         let countof = @countof(buffer)
@@ -288,7 +288,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     if !count:
         return
 
-    func jobEntry(jobData: nn *void)
+    func jobEntry(jobData: *void)
     {
         let oneJob = cast(*ForJob) jobData
         visitFor(oneJob.startIndex, oneJob.endIndex, oneJob.userData)

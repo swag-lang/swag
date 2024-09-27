@@ -44,7 +44,7 @@ struct LibraryView
 
 impl IWnd for LibraryView
 {
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MouseWheel:
             evt.accepted = false
@@ -85,7 +85,7 @@ impl IWnd for LibraryView
         }
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()

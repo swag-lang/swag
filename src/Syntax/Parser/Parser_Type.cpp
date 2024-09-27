@@ -17,9 +17,9 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
     // Non null keyword
-    if (tokenParse.is(TokenId::KwdNonNull))
+    if (tokenParse.is(TokenId::KwdNull))
     {
-        node->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
+        node->typeFlags.add(TYPE_FLAG_NULLABLE);
         SWAG_CHECK(eatToken());
     }
 
@@ -487,9 +487,9 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
     // Non null keyword
-    if (tokenParse.is(TokenId::KwdNonNull))
+    if (tokenParse.is(TokenId::KwdNull))
     {
-        node->typeFlags.add(TYPE_FLAG_NON_NULLABLE);
+        node->typeFlags.add(TYPE_FLAG_NULLABLE);
         SWAG_CHECK(eatToken());
     }
     

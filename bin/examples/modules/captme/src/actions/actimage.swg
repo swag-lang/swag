@@ -17,7 +17,7 @@ impl IActionUI for ActionImage
         return false
     }
 
-    mtd impl update(cxt: ActionContext, evt: nn *CommandStateEvent)->bool
+    mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
         let capture = main.getCapture()
@@ -189,7 +189,7 @@ impl MainWnd
             }
         }
 
-        func createBtn(dlg: nn *Wnd, pos: Math.Rectangle, id: u64)
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
             let btn = CheckButton.create(dlg, " ", pos)
             btn.checked  = g_ResizeMode == id ? .Undefined : .UnChecked

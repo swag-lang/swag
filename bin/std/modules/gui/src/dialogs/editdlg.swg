@@ -11,7 +11,7 @@ public struct EditDlg
 public impl EditDlg
 {
     // Creates the message box
-    func createSingleLine(from: nn *Surface)->*EditDlg
+    func createSingleLine(from: *Surface)->*EditDlg
     {
         let dlg     = Wnd.create'EditDlg()
         let metrics = from.wnd.getThemeMetrics()
@@ -35,7 +35,7 @@ public impl EditDlg
     }
 
     // Creates the message box
-    func createMultiLine(from: nn *Surface, heightEdit = 150)->*EditDlg
+    func createMultiLine(from: *Surface, heightEdit = 150)->*EditDlg
     {
         let dlg     = Wnd.create'EditDlg()
         let metrics = from.wnd.getThemeMetrics()

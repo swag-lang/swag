@@ -10,7 +10,7 @@
 #global #[Swag.Safety("overflow|nan", false)]
 using Globalization
 
-func dtoa(dst: nn *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, mant: u64, exp: s64)
+func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, mant: u64, exp: s64)
 {
     var prec = precision
 
@@ -58,7 +58,7 @@ func dtoa(dst: nn *ConcatBuffer, precision: s64, fmt: u8, neg, forceSign: bool, 
     formatDigits(dst, shortest, neg, forceSign, digs, prec, fmt)
 }
 
-func formatDigits(dst: nn *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs: DecimalSlice, precision: s64, fmt: u8)
+func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs: DecimalSlice, precision: s64, fmt: u8)
 {
     var prec = precision
     switch fmt
@@ -93,7 +93,7 @@ func formatDigits(dst: nn *ConcatBuffer, shortest: bool, neg, forceSign: bool, d
     }
 }
 
-func fmtE(dst: nn *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, fmt: u8)
+func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, fmt: u8)
 {
     // sign
     if neg:
@@ -159,7 +159,7 @@ func fmtE(dst: nn *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s6
     }
 }
 
-func fmtF(dst: nn *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
+func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 {
     // sign
     if neg:
@@ -198,7 +198,7 @@ func fmtF(dst: nn *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s6
 
 // roundShortest rounds d (= mant * 2^exp) to the shortest number of digits
 // that will let the original floating point value be precisely reconstructed.
-func roundShortest(d: nn *Decimal, mant: u64, exp: s64)
+func roundShortest(d: *Decimal, mant: u64, exp: s64)
 {
     // If mantissa is zero, the number is zero; stop now.
     if mant == 0
@@ -353,7 +353,7 @@ func roundShortest(d: nn *Decimal, mant: u64, exp: s64)
 // | g | 'e' for large exponents, 'f' otherwise
 // | G | 'E' for large exponents, 'f' otherwise
 // A negative precision means *only as much as needed to be exact*
-public func parse(buf: nn *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
+public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
     let bits: u64 = cast<bit>(u64) val
 

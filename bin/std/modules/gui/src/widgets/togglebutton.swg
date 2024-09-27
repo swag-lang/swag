@@ -6,7 +6,7 @@ struct ToggleButton
     using button:     Button
 
     isToggled:        bool
-    sigChanged:       func(nn *Self)
+    sigChanged:       func(*Self)
 
     aniBk:            BlendColor
     aniBorder:        BlendColor
@@ -15,7 +15,7 @@ struct ToggleButton
 
 impl IWnd for ToggleButton
 {
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc     = evt.bc
         let theme  = getTheme()
@@ -71,7 +71,7 @@ impl IWnd for ToggleButton
         theme.drawSubRect(bc.painter, posBox, subRectMark, aniMark.cur())
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {
@@ -86,7 +86,7 @@ impl IWnd for ToggleButton
 impl ToggleButton
 {
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ToggleButton
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null)->*ToggleButton
     {
         Debug.assert(parent != null)
         var pos = position

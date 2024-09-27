@@ -21,9 +21,9 @@ struct Slider
     max:                f32 = 1.0
     steps:              f32
     sliderFlags         = SliderFlags.HilightBar
-    sigStartChange:     SigArray'func||(nn *Self)
-    sigChanged:         SigArray'func||(nn *Self)
-    sigEndChange:       SigArray'func||(nn *Self)
+    sigStartChange:     SigArray'func||(*Self)
+    sigChanged:         SigArray'func||(*Self)
+    sigEndChange:       SigArray'func||(*Self)
 
     isMoving:           bool
     isPressed1:         bool
@@ -42,7 +42,7 @@ struct Slider
 
 impl IWnd for Slider
 {
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
         let theme   = getTheme()
@@ -197,7 +197,7 @@ impl IWnd for Slider
         }
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var pos        = surfaceToLocal(evt.surfacePos)
         let isVertical = sliderFlags.has(.Vertical)
@@ -506,7 +506,7 @@ impl Slider
     }
 
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, position: Math.Rectangle = {}, id: WndId = null, range = false, vertical = false)->*Slider
+    func create(parent: *Wnd, position: Math.Rectangle = {}, id: WndId = null, range = false, vertical = false)->*Slider
     {
         Debug.assert(parent != null)
         var pos = position

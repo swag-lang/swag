@@ -189,7 +189,7 @@ impl Painter
         return Math.Vector2.Zero
     }
 
-    mtd drawDashCap(using cxt: nn *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
+    mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
     {
         if penSize < 3:
             return
@@ -352,7 +352,7 @@ impl Painter
         }
     }
 
-    mtd drawJoin(using cxt: nn *Context, p, d1, d2: Math.Vector2)
+    mtd drawJoin(using cxt: *Context, p, d1, d2: Math.Vector2)
     {
         #[Swag.Complete]
         switch pen.joinStyle
@@ -370,7 +370,7 @@ impl Painter
         }
     }
 
-    mtd drawDashEndCap(using cxt: nn *Context, posCap, normalCap: Math.Vector2)
+    mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Math.Vector2)
     {
         if beginLine or lastLineInvalid:
             return
@@ -389,7 +389,7 @@ impl Painter
         }
     }
 
-    func drawMoveCursor(using cxt: nn *Context, pos: Math.Vector2)
+    func drawMoveCursor(using cxt: *Context, pos: Math.Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {
@@ -404,7 +404,7 @@ impl Painter
         }
     }
 
-    mtd drawLineInternal(using cxt: nn *Context, pos: Math.Vector2)
+    mtd drawLineInternal(using cxt: *Context, pos: Math.Vector2)
     {
         // Compute line (half width on each side)
         var newPos = pos
@@ -470,7 +470,7 @@ impl Painter
         beginLine, firstLine = false
     }
 
-    func preparePattern(using cxt: nn *Context)
+    func preparePattern(using cxt: *Context)
     {
         #[Swag.Complete]
         switch pen.dashStyle
@@ -519,7 +519,7 @@ impl Painter
     }
 
     #[Swag.Overload]
-    mtd drawLine(using cxt: nn *Context, pos: Math.Vector2)
+    mtd drawLine(using cxt: *Context, pos: Math.Vector2)
     {
         // solid
         if pen.dashStyle == .None
@@ -589,7 +589,7 @@ impl Painter
         }
     }
 
-    mtd drawLineBeginCap(using cxt: nn *Context)->Math.Vector2
+    mtd drawLineBeginCap(using cxt: *Context)->Math.Vector2
     {
         if pen.beginCapStyle == .None or penSize < 3:
             return Math.Vector2.Zero
@@ -603,7 +603,7 @@ impl Painter
         return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen, true)
     }
 
-    mtd drawLineEndCap(using cxt: nn *Context)->Math.Vector2
+    mtd drawLineEndCap(using cxt: *Context)->Math.Vector2
     {
         if pen.endCapStyle == .None or penSize < 3:
             return Math.Vector2.Zero
@@ -618,7 +618,7 @@ impl Painter
     }
 
     #[Swag.Overload]
-    mtd drawPath(using cxt: nn *Context)
+    mtd drawPath(using cxt: *Context)
     {
         if pen.size < 1 or path.polygon.points.count == 0:
             return
@@ -679,7 +679,7 @@ public impl Painter
 {
     // Draw a line path.
     #[Swag.Overload]
-    mtd drawPath(path: nn *LinePath, color: Color, penSize: f32)
+    mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type  = .SolidColor
         sharedSolidPen.brush.color = color
@@ -688,7 +688,7 @@ public impl Painter
     }
 
     #[Swag.Overload]
-    mtd drawPath(path: nn *LinePath, pen: Pen)
+    mtd drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen):
@@ -714,7 +714,7 @@ public impl Painter
 
     // Draw a list of paths.
     #[Swag.Overload]
-    mtd drawPath(pathList: nn *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
+    mtd drawPath(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count:
             return
@@ -750,7 +750,7 @@ public impl Painter
     }
 
     #[Swag.Overload]
-    mtd drawPath(pathList: nn *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
+    mtd drawPath(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count:
             return

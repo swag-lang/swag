@@ -1,5 +1,5 @@
 #[Swag.ConstExpr]
-func isStruct(t: nn typeinfo) => t.kind == Swag.TypeInfoKind.Struct
+func isStruct(t: typeinfo) => t.kind == Swag.TypeInfoKind.Struct
 
 //#[Swag.PrintBc]
 func(T) toto()

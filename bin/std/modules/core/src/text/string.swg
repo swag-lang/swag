@@ -73,7 +73,7 @@ impl String
         return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
-    mtd const opEquals(other: nn string)->bool
+    mtd const opEquals(other: string)->bool
     {
         if buffer == @dataof(other):
             return true
@@ -82,7 +82,7 @@ impl String
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
 
-    mtd const opCmp(other: nn string)->s32
+    mtd const opCmp(other: string)->s32
     {
         return Utf8.compare(toString(), other, Utf8.ComparisonType.Latin1)
     }
@@ -289,7 +289,7 @@ impl String
 
     // Replace all occurences of 'what' with 'by'
     #[Overload]
-    mtd replace(what: rune, by: nn string)
+    mtd replace(what: rune, by: string)
     {
         if !length:
             return
@@ -408,7 +408,7 @@ impl String
     }
 
     // Append a formatted string
-    mtd appendFormat(format: nn string, values: ...)
+    mtd appendFormat(format: string, values: ...)
     {
         append(Format.toString(format, values))
     }

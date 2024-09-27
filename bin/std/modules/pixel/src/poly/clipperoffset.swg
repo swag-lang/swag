@@ -92,7 +92,7 @@ impl Offset
         }
     }
 
-    mtd execute(solution: nn *ClipperPaths, delta: f64, reverseNeg: bool = false)
+    mtd execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
     {
         solution.clear()
         fixOrientations()
@@ -278,7 +278,7 @@ impl Offset
         }
     }
 
-    mtd offsetPoint(j: s32, ptrk: nn *s32, jointype: JoinType)
+    mtd offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         let k = dref ptrk
 

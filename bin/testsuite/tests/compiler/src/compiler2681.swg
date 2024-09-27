@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func titi(using self, ptr: nn *AA)
+    func titi(using self, ptr: *AA)
     {
         @assert(ptr.x == 10)
         ptr.x = 666

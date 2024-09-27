@@ -3,7 +3,7 @@ func lambda(x: s32)
 	@assert(x == 666)
 }
 
-func(T) toto(val: T, x: nn func(T))
+func(T) toto(val: T, x: func(T))
 {
 	x(val)
 }

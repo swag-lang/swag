@@ -9,7 +9,7 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'RuneError' for an invalid utf16 sequence
-func decodeRune(buffer: nn const [..] u16)->{ c: rune, eat: u32 }
+func decodeRune(buffer: const [..] u16)->{ c: rune, eat: u32 }
 {
     var result: retval
 
@@ -35,7 +35,7 @@ func decodeRune(buffer: nn const [..] u16)->{ c: rune, eat: u32 }
 // Convert unicode character 'src' to an utf16 sequence, and returns
 // the number of u16 that were needed to make the conversion.
 // 'dest' must be at least 2 u16 long
-func encodeRune(dest: nn [..] u16, src: rune)->u32
+func encodeRune(dest: [..] u16, src: rune)->u32
 {
     Debug.assert(@countof(dest) >= 2, "destination buffer is too small")
     switch
@@ -59,7 +59,7 @@ func encodeRune(dest: nn [..] u16, src: rune)->u32
 // Convert an utf8 buffer to a utf16 buffer, and returns the
 // number of valid elements in the destination buffer
 #[Swag.Overload]
-func fromUtf8(dest: nn [..] u16, src: const [..] u8)->u64
+func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 {
     var count      = 0'u64
     var srcPtr     = @dataof(src)
@@ -134,7 +134,7 @@ func toZeroTerminated(src: string)->Array'u16
 }
 
 // Compute the string length of a zero terminated utf16 buffer
-func lengthZeroTerminated(buf: nn const ^u16)->u64
+func lengthZeroTerminated(buf: const ^u16)->u64
 {
     var ptr   = buf
     var count = 0'u64

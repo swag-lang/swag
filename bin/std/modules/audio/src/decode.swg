@@ -62,7 +62,7 @@ impl Voice
         codec = null
     }
 
-    mtd decodeData(destBuffer: nn ^void, length: u64)->u64 throw
+    mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
     {
         // If the file contains datas that are directly requested by the driver, no need
         // to decode, we can directly read in the destination buffer
@@ -88,7 +88,7 @@ impl Voice
         return used.write
     }
 
-    mtd readData(destBuffer: nn ^void, length: u64)->u64 throw
+    mtd readData(destBuffer: ^void, length: u64)->u64 throw
     {
         // Out of datas
         if streamCurSeek >= file.dataSize:

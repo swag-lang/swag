@@ -392,7 +392,7 @@ impl Decoder
         getBits2(16)
     }
 
-    mtd huffDecode(ph: nn *HuffTables)->s32
+    mtd huffDecode(ph: *HuffTables)->s32
     {
         var symbol = ph.lookUp[(bitBuf >> 8) & 0xFF]
         if symbol < 0
@@ -524,7 +524,7 @@ impl Decoder
         }
     }
 
-    func idct(data: nn ^s16, buf: nn ^u8)
+    func idct(data: ^s16, buf: ^u8)
     {
         var pdstPtr = buf
         var dataPtr = data
@@ -734,7 +734,7 @@ impl Decoder
         totalBytesRead -= inBufLeft
     }
 
-    mtd decode(scanLineOfs: nn **void, scanLineLen: nn *u32)->s32 throw
+    mtd decode(scanLineOfs: **void, scanLineLen: *u32)->s32 throw
     {
         if totalLinesLeft == 0:
             return Done
@@ -1488,7 +1488,7 @@ impl Decoder
         }
     }
 
-    mtd decodeScan(fn: nn func(*Decoder, u32, s32, s32) throw) throw
+    mtd decodeScan(fn: func(*Decoder, u32, s32, s32) throw) throw
     {
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32
@@ -1686,7 +1686,7 @@ impl Decoder
     }
 
     #[Swag.Overload]
-    mtd getChar(paddingFlag: nn *bool)->u32
+    mtd getChar(paddingFlag: *bool)->u32
     {
         if !inBufLeft
         {
@@ -2015,7 +2015,7 @@ impl Decoder
         }
     }
 
-    func memset16(p: nn ^void, c: u16, n: u32)
+    func memset16(p: ^void, c: u16, n: u32)
     {
         var ps = cast(^u16) p
         for n

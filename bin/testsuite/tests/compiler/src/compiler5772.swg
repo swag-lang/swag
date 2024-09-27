@@ -1,8 +1,9 @@
+#global skip
 #global testerror "San0001"
 
 var G = 0
 
-func toto(x: nn any)
+func toto(x: any)
 {
     G = 1
 }

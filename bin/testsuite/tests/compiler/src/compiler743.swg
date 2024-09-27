@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func(T) toto(x: nn [..] T)
+func(T) toto(x: [..] T)
 {
 	@assert(@countof(x) == 1)
 	@assert(x[0] == 10)

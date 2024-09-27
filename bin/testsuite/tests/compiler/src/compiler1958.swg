@@ -28,7 +28,7 @@ impl I for A
 
 var G: *I
 
-func titi(itf: nn *I)
+func titi(itf: *I)
 {
     itf.toto()
     itf.toto1()

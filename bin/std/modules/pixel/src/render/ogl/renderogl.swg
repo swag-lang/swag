@@ -374,7 +374,7 @@ impl RenderOgl
     }
 
     // Set the current render target
-    mtd bindRenderTarget(rt: nn *RenderTarget, vp: *Math.Rectangle = null)
+    mtd bindRenderTarget(rt: *RenderTarget, vp: *Math.Rectangle = null)
     {
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid:
@@ -453,7 +453,7 @@ impl RenderOgl
 
     // Delete a render target
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd deleteRenderTarget(rt: nn *RenderTarget)
+    mtd deleteRenderTarget(rt: *RenderTarget)
     {
         if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid:
             return
@@ -560,7 +560,7 @@ impl RenderOgl
 
     // Unregister a texture created with 'addImage'
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd removeTexture(texture: nn *Texture)
+    mtd removeTexture(texture: *Texture)
     {
         if !texture.valid:
             return
@@ -849,7 +849,7 @@ impl RenderOgl
     }
 
     // Draw the given painter
-    mtd draw(dc: nn *Painter)
+    mtd draw(dc: *Painter)
     {
         let (width, height) = getTargetSize()
         if width <= 0 or height <= 0:
@@ -931,7 +931,7 @@ impl RenderOgl
     }
 
     // Create the given shader
-    mtd createShader(base: nn *ShaderBase, vertex, pixel: const [..] u8) throw
+    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
         buf.replace("#include base", @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))

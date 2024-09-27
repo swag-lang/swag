@@ -3,7 +3,7 @@ struct A
     x, y: s64
 }
 
-func titi(p: nn *A)
+func titi(p: *A)
 {
     p.x = 444
     p.y = 555

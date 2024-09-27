@@ -840,7 +840,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
 }
 
 #[Swag.Safety("nan", false)]
-func special(s: nn const [..] u8)->{ value: f64, eat: u32 }
+func special(s: const [..] u8)->{ value: f64, eat: u32 }
 {
     var result: retval
 

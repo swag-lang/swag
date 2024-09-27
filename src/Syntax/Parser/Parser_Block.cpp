@@ -31,33 +31,6 @@ bool Parser::doWhereIf(AstNode* node, AstNode** result)
     return true;
 }
 
-bool Parser::doExpectConstraint(AstFuncDecl* parent)
-{
-    while (true)
-    {
-        const auto node = Ast::newNode<AstExpectConstraint>(AstNodeKind::ExpectConstraint, this, parent);
-        node->allocateExtension(ExtensionKind::Semantic);
-        node->semanticFct = Semantic::resolveExpectConstraint;
-        node->addAstFlag(AST_NO_BYTECODE);
-        parent->addAstFlag(AST_HAS_CONSTRAINTS);
-        SWAG_CHECK(eatToken());
-
-        Ast::removeFromParent(node);
-        Ast::insertChild(parent, node, parent->returnType->childParentIdx());
-
-        parent->constraints.push_back(node);
-        SWAG_CHECK(doBoolExpression(node, EXPR_FLAG_NO_BINARY, &dummyResult));
-
-        if(!tokenParse.is(TokenId::KwdAnd))
-        {
-            SWAG_CHECK(eatSemiCol("[[expect]] expression"));
-            break;
-        }
-    }
-
-    return true;
-}
-
 bool Parser::doWhereVerifyConstraint(AstNode* parent)
 {
     auto       what    = AstNodeKind::Invalid;

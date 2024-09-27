@@ -317,7 +317,7 @@ impl DateTime
 
 impl Serialization.ISerialize for DateTime
 {
-    mtd impl read(decoder: nn Serialization.IDecoder)->bool throw
+    mtd impl read(decoder: Serialization.IDecoder)->bool throw
     {
         if decoder.isTextual()
         {
@@ -329,7 +329,7 @@ impl Serialization.ISerialize for DateTime
         return false
     }
 
-    mtd impl write(encoder: nn Serialization.IEncoder)->bool throw
+    mtd impl write(encoder: Serialization.IEncoder)->bool throw
     {
         if encoder.isTextual()
         {
@@ -375,7 +375,7 @@ impl StrConv.IConvert for DateTime
     // Console.print(Format.toString("%{a}", myDate))
     // ```
     // See [[Core.Time.DateTimeFormat]]
-    mtd impl convert(buf: nn *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
+    mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
         if @countof(strFormat) == 0 or @countof(strFormat) > 1:

@@ -269,7 +269,7 @@ private
     }
 }
 
-func screenShot(main: nn *MainWnd, captureMode: CaptureMode)->Image throw
+func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 {
     let awareness = Win32.SetThreadDpiAwarenessContext(Win32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
     defer discard Win32.SetThreadDpiAwarenessContext(awareness)

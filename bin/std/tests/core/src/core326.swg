@@ -7,7 +7,7 @@ struct Employee
 }
 
 #[Swag.Compiler, Swag.ConstExpr]
-func gen(type: nn const *Swag.TypeInfoStruct)->String
+func gen(type: const *Swag.TypeInfoStruct)->String
 {
     var result: String = "return "
 

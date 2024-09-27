@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: nn any)
+func toto(x: any)
 {
     let v = dref cast(^^s32) @dataof(x)
     @assert(v[0] == 1)

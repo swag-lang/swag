@@ -1,4 +1,4 @@
-func swap(x, y: nn *s32)
+func swap(x, y: *s32)
 {
     let tmp = dref x
     dref x = dref y
@@ -8,7 +8,7 @@ func swap(x, y: nn *s32)
 //#[Swag.PrintBc]
 //#[Swag.Safety("", false)]
 //#[Swag.Optimize("", false)]
-func nextPermutation(arr: nn [..] s32)
+func nextPermutation(arr: [..] s32)
 {
     swap(&arr[3], &arr[4])
 }

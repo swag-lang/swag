@@ -322,7 +322,7 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: nn *Application, painter: nn *Painter, rect: Math.Rectangle, f: nn IForm, zoom: f32, quickMode = false, snapMode = false)
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
         let render = &app.renderer
 
@@ -502,7 +502,7 @@ impl Capture
             base.paintPos = savePaintPos
     }
 
-    mtd paintBackImage(painter: nn *Painter, x, y: f32, z: f32)
+    mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
     {
         let renderer = editView.getApp().getRenderer()
 
@@ -536,7 +536,7 @@ impl Capture
         }
     }
 
-    mtd paint(painter: nn *Painter, rect: Math.Rectangle)
+    mtd paint(painter: *Painter, rect: Math.Rectangle)
     {
         painter.fillRect(rect, Argb.LightGray)
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
@@ -795,7 +795,7 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
-    mtd popupMenu(view: nn *EditView, pos: Math.Point)
+    mtd popupMenu(view: *EditView, pos: Math.Point)
     {
         with let menu = MenuCtrl.createPopup(view)
         {
@@ -859,7 +859,7 @@ impl Capture
         view.setFocus()
     }
 
-    mtd mouse(view: nn *EditView, evt: nn *MouseEvent)->bool
+    mtd mouse(view: *EditView, evt: *MouseEvent)->bool
     {
         let app = view.getApp()
 
@@ -1336,7 +1336,7 @@ impl Capture
         editView.invalidate()
     }
 
-    mtd pushUndo(u: nn *Undo)
+    mtd pushUndo(u: *Undo)
     {
         u.capture = self
 

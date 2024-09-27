@@ -1,6 +1,6 @@
-func decode(destBuffer: nn ^void, destLength: u64, srcBuffer: nn ^void, srcLength: u64)->{write, read: u64} throw
+func decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
 {
-    func(TD, TS) doIt(destBuffer: nn ^void, destLength: u64, srcBuffer: nn ^void, srcLength: u64)->{write, read: u64}
+    func(TD, TS) doIt(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
     {
         var dst = cast(^TD) destBuffer
         var src = cast(^TS) srcBuffer

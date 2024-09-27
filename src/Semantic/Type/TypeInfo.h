@@ -82,7 +82,7 @@ constexpr TypeInfoFlagsV TYPEINFO_ENUM_HAS_USING           = 0x00040000'00000000
 constexpr TypeInfoFlagsV TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
-constexpr TypeInfoFlagsV TYPEINFO_NON_NULLABLE             = 0x00400000'00000000;
+constexpr TypeInfoFlagsV TYPEINFO_NULLABLE                 = 0x00400000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;
@@ -90,7 +90,6 @@ constexpr TypeParamFlags TYPEINFOPARAM_AUTO_NAME        = 0x00000004;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_TYPE     = 0x00000008;
 constexpr TypeParamFlags TYPEINFOPARAM_GENERIC_CONSTANT = 0x00000010;
 constexpr TypeParamFlags TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
-constexpr TypeParamFlags TYPEINFOPARAM_EXPECT_NOT_NULL  = 0x00000040;
 
 enum class ComputeNameKind
 {
@@ -187,7 +186,7 @@ struct TypeInfo
     bool isUntypedBinHex() const { return flags.has(TYPEINFO_UNTYPED_BIN_HEX); }
     bool isConstAlias() const { return flags.has(TYPEINFO_CONST_ALIAS); }
     bool isCharacter() const { return flags.has(TYPEINFO_CHARACTER); }
-    bool isNonNullable() const { return flags.has(TYPEINFO_NON_NULLABLE); }
+    bool isNullable() const { return flags.has(TYPEINFO_NULLABLE) && couldBeNull(); }
     bool couldBeNull() const;
 
     virtual bool      isSame(const TypeInfo* from, CastFlags castFlags) const;

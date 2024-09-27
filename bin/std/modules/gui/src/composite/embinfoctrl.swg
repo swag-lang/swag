@@ -16,7 +16,7 @@ struct EmbInfoCtrl
 impl EmbInfoCtrl
 {
     // Create the popup list, but: not display it
-    func create(parent: nn *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
+    func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
     {
         let theme  = parent.getTheme()
         let colors = parent.getThemeColors()

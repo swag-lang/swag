@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-func toto(x: nn any)
+func toto(x: any)
 {
 	let type = @kindof(x)
 	@assert(type.fullname == "u8")

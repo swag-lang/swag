@@ -187,8 +187,6 @@ bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNa
             concat->addString("where");
         else if (node->is(AstNodeKind::VerifyConstraint))
             concat->addString("verify");
-        else if (node->is(AstNodeKind::ExpectConstraint))
-            concat->addString(node->token.text);
 
         concat->addBlank();
 
@@ -209,13 +207,8 @@ bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNa
             break;
         
         node = constraints[i + 1];
-        if (node->is(AstNodeKind::ExpectConstraint) && node->token.text == "and")
-            concat->addBlank();
-        else
-        {
-            concat->addEol();
-            concat->addIndent(context.indent);
-        }
+        concat->addEol();
+        concat->addIndent(context.indent);
     }
 
     concat->addEol();

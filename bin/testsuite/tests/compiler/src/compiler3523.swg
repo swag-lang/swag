@@ -4,7 +4,7 @@ struct(T) Array
 
 impl Array
 {
-    mtd opAffect(v: nn const [..] T)
+    mtd opAffect(v: const [..] T)
     {
         @assert(v[0] == 1)
         @assert(v[1] == 15)

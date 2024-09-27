@@ -10,7 +10,7 @@ struct TT
 alias myStruct = TT
 
 //#[Swag.PrintBc]
-func C(x: nn any)
+func C(x: any)
 {
     //@print(cast(s64) x.value)
     var val = cast(myStruct) x

@@ -1,4 +1,4 @@
-func toto(x: nn cstring)
+func toto(x: cstring)
 {
     let len = @strlen(x)
     @assert(len == 4)

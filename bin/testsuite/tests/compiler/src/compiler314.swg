@@ -1,6 +1,6 @@
 ;
 
-func len (str: nn string)->u32
+func len (str: string)->u32
 {
 	var p = @dataof(str);
 	var l = 0'u32;

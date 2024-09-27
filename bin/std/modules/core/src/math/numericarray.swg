@@ -89,7 +89,7 @@ impl NumericArray
     }
 
     #[Safety("boundcheck", false), Complete, Overload]
-    mtd opAffect(what: nn const [..] T)
+    mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
         for i in N:

@@ -240,7 +240,6 @@ struct Parser
     bool doWhile(AstNode* parent, AstNode** result);
     bool doFor(AstNode* parent, AstNode** result);
     bool doWhereIf(AstNode* node, AstNode** result);
-    bool doExpectConstraint(AstFuncDecl* parent);
     bool doWhereVerifyConstraint(AstNode* parent);
     bool doLoop(AstNode* parent, AstNode** result);
     bool doVisit(AstNode* parent, AstNode** result);

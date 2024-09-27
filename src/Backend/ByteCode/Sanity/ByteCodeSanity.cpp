@@ -297,7 +297,7 @@ namespace
                     continue;
                 if (ipn->node->resolvedSymbolOverload())
                     lastOverload = ipn->node->resolvedSymbolOverload();
-                
+
                 if (ipn->node->token.startLocation == start && ipn->node->token.endLocation == end)
                     continue;
                 start = ipn->node->token.startLocation;
@@ -390,15 +390,14 @@ namespace
                 continue;
             done.push_back(idx);
 
-            if (!typeFunc ||
-                typeFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL) ||
-                typeFunc->parameters[idx]->typeInfo->isNonNullable())
+            if (!typeFunc || !typeFunc->parameters[idx]->typeInfo->isNullable())
             {
                 SanityValue* ra = nullptr;
                 SWAG_CHECK(getRegister(context, ra, pushParams[i]));
 
                 if (ra->isConstant() && !ra->reg.u64)
                 {
+#ifdef FORCE_NULL                    
                     Utf8 msg;
                     if (ip->op == ByteCodeOp::LambdaCall)
                         msg = formErr(San0001, "lambda");
@@ -407,6 +406,7 @@ namespace
                     else
                         msg = formErr(San0001, intrinsic.cstr());
                     return raiseError(context, msg, ra);
+#endif
                 }
             }
         }
@@ -611,10 +611,12 @@ namespace
                     const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
                     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     const auto returnType   = typeInfoFunc->concreteReturnType();
-                    if (!returnType->isNonNullable() && returnType->couldBeNull())
+                    if (returnType->isNullable())
                     {
-                        // ra->kind        = SanityValueKind::ZeroParam;
-                        // ra->reg.pointer = nullptr;
+#ifdef FORCE_NULL                        
+                        ra->kind        = SanityValueKind::ForceNull;
+                        ra->reg.pointer = nullptr;
+#endif
                     }
                     break;
                 }
@@ -630,12 +632,14 @@ namespace
                     const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
                     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     const auto returnType   = typeInfoFunc->concreteReturnType();
-                    if (!returnType->isNonNullable() && returnType->couldBeNull())
+                    if (returnType->isNullable())
                     {
-                        // ra->kind        = SanityValueKind::ZeroParam;
-                        // ra->reg.pointer = nullptr;
-                        // rb->kind        = SanityValueKind::ZeroParam;
-                        // rb->reg.pointer = nullptr;
+#ifdef FORCE_NULL                        
+                        ra->kind        = SanityValueKind::ForceNull;
+                        ra->reg.pointer = nullptr;
+                        rb->kind        = SanityValueKind::ForceNull;
+                        rb->reg.pointer = nullptr;
+#endif
                     }
                     break;
                 }
@@ -648,14 +652,12 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (!overload->typeInfo->isNonNullable() && overload->typeInfo->couldBeNull() && !overload->typeInfo->isClosure())
+                        if (overload->typeInfo->isNullable() && !overload->typeInfo->isClosure())
                         {
-                            const auto idx = context->bc->typeInfoFunc->registerIdxToParamIdx(overload->storageIndex);
-                            if (!context->bc->typeInfoFunc->parameters[idx]->flags.has(TYPEINFOPARAM_EXPECT_NOT_NULL))
-                            {
-                                ra->kind        = SanityValueKind::ZeroParam;
-                                ra->reg.pointer = nullptr;
-                            }
+#ifdef FORCE_NULL
+                            ra->kind        = SanityValueKind::ForceNull;
+                            ra->reg.pointer = nullptr;
+#endif
                         }
                     }
 

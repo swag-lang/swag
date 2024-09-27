@@ -6,7 +6,7 @@ struct BaseForm
 }
 
 #[Swag.ConstExpr]
-func getField(type: nn typeinfo, name: string)->const* TypeValue
+func getField(type: typeinfo, name: string)->const* TypeValue
 {
     if type.kind == TypeInfoKind.Struct
     {

@@ -3,7 +3,7 @@ struct AA
 	x, y: s32
 }
 
-func toto(v: nn const* AA, zz: f32, yyyy: string, x: nn const [..] s32, a: const [2] f32, p: string...)
+func toto(v: const* AA, zz: f32, yyyy: string, x: const [..] s32, a: const [2] f32, p: string...)
 {
     @assert(v.x == 1)
     @assert(v.y == 2)
@@ -12,7 +12,7 @@ func toto(v: nn const* AA, zz: f32, yyyy: string, x: nn const [..] s32, a: const
 	@assert(p[0] == "toto")
 }
 
-func toto1(v: nn const* AA, zz: f32, yyyy: string, x: nn const [..] s32, a: const [2] f32, p: s32...)
+func toto1(v: const* AA, zz: f32, yyyy: string, x: const [..] s32, a: const [2] f32, p: s32...)
 {
 	//@assert(cast(f64) a[0] == 1.1)
 	@assert(cast(s64) x[0] == 10)

@@ -1,4 +1,4 @@
-func(T) valueof(x: nn any)->T
+func(T) valueof(x: any)->T
 {
 	let ptr = cast(*T) @dataof(x)
 	return dref ptr

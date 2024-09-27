@@ -63,7 +63,7 @@ struct Tab
     itemAutoLayoutMargin:     f32 = 25
     itemMinWidth:             f32 = 25
 
-    sigSelChanged:            SigArray'func||(nn *Tab)
+    sigSelChanged:            SigArray'func||(*Tab)
 
     buttonPopup:              *IconButton
     views:                    ArrayPtr'TabItem
@@ -77,7 +77,7 @@ struct Tab
 
 impl IWnd for Tab
 {
-    mtd paintItem(painter: nn *Painter, v: nn *TabItem, idx: u32)
+    mtd paintItem(painter: *Painter, v: *TabItem, idx: u32)
     {
         var clientRect = getClientRect()
         clientRect.height = barHeight
@@ -203,7 +203,7 @@ impl IWnd for Tab
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
         let theme   = getTheme()
@@ -263,7 +263,7 @@ impl IWnd for Tab
         }
     }
 
-    mtd impl onResizeEvent(evt: nn *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if views.isEmpty():
             return
@@ -281,7 +281,7 @@ impl IWnd for Tab
         }
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         let hit = hitTest(evt.surfacePos)
         if hit != hotIdx

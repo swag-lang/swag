@@ -44,7 +44,7 @@ impl ThemeStyle
     }
 
     // Create a specific style based on the parent
-    mtd create(parent: nn *ThemeStyle)
+    mtd create(parent: *ThemeStyle)
     {
         free()
         var theme = Memory.new'Theme()
@@ -52,7 +52,7 @@ impl ThemeStyle
         set(theme)
     }
 
-    internal mtd compute(owner: nn *Wnd, parent: nn *ThemeStyle)
+    internal mtd compute(owner: *Wnd, parent: *ThemeStyle)
     {
         // First time, initialize to parent
         if !refr

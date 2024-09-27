@@ -6,7 +6,7 @@
 	return ptr[0]
 }*/
 
-func valueof(x: nn any)
+func valueof(x: any)
 {
 	let ptr = cast(*s32) @dataof(x)
 	@assert(dref ptr == 666)

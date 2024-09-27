@@ -17,7 +17,7 @@ var toto2: Toto1
 
     var buf: ConcatBuffer
 
-    func readWrite(wh: nn *Toto1, ser: nn *Serializer) throw
+    func readWrite(wh: *Toto1, ser: *Serializer) throw
     {
         ser.beginSection(.Raw)
         ser.serialize("x", &wh.x)

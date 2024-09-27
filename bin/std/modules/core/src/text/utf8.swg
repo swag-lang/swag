@@ -242,7 +242,7 @@ func decodeRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
 // the number of bytes that were needed to make the conversion.
 //
 // 'dest' must be at least 4 bytes long
-func encodeRune(dest: nn [..] u8, src: rune)->u32
+func encodeRune(dest: [..] u8, src: rune)->u32
 {
     Debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
@@ -729,7 +729,7 @@ public enum ComparisonType
 }
 
 // Compare two utf8 buffers with the given algorithm
-func compare(src, dst: nn const [..] u8, comparisonType = ComparisonType.Latin1)->s32
+func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
 {
     using ComparisonType
 

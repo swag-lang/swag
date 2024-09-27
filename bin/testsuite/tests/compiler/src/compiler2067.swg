@@ -1,7 +1,7 @@
 var g_Argv: [128] string
 var g_Argc = 0'u32
 
-func init(x: nn string)
+func init(x: string)
 {
     var cmdLine = cast(const ^u8) @dataof(x)
 

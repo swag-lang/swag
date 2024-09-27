@@ -33,7 +33,7 @@ impl Sha256
         func sig1(x: u32)        => (rotRight(x, 17) ^ rotRight(x, 19) ^ (x >> 10))
     }
 
-    mtd transform(buf: nn const ^u8)
+    mtd transform(buf: const ^u8)
     {
         var m: [64] u32
 

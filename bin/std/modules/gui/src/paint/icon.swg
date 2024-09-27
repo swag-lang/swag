@@ -21,7 +21,7 @@ impl Icon
     }
 
     // Initialize the icon from an image list
-    func from(imageList: nn *ImageList, index: s32, sizeX, sizeY: f32 = 0)->Icon
+    func from(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)->Icon
     {
         var result: retval
         let sx      = sizeX orelse cast(f32) imageList.frameSizeX
@@ -31,7 +31,7 @@ impl Icon
     }
 
     // Initialize the icon from an image list
-    mtd set(imageList: nn *ImageList, index: s32, sizeX, sizeY: f32 = 0)
+    mtd set(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)
     {
         self.imageList = #self.imageList
         self.index     = #self.index
@@ -42,7 +42,7 @@ impl Icon
     }
 
     // Paint icon at the given position
-    mtd const paint(painter: nn *Painter, x, y: f32, color: Color = Argb.White)
+    mtd const paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
         if !imageList or !imageList.totalFrames:
             return

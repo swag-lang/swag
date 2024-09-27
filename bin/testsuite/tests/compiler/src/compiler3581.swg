@@ -7,7 +7,7 @@ struct A
 
 impl A
 {
-    mtd opAffect(p: nn func||())
+    mtd opAffect(p: func||())
     {
         x = p
     }

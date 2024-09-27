@@ -1,6 +1,6 @@
 using Core, Gui, Pixel
 
-func createView3(_tabView: nn *Tab, view: nn *Wnd)
+func createView3(_tabView: *Tab, view: *Wnd)
 {
     {
         let sb0 = ColorPicker.create(view, {10, 10, 200, 200})

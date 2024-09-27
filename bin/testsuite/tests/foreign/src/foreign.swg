@@ -137,13 +137,13 @@ public func tcf_toto16(x: s32, y: f64)
     //@print(cast(f64) y)
 }
 
-public func tcf_toto17(x: s64, fct: nn func(s64))
+public func tcf_toto17(x: s64, fct: func(s64))
 {
     @assert(x == 555)
     fct(x)
 }
 
-public func tcf_toto18(x, y: s64, fct: nn func(s64, s64))
+public func tcf_toto18(x, y: s64, fct: func(s64, s64))
 {
     /*@print("toto18: ")
     @print(cast(s64) x)
@@ -156,7 +156,7 @@ public func tcf_toto18(x, y: s64, fct: nn func(s64, s64))
     fct(x,y)
 }
 
-public func tcf_toto19(v, w, x, y, z: s64, fct: nn func(s64, s64, s64, s64, s64))
+public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
 {
     @assert(v == 333)
     @assert(w == 444)
@@ -287,7 +287,7 @@ struct TT
     x: IAllocator
 }
 
-func all(itf: nn IAllocator)
+func all(itf: IAllocator)
 {
     var req: AllocatorRequest
     req.mode = AllocatorMode.Alloc
@@ -318,7 +318,7 @@ public alias ThreadProc = func(*void)->u32;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
-public func tcf_entry(param: nn ^void)->u32
+public func tcf_entry(param: ^void)->u32
 {
     var ptr = cast(^u64) param
     @assert(ptr[1] == 666)
@@ -337,17 +337,17 @@ public func tcf_createThread(lambda: ThreadProc, userParam: u64)
     var ew = WaitForSingleObject(h, INFINITE)
 }
 
-public func tcf_callret(fct: nn func()->s64)->s64
+public func tcf_callret(fct: func()->s64)->s64
 {
     return fct()
 }
 
-public func tcf_callret1(v: s64, fct: nn func(s64)->string)->string
+public func tcf_callret1(v: s64, fct: func(s64)->string)->string
 {
     return fct(v)
 }
 
-public func tcf_callret2(v: f32, fct: nn func(f32)->string)->string
+public func tcf_callret2(v: f32, fct: func(f32)->string)->string
 {
     return fct(v)
 }
@@ -358,7 +358,7 @@ public func tcf_manualcall(x: s64)->s64
 }
 
 //#[Swag.PrintBc]
-public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: nn func(s8, s16, s32, string, s64))
+public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s16, s32, string, s64))
 {
     @assert(v == 33)
     @assert(w == 44)
@@ -389,7 +389,7 @@ public func tcf_float()->f32
     return 3.14
 }
 
-public func tcf_toto23(x: string, fct: nn func(string))
+public func tcf_toto23(x: string, fct: func(string))
 {
     fct(x)
 }

@@ -10,7 +10,7 @@ public struct MessageDlg
 public impl MessageDlg
 {
     // Creates the message box
-    func create(from: nn *Surface, message: string, icon: Icon = {})->*MessageDlg
+    func create(from: *Surface, message: string, icon: Icon = {})->*MessageDlg
     {
         let dlg = Wnd.create'MessageDlg()
         let srf = dlg.createSurface(from, 0, 0, 500, 300)
@@ -33,7 +33,7 @@ public impl MessageDlg
     }
 
     // Display the box, centered, and returns the id of the pressed button
-    mtd doModal(from: nn *Surface)->string
+    mtd doModal(from: *Surface)->string
     {
         adaptSizeToMessage()
         surface.center(from)
@@ -113,7 +113,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'ok'
-    func ok(from: nn *Surface, message: string, icon: Icon = {})
+    func ok(from: *Surface, message: string, icon: Icon = {})
     {
         with let dlg = create(from, message, icon)
         {
@@ -124,7 +124,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'ok' and 'cancel' button
-    func okCancel(from: nn *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
+    func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
         with let dlg = create(from, message, icon)
         {
@@ -136,7 +136,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: nn *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
+    func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
     {
         var ic = icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
         with let dlg = create(from, message, ic)
@@ -150,7 +150,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNoCancel(from: nn *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
+    func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = {})->WndId
     {
         with let dlg = create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
@@ -163,7 +163,7 @@ public impl MessageDlg
     }
 
     // Message box to 'confirm' something
-    func confirm(from: nn *Surface, message: string, question: string = null)->WndId
+    func confirm(from: *Surface, message: string, question: string = null)->WndId
     {
         var txt = String.from(message)
         txt += "\n"
@@ -174,7 +174,7 @@ public impl MessageDlg
 
     // Message box to show the current raised error.
     // @err() must still contain the raised error.
-    func error(from: nn *Surface, message: string = null)
+    func error(from: *Surface, message: string = null)
     {
         var txt: String = String.from(message)
         if !txt.isEmpty():

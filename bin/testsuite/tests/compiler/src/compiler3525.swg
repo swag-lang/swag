@@ -11,7 +11,7 @@ impl IShape for Circle
     mtd impl area() => 123
 }
 
-func area_per_perimeter(shape: nn IShape) => shape.area()
+func area_per_perimeter(shape: IShape) => shape.area()
 
 #test
 {

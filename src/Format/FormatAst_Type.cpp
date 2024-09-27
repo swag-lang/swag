@@ -34,9 +34,9 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         return true;
     }
 
-    if (node->typeFlags.has(TYPE_FLAG_NON_NULLABLE))
+    if (node->typeFlags.has(TYPE_FLAG_NULLABLE))
     {
-        concat->addString("nn");
+        concat->addString("null");
         concat->addBlank();
     }
     

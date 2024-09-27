@@ -1,6 +1,6 @@
 #test
 {
-    func toto(x: nn func(string))
+    func toto(x: func(string))
     {
         x("64")
     }

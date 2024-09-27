@@ -3,7 +3,7 @@
 #global namespace Threading
 using Win32
 
-internal func threadEntry(param: nn *void)->DWORD
+internal func threadEntry(param: *void)->DWORD
 {
     let th = cast(*Thread) param
     @setcontext(th.context)
@@ -54,7 +54,7 @@ impl Thread
     }
 
     // Initialize a thread in pause state
-    mtd init(lambda: nn func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+    mtd init(lambda: func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
         Debug.assert(!isValid(), "thread already created")
 

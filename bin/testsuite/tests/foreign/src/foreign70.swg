@@ -3,7 +3,7 @@ public struct A70
     x, y/*, z*/: s32
 }
 
-public func call70(toto70: nn func()->A70)
+public func call70(toto70: func()->A70)
 {
     let r = toto70()
     @assert(r.x == 1)

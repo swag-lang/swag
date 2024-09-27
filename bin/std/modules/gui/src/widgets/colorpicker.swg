@@ -31,7 +31,7 @@ struct ColorPicker
     hue, sat, lum:     f32
     a, r, g, b:        f32
     mode               = ColorPickerMode.SaturationLightness
-    sigChanged:        SigArray'func||(nn *Self)
+    sigChanged:        SigArray'func||(*Self)
 
     dirty:             bool = true
     isMoving:          bool
@@ -115,7 +115,7 @@ impl IWnd for ColorPicker
         }
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc         = evt.bc
         let painter    = bc.painter
@@ -272,7 +272,7 @@ impl IWnd for ColorPicker
         (hue, sat, lum) = c.toHsl()
     }
 
-    mtd impl onPostPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
         let bc         = evt.bc
         let painter    = bc.painter
@@ -302,7 +302,7 @@ impl IWnd for ColorPicker
         }
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var pos        = surfaceToLocal(evt.surfacePos)
         var clientRect = getClientRect()

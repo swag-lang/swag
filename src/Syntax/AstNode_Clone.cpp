@@ -66,16 +66,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     {
         typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
         if (typeInfo != from->typeInfo)
-        {
             addAstFlag(AST_FROM_GENERIC);
-
-            if(from->typeInfo->isKindGeneric() && typeInfo->isNonNullable())
-            {
-                typeInfo = typeInfo->clone();
-                typeInfo->flags.remove(TYPEINFO_NON_NULLABLE);
-            }
-        }
-        
     }
     else if (!context.cloneFlags.has(CLONE_RAW))
     {
@@ -316,8 +307,6 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstCompilerGlobal>(this, context);
         case AstNodeKind::CompilerCode:
             return clone<AstCompilerCode>(this, context);
-        case AstNodeKind::ExpectConstraint:
-            return clone<AstExpectConstraint>(this, context);
 
         default:
         {

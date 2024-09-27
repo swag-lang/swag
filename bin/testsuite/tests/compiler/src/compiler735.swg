@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-func(T) toto(x: nn *T)
+func(T) toto(x: *T)
 {
 	@assert(dref x == 666)
 }

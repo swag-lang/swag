@@ -155,7 +155,6 @@ enum class AstNodeKind : uint8_t
     CompilerRunExpression,
     CompilerSpecialValue,
     WhereConstraint,
-    ExpectConstraint,
     VerifyConstraint,
     CompilerWarning,
     ConditionalExpression,
@@ -993,12 +992,12 @@ constexpr TypeFlags TYPE_FLAG_IS_PTR_ARITHMETIC = 0x0800;
 constexpr TypeFlags TYPE_FLAG_IS_SUB_TYPE       = 0x1000;
 constexpr TypeFlags TYPE_FLAG_HAS_LOC_CONST     = 0x2000;
 constexpr TypeFlags TYPE_FLAG_IS_RETVAL_TYPE    = 0x4000;
-constexpr TypeFlags TYPE_FLAG_NON_NULLABLE      = 0x8000;
+constexpr TypeFlags TYPE_FLAG_NULLABLE          = 0x8000;
 
 struct AstTypeExpression : AstType
 {
-    static constexpr SpecFlags SPEC_FLAG_DONE_GEN     = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_CAN_THROW    = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_DONE_GEN  = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CAN_THROW = 0x0002;
 
     AstNode* clone(CloneContext& context);
 
@@ -1361,17 +1360,4 @@ struct AstCompilerCode : AstNode
     static constexpr SpecFlags SPEC_FLAG_FROM_NEXT = 0x0001;
 
     AstNode* clone(CloneContext& context);
-};
-
-enum class ExpectConstraintKind
-{
-    Invalid,
-    NotNull,
-};
-
-struct AstExpectConstraint : AstNode
-{
-    AstNode* clone(CloneContext& context);
-
-    ExpectConstraintKind constraintKind = ExpectConstraintKind::Invalid;
 };

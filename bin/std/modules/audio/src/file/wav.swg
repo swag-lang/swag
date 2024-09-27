@@ -111,7 +111,7 @@ struct WAVEFORMATEXTENSIBLE
     subFormat:         GUID     // Format identifier GUID
 }
 
-func setEncodingFormat(using file: nn *SoundFile, formatTag: u16) throw
+func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
 {
     switch formatTag
     {
@@ -141,7 +141,7 @@ func setEncodingFormat(using file: nn *SoundFile, formatTag: u16) throw
     }
 }
 
-func readChunkFmt(using file: nn *SoundFile, stream: nn *File.FileStream, chunkSize: u32) throw
+func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     if chunkSize < #sizeof(WAVEFORMAT):
         throw InvalidFormatError{"invalid wav"}
@@ -212,7 +212,7 @@ func readChunkFmt(using file: nn *SoundFile, stream: nn *File.FileStream, chunkS
     }
 }
 
-func readChunkData(using file: nn *SoundFile, stream: nn *File.FileStream, chunkSize: u32) throw
+func readChunkData(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     validity |= .Data
     dataSeek = stream.getPosition()
@@ -228,7 +228,7 @@ func readChunkData(using file: nn *SoundFile, stream: nn *File.FileStream, chunk
 }
 
 // Load a wav file
-public func loadFile(using file: nn *SoundFile, stream: nn *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
+public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
 {
     enum Stage
     {

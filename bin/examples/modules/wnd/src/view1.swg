@@ -49,7 +49,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     return list
 }
 
-func createView1(_tabView: *Tab, view: nn *Wnd)
+func createView1(_tabView: *Tab, view: *Wnd)
 {
     {
         let list = createListSimple(view, 10)

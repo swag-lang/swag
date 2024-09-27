@@ -12,7 +12,7 @@ impl IShape for Circle
 }
 
 #[Swag.Inline]
-func area_per_perimeter(shape: nn IShape) => shape.area()
+func area_per_perimeter(shape: IShape) => shape.area()
 
 #test
 {

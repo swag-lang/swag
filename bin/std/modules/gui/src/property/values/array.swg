@@ -1,12 +1,12 @@
 impl Properties
 {
-    func setDescEditBox(item: nn *PropertiesItem)
+    func setDescEditBox(item: *PropertiesItem)
     {
         let arrData = cast(*Array'u8) item.data
         item.editBox.setText(Format.toString("% elements", arrData.count))
     }
 
-    mtd reconstructArray(item: nn *PropertiesItem)
+    mtd reconstructArray(item: *PropertiesItem)
     {
         let arrData          = cast(*Array'u8) item.data
         let valueType        = Reflection.getStructArrayType(item.type)
@@ -50,7 +50,7 @@ impl Properties
             updateItemState(self.items[itemIdx + i + 1])
     }
 
-    mtd refreshArray(item: nn *PropertiesItem)
+    mtd refreshArray(item: *PropertiesItem)
     {
         let arrData = cast(*Array'u8) item.data
         if arrData.count == cast(u64) item.userData0:
@@ -62,7 +62,7 @@ impl Properties
         edView.sendResizeEvent()
     }
 
-    mtd clearArray(item: nn *PropertiesItem)
+    mtd clearArray(item: *PropertiesItem)
     {
         let valueType = Reflection.getStructArrayType(item.type)
         Reflection.clearStructArray(item.data, valueType)
@@ -70,7 +70,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd removeArrayValue(item: nn *PropertiesItem)
+    mtd removeArrayValue(item: *PropertiesItem)
     {
         let valueType     = Reflection.getStructArrayType(item.parent.type)
         let parentItemIdx = Slice.findLinear(items.toSlice(), item.parent)
@@ -84,7 +84,7 @@ impl Properties
         hasChanged(parentItem)
     }
 
-    mtd appendArrayValue(item: nn *PropertiesItem)
+    mtd appendArrayValue(item: *PropertiesItem)
     {
         let valueType = Reflection.getStructArrayType(item.type)
 
@@ -94,7 +94,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructArray(value: Swag.TypeValue, data: nn *u8, parentItem: *PropertiesItem)
+    mtd constructArray(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item           = addItem(value, data, parentItem)
         let numItemsBefore = items.count

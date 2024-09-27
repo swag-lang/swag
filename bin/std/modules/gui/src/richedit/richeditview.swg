@@ -15,13 +15,13 @@ public struct RichEditView
 
 impl IWnd for RichEditView
 {
-    mtd impl onResizeEvent(evt: nn *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         if ed and ed.richEdFlags & .WordWrap:
             ed.recomputeScroll = true
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
         switch evt.kind
@@ -82,7 +82,7 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd impl onKeyEvent(evt: nn *KeyEvent)
+    mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
         {
@@ -109,7 +109,7 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd impl onFocusEvent(evt: nn *FocusEvent)
+    mtd impl onFocusEvent(evt: *FocusEvent)
     {
         switch evt.kind
         {
@@ -126,13 +126,13 @@ impl IWnd for RichEditView
         }
     }
 
-    mtd impl onTimerEvent(evt: nn *TimerEvent)
+    mtd impl onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
         invalidate()
     }
 
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
         let colors  = getThemeColors()
@@ -296,7 +296,7 @@ impl RichEditView
         }
     }
 
-    mtd paintString(bc: nn *PaintContext, x, y: f32, str: String, strStyle: RichEditRuneStyle, visible: bool)->f32
+    mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditRuneStyle, visible: bool)->f32
     {
         let painter = bc.painter
 
@@ -318,7 +318,7 @@ impl RichEditView
         return x + me.width
     }
 
-    mtd paintLine(bc: nn *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
+    mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32
     {
         let line = ed.lines[lineIndex]
         let y    = py

@@ -28,7 +28,7 @@ impl IWnd for ComboCtrl
 
 impl ComboCtrl
 {
-    func create(parent: nn *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*ComboCtrl
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*ComboCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position

@@ -15,7 +15,7 @@ func T()
 	g = 1
 }
 
-func F(b: nn func())
+func F(b: func())
 {
 	b()
 }

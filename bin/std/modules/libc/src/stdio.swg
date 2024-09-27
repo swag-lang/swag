@@ -122,25 +122,25 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vprintf(format: cstring, args: nn *va_list)->s64
+    func vprintf(format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfprintf(0, stdout, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vfprintf(file: *FILE, format: cstring, args: nn *va_list)->s64
+    func vfprintf(file: *FILE, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfprintf(0, file, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vsprintf(s: *u8, format: cstring, args: nn *va_list)->s64
+    func vsprintf(s: *u8, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsprintf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vsnprintf(s: *u8, count: size_t, format: cstring, args: nn *va_list)->s64
+    func vsnprintf(s: *u8, count: size_t, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsprintf(0, s, count, format, null, dref cast(**void) args)
     }
@@ -166,13 +166,13 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vfscanf(file: *FILE, format: cstring, args: nn *va_list)->s64
+    func vfscanf(file: *FILE, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfscanf(0, file, format, null, dref cast(**void) args)
     }
 
     #[Discardable]
-    func vscanf(format: cstring, args: nn *va_list)->s64
+    func vscanf(format: cstring, args: *va_list)->s64
     {
         return stdio_common_vfscanf(0, stdin, format, null, dref cast(**void) args)
     }
@@ -188,7 +188,7 @@ var stderr: *FILE
     }
 
     #[Discardable]
-    func vsscanf(s, format: cstring, args: nn *va_list)->s64
+    func vsscanf(s, format: cstring, args: *va_list)->s64
     {
         return stdio_common_vsscanf(0, s, SIZE_MAX, format, null, dref cast(**void) args)
     }

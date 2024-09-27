@@ -1,6 +1,6 @@
 
 
-func(T) delete(addr: nn *T)
+func(T) delete(addr: *T)
 {
 	@assert(dref addr == 666)
 }

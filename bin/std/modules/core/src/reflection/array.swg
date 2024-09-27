@@ -14,7 +14,7 @@ func isStructArray(t: typeinfo)->bool
 
 // Returns the generic type of the 'Core.Array' typeinfo.
 // If 't' is not a 'Core.Array', returns null
-func getStructArrayType(t: nn typeinfo)->typeinfo
+func getStructArrayType(t: typeinfo)->typeinfo
 {
     if !isStructArray(t):
         return null
@@ -24,7 +24,7 @@ func getStructArrayType(t: nn typeinfo)->typeinfo
 }
 
 // Used to clear a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func clearStructArray(arrayPtr: nn *void, valueType: nn typeinfo)
+func clearStructArray(arrayPtr: *void, valueType: typeinfo)
 {
     let arr = cast(*Array'u8) arrayPtr
 
@@ -46,7 +46,7 @@ func clearStructArray(arrayPtr: nn *void, valueType: nn typeinfo)
 }
 
 // Remove an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func removeValueStructArray(arrayPtr: nn *void, valueType: nn typeinfo, index: u64)
+func removeValueStructArray(arrayPtr: *void, valueType: typeinfo, index: u64)
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
     let arr       = cast(*Array'u8) arrayPtr
@@ -78,7 +78,7 @@ func removeValueStructArray(arrayPtr: nn *void, valueType: nn typeinfo, index: u
 }
 
 // Add an element in a 'Core.Array' without knowing the type of the element at compile time but knowing it at runtime (valueType)
-func appendValueStructArray(arrayPtr: nn *void, valueType: nn typeinfo)->*void
+func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
 {
     // We will treat the array as a buffer of bytes, just to be able to access the fields
     let arr       = cast(*Array'u8) arrayPtr

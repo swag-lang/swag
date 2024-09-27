@@ -10,7 +10,7 @@
 }
 
 //#[Swag.PrintBc]
-func T(param: nn *s32)
+func T(param: *s32)
 {
 	dref param += 1
 }

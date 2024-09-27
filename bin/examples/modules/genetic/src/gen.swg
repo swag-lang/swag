@@ -80,7 +80,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 }
 
 #[Swag.Overload]
-func evaluateSolution(soluce: nn *Solution)
+func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
     for i in soluce.genes:
@@ -101,7 +101,7 @@ func pickToMate(other: *Solution = null)->*Solution
     return g_Gen[g_CurGen].all[0]
 }
 
-func mutate(child: nn *Solution, idx: u32)
+func mutate(child: *Solution, idx: u32)
 {
     var mutRate, mutNum: u32
 

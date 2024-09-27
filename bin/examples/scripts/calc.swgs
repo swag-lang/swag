@@ -16,7 +16,7 @@ var g_Op:           String
 var g_Error:        string
 var g_Start:        bool = true
 
-func validateOp(str: nn string)
+func validateOp(str: string)
 {
     if Latin1.isDigit(str[0])
     {
@@ -82,7 +82,7 @@ func createBtn(str: string, x, y: s32)
     }
 }
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -130,7 +130,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 400, 400, title: "Calc", hook: &onEvent, init: &test)
 }

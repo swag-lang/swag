@@ -1,6 +1,6 @@
 using Swag
 
-func toto(ptr: nn func() throw) throw
+func toto(ptr: func() throw) throw
 {
     assume ptr()
 }

@@ -9,7 +9,7 @@
 using Core, Gui, Pixel, Core.Math
 const NoiseMax = 5.0
 
-func onEvent(wnd: nn *Wnd, evt: nn IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     let paintEvt = evt as PaintEvent
     if !paintEvt:
@@ -55,7 +55,7 @@ func onEvent(wnd: nn *Wnd, evt: nn IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Blob", hook: &onEvent, init: &test)
 }

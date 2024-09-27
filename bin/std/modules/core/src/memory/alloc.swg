@@ -97,7 +97,7 @@ func tempAlloc(size: u64, alignment: u32 = 0, hint: string = null, loc = #caller
 
 // Allocate and initialize the given type
 #[Swag.Overload]
-func new(type: nn typeinfo, allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
+func new(type: typeinfo, allocator: IAllocator = null, alignment: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
     let userHint = hint orelse type.fullname
     let ptr      = alloc(cast(u64) type.sizeof, allocator, alignment, userHint, loc)

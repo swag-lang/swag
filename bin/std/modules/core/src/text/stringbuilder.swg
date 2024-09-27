@@ -45,14 +45,14 @@ impl StringBuilder
     }
 
     // Append a value
-    mtd appendAny(value: nn any, strFormat: string = null)
+    mtd appendAny(value: any, strFormat: string = null)
     {
         var convFmt: StrConv.ConvertFormat
         convertAny(&buffer, value, convFmt, strFormat)
     }
 
     // Append a formatted string
-    mtd appendFormat(fmt: nn string, values: ...)
+    mtd appendFormat(fmt: string, values: ...)
     {
         Format.append(&buffer, fmt, values)
     }

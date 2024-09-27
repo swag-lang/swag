@@ -7,7 +7,7 @@ struct TOTO
 var G: bool
 
 //#[Swag.PrintBc]
-func print(s: nn *TOTO, tt: bool)
+func print(s: *TOTO, tt: bool)
 {
     @assert(s.CPT == 666)
     G = true

@@ -40,7 +40,7 @@ impl StringPainter
     }
 
     // Draw string
-    mtd draw(painter: nn *Painter, rect: Math.Rectangle, what: string)
+    mtd draw(painter: *Painter, rect: Math.Rectangle, what: string)
     {
         str.set(what)
         painter.drawRichString(rect, &str, &fmt)

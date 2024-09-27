@@ -2,7 +2,7 @@
 #global namespace Slice
 
 // Insertion sort algorithm (slow)
-func(T) insertionSort(values: nn [..] T, cb: nn func||(T, T)->s32)
+func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
 {
     var buffer = @dataof(values)
     let count  = @countof(values)
@@ -17,7 +17,7 @@ func(T) insertionSort(values: nn [..] T, cb: nn func||(T, T)->s32)
 }
 
 // Quick sort algorithm
-func(T) quickSort(values: nn [..] T, cb: nn func||(T, T)->s32)
+func(T) quickSort(values: [..] T, cb: func||(T, T)->s32)
 {
     let count = cast(s64) @countof(values)
     if count == 0:
@@ -86,7 +86,7 @@ func(T) quickSort(values: nn [..] T, cb: nn func||(T, T)->s32)
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
 #[Swag.Overload]
-func(T) sort(values: nn [..] T, bigFirst = false)
+func(T) sort(values: [..] T, bigFirst = false)
 {
     if bigFirst:
         sort(values, func(x, y: T)->s32 => y <=> x)
@@ -97,7 +97,7 @@ func(T) sort(values: nn [..] T, bigFirst = false)
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
 #[Swag.Overload]
-func(T) sort(values: nn [..] T, cb: nn func||(T, T)->s32)
+func(T) sort(values: [..] T, cb: func||(T, T)->s32)
 {
     Debug.assert(cb != null)
     if @countof(values) <= 10:
@@ -108,14 +108,14 @@ func(T) sort(values: nn [..] T, cb: nn func||(T, T)->s32)
 
 // Returns true if the slice is sorted
 #[Swag.Overload]
-func(T) isSorted(values: nn const [..] T)->bool
+func(T) isSorted(values: const [..] T)->bool
 {
     return isSorted(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Returns true if the slice is sorted
 #[Swag.Overload]
-func(T) isSorted(values: nn const [..] T, cb: nn func||(T, T)->s32)->bool
+func(T) isSorted(values: const [..] T, cb: func||(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
     let countof = @countof(values)

@@ -28,7 +28,7 @@ impl IEvent for Evt2 {}
 impl IEvent for Evt3 {}
 
 //#[Swag.PrintBc]
-func toto(v: nn IEvent)
+func toto(v: IEvent)
 {
     let ptr0 = cast(*Evt3) v
     @assert(ptr0.x == 4)

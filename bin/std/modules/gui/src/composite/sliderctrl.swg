@@ -7,7 +7,7 @@ struct SliderCtrl
     labelSize:          f32 = 60
     editSize:           f32 = 60
 
-    sigChanged:         SigArray'func||(nn *Self)
+    sigChanged:         SigArray'func||(*Self)
 
     label:              *Label
     slider:             *Slider
@@ -35,7 +35,7 @@ impl IWnd for SliderCtrl
 impl SliderCtrl
 {
     // Create the popup list, but: not display it
-    func create(parent: nn *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*SliderCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position

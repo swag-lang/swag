@@ -35,7 +35,7 @@ func tilePos(i, j: s32)->Math.Rectangle
     return Math.Rectangle{xd, yd, displayW, displayH}
 }
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -208,7 +208,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 800, "Taquin", hook: &onEvent, init: &test)
 }

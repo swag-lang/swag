@@ -22,7 +22,7 @@ impl IPrintable for TITI
 }
 
 //#[Swag.PrintBc]
-func printWhatever(_itf: nn *IPrintable)
+func printWhatever(_itf: *IPrintable)
 {
     _itf.print()
 }

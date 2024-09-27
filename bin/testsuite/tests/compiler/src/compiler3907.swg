@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: nn const [..] s32)
+func toto(x: const [..] s32)
 {
     let a = &x[0]
     @assert(#typeof(a).name == "const ^s32")

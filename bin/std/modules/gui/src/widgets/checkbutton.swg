@@ -22,12 +22,12 @@ struct CheckButton
 
     checked              = ButtonCheckState.UnChecked
     checkButtonFlags     = CheckButtonFlags.Zero
-    sigChanged:          SigArray'func||(nn *Self)
+    sigChanged:          SigArray'func||(*Self)
 }
 
 impl IWnd for CheckButton
 {
-    mtd impl onPaintEvent(evt: nn *PaintEvent)
+    mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
         let painter = bc.painter
@@ -117,7 +117,7 @@ impl IWnd for CheckButton
         Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {
@@ -136,7 +136,7 @@ impl IWnd for CheckButton
 impl CheckButton
 {
     #[Swag.Discardable]
-    func create(parent: nn *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*CheckButton
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = {}, id: WndId = null)->*CheckButton
     {
         Debug.assert(parent != null)
         var pos = position

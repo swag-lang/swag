@@ -3,13 +3,13 @@ func(T) inc(x: *T)
     dref x += 1
 }
 
-func(T) dec(x: nn *T)
+func(T) dec(x: *T)
 {
     dref x -= 1
 }
 
 //#[Swag.PrintBc]
-func(T) map(values: [..] T, cb: nn func(nn *T))
+func(T) map(values: [..] T, cb: func(*T))
 {
     for values:
         cb(&values[#index])

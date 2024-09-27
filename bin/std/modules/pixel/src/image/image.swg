@@ -181,7 +181,7 @@ impl Image
 
     // Copy one pixel, depending on bpp
     #[Swag.Inline]
-    func(BPP: u8) copyPixel(pixDst, pixSrc: nn ^u8)
+    func(BPP: u8) copyPixel(pixDst, pixSrc: ^u8)
     {
         #if BPP == 24
         {
@@ -199,7 +199,7 @@ impl Image
     }
 
     // Set pixel values depending on pixel format
-    func(PF: PixelFormat) setPixelRGBA8(pixDst: nn ^u8, r, g, b, _a: u8)
+    func(PF: PixelFormat) setPixelRGBA8(pixDst: ^u8, r, g, b, _a: u8)
     {
         #if PF == .BGR8
         {

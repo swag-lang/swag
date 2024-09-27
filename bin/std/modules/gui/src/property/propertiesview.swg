@@ -9,7 +9,7 @@ public struct PropertiesView
 
 impl IWnd for PropertiesView
 {
-    mtd impl onResizeEvent(evt: nn *ResizeEvent)
+    mtd impl onResizeEvent(evt: *ResizeEvent)
     {
         stackWnd.IWnd.onResizeEvent(evt)
         if !ed or !ed.items.count:

@@ -27,7 +27,7 @@ struct manipulation more intuitive and the code more readable.
 {
     struct Point { x, y: s32 }
 
-    func set(using pt: nn *Point, value: s32)
+    func set(using pt: *Point, value: s32)
     {
         x, y = value
     }
@@ -55,7 +55,7 @@ more complex function signatures.
 {
     struct Vector { x, y: f32 }
 
-    func add(using vec: nn *Vector, dx: f32, dy: f32)
+    func add(using vec: *Vector, dx: f32, dy: f32)
     {
         x += dx
         y += dy
@@ -85,14 +85,14 @@ a wide range of function signatures, allowing for flexible and context-appropria
     struct Complex { real, imag: f32 }
 
     #[Swag.Overload]
-    func multiply(c: nn *Complex, scalar: f32)
+    func multiply(c: *Complex, scalar: f32)
     {
         c.real *= scalar
         c.imag *= scalar
     }
 
     #[Swag.Overload]
-    func multiply(using c: nn *Complex, other: nn *Complex)
+    func multiply(using c: *Complex, other: *Complex)
     {
         real = (real * other.real) - (imag * other.imag)
         imag = (real * other.imag) + (imag * other.real)

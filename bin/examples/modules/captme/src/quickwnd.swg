@@ -10,12 +10,12 @@ impl QuickStyle
         clear()
     }
 
-    func deleteOne(itf: nn IForm)
+    func deleteOne(itf: IForm)
     {
         Memory.delete(@dataof(itf), @kindof(itf))
     }
 
-    mtd remove(itf: nn IForm)
+    mtd remove(itf: IForm)
     {
         deleteOne(itf)
         forms.remove(itf)
@@ -59,7 +59,7 @@ struct QuickWnd
 
 impl IWnd for QuickWnd
 {
-    mtd impl onMouseEvent(evt: nn *MouseEvent)
+    mtd impl onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MousePressed and evt.button == .Right
         {
@@ -71,7 +71,7 @@ impl IWnd for QuickWnd
         scrollWnd.IWnd.onMouseEvent(evt)
     }
 
-    mtd impl onSerializeStateEvent(evt: nn *SerializeStateEvent)
+    mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch
         {
@@ -552,7 +552,7 @@ impl QuickWnd
 
     mtd updateQuickStyles()
     {
-        func paintForm(painter: nn *Painter, btnp: nn *QuickButton)
+        func paintForm(painter: *Painter, btnp: *QuickButton)
         {
             painter.setParams(.Antialiased)
             let sel  = cast(*BaseForm) @dataof(btnp.formItf)

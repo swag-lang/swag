@@ -91,7 +91,7 @@ var g_Rng:      Random.Rng
 var g_Objs:     Array'Verlet
 var g_Time:     f32
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -129,7 +129,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 600, title: "Verlet", hook: &onEvent, init: &test)
 }

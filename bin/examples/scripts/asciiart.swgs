@@ -9,7 +9,7 @@ var g_Img:     Image
 var g_Texture: Texture
 var g_Font:    *Font
 
-func openImage(surface: nn *Surface)
+func openImage(surface: *Surface)
 {
     var opt: FileDlgOptions
     with opt
@@ -35,7 +35,7 @@ func openImage(surface: nn *Surface)
         MessageDlg.error(surface, "Failed to load image")
 }
 
-func compute(render: nn *RenderOgl)
+func compute(render: *RenderOgl)
 {
     if !g_Img.isValid():
         return
@@ -46,7 +46,7 @@ func compute(render: nn *RenderOgl)
     g_Texture = render.addImage(g_Img)
 }
 
-func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
+func onEvent(wnd: *Wnd, evt: IEvent)->bool
 {
     switch evt
     {
@@ -88,7 +88,7 @@ func onEvent(wnd: nn *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: nn *Application) = if Env.hasArg("swag.test"):
+    func test(app: *Application) = if Env.hasArg("swag.test"):
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ascii art", hook: &onEvent, init: &test)
 }

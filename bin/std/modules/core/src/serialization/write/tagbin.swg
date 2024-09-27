@@ -111,7 +111,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginStruct(structType: nn typeinfo, _structData: const *u8)->bool
+    mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
         let (pod, ?) = Serialization.isPodFinal(structType)
         if pod
@@ -172,7 +172,7 @@ impl TagBin
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endValue() {}
 
-    mtd beginSequence(typeElem: nn typeinfo, data: nn const *void, countElem: u64)->bool
+    mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: u64)->bool
     {
         output.addNative(TagBinSignatures.Sequence)
         output.addNative(countElem)

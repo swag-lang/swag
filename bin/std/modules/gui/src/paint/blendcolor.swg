@@ -15,7 +15,7 @@ struct BlendColor
 impl BlendColor
 {
     // Apply the color lerp to reach 'target'
-    mtd apply(wnd: nn *Wnd, target: Color)
+    mtd apply(wnd: *Wnd, target: Color)
     {
         if start
         {

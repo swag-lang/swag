@@ -1,6 +1,6 @@
 //#global skip
 
-func(T, R) map(v: T, cb: nn func(T)->R)->R
+func(T, R) map(v: T, cb: func(T)->R)->R
 {
     return cb(v)
 }

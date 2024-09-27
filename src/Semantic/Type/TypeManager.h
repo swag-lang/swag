@@ -145,7 +145,7 @@ struct TypeManager
 
     TypeInfo*             makeUnConst(TypeInfo* typeInfo);
     TypeInfo*             makeConst(TypeInfo* typeInfo);
-    TypeInfo*             makeNonNullable(TypeInfo* typeInfo);
+    TypeInfo*             makeNullable(TypeInfo* typeInfo);
     TypeInfoPointer*      makePointerTo(TypeInfo* toType, const TypeInfoFlags& ptrFlags = 0);
     static TypeInfoParam* makeParam();
     void                  registerTypeType();
@@ -161,7 +161,7 @@ struct TypeManager
     Map<TypeInfo*, std::vector<PointerCache>> mapPointers;
     Map<TypeInfo*, TypeInfo*>                 mapConst;
     Map<TypeInfo*, TypeInfo*>                 mapUnConst;
-    Map<TypeInfo*, TypeInfo*>                 mapNonNullable;
+    Map<TypeInfo*, TypeInfo*>                 mapNullable;
 
     TypeInfoNative* typeInfoS8          = nullptr;
     TypeInfoNative* typeInfoS16         = nullptr;

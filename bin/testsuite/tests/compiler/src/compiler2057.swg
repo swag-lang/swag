@@ -1,5 +1,5 @@
 #[Swag.Discardable]
-func itoa(result: nn ^u8, value: s64)->^u8
+func itoa(result: ^u8, value: s64)->^u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
@@ -40,7 +40,7 @@ func itoa(result: nn ^u8, value: s64)->^u8
     return retVal
 }
 
-func ftoa(result: nn ^u8, value: f64)
+func ftoa(result: ^u8, value: f64)
 {
     var ipart = cast(s64) value
     var fpart = value - cast(f64) ipart

@@ -73,7 +73,7 @@ impl Painter
 
     // Returns all the glyphs for a given string and font
     #[Swag.Overload]
-    func getGlyphs(text: Array'rune, font: nn *Font)->Array'(const *GlyphDesc)
+    func getGlyphs(text: Array'rune, font: *Font)->Array'(const *GlyphDesc)
     {
         var result: retval
         result.allocator = @getcontext().tempAllocator
@@ -87,7 +87,7 @@ impl Painter
     }
 
     // Get a rune size for a given font
-    func measureRune(c: rune, font: nn *Font)->Math.Point
+    func measureRune(c: rune, font: *Font)->Math.Point
     {
         var result: retval
         let desc    = font.getGlyphDesc(c)
@@ -123,7 +123,7 @@ impl Painter
     }
 
     // Draw a simple string (centered)
-    mtd drawStringCenter(x, y: f32, text: string, font: nn *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
+    mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
         var ms = measureString(text, font)
         var yr = y - (ms.height * 0.5 * zoom)
@@ -254,7 +254,7 @@ impl Painter
     }
 
     // Recompute the layout for a given rectangle
-    mtd computeLayout(pos: Math.Rectangle, text: nn *RichString, format: RichStringFormat)
+    mtd computeLayout(pos: Math.Rectangle, text: *RichString, format: RichStringFormat)
     {
         Debug.assert(format.font.regular != null, "invalid default font")
         text.layoutRect = pos
@@ -448,7 +448,7 @@ impl Painter
     // Draw a rich string.
     // A rich string can be multiline, and accepts internal formats.
     // The layout will be computed at the first call, and each time 'pos' has changed.
-    mtd drawRichString(pos: Math.Rectangle, text: nn *RichString, format: RichStringFormat, forceCompute = false)
+    mtd drawRichString(pos: Math.Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         text.compute()
         if text.chunks.count == 0:

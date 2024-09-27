@@ -4,7 +4,7 @@ struct SALUTE
 }
 
 //#[Swag.PrintBc]
-func cc(st: nn *SALUTE)
+func cc(st: *SALUTE)
 {
     st.s = 55
     st.t = 55
