@@ -289,7 +289,7 @@ namespace
 
         if (locValue)
         {
-            SymbolOverload* lastOverload = nullptr;
+            const SymbolOverload* lastOverload = nullptr;
             for (uint32_t i = locValue->ips.size() - 1; i != UINT32_MAX; i--)
             {
                 const auto ipn = locValue->ips[i];
