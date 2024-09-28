@@ -273,19 +273,19 @@ namespace
     /////////////////////////////////////
     /////////////////////////////////////
 
-    bool raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr)
+    Diagnostic* raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
-            return true;
+            return nullptr;
 
         const auto ip = STATE()->ip;
         if (!ip->node)
-            return true;
+            return nullptr;
 
         auto start = ip->node->token.startLocation;
         auto end   = ip->node->token.endLocation;
 
-        Diagnostic err{ip->node, ip->node->token, msg};
+        Diagnostic* err = new Diagnostic{ip->node, ip->node->token, msg};
 
         if (locValue)
         {
@@ -308,47 +308,59 @@ namespace
                     Utf8 what = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
                     if (ipn->op == ByteCodeOp::CopyRTtoRA || ipn->op == ByteCodeOp::CopyRT2toRARB)
                         what += " can return a null value";
-                    err.addNote(ipn->node, ipn->node->token, what);
+                    err->addNote(ipn->node, ipn->node->token, what);
                 }
                 else
                 {
-                    err.addNote(ipn->node, ipn->node->token, "history");
+                    err->addNote(ipn->node, ipn->node->token, "history");
                 }
             }
 
             if (lastOverload && lastOverload->node)
             {
-                err.addNote(lastOverload->node, lastOverload->node->getTokenName(), "declaration");
+                err->addNote(lastOverload->node, lastOverload->node->getTokenName(), "declaration");
             }
         }
 
-        return context->report(err);
+        return err;
     }
 
     bool checkOverflow(SanityContext* context, bool isValid, const char* msgKind, TypeInfo* type)
     {
         if (isValid)
             return true;
-        return raiseError(context, formErr(San0010, msgKind, type->getDisplayNameC()));
+        const auto err = raiseError(context, formErr(San0010, msgKind, type->getDisplayNameC()));
+        if (err)
+            return context->report(*err);
+        return true;
     }
 
     bool checkDivZero(SanityContext* context, const SanityValue* value, bool isZero)
     {
         if (!value->isConstant() || !isZero)
             return true;
-        return raiseError(context, toErr(San0002), value);
+        const auto err = raiseError(context, toErr(San0002), value);
+        if (err)
+            return context->report(*err);
+        return true;
     }
 
     bool checkEscapeFrame(SanityContext* context, const SanityValue* value)
     {
         SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
-        return raiseError(context, toErr(San0004), value);
+        const auto err = raiseError(context, toErr(San0004), value);
+        if (err)
+            return context->report(*err);
+        return true;
     }
 
     bool checkStackOffset(SanityContext* context, uint64_t stackOffset, uint32_t sizeOf = 0)
     {
-        if (stackOffset + sizeOf > static_cast<size_t>(STATE()->stack.size()))
-            return raiseError(context, formErr(San0007, stackOffset + sizeOf, STATE()->stack.size()));
+        if (stackOffset + sizeOf <= static_cast<size_t>(STATE()->stack.size()))
+            return true;
+        const auto err = raiseError(context, formErr(San0007, stackOffset + sizeOf, STATE()->stack.size()));
+        if (err)
+            return context->report(*err);
         return true;
     }
 
@@ -356,7 +368,10 @@ namespace
     {
         if (!value->isConstant() || value->reg.u64)
             return true;
-        return raiseError(context, toErr(San0006), value);
+        const auto err = raiseError(context, toErr(San0006), value);
+        if (err)
+            return context->report(*err);
+        return true;
     }
 
     bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
@@ -390,14 +405,15 @@ namespace
                 continue;
             done.push_back(idx);
 
-            if (!typeFunc || !typeFunc->parameters[idx]->typeInfo->isNullable())
+            if (!typeFunc ||
+                (typeFunc->parameters[idx]->typeInfo->couldBeNull() && !typeFunc->parameters[idx]->typeInfo->isNullable()))
             {
                 SanityValue* ra = nullptr;
                 SWAG_CHECK(getRegister(context, ra, pushParams[i]));
 
                 if (ra->isConstant() && !ra->reg.u64)
                 {
-#ifdef FORCE_NULL                    
+#ifdef FORCE_NULL
                     Utf8 msg;
                     if (ip->op == ByteCodeOp::LambdaCall)
                         msg = formErr(San0001, "lambda");
@@ -405,7 +421,9 @@ namespace
                         msg = formErr(San0001, typeFunc->declNode->token.cstr());
                     else
                         msg = formErr(San0001, intrinsic.cstr());
-                    return raiseError(context, msg, ra);
+                    const auto err = raiseError(context, msg, ra);
+                    if (err)
+                        return context->report(*err);
 #endif
                 }
             }
@@ -418,8 +436,12 @@ namespace
     {
         SanityValue memValue;
         SWAG_CHECK(getStackValue(context, &memValue, addr, sizeOf));
-        if (memValue.kind == SanityValueKind::Invalid)
-            return raiseError(context, toErr(San0008), locValue);
+        if (memValue.kind != SanityValueKind::Invalid)
+            return true;
+
+        const auto err = raiseError(context, toErr(San0008), locValue);
+        if (err)
+            return context->report(*err);
         return true;
     }
 
@@ -613,7 +635,7 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable())
                     {
-#ifdef FORCE_NULL                        
+#ifdef FORCE_NULL
                         ra->kind        = SanityValueKind::ForceNull;
                         ra->reg.pointer = nullptr;
 #endif
@@ -634,7 +656,7 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable())
                     {
-#ifdef FORCE_NULL                        
+#ifdef FORCE_NULL
                         ra->kind        = SanityValueKind::ForceNull;
                         ra->reg.pointer = nullptr;
                         rb->kind        = SanityValueKind::ForceNull;
