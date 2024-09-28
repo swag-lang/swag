@@ -1118,12 +1118,6 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
     {
         auto typeField = c->typeInfo;
 
-        if (typeField->couldBeNull())
-        {
-            c->typeInfo = g_TypeMgr->makeNullable(typeField);
-            typeField   = c->typeInfo;
-        }
-
         if (typeField->isArray())
         {
             const auto typeArray = castTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);

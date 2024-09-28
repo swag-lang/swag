@@ -216,7 +216,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: nl *void 
         return
     Debug.assert(offset != 0)
 
-    func jobEntry(jobData: nl *void)
+    func jobEntry(jobData: *void)
     {
         let oneJob = cast(*SliceJob'T) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)

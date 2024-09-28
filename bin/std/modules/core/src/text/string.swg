@@ -578,7 +578,7 @@ impl String
     }
 
     // Convert a literal string to a String
-    func from(value: string)->String
+    func from(value: nl string)->String
     {
         var val: retval = value
         return val

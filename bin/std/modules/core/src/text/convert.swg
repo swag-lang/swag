@@ -32,7 +32,7 @@ impl ConvertFormatFloat
     //     | G | 'E' for large exponents, 'f' otherwise
     // + 'precision'
     //     A number which is the precision of the fractional part
-    mtd setFormat(strFormat: string)
+    mtd setFormat(strFormat: nl string)
     {
         let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
@@ -98,7 +98,7 @@ impl ConvertFormatInt
     //     The padding character, in ascii. It's mandatory before the next field
     // + 'width'
     //     The width of the output, in number of characters
-    mtd setFormat(strFormat: string)
+    mtd setFormat(strFormat: nl string)
     {
         let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
@@ -297,7 +297,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
 }
 
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
-func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: string)
+func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
 {
     let kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")

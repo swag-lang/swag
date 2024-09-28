@@ -467,7 +467,7 @@ internal impl EditBox
         return false
     }
 
-    mtd insertString(str: string)
+    mtd insertString(str: nl string)
     {
         Utf8.visitRunes(|r| str)
         {

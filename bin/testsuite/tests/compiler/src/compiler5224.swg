@@ -4,7 +4,7 @@ func hasAttribute(value: typeinfo, attribute: typeinfo)->bool
 }
 
 var G = 0
-func beginSection(fct: *void, kind: s32, skipFat = false) throw
+func beginSection(fct: nl *void, kind: s32, skipFat = false) throw
 {
     G = 1
 }

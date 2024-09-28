@@ -959,7 +959,7 @@ impl ListCtrl
 
     // Add one new line
     #[Swag.Overload]
-    mtd createLine(parentLine: *ListLine)->*ListLine
+    mtd createLine(parentLine: nl *ListLine)->*ListLine
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 

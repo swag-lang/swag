@@ -641,7 +641,7 @@ impl Capture
         return result
     }
 
-    mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
+    mtd getSelectionBoundRect(editForm: nl IForm = null)->Math.Rectangle
     {
         if editForm:
             return editForm.boundRect()

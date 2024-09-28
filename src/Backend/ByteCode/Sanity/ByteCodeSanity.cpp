@@ -5,6 +5,7 @@
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -706,12 +707,11 @@ namespace
                     if (ip->node && ip->node->resolvedSymbolOverload())
                     {
                         const auto overload = ip->node->resolvedSymbolOverload();
-                        if (overload->typeInfo->isNullable() && !overload->typeInfo->isClosure())
+                        const auto typeOver = TypeManager::concreteType(overload->typeInfo);
+                        if (overload->typeInfo->isNullable() && !typeOver->isClosure())
                         {
-#ifdef FORCE_NULL
                             ra->kind        = SanityValueKind::ForceNull;
                             ra->reg.pointer = nullptr;
-#endif
                         }
                     }
 

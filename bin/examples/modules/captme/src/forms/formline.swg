@@ -232,7 +232,7 @@ impl IForm for FormLine
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
     }
 
-    mtd impl setup(capt: *Capture)
+    mtd impl setup(capt: nl *Capture)
     {
         capture = capt
         gizmo.anchors.resize(2)

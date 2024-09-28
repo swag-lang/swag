@@ -84,6 +84,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof):
         return false
 
+    // HACK for now : do not take care of Nullable flag
     let flags1 = type1.flags & ~.Nullable
     let flags2 = type2.flags & ~.Nullable
     if flags1 != flags2:
@@ -115,9 +116,18 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return true
     }
 
+    // HACK for now : do not take care of Nullable flag
+    var idx1 = 0
+    var idx2 = 0
+    if type1.flags & .Nullable:
+        idx1 = 3
+    if type2.flags & .Nullable:
+        idx2 = 3            
+
     if cmpFlags & .UnScoped:
-        return @stringcmp(type1.name, type2.name)
-    return @stringcmp(type1.fullname, type2.fullname)
+        return @stringcmp(type1.name[idx1..], type2.name[idx2..])
+
+    return @stringcmp(type1.fullname[idx1..], type2.fullname[idx2..])
 }
 
 ////////////////////////////////////////////////////////////

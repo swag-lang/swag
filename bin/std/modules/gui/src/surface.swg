@@ -139,7 +139,7 @@ impl Surface
     }
 
     // Set the surface title
-    mtd setTitle(name: string)
+    mtd setTitle(name: nl string)
     {
         wnd.name = name
         invalidate()
