@@ -56,7 +56,7 @@ func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(co
 
 // Returns the given associated 'attribute' to 'value' or null
 #[Overload, ConstExpr]
-func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->const *Swag.Attribute
+func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->nl const *Swag.Attribute
 {
     foreach it in value.attributes where attribute == it.type:
         return it
@@ -98,7 +98,7 @@ func getAttributes(type: typeinfo, attribute: typeinfo)->Array'(const *Swag.Attr
 
 // Returns the given associated 'attribute' to 'type' or null
 #[Overload, ConstExpr]
-func getAttribute(type: typeinfo, attribute: typeinfo)->const *Swag.Attribute
+func getAttribute(type: typeinfo, attribute: typeinfo)->nl const *Swag.Attribute
 {
     switch type.kind
     {

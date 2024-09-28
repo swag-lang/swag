@@ -25,7 +25,7 @@ impl Image
     var decoders: Array'ImageDecoder
 
     // Find the decoder that can treat 'fileName'
-    func getDecoder(fileName: string)->*ImageDecoder
+    func getDecoder(fileName: string)->nl *ImageDecoder
     {
         var found: *ImageDecoder
         foreach &decoder in decoders

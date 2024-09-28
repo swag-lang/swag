@@ -398,7 +398,7 @@ impl HashTable
 
     // Find the given key, and returns the corresponding entry.
     // Returns null if the key is not there.
-    mtd const find(key: K)->*HashTableEntry
+    mtd const find(key: K)->nl *HashTableEntry
     {
         if !table:
             return null

@@ -163,18 +163,18 @@ func animate(wnd: *Wnd)
     if wasMoving and !g_IsMoving:
         randValue()
 
-    for var i = 0'u64; i < g_Cells.count; i += 1
+    for var i = 0'u64; i < g_Cells.count; i += #over 1
     {
         let c = #ref g_Cells[i]
         if c.remove
         {
             g_Cells.removeAt(i)
-            i -= 1
+            i -= #over 1
         }
     }
 }
 
-func cellAt(x, y: s32, me: nl *Cell = null)->*Cell
+func cellAt(x, y: s32, me: nl *Cell = null)->nl *Cell
 {
     foreach &c in g_Cells
     {

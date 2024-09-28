@@ -74,10 +74,12 @@ internal impl TagBin
         freeSections.add(ptr)
     }
 
-    mtd canConvertType(toType, fromType: typeinfo)->bool
+    mtd canConvertType(toType, fromType: nl typeinfo)->bool
     {
         if toType == fromType:
             return true
+        if !toType or !fromType:
+            return false
 
         var fromStruct: const *Swag.TypeInfoStruct
         var toStruct:   const *Swag.TypeInfoStruct

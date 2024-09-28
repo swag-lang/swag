@@ -291,12 +291,15 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
         // to make a compare by name too
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
         {
-            const auto rFlags = reserveRegisterRC(context);
-            const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
-            inst->b.u64       = SWAG_TYPECMP_STRICT;
-            EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rFlags, r2);
-            freeRegisterRC(context, rFlags);
-            return true;
+            if (!leftTypeInfo->isPointerNull() && !rightTypeInfo->isPointerNull())
+            {
+                const auto rFlags = reserveRegisterRC(context);
+                const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
+                inst->b.u64       = SWAG_TYPECMP_STRICT;
+                EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rFlags, r2);
+                freeRegisterRC(context, rFlags);
+                return true;
+            }
         }
 
         // CString compare
@@ -448,15 +451,18 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
         // to make a compare by name too
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
         {
-            const auto rFlags = reserveRegisterRC(context);
-            const auto rt     = reserveRegisterRC(context);
-            const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
-            inst->b.u64       = SWAG_TYPECMP_STRICT;
-            EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rFlags, rt);
-            EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
-            freeRegisterRC(context, rFlags);
-            freeRegisterRC(context, rt);
-            return true;
+            if (!leftTypeInfo->isPointerNull() && !rightTypeInfo->isPointerNull())
+            {
+                const auto rFlags = reserveRegisterRC(context);
+                const auto rt     = reserveRegisterRC(context);
+                const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
+                inst->b.u64       = SWAG_TYPECMP_STRICT;
+                EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rFlags, rt);
+                EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
+                freeRegisterRC(context, rFlags);
+                freeRegisterRC(context, rt);
+                return true;
+            }
         }
 
         // Simple pointer compare

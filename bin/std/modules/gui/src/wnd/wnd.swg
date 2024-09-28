@@ -942,7 +942,7 @@ impl Wnd
 
     // Get the child window at the given coordinate
     // Coordinate is expressed in the parent system
-    mtd getWndAt(x, y: f32, getDisabled, getHidden = false)->*Wnd
+    mtd getWndAt(x, y: f32, getDisabled, getHidden = false)->nl *Wnd
     {
         if !position.contains(x, y):
             return null
@@ -1002,7 +1002,7 @@ impl Wnd
     }
 
     // Retrieve the child with the given id
-    mtd getChildById(childId: string)->*Wnd
+    mtd getChildById(childId: string)->nl *Wnd
     {
         foreach c in childs
         {
@@ -1017,7 +1017,7 @@ impl Wnd
     }
 
     // Retrieve the parent with the given id
-    mtd getParentById(parentId: string)->*Wnd
+    mtd getParentById(parentId: string)->nl *Wnd
     {
         var p = parent
         while p

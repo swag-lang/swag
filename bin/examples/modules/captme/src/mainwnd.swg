@@ -325,7 +325,7 @@ impl MainWnd
         }
     }
 
-    mtd getCapture()->*Capture
+    mtd getCapture()->nl *Capture
     {
         if !editWnd:
             return null

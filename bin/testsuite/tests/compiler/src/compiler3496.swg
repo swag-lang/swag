@@ -12,12 +12,12 @@ impl A
 
 struct(T) B
 {
-    using a: A'(*T)
+    using a: A'(nl *T)
 }
 
 #test
 {
-    var v1: A'(*s32)
+    var v1: A'(nl *s32)
     var v:  B's32
     var x = v[0]
 }

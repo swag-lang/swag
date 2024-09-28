@@ -248,7 +248,7 @@ impl ComboBox
     }
 
     // Returns the selected item
-    mtd getSelectedItem()->*ComboBoxItem
+    mtd getSelectedItem()->nl *ComboBoxItem
     {
         if selectedIdx >= items.count:
             return null

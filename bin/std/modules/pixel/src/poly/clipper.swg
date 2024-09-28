@@ -706,7 +706,7 @@ impl Transform
         }
     }
 
-    func getMaximaPair(e: *Edge)->*Edge
+    func getMaximaPair(e: *Edge)->nl *Edge
     {
         if (e.next.top == e.top) and !e.next.nextInLML:
             return e.next

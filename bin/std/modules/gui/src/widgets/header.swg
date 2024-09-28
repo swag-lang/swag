@@ -314,7 +314,7 @@ impl Header
     }
 
     // Returns the given item, by column
-    mtd getItemByCol(column: u32)->*HeaderItem
+    mtd getItemByCol(column: u32)->nl *HeaderItem
     {
         Debug.assert(column < items.count)
 

@@ -16,7 +16,7 @@ func isStructOfName(type: typeinfo, name: string)->bool
 // Get information about a specific method in a given struct.
 // Returns null if the method does not exist
 #[ConstExpr]
-func getMethod(type: typeinfo, name: string)->const *TypeValue
+func getMethod(type: typeinfo, name: string)->nl const *TypeValue
 {
     if !isStruct(type):
         return null
@@ -30,7 +30,7 @@ func getMethod(type: typeinfo, name: string)->const *TypeValue
 // Get information about a specific field in a given struct
 // Returns null if the field does not exist
 #[ConstExpr]
-func getField(type: typeinfo, name: string)->const *TypeValue
+func getField(type: typeinfo, name: string)->nl const *TypeValue
 {
     if !isStruct(type):
         return null

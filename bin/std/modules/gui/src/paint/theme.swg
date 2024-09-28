@@ -118,7 +118,7 @@ impl Theme
     }
 
     // Create a default font with the given size
-    mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->*Font
+    mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->nl *Font
     {
         switch style
         {
@@ -137,7 +137,7 @@ impl Theme
     }
 
     // Create a default font (fixed size) with the given size
-    mtd createDefaultFontFS(size: u32, style = FontFamilyStyle.Regular)->*Font
+    mtd createDefaultFontFS(size: u32, style = FontFamilyStyle.Regular)->nl *Font
     {
         switch style
         {

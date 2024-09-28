@@ -75,7 +75,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     return allArgs
 }
 
-func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->const *Swag.TypeValue
+func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->nl const *Swag.TypeValue
 {
     foreach it in typeStruct.fields
     {

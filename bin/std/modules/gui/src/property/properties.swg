@@ -132,7 +132,7 @@ internal impl Properties
         return gridColumnSize + gridMarginColumn * 0.5
     }
 
-    mtd hitTest(ptLoc: Math.Point)->*PropertiesItem
+    mtd hitTest(ptLoc: Math.Point)->nl *PropertiesItem
     {
         var pt = ptLoc + scrollWnd.getScrollPos()
         foreach item in items

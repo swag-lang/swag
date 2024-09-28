@@ -114,7 +114,7 @@ impl ListLine
     }
 
     // Get an item by index
-    mtd getItem(column: u32)->*ListItem
+    mtd getItem(column: u32)->nl *ListItem
     {
         foreach item in items
         {
@@ -1070,7 +1070,7 @@ impl ListCtrl
     }
 
     // Get the line with the keyboard focus
-    mtd const getFocusLine()->*ListLine
+    mtd const getFocusLine()->nl *ListLine
     {
         if focusIndex >= lines.count:
             return null
@@ -1111,7 +1111,7 @@ impl ListCtrl
 
     // Returns a selected line
     // Mostly for singlesel mode
-    mtd const getSelectedLine()->*ListLine
+    mtd const getSelectedLine()->nl *ListLine
     {
         if isVirtual or selModel.isEmpty():
             return null

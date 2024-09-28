@@ -593,7 +593,7 @@ impl RegExp
         here.value.add(toNode)
     }
 
-    mtd nfaPop()->*NfaTable throw
+    mtd nfaPop()->nl *NfaTable throw
     {
         if nfaStack.isEmpty():
             throw SyntaxError{"nfaPop"}
@@ -1104,7 +1104,7 @@ impl RegExp
         return pz
     }
 
-    func toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
+    func toI32(pz, pzEnd: const ^rune, val: *s32)->nl const ^rune throw
     {
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0]):
             throw SyntaxError{}
@@ -1448,6 +1448,8 @@ impl RegExp
                 pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
             }
 
+            if !pz:
+                break
             c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         }
     }

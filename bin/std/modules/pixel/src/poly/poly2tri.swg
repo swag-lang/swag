@@ -300,7 +300,7 @@ impl Triangle
         }
     }
 
-    mtd pointCW(point: *Point)->*Point
+    mtd pointCW(point: *Point)->nl *Point
     {
         switch point
         {
@@ -316,7 +316,7 @@ impl Triangle
         return null
     }
 
-    mtd pointCCW(point: *Point)->*Point
+    mtd pointCCW(point: *Point)->nl *Point
     {
         switch point
         {
@@ -537,7 +537,7 @@ impl AdvancingFront
         return node
     }
 
-    mtd locateNode(x: f32)->*Node
+    mtd locateNode(x: f32)->nl *Node
     {
         var node = searchNode
         if x < node.value
@@ -857,7 +857,7 @@ impl Tessellate
         return ot
     }
 
-    func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
+    func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->nl *Point
     {
         let o2d = orient2d(eq, op, ep)
         if o2d == .CW:

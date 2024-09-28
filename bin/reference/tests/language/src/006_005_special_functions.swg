@@ -34,7 +34,7 @@ impl Struct
     func opCount(using self)->u64 { return 0; }
 
     // Called when @dataof is used, returns a pointer to the underlying data of type WhateverType
-    func opData(using self)->*WhateverType { return null; }
+    func opData(using self)->nl *WhateverType { return null; }
 
     // Custom casting between the struct and another type, can be overloaded with different return types
     // Example usage: var x = cast(OneType) v

@@ -14,7 +14,7 @@ func isStructArray(t: typeinfo)->bool
 
 // Returns the generic type of the 'Core.Array' typeinfo.
 // If 't' is not a 'Core.Array', returns null
-func getStructArrayType(t: typeinfo)->typeinfo
+func getStructArrayType(t: typeinfo)->nl typeinfo
 {
     if !isStructArray(t):
         return null

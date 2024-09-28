@@ -174,7 +174,7 @@ impl RichString
 
     // Get the url chunk at position 'at'.
     // If an url does not exists, returns 'null'.
-    mtd getUrlChunkAt(at: Math.Point)->*RichChunk
+    mtd getUrlChunkAt(at: Math.Point)->nl *RichChunk
     {
         if !hasUrl:
             return null

@@ -1,4 +1,4 @@
-public func toto3197()->func(s32)->string throw throw
+public func toto3197()->nl func(s32)->nl string throw throw
 {
     return null
 }

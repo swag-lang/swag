@@ -2,7 +2,7 @@ struct A {}
 
 impl A
 {
-    mtd toto()->*void
+    mtd toto()->nl *void
     {
         return null
     }

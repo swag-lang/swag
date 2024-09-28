@@ -93,7 +93,7 @@ internal impl Application
         }
     }
 
-    func skipDisabled(wnd: *Wnd)->*Wnd
+    func skipDisabled(wnd: *Wnd)->nl *Wnd
     {
         if !wnd:
             return null
@@ -680,7 +680,7 @@ impl Application
     }
 
     // Returns the window under the given point
-    mtd getWndAtMouse()->*Wnd
+    mtd getWndAtMouse()->nl *Wnd
     {
         var mousePos      = mouse.getPosition()
         let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)

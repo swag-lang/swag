@@ -375,6 +375,32 @@ namespace
         return true;
     }
 
+    bool checkNotNullReturn(SanityContext* context, uint32_t reg)
+    {
+        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
+            return true;
+
+        const auto ip = STATE()->ip;
+        if (ip->flags.has(BCI_CANT_OVERFLOW))
+            return true;
+
+        SanityValue* ra = nullptr;
+        SWAG_CHECK(getRegister(context, ra, reg));
+
+        if (ra->kind == SanityValueKind::Constant && !ra->reg.u64)
+        {
+            const auto returnType = context->bc->typeInfoFunc->concreteReturnType();
+            if (!returnType->isNullable() && returnType->couldBeNull())
+            {
+                const auto err = raiseError(context, toErr(San0003), ra);
+                if (err)
+                    return context->report(*err);
+            }
+        }
+
+        return true;
+    }
+
     bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
@@ -444,7 +470,7 @@ namespace
                             const auto funcDecl = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                             SWAG_ASSERT(funcDecl->parameters);
                             err->addNote(formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::niceArgumentRank(idx + 1).cstr()));
-                            
+
                             const auto childParam = funcDecl->parameters->children[idx];
                             if (childParam->isGeneratedSelf())
                                 err->addNote(funcDecl, funcDecl->getTokenName(), toNte(Nte0225));
@@ -666,12 +692,10 @@ namespace
                     const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
                     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     const auto returnType   = typeInfoFunc->concreteReturnType();
-                    if (returnType->isNullable())
+                    if (returnType->isNullable() && !returnType->isClosure())
                     {
-#ifdef FORCE_NULL
-                        ra->kind        = SanityValueKind::ForceNull;
-                        ra->reg.pointer = nullptr;
-#endif
+                        //ra->kind        = SanityValueKind::ForceNull;
+                        //ra->reg.pointer = nullptr;
                     }
                     break;
                 }
@@ -1372,11 +1396,14 @@ namespace
                     break;
 
                 case ByteCodeOp::CopyRAtoRR:
-                    if (ip->hasFlag(BCI_IMM_A))
-                        break;
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
-                    if (ra->kind == SanityValueKind::StackAddr)
-                        return checkEscapeFrame(context, ra);
+                    SWAG_CHECK(checkNotNullReturn(context, ip->a.u32));
+
+                    if (!ip->hasFlag(BCI_IMM_A))
+                    {
+                        if (ra->kind == SanityValueKind::StackAddr)
+                            return checkEscapeFrame(context, ra);
+                    }
                     break;
 
                 case ByteCodeOp::CopyRARBtoRR2:

@@ -99,7 +99,7 @@ func peekExecJob()->bool
     return true
 }
 
-func getJobToExec()->*Job
+func getJobToExec()->nl *Job
 {
     Sync.scopedLock(&g_mutexPendingJobs)
     if g_pendingJobs.isEmpty():

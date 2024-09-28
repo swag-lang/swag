@@ -142,7 +142,8 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             {
                 const auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRR, r0);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::CopyRAtoRR, r0);
+                inst->flags.add(BCI_CANT_OVERFLOW);
                 freeRegisterRC(context, r0);
             }
         }
@@ -157,7 +158,8 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             {
                 const auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, r0, r0);
+                const auto inst = EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, r0, r0);
+                inst->flags.add(BCI_CANT_OVERFLOW);
                 freeRegisterRC(context, r0);
             }
         }

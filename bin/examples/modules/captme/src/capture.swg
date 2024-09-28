@@ -1189,14 +1189,14 @@ impl Capture
     // SELECTION
     //////////////////////////////
 
-    mtd getSelectedBaseForm()->*BaseForm
+    mtd getSelectedBaseForm()->nl *BaseForm
     {
         if selection.count == 0:
             return null
         return cast(*BaseForm) @dataof(forms[selection.back()])
     }
 
-    mtd getSelectedFormType()->typeinfo
+    mtd getSelectedFormType()->nl typeinfo
     {
         if selection.count == 0:
             return null

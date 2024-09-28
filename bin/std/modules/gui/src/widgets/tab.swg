@@ -567,7 +567,7 @@ impl Tab
     }
 
     // Returns the current selected item, or 'null'
-    mtd getSelectedItem()->*TabItem
+    mtd getSelectedItem()->nl *TabItem
     {
         if selectedIdx >= views.count:
             return null

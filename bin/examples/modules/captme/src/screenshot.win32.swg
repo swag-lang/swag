@@ -90,7 +90,7 @@ private
         g_Ignore  = hWnd
         EnumWindows(cast() &enumProc, 0)
         if !g_Hit:
-            return null
+            return g_Hit
 
         for
         {
