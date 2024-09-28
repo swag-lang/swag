@@ -349,7 +349,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("var", TokenId::KwdVar);
     keywords.add("let", TokenId::KwdLet);
     keywords.add("const", TokenId::KwdConst);
-    keywords.add("nn", TokenId::KwdNonNull);
+    keywords.add("nl", TokenId::KwdNullable);
     keywords.add("moveref", TokenId::KwdMoveRef);
 
     keywords.add("not", TokenId::KwdReserved);

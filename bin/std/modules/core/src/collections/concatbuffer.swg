@@ -396,7 +396,7 @@ impl ConcatBuffer
     // Convert the buffer to a String.
     // A copy will be made, so the buffer is still valid after the call.
     // See [[ConcatBuffer.moveToString]]
-    mtd toString(alloc: Swag.IAllocator = null)->String
+    mtd toString(alloc: nl Swag.IAllocator = null)->String
     {
         var result: retval
         if !firstBucket:

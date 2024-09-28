@@ -5,7 +5,7 @@
         #[Swag.Foreign("kernel32")]
         {
             func GetStdHandle(handle: u32)->*void;
-            func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *u32)->s32;
+            func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: nl *u32, lpOverlapped: nl *u32)->s32;
             func SetConsoleTextAttribute(hConsoleOutput: *void, wAttributes: u16)->bool;
         }
 

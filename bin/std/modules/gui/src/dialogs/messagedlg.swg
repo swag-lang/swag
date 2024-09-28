@@ -136,7 +136,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
+    func yesNo(from: *Surface, message: string, title: nl string = null, defaultId = Dialog.BtnNo, icon: Icon = {})->WndId
     {
         var ic = icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
         with let dlg = create(from, message, ic)
@@ -163,7 +163,7 @@ public impl MessageDlg
     }
 
     // Message box to 'confirm' something
-    func confirm(from: *Surface, message: string, question: string = null)->WndId
+    func confirm(from: *Surface, message: string, question: nl string = null)->WndId
     {
         var txt = String.from(message)
         txt += "\n"
@@ -174,7 +174,7 @@ public impl MessageDlg
 
     // Message box to show the current raised error.
     // @err() must still contain the raised error.
-    func error(from: *Surface, message: string = null)
+    func error(from: *Surface, message: nl string = null)
     {
         var txt: String = String.from(message)
         if !txt.isEmpty():

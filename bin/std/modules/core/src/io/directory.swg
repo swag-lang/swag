@@ -14,7 +14,7 @@ struct EnumerationOptions
 }
 
 // Get all the files of the given directory
-func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)->Array'(File.FileInfo) throw
+func enumerateFiles(dirName: string, matchExtension: nl string = null, recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchExtension  = matchExtension
@@ -24,7 +24,7 @@ func enumerateFiles(dirName: string, matchExtension: string = null, recurse = fa
 }
 
 // Get all the directories in the given directory
-func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)->Array'(File.FileInfo) throw
+func enumerateDirectories(dirName: string, matchExtension: nl string = null, recurse = false)->Array'(File.FileInfo) throw
 {
     var options: EnumerationOptions
     options.matchExtension = matchExtension

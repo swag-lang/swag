@@ -1,4 +1,4 @@
-func(T) toto(x: const [..] T)
+func(T) toto(x: nl const [..] T)
 {
 }
 

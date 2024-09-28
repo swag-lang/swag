@@ -22,7 +22,7 @@ impl A
 
 impl B
 {
-    func create(parent: *void, name: string, position: f32, id: Alias0 = null)
+    func create(parent: nl *void, name: string, position: f32, id: Alias0 = null)
     {
         A.create'B(parent, position, id)
     }

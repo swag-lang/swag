@@ -120,7 +120,7 @@ impl QuickWnd
         updateQuickStyles()
     }
 
-    mtd btnPopup(btn: *Button, pos: Math.Point)
+    mtd btnPopup(btn: nl *Button, pos: Math.Point)
     {
         let menu = MenuCtrl.createPopup(self)
         menu.addItem("Remove Quick Style", "0", disabled: !btn)

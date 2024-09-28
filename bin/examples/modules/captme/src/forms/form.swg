@@ -11,7 +11,7 @@ interface IForm
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd movePoint(pt: u32, newPosX, newPosY: s32);
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;
-    mtd setup(capt: *Capture);
+    mtd setup(capt: nl *Capture);
     mtd isSame(ptr: *BaseForm)->bool;
     mtd copy(dst, src: *BaseForm);
 }

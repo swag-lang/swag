@@ -23,7 +23,7 @@ struct SerializationError
 }
 
 //#[Swag.PrintBc]//, Swag.Optimize("", false)]
-func beginStruct(fct: *void, structType: typeinfo, _structData: const *u8)->bool throw
+func beginStruct(fct: nl *void, structType: typeinfo, _structData: nl const *u8)->bool throw
 {
     if  hasAttribute(structType, attrA) or
         hasAttribute(structType, attrB)

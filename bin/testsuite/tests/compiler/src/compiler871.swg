@@ -1,6 +1,4 @@
-
-
-func toto(x: string)
+func toto(x: nl string)
 {
 	@assert(@countof(x) == 0)
 	@assert(@dataof(x) == null)

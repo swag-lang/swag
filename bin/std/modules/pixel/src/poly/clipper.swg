@@ -2142,7 +2142,7 @@ impl Transform
             return e2.curr.x < e1.curr.x
     }
 
-    mtd insertEdgeIntoAEL(edge: *Edge, startE: *Edge)
+    mtd insertEdgeIntoAEL(edge: *Edge, startE: nl *Edge)
     {
         var startEdge = startE
         if !activeEdges

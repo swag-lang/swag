@@ -172,14 +172,14 @@ impl RichEditCtrl
                     }
 
                     i = cutAti
-                    let nl = newLine(curLine + 1)
-                    nl.wordWrap = true
+                    let newL = newLine(curLine + 1)
+                    newL.wordWrap = true
 
-                    nl.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
-                    nl.styles.add(@mkslice(l.styles.buffer + i, l.chars.count - i))
-                    nl.dirtyStyle       = false
-                    nl.lexerEndingState = l.lexerEndingState
-                    nl.lexerCptCmt      = l.lexerCptCmt
+                    newL.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
+                    newL.styles.add(@mkslice(l.styles.buffer + i, l.chars.count - i))
+                    newL.dirtyStyle       = false
+                    newL.lexerEndingState = l.lexerEndingState
+                    newL.lexerCptCmt      = l.lexerCptCmt
                     l.chars.resize(i)
                     l.styles.resize(i)
 

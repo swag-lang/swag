@@ -500,7 +500,7 @@ public impl Crc32
     }
 
     // Update the hash value with 'buffer' content
-    mtd update(data: const [..] u8)
+    mtd update(data: nl const [..] u8)
     {
         var cur    = ~crc
         var length = @countof(data)

@@ -46,7 +46,7 @@ impl RichEditCtrl
         return result
     }
 
-    mtd getTabOffset(x: s32, numBlanks: *s32 = null)->s32
+    mtd getTabOffset(x: s32, numBlanks: nl *s32 = null)->s32
     {
         let of        = cast(s32) (x - getMarginLeft())
         let fontR     = getFont().getFont(styles[0].fontMode)

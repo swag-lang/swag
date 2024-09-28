@@ -314,7 +314,7 @@ public alias ThreadProc = func(*void)->u32;
 
 #[Swag.Foreign("kernel32")]
 {
-    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
+    func CreateThread(lpThreadAttributes: nl *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 

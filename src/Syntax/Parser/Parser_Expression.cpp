@@ -407,7 +407,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::KwdConst:
-        case TokenId::KwdNonNull:
+        case TokenId::KwdNullable:
         case TokenId::KwdCode:
         case TokenId::KwdStruct:
         case TokenId::KwdUnion:

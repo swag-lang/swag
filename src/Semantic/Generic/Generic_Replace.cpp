@@ -109,20 +109,26 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     const auto it = replaceTypes.find(typeInfo->name);
     if (it != replaceTypes.end())
     {
+        auto typeReplace = it->second.typeInfoReplace;
+
+        // Be sure to keep the nullable state of the generic type, if specified
+        if (typeInfo->isNullable())
+            typeReplace = g_TypeMgr->makeNullable(typeReplace);
+
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
-        if (typeInfo->isFuncAttr() && it->second.typeInfoReplace->isLambdaClosure())
+        if (typeInfo->isFuncAttr() && typeReplace->isLambdaClosure())
         {
-            const auto t = it->second.typeInfoReplace->clone();
+            const auto t = typeReplace->clone();
             t->kind      = TypeInfoKind::FuncAttr;
             return t;
         }
 
         // Do not substitute with unconverted TypeList
-        if (!it->second.typeInfoReplace->isListArray())
-            return it->second.typeInfoReplace;
+        if (!typeReplace->isListArray())
+            return typeReplace;
         if (typeInfo->isKindGeneric())
-            return TypeManager::convertTypeListToArray(nullptr, castTypeInfo<TypeInfoList>(it->second.typeInfoReplace), true);
+            return TypeManager::convertTypeListToArray(nullptr, castTypeInfo<TypeInfoList>(typeReplace), true);
     }
 
     // When type is a compound, we do substitution in the raw type

@@ -210,19 +210,19 @@ public func waitJob(job: *Job)
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
 #[Swag.Macro]
-public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
+public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: nl *void = null, stmt: code)
 {
     if !@countof(range):
         return
     Debug.assert(offset != 0)
 
-    func jobEntry(jobData: *void)
+    func jobEntry(jobData: nl *void)
     {
         let oneJob = cast(*SliceJob'T) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
-    func visitSlice(buffer: [..] T, offset: u32, userData: *void)
+    func visitSlice(buffer: [..] T, offset: u32, userData: nl *void)
     {
         var scan    = @dataof(buffer)
         let countof = @countof(buffer)
@@ -294,7 +294,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         visitFor(oneJob.startIndex, oneJob.endIndex, oneJob.userData)
     }
 
-    func visitFor(startIndex, endIndex: u32, userData: *void)
+    func visitFor(startIndex, endIndex: u32, userData: nl *void)
     {
         var curIndex = startIndex
         for (endIndex - startIndex) + 1

@@ -20,7 +20,7 @@ impl A
 struct(T) B
 {
     d: f32
-    using a: A'(*T)
+    using a: A'(nl *T)
 }
 
 struct C

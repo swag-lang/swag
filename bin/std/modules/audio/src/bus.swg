@@ -12,7 +12,7 @@ public impl Bus
     // Creates an audio bus.
     // You can then associate a [[Voice]] to that bus with [[Voice.setRooting]]
     // Note that you can have a graph of buses, because a bus can have another bus as 'parent'.
-    func create(numChannels: u32, parent: *Bus = null)->*Bus throw
+    func create(numChannels: u32, parent: nl *Bus = null)->*Bus throw
     {
         let bus = Memory.new'Bus()
         defer<err> Memory.delete(bus)

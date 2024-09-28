@@ -374,7 +374,7 @@ impl RenderOgl
     }
 
     // Set the current render target
-    mtd bindRenderTarget(rt: *RenderTarget, vp: *Math.Rectangle = null)
+    mtd bindRenderTarget(rt: *RenderTarget, vp: nl *Math.Rectangle = null)
     {
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid:
@@ -886,7 +886,7 @@ impl RenderOgl
     }
 
     // Set the current shader
-    mtd setShader(shader: *ShaderBase = null)
+    mtd setShader(shader: nl *ShaderBase = null)
     {
         curShader = shader orelse &shaderAA
         glUseProgram(cast(GLuint) curShader.handle)

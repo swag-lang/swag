@@ -24,7 +24,7 @@ impl Image
     mtd const isValid() => pixels.buffer != null
 
     // Creates a new image
-    func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
+    func create(width, height: s32, pf: PixelFormat, buffer: nl const [..] u8 = null)->Image
     {
         Debug.assert(width > 0 and height > 0, "invalid dimensions")
 

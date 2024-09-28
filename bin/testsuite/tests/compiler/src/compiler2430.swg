@@ -1,4 +1,4 @@
-public func append2430(buf: *void, fmt: string, values: ...)
+public func append2430(buf: nl *void, fmt: string, values: ...)
     verify
     {
         if !#isconstexpr(fmt): return true

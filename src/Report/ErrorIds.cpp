@@ -121,7 +121,7 @@ void initErrors()
     SWAG_ERROR(San0007, "[sanity] stack overwrite     $ possible overwrite of the stack memory at offset [[%lld]] (stack size is [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] uninitialized usage $ possible usage of uninitialized memory");
     SWAG_ERROR(San0010, "[sanity] overflow            $ possible overflow in [['%s']] (type is [[%s]])");
-    SWAG_ERROR(San0001, "[sanity] null argument       $ possible forbidden null argument when calling [[%s]]");
+    SWAG_ERROR(San0001, "[sanity] null argument       $ possible null argument when calling [[%s]]");
     SWAG_ERROR(San0003, nullptr);
     SWAG_ERROR(San0005, nullptr);
     SWAG_ERROR(San0009, nullptr);
@@ -1160,7 +1160,7 @@ void initErrors()
     SWAG_ERROR(Nte0222, "consider using [[&%s]] if you want a function pointer for a lambda or a closure");
     SWAG_ERROR(Nte0011, "this makes the conversion from [[%s]] to [[%s]] ambiguous");
     SWAG_ERROR(Nte0223, "this is the culprit");
-    SWAG_ERROR(Nte0224, nullptr);
+    SWAG_ERROR(Nte0224, "function [[%s]] does not accept a null value as [[%s]]");
     SWAG_ERROR(Nte0225, nullptr);
 }
 

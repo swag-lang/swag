@@ -119,7 +119,7 @@ impl RichString
     // ```swag
     // <b>this is bold</b> but this is normal <i>and this is italic</i>
     // ```swag
-    mtd set(text: string)
+    mtd set(text: nl string)
     {
         if raw == text and chunks.count:
             return

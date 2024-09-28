@@ -229,19 +229,19 @@ impl Wnd
     }
 
     #[Swag.Inline, Swag.Overload]
-    func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
+    func(T) create(parent: nl *Wnd = null, id: nl WndId = null, hook: nl HookEvent = null)->*T
     {
         return create(parent, "", {}, id: id, hook: hook)
     }
 
     #[Swag.Inline, Swag.Overload]
-    func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
+    func(T) create(parent: nl *Wnd, position: Math.Rectangle, id: nl WndId = null, hook: nl HookEvent = null)->*T
     {
         return create(parent, "", position, id: id, hook: hook)
     }
 
     #[Swag.Overload]
-    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
+    func(T) create(parent: nl *Wnd, name: nl string, position: Math.Rectangle, id: nl WndId = null, hook: nl HookEvent = null)->*T
     {
         let res = Memory.new'T()
         res.isAllocated = true

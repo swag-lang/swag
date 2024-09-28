@@ -41,6 +41,8 @@ bool TypeInfoNative::isSame(const TypeInfo* to, CastFlags castFlags) const
 
 void TypeInfoNative::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
+    if (isNullable())
+        resName += "nl ";
     if (isConst())
         resName += "const ";
     switch (nativeType)
@@ -157,6 +159,9 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 Utf8 TypeInfoAlias::getDisplayName()
 {
     Utf8 res;
+    
+    if (isNullable())
+        res += "nl ";
     if (isConst())
         res += "const ";
     res += rawType->getDisplayName();
@@ -220,6 +225,8 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, ComputeNameKind nameKin
 
     if (!hasFlag(TYPEINFO_POINTER_AUTO_REF) || (nameKind != ComputeNameKind::DisplayName && nameKind != ComputeNameKind::ScopedNameExport))
     {
+        if (isNullable())
+            resName += "nl ";
         if (isConst())
             resName += "const ";
         if (isPointerRef() && hasFlag(TYPEINFO_POINTER_MOVE_REF))
@@ -349,6 +356,8 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 
 void TypeInfoSlice::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
+    if (isNullable())
+        resName += "nl ";
     if (isConst())
         resName += "const ";
     resName += "[..] ";
@@ -1339,11 +1348,11 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, ComputeNameKind nameKind
         resName = computeTupleDisplayName(fields, nameKind);
         return;
     }
-    
+
     if (nameKind != ComputeNameKind::Name && nameKind != ComputeNameKind::DisplayName)
         computeScopedName(resName);
 
     resName += structName;
-    
+
     computeNameGenericParameters(genericParameters, resName, nameKind);
 }

@@ -7,7 +7,7 @@ impl I for A {}
 impl I for B {}
 
 //#[Swag.PrintBc]
-func toto(i: I)
+func toto(i: nl I)
 {
     //#[Swag.Complete]
     switch i

@@ -1020,8 +1020,8 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
     func glTexGenfv(coord: GLenum, pname: GLenum, params: const *GLfloat);
     func glTexGeni(coord: GLenum, pname: GLenum, param: GLint);
     func glTexGeniv(coord: GLenum, pname: GLenum, params: const *GLint);
-    func glTexImage1D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: const *GLvoid);
-    func glTexImage2D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, height: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: const *GLvoid);
+    func glTexImage1D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: nl const *GLvoid);
+    func glTexImage2D(target: GLenum, level: GLint, internalformat: GLint, width: GLsizei, height: GLsizei, border: GLint, format: GLenum, type: GLenum, pixels: nl const *GLvoid);
     func glTexParameterf(target: GLenum, pname: GLenum, param: GLfloat);
     func glTexParameterfv(target: GLenum, pname: GLenum, params: const *GLfloat);
     func glTexParameteri(target: GLenum, pname: GLenum, param: GLint);

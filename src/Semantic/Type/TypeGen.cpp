@@ -35,7 +35,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto       typeName           = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
+    auto typeName = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
+
     const auto nonPartialTypeName = typeName;
     if (genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
         typeName += "__partial";
@@ -184,6 +185,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
         exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::Character);
     if (typeInfo->isConst())
         exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::Const);
+    if (typeInfo->isNullable())
+        exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::Nullable);
 
     // True by default, will be removed by struct if necessary
     exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::CanCopy);

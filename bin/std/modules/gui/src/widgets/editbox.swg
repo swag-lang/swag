@@ -836,7 +836,7 @@ internal impl EditBox
 impl EditBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, content: string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
+    func create(parent: *Wnd, content: nl string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
     {
         Debug.assert(parent != null)
         var pos = position
@@ -892,7 +892,7 @@ impl EditBox
     }
 
     // Set the editbox content
-    mtd setText(str: string)
+    mtd setText(str: nl string)
     {
         if text == str:
             return

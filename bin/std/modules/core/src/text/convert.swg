@@ -147,7 +147,7 @@ impl ConvertFormatInt
 }
 
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
-func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: string)
+func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
 {
     var valueData = @dataof(value)
     var type      = Reflection.makeConcreteAlias(@kindof(value))
@@ -458,7 +458,7 @@ func convertInt(buf: *ConcatBuffer, value: any, fmt: ConvertFormatInt)
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: string)
+func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
@@ -469,7 +469,7 @@ func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFor
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertInt(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: string)
+func convertInt(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 
@@ -499,7 +499,7 @@ func convertRune(buf: *ConcatBuffer, value: rune)
 
 // Templated version. Convert a value of type 'T'
 #[Swag.Warning("Wrn0006", .Disable)]
-func(T) convert(buf: *ConcatBuffer, value: T, convFmt: ConvertFormat, strFormat: string)
+func(T) convert(buf: *ConcatBuffer, value: T, convFmt: ConvertFormat, strFormat: nl string)
 {
     #if Reflection.isInteger(T)
     {

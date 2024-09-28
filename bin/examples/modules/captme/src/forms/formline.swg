@@ -210,7 +210,7 @@ impl IForm for FormLine
         return false
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         computePaintCoords(z)
 

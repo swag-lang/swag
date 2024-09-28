@@ -88,7 +88,7 @@ func evaluateSolution(soluce: *Solution)
     soluce.score /= g_NumGenes
 }
 
-func pickToMate(other: *Solution = null)->*Solution
+func pickToMate(other: nl *Solution = null)->*Solution
 {
     var rnd = g_Rng.nextF32(0, g_TotalWeight)
     foreach child in g_Gen[g_CurGen].all

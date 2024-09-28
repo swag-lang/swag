@@ -495,7 +495,7 @@ internal impl Properties
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
+    mtd addItem(value: Swag.TypeValue, data: nl *u8, parentItem: nl *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
     {
         var line: *Wnd
 
@@ -761,7 +761,7 @@ impl Properties
     }
 
     // Add a new struct to display.
-    mtd addStruct(val: any, section: string = null)
+    mtd addStruct(val: any, section: nl string = null)
     {
         let dataof = @dataof(val)
         let typeof = @kindof(val)

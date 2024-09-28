@@ -16,8 +16,8 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
-    // Non null keyword
-    if (tokenParse.is(TokenId::KwdNull))
+    // Nullable keyword
+    if (tokenParse.is(TokenId::KwdNullable))
     {
         node->typeFlags.add(TYPE_FLAG_NULLABLE);
         SWAG_CHECK(eatToken());
@@ -486,8 +486,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     *result         = node;
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
-    // Non null keyword
-    if (tokenParse.is(TokenId::KwdNull))
+    // Nullable keyword
+    if (tokenParse.is(TokenId::KwdNullable))
     {
         node->typeFlags.add(TYPE_FLAG_NULLABLE);
         SWAG_CHECK(eatToken());
@@ -639,7 +639,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
 
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0329)}));
 
-    if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdNonNull) && getNextToken().is(TokenId::KwdFunc))
+    if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdNullable) && getNextToken().is(TokenId::KwdFunc))
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
     else
         SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));

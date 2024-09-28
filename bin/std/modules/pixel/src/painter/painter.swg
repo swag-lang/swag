@@ -815,7 +815,7 @@ impl Painter
     }
 
     // Set the current shader
-    mtd setShader(shader: *ShaderBase = null)
+    mtd setShader(shader: nl *ShaderBase = null)
     {
         let cmd = newCommand(.SetShader, true)
         cmd.shader.shader = shader

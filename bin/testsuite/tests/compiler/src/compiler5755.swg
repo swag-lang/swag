@@ -8,7 +8,7 @@ impl I for B {}
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]
-func toto(i: I)
+func toto(i: nl I)
 {
     #[Swag.Complete]
     switch i

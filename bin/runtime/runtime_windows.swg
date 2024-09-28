@@ -85,7 +85,7 @@ namespace __Win32RT
 
     #[Swag.Foreign("DbgHelp")]
     {
-        func SymInitialize(hProcess: HANDLE, userSearchPath: *CHAR, fInvadeProcess: BOOL)->BOOL;
+        func SymInitialize(hProcess: HANDLE, userSearchPath: nl *CHAR, fInvadeProcess: BOOL)->BOOL;
         func SymCleanup(hProcess: HANDLE)->BOOL;
         func SymFromAddr(hProcess: HANDLE, address: ULONG64, displacement: *ULONG64, symbol: *SYMBOL_INFO)->BOOL;
         func SymFromAddrW(hProcess: HANDLE, address: ULONG64, displacement: *ULONG64, symbol: *SYMBOL_INFOW)->BOOL;
@@ -99,10 +99,10 @@ namespace __Win32RT
         func RtlMoveMemory(destination: *void, source: const *void, length: u64);
         func RtlCompareMemory(destination, source: const *void, length: u64)->u64;
         func RtlFillMemory(destination: *void, length: u64, fill: s32);
-        func RtlCaptureStackBackTrace(framesToSkip: ULONG, framesToCapture: ULONG, backTrace: **void, backTraceHash: *ULONG)->USHORT;
+        func RtlCaptureStackBackTrace(framesToSkip: ULONG, framesToCapture: ULONG, backTrace: **void, backTraceHash: nl *ULONG)->USHORT;
 
         func GetStdHandle(nStdHandle: u32)->HANDLE;
-        func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+        func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: nl *u32, lpOverlapped: nl *void)->u32;
         func GetCurrentProcess()->HANDLE;
         func ExitProcess(uExitCode: u32);
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: *const *void);
@@ -118,7 +118,7 @@ namespace __Win32RT
 
     #[Swag.Foreign("user32")]
     {
-        func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
+        func MessageBoxA(hWnd: nl const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
     }
 }
 

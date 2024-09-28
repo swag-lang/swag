@@ -2,7 +2,7 @@
 #global namespace Errors
 using Win32
 
-func transformWinErrors(val0: string = null) throw
+func transformWinErrors(val0: nl string = null) throw
 {
     if @err() == null:
         return

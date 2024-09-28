@@ -30,7 +30,7 @@ func day6B()
     var times: Array'u64
     var dists: Array'u64
 
-    var str0, str1: String
+    var str0, str1: String = ""
     foreach v in val0:
         str0 += v
     foreach v in val1:

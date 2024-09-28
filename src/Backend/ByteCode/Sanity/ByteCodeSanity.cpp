@@ -306,14 +306,14 @@ namespace
                 if (ipn->node->resolvedSymbolOverload())
                 {
                     Utf8 what = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
-                    if (ipn->op == ByteCodeOp::CopyRTtoRA || ipn->op == ByteCodeOp::CopyRT2toRARB)
-                        what += " can return a null value";
                     err->addNote(ipn->node, ipn->node->token, what);
                 }
+                else if (ipn->node->hasComputedValue() && ipn->node->typeInfo->isPointerNull())
+                    err->addNote(ipn->node, ipn->node->token, "null value");
+                else if (ipn->node->hasComputedValue())
+                    err->addNote(ipn->node, ipn->node->token, "compile-time value");
                 else
-                {
-                    err->addNote(ipn->node, ipn->node->token, "history");
-                }
+                    err->addNote(ipn->node, ipn->node->token, "context");
             }
 
             if (lastOverload && lastOverload->node)
@@ -393,6 +393,7 @@ namespace
         }
 
         VectorNative<uint32_t> done;
+        bool                   doneObjInterface = false;
         for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
         {
             uint32_t idx;
@@ -401,19 +402,32 @@ namespace
             else
                 idx = pushParams.size() - i - 1;
 
+            if (typeFunc && typeFunc->isClosure() && idx == 0)
+                continue;
+            const auto typeParam = typeFunc ? typeFunc->parameters[idx]->typeInfo : nullptr;
+
+            // For an interface, we test the second register, which is the pointer to the 'itable'.
+            // It is legit to have a null object with a table.
+            if (typeParam && typeParam->isInterface())
+            {
+                if (!doneObjInterface)
+                {
+                    doneObjInterface = true;
+                    continue;
+                }
+            }
+
             if (done.contains(idx))
                 continue;
             done.push_back(idx);
 
-            if (!typeFunc ||
-                (typeFunc->parameters[idx]->typeInfo->couldBeNull() && !typeFunc->parameters[idx]->typeInfo->isNullable()))
+            if (!typeParam || (typeParam->couldBeNull() && !typeParam->isNullable()))
             {
                 SanityValue* ra = nullptr;
                 SWAG_CHECK(getRegister(context, ra, pushParams[i]));
 
                 if (ra->isConstant() && !ra->reg.u64)
                 {
-#ifdef FORCE_NULL
                     Utf8 msg;
                     if (ip->op == ByteCodeOp::LambdaCall)
                         msg = formErr(San0001, "lambda");
@@ -423,8 +437,17 @@ namespace
                         msg = formErr(San0001, intrinsic.cstr());
                     const auto err = raiseError(context, msg, ra);
                     if (err)
+                    {
+                        if (typeFunc && typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
+                        {
+                            const auto funcDecl = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+                            SWAG_ASSERT(funcDecl->parameters);
+                            err->addNote(formNte(Nte0224, funcDecl->token.cstr(), Naming::niceArgumentRank(idx + 1).cstr()));
+                            err->addNote(funcDecl->parameters->children[idx], toNte(Nte0183));
+                        }
+
                         return context->report(*err);
-#endif
+                    }
                 }
             }
         }

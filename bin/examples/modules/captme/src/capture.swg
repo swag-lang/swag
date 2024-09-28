@@ -660,7 +660,7 @@ impl Capture
         return bound
     }
 
-    mtd snap(x, y: *s32, right, bottom: bool, idxPt: u32 = 0, editForm: IForm = null)
+    mtd snap(x, y: nl *s32, right, bottom: bool, idxPt: u32 = 0, editForm: nl IForm = null)
     {
         const SnapToler = 10
 

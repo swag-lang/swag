@@ -81,7 +81,12 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return @typecmp(typePointer.pointedType, type2, cmpFlags)
     }
 
-    if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags):
+    if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof):
+        return false
+
+    let flags1 = type1.flags & ~.Nullable
+    let flags2 = type2.flags & ~.Nullable
+    if flags1 != flags2:
         return false
 
     // For tuples, we compare field by field
