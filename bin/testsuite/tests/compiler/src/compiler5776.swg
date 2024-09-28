@@ -1,8 +1,7 @@
-//#global skip
 #global testerror "San0001"
 
 #[Swag.Safety("", true)]
-func setErr1()
+#test
 {
-    let a = @strlen(null)
+    let a = @itftableof(null, null)
 }

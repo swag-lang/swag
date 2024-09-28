@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #global testerror "San0001"
 
 #[Swag.Safety("", true)]
