@@ -252,6 +252,7 @@ struct Diagnostic
     LogColor                  autoRemarkColor;
     LogColor                  remarkColor;
     LogColor                  sourceFileColor;
+    LogColor                  sourceFileColorContext;
     LogColor                  codeLineNoColor;
     LogColor                  codeLineNoColorContext;
     LogColor                  stackColor;

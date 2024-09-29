@@ -34,6 +34,7 @@ void Diagnostic::setupColors()
     remarkColor               = LogColor::Gray;
     autoRemarkColor           = LogColor::Gray;
     sourceFileColor           = LogColor::Cyan;
+    sourceFileColorContext    = LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -297,6 +298,11 @@ void Diagnostic::addNote(const AstNode* node, const Utf8& h)
 
 void Diagnostic::printSourceLine(Log* log) const
 {
+    if (fromContext)
+        log->setColor(sourceFileColorContext);
+    else
+        log->setColor(sourceFileColor);
+
     SWAG_ASSERT(sourceFile);
     auto checkFile = sourceFile;
     if (checkFile->fileForSourceLocation)
@@ -879,7 +885,6 @@ void Diagnostic::reportCompact(Log* log)
     log->print(tokens[0]);
     log->print(": ");
 
-    log->setColor(sourceFileColor);
     printSourceLine(log);
 
     if (tokens.size() > 1)
@@ -949,11 +954,10 @@ void Diagnostic::report(Log* log)
         }
         else
         {
-            log->setColor(marginBorderColor);            
+            log->setColor(marginBorderColor);
             log->print(LogSymbol::VerticalLine);
         }
         log->write(" ");
-        log->setColor(sourceFileColor);
         printSourceLine(log);
         log->writeEol();
         printMargin(log, false, true);
