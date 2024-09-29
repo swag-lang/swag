@@ -18,9 +18,9 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     var one   = Tokenize.eatSpaces(buf)
 
     // Dynamic Core.Array
-    if Reflection.isStructArray(type)
+    let valueType = Reflection.getStructArrayType(type)
+    if valueType
     {
-        let valueType = Reflection.getStructArrayType(type)
         while @countof(one) and one[0] != '#'
         {
             let addrVal = Reflection.appendValueStructArray(addr, valueType)

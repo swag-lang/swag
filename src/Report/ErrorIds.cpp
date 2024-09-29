@@ -1160,8 +1160,8 @@ void initErrors()
     SWAG_ERROR(Nte0222, "consider using [[&%s]] if you want a function pointer for a lambda or a closure");
     SWAG_ERROR(Nte0011, "this makes the conversion from [[%s]] to [[%s]] ambiguous");
     SWAG_ERROR(Nte0223, "this is the culprit");
-    SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as [[%s]]");
-    SWAG_ERROR(Nte0225, "the corresponding parameter is an implicit [[self]]");
+    SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
+    SWAG_ERROR(Nte0225, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

@@ -274,7 +274,7 @@ namespace
     /////////////////////////////////////
     /////////////////////////////////////
 
-    Diagnostic* raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr)
+    Diagnostic* raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr)
     {
         if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
             return nullptr;
@@ -283,10 +283,12 @@ namespace
         if (!ip->node)
             return nullptr;
 
-        auto start = ip->node->token.startLocation;
-        auto end   = ip->node->token.endLocation;
+        if (!locNode)
+            locNode = ip->node;
 
-        Diagnostic* err = new Diagnostic{ip->node, ip->node->token, msg};
+        auto       start = locNode->token.startLocation;
+        auto       end   = locNode->token.endLocation;
+        const auto err   = new Diagnostic{locNode, locNode->token, msg};
 
         if (locValue)
         {
@@ -377,7 +379,7 @@ namespace
 
     bool checkNotNullReturn(SanityContext* context, uint32_t reg)
     {
-        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
+        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY | SAFETY_NULL))
             return true;
 
         const auto ip = STATE()->ip;
@@ -403,7 +405,7 @@ namespace
 
     bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
     {
-        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_NULL))
+        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY | SAFETY_NULL))
             return true;
 
         const auto        ip       = STATE()->ip;
@@ -462,24 +464,36 @@ namespace
                         msg = formErr(San0001, typeFunc->declNode->token.cstr());
                     else
                         msg = formErr(San0001, intrinsic.cstr());
-                    const auto err = raiseError(context, msg, ra);
+
+                    AstNode* locNode = nullptr;
+                    if (ip->node && ip->node->childCount() && ip->node->firstChild()->is(AstNodeKind::FuncCallParams))
+                        locNode = ip->node->firstChild()->children[idx];
+                    else if (ip->node && ip->node->childCount() == 1)
+                        locNode = ip->node->firstChild();
+
+                    const auto err = raiseError(context, msg, ra, locNode);
                     if (err)
                     {
                         if (typeFunc && typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
                         {
                             const auto funcDecl = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                             SWAG_ASSERT(funcDecl->parameters);
-                            err->addNote(formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::niceArgumentRank(idx + 1).cstr()));
 
                             const auto childParam = funcDecl->parameters->children[idx];
                             if (childParam->isGeneratedSelf())
-                                err->addNote(funcDecl, funcDecl->getTokenName(), toNte(Nte0225));
+                            {
+                                msg = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
+                                err->addNote(funcDecl, funcDecl->getTokenName(), msg);
+                            }
                             else
-                                err->addNote(childParam, toNte(Nte0183));
+                            {
+                                msg = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
+                                err->addNote(childParam, msg);
+                            }
                         }
                         else if (!intrinsic.empty())
                         {
-                            err->addNote(formNte(Nte0224, "intrinsic", intrinsic.cstr(), Naming::niceArgumentRank(idx + 1).cstr()));
+                            err->addNote(formNte(Nte0224, "intrinsic", intrinsic.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr()));
                         }
 
                         return context->report(*err);
@@ -694,8 +708,8 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable() && !returnType->isClosure())
                     {
-                        //ra->kind        = SanityValueKind::ForceNull;
-                        //ra->reg.pointer = nullptr;
+                        // ra->kind        = SanityValueKind::ForceNull;
+                        // ra->reg.pointer = nullptr;
                     }
                     break;
                 }

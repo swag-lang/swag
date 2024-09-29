@@ -300,7 +300,7 @@ impl Triangle
         }
     }
 
-    mtd pointCW(point: *Point)->nl *Point
+    mtd pointCW(point: *Point)->*Point
     {
         switch point
         {
@@ -308,15 +308,12 @@ impl Triangle
             return points[2]
         case points[1]:
             return points[0]
-        case points[2]:
+        default:
             return points[1]
         }
-
-        Debug.assert(false)
-        return null
     }
 
-    mtd pointCCW(point: *Point)->nl *Point
+    mtd pointCCW(point: *Point)->*Point
     {
         switch point
         {
@@ -324,12 +321,9 @@ impl Triangle
             return points[1]
         case points[1]:
             return points[2]
-        case points[2]:
+        default:
             return points[0]
         }
-
-        Debug.assert(false)
-        return null
     }
 
     mtd getDelaunayEdgeCCW(p: *Point)->bool

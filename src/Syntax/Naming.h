@@ -34,6 +34,7 @@ namespace Naming
     Utf8 aKindName(ScopeKind kind);
 
     Utf8 niceArgumentRank(uint32_t idx);
+    Utf8 aNiceArgumentRank(uint32_t idx);
     Utf8 niceParameterRank(uint32_t idx);
 
     Utf8 tokenToName(TokenId id);

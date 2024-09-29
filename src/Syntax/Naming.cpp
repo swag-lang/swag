@@ -480,6 +480,21 @@ Utf8 Naming::niceArgumentRank(uint32_t idx)
     }
 }
 
+Utf8 Naming::aNiceArgumentRank(uint32_t idx)
+{
+    Utf8 result;
+    switch (idx)
+    {
+        case 1:
+        case 2:
+        case 3:
+            result = "a ";
+    }
+
+    result += niceArgumentRank(idx);
+    return result;
+}
+
 Utf8 Naming::niceParameterRank(uint32_t idx)
 {
     switch (idx)
