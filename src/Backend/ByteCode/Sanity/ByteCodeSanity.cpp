@@ -324,9 +324,25 @@ namespace
             const auto ipNode = ipNodes[i];
             if (!ipNode)
                 continue;
-            
-            // Show the symbol declaration the last time it's present in an ip node
+
             const auto overload = ipNode->resolvedSymbolOverload();
+
+            if (!isHere(ipNode) && (!overload || ipNode != overload->node))
+            {
+                err->setContextNotes(true);
+                if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
+                    err->addNote(ipNode, ipNode->token, "from null value");
+                else if (ipNode->hasComputedValue())
+                    err->addNote(ipNode, ipNode->token, "from compile-time value");
+                else if (ipNode->is(AstNodeKind::Return) && ipNode->hasOwnerInline())
+                    err->addNote(ipNode->ownerInline(), form("from return value of inlined function [[%s]]", ipNode->ownerInline()->func->tokenName.cstr()));
+                else
+                    err->addNote(ipNode, ipNode->token, "from");
+                err->setContextNotes(false);
+                doneNodes.push_back(ipNode);
+            }
+
+            // Show the symbol declaration the last time it's present in an ip node
             if (overload)
             {
                 if (!doneOverload.contains(overload) && !isHere(overload->node))
@@ -343,25 +359,14 @@ namespace
 
                     if (!here)
                     {
+                        err->setContextNotes(true);
                         doneOverload.push_back(overload);
                         Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
                         err->addNote(overload->node, overload->node->getTokenName(), what);
                         doneNodes.push_back(overload->node);
+                        err->setContextNotes(false);
                     }
                 }
-            }
-
-            if (!isHere(ipNode))
-            {
-                if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
-                    err->addNote(ipNode, ipNode->token, "from null value");
-                else if (ipNode->hasComputedValue())
-                    err->addNote(ipNode, ipNode->token, "from compile-time value");
-                else if (ipNode->is(AstNodeKind::Return) && ipNode->hasOwnerInline())
-                    err->addNote(ipNode->ownerInline(), form("from return value of inlined function [[%s]]", ipNode->ownerInline()->func->tokenName.cstr()));
-                else
-                    err->addNote(ipNode, ipNode->token, "from");
-                doneNodes.push_back(ipNode);
             }
         }
 
@@ -512,32 +517,32 @@ namespace
                         locNode = ip->node->firstChild();
 
                     const auto err = raiseError(context, msg, ra, locNode);
-                    if (err)
+                    if (!err)
+                        continue;
+
+                    if (typeFunc && typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
                     {
-                        if (typeFunc && typeFunc->declNode && typeFunc->declNode->is(AstNodeKind::FuncDecl))
-                        {
-                            const auto funcDecl = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-                            SWAG_ASSERT(funcDecl->parameters);
+                        const auto funcDecl = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+                        SWAG_ASSERT(funcDecl->parameters);
 
-                            const auto childParam = funcDecl->parameters->children[idx];
-                            if (childParam->isGeneratedSelf())
-                            {
-                                msg = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
-                                err->addNote(funcDecl, funcDecl->getTokenName(), msg);
-                            }
-                            else
-                            {
-                                msg = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
-                                err->addNote(childParam, msg);
-                            }
-                        }
-                        else if (!intrinsic.empty())
+                        const auto childParam = funcDecl->parameters->children[idx];
+                        if (childParam->isGeneratedSelf())
                         {
-                            err->addNote(formNte(Nte0224, "intrinsic", intrinsic.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr()));
+                            msg  = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
+                            err->addNote(funcDecl, funcDecl->getTokenName(), msg);
                         }
-
-                        return context->report(*err);
+                        else
+                        {
+                            msg  = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
+                            err->addNote(childParam, msg);
+                        }
                     }
+                    else if (!intrinsic.empty())
+                    {
+                        err->addNote(formNte(Nte0224, "intrinsic", intrinsic.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr()));
+                    }
+
+                    return context->report(*err);
                 }
             }
         }
@@ -779,12 +784,10 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable())
                     {
-#ifdef FORCE_NULL
-                        ra->kind        = SanityValueKind::ForceNull;
-                        ra->reg.pointer = nullptr;
-                        rb->kind        = SanityValueKind::ForceNull;
-                        rb->reg.pointer = nullptr;
-#endif
+                        // ra->kind        = SanityValueKind::ForceNull;
+                        // ra->reg.pointer = nullptr;
+                        // rb->kind        = SanityValueKind::ForceNull;
+                        // rb->reg.pointer = nullptr;
                     }
                     break;
                 }

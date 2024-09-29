@@ -26,7 +26,9 @@ void Diagnostic::setupColors()
     noteTitleColor            = LogColor::DarkYellow;
     noteColor                 = LogColor::White;
     marginBorderColor         = LogColor::Cyan;
+    marginBorderColorContext  = LogColor::Gray;
     codeLineNoColor           = LogColor::Cyan;
+    codeLineNoColorContext    = LogColor::Gray;
     stackColor                = LogColor::DarkYellow;
     preRemarkColor            = LogColor::White;
     remarkColor               = LogColor::Gray;
@@ -234,7 +236,8 @@ void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end,
         }
     }
 
-    const auto note = Diagnostic::note(sourceFile, start, end, h);
+    const auto note   = Diagnostic::note(sourceFile, start, end, h);
+    note->fromContext = contextNotes;
     notes.push_back(note);
 }
 
@@ -245,14 +248,18 @@ void Diagnostic::addNote(const Token& token, const Utf8& h)
 
 void Diagnostic::addNote(AstNode* node, const Token& token, const Utf8& msg)
 {
-    notes.push_back(note(node, token, msg));
+    const auto note   = Diagnostic::note(node, token, msg);
+    note->fromContext = contextNotes;
+    notes.push_back(note);
 }
 
 void Diagnostic::addNote(const Utf8& msg)
 {
     if (msg.empty())
         return;
-    notes.push_back(note(msg));
+    const auto note   = Diagnostic::note(msg);
+    note->fromContext = contextNotes;
+    notes.push_back(note);
 }
 
 void Diagnostic::addNote(const Diagnostic* note)
@@ -264,12 +271,16 @@ void Diagnostic::addNote(const Diagnostic* note)
 
 void Diagnostic::addNote(SourceFile* file, const Token& token, const Utf8& msg)
 {
-    notes.push_back(note(file, token, msg));
+    const auto note   = Diagnostic::note(file, token, msg);
+    note->fromContext = contextNotes;
+    notes.push_back(note);
 }
 
 void Diagnostic::addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg)
 {
-    notes.push_back(note(file, start, end, msg));
+    const auto note   = Diagnostic::note(file, start, end, msg);
+    note->fromContext = contextNotes;
+    notes.push_back(note);
 }
 
 void Diagnostic::addNote(const AstNode* node, const Utf8& h)
@@ -279,7 +290,9 @@ void Diagnostic::addNote(const AstNode* node, const Utf8& h)
 
     SourceLocation start, end;
     node->computeLocation(start, end);
-    notes.push_back(note(node->token.sourceFile, start, end, h));
+    const auto note   = Diagnostic::note(node->token.sourceFile, start, end, h);
+    note->fromContext = contextNotes;
+    notes.push_back(note);
 }
 
 void Diagnostic::printSourceLine(Log* log) const
@@ -302,7 +315,10 @@ void Diagnostic::printSourceLine(Log* log) const
 
 void Diagnostic::printMarginLineNo(Log* log, uint32_t lineNo) const
 {
-    log->setColor(codeLineNoColor);
+    if (fromContext)
+        log->setColor(codeLineNoColorContext);
+    else
+        log->setColor(codeLineNoColor);
 
     auto numDigits = 0;
     auto l         = lineNo;
@@ -331,11 +347,17 @@ void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, uint32_t line
 
     printMarginLineNo(log, lineNo);
 
-    log->setColor(marginBorderColor);
     if (fromContext)
+    {
+        log->setColor(marginBorderColorContext);
         log->print(LogSymbol::VerticalLineDot);
+    }
     else
+    {
+        log->setColor(marginBorderColor);
         log->print(LogSymbol::VerticalLine);
+    }
+
     log->write(" ");
 
     if (eol)
@@ -847,7 +869,7 @@ void Diagnostic::printRanges(Log* log)
 void Diagnostic::reportCompact(Log* log)
 {
     textMsg = preprocess(textMsg);
-    
+
     setupColors();
     printErrorLevel(log);
 
@@ -873,7 +895,7 @@ void Diagnostic::reportCompact(Log* log)
 void Diagnostic::report(Log* log)
 {
     textMsg = preprocess(textMsg);
-    
+
     // Message level
     if (showErrorLevel)
     {
@@ -920,11 +942,16 @@ void Diagnostic::report(Log* log)
         if (showErrorLevel)
             log->writeEol();
         printMarginLineNo(log, 0);
-        log->setColor(marginBorderColor);
         if (fromContext)
+        {
+            log->setColor(marginBorderColorContext);
             log->print(LogSymbol::VerticalLineDot);
+        }
         else
+        {
+            log->setColor(marginBorderColor);            
             log->print(LogSymbol::VerticalLine);
+        }
         log->write(" ");
         log->setColor(sourceFileColor);
         printSourceLine(log);

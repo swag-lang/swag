@@ -270,6 +270,8 @@ namespace
         }
 
         cleanNotes(notes);
+        std::ranges::sort(notes, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
+        
         log->writeEol();
 
         bool              marginBefore = true;
@@ -286,11 +288,17 @@ namespace
             if (n->errorLevel == DiagnosticLevel::Note && marginBefore)
             {
                 n->printMarginLineNo(log, 0);
-                log->setColor(n->marginBorderColor);
+                
                 if (prevN && prevN->fromContext)
+                {
+                    log->setColor(n->marginBorderColorContext);
                     log->print(LogSymbol::VerticalLineDot);
-                else
+                }
+                else if(!prevN || prevN->fromContext == n->fromContext)
+                {
+                    log->setColor(n->marginBorderColor);
                     log->print(LogSymbol::VerticalLine);
+                }
                 log->writeEol();
             }
 
