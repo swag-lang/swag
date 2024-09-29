@@ -238,7 +238,7 @@ void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end,
     }
 
     const auto note   = Diagnostic::note(sourceFile, start, end, h);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 
@@ -250,7 +250,7 @@ void Diagnostic::addNote(const Token& token, const Utf8& h)
 void Diagnostic::addNote(AstNode* node, const Token& token, const Utf8& msg)
 {
     const auto note   = Diagnostic::note(node, token, msg);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 
@@ -259,7 +259,7 @@ void Diagnostic::addNote(const Utf8& msg)
     if (msg.empty())
         return;
     const auto note   = Diagnostic::note(msg);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 
@@ -273,14 +273,14 @@ void Diagnostic::addNote(const Diagnostic* note)
 void Diagnostic::addNote(SourceFile* file, const Token& token, const Utf8& msg)
 {
     const auto note   = Diagnostic::note(file, token, msg);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 
 void Diagnostic::addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg)
 {
     const auto note   = Diagnostic::note(file, start, end, msg);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 
@@ -292,7 +292,7 @@ void Diagnostic::addNote(const AstNode* node, const Utf8& h)
     SourceLocation start, end;
     node->computeLocation(start, end);
     const auto note   = Diagnostic::note(node->token.sourceFile, start, end, h);
-    note->fromContext = contextNotes;
+    note->fromContext = forceFromContext;
     notes.push_back(note);
 }
 

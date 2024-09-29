@@ -135,6 +135,8 @@ namespace
                     continue;
                 if (!note1->display)
                     continue;
+                if(note->fromContext != note1->fromContext)
+                    continue;
 
                 auto sourceFile1 = note1->sourceFile;
                 if (sourceFile1 && sourceFile1->fileForSourceLocation)
@@ -218,6 +220,8 @@ namespace
                 const auto note1 = notes[idxNote1];
                 if (!note1->display || !note1->hasLocation)
                     continue;
+                if(note->fromContext != note1->fromContext)
+                    continue;
 
                 auto sourceFile1 = note1->sourceFile;
                 if (sourceFile1 && sourceFile1->fileForSourceLocation)
@@ -243,9 +247,6 @@ namespace
         {
             note->lineCodeMaxDigits = lineCodeMaxDigits;
             note->minBlanks         = minBlanks;
-
-            if (note->hasLocation && note->sourceFile != notes[0]->sourceFile)
-                note->fromContext = true;
         }
     }
 
@@ -269,8 +270,8 @@ namespace
                 notes.push_back(new Diagnostic{*n});
         }
 
-        cleanNotes(notes);
         std::ranges::sort(notes, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
+        cleanNotes(notes);
         
         log->writeEol();
 

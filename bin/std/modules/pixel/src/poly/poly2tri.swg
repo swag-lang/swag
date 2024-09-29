@@ -531,7 +531,7 @@ impl AdvancingFront
         return node
     }
 
-    mtd locateNode(x: f32)->nl *Node
+    mtd locateNode(x: f32)->*Node
     {
         var node = searchNode
         if x < node.value
@@ -563,7 +563,8 @@ impl AdvancingFront
             }
         }
 
-        return null
+        Debug.assert(false, "null node")
+        return searchNode
     }
 }
 
@@ -851,15 +852,13 @@ impl Tessellate
         return ot
     }
 
-    func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->nl *Point
+    func nextFlipPoint(ep, eq: *Point, ot: *Triangle, op: *Point)->*Point
     {
         let o2d = orient2d(eq, op, ep)
         if o2d == .CW:
             return ot.pointCCW(op)
-        if o2d == .CCW:
-            return ot.pointCW(op)
-        Debug.assert(false, "[Unsupported] Opposing point on constrained edge")
-        return null
+        Debug.assert(o2d == .CCW, "[Unsupported] Opposing point on constrained edge")
+        return ot.pointCW(op)
     }
 
     mtd flipScanEdgeEvent(ep, eq: *Point, flipTriangle: *Triangle, t: *Triangle, p: *Point)

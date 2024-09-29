@@ -329,7 +329,7 @@ namespace
 
             if (!isHere(ipNode) && (!overload || ipNode != overload->node))
             {
-                err->setContextNotes(true);
+                err->setForceFromContext(true);
                 if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
                     err->addNote(ipNode, ipNode->token, "from null value");
                 else if (ipNode->hasComputedValue())
@@ -338,7 +338,7 @@ namespace
                     err->addNote(ipNode->ownerInline(), form("from return value of inlined function [[%s]]", ipNode->ownerInline()->func->tokenName.cstr()));
                 else
                     err->addNote(ipNode, ipNode->token, "from");
-                err->setContextNotes(false);
+                err->setForceFromContext(false);
                 doneNodes.push_back(ipNode);
             }
 
@@ -359,12 +359,12 @@ namespace
 
                     if (!here)
                     {
-                        err->setContextNotes(true);
+                        err->setForceFromContext(true);
                         doneOverload.push_back(overload);
                         Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
                         err->addNote(overload->node, overload->node->getTokenName(), what);
                         doneNodes.push_back(overload->node);
-                        err->setContextNotes(false);
+                        err->setForceFromContext(false);
                     }
                 }
             }
@@ -528,12 +528,12 @@ namespace
                         const auto childParam = funcDecl->parameters->children[idx];
                         if (childParam->isGeneratedSelf())
                         {
-                            msg  = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
+                            msg = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
                             err->addNote(funcDecl, funcDecl->getTokenName(), msg);
                         }
                         else
                         {
-                            msg  = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
+                            msg = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
                             err->addNote(childParam, msg);
                         }
                     }
@@ -1427,7 +1427,28 @@ namespace
                     break;
 
                 case ByteCodeOp::IncPointer64:
+                {
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
+
+                    if (ip->node->is(AstNodeKind::Identifier))
+                    {
+                        const auto id    = castAst<AstIdentifier>(ip->node, AstNodeKind::Identifier);
+                        const auto idRef = id->identifierRef();
+                        for (auto i = id->childParentIdx() - 1; i != UINT32_MAX; i--)
+                        {
+                            const auto node = idRef->children[i];
+                            if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
+                                continue;
+                            for (auto it : ra->ips)
+                            {
+                                if (it->node == STATE()->ip->node)
+                                    it->node = node;
+                            }
+                            STATE()->ip->node = node;
+                            break;
+                        }
+                    }
+
                     SWAG_CHECK(checkNotNull(context, ra));
                     SWAG_CHECK(getRegister(context, rc, ip->c.u32));
                     *rc = *ra;
@@ -1437,7 +1458,8 @@ namespace
                     else
                         rc->reg.u64 += vb.reg.s64;
                     rc->update(ip);
-                    break;
+                }
+                break;
 
                 case ByteCodeOp::IncMulPointer64:
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
