@@ -42,7 +42,10 @@
             if (va.kind == SanityValueKind::Unknown || vb.kind == SanityValueKind::Unknown)   \
                 setStackValue(context, addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown); \
             else                                                                              \
+            {                                                                                 \
                 *(__cast*) addr __op vb.reg.__reg;                                            \
+                updateStackValue(context, addr, sizeof(vb.reg.__reg));                        \
+            }                                                                                 \
         }                                                                                     \
     } while (0);
 
@@ -63,6 +66,7 @@
             {                                                                                                                    \
                 SWAG_CHECK(checkOverflow(context, !__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
                 *(__cast*) addr __op vb.reg.__reg;                                                                               \
+                updateStackValue(context, addr, sizeof(vb.reg.__reg));                                                           \
             }                                                                                                                    \
         }                                                                                                                        \
     } while (0);
@@ -86,6 +90,7 @@
             {                                                                                 \
                 rc->reg.__reg = *(__cast*) addr;                                              \
                 *(__cast*) addr __op rb->reg.__reg;                                           \
+                updateStackValue(context, addr, sizeof(vb.reg.__reg));                        \
             }                                                                                 \
         }                                                                                     \
     } while (0);
@@ -111,6 +116,7 @@
                 rd->reg.__reg = *(__cast*) addr;                                                                                      \
                 if (rd->reg.__reg == rb->reg.__reg)                                                                                   \
                     *(__cast*) addr = rc->reg.__reg;                                                                                  \
+                updateStackValue(context, addr, sizeof(vb.reg.__reg));                                                                \
             }                                                                                                                         \
         }                                                                                                                             \
     } while (0);
@@ -146,6 +152,7 @@
                 r.__reg = *(__cast*) addr;                                                    \
                 __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                  \
                 *(__cast*) addr = r.__reg;                                                    \
+                updateStackValue(context, addr, sizeof(vb.reg.__reg));                        \
             }                                                                                 \
         }                                                                                     \
     } while (0);
@@ -249,21 +256,18 @@ namespace
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
         auto addrValue = STATE()->stackValue.data() + offset;
 
-        result->kind = addrValue->kind;
-
+        *result = *addrValue;
         addrValue++;
+
         for (uint32_t i = 1; i < sizeOf; i++)
         {
-            const auto value = *addrValue;
-            addrValue++;
-
-            if (value.kind != result->kind)
+            if (addrValue->kind != result->kind)
             {
                 result->kind = SanityValueKind::Unknown;
                 return true;
             }
 
-            *result = value;
+            addrValue++;
         }
 
         return true;
@@ -313,22 +317,22 @@ namespace
                 continue;
 
             // Show the symbol declaration the last time it's present in an ip node
-            bool here = false;
+            bool       here     = false;
             const auto overload = ipNode->resolvedSymbolOverload();
             if (overload)
             {
                 if (!doneOverload.contains(overload))
                 {
-                    for(uint32_t j = 0; j < i; j++)
+                    for (uint32_t j = 0; j < i; j++)
                     {
-                        if(ipNodes[j] && ipNodes[j]->resolvedSymbolOverload() == overload)
+                        if (ipNodes[j] && ipNodes[j]->resolvedSymbolOverload() == overload)
                         {
                             here = true;
                             break;
                         }
                     }
 
-                    if(!here)
+                    if (!here)
                     {
                         doneOverload.push_back(overload);
                         Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
@@ -339,15 +343,15 @@ namespace
             }
 
             here = false;
-            for(const auto it : doneNodes)
+            for (const auto it : doneNodes)
             {
-                if(it->token.startLocation == ipNode->token.startLocation && it->token.endLocation == ipNode->token.endLocation)
+                if (it->token.startLocation == ipNode->token.startLocation && it->token.endLocation == ipNode->token.endLocation)
                 {
                     here = true;
                     break;
                 }
             }
-            
+
             if (!here)
             {
                 if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
@@ -638,6 +642,17 @@ namespace
         {
             auto& val = STATE()->stackValue[i];
             val.kind  = kind;
+            val.ips.push_back(STATE()->ip);
+        }
+    }
+
+    void updateStackValue(SanityContext* context, void* addr, uint32_t sizeOf)
+    {
+        const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.data());
+        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
+        for (uint32_t i = offset; i < offset + sizeOf; i++)
+        {
+            auto& val = STATE()->stackValue[i];
             val.ips.push_back(STATE()->ip);
         }
     }

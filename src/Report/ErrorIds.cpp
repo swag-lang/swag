@@ -121,8 +121,8 @@ void initErrors()
     SWAG_ERROR(San0007, "[sanity] stack overwrite     $ potential overwrite of stack memory at offset [[%lld]] (stack size is [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] uninitialized usage $ potential usage of uninitialized memory");
     SWAG_ERROR(San0010, "[sanity] overflow            $ potential overflow in [['%s']] (type is [[%s]])");
-    SWAG_ERROR(San0001, "[sanity] null argument       $ potential forbidden null argument in call to [[%s]]");
-    SWAG_ERROR(San0003, "[sanity] null return value   $ potential forbidden null return value");
+    SWAG_ERROR(San0001, "[sanity] null argument       $ potential null argument in call to [[%s]]");
+    SWAG_ERROR(San0003, "[sanity] null return value   $ potential null return value");
     SWAG_ERROR(San0005, nullptr);
     SWAG_ERROR(San0009, nullptr);
 
