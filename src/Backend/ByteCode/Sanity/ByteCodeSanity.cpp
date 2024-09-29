@@ -282,46 +282,58 @@ namespace
         const auto ip = STATE()->ip;
         if (!ip->node)
             return nullptr;
-
         if (!locNode)
             locNode = ip->node;
 
-        auto       start = locNode->token.startLocation;
-        auto       end   = locNode->token.endLocation;
-        const auto err   = new Diagnostic{locNode, locNode->token, msg};
+        const auto err = new Diagnostic{locNode, locNode->token, msg};
+        if (!locValue)
+            return err;
 
-        if (locValue)
+        auto                               start = locNode->token.startLocation;
+        auto                               end   = locNode->token.endLocation;
+        VectorNative<SymbolOverload*>      doneOverload;
+        VectorNative<ByteCodeInstruction*> ips;
+        VectorNative<AstNode*>             ipNodes;
+
+        for (const auto it : locValue->ips)
         {
-            const SymbolOverload* lastOverload = nullptr;
-            for (uint32_t i = locValue->ips.size() - 1; i != UINT32_MAX; i--)
+            ips.push_back(it);
+            ipNodes.push_back(it->node);
+        }
+
+        if (locNode)
+        {
+            ips.push_back(nullptr);
+            ipNodes.push_back(locNode);
+        }
+
+        for (uint32_t i = ipNodes.size() - 1; i != UINT32_MAX; i--)
+        {
+            const auto ipNode = ipNodes[i];
+            if (!ipNode)
+                continue;
+
+            const auto overload = ipNode->resolvedSymbolOverload();
+            if (overload)
             {
-                const auto ipn = locValue->ips[i];
-                if (!ipn->node)
-                    continue;
-                if (ipn->node->resolvedSymbolOverload())
-                    lastOverload = ipn->node->resolvedSymbolOverload();
-
-                if (ipn->node->token.startLocation == start && ipn->node->token.endLocation == end)
-                    continue;
-                start = ipn->node->token.startLocation;
-                end   = ipn->node->token.endLocation;
-
-                if (ipn->node->resolvedSymbolOverload())
+                if (!doneOverload.contains(overload))
                 {
-                    Utf8 what = form("%s [[%s]] of type [[%s]]", Naming::kindName(lastOverload).cstr(), lastOverload->symbol->name.cstr(), lastOverload->typeInfo->getDisplayNameC());
-                    err->addNote(ipn->node, ipn->node->token, what);
+                    doneOverload.push_back(overload);
+                    Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
+                    err->addNote(overload->node, overload->node->getTokenName(), what);
                 }
-                else if (ipn->node->hasComputedValue() && ipn->node->typeInfo->isPointerNull())
-                    err->addNote(ipn->node, ipn->node->token, "null value");
-                else if (ipn->node->hasComputedValue())
-                    err->addNote(ipn->node, ipn->node->token, "compile-time value");
-                else
-                    err->addNote(ipn->node, ipn->node->token, "context");
             }
 
-            if (lastOverload && lastOverload->node)
+            if (ipNode->token.startLocation != start || ipNode->token.endLocation != end)
             {
-                err->addNote(lastOverload->node, lastOverload->node->getTokenName(), "declaration");
+                if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
+                    err->addNote(ipNode, ipNode->token, "null value");
+                else if (ipNode->hasComputedValue())
+                    err->addNote(ipNode, ipNode->token, "compile-time value");
+                else
+                    err->addNote(ipNode, ipNode->token, "from");
+                start = ipNode->token.startLocation;
+                end   = ipNode->token.endLocation;
             }
         }
 
@@ -466,8 +478,8 @@ namespace
                         msg = formErr(San0001, intrinsic.cstr());
 
                     AstNode* locNode = nullptr;
-                    if (ip->node && ip->node->childCount() && ip->node->firstChild()->is(AstNodeKind::FuncCallParams))
-                        locNode = ip->node->firstChild()->children[idx];
+                    if (ip->node && ip->node->childCount() && ip->node->lastChild()->is(AstNodeKind::FuncCallParams))
+                        locNode = ip->node->lastChild()->children[idx];
                     else if (ip->node && ip->node->childCount() == 1)
                         locNode = ip->node->firstChild();
 

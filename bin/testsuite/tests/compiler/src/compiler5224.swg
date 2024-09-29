@@ -12,7 +12,7 @@ func beginSection(fct: nl *void, kind: s32, skipFat = false) throw
 attr attrA();
 attr attrB();
 
-func readNative(fct: *void)->u32 throw
+func readNative(fct: nl *void)->u32 throw
 {
     return 0;
 }

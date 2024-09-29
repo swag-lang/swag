@@ -19,5 +19,6 @@ impl A
 #test
 {
     var p: *A
-    A.toto(p, 0)
+    let p1 = p
+    A.toto(p1, 0)
 }
