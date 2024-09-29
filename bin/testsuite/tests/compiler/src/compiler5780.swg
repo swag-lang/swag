@@ -1,0 +1,30 @@
+//#global skip
+//#global testerror "San0001"
+
+var G = 0
+struct A {}
+impl A
+{
+    #[Swag.Optimize("", false)]
+    mtd toto(x: s32)
+    {
+        //@print("titi")
+        G = 1
+    }
+}
+
+#[Swag.NoInline]
+func titi()->nl *A
+{
+    return null
+}
+
+#[Swag.Safety("sanity", true)]
+#[Swag.Safety("null", true)]
+#[Swag.Optimize("", false)]
+//#[Swag.PrintGenBc]
+#test
+{
+    let p1 = titi()
+    A.toto(p1, 0)
+}

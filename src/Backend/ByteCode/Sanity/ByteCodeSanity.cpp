@@ -327,11 +327,14 @@ namespace
             if (ipNode->token.startLocation != start || ipNode->token.endLocation != end)
             {
                 if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
-                    err->addNote(ipNode, ipNode->token, "null value");
+                    err->addNote(ipNode, ipNode->token, "from null value");
                 else if (ipNode->hasComputedValue())
-                    err->addNote(ipNode, ipNode->token, "compile-time value");
+                    err->addNote(ipNode, ipNode->token, "from compile-time value");
+                else if (ipNode->is(AstNodeKind::Return) && ipNode->hasOwnerInline())
+                    err->addNote(ipNode->ownerInline(), form("from return value of inlined function [[%s]]", ipNode->ownerInline()->func->tokenName.cstr()));
                 else
                     err->addNote(ipNode, ipNode->token, "from");
+
                 start = ipNode->token.startLocation;
                 end   = ipNode->token.endLocation;
             }
