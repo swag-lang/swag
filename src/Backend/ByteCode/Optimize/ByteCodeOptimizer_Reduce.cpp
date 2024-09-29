@@ -4017,33 +4017,36 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
         }
 
         // Reduce SetZeroAtPointer
-        size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
-        if (size0)
+        if (ip->a.u32 == ip[1].a.u32)
         {
-            const auto size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
-            if (size1 && offset0 + size0 == offset1)
+            size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
+            if (size0)
             {
-                const auto totalSize = size0 + size1;
-                switch (totalSize)
+                const auto size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
+                if (size1 && offset0 + size0 == offset1)
                 {
-                    case 2:
-                        SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
-                        break;
-                    case 4:
-                        SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
-                        break;
-                    case 8:
-                        SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
-                        break;
-                    default:
-                        SET_OP(ip, ByteCodeOp::SetZeroAtPointerX);
-                        ip->c.s64 = offset0;
-                        SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
-                        ip->b.s64 = totalSize;
-                        break;
-                }
+                    const auto totalSize = size0 + size1;
+                    switch (totalSize)
+                    {
+                        case 2:
+                            SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
+                            break;
+                        case 4:
+                            SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
+                            break;
+                        case 8:
+                            SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
+                            break;
+                        default:
+                            SET_OP(ip, ByteCodeOp::SetZeroAtPointerX);
+                            ip->c.s64 = offset0;
+                            SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
+                            ip->b.s64 = totalSize;
+                            break;
+                    }
 
-                setNop(context, ip + 1);
+                    setNop(context, ip + 1);
+                }
             }
         }
     }
@@ -4051,7 +4054,8 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
     switch (ip->op)
     {
         case ByteCodeOp::SetAtPointer8:
-            if (ip[1].op == ByteCodeOp::SetAtPointer8 &&
+            if (ip->a.u32 == ip[1].a.u32 &&
+                ip[1].op == ByteCodeOp::SetAtPointer8 &&
                 ip->c.u32 + sizeof(uint8_t) == ip[1].c.u32 &&
                 !ip[0].hasFlag(BCI_START_STMT) &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
@@ -4074,7 +4078,8 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             break;
 
         case ByteCodeOp::SetAtPointer16:
-            if (ip[1].op == ByteCodeOp::SetAtPointer16 &&
+            if (ip->a.u32 == ip[1].a.u32 &&
+                ip[1].op == ByteCodeOp::SetAtPointer16 &&
                 ip->c.u32 + sizeof(uint16_t) == ip[1].c.u32 &&
                 !ip[0].hasFlag(BCI_START_STMT) &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
@@ -4097,7 +4102,8 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             break;
 
         case ByteCodeOp::SetAtPointer32:
-            if (ip[1].op == ByteCodeOp::SetAtPointer32 &&
+            if (ip->a.u32 == ip[1].a.u32 &&
+                ip[1].op == ByteCodeOp::SetAtPointer32 &&
                 ip->c.u32 + sizeof(uint32_t) == ip[1].c.u32 &&
                 !ip[0].hasFlag(BCI_START_STMT) &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
