@@ -115,16 +115,16 @@
         }                                                                                                                             \
     } while (0);
 
-#define BINOP_EQ_DIV(__cast, __op, __reg)                            \
-    SWAG_CHECK(getRegister(context, ra, ip->a.u32));                 \
-    SWAG_CHECK(getImmediateB(context, vb, ip->node->secondChild())); \
-    SWAG_CHECK(checkDivZero(context, &vb, vb.reg.__reg == 0));       \
-    if (vb.isConstant() && vb.reg.__reg == 0)                        \
-    {                                                                \
-        SWAG_CHECK(getRegister(context, rc, ip->c.u32));             \
-        rc->kind = SanityValueKind::Unknown;                         \
-        break;                                                       \
-    }                                                                \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                      \
+    SWAG_CHECK(getRegister(context, ra, ip->a.u32));           \
+    SWAG_CHECK(getImmediateB(context, vb));                    \
+    SWAG_CHECK(checkDivZero(context, &vb, vb.reg.__reg == 0)); \
+    if (vb.isConstant() && vb.reg.__reg == 0)                  \
+    {                                                          \
+        SWAG_CHECK(getRegister(context, rc, ip->c.u32));       \
+        rc->kind = SanityValueKind::Unknown;                   \
+        break;                                                 \
+    }                                                          \
     BINOP_EQ(__cast, __op, __reg);
 
 #define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                                     \
@@ -252,7 +252,6 @@ namespace
         result->kind = addrValue->kind;
 
         addrValue++;
-
         for (uint32_t i = 1; i < sizeOf; i++)
         {
             const auto value = *addrValue;
@@ -289,9 +288,8 @@ namespace
         if (!locValue)
             return err;
 
-        auto                               start = locNode->token.startLocation;
-        auto                               end   = locNode->token.endLocation;
         VectorNative<SymbolOverload*>      doneOverload;
+        VectorNative<AstNode*>             doneNodes;
         VectorNative<ByteCodeInstruction*> ips;
         VectorNative<AstNode*>             ipNodes;
 
@@ -305,6 +303,7 @@ namespace
         {
             ips.push_back(nullptr);
             ipNodes.push_back(locNode);
+            doneNodes.push_back(locNode);
         }
 
         for (uint32_t i = ipNodes.size() - 1; i != UINT32_MAX; i--)
@@ -313,18 +312,43 @@ namespace
             if (!ipNode)
                 continue;
 
+            // Show the symbol declaration the last time it's present in an ip node
+            bool here = false;
             const auto overload = ipNode->resolvedSymbolOverload();
             if (overload)
             {
                 if (!doneOverload.contains(overload))
                 {
-                    doneOverload.push_back(overload);
-                    Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
-                    err->addNote(overload->node, overload->node->getTokenName(), what);
+                    for(uint32_t j = 0; j < i; j++)
+                    {
+                        if(ipNodes[j] && ipNodes[j]->resolvedSymbolOverload() == overload)
+                        {
+                            here = true;
+                            break;
+                        }
+                    }
+
+                    if(!here)
+                    {
+                        doneOverload.push_back(overload);
+                        Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
+                        err->addNote(overload->node, overload->node->getTokenName(), what);
+                        doneNodes.push_back(overload->node);
+                    }
                 }
             }
 
-            if (ipNode->token.startLocation != start || ipNode->token.endLocation != end)
+            here = false;
+            for(const auto it : doneNodes)
+            {
+                if(it->token.startLocation == ipNode->token.startLocation && it->token.endLocation == ipNode->token.endLocation)
+                {
+                    here = true;
+                    break;
+                }
+            }
+            
+            if (!here)
             {
                 if (ipNode->hasComputedValue() && ipNode->typeInfo->isPointerNull())
                     err->addNote(ipNode, ipNode->token, "from null value");
@@ -334,9 +358,7 @@ namespace
                     err->addNote(ipNode->ownerInline(), form("from return value of inlined function [[%s]]", ipNode->ownerInline()->func->tokenName.cstr()));
                 else
                     err->addNote(ipNode, ipNode->token, "from");
-
-                start = ipNode->token.startLocation;
-                end   = ipNode->token.endLocation;
+                doneNodes.push_back(ipNode);
             }
         }
 
@@ -537,7 +559,7 @@ namespace
     /////////////////////////////////////
     /////////////////////////////////////
 
-    bool getImmediateA(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
+    bool getImmediateA(SanityContext* context, SanityValue& result)
     {
         const auto ip = STATE()->ip;
         if (ip->hasFlag(BCI_IMM_A))
@@ -553,7 +575,7 @@ namespace
         return true;
     }
 
-    bool getImmediateB(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
+    bool getImmediateB(SanityContext* context, SanityValue& result)
     {
         const auto ip = STATE()->ip;
         if (ip->hasFlag(BCI_IMM_B))
@@ -569,7 +591,7 @@ namespace
         return true;
     }
 
-    bool getImmediateC(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
+    bool getImmediateC(SanityContext* context, SanityValue& result)
     {
         const auto ip = STATE()->ip;
         if (ip->hasFlag(BCI_IMM_C))
@@ -585,7 +607,7 @@ namespace
         return true;
     }
 
-    bool getImmediateD(SanityContext* context, SanityValue& result, AstNode* node = nullptr)
+    bool getImmediateD(SanityContext* context, SanityValue& result)
     {
         const auto ip = STATE()->ip;
         if (ip->hasFlag(BCI_IMM_D))
@@ -616,6 +638,7 @@ namespace
         {
             auto& val = STATE()->stackValue[i];
             val.kind  = kind;
+            val.ips.push_back(STATE()->ip);
         }
     }
 
