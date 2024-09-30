@@ -295,10 +295,11 @@ namespace ByteCodeGen
     void emitSetZeroStack(const ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf);
     void emitMemCpy(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf);
     bool emitDefer(ByteCodeGenContext* context);
+    void emitAssert(const ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
 
     const char* safetyMsg(SafetyMsg msg, TypeInfo* toType = nullptr, TypeInfo* fromType = nullptr);
-    void        emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
     bool        mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags what);
+    void        emitSafetyAssert(ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
     void        emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r);
     void        emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r);
     void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);

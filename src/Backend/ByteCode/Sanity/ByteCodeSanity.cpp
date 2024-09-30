@@ -212,23 +212,21 @@
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;
 
-#define JUMPT(__isCst, __expr1)                              \
-    jmpAddState = nullptr;                                   \
-    if (__isCst)                                             \
-    {                                                        \
-        ip->dynFlags.add(BCID_SAN_PASS);                     \
-        if (__expr1)                                         \
-            ip += ip->b.s32 + 1;                             \
-        else                                                 \
-            ip = ip + 1;                                     \
-        continue;                                            \
-    }                                                        \
-    if (context->statesHere.contains(ip + ip->b.s32 + 1))    \
-        return true;                                         \
-    context->statesHere.insert(ip + ip->b.s32 + 1);          \
-    jmpAddState = newState(context, ip, ip + ip->b.s32 + 1); \
-    if (!jmpAddState)                                        \
-        return true;
+#define JUMPT(__isCst, __expr1)                           \
+    jmpAddState = nullptr;                                \
+    if (__isCst)                                          \
+    {                                                     \
+        ip->dynFlags.add(BCID_SAN_PASS);                  \
+        if (__expr1)                                      \
+            ip += ip->b.s32 + 1;                          \
+        else                                              \
+            ip = ip + 1;                                  \
+        continue;                                         \
+    }                                                     \
+    if (context->statesHere.contains(ip + ip->b.s32 + 1)) \
+        return true;                                      \
+    context->statesHere.insert(ip + ip->b.s32 + 1);       \
+    jmpAddState = newState(context, ip, ip + ip->b.s32 + 1);
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(context, va)); \
@@ -779,10 +777,15 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable() && !returnType->isClosure())
                     {
-#if 0                        
-                        ra->kind        = SanityValueKind::ForceNull;
-                        ra->reg.pointer = nullptr;
+                        if (!STATE()->forceParamsU.contains(static_cast<uint32_t>(ip - context->bc->out)))
+                        {
+#if 0                            
+                            const auto state = newState(context, ip, ip);
+                            state->forceParamsU.push_back(static_cast<uint32_t>(ip - context->bc->out));
+                            ra->kind        = SanityValueKind::ForceNull;
+                            ra->reg.pointer = nullptr;
 #endif
+                        }
                     }
                     break;
                 }
@@ -830,8 +833,7 @@ namespace
                             if (!STATE()->forceParams0.contains(idx))
                             {
                                 const auto state = newState(context, ip, ip);
-                                if (state)
-                                    state->forceParamsU.push_back(idx);
+                                state->forceParamsU.push_back(idx);
                                 STATE()->forceParams0.push_back(idx);
                             }
                         }
@@ -2732,7 +2734,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     context.bc = bc;
 
 #if 0
-    if (bc->sourceFile && bc->sourceFile->name != "compiler5783.swg")
+    if (bc->sourceFile && bc->sourceFile->name != "compiler5784.swg")
         return true;
 #endif
 
