@@ -32,16 +32,16 @@ struct SanityValue
         return kind == SanityValueKind::Constant || kind == SanityValueKind::ForceNull;
     }
 
-    void update(ByteCodeInstruction *ip)
+    void update(ByteCodeInstruction* ip)
     {
         ips.push_back(ip);
     }
 
-    void set(ByteCodeInstruction *ip)
+    void set(ByteCodeInstruction* ip)
     {
         ips.clear();
         ips.push_back(ip);
-    }    
+    }
 };
 
 struct SanityState
@@ -49,9 +49,9 @@ struct SanityState
     Vector<uint8_t>      stack;
     Vector<SanityValue>  stackValue;
     Vector<SanityValue>  regs;
-    ByteCodeInstruction* branchIp = nullptr;
-    ByteCodeInstruction* ip       = nullptr;
-    uint32_t             parent   = UINT32_MAX;
+    ByteCodeInstruction* fromIp = nullptr;
+    ByteCodeInstruction* ip     = nullptr;
+    uint32_t             parent = UINT32_MAX;
 };
 
 struct SanityContext : JobContext

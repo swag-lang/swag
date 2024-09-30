@@ -212,26 +212,20 @@
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;
 
-#define JUMPT(__isCst, __expr1)                           \
-    jmpAddState = nullptr;                                \
-    if (__isCst)                                          \
-    {                                                     \
-        ip->dynFlags.add(BCID_SAN_PASS);                  \
-        if (__expr1)                                      \
-            ip += ip->b.s32 + 1;                          \
-        else                                              \
-            ip = ip + 1;                                  \
-        continue;                                         \
-    }                                                     \
-    if (context->statesHere.contains(ip + ip->b.s32 + 1)) \
-        return true;                                      \
-    context->statesHere.insert(ip + ip->b.s32 + 1);       \
-    jmpAddState = new SanityState;                        \
-    context->states.push_back(jmpAddState);               \
-    *jmpAddState          = *STATE();                     \
-    jmpAddState->branchIp = ip;                           \
-    jmpAddState->ip       = ip + ip->b.s32 + 1;           \
-    jmpAddState->parent   = context->state;
+#define JUMPT(__isCst, __expr1)                              \
+    jmpAddState = nullptr;                                   \
+    if (__isCst)                                             \
+    {                                                        \
+        ip->dynFlags.add(BCID_SAN_PASS);                     \
+        if (__expr1)                                         \
+            ip += ip->b.s32 + 1;                             \
+        else                                                 \
+            ip = ip + 1;                                     \
+        continue;                                            \
+    }                                                        \
+    jmpAddState = newState(context, ip, ip + ip->b.s32 + 1); \
+    if (!jmpAddState)                                        \
+        return true;
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(context, va)); \
@@ -244,6 +238,22 @@
 
 namespace
 {
+    SanityState* newState(SanityContext* context, ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp)
+    {
+        if (context->statesHere.contains(startIp))
+            return nullptr;
+        context->statesHere.insert(startIp);
+
+        const auto state = new SanityState;
+        *state           = *STATE();
+
+        context->states.push_back(state);
+        state->fromIp = fromIp;
+        state->ip     = startIp;
+        state->parent = context->state;
+        return state;
+    }
+
     bool getRegister(SanityContext* context, SanityValue*& result, uint32_t reg)
     {
         SWAG_ASSERT(reg < STATE()->regs.size());
