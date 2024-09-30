@@ -1,5 +1,5 @@
 //#global skip
-#global testerror "San0001"
+//#global testerror "San0001"
 
 var G = 0
 struct A {}

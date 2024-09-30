@@ -10,6 +10,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
+#pragma optimize("", off)
 
 #define STATE() context->states[context->state]
 
@@ -361,8 +362,10 @@ namespace
                     {
                         err->setForceFromContext(true);
                         doneOverload.push_back(overload);
-                        Utf8 what = form("from %s [[%s]] of type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), overload->typeInfo->getDisplayNameC());
+
+                        Utf8 what = form("declaration of %s [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr());
                         err->addNote(overload->node, overload->node->getTokenName(), what);
+
                         doneNodes.push_back(overload->node);
                         err->setForceFromContext(false);
                     }
@@ -646,7 +649,9 @@ namespace
         {
             auto& val = STATE()->stackValue[i];
             val.kind  = kind;
-            val.ips.push_back(STATE()->ip);
+            val.ips.clear();
+            if (kind == SanityValueKind::Constant)
+                val.ips.push_back(STATE()->ip);
         }
     }
 
@@ -1439,12 +1444,16 @@ namespace
                             const auto node = idRef->children[i];
                             if (node->is(AstNodeKind::Identifier) && node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
                                 continue;
+
                             for (auto it : ra->ips)
                             {
-                                if (it->node == STATE()->ip->node)
+                                if (it->node == ip->node)
+                                    it->node = node;
+                                else if (it->node->is(AstNodeKind::Identifier) && it->node->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
                                     it->node = node;
                             }
-                            STATE()->ip->node = node;
+
+                            ip->node = node;
                             break;
                         }
                     }
