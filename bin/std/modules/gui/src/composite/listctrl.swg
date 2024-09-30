@@ -186,7 +186,7 @@ impl IWnd for ListView
 
         switch evt.key
         {
-        case Space:
+        case Space where focusLine:
             if focusLine.canCheck
             {
                 foreach l in list.selModel
@@ -206,7 +206,7 @@ impl IWnd for ListView
                 list.toggleExpand(focusLine)
             }
 
-        case Enter:
+        case Enter where focusLine:
             if focusLine.canCheck
             {
                 foreach l in list.selModel
@@ -260,9 +260,9 @@ impl IWnd for ListView
                 startSelIdx, endSelIdx = list.focusIndex + 1
             selChanged = true
 
-        case Left:
+        case Left where focusLine:
             list.collapse(focusLine)
-        case Right:
+        case Right where focusLine:
             list.expand(focusLine)
 
         case PageDown:

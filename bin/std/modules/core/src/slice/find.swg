@@ -4,7 +4,7 @@
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order
 // Returns Swag.U64.Max if not found.
-func(T, V) findSorted(values: const [..] T, value: V)->u64
+func(T, V) findSorted(values: nl const [..] T, value: V)->u64
 {
     var result: retval
 
@@ -35,7 +35,7 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 // Find 'value' in a slice by performing a linear search.
 // O^n, but slice does not have to be sorted.
 // Returns Swag.U64.Max if not found.
-func(T, V) findLinear(values: const [..] T, value: V)->u64
+func(T, V) findLinear(values: nl const [..] T, value: V)->u64
 {
     foreach v, i in values where v == value:
         return i
@@ -43,8 +43,10 @@ func(T, V) findLinear(values: const [..] T, value: V)->u64
 }
 
 // Returns true if the given slice contains the sub slice 'value'
-func(T) findSlice(values, value: const [..] T)->u32
+func(T) findSlice(values: nl const [..] T, value: const [..] T)->u32
 {
+    if !@countof(values):
+        return Swag.U32.Max
     if @countof(value) > @countof(values):
         return Swag.U32.Max
 
@@ -70,14 +72,14 @@ func(T) findSlice(values, value: const [..] T)->u32
 // Returns true if the given slice contains the 'value'.
 // The slice must be sorted in ascending order
 #[Swag.ConstExpr]
-func(T, V) containsSorted(values: const [..] T, value: V)->bool
+func(T, V) containsSorted(values: nl const [..] T, value: V)->bool
 {
     return findSorted(values, value) != Swag.U64.Max
 }
 
 // Returns true if the given slice contains the 'value'
 #[Swag.ConstExpr, Swag.Overload]
-func(T, V) contains(values: const [..] T, value: V)->bool
+func(T, V) contains(values: nl const [..] T, value: V)->bool
 {
     foreach v in values where v == value:
         return true
@@ -86,10 +88,13 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 
 // Returns true if two slices are equal
 #[Swag.ConstExpr]
-func(T) equals(dst, src: const [..] T)->bool
+func(T) equals(dst, src: nl const [..] T)->bool
 {
     if @countof(dst) != @countof(src):
         return false
+    if !@countof(dst) or !@countof(src):
+        return true
+
     for i in dst where dst[i] != src[i]:
         return false
     return true
