@@ -777,15 +777,16 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable() && !returnType->isClosure())
                     {
-                        if (!STATE()->forceParamsU.contains(static_cast<uint32_t>(ip - context->bc->out)))
+#if 0
+                        uint32_t ipIdx = static_cast<uint32_t>(ip - context->bc->out);
+                        if (!STATE()->forceParamsU.contains(ipIdx))
                         {
-#if 0                            
                             const auto state = newState(context, ip, ip);
-                            state->forceParamsU.push_back(static_cast<uint32_t>(ip - context->bc->out));
+                            state->forceParamsU.push_back(ipIdx);
                             ra->kind        = SanityValueKind::ForceNull;
                             ra->reg.pointer = nullptr;
-#endif
                         }
+#endif
                     }
                     break;
                 }

@@ -1075,6 +1075,7 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
     const auto node = context->node;
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitUnreachable;
+    propagateReturn(node->parent);
     return true;
 }
 
