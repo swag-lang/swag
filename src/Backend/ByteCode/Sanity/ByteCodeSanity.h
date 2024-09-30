@@ -46,12 +46,14 @@ struct SanityValue
 
 struct SanityState
 {
-    Vector<uint8_t>      stack;
-    Vector<SanityValue>  stackValue;
-    Vector<SanityValue>  regs;
-    ByteCodeInstruction* fromIp = nullptr;
-    ByteCodeInstruction* ip     = nullptr;
-    uint32_t             parent = UINT32_MAX;
+    Vector<uint8_t>        stack;
+    Vector<SanityValue>    stackValue;
+    Vector<SanityValue>    regs;
+    VectorNative<uint32_t> forceParams0;
+    VectorNative<uint32_t> forceParamsU;
+    ByteCodeInstruction*   fromIp = nullptr;
+    ByteCodeInstruction*   ip     = nullptr;
+    uint32_t               parent = UINT32_MAX;
 };
 
 struct SanityContext : JobContext

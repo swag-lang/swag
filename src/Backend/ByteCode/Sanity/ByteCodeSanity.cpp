@@ -223,6 +223,9 @@
             ip = ip + 1;                                     \
         continue;                                            \
     }                                                        \
+    if (context->statesHere.contains(ip + ip->b.s32 + 1))    \
+        return true;                                         \
+    context->statesHere.insert(ip + ip->b.s32 + 1);          \
     jmpAddState = newState(context, ip, ip + ip->b.s32 + 1); \
     if (!jmpAddState)                                        \
         return true;
@@ -240,10 +243,6 @@ namespace
 {
     SanityState* newState(SanityContext* context, ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp)
     {
-        if (context->statesHere.contains(startIp))
-            return nullptr;
-        context->statesHere.insert(startIp);
-
         const auto state = new SanityState;
         *state           = *STATE();
 
@@ -780,8 +779,10 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable() && !returnType->isClosure())
                     {
-                        // ra->kind        = SanityValueKind::ForceNull;
-                        // ra->reg.pointer = nullptr;
+#if 0                        
+                        ra->kind        = SanityValueKind::ForceNull;
+                        ra->reg.pointer = nullptr;
+#endif
                     }
                     break;
                 }
@@ -799,31 +800,45 @@ namespace
                     const auto returnType   = typeInfoFunc->concreteReturnType();
                     if (returnType->isNullable())
                     {
-                        // ra->kind        = SanityValueKind::ForceNull;
-                        // ra->reg.pointer = nullptr;
-                        // rb->kind        = SanityValueKind::ForceNull;
-                        // rb->reg.pointer = nullptr;
+#if 0                        
+                         ra->kind        = SanityValueKind::ForceNull;
+                         ra->reg.pointer = nullptr;
+                         rb->kind        = SanityValueKind::ForceNull;
+                         rb->reg.pointer = nullptr;
+#endif
                     }
                     break;
                 }
 
                 case ByteCodeOp::GetParam64:
+                {
                     SWAG_CHECK(getRegister(context, ra, ip->a.u32));
                     ra->kind = SanityValueKind::Unknown;
                     ra->set(ip);
 
-                    if (ip->node && ip->node->resolvedSymbolOverload())
+                    const auto overload = ip->node->resolvedSymbolOverload();
+                    const auto idx      = context->bc->typeInfoFunc->registerIdxToParamIdx(ip->b.mergeU64U32.high);
+
+                    if (ip->node && overload && !STATE()->forceParamsU.contains(idx))
                     {
-                        const auto overload = ip->node->resolvedSymbolOverload();
                         const auto typeOver = TypeManager::concreteType(overload->typeInfo);
                         if (overload->typeInfo->isNullable() && !typeOver->isClosure())
                         {
                             ra->kind        = SanityValueKind::ForceNull;
                             ra->reg.pointer = nullptr;
+
+                            if (!STATE()->forceParams0.contains(idx))
+                            {
+                                const auto state = newState(context, ip, ip);
+                                if (state)
+                                    state->forceParamsU.push_back(idx);
+                                STATE()->forceParams0.push_back(idx);
+                            }
                         }
                     }
+                }
 
-                    break;
+                break;
 
                 // Fake 1 value
                 case ByteCodeOp::InternalGetTlsPtr:
@@ -2715,6 +2730,11 @@ bool ByteCodeSanity::process(ByteCode* bc)
 
     SanityContext context;
     context.bc = bc;
+
+#if 0
+    if (bc->sourceFile && bc->sourceFile->name != "compiler5783.swg")
+        return true;
+#endif
 
     const auto state    = new SanityState;
     const auto funcDecl = castAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
