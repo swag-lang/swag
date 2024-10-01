@@ -1,7 +1,7 @@
 #global testerror "San0002"
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 #test
 {
     var x = 10

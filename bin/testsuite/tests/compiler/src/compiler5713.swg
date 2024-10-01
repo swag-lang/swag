@@ -5,7 +5,7 @@ struct Mouse {}
 impl IEvent for Mouse {}
 
 //#[Swag.PrintBc]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #test
 {
     var x: IEvent

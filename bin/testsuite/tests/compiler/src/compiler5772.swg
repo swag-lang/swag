@@ -8,7 +8,7 @@ func toto(x: any)
     G = 1
 }
 
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 #test
 {
     var a: any

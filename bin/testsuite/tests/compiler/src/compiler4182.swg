@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 //#[Swag.Optimize("", false)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto()->f32
 {
     var y = -10'f32

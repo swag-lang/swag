@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.Optimize("", false)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto()->*s32
 {
     var a = 0

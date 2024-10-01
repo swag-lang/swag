@@ -2,7 +2,7 @@
 #global testerror "San0002"
 
 //#[Swag.PrintGenBc]
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 func titi(x: nl *s32, y: s32)
 {
     if !x: 

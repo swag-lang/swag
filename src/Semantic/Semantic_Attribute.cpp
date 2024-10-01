@@ -213,12 +213,12 @@ void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attri
     INHERIT_SAFETY(child, SAFETY_UNREACHABLE);
     INHERIT_SAFETY(child, SAFETY_BOOL);
     INHERIT_SAFETY(child, SAFETY_NAN);
-    INHERIT_SAFETY(child, SAFETY_SANITY);
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_MATCH_WHERE_OFF | ATTRIBUTE_MATCH_SELF_OFF);
+    INHERIT_ATTR(child, ATTRIBUTE_SANITY_ON | ATTRIBUTE_SANITY_OFF);
 
     if (!child->hasAstFlag(AST_INTERNAL))
         INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
@@ -421,6 +421,19 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             }
 
             //////
+            else if (child->token.is(g_LangSpec->name_Sanity))
+            {
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Sanity, g_LangSpec->name_what);
+                SWAG_ASSERT(attrParam);
+                auto attrWhat = &attrParam->value;
+
+                if (attrWhat->reg.b)
+                    flags.add(ATTRIBUTE_SANITY_ON);
+                else
+                    flags.add(ATTRIBUTE_SANITY_OFF);
+            }
+
+            //////
             else if (child->token.is(g_LangSpec->name_Safety))
             {
                 VectorNative<const OneAttribute*> allAttrs;
@@ -460,7 +473,6 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
                         CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
                         CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-                        CHECK_SAFETY_NAME(name_sanity, SAFETY_SANITY);
                         CHECK_SAFETY_NAME(name_null, SAFETY_NULL);
 
                         if (!done)

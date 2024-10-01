@@ -93,6 +93,7 @@ struct CommandLine
     Utf8 buildCfg           = "fast-debug";
     Utf8 buildCfgDebug      = "default";
     Utf8 buildCfgSafety     = "default";
+    Utf8 buildCfgSanity     = "default";
     Utf8 buildCfgInlineBC   = "default";
     Utf8 buildCfgOptimBC    = "default";
     Utf8 buildCfgOptim      = "default";

@@ -163,6 +163,7 @@ impl FastNoise
     }
 
     // Get a noise result.
+    #[Swag.Sanity(false)]
     public mtd const noise(x, y: f32)->f32
     {
         var result: f32 = undefined

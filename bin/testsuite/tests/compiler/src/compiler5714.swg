@@ -4,7 +4,7 @@ alias A = string
 
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto(b: s32)
 {
     var x: A

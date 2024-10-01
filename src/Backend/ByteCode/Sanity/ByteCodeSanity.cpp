@@ -288,9 +288,6 @@ namespace
 
     Diagnostic* raiseError(SanityContext* context, const Utf8& msg, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr)
     {
-        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
-            return nullptr;
-
         const auto ip = STATE()->ip;
         if (!ip->node)
             return nullptr;
@@ -438,9 +435,6 @@ namespace
 
     bool checkNotNullReturn(SanityContext* context, uint32_t reg)
     {
-        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY | SAFETY_NULL))
-            return true;
-
         const auto ip = STATE()->ip;
         if (ip->flags.has(BCI_CANT_OVERFLOW))
             return true;
@@ -464,9 +458,6 @@ namespace
 
     bool checkNotNullArguments(SanityContext* context, VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
     {
-        if (!context->bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY | SAFETY_NULL))
-            return true;
-
         const auto        ip       = STATE()->ip;
         TypeInfoFuncAttr* typeFunc = nullptr;
 
@@ -2744,7 +2735,16 @@ namespace
 
 bool ByteCodeSanity::process(ByteCode* bc)
 {
-    if (!bc->node || bc->isCompilerGenerated)
+    if (bc->isCompilerGenerated)
+        return true;
+    if (!bc->node)
+        return true;
+    if (!bc->node->token.sourceFile)
+        return true;
+    
+    if (bc->node->hasAttribute(ATTRIBUTE_SANITY_OFF))
+        return true;
+    if (!bc->node->token.sourceFile->module->buildCfg.sanity && !bc->node->hasAttribute(ATTRIBUTE_SANITY_ON))
         return true;
 
     SanityContext context;

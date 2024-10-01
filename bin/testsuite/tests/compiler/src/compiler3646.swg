@@ -3,7 +3,7 @@ interface I
     func fct(self);
 }
 
-#[Swag.Safety("sanity", false)]
+#[Swag.Sanity(false)]
 func toto()
 {
     var x: [2] I

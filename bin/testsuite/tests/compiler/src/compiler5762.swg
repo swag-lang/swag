@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #[Swag.Safety("null", true)]
 #[Swag.Optimize("", false)]
 #test

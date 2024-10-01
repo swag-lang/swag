@@ -984,7 +984,6 @@ bool Semantic::resolveCompilerIntrinsicTag(SemanticContext* context)
             CHECK_SAFETY_NAME(name_dyncast, SAFETY_DYN_CAST);
             CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
             CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-            CHECK_SAFETY_NAME(name_sanity, SAFETY_SANITY);
             CHECK_SAFETY_NAME(name_null, SAFETY_NULL);
 
             if (!done)

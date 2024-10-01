@@ -5,7 +5,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 }
 
 #[Swag.Safety("overflow", true)]
-#[Swag.Safety("sanity", false)]
+#[Swag.Sanity(false)]
 #test
 {
     {

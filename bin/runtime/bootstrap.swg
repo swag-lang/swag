@@ -140,6 +140,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File)]
     attr NoDoc()
 
+    // Do not make a sanity pass.
+    #[AttrUsage(AttributeUsage.Function)]
+    attr Sanity(what: bool)    
+
     // Enable/Disable one or more safety checks.
     // For example:
     // ```swag
@@ -801,6 +805,7 @@ namespace Swag
         tempAllocatorCapacity          = 4'u32 * 1024 * 1024                // Default capacity of the 'temp' allocator (in bytes)
         errorAllocatorCapacity         = 16'u32 * 1024                      // Default capacity of the 'error' allocator (in bytes)
         safetyGuards:                  u16 = SafetyAll                      // Activate specific safety checks
+        sanity                         = true                               // Make a sanity pass
         debugAllocator                 = true                               // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack     = true                               // Capture the call stack for each allocation
         debugAllocatorLeaks            = true                               // Detect memory leaks

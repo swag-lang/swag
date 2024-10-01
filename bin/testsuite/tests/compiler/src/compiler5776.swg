@@ -1,6 +1,6 @@
 #global testerror "San0001"
 
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 #test
 {
     let a = @itftableof(null, null)

@@ -74,6 +74,7 @@ struct LanguageSpec
     Utf8 name_Match;
     Utf8 name_Pack;
     Utf8 name_ExportType;
+    Utf8 name_Sanity;
     Utf8 name_Using;
 
     Utf8 name_Swag_AttrUsage;
@@ -89,6 +90,7 @@ struct LanguageSpec
     Utf8 name_Swag_Opaque;
     Utf8 name_Swag_Offset;
     Utf8 name_Swag_ExportType;
+    Utf8 name_Swag_Sanity;
     Utf8 name_Swag_Warn;
     Utf8 name_Swag_ConstExpr;
     Utf8 name_Swag_Macro;
@@ -202,7 +204,6 @@ struct LanguageSpec
     Utf8 name_bool;
     Utf8 name_nan;
     Utf8 name_dyncast;
-    Utf8 name_sanity;
     Utf8 name_null;
 
     Utf8 name_any;

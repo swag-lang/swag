@@ -1,6 +1,6 @@
 #global testerror "San0006"
 
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #[Swag.Safety("null", true)]
 {
     #[Swag.Safety("boundcheck", true)]

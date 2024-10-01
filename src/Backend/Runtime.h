@@ -14,9 +14,8 @@ constexpr SafetyFlags SAFETY_DYN_CAST    = 0x0008;
 constexpr SafetyFlags SAFETY_SWITCH      = 0x0010;
 constexpr SafetyFlags SAFETY_BOOL        = 0x0020;
 constexpr SafetyFlags SAFETY_NAN         = 0x0040;
-constexpr SafetyFlags SAFETY_SANITY      = 0x0080;
-constexpr SafetyFlags SAFETY_UNREACHABLE = 0x0100;
-constexpr SafetyFlags SAFETY_NULL        = 0x0200;
+constexpr SafetyFlags SAFETY_UNREACHABLE = 0x0080;
+constexpr SafetyFlags SAFETY_NULL        = 0x0100;
 constexpr SafetyFlags SAFETY_ALL         = 0xFFFF;
 
 constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
@@ -291,6 +290,7 @@ struct BuildCfg
     uint32_t    tempAllocatorCapacity      = 4 * 1024 * 1024;
     uint32_t    errorAllocatorCapacity     = 16 * 1024;
     SafetyFlags safetyGuards               = SAFETY_ALL;
+    bool        sanity                     = true;
     bool        debugAllocator             = true;
     bool        debugAllocatorCaptureStack = true;
     bool        debugAllocatorLeaks        = true;

@@ -52,6 +52,7 @@ void LanguageSpec::setupNames()
     name_Strict        = "Strict";
     name_PrintBc       = "PrintBc";
     name_ExportType    = "ExportType";
+    name_Sanity        = "Sanity";
     name_Using         = "Using";
 
     name_Swag_AttrUsage     = "Swag.AttrUsage";
@@ -67,6 +68,7 @@ void LanguageSpec::setupNames()
     name_Swag_Opaque        = "Swag.Opaque";
     name_Swag_Offset        = "Swag.Offset";
     name_Swag_ExportType    = "Swag.ExportType";
+    name_Swag_Sanity        = "Swag.Sanity";
     name_Swag_Warn          = "Swag.Warning";
     name_Swag_ConstExpr     = "Swag.ConstExpr";
     name_Swag_Macro         = "Swag.Macro";
@@ -175,7 +177,6 @@ void LanguageSpec::setupNames()
     name_math        = "math";
     name_bool        = "bool";
     name_nan         = "nan";
-    name_sanity      = "sanity";
     name_null        = "null";
     name_dyncast     = "dyncast";
 

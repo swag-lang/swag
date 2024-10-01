@@ -107,6 +107,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu cl sc", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug, fast-debug, fast-compile and release are predefined)");
     addArg("bu cl sc", "--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "generate debug information");
     addArg("bu cl sc", "--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "generate safety guards");
+    addArg("bu cl sc", "--cfg-sanity", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSanity, "true|false|default", "make a sanity pass");
     addArg("bu cl sc", "--cfg-inline-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
     addArg("bu cl sc", "--cfg-optim-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimBC, "0|1|2|default", "bytecode optimization level");
     addArg("bu cl sc", "--cfg-optim-backend", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptim, "O1|O2|O3|Os|Oz|default", "optimize output for speed and/or size");

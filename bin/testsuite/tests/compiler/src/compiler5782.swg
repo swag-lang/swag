@@ -2,7 +2,7 @@
 //#global testerror "San0002"
 
 //#[Swag.PrintGenBc]
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 func mkString(str: nl string)->string
 {
     if str == null:

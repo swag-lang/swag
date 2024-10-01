@@ -4,7 +4,7 @@ alias A = string
 
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
-#[Swag.Safety("sanity", false)]
+#[Swag.Sanity(false)]
 #test
 {
     var x: A

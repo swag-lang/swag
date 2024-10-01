@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.Optimize("", false)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #[Swag.Safety("overflow", true)]
 #test
 {

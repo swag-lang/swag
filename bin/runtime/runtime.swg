@@ -132,9 +132,11 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
 ////////////////////////////////////////////////////////////
 
-#[Safety("", false)]
-func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
+func @itftableof(structType, itfType: const *TypeInfoStruct)->nl const *void
 {
+    if !structType or !itfType:
+        return null
+
     for i in structType.interfaces
     {
         if @stringcmp(structType.interfaces[i].name, itfType.fullname):

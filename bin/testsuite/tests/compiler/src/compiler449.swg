@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #global testerror "San0006"
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #test
 {
 	let a: [..] s32 = null;

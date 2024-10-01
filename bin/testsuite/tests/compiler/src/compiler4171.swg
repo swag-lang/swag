@@ -1,6 +1,6 @@
 #global testerror "San0002"
 
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 //#[Swag.PrintGenBc]
 func toto()->s32
 {

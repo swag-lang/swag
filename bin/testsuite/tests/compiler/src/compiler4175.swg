@@ -1,7 +1,7 @@
 #global skip
 
 #[Swag.Safety("", false)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto()
 {
     var x: [4] s32

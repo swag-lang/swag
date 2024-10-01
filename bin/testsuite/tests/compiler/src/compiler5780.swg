@@ -19,7 +19,7 @@ func titi()->nl *A
     return null
 }
 
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #[Swag.Safety("null", true)]
 #[Swag.Optimize("", false)]
 //#[Swag.PrintGenBc]

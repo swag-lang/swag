@@ -3,7 +3,7 @@
 struct A { a, b, c: s32; }
 
 #[Swag.Optimize("", false)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto(v: bool)
 {
     var a: A = undefined

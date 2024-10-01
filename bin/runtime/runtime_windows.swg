@@ -304,7 +304,7 @@ func __captureStack(skip: u32, wh: [..] *void)->u32
 }
 
 var __logStackTraceInitDone = false
-func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
+func __logStackTrace(wh: [..] *void, startAfter: nl *Swag.SourceCodeLocation = null, printNoLine = true)
 {
     using __Win32RT
 

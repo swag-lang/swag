@@ -2,7 +2,7 @@
 using Swag
 
 #[Swag.Safety("", true)]
-#[Swag.Safety("sanity", false)]
+#[Swag.Sanity(false)]
 #test
 {
     var x: any = 6

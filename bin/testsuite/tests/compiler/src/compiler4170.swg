@@ -1,7 +1,7 @@
 #global testerror "San0008"
 
 #[Swag.Optimize("", false)]
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 func toto(param: s32)
 {
     var pix: [4] s32

@@ -644,7 +644,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
 
     // Sanity must be done before any optimization, in order to not have to deal with all extra instructions.
-    if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
+    if (bc->node && !bc->sanDone)
     {
         bc->sanDone = true;
         SWAG_CHECK(ByteCodeSanity::process(bc));

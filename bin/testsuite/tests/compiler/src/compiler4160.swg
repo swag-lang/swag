@@ -1,6 +1,6 @@
 #global testerror "San0008"
 
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 func toto()
 {
     var x: s32 = undefined

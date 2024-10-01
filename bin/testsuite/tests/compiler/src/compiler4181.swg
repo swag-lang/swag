@@ -2,7 +2,7 @@
 
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
-#[Swag.Safety("sanity", true)]
+#[Swag.Sanity(true)]
 #test
 {
     var y = -10'f32

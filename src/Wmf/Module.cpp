@@ -61,6 +61,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
         buildCfg.safetyGuards          = 0;
+        buildCfg.sanity                = false;
         buildCfg.errorStackTrace       = false;
         buildCfg.debugAllocator        = true;
         buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
@@ -73,6 +74,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
         buildCfg.safetyGuards          = SAFETY_ALL;
+        buildCfg.sanity                = true;
         buildCfg.errorStackTrace       = true;
         buildCfg.debugAllocator        = true;
         buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
@@ -87,6 +89,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.safetyGuards          = SAFETY_ALL;
         buildCfg.safetyGuards.remove(SAFETY_NAN);
         buildCfg.safetyGuards.remove(SAFETY_BOOL);
+        buildCfg.sanity            = true;
         buildCfg.errorStackTrace   = true;
         buildCfg.debugAllocator    = true;
         buildCfg.backendOptimize   = BuildCfgBackendOptim::O2;
@@ -99,6 +102,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeAutoInline             = true;
         buildCfg.byteCodeEmitAssume             = false;
         buildCfg.safetyGuards                   = 0;
+        buildCfg.sanity                         = false;
         buildCfg.errorStackTrace                = false;
         buildCfg.debugAllocator                 = false;
         buildCfg.backendOptimize                = BuildCfgBackendOptim::O3;
@@ -120,6 +124,8 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.backendOptimize = static_cast<BuildCfgBackendOptim>(max(0, min(g_CommandLine.buildCfgOptim.toInt(), 5)));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
+    if (g_CommandLine.buildCfgSanity != "default")
+        buildCfg.sanity = g_CommandLine.buildCfgSanity == "true" ? true : false;
     if (g_CommandLine.buildCfgStackTrace != "default")
         buildCfg.errorStackTrace = g_CommandLine.buildCfgStackTrace == "true";
     if (g_CommandLine.buildCfgDebugAlloc != "default")

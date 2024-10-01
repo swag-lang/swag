@@ -3,7 +3,7 @@
 using Swag
 
 //#[Swag.PrintGenBc]
-#[Swag.Safety("", true)]
+#[Swag.Sanity(true)]
 func free(buffer: ^void, size: u64, allocator: nl IAllocator = null, hint: nl string = null, loc = #callerlocation)
 {
     var req: AllocatorRequest
