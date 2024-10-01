@@ -69,7 +69,7 @@ struct Tab
     views:                    ArrayPtr'TabItem
     popup:                    *PopupListCtrl
     selectedIdx:              u32
-    firstVisibleIdx:          u32 = 0
+    firstVisibleIdx:          u32
     hotIdx:                   u32 = Swag.U32.Max
     barHeight:                f32
     mostRightPos:             f32
@@ -567,10 +567,9 @@ impl Tab
     }
 
     // Returns the current selected item, or 'null'
-    mtd getSelectedItem()->nl *TabItem
+    mtd getSelectedItem()->*TabItem
     {
-        if selectedIdx >= views.count:
-            return null
+        Debug.assert(selectedIdx < views.count)
         return views[selectedIdx]
     }
 }

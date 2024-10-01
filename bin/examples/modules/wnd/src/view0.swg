@@ -234,6 +234,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         {
             let val  = Format.toString("%", cast(s32) wnd.getValue())
             let edit = cast(*EditBox) wnd.getTopView().getChildById("edit0")
+            Debug.assert(edit != null)
             edit.setText(val)
         }
 
@@ -243,6 +244,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         {
             let (val, ?, ?) = catch StrConv.parseS32(wnd.text)
             let slider = cast(*Slider) wnd.getTopView().getChildById("slider0")
+            Debug.assert(slider != null)
             slider.setValue(cast(f32) val)
         }
 

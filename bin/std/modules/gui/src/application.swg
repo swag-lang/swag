@@ -93,7 +93,7 @@ internal impl Application
         }
     }
 
-    func skipDisabled(wnd: *Wnd)->nl *Wnd
+    func skipDisabled(wnd: nl *Wnd)->nl *Wnd
     {
         if !wnd:
             return null

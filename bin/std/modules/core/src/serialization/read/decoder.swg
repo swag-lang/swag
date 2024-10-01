@@ -151,9 +151,9 @@ impl Decoder
             }
 
             // Core.Array
-            if Reflection.isStructArray(type)
+            let valueType = Reflection.getStructArrayType(type)
+            if valueType
             {
-                let valueType = Reflection.getStructArrayType(type)
                 var count     = 0'u64
                 let treated   = serializer.beginSequence(type, data, &count)
                 defer<noerr> serializer.endSequence()

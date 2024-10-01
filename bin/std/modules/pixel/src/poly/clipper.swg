@@ -1718,7 +1718,7 @@ impl Transform
         return e and e.top.y == y and !e.nextInLML
     }
 
-    func getMaximaPairEx(e: *Edge)->*Edge
+    func getMaximaPairEx(e: *Edge)->nl *Edge
     {
         let result = getMaximaPair(e)
         if result and (result.outIdx == Skip or

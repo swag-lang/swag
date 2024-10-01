@@ -314,7 +314,7 @@ impl Header
     }
 
     // Returns the given item, by column
-    mtd getItemByCol(column: u32)->nl *HeaderItem
+    mtd getItemByCol(column: u32)->*HeaderItem
     {
         Debug.assert(column < items.count)
 
@@ -324,7 +324,7 @@ impl Header
                 return item
         }
 
-        return null
+        unreachable
     }
 
     // Get an item width by index

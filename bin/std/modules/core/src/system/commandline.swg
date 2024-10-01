@@ -181,7 +181,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                 itp += 1
             }
 
-            discard catch StrConv.parseValue(addr, typeField, collect.toString())
+            if collect != null:
+                discard catch StrConv.parseValue(addr, typeField, collect.toString())
             if @err() != null:
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
         }

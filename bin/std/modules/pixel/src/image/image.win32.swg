@@ -5,6 +5,7 @@ using Swag, Core, Core.Errors, Win32, Gdi32
 impl Image
 {
     // Transform an image to a windows icon
+    #[Swag.Safety("", false)]
     mtd toHICON()->HICON throw
     {
         var bi: BITMAPINFO

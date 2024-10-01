@@ -21,6 +21,7 @@ using Core
 
 private var total = 0
 
+#[Swag.Safety("sanity", false)]
 func day8B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")

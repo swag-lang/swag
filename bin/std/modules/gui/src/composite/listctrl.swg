@@ -114,15 +114,16 @@ impl ListLine
     }
 
     // Get an item by index
-    mtd getItem(column: u32)->nl *ListItem
+    mtd getItem(column: u32)->*ListItem
     {
+        Debug.assert(column < items.count)
         foreach item in items
         {
             if item.column == column:
                 return item
         }
 
-        return null
+        unreachable
     }
 
     // Initialize a given column item
@@ -1086,8 +1087,10 @@ impl ListCtrl
 
         foreach i in selModel
         {
-            let idx = idxLineToIdxList.find(i).value
-            result.add(lines[idx])
+            let res = idxLineToIdxList.find(i)
+            if !res:
+                continue
+            result.add(lines[res.value])
         }
 
         return result
@@ -1102,8 +1105,10 @@ impl ListCtrl
 
         foreach i in checkModel
         {
-            let idx = idxLineToIdxList.find(i).value
-            result.add(lines[idx])
+            let res = idxLineToIdxList.find(i)
+            if !res:
+                continue
+            result.add(lines[res.value])
         }
 
         return result
@@ -1116,7 +1121,10 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty():
             return null
         let range = selModel.selection.front()
-        let idx   = idxLineToIdxList.find(range.start).value
+        let res   = idxLineToIdxList.find(range.start)
+        if !res:
+            return null
+        let idx   = res.value
         return lines[idx]
     }
 
@@ -1227,7 +1235,10 @@ impl ListCtrl
         while tmp.count
         {
             let toI       = tmp.popBack()
-            let idxInsert = idxLineToIdxList.find(toI.index).value
+            let res       = idxLineToIdxList.find(toI.index)
+            if !res:
+                continue
+            let idxInsert = res.value
             foreach l, i in toI.lines
             {
                 l.index = cptIdxLine
@@ -1273,7 +1284,10 @@ impl ListCtrl
         }
 
         // Insert at the right position
-        let idxInsert = idxLineToIdxList.find(line.index).value
+        let res = idxLineToIdxList.find(line.index)
+        if !res:
+            return
+        let idxInsert = res.value
         lines.removeAtOrdered(cast(u64) (idxInsert + 1), cast(u64) removeCount)
 
         // Update indexes after the insertion

@@ -791,19 +791,23 @@ impl QuickWnd
         }
 
         let baseForm    = cast(*BaseForm) @dataof(formItf)
-        var canAddModel = true
-        if main.editMode == .Highlight
+        var canAddModel = false
+        if baseForm
         {
-            if baseForm.subKind != .Highlight:
+            canAddModel = true
+            if main.editMode == .Highlight
+            {
+                if baseForm.subKind != .Highlight:
+                    canAddModel = false
+            }
+            elif main.editMode == .PixSel
+            {
                 canAddModel = false
-        }
-        elif main.editMode == .PixSel
-        {
-            canAddModel = false
-        }
-        elif baseForm.subKind == .Highlight or baseForm.subKind == .PixSel
-        {
-            canAddModel = false
+            }
+            elif baseForm.subKind == .Highlight or baseForm.subKind == .PixSel
+            {
+                canAddModel = false
+            }
         }
 
         if canAddModel

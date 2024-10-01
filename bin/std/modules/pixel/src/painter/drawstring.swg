@@ -87,9 +87,11 @@ impl Painter
     }
 
     // Get a rune size for a given font
-    func measureRune(c: rune, font: *Font)->Math.Point
+    func measureRune(c: rune, font: nl *Font)->Math.Point
     {
         var result: retval
+        if !font:
+            return result
         let desc    = font.getGlyphDesc(c)
         result.x = desc.advanceX
         result.y = desc.shiftY + desc.height

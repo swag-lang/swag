@@ -65,6 +65,8 @@ impl RichEditCtrl
     mtd getXExtent()->Math.Point
     {
         let fontR = getFont().getFont(styles[0].fontMode)
+        if !fontR:
+            return {}
         return Painter.measureRune('X', fontR)
     }
 

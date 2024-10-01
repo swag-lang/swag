@@ -301,7 +301,10 @@ impl RichEditView
         let painter = bc.painter
 
         let fontR = ed.getFont().getFont(strStyle.fontMode)
-        let me    = Painter.measureString(str, fontR)
+        if !fontR:
+            return 0
+
+        let me = Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a

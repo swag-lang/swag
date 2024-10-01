@@ -212,21 +212,22 @@
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;
 
-#define JUMPT(__isCst, __expr1)                           \
-    jmpAddState = nullptr;                                \
-    if (__isCst)                                          \
-    {                                                     \
-        ip->dynFlags.add(BCID_SAN_PASS);                  \
-        if (__expr1)                                      \
-            ip += ip->b.s32 + 1;                          \
-        else                                              \
-            ip = ip + 1;                                  \
-        continue;                                         \
-    }                                                     \
-    if (context->statesHere.contains(ip + ip->b.s32 + 1)) \
-        return true;                                      \
-    context->statesHere.insert(ip + ip->b.s32 + 1);       \
-    jmpAddState = newState(context, ip, ip + ip->b.s32 + 1);
+#define JUMPT(__isCst, __expr1)                                  \
+    jmpAddState = nullptr;                                       \
+    if (__isCst)                                                 \
+    {                                                            \
+        ip->dynFlags.add(BCID_SAN_PASS);                         \
+        if (__expr1)                                             \
+            ip += ip->b.s32 + 1;                                 \
+        else                                                     \
+            ip = ip + 1;                                         \
+        continue;                                                \
+    }                                                            \
+    if (!context->statesHere.contains(ip + ip->b.s32 + 1))       \
+    {                                                            \
+        context->statesHere.insert(ip + ip->b.s32 + 1);          \
+        jmpAddState = newState(context, ip, ip + ip->b.s32 + 1); \
+    }
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(context, va)); \
@@ -308,7 +309,10 @@ namespace
         for (const auto it : locValue->ips)
         {
             ips.push_back(it);
-            ipNodes.push_back(it->node);
+            auto ipNode = it->node;
+            while (ipNode->hasOwnerInline())
+                ipNode = ipNode->ownerInline();
+            ipNodes.push_back(ipNode);
         }
 
         if (locNode)
@@ -1035,7 +1039,13 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = SanityValueKind::Constant;
                         jmpAddState->regs[ip->a.u32].reg.u64 = 0;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
+                    }
+                    else
+                    {
+                        STATE()->regs[ip->a.u32].kind    = SanityValueKind::Constant;
+                        STATE()->regs[ip->a.u32].reg.u64 = 1;
+                        STATE()->regs[ip->a.u32].set(ip);
                     }
                     break;
                 case ByteCodeOp::JumpIfTrue:
@@ -1046,6 +1056,12 @@ namespace
                         jmpAddState->regs[ip->a.u32].reg.u64 = 1;
                         jmpAddState->regs[ip->a.u32].update(ip);
                     }
+                    else
+                    {
+                        STATE()->regs[ip->a.u32].kind    = SanityValueKind::Constant;
+                        STATE()->regs[ip->a.u32].reg.u64 = 0;
+                        STATE()->regs[ip->a.u32].set(ip);
+                    }
                     break;
 
                 case ByteCodeOp::JumpIfEqual64:
@@ -1054,7 +1070,7 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = vc.kind;
                         jmpAddState->regs[ip->a.u32].reg.u64 = vc.reg.u64;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
                     }
                     break;
 
@@ -1064,7 +1080,7 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = SanityValueKind::Constant;
                         jmpAddState->regs[ip->a.u32].reg.u64 = 0;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
                     }
                     break;
                 case ByteCodeOp::JumpIfZero16:
@@ -1073,7 +1089,7 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = SanityValueKind::Constant;
                         jmpAddState->regs[ip->a.u32].reg.u64 = 0;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
                     }
                     break;
                 case ByteCodeOp::JumpIfZero32:
@@ -1082,7 +1098,7 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = SanityValueKind::Constant;
                         jmpAddState->regs[ip->a.u32].reg.u64 = 0;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
                     }
                     break;
                 case ByteCodeOp::JumpIfZero64:
@@ -1091,7 +1107,7 @@ namespace
                     {
                         jmpAddState->regs[ip->a.u32].kind    = SanityValueKind::Constant;
                         jmpAddState->regs[ip->a.u32].reg.u64 = 0;
-                        jmpAddState->regs[ip->a.u32].update(ip);
+                        jmpAddState->regs[ip->a.u32].set(ip);
                     }
                     break;
 
@@ -2735,7 +2751,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     context.bc = bc;
 
 #if 0
-    if (bc->sourceFile && bc->sourceFile->name != "compiler5784.swg")
+    if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
         return true;
 #endif
 

@@ -118,8 +118,9 @@ impl Theme
     }
 
     // Create a default font with the given size
-    mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->nl *Font
+    mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->*Font
     {
+        #[Swag.Complete]
         switch style
         {
         case Regular:
@@ -132,13 +133,13 @@ impl Theme
             return Font.create(res.defaultTypeFaceBI, size)
         }
 
-        Debug.assert(false, "invalid font style")
-        return null
+        unreachable
     }
 
     // Create a default font (fixed size) with the given size
-    mtd createDefaultFontFS(size: u32, style = FontFamilyStyle.Regular)->nl *Font
+    mtd createDefaultFontFS(size: u32, style = FontFamilyStyle.Regular)->*Font
     {
+        #[Swag.Complete]
         switch style
         {
         case Regular:
@@ -151,7 +152,6 @@ impl Theme
             return Font.create(res.defaultFsTypeFaceBI, size)
         }
 
-        Debug.assert(false, "invalid font style")
-        return null
+        unreachable
     }
 }

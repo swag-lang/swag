@@ -8,8 +8,10 @@ impl Properties
 
     mtd reconstructArray(item: *PropertiesItem)
     {
-        let arrData          = cast(*Array'u8) item.data
         let valueType        = Reflection.getStructArrayType(item.type)
+        Debug.assert(valueType != null)
+
+        let arrData          = cast(*Array'u8) item.data
         let countItemsBefore = items.count
         let itemIdx          = Slice.findLinear(self.items.toSlice(), item)
         let insertItemIdx    = itemIdx + item.numChilds + 1
@@ -65,6 +67,8 @@ impl Properties
     mtd clearArray(item: *PropertiesItem)
     {
         let valueType = Reflection.getStructArrayType(item.type)
+        Debug.assert(valueType != null)
+
         Reflection.clearStructArray(item.data, valueType)
         refreshArray(item)
         hasChanged(item)
@@ -73,6 +77,8 @@ impl Properties
     mtd removeArrayValue(item: *PropertiesItem)
     {
         let valueType     = Reflection.getStructArrayType(item.parent.type)
+        Debug.assert(valueType != null)
+
         let parentItemIdx = Slice.findLinear(items.toSlice(), item.parent)
         let itemIdx       = Slice.findLinear(items.toSlice(), item)
         let removeItemIdx = itemIdx - parentItemIdx - 1
@@ -87,6 +93,7 @@ impl Properties
     mtd appendArrayValue(item: *PropertiesItem)
     {
         let valueType = Reflection.getStructArrayType(item.type)
+        Debug.assert(valueType != null)
 
         discard Reflection.appendValueStructArray(item.data, valueType)
 
@@ -101,6 +108,8 @@ impl Properties
         item.flags.add(.NoSeparator)
 
         let valueType = Reflection.getStructArrayType(item.type)
+        Debug.assert(valueType != null)
+
         let arrData   = cast(*Array'u8) data
         var newData   = arrData.buffer
 
