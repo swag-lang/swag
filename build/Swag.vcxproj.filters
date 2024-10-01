@@ -253,6 +253,7 @@
     <ClCompile Include="..\src\Backend\Linker\BackendLinker.cpp" />
     <ClCompile Include="..\src\Backend\Linker\BackendLinker_Coff.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Loop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -384,6 +385,7 @@
     <ClInclude Include="..\src\Core\AtomicFlags.h" />
     <ClInclude Include="..\src\Backend\Linker\BackendLinker.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Macros.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

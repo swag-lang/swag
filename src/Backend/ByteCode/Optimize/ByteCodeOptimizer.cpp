@@ -647,7 +647,8 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     if (bc->node && !bc->sanDone)
     {
         bc->sanDone = true;
-        SWAG_CHECK(ByteCodeSanity::process(bc));
+        ByteCodeSanity san;
+        SWAG_CHECK(san.process(bc));
     }
 
     optContext.bc = bc;

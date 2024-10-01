@@ -1,7 +1,7 @@
-#global skip
 var G = 0
 
-#[Swag.PrintGenBc]
+//#[Swag.PrintGenBc]
+#[Swag.Sanity(false)]
 #test
 {
     let nc = G

@@ -64,7 +64,33 @@ struct SanityContext : JobContext
     VectorNative<SanityState*> states;
 };
 
-namespace ByteCodeSanity
+struct ByteCodeSanity
 {
+    Diagnostic* raiseError(const Utf8& msg, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr);
+
+    bool checkOverflow(bool isValid, const char* msgKind, TypeInfo* type);
+    bool checkDivZero(const SanityValue* value, bool isZero);
+    bool checkEscapeFrame(const SanityValue* value);
+    bool checkStackOffset(const SanityValue* value, uint64_t stackOffset, uint32_t sizeOf = 0);
+    bool checkNotNull(const SanityValue* value);
+    bool checkNotNullReturn(uint32_t reg);
+    bool checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic);
+    bool checkStackInitialized(void* addr, uint32_t sizeOf, const SanityValue* locValue = nullptr);
+
+    bool         getImmediateA(SanityValue& result);
+    bool         getImmediateB(SanityValue& result);
+    bool         getImmediateC(SanityValue& result);
+    bool         getImmediateD(SanityValue& result);
+    bool         getRegister(SanityValue*& result, uint32_t reg);
+    bool         getStackValue(SanityValue* result, void* addr, uint32_t sizeOf);
+    bool         getStackAddress(uint8_t*& result, const SanityValue* value, uint64_t stackOffset, uint32_t sizeOf = 0);
+    void         setStackValue(void* addr, uint32_t sizeOf, SanityValueKind kind);
+    void         updateStackValue(void* addr, uint32_t sizeOf);
+    void         invalidateCurStateStack();
+    SanityState* newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp);
+
+    bool loop();
     bool process(ByteCode* bc);
+
+    SanityContext context;
 };
