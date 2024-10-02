@@ -159,7 +159,7 @@ bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 {
     const auto ip = STATE()->ip;
-    if (ip->flags.has(BCI_CANT_OVERFLOW))
+    if (ip->flags.has(BCI_NOT_NULL))
         return true;
 
     SanityValue* ra = nullptr;

@@ -24,6 +24,7 @@ constexpr InstructionFlags BCI_START_STMT_S   = 0x1000;
 constexpr InstructionFlags BCI_START_STMT     = BCI_START_STMT_N | BCI_START_STMT_S;
 constexpr InstructionFlags BCI_NO_BACKEND     = 0x2000;
 constexpr InstructionFlags BCI_CANT_OVERFLOW  = 0x4000;
+constexpr InstructionFlags BCI_NOT_NULL       = 0x8000;
 
 using InstructionDynFlags                    = Flags<uint8_t>;
 constexpr InstructionDynFlags BCID_OPT_FLAG  = 0x01;
