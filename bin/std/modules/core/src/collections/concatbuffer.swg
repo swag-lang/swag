@@ -375,7 +375,7 @@ impl ConcatBuffer
 
     // Convert to a slice *only* if the buffer is linear, or return null.
     // See [[ConcatBuffer.makeLinear]]
-    mtd toSlice()->[..] u8
+    mtd toSlice()->nl [..] u8
     {
         if lastBucket == firstBucket:
             return @mkslice(firstBucket.datas, firstBucket.count)

@@ -87,8 +87,8 @@ When an `if` statement includes a variable declaration, you can add an additiona
 
 #test
 {
-    func retSomething()->string => "string"
-    func retNothing()->string   => null
+    func retSomething()->string  => "string"
+    func retNothing()->nl string => null
 
     // The 'where' clause is only evaluated if 'str' is not null.
     if let str = retSomething() where str[0] == 's':

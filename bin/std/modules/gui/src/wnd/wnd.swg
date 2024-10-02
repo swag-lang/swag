@@ -1124,7 +1124,7 @@ impl Wnd
     }
 
     // Get the id associated with a shortcut. null if none
-    mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->WndId
+    mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->nl WndId
     {
         foreach c in keyShortcuts
         {

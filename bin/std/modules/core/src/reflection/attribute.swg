@@ -4,7 +4,7 @@ using Swag
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
+func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->nl any
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -27,7 +27,7 @@ func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, valu
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
+func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->nl any
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -37,7 +37,7 @@ func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(attribute: const *Swag.Attribute, value: string)->any
+func getAttributeValue(attribute: const *Swag.Attribute, value: string)->nl any
 {
     foreach p in attribute.params where p.name == value:
         return p.value

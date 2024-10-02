@@ -15,7 +15,7 @@ func isDirectorySeparator(c: u8)->bool
 
 // Returns the root part of the path, null if not found
 #[ConstExpr]
-func getRootName(fullname: string)->string
+func getRootName(fullname: string)->nl string
 {
     if fullname == null:
         return null
@@ -42,7 +42,7 @@ func isRooted(fullname: string)->bool
 
 // Returns the directory part of the path, null if not found
 #[ConstExpr]
-func getDirectoryName(fullname: string)->string
+func getDirectoryName(fullname: string)->nl string
 {
     if fullname == null:
         return null
@@ -69,7 +69,7 @@ func getDirectoryName(fullname: string)->string
 
 // Returns the file name part of the path, null if not found
 #[ConstExpr]
-func getFileName(fullname: string)->string
+func getFileName(fullname: string)->nl string
 {
     if fullname == null:
         return null
@@ -94,7 +94,7 @@ func getFileName(fullname: string)->string
 
 // Returns the path file name, null if not found
 #[ConstExpr]
-func getFileNameWithoutExtension(fullname: string)->string
+func getFileNameWithoutExtension(fullname: string)->nl string
 {
     if fullname == null:
         return null
@@ -123,7 +123,7 @@ func getFileNameWithoutExtension(fullname: string)->string
 // Returns the file name extension, including the '.' character
 // Returns null if no extension was found
 #[ConstExpr]
-func getExtension(fullname: string)->string
+func getExtension(fullname: string)->nl string
 {
     if fullname == null:
         return null

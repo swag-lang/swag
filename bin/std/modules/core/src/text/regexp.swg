@@ -142,7 +142,7 @@ impl RegExp
 
     // You can get a capture group value by using the derefence syntax.
     // Returns 'null' if the capture group does not exist
-    public mtd opIndex(idx: u64)->string
+    public mtd opIndex(idx: u64)->nl string
     {
         foreach v in groups
         {
@@ -276,7 +276,7 @@ impl RegExp
 
     // Find the first occurence in the string
     #[Swag.Overload]
-    public mtd grep(str: string)->string
+    public mtd grep(str: string)->nl string
     {
         if str == null:
             return null        
@@ -285,7 +285,7 @@ impl RegExp
     }
 
     // Try to match the start of the string, and returns the matched value or null.
-    public mtd partialMatch(str: string)->string
+    public mtd partialMatch(str: string)->nl string
     {
         if str == null:
             return null        
@@ -298,7 +298,7 @@ impl RegExp
         return null
     }
 
-    mtd internalGrep(str: string)->string
+    mtd internalGrep(str: string)->nl string
     {
         var beg  = @dataof(str)
         let last = beg + @countof(str)

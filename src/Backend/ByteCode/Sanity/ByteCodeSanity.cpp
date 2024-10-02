@@ -167,12 +167,15 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 
     if (ra->isNull())
     {
-        const auto returnType = context.bc->typeInfoFunc->concreteReturnType();
-        if (!returnType->isNullable() && returnType->couldBeNull())
+        if (!context.bc->typeInfoFunc->returnType->isNullable() && context.bc->typeInfoFunc->returnType->couldBeNull())
         {
-            const auto err = raiseError(toErr(San0003), ra);
-            if (err)
-                return context.report(*err);
+            const auto returnType = context.bc->typeInfoFunc->concreteReturnType();
+            if (!returnType->isNullable() && returnType->couldBeNull())
+            {
+                const auto err = raiseError(toErr(San0003), ra);
+                if (err)
+                    return context.report(*err);
+            }
         }
     }
 

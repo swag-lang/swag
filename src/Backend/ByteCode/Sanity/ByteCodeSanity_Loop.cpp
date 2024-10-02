@@ -169,19 +169,14 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::CopyRARBtoRR2:
-                if (!ip->hasFlag(BCI_IMM_A))
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(checkNotNullReturn(ip->a.u32));
+                if (ra->isStackAddr())
                 {
-                    SWAG_CHECK(getRegister(ra, ip->a.u32));
-#if 0
-                    SWAG_CHECK(checkNotNullReturn(ip->a.u32));
-#endif
-                    if (ra->isStackAddr())
-                    {
-                        // Legit in #run block, as we will make a copy
-                        if (context.bc->node && context.bc->node->hasAstFlag(AST_IN_RUN_BLOCK))
-                            break;
-                        return checkEscapeFrame(ra);
-                    }
+                    // Legit in #run block, as we will make a copy
+                    if (context.bc->node && context.bc->node->hasAstFlag(AST_IN_RUN_BLOCK))
+                        break;
+                    return checkEscapeFrame(ra);
                 }
                 break;
 
