@@ -526,6 +526,7 @@ struct TypeInfoAlias final : TypeInfo
         return rawType->numRegisters();
     }
 
+    Utf8      aliasName;
     TypeInfo* rawType = nullptr;
 };
 

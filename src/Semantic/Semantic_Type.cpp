@@ -599,6 +599,7 @@ bool Semantic::resolveAliasAfterValue(SemanticContext* context)
     const auto typeInfo = makeType<TypeInfoAlias>();
     typeInfo->declNode  = node;
     typeInfo->name      = node->token.text;
+    typeInfo->aliasName = typeInfo->name;
     if (node->hasAttribute(ATTRIBUTE_STRICT))
         typeInfo->addFlag(TYPEINFO_STRICT);
     node->typeInfo = typeInfo;

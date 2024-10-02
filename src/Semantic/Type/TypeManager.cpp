@@ -472,7 +472,8 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     {
         const auto typeAlias = makeType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
-        typeAlias->rawType = typeInfo;
+        typeAlias->rawType   = typeInfo;
+        typeAlias->aliasName = typeAlias->name;
         typeAlias->addFlag(TYPEINFO_CONST | TYPEINFO_CONST_ALIAS);
         mapConst[typeInfo] = typeAlias;
         return typeAlias;

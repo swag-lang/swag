@@ -137,6 +137,7 @@ bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
 TypeInfo* TypeInfoAlias::clone()
 {
     const auto newType = makeType<TypeInfoAlias>();
+    newType->aliasName = aliasName;
     newType->rawType   = rawType;
     newType->copyFrom(this);
     return newType;
@@ -144,6 +145,9 @@ TypeInfo* TypeInfoAlias::clone()
 
 void TypeInfoAlias::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
+    if (isNullable())
+        resName += "nl ";
+
     if (nameKind == ComputeNameKind::DisplayName && flags.has(TYPEINFO_CONST_ALIAS))
     {
         if (isConst())
@@ -152,14 +156,26 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
     }
     else
     {
-        TypeInfo::computeWhateverName(resName, nameKind);
+        switch (nameKind)
+        {
+            case ComputeNameKind::Name:
+            case ComputeNameKind::DisplayName:
+                resName += aliasName;
+                break;
+
+            case ComputeNameKind::ScopedName:
+            case ComputeNameKind::ScopedNameExport:
+                computeScopedName(resName);
+                resName += aliasName;
+                break;
+        }
     }
 }
 
 Utf8 TypeInfoAlias::getDisplayName()
 {
     Utf8 res;
-    
+
     if (isNullable())
         res += "nl ";
     if (isConst())
