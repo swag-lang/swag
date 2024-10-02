@@ -149,7 +149,7 @@
     SWAG_CHECK(getImmediateB(vb));                                                                        \
     SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->updateIp(ip);                                                                                     \
+    rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
     {                                                                                                     \
         __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);                           \
@@ -160,7 +160,7 @@
     SWAG_CHECK(getImmediateB(vb));                                                                        \
     SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->updateIp(ip);                                                                                     \
+    rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;
 
@@ -169,7 +169,7 @@
     SWAG_CHECK(getImmediateB(vb));                                                                        \
     SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->updateIp(ip);                                                                                     \
+    rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
     {                                                                                                     \
         SWAG_CHECK(checkOverflow(!__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));       \
@@ -184,7 +184,7 @@
     {                                                 \
         SWAG_CHECK(getRegister(rc, ip->c.u32));       \
         rc->setUnknown();                             \
-        rc->updateIp(ip);                             \
+        rc->computeIp(ip, ra, &vb);                   \
         break;                                        \
     }                                                 \
     BINOP(__op, __reg);
@@ -194,7 +194,7 @@
     SWAG_CHECK(getImmediateB(vb));                                                                        \
     SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->updateIp(ip);                                                                                     \
+    rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;
 

@@ -18,13 +18,67 @@ void SanityValue::setUnknown()
     kind = SanityValueKind::Unknown;
 }
 
-void SanityValue::updateIp(ByteCodeInstruction* ip)
+namespace
 {
-    ips.push_back(ip);
+    void updateIp(ByteCodeInstruction* ip, SanityValue* value)
+    {
+        value->ips.push_back(ip);
+    }
+
+    void setIp(ByteCodeInstruction* ip, SanityValue* value)
+    {
+        value->ips.clear();
+        value->ips.push_back(ip);
+    }
 }
 
-void SanityValue::setIp(ByteCodeInstruction* ip)
+void SanityValue::computeIp(ByteCodeInstruction* ip, SanityValue* ra, SanityValue* rb, SanityValue* rc, SanityValue* rd)
 {
-    ips.clear();
-    ips.push_back(ip);
+    if (ByteCode::hasWriteRegInA(ip))
+    {
+        SWAG_ASSERT(ra);
+        if (ByteCode::hasReadRefToRegA(ip, ip->a.u32) ||
+            ByteCode::hasReadRefToRegB(ip, ip->a.u32) ||
+            ByteCode::hasReadRefToRegC(ip, ip->a.u32) ||
+            ByteCode::hasReadRefToRegD(ip, ip->a.u32))
+            updateIp(ip, ra);
+        else
+            setIp(ip, ra);
+    }
+
+    if (ByteCode::hasWriteRegInB(ip))
+    {
+        SWAG_ASSERT(rb);
+        if (ByteCode::hasReadRefToRegA(ip, ip->b.u32) ||
+            ByteCode::hasReadRefToRegB(ip, ip->b.u32) ||
+            ByteCode::hasReadRefToRegC(ip, ip->b.u32) ||
+            ByteCode::hasReadRefToRegD(ip, ip->b.u32))
+            updateIp(ip, rb);
+        else
+            setIp(ip, rb);
+    }
+
+    if (ByteCode::hasWriteRegInC(ip))
+    {
+        SWAG_ASSERT(rc);
+        if (ByteCode::hasReadRefToRegA(ip, ip->c.u32) ||
+            ByteCode::hasReadRefToRegB(ip, ip->c.u32) ||
+            ByteCode::hasReadRefToRegC(ip, ip->c.u32) ||
+            ByteCode::hasReadRefToRegD(ip, ip->c.u32))
+            updateIp(ip, rc);
+        else
+            setIp(ip, rc);
+    }
+
+    if (ByteCode::hasWriteRegInD(ip))
+    {
+        SWAG_ASSERT(rd);
+        if (ByteCode::hasReadRefToRegA(ip, ip->d.u32) ||
+            ByteCode::hasReadRefToRegB(ip, ip->d.u32) ||
+            ByteCode::hasReadRefToRegC(ip, ip->d.u32) ||
+            ByteCode::hasReadRefToRegD(ip, ip->d.u32))
+            updateIp(ip, rd);
+        else
+            setIp(ip, rd);
+    }
 }

@@ -2,6 +2,7 @@
 
 alias A = string
 
+//#[Swag.PrintGenBc]
 #[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]
 #[Swag.Sanity(true)]

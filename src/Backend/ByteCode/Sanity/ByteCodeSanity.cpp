@@ -149,7 +149,7 @@ bool ByteCodeSanity::checkStackOffset(const SanityValue* value, uint64_t stackOf
 
 bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 {
-    if (!value->isConstant() || value->reg.u64)
+    if (!value->isNull())
         return true;
     const auto err = raiseError(toErr(San0006), value);
     if (err)
@@ -452,7 +452,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     context.bc = bc;
 
 #if 0
-    if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
+    if (bc->sourceFile && bc->sourceFile->name != "compiler5714.swg")
         return true;
 #endif
 
