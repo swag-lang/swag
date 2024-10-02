@@ -44,6 +44,8 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicPanic:
                 return true;
 
+                /////////////////////////////////////////
+
             case ByteCodeOp::DecSPBP:
             case ByteCodeOp::IncSPPostCall:
             case ByteCodeOp::IncSPPostCallCond:
@@ -72,9 +74,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::ClearRR32:
             case ByteCodeOp::ClearRR64:
             case ByteCodeOp::ClearRRX:
-                break;
-
-            // Fake 1 value
             case ByteCodeOp::InternalGetTlsPtr:
             case ByteCodeOp::IntrinsicGetContext:
             case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -113,32 +112,11 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicIsByteCode:
             case ByteCodeOp::JumpIfError:
             case ByteCodeOp::JumpIfNoError:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
-                break;
-
             case ByteCodeOp::IntrinsicCVaArg:
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                rb->setUnknown();
-                SanityValue::computeIp(ip, nullptr, rb);
-                break;
-
             case ByteCodeOp::IntrinsicIs:
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, rc);
-                break;
-
             case ByteCodeOp::IntrinsicTypeCmp:
             case ByteCodeOp::IntrinsicStringCmp:
             case ByteCodeOp::IntrinsicAs:
-                SWAG_CHECK(getRegister(rd, ip->d.u32));
-                rd->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, nullptr, rd);
-                break;
-
-            // Fake 2 values
             case ByteCodeOp::GetParam64SI:
             case ByteCodeOp::IntrinsicGvtd:
             case ByteCodeOp::IntrinsicGetErr:
@@ -146,12 +124,30 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::DeRefStringSlice:
             case ByteCodeOp::IntrinsicArguments:
             case ByteCodeOp::IntrinsicCompiler:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                ra->setUnknown();
-                rb->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
+                if (ByteCode::hasWriteRegInA(ip))
+                {
+                    SWAG_CHECK(getRegister(ra, ip->a.u32));
+                    ra->setUnknown();
+                }
+                if (ByteCode::hasWriteRegInB(ip))
+                {
+                    SWAG_CHECK(getRegister(rb, ip->b.u32));
+                    rb->setUnknown();
+                }
+                if (ByteCode::hasWriteRegInC(ip))
+                {
+                    SWAG_CHECK(getRegister(rc, ip->c.u32));
+                    rc->setUnknown();
+                }
+                if (ByteCode::hasWriteRegInD(ip))
+                {
+                    SWAG_CHECK(getRegister(rd, ip->d.u32));
+                    rd->setUnknown();
+                }
+                SanityValue::computeIp(ip, ra, rb, rc, rd);
                 break;
+
+                /////////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRT:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
@@ -358,13 +354,6 @@ bool ByteCodeSanity::loop()
                 break;
             case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
                 ATOM_EQ_XCHG(int64_t, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicItfTableOf:
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@itfTableOf"));
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, rc);
                 break;
 
             case ByteCodeOp::Jump:
@@ -1975,6 +1964,13 @@ bool ByteCodeSanity::loop()
                 else
                     ra->setUnknown();
                 SanityValue::computeIp(ip, ra, rb);
+                break;
+
+            case ByteCodeOp::IntrinsicItfTableOf:
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@itfTableOf"));
+                SWAG_CHECK(getRegister(rc, ip->c.u32));
+                rc->setUnknown();
+                SanityValue::computeIp(ip, nullptr, nullptr, rc);
                 break;
 
             case ByteCodeOp::IntrinsicStrCmp:
