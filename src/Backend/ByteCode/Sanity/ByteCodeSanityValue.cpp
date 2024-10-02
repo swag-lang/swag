@@ -72,6 +72,12 @@ void SanityValue::setUnknown()
     kind = SanityValueKind::Unknown;
 }
 
+void SanityValue::setStackAddr(uint64_t val)
+{
+    kind    = SanityValueKind::StackAddr;
+    reg.u64 = val;
+}
+
 namespace
 {
     void updateIp(ByteCodeInstruction* ip, SanityValue* value)

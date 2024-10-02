@@ -818,12 +818,13 @@ bool ByteCodeSanity::loop()
 
                 SWAG_CHECK(checkNotNull(ra));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                *rc = *ra;
                 SWAG_CHECK(getImmediateB(vb));
-                if (vb.isUnknown())
-                    rc->setUnknown();
+                if (ra->isConstant() && vb.isConstant())
+                    rc->setConstant(ra->reg.u64 + vb.reg.s64);
+                else if (ra->isStackAddr() && vb.isConstant())
+                    rc->setStackAddr(ra->reg.u64 + vb.reg.s64);
                 else
-                    rc->reg.u64 += vb.reg.s64;
+                    rc->setUnknown();
                 SanityValue::computeIp(ip, ra, &vb, rc);
             }
             break;
@@ -835,7 +836,7 @@ bool ByteCodeSanity::loop()
                 if (ra->isConstant() && vb.isConstant())
                     rc->setConstant(ra->reg.u64 - vb.reg.s64);
                 else if (ra->isStackAddr() && vb.isConstant())
-                    rc->reg.u64 = ra->reg.u64 - vb.reg.s64;
+                    rc->setStackAddr(ra->reg.u64 - vb.reg.s64);
                 else
                     rc->setUnknown();
                 SanityValue::computeIp(ip, ra, &vb, rc);
@@ -844,12 +845,13 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 SWAG_CHECK(checkNotNull(ra));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                *rc = *ra;
                 SWAG_CHECK(getImmediateB(vb));
-                if (vb.isUnknown())
-                    rc->setUnknown();
+                if (ra->isConstant() && vb.isConstant())
+                    rc->setConstant(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
+                else if (ra->isStackAddr() && vb.isConstant())
+                    rc->setStackAddr(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
                 else
-                    rc->reg.u64 += vb.reg.s64 * ip->d.u64;
+                    rc->setUnknown();
                 SanityValue::computeIp(ip, ra, &vb, rc);
                 break;
 
