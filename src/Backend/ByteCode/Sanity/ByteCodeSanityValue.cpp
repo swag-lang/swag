@@ -4,7 +4,9 @@
 
 bool SanityValue::isNull() const
 {
-    return kind == SanityValueKind::Constant && !reg.pointer;
+    if (kind == SanityValueKind::Constant && !reg.pointer)
+        return true;
+    return false;
 }
 
 void SanityValue::setConstant(uint8_t val)
@@ -76,6 +78,11 @@ void SanityValue::setStackAddr(uint64_t val)
 {
     kind    = SanityValueKind::StackAddr;
     reg.u64 = val;
+}
+
+void SanityValue::setKind(SanityValueKind val)
+{
+    kind = val;
 }
 
 namespace

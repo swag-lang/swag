@@ -14,14 +14,15 @@ enum class SanityRefKind
 
 struct SanityState
 {
-    Vector<uint8_t>        stack;
-    Vector<SanityValue>    stackValue;
-    Vector<SanityValue>    regs;
-    VectorNative<uint32_t> forceParams0;
-    VectorNative<uint32_t> forceParamsU;
-    ByteCodeInstruction*   fromIp = nullptr;
-    ByteCodeInstruction*   ip     = nullptr;
-    uint32_t               parent = UINT32_MAX;
+    Vector<uint8_t>                    stack;
+    Vector<SanityValue>                stackValue;
+    Vector<SanityValue>                regs;
+    VectorNative<uint32_t>             forceParams0;
+    VectorNative<uint32_t>             forceParamsU;
+    VectorNative<ByteCodeInstruction*> ips;
+    ByteCodeInstruction*               fromIp = nullptr;
+    ByteCodeInstruction*               ip     = nullptr;
+    uint32_t                           parent = UINT32_MAX;
 };
 
 struct SanityContext : JobContext
@@ -57,8 +58,9 @@ struct ByteCodeSanity
     void         invalidateCurStateStack();
     SanityState* newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp);
 
-    bool loop();
-    bool process(ByteCode* bc);
+    static void backTrace(SanityState* state, uint32_t reg);
+    bool        loop();
+    bool        process(ByteCode* bc);
 
     SanityContext context;
 };

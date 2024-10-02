@@ -11,6 +11,7 @@ enum class SanityValueKind : uint8_t
     StackAddr,
     Constant,
     Unknown,
+    NotZero,
 };
 
 struct SanityValue
@@ -32,6 +33,7 @@ struct SanityValue
     void setConstant(double val);
     void setUnknown();
     void setStackAddr(uint64_t val);
+    void setKind(SanityValueKind val);
 
     bool isConstant() const { return kind == SanityValueKind::Constant; }
     bool isStackAddr() const { return kind == SanityValueKind::StackAddr; }

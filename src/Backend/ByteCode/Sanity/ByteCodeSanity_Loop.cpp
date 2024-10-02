@@ -11,6 +11,46 @@
 
 #pragma optimize("", off)
 
+void ByteCodeSanity::backTrace(SanityState* state, uint32_t reg)
+{
+    const auto value = &state->regs[reg];
+
+    for (uint32_t i = state->ips.size() - 2; i != UINT_MAX; i--)
+    {
+        const auto ip = state->ips[i];
+        if (!ByteCode::hasWriteRefToReg(ip, reg))
+            return;
+
+        switch (ip->op)
+        {
+            case ByteCodeOp::CastBool8:
+            case ByteCodeOp::CastBool16:
+            case ByteCodeOp::CastBool32:
+            case ByteCodeOp::CastBool64:
+            {
+                const auto rb = &state->regs[ip->b.u32];
+                if (!value->reg.b)
+                    rb->setConstant(0LL);
+                else
+                    rb->setConstant(1LL);
+                reg = ip->b.u32;
+            }
+            break;
+
+            case ByteCodeOp::CopyRBtoRA64:
+            {
+                const auto ra = &state->regs[reg];
+                const auto rb = &state->regs[ip->b.u32];
+                rb->setConstant(ra->reg.u64);
+            }
+            break;
+
+            default:
+                return;
+        }
+    }
+}
+
 bool ByteCodeSanity::loop()
 {
     SanityValue*           ra    = nullptr;
@@ -37,6 +77,8 @@ bool ByteCodeSanity::loop()
         }
 
         STATE()->ip = ip;
+        STATE()->ips.push_back(ip);
+
         switch (ip->op)
         {
             case ByteCodeOp::Ret:
@@ -305,9 +347,11 @@ bool ByteCodeSanity::loop()
                 if (jmpAddState)
                 {
                     jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
                     STATE()->regs[ip->a.u32].setConstant(1LL);
+                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
                     SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
+                    backTrace(jmpAddState, ip->a.u32);
+                    backTrace(STATE(), ip->a.u32);
                 }
                 break;
             case ByteCodeOp::JumpIfTrue:
@@ -315,8 +359,8 @@ bool ByteCodeSanity::loop()
                 if (jmpAddState)
                 {
                     jmpAddState->regs[ip->a.u32].setConstant(1LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
                     STATE()->regs[ip->a.u32].setConstant(0LL);
+                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
                     SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
                 }
                 break;

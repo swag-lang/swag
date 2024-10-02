@@ -1,7 +1,7 @@
 var G = 0
 
 //#[Swag.PrintGenBc]
-#[Swag.Sanity(false)]
+#[Swag.Sanity(true)]
 #test
 {
     let nc = G
