@@ -7,10 +7,64 @@ bool SanityValue::isNull() const
     return kind == SanityValueKind::Constant && !reg.pointer;
 }
 
+void SanityValue::setConstant(uint8_t val)
+{
+    kind   = SanityValueKind::Constant;
+    reg.u8 = val;
+}
+
+void SanityValue::setConstant(uint16_t val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.u16 = val;
+}
+
+void SanityValue::setConstant(uint32_t val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.u32 = val;
+}
+
 void SanityValue::setConstant(uint64_t val)
 {
     kind    = SanityValueKind::Constant;
     reg.u64 = val;
+}
+
+void SanityValue::setConstant(int8_t val)
+{
+    kind   = SanityValueKind::Constant;
+    reg.s8 = val;
+}
+
+void SanityValue::setConstant(int16_t val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.s16 = val;
+}
+
+void SanityValue::setConstant(int32_t val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.s32 = val;
+}
+
+void SanityValue::setConstant(int64_t val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.s64 = val;
+}
+
+void SanityValue::setConstant(float val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.f32 = val;
+}
+
+void SanityValue::setConstant(double val)
+{
+    kind    = SanityValueKind::Constant;
+    reg.f64 = val;
 }
 
 void SanityValue::setUnknown()

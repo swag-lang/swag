@@ -20,7 +20,16 @@ struct SanityValue
     SanityValueKind                    kind = SanityValueKind::Invalid;
 
     bool isNull() const;
+    void setConstant(int8_t val);
+    void setConstant(int16_t val);
+    void setConstant(int32_t val);
+    void setConstant(int64_t val);
+    void setConstant(uint8_t val);
+    void setConstant(uint16_t val);
+    void setConstant(uint32_t val);
     void setConstant(uint64_t val);
+    void setConstant(float val);
+    void setConstant(double val);
     void setUnknown();
 
     bool isConstant() const { return kind == SanityValueKind::Constant; }

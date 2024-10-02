@@ -5,7 +5,6 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanity_Macros.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
