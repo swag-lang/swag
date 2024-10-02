@@ -367,6 +367,12 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
+    if (typeNode->typeFlags.has(TYPE_FLAG_NULLABLE))
+    {
+        concat->addString("nl");
+        concat->addBlank();
+    }
+    
     if (node->is(AstNodeKind::TypeLambda))
         concat->addString("func");
     else
