@@ -44,6 +44,9 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicPanic:
                 return true;
 
+            case ByteCodeOp::Nop:
+                break;
+
                 /////////////////////////////////////////
 
             case ByteCodeOp::DecSPBP:
@@ -153,6 +156,16 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 if (ra->isStackAddr())
                     invalidateCurStateStack();
+                break;
+
+            case ByteCodeOp::CopyRAtoRR:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(checkNotNullReturn(ip->a.u32));
+                if (!ip->hasFlag(BCI_IMM_A))
+                {
+                    if (ra->isStackAddr())
+                        return checkEscapeFrame(ra);
+                }
                 break;
 
             case ByteCodeOp::CopyRTtoRA:
@@ -268,93 +281,7 @@ bool ByteCodeSanity::loop()
                 pushParams.clear();
                 break;
 
-            case ByteCodeOp::IntrinsicCVaStart:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(checkNotNullArguments({ip->a.u32}, "@cvastart"));
-                if (ra->isStackAddr())
-                {
-                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, 8));
-                    setStackValue(addr, 8, SanityValueKind::Unknown);
-                }
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicAddS8:
-                ATOM_EQ(int8_t, +=, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAddS16:
-                ATOM_EQ(int16_t, +=, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAddS32:
-                ATOM_EQ(int32_t, +=, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAddS64:
-                ATOM_EQ(int64_t, +=, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicAndS8:
-                ATOM_EQ(int8_t, &=, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAndS16:
-                ATOM_EQ(int16_t, &=, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAndS32:
-                ATOM_EQ(int32_t, &=, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicAndS64:
-                ATOM_EQ(int64_t, &=, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicOrS8:
-                ATOM_EQ(int8_t, |=, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicOrS16:
-                ATOM_EQ(int16_t, |=, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicOrS32:
-                ATOM_EQ(int32_t, |=, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicOrS64:
-                ATOM_EQ(int64_t, |=, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicXorS8:
-                ATOM_EQ(int8_t, ^=, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXorS16:
-                ATOM_EQ(int16_t, ^=, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXorS32:
-                ATOM_EQ(int32_t, ^=, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXorS64:
-                ATOM_EQ(int64_t, ^=, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicXchgS8:
-                ATOM_EQ(int8_t, =, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXchgS16:
-                ATOM_EQ(int16_t, =, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXchgS32:
-                ATOM_EQ(int32_t, =, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicXchgS64:
-                ATOM_EQ(int64_t, =, s64);
-                break;
-
-            case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
-                ATOM_EQ_XCHG(int8_t, s8);
-                break;
-            case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
-                ATOM_EQ_XCHG(int16_t, s16);
-                break;
-            case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
-                ATOM_EQ_XCHG(int32_t, s32);
-                break;
-            case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
-                ATOM_EQ_XCHG(int64_t, s64);
-                break;
+                /////////////////////////////////////////
 
             case ByteCodeOp::Jump:
                 ip->dynFlags.add(BCID_SAN_PASS);
@@ -448,6 +375,8 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateA(va));
                 JUMP1(va.reg.u64 != 0);
                 break;
+
+                /////////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA64:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
@@ -863,16 +792,6 @@ bool ByteCodeSanity::loop()
                 SanityValue::computeIp(ip, ra, &vb, rc);
                 break;
 
-            case ByteCodeOp::CopyRAtoRR:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(checkNotNullReturn(ip->a.u32));
-                if (!ip->hasFlag(BCI_IMM_A))
-                {
-                    if (ra->isStackAddr())
-                        return checkEscapeFrame(ra);
-                }
-                break;
-
             case ByteCodeOp::CopyRARBtoRR2:
                 if (!ip->hasFlag(BCI_IMM_A))
                 {
@@ -1273,6 +1192,231 @@ bool ByteCodeSanity::loop()
                     ra->setUnknown();
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
+
+            case ByteCodeOp::ClearMaskU32:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                if (ra->isConstant())
+                    ra->setConstant(ra->reg.u32 & ip->b.u32);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+            case ByteCodeOp::ClearMaskU64:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                if (ra->isConstant())
+                    ra->setConstant(ra->reg.u64 & ip->b.u64);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::InvertU8:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                if (rb->isConstant())
+                    ra->setConstant(~rb->reg.u8);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, rb);
+                break;
+            case ByteCodeOp::InvertU16:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                if (rb->isConstant())
+                    ra->setConstant(~rb->reg.u16);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, rb);
+                break;
+            case ByteCodeOp::InvertU32:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                if (rb->isConstant())
+                    ra->setConstant(~rb->reg.u32);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, rb);
+                break;
+            case ByteCodeOp::InvertU64:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                if (rb->isConstant())
+                    ra->setConstant(~rb->reg.u64);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, rb);
+                break;
+
+                /////////////////////////////////////////
+
+            case ByteCodeOp::IntrinsicItfTableOf:
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@itfTableOf"));
+                SWAG_CHECK(getRegister(rc, ip->c.u32));
+                rc->setUnknown();
+                SanityValue::computeIp(ip, nullptr, nullptr, rc);
+                break;
+
+            case ByteCodeOp::IntrinsicCVaStart:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(checkNotNullArguments({ip->a.u32}, "@cvastart"));
+                if (ra->isStackAddr())
+                {
+                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, 8));
+                    setStackValue(addr, 8, SanityValueKind::Unknown);
+                }
+                break;
+
+            case ByteCodeOp::IntrinsicStrCmp:
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                SWAG_CHECK(getRegister(rc, ip->c.u32));
+                SWAG_CHECK(checkNotNullArguments({ip->c.u32, ip->b.u32}, "@strcmp"));
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::IntrinsicStrLen:
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32}, "@strlen"));
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::IntrinsicMemCmp:
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                SWAG_CHECK(getRegister(rc, ip->c.u32));
+                SWAG_CHECK(checkNotNullArguments({ip->c.u32, ip->b.u32}, "@memcmp"));
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::MemCpy8:
+                MEMCPY(uint8_t, 1);
+                break;
+            case ByteCodeOp::MemCpy16:
+                MEMCPY(uint16_t, 2);
+                break;
+            case ByteCodeOp::MemCpy32:
+                MEMCPY(uint32_t, 4);
+                break;
+            case ByteCodeOp::MemCpy64:
+                MEMCPY(uint64_t, 8);
+                break;
+            case ByteCodeOp::IntrinsicMemCpy:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                SWAG_CHECK(getImmediateC(vc));
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@memcpy"));
+                if (ra->isStackAddr() && rb->isStackAddr() && vc.isConstant())
+                {
+                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
+                    SWAG_CHECK(getStackAddress(addr2, rb, rb->reg.u32, vc.reg.u32));
+                    SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
+                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
+                    setStackValue(addr, vc.reg.u32, va.kind);
+                    std::copy_n(addr2, vc.reg.u32, addr);
+                }
+                else
+                    invalidateCurStateStack();
+                break;
+
+            case ByteCodeOp::IntrinsicMemMove:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                SWAG_CHECK(getImmediateC(vc));
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@memmove"));
+                if (ra->isStackAddr() && rb->isStackAddr() && vc.isConstant())
+                {
+                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
+                    SWAG_CHECK(getStackAddress(addr2, rb, rb->reg.u32, vc.reg.u32));
+                    SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
+                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
+                    setStackValue(addr, vc.reg.u32, va.kind);
+                    memmove(addr, addr2, vc.reg.u32);
+                }
+                else
+                    invalidateCurStateStack();
+                break;
+            case ByteCodeOp::IntrinsicMemSet:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getImmediateB(vb));
+                SWAG_CHECK(getImmediateC(vc));
+                SWAG_CHECK(checkNotNullArguments({ip->a.u32}, "@memset"));
+                if (ra->isStackAddr() && vb.isConstant() && vc.isConstant())
+                {
+                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
+                    setStackValue(addr, vc.reg.u32, SanityValueKind::Constant);
+                    memset(addr, vb.reg.u8, vc.reg.u32);
+                }
+                else
+                    invalidateCurStateStack();
+                break;
+
+            case ByteCodeOp::IntrinsicMulAddF32:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getImmediateB(vb));
+                SWAG_CHECK(getImmediateC(vc));
+                SWAG_CHECK(getImmediateD(vd));
+                if (vb.isConstant() && vc.isConstant() && vd.isConstant())
+                    ra->setConstant(vb.reg.f32 * vc.reg.f32 + vd.reg.f32);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, &vb, &vc, &vd);
+                break;
+            case ByteCodeOp::IntrinsicMulAddF64:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getImmediateB(vb));
+                SWAG_CHECK(getImmediateC(vc));
+                SWAG_CHECK(getImmediateD(vd));
+                if (vb.isConstant() && vc.isConstant() && vd.isConstant())
+                    ra->setConstant(vb.reg.f64 * vc.reg.f64 + vd.reg.f64);
+                else
+                    ra->setUnknown();
+                SanityValue::computeIp(ip, ra, &vb, &vc, &vd);
+                break;
+
+            case ByteCodeOp::IntrinsicS8x1:
+            case ByteCodeOp::IntrinsicS16x1:
+            case ByteCodeOp::IntrinsicS32x1:
+            case ByteCodeOp::IntrinsicS64x1:
+            case ByteCodeOp::IntrinsicF32x1:
+            case ByteCodeOp::IntrinsicF64x1:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getImmediateB(vb));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra, &vb);
+                if (vb.isConstant())
+                {
+                    ra->kind = SanityValueKind::Constant;
+                    SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(&context, ip, ra->reg, vb.reg, {}, {}));
+                }
+                break;
+
+            case ByteCodeOp::IntrinsicS8x2:
+            case ByteCodeOp::IntrinsicS16x2:
+            case ByteCodeOp::IntrinsicS32x2:
+            case ByteCodeOp::IntrinsicS64x2:
+            case ByteCodeOp::IntrinsicU8x2:
+            case ByteCodeOp::IntrinsicU16x2:
+            case ByteCodeOp::IntrinsicU32x2:
+            case ByteCodeOp::IntrinsicU64x2:
+            case ByteCodeOp::IntrinsicF32x2:
+            case ByteCodeOp::IntrinsicF64x2:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getImmediateB(vb));
+                SWAG_CHECK(getImmediateC(vc));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra, &vb, &vc);
+                if (vb.isConstant() && vc.isConstant())
+                {
+                    ra->kind = SanityValueKind::Constant;
+                    SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(&context, ip, ra->reg, vb.reg, vc.reg, {}));
+                }
+                break;
+
+                /////////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
                 BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, "+=", g_TypeMgr->typeInfoS8);
@@ -1912,218 +2056,82 @@ bool ByteCodeSanity::loop()
                 BINOP_SHIFT(uint64_t, u64, ByteCodeRun::executeRightShift, false);
                 break;
 
-            case ByteCodeOp::ClearMaskU32:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                if (ra->isConstant())
-                    ra->setConstant(ra->reg.u32 & ip->b.u32);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::IntrinsicAtomicAddS8:
+                ATOM_EQ(int8_t, +=, s8);
                 break;
-            case ByteCodeOp::ClearMaskU64:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                if (ra->isConstant())
-                    ra->setConstant(ra->reg.u64 & ip->b.u64);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::IntrinsicAtomicAddS16:
+                ATOM_EQ(int16_t, +=, s16);
+                break;
+            case ByteCodeOp::IntrinsicAtomicAddS32:
+                ATOM_EQ(int32_t, +=, s32);
+                break;
+            case ByteCodeOp::IntrinsicAtomicAddS64:
+                ATOM_EQ(int64_t, +=, s64);
                 break;
 
-            case ByteCodeOp::InvertU8:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                if (rb->isConstant())
-                    ra->setConstant(~rb->reg.u8);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
+            case ByteCodeOp::IntrinsicAtomicAndS8:
+                ATOM_EQ(int8_t, &=, s8);
                 break;
-            case ByteCodeOp::InvertU16:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                if (rb->isConstant())
-                    ra->setConstant(~rb->reg.u16);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
+            case ByteCodeOp::IntrinsicAtomicAndS16:
+                ATOM_EQ(int16_t, &=, s16);
                 break;
-            case ByteCodeOp::InvertU32:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                if (rb->isConstant())
-                    ra->setConstant(~rb->reg.u32);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
+            case ByteCodeOp::IntrinsicAtomicAndS32:
+                ATOM_EQ(int32_t, &=, s32);
                 break;
-            case ByteCodeOp::InvertU64:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                if (rb->isConstant())
-                    ra->setConstant(~rb->reg.u64);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
+            case ByteCodeOp::IntrinsicAtomicAndS64:
+                ATOM_EQ(int64_t, &=, s64);
                 break;
 
-            case ByteCodeOp::IntrinsicItfTableOf:
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@itfTableOf"));
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, rc);
+            case ByteCodeOp::IntrinsicAtomicOrS8:
+                ATOM_EQ(int8_t, |=, s8);
+                break;
+            case ByteCodeOp::IntrinsicAtomicOrS16:
+                ATOM_EQ(int16_t, |=, s16);
+                break;
+            case ByteCodeOp::IntrinsicAtomicOrS32:
+                ATOM_EQ(int32_t, |=, s32);
+                break;
+            case ByteCodeOp::IntrinsicAtomicOrS64:
+                ATOM_EQ(int64_t, |=, s64);
                 break;
 
-            case ByteCodeOp::IntrinsicStrCmp:
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                SWAG_CHECK(checkNotNullArguments({ip->c.u32, ip->b.u32}, "@strcmp"));
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::IntrinsicAtomicXorS8:
+                ATOM_EQ(int8_t, ^=, s8);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXorS16:
+                ATOM_EQ(int16_t, ^=, s16);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXorS32:
+                ATOM_EQ(int32_t, ^=, s32);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXorS64:
+                ATOM_EQ(int64_t, ^=, s64);
                 break;
 
-            case ByteCodeOp::IntrinsicStrLen:
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32}, "@strlen"));
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::IntrinsicAtomicXchgS8:
+                ATOM_EQ(int8_t, =, s8);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXchgS16:
+                ATOM_EQ(int16_t, =, s16);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXchgS32:
+                ATOM_EQ(int32_t, =, s32);
+                break;
+            case ByteCodeOp::IntrinsicAtomicXchgS64:
+                ATOM_EQ(int64_t, =, s64);
                 break;
 
-            case ByteCodeOp::IntrinsicMemCmp:
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                SWAG_CHECK(checkNotNullArguments({ip->c.u32, ip->b.u32}, "@memcmp"));
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
+                ATOM_EQ_XCHG(int8_t, s8);
                 break;
-
-            case ByteCodeOp::MemCpy8:
-                MEMCPY(uint8_t, 1);
+            case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
+                ATOM_EQ_XCHG(int16_t, s16);
                 break;
-            case ByteCodeOp::MemCpy16:
-                MEMCPY(uint16_t, 2);
+            case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
+                ATOM_EQ_XCHG(int32_t, s32);
                 break;
-            case ByteCodeOp::MemCpy32:
-                MEMCPY(uint32_t, 4);
-                break;
-            case ByteCodeOp::MemCpy64:
-                MEMCPY(uint64_t, 8);
-                break;
-            case ByteCodeOp::IntrinsicMemCpy:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                SWAG_CHECK(getImmediateC(vc));
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@memcpy"));
-                if (ra->isStackAddr() && rb->isStackAddr() && vc.isConstant())
-                {
-                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
-                    SWAG_CHECK(getStackAddress(addr2, rb, rb->reg.u32, vc.reg.u32));
-                    SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
-                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
-                    setStackValue(addr, vc.reg.u32, va.kind);
-                    std::copy_n(addr2, vc.reg.u32, addr);
-                }
-                else
-                    invalidateCurStateStack();
-                break;
-
-            case ByteCodeOp::IntrinsicMemMove:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                SWAG_CHECK(getImmediateC(vc));
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@memmove"));
-                if (ra->isStackAddr() && rb->isStackAddr() && vc.isConstant())
-                {
-                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
-                    SWAG_CHECK(getStackAddress(addr2, rb, rb->reg.u32, vc.reg.u32));
-                    SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
-                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
-                    setStackValue(addr, vc.reg.u32, va.kind);
-                    memmove(addr, addr2, vc.reg.u32);
-                }
-                else
-                    invalidateCurStateStack();
-                break;
-            case ByteCodeOp::IntrinsicMemSet:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getImmediateB(vb));
-                SWAG_CHECK(getImmediateC(vc));
-                SWAG_CHECK(checkNotNullArguments({ip->a.u32}, "@memset"));
-                if (ra->isStackAddr() && vb.isConstant() && vc.isConstant())
-                {
-                    SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, vc.reg.u32));
-                    setStackValue(addr, vc.reg.u32, SanityValueKind::Constant);
-                    memset(addr, vb.reg.u8, vc.reg.u32);
-                }
-                else
-                    invalidateCurStateStack();
-                break;
-
-            case ByteCodeOp::IntrinsicMulAddF32:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getImmediateB(vb));
-                SWAG_CHECK(getImmediateC(vc));
-                SWAG_CHECK(getImmediateD(vd));
-                if (vb.isConstant() && vc.isConstant() && vd.isConstant())
-                    ra->setConstant(vb.reg.f32 * vc.reg.f32 + vd.reg.f32);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, &vb, &vc, &vd);
-                break;
-            case ByteCodeOp::IntrinsicMulAddF64:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getImmediateB(vb));
-                SWAG_CHECK(getImmediateC(vc));
-                SWAG_CHECK(getImmediateD(vd));
-                if (vb.isConstant() && vc.isConstant() && vd.isConstant())
-                    ra->setConstant(vb.reg.f64 * vc.reg.f64 + vd.reg.f64);
-                else
-                    ra->setUnknown();
-                SanityValue::computeIp(ip, ra, &vb, &vc, &vd);
-                break;
-
-            case ByteCodeOp::IntrinsicS8x1:
-            case ByteCodeOp::IntrinsicS16x1:
-            case ByteCodeOp::IntrinsicS32x1:
-            case ByteCodeOp::IntrinsicS64x1:
-            case ByteCodeOp::IntrinsicF32x1:
-            case ByteCodeOp::IntrinsicF64x1:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getImmediateB(vb));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra, &vb);
-                if (vb.isConstant())
-                {
-                    ra->kind = SanityValueKind::Constant;
-                    SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(&context, ip, ra->reg, vb.reg, {}, {}));
-                }
-                break;
-
-            case ByteCodeOp::IntrinsicS8x2:
-            case ByteCodeOp::IntrinsicS16x2:
-            case ByteCodeOp::IntrinsicS32x2:
-            case ByteCodeOp::IntrinsicS64x2:
-            case ByteCodeOp::IntrinsicU8x2:
-            case ByteCodeOp::IntrinsicU16x2:
-            case ByteCodeOp::IntrinsicU32x2:
-            case ByteCodeOp::IntrinsicU64x2:
-            case ByteCodeOp::IntrinsicF32x2:
-            case ByteCodeOp::IntrinsicF64x2:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getImmediateB(vb));
-                SWAG_CHECK(getImmediateC(vc));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra, &vb, &vc);
-                if (vb.isConstant() && vc.isConstant())
-                {
-                    ra->kind = SanityValueKind::Constant;
-                    SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(&context, ip, ra->reg, vb.reg, vc.reg, {}));
-                }
-                break;
-
-            case ByteCodeOp::Nop:
+            case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
+                ATOM_EQ_XCHG(int64_t, s64);
                 break;
 
             default:
