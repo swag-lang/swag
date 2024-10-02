@@ -552,22 +552,10 @@ bool ByteCodeSanity::loop()
                 SanityValue::computeIp(ip, ra);
                 break;
 
-            case ByteCodeOp::IncrementRA64:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->reg.u64++;
-                SanityValue::computeIp(ip, ra);
-                break;
-            case ByteCodeOp::DecrementRA64:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->reg.u64--;
-                SanityValue::computeIp(ip, ra);
-                break;
-
             case ByteCodeOp::MakeStackPointer:
                 SWAG_CHECK(checkStackOffset(nullptr, ip->b.u32));
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->kind    = SanityValueKind::StackAddr;
-                ra->reg.u64 = ip->b.u32;
+                ra->setStackAddr(ip->b.u32);
                 SanityValue::computeIp(ip, ra);
                 break;
 
@@ -728,6 +716,17 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::ClearRA:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 ra->setConstant(0LL);
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::IncrementRA64:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->reg.u64++;
+                SanityValue::computeIp(ip, ra);
+                break;
+            case ByteCodeOp::DecrementRA64:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->reg.u64--;
                 SanityValue::computeIp(ip, ra);
                 break;
 
