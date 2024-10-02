@@ -306,9 +306,6 @@ bool ByteCodeSanity::loop()
                 {
                     jmpAddState->regs[ip->a.u32].setConstant(0LL);
                     SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                else
-                {
                     STATE()->regs[ip->a.u32].setConstant(1LL);
                     SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
                 }
@@ -319,9 +316,6 @@ bool ByteCodeSanity::loop()
                 {
                     jmpAddState->regs[ip->a.u32].setConstant(1LL);
                     SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                else
-                {
                     STATE()->regs[ip->a.u32].setConstant(0LL);
                     SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
                 }
