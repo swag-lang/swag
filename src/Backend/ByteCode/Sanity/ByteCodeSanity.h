@@ -1,5 +1,5 @@
 #pragma once
-#include "Backend/ByteCode/Register.h"
+#include "Backend/ByteCode/Sanity/ByteCodeSanityValue.h"
 #include "Threading/Job.h"
 
 struct ByteCode;
@@ -10,38 +10,6 @@ enum class SanityRefKind
     Invalid,
     Register,
     Stack,
-};
-
-enum class SanityValueKind : uint8_t
-{
-    Invalid,
-    StackAddr,
-    Constant,
-    ForceNull,
-    Unknown,
-};
-
-struct SanityValue
-{
-    VectorNative<ByteCodeInstruction*> ips;
-    Register                           reg;
-    SanityValueKind                    kind = SanityValueKind::Invalid;
-
-    bool isConstant() const
-    {
-        return kind == SanityValueKind::Constant || kind == SanityValueKind::ForceNull;
-    }
-
-    void update(ByteCodeInstruction* ip)
-    {
-        ips.push_back(ip);
-    }
-
-    void set(ByteCodeInstruction* ip)
-    {
-        ips.clear();
-        ips.push_back(ip);
-    }
 };
 
 struct SanityState

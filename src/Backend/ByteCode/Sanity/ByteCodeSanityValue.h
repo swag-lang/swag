@@ -1,0 +1,32 @@
+#pragma once
+#include "Backend/ByteCode/Register.h"
+#include "Threading/Job.h"
+
+struct ByteCode;
+struct ByteCodeInstruction;
+
+enum class SanityValueKind : uint8_t
+{
+    Invalid,
+    StackAddr,
+    Constant,
+    Unknown,
+};
+
+struct SanityValue
+{
+    VectorNative<ByteCodeInstruction*> ips;
+    Register                           reg;
+    SanityValueKind                    kind = SanityValueKind::Invalid;
+
+    bool isNull() const;
+    void setConstant(uint64_t val);
+    void setUnknown();
+
+    bool isConstant() const { return kind == SanityValueKind::Constant; }
+    bool isStackAddr() const { return kind == SanityValueKind::StackAddr; }
+    bool isUnknown() const { return kind == SanityValueKind::Unknown; }
+
+    void updateIp(ByteCodeInstruction* ip);
+    void setIp(ByteCodeInstruction* ip);
+};

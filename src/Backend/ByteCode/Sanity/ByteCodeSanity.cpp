@@ -166,7 +166,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     SanityValue* ra = nullptr;
     SWAG_CHECK(getRegister(ra, reg));
 
-    if (ra->kind == SanityValueKind::Constant && !ra->reg.u64)
+    if (ra->isNull())
     {
         const auto returnType = context.bc->typeInfoFunc->concreteReturnType();
         if (!returnType->isNullable() && returnType->couldBeNull())
