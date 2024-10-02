@@ -44,32 +44,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicPanic:
                 return true;
 
-            case ByteCodeOp::PushRAParamCond:
-                pushParams.push_back(ip->b.u32);
-                break;
-
-            case ByteCodeOp::PushRAParam:
-                pushParams.push_back(ip->a.u32);
-                break;
-
-            case ByteCodeOp::PushRAParam2:
-                pushParams.push_back(ip->a.u32);
-                pushParams.push_back(ip->b.u32);
-                break;
-
-            case ByteCodeOp::PushRAParam3:
-                pushParams.push_back(ip->a.u32);
-                pushParams.push_back(ip->b.u32);
-                pushParams.push_back(ip->c.u32);
-                break;
-
-            case ByteCodeOp::PushRAParam4:
-                pushParams.push_back(ip->a.u32);
-                pushParams.push_back(ip->b.u32);
-                pushParams.push_back(ip->c.u32);
-                pushParams.push_back(ip->d.u32);
-                break;
-
             case ByteCodeOp::DecSPBP:
             case ByteCodeOp::IncSPPostCall:
             case ByteCodeOp::IncSPPostCallCond:
@@ -98,6 +72,91 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::ClearRR32:
             case ByteCodeOp::ClearRR64:
             case ByteCodeOp::ClearRRX:
+                break;
+
+            // Fake 1 value
+            case ByteCodeOp::InternalGetTlsPtr:
+            case ByteCodeOp::IntrinsicGetContext:
+            case ByteCodeOp::IntrinsicGetProcessInfos:
+            case ByteCodeOp::InternalHasErr:
+            case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeConstantSegPointer:
+            case ByteCodeOp::MakeMutableSegPointer:
+            case ByteCodeOp::MakeCompilerSegPointer:
+            case ByteCodeOp::GetFromMutableSeg8:
+            case ByteCodeOp::GetFromMutableSeg16:
+            case ByteCodeOp::GetFromMutableSeg32:
+            case ByteCodeOp::GetFromMutableSeg64:
+            case ByteCodeOp::GetFromBssSeg8:
+            case ByteCodeOp::GetFromBssSeg16:
+            case ByteCodeOp::GetFromBssSeg32:
+            case ByteCodeOp::GetFromBssSeg64:
+            case ByteCodeOp::GetFromCompilerSeg8:
+            case ByteCodeOp::GetFromCompilerSeg16:
+            case ByteCodeOp::GetFromCompilerSeg32:
+            case ByteCodeOp::GetFromCompilerSeg64:
+            case ByteCodeOp::CopySP:
+            case ByteCodeOp::SaveRRtoRA:
+            case ByteCodeOp::CopyRRtoRA:
+            case ByteCodeOp::CopySPVaargs:
+            case ByteCodeOp::MakeLambda:
+            case ByteCodeOp::CopyRBAddrToRA:
+            case ByteCodeOp::IntrinsicMakeCallback:
+            case ByteCodeOp::CloneString:
+            case ByteCodeOp::IntrinsicIsConstExprSI:
+            case ByteCodeOp::IntrinsicLocationSI:
+            case ByteCodeOp::IntrinsicAlloc:
+            case ByteCodeOp::IntrinsicRealloc:
+            case ByteCodeOp::IntrinsicSysAlloc:
+            case ByteCodeOp::IntrinsicDbgAlloc:
+            case ByteCodeOp::IntrinsicRtFlags:
+            case ByteCodeOp::IntrinsicIsByteCode:
+            case ByteCodeOp::JumpIfError:
+            case ByteCodeOp::JumpIfNoError:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                ra->setUnknown();
+                SanityValue::computeIp(ip, ra);
+                break;
+
+            case ByteCodeOp::IntrinsicCVaArg:
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                rb->setUnknown();
+                SanityValue::computeIp(ip, nullptr, rb);
+                break;
+
+            case ByteCodeOp::IntrinsicIs:
+                SWAG_CHECK(getRegister(rc, ip->c.u32));
+                rc->setUnknown();
+                SanityValue::computeIp(ip, nullptr, nullptr, rc);
+                break;
+
+            case ByteCodeOp::IntrinsicTypeCmp:
+            case ByteCodeOp::IntrinsicStringCmp:
+            case ByteCodeOp::IntrinsicAs:
+                SWAG_CHECK(getRegister(rd, ip->d.u32));
+                rd->setUnknown();
+                SanityValue::computeIp(ip, nullptr, nullptr, nullptr, rd);
+                break;
+
+            // Fake 2 values
+            case ByteCodeOp::GetParam64SI:
+            case ByteCodeOp::IntrinsicGvtd:
+            case ByteCodeOp::IntrinsicGetErr:
+            case ByteCodeOp::IntrinsicModules:
+            case ByteCodeOp::DeRefStringSlice:
+            case ByteCodeOp::IntrinsicArguments:
+            case ByteCodeOp::IntrinsicCompiler:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                SWAG_CHECK(getRegister(rb, ip->b.u32));
+                ra->setUnknown();
+                rb->setUnknown();
+                SanityValue::computeIp(ip, ra, rb);
+                break;
+
+            case ByteCodeOp::CopyRAtoRT:
+                SWAG_CHECK(getRegister(ra, ip->a.u32));
+                if (ra->isStackAddr())
+                    invalidateCurStateStack();
                 break;
 
             case ByteCodeOp::CopyRTtoRA:
@@ -170,57 +229,47 @@ bool ByteCodeSanity::loop()
                     }
                 }
             }
-
             break;
 
-            // Fake 1 value
-            case ByteCodeOp::InternalGetTlsPtr:
-            case ByteCodeOp::IntrinsicGetContext:
-            case ByteCodeOp::IntrinsicGetProcessInfos:
-            case ByteCodeOp::InternalHasErr:
-            case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeMutableSegPointer:
-            case ByteCodeOp::MakeCompilerSegPointer:
-            case ByteCodeOp::GetFromMutableSeg8:
-            case ByteCodeOp::GetFromMutableSeg16:
-            case ByteCodeOp::GetFromMutableSeg32:
-            case ByteCodeOp::GetFromMutableSeg64:
-            case ByteCodeOp::GetFromBssSeg8:
-            case ByteCodeOp::GetFromBssSeg16:
-            case ByteCodeOp::GetFromBssSeg32:
-            case ByteCodeOp::GetFromBssSeg64:
-            case ByteCodeOp::GetFromCompilerSeg8:
-            case ByteCodeOp::GetFromCompilerSeg16:
-            case ByteCodeOp::GetFromCompilerSeg32:
-            case ByteCodeOp::GetFromCompilerSeg64:
-            case ByteCodeOp::CopySP:
-            case ByteCodeOp::SaveRRtoRA:
-            case ByteCodeOp::CopyRRtoRA:
-            case ByteCodeOp::CopySPVaargs:
-            case ByteCodeOp::MakeLambda:
-            case ByteCodeOp::CopyRBAddrToRA:
-            case ByteCodeOp::IntrinsicMakeCallback:
-            case ByteCodeOp::CloneString:
-            case ByteCodeOp::IntrinsicIsConstExprSI:
-            case ByteCodeOp::IntrinsicLocationSI:
-            case ByteCodeOp::IntrinsicAlloc:
-            case ByteCodeOp::IntrinsicRealloc:
-            case ByteCodeOp::IntrinsicSysAlloc:
-            case ByteCodeOp::IntrinsicDbgAlloc:
-            case ByteCodeOp::IntrinsicRtFlags:
-            case ByteCodeOp::IntrinsicIsByteCode:
-            case ByteCodeOp::JumpIfError:
-            case ByteCodeOp::JumpIfNoError:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                ra->setUnknown();
-                SanityValue::computeIp(ip, ra);
+            case ByteCodeOp::PushRAParamCond:
+                pushParams.push_back(ip->b.u32);
                 break;
 
-            case ByteCodeOp::CopyRAtoRT:
+            case ByteCodeOp::PushRAParam:
+                pushParams.push_back(ip->a.u32);
+                break;
+
+            case ByteCodeOp::PushRAParam2:
+                pushParams.push_back(ip->a.u32);
+                pushParams.push_back(ip->b.u32);
+                break;
+
+            case ByteCodeOp::PushRAParam3:
+                pushParams.push_back(ip->a.u32);
+                pushParams.push_back(ip->b.u32);
+                pushParams.push_back(ip->c.u32);
+                break;
+
+            case ByteCodeOp::PushRAParam4:
+                pushParams.push_back(ip->a.u32);
+                pushParams.push_back(ip->b.u32);
+                pushParams.push_back(ip->c.u32);
+                pushParams.push_back(ip->d.u32);
+                break;
+
+            case ByteCodeOp::LambdaCall:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
-                if (ra->isStackAddr())
-                    invalidateCurStateStack();
+                SWAG_CHECK(checkNotNull(ra));
+                SWAG_CHECK(checkNotNullArguments(pushParams, ""));
+                invalidateCurStateStack();
+                pushParams.clear();
+                break;
+
+            case ByteCodeOp::LocalCall:
+            case ByteCodeOp::ForeignCall:
+                SWAG_CHECK(checkNotNullArguments(pushParams, ""));
+                invalidateCurStateStack();
+                pushParams.clear();
                 break;
 
             case ByteCodeOp::IntrinsicCVaStart:
@@ -231,12 +280,6 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, 8));
                     setStackValue(addr, 8, SanityValueKind::Unknown);
                 }
-                break;
-
-            case ByteCodeOp::IntrinsicCVaArg:
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                rb->setUnknown();
-                SanityValue::computeIp(ip, nullptr, rb);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicAddS8:
@@ -322,35 +365,6 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
                 rc->setUnknown();
                 SanityValue::computeIp(ip, nullptr, nullptr, rc);
-                break;
-
-            case ByteCodeOp::IntrinsicIs:
-                SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, rc);
-                break;
-
-            case ByteCodeOp::IntrinsicTypeCmp:
-            case ByteCodeOp::IntrinsicStringCmp:
-            case ByteCodeOp::IntrinsicAs:
-                SWAG_CHECK(getRegister(rd, ip->d.u32));
-                rd->setUnknown();
-                SanityValue::computeIp(ip, nullptr, nullptr, nullptr, rd);
-                break;
-
-            // Fake 2 values
-            case ByteCodeOp::GetParam64SI:
-            case ByteCodeOp::IntrinsicGvtd:
-            case ByteCodeOp::IntrinsicGetErr:
-            case ByteCodeOp::IntrinsicModules:
-            case ByteCodeOp::DeRefStringSlice:
-            case ByteCodeOp::IntrinsicArguments:
-            case ByteCodeOp::IntrinsicCompiler:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(getRegister(rb, ip->b.u32));
-                ra->setUnknown();
-                rb->setUnknown();
-                SanityValue::computeIp(ip, ra, rb);
                 break;
 
             case ByteCodeOp::Jump:
@@ -457,73 +471,79 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.u8 - vb.reg.u8;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.u8 - vb.reg.u8;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
             case ByteCodeOp::CompareOp3Way16:
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.u16 - vb.reg.u16;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.u16 - vb.reg.u16;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
             case ByteCodeOp::CompareOp3Way32:
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.u32 - vb.reg.u32;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.u32 - vb.reg.u32;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
             case ByteCodeOp::CompareOp3Way64:
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.u64 - vb.reg.u64;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.u64 - vb.reg.u64;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
             case ByteCodeOp::CompareOp3WayF32:
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.f32 - vb.reg.f32;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.f32 - vb.reg.f32;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
             case ByteCodeOp::CompareOp3WayF64:
                 SWAG_CHECK(getImmediateA(va));
                 SWAG_CHECK(getImmediateB(vb));
                 SWAG_CHECK(getRegister(rc, ip->c.u32));
-                rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown;
-                SanityValue::computeIp(ip, &va, &vb, rc);
-                if (rc->isConstant())
+                if (va.isConstant() && vb.isConstant())
                 {
-                    auto sub    = va.reg.f64 - vb.reg.f64;
-                    rc->reg.s32 = (sub > 0) - (sub < 0);
+                    auto sub = va.reg.f64 - vb.reg.f64;
+                    rc->setConstant((sub > 0) - (sub < 0));
                 }
+                else
+                    rc->setUnknown();
+                SanityValue::computeIp(ip, &va, &vb, rc);
                 break;
 
             case ByteCodeOp::ZeroToTrue:
@@ -2043,21 +2063,6 @@ bool ByteCodeSanity::loop()
                 }
                 else
                     invalidateCurStateStack();
-                break;
-
-            case ByteCodeOp::LambdaCall:
-                SWAG_CHECK(getRegister(ra, ip->a.u32));
-                SWAG_CHECK(checkNotNull(ra));
-                SWAG_CHECK(checkNotNullArguments(pushParams, ""));
-                invalidateCurStateStack();
-                pushParams.clear();
-                break;
-
-            case ByteCodeOp::LocalCall:
-            case ByteCodeOp::ForeignCall:
-                SWAG_CHECK(checkNotNullArguments(pushParams, ""));
-                invalidateCurStateStack();
-                pushParams.clear();
                 break;
 
             case ByteCodeOp::IntrinsicMulAddF32:
