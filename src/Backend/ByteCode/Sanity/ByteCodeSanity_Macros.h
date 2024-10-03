@@ -5,8 +5,8 @@
     SWAG_CHECK(getRegister(rb, ip->b.u32));                            \
     if (ra->isStackAddr() && rb->isStackAddr())                        \
     {                                                                  \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, __sizeof));  \
-        SWAG_CHECK(getStackAddress(addr2, rb, rb->reg.u32, __sizeof)); \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, __sizeof, ra));  \
+        SWAG_CHECK(getStackAddress(addr2, rb->reg.u32, __sizeof, rb)); \
         SWAG_CHECK(checkStackInitialized(addr2, __sizeof, rb));        \
         SWAG_CHECK(getStackValue(&vb, addr2, __sizeof));               \
         setStackValue(addr, __sizeof, vb.kind);                        \
@@ -20,7 +20,7 @@
     SWAG_CHECK(checkNotNull(ra));                                                 \
     if (ra->isStackAddr())                                                        \
     {                                                                             \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, sizeof(vb.reg.__reg))); \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));               \
         SWAG_CHECK(getImmediateB(vb));                                            \
@@ -38,7 +38,7 @@
     SWAG_CHECK(checkNotNull(ra));                                                                                   \
     if (ra->isStackAddr())                                                                                          \
     {                                                                                                               \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, sizeof(vb.reg.__reg)));                                   \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra));                                   \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));                                          \
         SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));                                                 \
         SWAG_CHECK(getImmediateB(vb));                                                                              \
@@ -59,7 +59,7 @@
     rc->setUnknown();                                                             \
     if (ra->isStackAddr())                                                        \
     {                                                                             \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, sizeof(vb.reg.__reg))); \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(getStackValue(rc, addr, sizeof(vb.reg.__reg)));                \
         SWAG_CHECK(getRegister(rb, ip->b.u32));                                   \
@@ -80,7 +80,7 @@
     rd->setUnknown();                                                             \
     if (ra->isStackAddr())                                                        \
     {                                                                             \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, sizeof(vb.reg.__reg))); \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(getStackValue(rd, addr, sizeof(vb.reg.__reg)));                \
         SWAG_CHECK(getRegister(rb, ip->b.u32));                                   \
@@ -113,7 +113,7 @@
     SWAG_CHECK(checkNotNull(ra));                                                 \
     if (ra->isStackAddr())                                                        \
     {                                                                             \
-        SWAG_CHECK(getStackAddress(addr, ra, ra->reg.u32, sizeof(vb.reg.__reg))); \
+        SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));               \
         SWAG_CHECK(getImmediateB(vb));                                            \

@@ -136,11 +136,11 @@ bool ByteCodeSanity::checkEscapeFrame(const SanityValue* value)
     return true;
 }
 
-bool ByteCodeSanity::checkStackOffset(const SanityValue* value, uint64_t stackOffset, uint32_t sizeOf)
+bool ByteCodeSanity::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue)
 {
     if (stackOffset + sizeOf <= static_cast<size_t>(STATE()->stack.size()))
         return true;
-    const auto err = raiseError(formErr(San0007, stackOffset + sizeOf, STATE()->stack.size()), value);
+    const auto err = raiseError(formErr(San0007, stackOffset + sizeOf, STATE()->stack.size()), locValue);
     if (err)
         return context.report(*err);
     return true;
@@ -365,9 +365,16 @@ bool ByteCodeSanity::getRegister(SanityValue*& result, uint32_t reg)
     return true;
 }
 
-bool ByteCodeSanity::getStackValue(SanityValue* result, void* addr, uint32_t sizeOf)
+bool ByteCodeSanity::getStackAddress(uint8_t*& result, uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue)
 {
-    const auto offset = static_cast<uint8_t*>(addr) - STATE()->stack.data();
+    SWAG_CHECK(checkStackOffset(stackOffset, sizeOf, locValue));
+    result = STATE()->stack.data() + stackOffset;
+    return true;
+}
+
+bool ByteCodeSanity::getStackValue(SanityValue* result, void* stackAddr, uint32_t sizeOf)
+{
+    const auto offset = static_cast<uint8_t*>(stackAddr) - STATE()->stack.data();
     SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
     auto addrValue = STATE()->stackValue.data() + offset;
 
@@ -388,16 +395,9 @@ bool ByteCodeSanity::getStackValue(SanityValue* result, void* addr, uint32_t siz
     return true;
 }
 
-bool ByteCodeSanity::getStackAddress(uint8_t*& result, const SanityValue* value, uint64_t stackOffset, uint32_t sizeOf)
+void ByteCodeSanity::setStackValue(void* stackAddr, uint32_t sizeOf, SanityValueKind kind)
 {
-    SWAG_CHECK(checkStackOffset(value, stackOffset, sizeOf));
-    result = STATE()->stack.data() + stackOffset;
-    return true;
-}
-
-void ByteCodeSanity::setStackValue(void* addr, uint32_t sizeOf, SanityValueKind kind)
-{
-    const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.data());
+    const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(stackAddr) - STATE()->stack.data());
     SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
@@ -454,10 +454,10 @@ bool ByteCodeSanity::process(ByteCode* bc)
     context.bc = bc;
 
 #if 1
-    //if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
-    //    return true;
+    // if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
+    //     return true;
     if (bc->sourceFile->flags.has(FILE_RUNTIME) || bc->sourceFile->flags.has(FILE_BOOTSTRAP))
-        return true;    
+        return true;
 #endif
 
     const auto state    = new SanityState;

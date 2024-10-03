@@ -22,6 +22,7 @@ using Core
 private var total = 0
 
 #[Swag.Sanity(false)]
+//#[Swag.PrintGenBc]
 func day8B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
