@@ -1322,17 +1322,69 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::MemCpy8:
-                MEMCPY(uint8_t, 1);
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
+                if (ra->isStackAddr() && rb->isStackAddr())
+                {
+                    SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, 1, ra));
+                    SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, 1, rb));
+                    SWAG_CHECK(STATE()->checkStackInitialized(addr2, 1, rb));
+                    SWAG_CHECK(STATE()->getStackKind(&va, addr2, 1));
+                    STATE()->setStackKind(addr, 1, va.kind, va.flags);
+                    *addr = *addr2;
+                }
+                else
+                    STATE()->invalidateStack();
                 break;
+
             case ByteCodeOp::MemCpy16:
-                MEMCPY(uint16_t, 2);
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
+                if (ra->isStackAddr() && rb->isStackAddr())
+                {
+                    SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, 2, ra));
+                    SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, 2, rb));
+                    SWAG_CHECK(STATE()->checkStackInitialized(addr2, 2, rb));
+                    SWAG_CHECK(STATE()->getStackKind(&va, addr2, 2));
+                    STATE()->setStackKind(addr, 2, va.kind, va.flags);
+                    *reinterpret_cast<uint16_t*>(addr) = *reinterpret_cast<uint16_t*>(addr2);
+                }
+                else
+                    STATE()->invalidateStack();
                 break;
+
             case ByteCodeOp::MemCpy32:
-                MEMCPY(uint32_t, 4);
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
+                if (ra->isStackAddr() && rb->isStackAddr())
+                {
+                    SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, 4, ra));
+                    SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, 4, rb));
+                    SWAG_CHECK(STATE()->checkStackInitialized(addr2, 4, rb));
+                    SWAG_CHECK(STATE()->getStackKind(&va, addr2, 4));
+                    STATE()->setStackKind(addr, 4, va.kind, va.flags);
+                    *reinterpret_cast<uint32_t*>(addr) = *reinterpret_cast<uint32_t*>(addr2);
+                }
+                else
+                    STATE()->invalidateStack();
                 break;
+
             case ByteCodeOp::MemCpy64:
-                MEMCPY(uint64_t, 8);
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
+                if (ra->isStackAddr() && rb->isStackAddr())
+                {
+                    SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, 8, ra));
+                    SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, 8, rb));
+                    SWAG_CHECK(STATE()->checkStackInitialized(addr2, 8, rb));
+                    SWAG_CHECK(STATE()->getStackKind(&va, addr2, 8));
+                    STATE()->setStackKind(addr, 8, va.kind, va.flags);
+                    *reinterpret_cast<uint64_t*>(addr) = *reinterpret_cast<uint64_t*>(addr2);
+                }
+                else
+                    STATE()->invalidateStack();
                 break;
+
             case ByteCodeOp::IntrinsicMemCpy:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
                 SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
@@ -1344,7 +1396,7 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, vc.reg.u32, rb));
                     SWAG_CHECK(STATE()->checkStackInitialized(addr2, vc.reg.u32, rb));
                     SWAG_CHECK(STATE()->getStackKind(&va, addr2, vc.reg.u32));
-                    STATE()->setStackKind(addr, vc.reg.u32, va.kind);
+                    STATE()->setStackKind(addr, vc.reg.u32, va.kind, va.flags);
                     std::copy_n(addr2, vc.reg.u32, addr);
                 }
                 else

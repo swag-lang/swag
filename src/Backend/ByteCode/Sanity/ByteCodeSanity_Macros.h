@@ -1,20 +1,5 @@
 #define STATE() context.states[context.state]
 
-#define MEMCPY(__cast, __sizeof)                                                \
-    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                            \
-    SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));                            \
-    if (ra->isStackAddr() && rb->isStackAddr())                                 \
-    {                                                                           \
-        SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, __sizeof, ra));  \
-        SWAG_CHECK(STATE()->getStackAddress(addr2, rb->reg.u32, __sizeof, rb)); \
-        SWAG_CHECK(STATE()->checkStackInitialized(addr2, __sizeof, rb));        \
-        SWAG_CHECK(STATE()->getStackKind(&vb, addr2, __sizeof));                \
-        STATE()->setStackKind(addr, __sizeof, vb.kind);                         \
-        *(__cast*) addr = *(__cast*) addr2;                                     \
-    }                                                                           \
-    else                                                                        \
-        STATE()->invalidateStack();
-
 #define BINOP_EQ(__cast, __op, __reg)                                                      \
     SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                       \
     SWAG_CHECK(checkNotNull(ra));                                                          \
