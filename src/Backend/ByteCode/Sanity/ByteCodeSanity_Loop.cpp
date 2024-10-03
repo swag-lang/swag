@@ -538,34 +538,34 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::SetZeroStackX:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, ip->b.u32, nullptr));
                 memset(addr, 0, ip->b.u32);
-                setStackValue(addr, ip->b.u32, SanityValueKind::Constant);
+                setStackKind(addr, ip->b.u32, SanityValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack8:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, 1, nullptr));
                 *addr = 0;
-                setStackValue(addr, 1, SanityValueKind::Constant);
+                setStackKind(addr, 1, SanityValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack16:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, 2, nullptr));
                 *reinterpret_cast<uint16_t*>(addr) = 0;
-                setStackValue(addr, 2, SanityValueKind::Constant);
+                setStackKind(addr, 2, SanityValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack32:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, 4, nullptr));
                 *reinterpret_cast<uint32_t*>(addr) = 0;
-                setStackValue(addr, 4, SanityValueKind::Constant);
+                setStackKind(addr, 4, SanityValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack64:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, 8, nullptr));
                 *reinterpret_cast<uint64_t*>(addr) = 0;
-                setStackValue(addr, 8, SanityValueKind::Constant);
+                setStackKind(addr, 8, SanityValueKind::Constant);
                 break;
 
             case ByteCodeOp::SetAtStackPointer64:
                 SWAG_CHECK(getStackAddress(addr, ip->a.u32, 8, nullptr));
                 SWAG_CHECK(getImmediateB(vb));
                 *reinterpret_cast<uint64_t*>(addr) = vb.reg.u64;
-                setStackValue(addr, 8, vb.kind);
+                setStackKind(addr, 8, vb.kind);
                 break;
 
             case ByteCodeOp::SetZeroAtPointerXRB:
@@ -577,7 +577,7 @@ bool ByteCodeSanity::loop()
                     SWAG_ASSERT(rb->reg.u64 * ip->c.u64 <= UINT32_MAX);
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64, static_cast<uint32_t>(rb->reg.u64 * ip->c.u64), ra));
                     memset(addr, 0, rb->reg.u64 * ip->c.u64);
-                    setStackValue(addr, static_cast<uint32_t>(rb->reg.u64 * ip->c.u64), SanityValueKind::Constant);
+                    setStackKind(addr, static_cast<uint32_t>(rb->reg.u64 * ip->c.u64), SanityValueKind::Constant);
                 }
                 break;
 
@@ -589,7 +589,7 @@ bool ByteCodeSanity::loop()
                     SWAG_ASSERT(ip->b.u64 <= UINT32_MAX);
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->c.u32, static_cast<uint32_t>(ip->b.u64), ra));
                     memset(addr, 0, ip->b.u64);
-                    setStackValue(addr, static_cast<uint32_t>(ip->b.u64), SanityValueKind::Constant);
+                    setStackKind(addr, static_cast<uint32_t>(ip->b.u64), SanityValueKind::Constant);
                 }
                 break;
             case ByteCodeOp::SetZeroAtPointer8:
@@ -599,7 +599,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->b.u32, 1, ra));
                     *addr = 0;
-                    setStackValue(addr, 1, SanityValueKind::Constant);
+                    setStackKind(addr, 1, SanityValueKind::Constant);
                 }
                 break;
             case ByteCodeOp::SetZeroAtPointer16:
@@ -609,7 +609,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->b.u32, 2, ra));
                     *reinterpret_cast<uint16_t*>(addr) = 0;
-                    setStackValue(addr, 2, SanityValueKind::Constant);
+                    setStackKind(addr, 2, SanityValueKind::Constant);
                 }
                 break;
             case ByteCodeOp::SetZeroAtPointer32:
@@ -619,7 +619,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->b.u32, 4, ra));
                     *reinterpret_cast<uint32_t*>(addr) = 0;
-                    setStackValue(addr, 4, SanityValueKind::Constant);
+                    setStackKind(addr, 4, SanityValueKind::Constant);
                 }
                 break;
             case ByteCodeOp::SetZeroAtPointer64:
@@ -629,7 +629,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->b.u32, 8, ra));
                     *reinterpret_cast<uint64_t*>(addr) = 0;
-                    setStackValue(addr, 8, SanityValueKind::Constant);
+                    setStackKind(addr, 8, SanityValueKind::Constant);
                 }
                 break;
 
@@ -641,7 +641,7 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->c.u32, 1, ra));
                     SWAG_CHECK(getImmediateB(vb));
                     *addr = vb.reg.u8;
-                    setStackValue(addr, 1, vb.kind);
+                    setStackKind(addr, 1, vb.kind);
                 }
                 break;
             case ByteCodeOp::SetAtPointer16:
@@ -652,7 +652,7 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->c.u32, 2, ra));
                     SWAG_CHECK(getImmediateB(vb));
                     *reinterpret_cast<uint16_t*>(addr) = vb.reg.u16;
-                    setStackValue(addr, 2, vb.kind);
+                    setStackKind(addr, 2, vb.kind);
                 }
                 break;
             case ByteCodeOp::SetAtPointer32:
@@ -663,7 +663,7 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->c.u32, 4, ra));
                     SWAG_CHECK(getImmediateB(vb));
                     *reinterpret_cast<uint32_t*>(addr) = vb.reg.u32;
-                    setStackValue(addr, 4, vb.kind);
+                    setStackKind(addr, 4, vb.kind);
                 }
                 break;
             case ByteCodeOp::SetAtPointer64:
@@ -674,7 +674,7 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u64 + ip->c.u32, 8, ra));
                     SWAG_CHECK(getImmediateB(vb));
                     *reinterpret_cast<uint64_t*>(addr) = vb.reg.u64;
-                    setStackValue(addr, 8, vb.kind);
+                    setStackKind(addr, 8, vb.kind);
                 }
                 break;
 
@@ -734,7 +734,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::GetFromStack8:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, ip->b.u32, 1, nullptr));
-                SWAG_CHECK(getStackValue(ra, addr, 1));
+                SWAG_CHECK(getStackKind(ra, addr, 1));
                 SWAG_CHECK(checkStackInitialized(addr, 1, ra));
                 ra->reg.u64 = *addr;
                 SanityValue::computeIp(ip, ra);
@@ -742,7 +742,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::GetFromStack16:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, ip->b.u32, 2, nullptr));
-                SWAG_CHECK(getStackValue(ra, addr, 2));
+                SWAG_CHECK(getStackKind(ra, addr, 2));
                 SWAG_CHECK(checkStackInitialized(addr, 2, ra));
                 ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
                 SanityValue::computeIp(ip, ra);
@@ -750,7 +750,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::GetFromStack32:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, ip->b.u32, 4, nullptr));
-                SWAG_CHECK(getStackValue(ra, addr, 4));
+                SWAG_CHECK(getStackKind(ra, addr, 4));
                 SWAG_CHECK(checkStackInitialized(addr, 4, ra));
                 ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
                 SanityValue::computeIp(ip, ra);
@@ -758,7 +758,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::GetFromStack64:
                 SWAG_CHECK(getRegister(ra, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, ip->b.u32, 8, nullptr));
-                SWAG_CHECK(getStackValue(ra, addr, 8));
+                SWAG_CHECK(getStackKind(ra, addr, 8));
                 SWAG_CHECK(checkStackInitialized(addr, 8, ra));
                 ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                 SanityValue::computeIp(ip, ra);
@@ -838,7 +838,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, rb->reg.u64 + ip->c.s64, 1, rb));
                     SWAG_CHECK(checkStackInitialized(addr, 1));
-                    SWAG_CHECK(getStackValue(ra, addr, 1));
+                    SWAG_CHECK(getStackKind(ra, addr, 1));
                     ra->reg.u64 = *addr;
                 }
                 else
@@ -853,7 +853,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, rb->reg.u64 + ip->c.s64, 2, rb));
                     SWAG_CHECK(checkStackInitialized(addr, 2));
-                    SWAG_CHECK(getStackValue(ra, addr, 2));
+                    SWAG_CHECK(getStackKind(ra, addr, 2));
                     ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
                 }
                 else
@@ -868,7 +868,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, rb->reg.u64 + ip->c.s64, 4, rb));
                     SWAG_CHECK(checkStackInitialized(addr, 4));
-                    SWAG_CHECK(getStackValue(ra, addr, 4));
+                    SWAG_CHECK(getStackKind(ra, addr, 4));
                     ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
                 }
                 else
@@ -883,7 +883,7 @@ bool ByteCodeSanity::loop()
                 {
                     SWAG_CHECK(getStackAddress(addr, rb->reg.u64 + ip->c.s64, 8, rb));
                     SWAG_CHECK(checkStackInitialized(addr, 8));
-                    SWAG_CHECK(getStackValue(ra, addr, 8));
+                    SWAG_CHECK(getStackKind(ra, addr, 8));
                     ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                 }
                 else
@@ -1291,7 +1291,7 @@ bool ByteCodeSanity::loop()
                 if (ra->isStackAddr())
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u32, 8, ra));
-                    setStackValue(addr, 8, SanityValueKind::Unknown);
+                    setStackKind(addr, 8, SanityValueKind::Unknown);
                 }
                 break;
 
@@ -1343,8 +1343,8 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u32, vc.reg.u32, ra));
                     SWAG_CHECK(getStackAddress(addr2, rb->reg.u32, vc.reg.u32, rb));
                     SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
-                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
-                    setStackValue(addr, vc.reg.u32, va.kind);
+                    SWAG_CHECK(getStackKind(&va, addr2, vc.reg.u32));
+                    setStackKind(addr, vc.reg.u32, va.kind);
                     std::copy_n(addr2, vc.reg.u32, addr);
                 }
                 else
@@ -1361,8 +1361,8 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u32, vc.reg.u32, ra));
                     SWAG_CHECK(getStackAddress(addr2, rb->reg.u32, vc.reg.u32, rb));
                     SWAG_CHECK(checkStackInitialized(addr2, vc.reg.u32, rb));
-                    SWAG_CHECK(getStackValue(&va, addr2, vc.reg.u32));
-                    setStackValue(addr, vc.reg.u32, va.kind);
+                    SWAG_CHECK(getStackKind(&va, addr2, vc.reg.u32));
+                    setStackKind(addr, vc.reg.u32, va.kind);
                     memmove(addr, addr2, vc.reg.u32);
                 }
                 else
@@ -1376,7 +1376,7 @@ bool ByteCodeSanity::loop()
                 if (ra->isStackAddr() && vb.isConstant() && vc.isConstant())
                 {
                     SWAG_CHECK(getStackAddress(addr, ra->reg.u32, vc.reg.u32, ra));
-                    setStackValue(addr, vc.reg.u32, SanityValueKind::Constant);
+                    setStackKind(addr, vc.reg.u32, SanityValueKind::Constant);
                     memset(addr, vb.reg.u8, vc.reg.u32);
                 }
                 else

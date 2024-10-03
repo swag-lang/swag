@@ -15,7 +15,7 @@ enum class SanityRefKind
 struct SanityState
 {
     Vector<uint8_t>                    stack;
-    Vector<SanityValue>                stackValue;
+    Vector<SanityValue>                stackKind;
     Vector<SanityValue>                regs;
     VectorNative<uint32_t>             forceParams0;
     VectorNative<uint32_t>             forceParamsU;
@@ -51,10 +51,10 @@ struct ByteCodeSanity
     bool         getImmediateC(SanityValue& result);
     bool         getImmediateD(SanityValue& result);
     bool         getRegister(SanityValue*& result, uint32_t reg);
-    bool         getStackValue(SanityValue* result, void* stackAddr, uint32_t sizeOf);
+    bool         getStackKind(SanityValue* result, void* stackAddr, uint32_t sizeOf);
     bool         getStackAddress(uint8_t*& result, uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue);
-    void         setStackValue(void* stackAddr, uint32_t sizeOf, SanityValueKind kind);
-    void         updateStackValue(void* addr, uint32_t sizeOf);
+    void         setStackKind(void* stackAddr, uint32_t sizeOf, SanityValueKind kind, SanityValueFlags flags = SANITY_VALUE_FLAG_NONE);
+    void         updateStackKind(void* addr, uint32_t sizeOf);
     void         invalidateCurStateStack();
     SanityState* newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp);
 

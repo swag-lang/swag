@@ -284,7 +284,7 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
 bool ByteCodeSanity::checkStackInitialized(void* addr, uint32_t sizeOf, const SanityValue* locValue)
 {
     SanityValue memValue;
-    SWAG_CHECK(getStackValue(&memValue, addr, sizeOf));
+    SWAG_CHECK(getStackKind(&memValue, addr, sizeOf));
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
 
@@ -372,11 +372,11 @@ bool ByteCodeSanity::getStackAddress(uint8_t*& result, uint64_t stackOffset, uin
     return true;
 }
 
-bool ByteCodeSanity::getStackValue(SanityValue* result, void* stackAddr, uint32_t sizeOf)
+bool ByteCodeSanity::getStackKind(SanityValue* result, void* stackAddr, uint32_t sizeOf)
 {
     const auto offset = static_cast<uint8_t*>(stackAddr) - STATE()->stack.data();
-    SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
-    auto addrValue = STATE()->stackValue.data() + offset;
+    SWAG_ASSERT(offset + sizeOf <= STATE()->stackKind.size());
+    auto addrValue = STATE()->stackKind.data() + offset;
 
     *result = *addrValue;
     addrValue++;
@@ -395,34 +395,36 @@ bool ByteCodeSanity::getStackValue(SanityValue* result, void* stackAddr, uint32_
     return true;
 }
 
-void ByteCodeSanity::setStackValue(void* stackAddr, uint32_t sizeOf, SanityValueKind kind)
+void ByteCodeSanity::setStackKind(void* stackAddr, uint32_t sizeOf, SanityValueKind kind, SanityValueFlags flags)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(stackAddr) - STATE()->stack.data());
-    SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
+    SWAG_ASSERT(offset + sizeOf <= STATE()->stackKind.size());
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
-        auto& val = STATE()->stackValue[i];
+        auto& val = STATE()->stackKind[i];
         val.kind  = kind;
+        val.flags = flags;
+
         val.ips.clear();
         if (kind == SanityValueKind::Constant)
             val.ips.push_back(STATE()->ip);
     }
 }
 
-void ByteCodeSanity::updateStackValue(void* addr, uint32_t sizeOf)
+void ByteCodeSanity::updateStackKind(void* addr, uint32_t sizeOf)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.data());
-    SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.size());
+    SWAG_ASSERT(offset + sizeOf <= STATE()->stackKind.size());
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
-        auto& val = STATE()->stackValue[i];
+        auto& val = STATE()->stackKind[i];
         val.ips.push_back(STATE()->ip);
     }
 }
 
 void ByteCodeSanity::invalidateCurStateStack()
 {
-    setStackValue(STATE()->stack.data(), STATE()->stack.size(), SanityValueKind::Unknown);
+    setStackKind(STATE()->stack.data(), STATE()->stack.size(), SanityValueKind::Unknown);
 }
 
 SanityState* ByteCodeSanity::newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp)
@@ -463,7 +465,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     const auto state    = new SanityState;
     const auto funcDecl = castAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
     state->stack.resize(funcDecl->stackSize);
-    state->stackValue.resize(funcDecl->stackSize);
+    state->stackKind.resize(funcDecl->stackSize);
     state->regs.resize(context.bc->maxReservedRegisterRC);
     state->ip = context.bc->out;
     context.states.push_back(state);

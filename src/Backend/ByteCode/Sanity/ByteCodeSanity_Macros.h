@@ -8,8 +8,8 @@
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, __sizeof, ra));  \
         SWAG_CHECK(getStackAddress(addr2, rb->reg.u32, __sizeof, rb)); \
         SWAG_CHECK(checkStackInitialized(addr2, __sizeof, rb));        \
-        SWAG_CHECK(getStackValue(&vb, addr2, __sizeof));               \
-        setStackValue(addr, __sizeof, vb.kind);                        \
+        SWAG_CHECK(getStackKind(&vb, addr2, __sizeof));               \
+        setStackKind(addr, __sizeof, vb.kind);                        \
         *(__cast*) addr = *(__cast*) addr2;                            \
     }                                                                  \
     else                                                               \
@@ -22,14 +22,14 @@
     {                                                                             \
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
-        SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));               \
+        SWAG_CHECK(getStackKind(&va, addr, sizeof(vb.reg.__reg)));               \
         SWAG_CHECK(getImmediateB(vb));                                            \
         if (va.isUnknown() || vb.isUnknown())                                     \
-            setStackValue(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
+            setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
         else                                                                      \
         {                                                                         \
             *(__cast*) addr __op vb.reg.__reg;                                    \
-            updateStackValue(addr, sizeof(vb.reg.__reg));                         \
+            updateStackKind(addr, sizeof(vb.reg.__reg));                         \
         }                                                                         \
     }
 
@@ -40,15 +40,15 @@
     {                                                                                                               \
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra));                                   \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));                                          \
-        SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));                                                 \
+        SWAG_CHECK(getStackKind(&va, addr, sizeof(vb.reg.__reg)));                                                 \
         SWAG_CHECK(getImmediateB(vb));                                                                              \
         if (va.isUnknown() || vb.isUnknown())                                                                       \
-            setStackValue(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);                                    \
+            setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);                                    \
         else                                                                                                        \
         {                                                                                                           \
             SWAG_CHECK(checkOverflow(!__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
             *(__cast*) addr __op vb.reg.__reg;                                                                      \
-            updateStackValue(addr, sizeof(vb.reg.__reg));                                                           \
+            updateStackKind(addr, sizeof(vb.reg.__reg));                                                           \
         }                                                                                                           \
     }
 
@@ -61,15 +61,15 @@
     {                                                                             \
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
-        SWAG_CHECK(getStackValue(rc, addr, sizeof(vb.reg.__reg)));                \
+        SWAG_CHECK(getStackKind(rc, addr, sizeof(vb.reg.__reg)));                \
         SWAG_CHECK(getRegister(rb, ip->b.u32));                                   \
         if (rc->isUnknown() || rb->isUnknown())                                   \
-            setStackValue(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
+            setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
         else                                                                      \
         {                                                                         \
             rc->reg.__reg = *(__cast*) addr;                                      \
             *(__cast*) addr __op rb->reg.__reg;                                   \
-            updateStackValue(addr, sizeof(vb.reg.__reg));                         \
+            updateStackKind(addr, sizeof(vb.reg.__reg));                         \
         }                                                                         \
     }
 
@@ -82,17 +82,17 @@
     {                                                                             \
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
-        SWAG_CHECK(getStackValue(rd, addr, sizeof(vb.reg.__reg)));                \
+        SWAG_CHECK(getStackKind(rd, addr, sizeof(vb.reg.__reg)));                \
         SWAG_CHECK(getRegister(rb, ip->b.u32));                                   \
         SWAG_CHECK(getRegister(rc, ip->c.u32));                                   \
         if (rd->isUnknown() || rb->isUnknown() || rc->isUnknown())                \
-            setStackValue(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
+            setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
         else                                                                      \
         {                                                                         \
             rd->reg.__reg = *(__cast*) addr;                                      \
             if (rd->reg.__reg == rb->reg.__reg)                                   \
                 *(__cast*) addr = rc->reg.__reg;                                  \
-            updateStackValue(addr, sizeof(vb.reg.__reg));                         \
+            updateStackKind(addr, sizeof(vb.reg.__reg));                         \
         }                                                                         \
     }
 
@@ -115,17 +115,17 @@
     {                                                                             \
         SWAG_CHECK(getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
-        SWAG_CHECK(getStackValue(&va, addr, sizeof(vb.reg.__reg)));               \
+        SWAG_CHECK(getStackKind(&va, addr, sizeof(vb.reg.__reg)));               \
         SWAG_CHECK(getImmediateB(vb));                                            \
         if (va.isUnknown() || vb.isUnknown())                                     \
-            setStackValue(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
+            setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);  \
         else                                                                      \
         {                                                                         \
             Register r;                                                           \
             r.__reg = *(__cast*) addr;                                            \
             __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);          \
             *(__cast*) addr = r.__reg;                                            \
-            updateStackValue(addr, sizeof(vb.reg.__reg));                         \
+            updateStackKind(addr, sizeof(vb.reg.__reg));                         \
         }                                                                         \
     }
 
