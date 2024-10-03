@@ -11,7 +11,7 @@
 
 #pragma optimize("", off)
 
-void ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
+bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 {
     const auto value = &state->regs[reg];
 
@@ -19,10 +19,20 @@ void ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
     {
         const auto ip = state->ips[i];
         if (!ByteCode::hasWriteRefToReg(ip, reg))
-            return;
+            return true;
 
         switch (ip->op)
         {
+            case ByteCodeOp::GetFromStack32:
+            {
+                const auto ra = &state->regs[ip->a.u32];
+                uint8_t* addr;
+                SWAG_CHECK(state->getStackAddress(addr, ip->b.u32, 4, nullptr));
+                *reinterpret_cast<uint32_t*>(addr) = ra->reg.u32;
+                state->setStackKind(addr, 4, ra->kind, ra->flags);
+                break;
+            }
+
             case ByteCodeOp::CastBool8:
             case ByteCodeOp::CastBool16:
             case ByteCodeOp::CastBool32:
@@ -46,9 +56,11 @@ void ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
             }
 
             default:
-                return;
+                return true;
         }
     }
+
+    return true;
 }
 
 bool ByteCodeSanity::loop()
@@ -358,13 +370,13 @@ bool ByteCodeSanity::loop()
                     context.statesHere.insert(ip + ip->b.s32 + 1);
                     const auto state = newState(ip, ip + ip->b.s32 + 1);
                     state->regs[ip->a.u32].setConstant(0LL);
-                    backTrace(state, ip->a.u32);
+                    SWAG_CHECK(backTrace(state, ip->a.u32));
                     SanityValue::computeIp(ip, &state->regs[ip->a.u32]);
                 }
 
                 STATE()->regs[ip->a.u32].setConstant(1LL);
                 SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
-                backTrace(STATE(), ip->a.u32);
+                SWAG_CHECK(backTrace(STATE(), ip->a.u32));
                 break;
 
             case ByteCodeOp::JumpIfTrue:

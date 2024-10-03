@@ -27,7 +27,7 @@ struct ByteCodeSanity
 
     ByteCodeSanityState* newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp);
 
-    static void backTrace(ByteCodeSanityState* state, uint32_t reg);
+    static bool backTrace(ByteCodeSanityState* state, uint32_t reg);
     bool        loop();
     bool        process(ByteCode* bc);
 
