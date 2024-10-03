@@ -11,14 +11,19 @@ enum class SanityValueKind : uint8_t
     StackAddr,
     Constant,
     Unknown,
-    NotZero,
 };
+
+using SanityValueFlags = Flags<uint64_t>;
+
+constexpr SanityValueFlags SANITY_VALUE_NONE          = 0x0000000000000000;
+constexpr SanityValueFlags SANITY_VALUE_FLAG_NOT_ZERO = 0x0000000000000001;
 
 struct SanityValue
 {
     VectorNative<ByteCodeInstruction*> ips;
     Register                           reg;
-    SanityValueKind                    kind = SanityValueKind::Invalid;
+    SanityValueFlags                   flags = SANITY_VALUE_NONE;
+    SanityValueKind                    kind  = SanityValueKind::Invalid;
 
     bool isZero() const;
     bool isNotZero() const;
@@ -32,7 +37,7 @@ struct SanityValue
     void setConstant(uint64_t val);
     void setConstant(float val);
     void setConstant(double val);
-    void setUnknown();
+    void setUnknown(SanityValueFlags fl = SANITY_VALUE_NONE);
     void setStackAddr(uint64_t val);
     void setKind(SanityValueKind val);
 

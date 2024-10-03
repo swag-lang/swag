@@ -32,18 +32,18 @@ void ByteCodeSanity::backTrace(SanityState* state, uint32_t reg)
                 if (!value->reg.b)
                     rb->setConstant(0LL);
                 else
-                    rb->setConstant(1LL);
+                    rb->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
                 reg = ip->b.u32;
+                break;
             }
-            break;
 
             case ByteCodeOp::CopyRBtoRA64:
             {
                 const auto ra = &state->regs[reg];
                 const auto rb = &state->regs[ip->b.u32];
-                rb->setConstant(ra->reg.u64);
+                *rb           = *ra;
+                break;
             }
-            break;
 
             default:
                 return;
@@ -60,7 +60,6 @@ bool ByteCodeSanity::loop()
     uint8_t*               addr  = nullptr;
     uint8_t*               addr2 = nullptr;
     SanityValue            va, vb, vc, vd;
-    SanityState*           jmpAddState = nullptr;
     VectorNative<uint32_t> pushParams;
 
     auto ip = STATE()->ip;
@@ -898,7 +897,7 @@ bool ByteCodeSanity::loop()
                 if (rb->isConstant())
                     ra->setConstant(rb->reg.b ? 0LL : 1LL);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(rb->flags);
                 SanityValue::computeIp(ip, ra, rb);
                 break;
             case ByteCodeOp::NegS32:
@@ -907,7 +906,7 @@ bool ByteCodeSanity::loop()
                 if (rb->isConstant())
                     ra->setConstant(-vb.reg.s32);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(rb->flags);
                 SanityValue::computeIp(ip, ra, rb);
                 break;
             case ByteCodeOp::NegS64:
@@ -916,7 +915,7 @@ bool ByteCodeSanity::loop()
                 if (rb->isConstant())
                     ra->setConstant(-rb->reg.s64);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(rb->flags);
                 SanityValue::computeIp(ip, ra, rb);
                 break;
             case ByteCodeOp::NegF32:
@@ -925,7 +924,7 @@ bool ByteCodeSanity::loop()
                 if (rb->isConstant())
                     ra->setConstant(-rb->reg.f32);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(rb->flags);
                 SanityValue::computeIp(ip, ra, rb);
                 break;
             case ByteCodeOp::NegF64:
@@ -934,7 +933,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(-rb->reg.f64);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(rb->flags);
                 SanityValue::computeIp(ip, ra, rb);
                 break;
 
@@ -943,8 +942,10 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateB(vb));
                 if (vb.isConstant())
                     ra->setConstant(vb.reg.u8 ? 1LL : 0);
+                else if (va.isUnknown() && vb.flags.has(SANITY_VALUE_FLAG_NOT_ZERO))
+                    ra->setConstant(1LL);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastBool16:
@@ -952,8 +953,10 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateB(vb));
                 if (vb.isConstant())
                     ra->setConstant(vb.reg.u16 ? 1LL : 0);
+                else if (va.isUnknown() && vb.flags.has(SANITY_VALUE_FLAG_NOT_ZERO))
+                    ra->setConstant(1LL);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastBool32:
@@ -961,8 +964,10 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateB(vb));
                 if (vb.isConstant())
                     ra->setConstant(vb.reg.u32 ? 1LL : 0);
+                else if (va.isUnknown() && vb.flags.has(SANITY_VALUE_FLAG_NOT_ZERO))
+                    ra->setConstant(1LL);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastBool64:
@@ -970,8 +975,10 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(getImmediateB(vb));
                 if (vb.isConstant())
                     ra->setConstant(vb.reg.u64 ? 1LL : 0);
+                else if (va.isUnknown() && vb.flags.has(SANITY_VALUE_FLAG_NOT_ZERO))
+                    ra->setConstant(1LL);
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -981,7 +988,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int16_t>(vb.reg.s8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -991,7 +998,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int32_t>(vb.reg.s8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS16S32:
@@ -1000,7 +1007,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int32_t>(vb.reg.s16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastF32S32:
@@ -1009,7 +1016,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int32_t>(vb.reg.f32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -1019,7 +1026,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int64_t>(vb.reg.s8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS16S64:
@@ -1028,7 +1035,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int64_t>(vb.reg.s16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS32S64:
@@ -1037,7 +1044,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int64_t>(vb.reg.s32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastF64S64:
@@ -1046,7 +1053,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<int64_t>(vb.reg.f64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -1056,7 +1063,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.s8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS16F32:
@@ -1065,7 +1072,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.s16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS32F32:
@@ -1074,7 +1081,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.s32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS64F32:
@@ -1083,7 +1090,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.s64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU8F32:
@@ -1092,7 +1099,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.u8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU16F32:
@@ -1101,7 +1108,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.u16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU32F32:
@@ -1110,7 +1117,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.u32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU64F32:
@@ -1119,7 +1126,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.u64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -1129,7 +1136,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.s8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS16F64:
@@ -1138,7 +1145,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.s16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS32F64:
@@ -1147,7 +1154,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.s32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastS64F64:
@@ -1156,7 +1163,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.s64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU8F64:
@@ -1165,7 +1172,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.u8));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU16F64:
@@ -1174,7 +1181,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.u16));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU32F64:
@@ -1183,7 +1190,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.u32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastU64F64:
@@ -1192,7 +1199,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.u64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
             case ByteCodeOp::CastF32F64:
@@ -1201,7 +1208,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<double>(vb.reg.f32));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 
@@ -1211,7 +1218,7 @@ bool ByteCodeSanity::loop()
                 if (vb.isConstant())
                     ra->setConstant(static_cast<float>(vb.reg.f64));
                 else
-                    ra->setUnknown();
+                    ra->setUnknown(vb.flags);
                 SanityValue::computeIp(ip, ra, &vb);
                 break;
 

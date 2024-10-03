@@ -453,9 +453,11 @@ bool ByteCodeSanity::process(ByteCode* bc)
 
     context.bc = bc;
 
-#if 0
-    if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
-        return true;
+#if 1
+    //if (bc->sourceFile && bc->sourceFile->name != "compiler5786.swg")
+    //    return true;
+    if (bc->sourceFile->flags.has(FILE_RUNTIME) || bc->sourceFile->flags.has(FILE_BOOTSTRAP))
+        return true;    
 #endif
 
     const auto state    = new SanityState;
