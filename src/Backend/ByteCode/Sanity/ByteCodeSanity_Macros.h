@@ -1,8 +1,8 @@
 #define STATE() context.states[context.state]
 
 #define MEMCPY(__cast, __sizeof)                                                \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                     \
-    SWAG_CHECK(getRegister(rb, ip->b.u32));                                     \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                            \
+    SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));                            \
     if (ra->isStackAddr() && rb->isStackAddr())                                 \
     {                                                                           \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, __sizeof, ra));  \
@@ -16,14 +16,14 @@
         STATE()->invalidateStack();
 
 #define BINOP_EQ(__cast, __op, __reg)                                                      \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                       \
     SWAG_CHECK(checkNotNull(ra));                                                          \
     if (ra->isStackAddr())                                                                 \
     {                                                                                      \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(STATE()->checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(STATE()->getStackKind(&va, addr, sizeof(vb.reg.__reg)));                \
-        SWAG_CHECK(getImmediateB(vb));                                                     \
+        SWAG_CHECK(STATE()->getImmediateB(vb));                                            \
         if (va.isUnknown() || vb.isUnknown())                                              \
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);   \
         else                                                                               \
@@ -34,14 +34,14 @@
     }
 
 #define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                     \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                                                         \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                                                \
     SWAG_CHECK(checkNotNull(ra));                                                                                   \
     if (ra->isStackAddr())                                                                                          \
     {                                                                                                               \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra));                          \
         SWAG_CHECK(STATE()->checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));                                 \
         SWAG_CHECK(STATE()->getStackKind(&va, addr, sizeof(vb.reg.__reg)));                                         \
-        SWAG_CHECK(getImmediateB(vb));                                                                              \
+        SWAG_CHECK(STATE()->getImmediateB(vb));                                                                     \
         if (va.isUnknown() || vb.isUnknown())                                                                       \
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);                            \
         else                                                                                                        \
@@ -53,16 +53,16 @@
     }
 
 #define ATOM_EQ(__cast, __op, __reg)                                                       \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                       \
     SWAG_CHECK(checkNotNull(ra));                                                          \
-    SWAG_CHECK(getRegister(rc, ip->c.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                       \
     rc->setUnknown();                                                                      \
     if (ra->isStackAddr())                                                                 \
     {                                                                                      \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(STATE()->checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(STATE()->getStackKind(rc, addr, sizeof(vb.reg.__reg)));                 \
-        SWAG_CHECK(getRegister(rb, ip->b.u32));                                            \
+        SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));                                   \
         if (rc->isUnknown() || rb->isUnknown())                                            \
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);   \
         else                                                                               \
@@ -74,17 +74,17 @@
     }
 
 #define ATOM_EQ_XCHG(__cast, __reg)                                                        \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                       \
     SWAG_CHECK(checkNotNull(ra));                                                          \
-    SWAG_CHECK(getRegister(rd, ip->d.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(rd, ip->d.u32));                                       \
     rd->setUnknown();                                                                      \
     if (ra->isStackAddr())                                                                 \
     {                                                                                      \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(STATE()->checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(STATE()->getStackKind(rd, addr, sizeof(vb.reg.__reg)));                 \
-        SWAG_CHECK(getRegister(rb, ip->b.u32));                                            \
-        SWAG_CHECK(getRegister(rc, ip->c.u32));                                            \
+        SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));                                   \
+        SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                   \
         if (rd->isUnknown() || rb->isUnknown() || rc->isUnknown())                         \
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);   \
         else                                                                               \
@@ -96,27 +96,27 @@
         }                                                                                  \
     }
 
-#define BINOP_EQ_DIV(__cast, __op, __reg)             \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));           \
-    SWAG_CHECK(getImmediateB(vb));                    \
-    SWAG_CHECK(checkDivZero(&vb, vb.reg.__reg == 0)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)         \
-    {                                                 \
-        SWAG_CHECK(getRegister(rc, ip->c.u32));       \
-        rc->setUnknown();                             \
-        break;                                        \
-    }                                                 \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));     \
+    SWAG_CHECK(STATE()->getImmediateB(vb));              \
+    SWAG_CHECK(checkDivZero(&vb, vb.reg.__reg == 0));    \
+    if (vb.isConstant() && vb.reg.__reg == 0)            \
+    {                                                    \
+        SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32)); \
+        rc->setUnknown();                                \
+        break;                                           \
+    }                                                    \
     BINOP_EQ(__cast, __op, __reg);
 
 #define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                                  \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));                                                \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));                                       \
     SWAG_CHECK(checkNotNull(ra));                                                          \
     if (ra->isStackAddr())                                                                 \
     {                                                                                      \
         SWAG_CHECK(STATE()->getStackAddress(addr, ra->reg.u32, sizeof(vb.reg.__reg), ra)); \
         SWAG_CHECK(STATE()->checkStackInitialized(addr, sizeof(vb.reg.__reg), ra));        \
         SWAG_CHECK(STATE()->getStackKind(&va, addr, sizeof(vb.reg.__reg)));                \
-        SWAG_CHECK(getImmediateB(vb));                                                     \
+        SWAG_CHECK(STATE()->getImmediateB(vb));                                            \
         if (va.isUnknown() || vb.isUnknown())                                              \
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);   \
         else                                                                               \
@@ -130,9 +130,9 @@
     }
 
 #define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                    \
-    SWAG_CHECK(getImmediateA(va));                                                                        \
-    SWAG_CHECK(getImmediateB(vb));                                                                        \
-    SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
+    SWAG_CHECK(STATE()->getImmediateA(va));                                                               \
+    SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
     rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
@@ -141,18 +141,18 @@
     }
 
 #define BINOP(__op, __reg)                                                                                \
-    SWAG_CHECK(getImmediateA(va));                                                                        \
-    SWAG_CHECK(getImmediateB(vb));                                                                        \
-    SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
+    SWAG_CHECK(STATE()->getImmediateA(va));                                                               \
+    SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
     rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;
 
 #define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                      \
-    SWAG_CHECK(getImmediateA(va));                                                                        \
-    SWAG_CHECK(getImmediateB(vb));                                                                        \
-    SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
+    SWAG_CHECK(STATE()->getImmediateA(va));                                                               \
+    SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
     rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \
@@ -161,23 +161,23 @@
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                   \
     }
 
-#define BINOP_DIV(__op, __reg)                        \
-    SWAG_CHECK(getRegister(ra, ip->a.u32));           \
-    SWAG_CHECK(getImmediateB(vb));                    \
-    SWAG_CHECK(checkDivZero(&vb, vb.reg.__reg == 0)); \
-    if (vb.isConstant() && vb.reg.__reg == 0)         \
-    {                                                 \
-        SWAG_CHECK(getRegister(rc, ip->c.u32));       \
-        rc->setUnknown();                             \
-        rc->computeIp(ip, ra, &vb);                   \
-        break;                                        \
-    }                                                 \
+#define BINOP_DIV(__op, __reg)                           \
+    SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));     \
+    SWAG_CHECK(STATE()->getImmediateB(vb));              \
+    SWAG_CHECK(checkDivZero(&vb, vb.reg.__reg == 0));    \
+    if (vb.isConstant() && vb.reg.__reg == 0)            \
+    {                                                    \
+        SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32)); \
+        rc->setUnknown();                                \
+        rc->computeIp(ip, ra, &vb);                      \
+        break;                                           \
+    }                                                    \
     BINOP(__op, __reg);
 
 #define CMP_OP(__op, __reg)                                                                               \
-    SWAG_CHECK(getImmediateA(va));                                                                        \
-    SWAG_CHECK(getImmediateB(vb));                                                                        \
-    SWAG_CHECK(getRegister(rc, ip->c.u32));                                                               \
+    SWAG_CHECK(STATE()->getImmediateA(va));                                                               \
+    SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
     rc->computeIp(ip, &va, &vb, rc);                                                                      \
     if (rc->isConstant())                                                                                 \

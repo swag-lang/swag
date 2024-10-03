@@ -25,12 +25,6 @@ struct ByteCodeSanity
     bool checkNotNullReturn(uint32_t reg);
     bool checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic);
 
-    bool getImmediateA(SanityValue& result);
-    bool getImmediateB(SanityValue& result);
-    bool getImmediateC(SanityValue& result);
-    bool getImmediateD(SanityValue& result);
-    bool getRegister(SanityValue*& result, uint32_t reg);
-
     ByteCodeSanityState* newState(ByteCodeInstruction* fromIp, ByteCodeInstruction* startIp);
 
     static void backTrace(ByteCodeSanityState* state, uint32_t reg);

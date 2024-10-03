@@ -152,7 +152,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
         return true;
 
     SanityValue* ra = nullptr;
-    SWAG_CHECK(getRegister(ra, reg));
+    SWAG_CHECK(STATE()->getRegister(ra, reg));
 
     if (ra->isZero())
     {
@@ -218,7 +218,7 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
         if (!typeParam || (typeParam->couldBeNull() && !typeParam->isNullable()))
         {
             SanityValue* ra = nullptr;
-            SWAG_CHECK(getRegister(ra, pushParams[i]));
+            SWAG_CHECK(STATE()->getRegister(ra, pushParams[i]));
 
             if (ra->isConstant() && !ra->reg.u64)
             {
@@ -267,77 +267,6 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
         }
     }
 
-    return true;
-}
-
-bool ByteCodeSanity::getImmediateA(SanityValue& result)
-{
-    const auto ip = STATE()->ip;
-    if (ip->hasFlag(BCI_IMM_A))
-    {
-        result.kind = SanityValueKind::Constant;
-        result.reg  = ip->b;
-        return true;
-    }
-
-    SanityValue* ra = nullptr;
-    SWAG_CHECK(getRegister(ra, ip->a.u32));
-    result = *ra;
-    return true;
-}
-
-bool ByteCodeSanity::getImmediateB(SanityValue& result)
-{
-    const auto ip = STATE()->ip;
-    if (ip->hasFlag(BCI_IMM_B))
-    {
-        result.kind = SanityValueKind::Constant;
-        result.reg  = ip->b;
-        return true;
-    }
-
-    SanityValue* rb = nullptr;
-    SWAG_CHECK(getRegister(rb, ip->b.u32));
-    result = *rb;
-    return true;
-}
-
-bool ByteCodeSanity::getImmediateC(SanityValue& result)
-{
-    const auto ip = STATE()->ip;
-    if (ip->hasFlag(BCI_IMM_C))
-    {
-        result.kind = SanityValueKind::Constant;
-        result.reg  = ip->c;
-        return true;
-    }
-
-    SanityValue* rc = nullptr;
-    SWAG_CHECK(getRegister(rc, ip->c.u32));
-    result = *rc;
-    return true;
-}
-
-bool ByteCodeSanity::getImmediateD(SanityValue& result)
-{
-    const auto ip = STATE()->ip;
-    if (ip->hasFlag(BCI_IMM_D))
-    {
-        result.kind = SanityValueKind::Constant;
-        result.reg  = ip->d;
-        return true;
-    }
-
-    SanityValue* rd = nullptr;
-    SWAG_CHECK(getRegister(rd, ip->d.u32));
-    result = *rd;
-    return true;
-}
-
-bool ByteCodeSanity::getRegister(SanityValue*& result, uint32_t reg)
-{
-    SWAG_ASSERT(reg < STATE()->regs.size());
-    result = &STATE()->regs[reg];
     return true;
 }
 

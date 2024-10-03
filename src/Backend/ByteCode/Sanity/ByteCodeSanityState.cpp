@@ -1,13 +1,81 @@
 #include "pch.h"
+#include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanityState.h"
 #include "Report/ErrorIds.h"
+
+bool ByteCodeSanityState::getImmediateA(SanityValue& result)
+{
+    if (ip->hasFlag(BCI_IMM_A))
+    {
+        result.kind = SanityValueKind::Constant;
+        result.reg  = ip->b;
+        return true;
+    }
+
+    SanityValue* ra = nullptr;
+    SWAG_CHECK(getRegister(ra, ip->a.u32));
+    result = *ra;
+    return true;
+}
+
+bool ByteCodeSanityState::getImmediateB(SanityValue& result)
+{
+    if (ip->hasFlag(BCI_IMM_B))
+    {
+        result.kind = SanityValueKind::Constant;
+        result.reg  = ip->b;
+        return true;
+    }
+
+    SanityValue* rb = nullptr;
+    SWAG_CHECK(getRegister(rb, ip->b.u32));
+    result = *rb;
+    return true;
+}
+
+bool ByteCodeSanityState::getImmediateC(SanityValue& result)
+{
+    if (ip->hasFlag(BCI_IMM_C))
+    {
+        result.kind = SanityValueKind::Constant;
+        result.reg  = ip->c;
+        return true;
+    }
+
+    SanityValue* rc = nullptr;
+    SWAG_CHECK(getRegister(rc, ip->c.u32));
+    result = *rc;
+    return true;
+}
+
+bool ByteCodeSanityState::getImmediateD(SanityValue& result)
+{
+    if (ip->hasFlag(BCI_IMM_D))
+    {
+        result.kind = SanityValueKind::Constant;
+        result.reg  = ip->d;
+        return true;
+    }
+
+    SanityValue* rd = nullptr;
+    SWAG_CHECK(getRegister(rd, ip->d.u32));
+    result = *rd;
+    return true;
+}
+
+bool ByteCodeSanityState::getRegister(SanityValue*& result, uint32_t reg)
+{
+    SWAG_ASSERT(reg < regs.size());
+    result = &regs[reg];
+    return true;
+}
 
 bool ByteCodeSanityState::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue) const
 {
     if (stackOffset + sizeOf <= static_cast<size_t>(stack.size()))
         return true;
-    const auto err = san->raiseError(ip, formErr(San0007, stackOffset + sizeOf, stack.size()), locValue);
+    const auto err = ByteCodeSanity::raiseError(ip, formErr(San0007, stackOffset + sizeOf, stack.size()), locValue);
     if (err)
         return san->context.report(*err);
     return true;
@@ -20,7 +88,7 @@ bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, con
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
 
-    const auto err = san->raiseError(ip, toErr(San0008), locValue);
+    const auto err = ByteCodeSanity::raiseError(ip, toErr(San0008), locValue);
     if (err)
         return san->context.report(*err);
     return true;
