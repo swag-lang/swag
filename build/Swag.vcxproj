@@ -236,6 +236,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeRunContext.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Run\ByteCodeStack.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.h" />
+    <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Macros.h" />
     <ClInclude Include="..\src\Backend\CallConv.h" />
@@ -413,6 +414,7 @@
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Run\ByteCodeStack.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity.cpp" />
+    <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Loop.cpp" />
     <ClCompile Include="..\src\Backend\CallConv.cpp" />
