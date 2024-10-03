@@ -70,6 +70,7 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
                 SWAG_CHECK(state->getRegister(ra, ip->a.u32));
                 SWAG_CHECK(state->getRegister(rb, ip->b.u32));
                 *rb = *ra;
+                reg = ip->b.u32;
                 break;
 
             default:
