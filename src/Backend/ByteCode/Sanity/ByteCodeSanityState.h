@@ -18,7 +18,8 @@ struct ByteCodeSanityState
     bool getStackKind(SanityValue* result, void* stackAddr, uint32_t sizeOf) const;
     bool getStackAddress(uint8_t*& result, uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue);
     void setStackKind(void* stackAddr, uint32_t sizeOf, SanityValueKind kind, SanityValueFlags flags = SANITY_VALUE_FLAG_NONE);
-    void updateStackKind(void* addr, uint32_t sizeOf);
+    void setStackIps(void* addr, uint32_t sizeOf, bool clear);
+    void updateStackIps(void* addr, uint32_t sizeOf, const SanityValue* from);
     void invalidateStack();
 
     ByteCodeSanity*                    san = nullptr;

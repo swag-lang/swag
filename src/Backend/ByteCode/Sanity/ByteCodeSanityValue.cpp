@@ -109,7 +109,7 @@ namespace
     }
 }
 
-void SanityValue::computeIp(ByteCodeInstruction* ip, SanityValue* ra, SanityValue* rb, SanityValue* rc, SanityValue* rd)
+void SanityValue::setIps(ByteCodeInstruction* ip, SanityValue* ra, SanityValue* rb, SanityValue* rc, SanityValue* rd)
 {
     if (ByteCode::hasWriteRegInA(ip))
     {

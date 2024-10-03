@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Backend/ByteCode/Sanity/ByteCodeSanityState.h"
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
-#include "Backend/ByteCode/Sanity/ByteCodeSanityState.h"
 #include "Report/ErrorIds.h"
 
 bool ByteCodeSanityState::getImmediateA(SanityValue& result)
@@ -133,20 +133,30 @@ void ByteCodeSanityState::setStackKind(void* stackAddr, uint32_t sizeOf, SanityV
         auto& val = stackKind[i];
         val.kind  = kind;
         val.flags = flags;
-
-        val.ips.clear();
-        if (kind == SanityValueKind::Constant)
-            val.ips.push_back(ip);
     }
 }
 
-void ByteCodeSanityState::updateStackKind(void* addr, uint32_t sizeOf)
+void ByteCodeSanityState::setStackIps(void* addr, uint32_t sizeOf, bool clear)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - stack.data());
     SWAG_ASSERT(offset + sizeOf <= stackKind.size());
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
         auto& val = stackKind[i];
+        if (clear)
+            val.ips.clear();
+        val.ips.push_back(ip);
+    }
+}
+
+void ByteCodeSanityState ::updateStackIps(void* addr, uint32_t sizeOf, const SanityValue* from)
+{
+    const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - stack.data());
+    SWAG_ASSERT(offset + sizeOf <= stackKind.size());
+    for (uint32_t i = offset; i < offset + sizeOf; i++)
+    {
+        auto& val = stackKind[i];
+        val.ips   = from->ips;
         val.ips.push_back(ip);
     }
 }
