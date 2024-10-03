@@ -929,8 +929,8 @@ void initErrors()
     SWAG_ERROR(Err0780, "invalid [[expect]] expression                     $ expected an expression compatible with an [[expect]] compile time check                                                                  $ the only valid expression for now is [[param != null]]");
     SWAG_ERROR(Err0782, "invalid [[expect]] expression                     $ expected a function parameter name                                                                                                       $ ");
     SWAG_ERROR(Err0781, "invalid nullable type                             $ cannot make the type [[%s]] nullable                                                                                                     $ ");
-    SWAG_ERROR(Err0783, nullptr);
-    SWAG_ERROR(Err0784, nullptr);
+    SWAG_ERROR(Err0783, "conflicting attributes                            $ cannot use [[#[Swag.Macro]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
+    SWAG_ERROR(Err0784, "conflicting attributes                            $ cannot use [[#[Swag.Mixin]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
     SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////

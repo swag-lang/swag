@@ -344,14 +344,21 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                 if (EXCLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
                     return context->report({child, toErr(Err0044)});
+                
                 if (EXCLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
                     return context->report({child, toErr(Err0045)});
+                
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
                     return context->report({child, toErr(Err0046)});
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
                     return context->report({child, toErr(Err0047)});
+                if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_NO_INLINE))
+                    return context->report({child, toErr(Err0783)});
+
                 if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
                     return context->report({child, toErr(Err0048)});
+                if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_NO_INLINE))
+                    return context->report({child, toErr(Err0784)});                 
             }
 
             //////
