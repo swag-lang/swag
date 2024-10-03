@@ -1584,7 +1584,7 @@ impl Transform
         return true
     }
 
-    func parseFirstLeft(fl: *OutRec)->*OutRec
+    func parseFirstLeft(fl: *OutRec)->nl *OutRec
     {
         var firstLeft = fl
         while firstLeft and !firstLeft.pts:

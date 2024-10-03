@@ -13,7 +13,10 @@
 
 bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 {
-    const auto value = &state->regs[reg];
+    const auto   value = &state->regs[reg];
+    SanityValue* ra    = nullptr;
+    SanityValue* rb    = nullptr;
+    uint8_t*     addr  = nullptr;
 
     for (uint32_t i = state->ips.size() - 2; i != UINT_MAX; i--)
     {
@@ -23,37 +26,51 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 
         switch (ip->op)
         {
+            case ByteCodeOp::GetFromStack8:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(state->getStackAddress(addr, ip->b.u32, 1, nullptr));
+                *addr = ra->reg.u8;
+                state->setStackKind(addr, 1, ra->kind, ra->flags);
+                break;
+
+            case ByteCodeOp::GetFromStack16:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(state->getStackAddress(addr, ip->b.u32, 2, nullptr));
+                *reinterpret_cast<uint16_t*>(addr) = ra->reg.u16;
+                state->setStackKind(addr, 2, ra->kind, ra->flags);
+                break;
+
             case ByteCodeOp::GetFromStack32:
-            {
-                const auto ra = &state->regs[ip->a.u32];
-                uint8_t* addr;
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
                 SWAG_CHECK(state->getStackAddress(addr, ip->b.u32, 4, nullptr));
                 *reinterpret_cast<uint32_t*>(addr) = ra->reg.u32;
                 state->setStackKind(addr, 4, ra->kind, ra->flags);
                 break;
-            }
+
+            case ByteCodeOp::GetFromStack64:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(state->getStackAddress(addr, ip->b.u32, 8, nullptr));
+                *reinterpret_cast<uint64_t*>(addr) = ra->reg.u64;
+                state->setStackKind(addr, 8, ra->kind, ra->flags);
+                break;
 
             case ByteCodeOp::CastBool8:
             case ByteCodeOp::CastBool16:
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
-            {
-                const auto rb = &state->regs[ip->b.u32];
+                SWAG_CHECK(state->getRegister(rb, ip->b.u32));
                 if (!value->reg.b)
                     rb->setConstant(0LL);
                 else
                     rb->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
                 reg = ip->b.u32;
                 break;
-            }
 
             case ByteCodeOp::CopyRBtoRA64:
-            {
-                const auto ra = &state->regs[reg];
-                const auto rb = &state->regs[ip->b.u32];
-                *rb           = *ra;
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(state->getRegister(rb, ip->b.u32));
+                *rb = *ra;
                 break;
-            }
 
             default:
                 return true;
