@@ -148,7 +148,7 @@ bool ByteCodeSanity::checkStackOffset(const SanityValue* value, uint64_t stackOf
 
 bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 {
-    if (!value->isNull())
+    if (!value->isZero())
         return true;
     const auto err = raiseError(toErr(San0006), value);
     if (err)
@@ -165,7 +165,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     SanityValue* ra = nullptr;
     SWAG_CHECK(getRegister(ra, reg));
 
-    if (ra->isNull())
+    if (ra->isZero())
     {
         if (!context.bc->typeInfoFunc->returnType->isNullable() && context.bc->typeInfoFunc->returnType->couldBeNull())
         {

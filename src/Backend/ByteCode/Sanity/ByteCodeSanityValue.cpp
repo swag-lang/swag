@@ -2,10 +2,19 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanityValue.h"
 #include "Backend/ByteCode/ByteCode.h"
 
-bool SanityValue::isNull() const
+bool SanityValue::isZero() const
 {
-    if (kind == SanityValueKind::Constant && !reg.pointer)
+    if (kind == SanityValueKind::Constant && !reg.u64)
         return true;
+    return false;
+}
+
+bool SanityValue::isNotZero() const
+{
+    if (kind == SanityValueKind::Constant && reg.u64)
+        return true;
+    if (kind == SanityValueKind::NotZero)
+        return true;    
     return false;
 }
 

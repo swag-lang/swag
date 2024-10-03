@@ -343,87 +343,76 @@ bool ByteCodeSanity::loop()
                 continue;
 
             case ByteCodeOp::JumpIfFalse:
-                JUMP1(!va.reg.b);
-                if (jmpAddState)
+            case ByteCodeOp::JumpIfZero8:
+            case ByteCodeOp::JumpIfZero16:
+            case ByteCodeOp::JumpIfZero32:
+            case ByteCodeOp::JumpIfZero64:
+                SWAG_CHECK(getImmediateA(va));
+                if (va.isZero())
                 {
-                    jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    STATE()->regs[ip->a.u32].setConstant(1LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                    SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
-                    backTrace(jmpAddState, ip->a.u32);
-                    backTrace(STATE(), ip->a.u32);
+                    ip->dynFlags.add(BCID_SAN_PASS);
+                    ip += ip->b.s32 + 1;
+                    continue;
                 }
+                if (!va.isNotZero() && !context.statesHere.contains(ip + ip->b.s32 + 1))
+                {
+                    context.statesHere.insert(ip + ip->b.s32 + 1);
+                    const auto state = newState(ip, ip + ip->b.s32 + 1);
+                    state->regs[ip->a.u32].setConstant(0LL);
+                    backTrace(state, ip->a.u32);
+                    SanityValue::computeIp(ip, &state->regs[ip->a.u32]);
+                }
+
+                STATE()->regs[ip->a.u32].setConstant(1LL);
+                SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
+                backTrace(STATE(), ip->a.u32);
                 break;
+
             case ByteCodeOp::JumpIfTrue:
-                JUMP1(va.reg.b);
-                if (jmpAddState)
+            case ByteCodeOp::JumpIfNotZero8:
+            case ByteCodeOp::JumpIfNotZero16:
+            case ByteCodeOp::JumpIfNotZero32:
+            case ByteCodeOp::JumpIfNotZero64:
+                SWAG_CHECK(getImmediateA(va));
+                if (va.isNotZero())
                 {
-                    jmpAddState->regs[ip->a.u32].setConstant(1LL);
-                    STATE()->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                    SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
+                    STATE()->regs[ip->a.u32].setConstant(1LL);
+                    backTrace(STATE(), ip->a.u32);
+                    ip->dynFlags.add(BCID_SAN_PASS);
+                    ip += ip->b.s32 + 1;
+                    continue;
                 }
+                if (!va.isZero() && !context.statesHere.contains(ip + ip->b.s32 + 1))
+                {
+                    context.statesHere.insert(ip + ip->b.s32 + 1);
+                    const auto state = newState(ip, ip + ip->b.s32 + 1);
+                    state->regs[ip->a.u32].setConstant(1LL);
+                    backTrace(state, ip->a.u32);
+                    SanityValue::computeIp(ip, &state->regs[ip->a.u32]);
+                }
+
+                STATE()->regs[ip->a.u32].setConstant(0LL);
+                SanityValue::computeIp(ip, &STATE()->regs[ip->a.u32]);
+                backTrace(STATE(), ip->a.u32);
                 break;
 
             case ByteCodeOp::JumpIfEqual64:
-                JUMP2(va.reg.u64 == vc.reg.u64);
-                if (jmpAddState && vc.isConstant())
-                {
-                    jmpAddState->regs[ip->a.u32].setConstant(vc.reg.u64);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                break;
-
-            case ByteCodeOp::JumpIfZero8:
-                JUMP1(va.reg.u8 == 0);
-                if (jmpAddState)
-                {
-                    jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                break;
-            case ByteCodeOp::JumpIfZero16:
-                JUMP1(va.reg.u16 == 0);
-                if (jmpAddState)
-                {
-                    jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                break;
-            case ByteCodeOp::JumpIfZero32:
-                JUMP1(va.reg.u32 == 0);
-                if (jmpAddState)
-                {
-                    jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                break;
-            case ByteCodeOp::JumpIfZero64:
-                JUMP1(va.reg.u64 == 0);
-                if (jmpAddState)
-                {
-                    jmpAddState->regs[ip->a.u32].setConstant(0LL);
-                    SanityValue::computeIp(ip, &jmpAddState->regs[ip->a.u32]);
-                }
-                break;
-
-            case ByteCodeOp::JumpIfLowerEqS64:
-                JUMP2(va.reg.s64 <= vc.reg.s64);
-                break;
-            case ByteCodeOp::JumpIfNotZero8:
-                JUMP1(va.reg.u8 != 0);
-                break;
-            case ByteCodeOp::JumpIfNotZero16:
                 SWAG_CHECK(getImmediateA(va));
-                JUMP1(va.reg.u16 != 0);
-                break;
-            case ByteCodeOp::JumpIfNotZero32:
-                SWAG_CHECK(getImmediateA(va));
-                JUMP1(va.reg.u32 != 0);
-                break;
-            case ByteCodeOp::JumpIfNotZero64:
-                SWAG_CHECK(getImmediateA(va));
-                JUMP1(va.reg.u64 != 0);
+                SWAG_CHECK(getImmediateC(vc));
+                if (va.isConstant() && vc.isConstant())
+                {
+                    ip->dynFlags.add(BCID_SAN_PASS);
+                    if (va.reg.u64 == vc.reg.u64)
+                        ip += ip->b.s32 + 1;
+                    else
+                        ip = ip + 1;
+                    continue;
+                }
+                if (!context.statesHere.contains(ip + ip->b.s32 + 1))
+                {
+                    context.statesHere.insert(ip + ip->b.s32 + 1);
+                    newState(ip, ip + ip->b.s32 + 1);
+                }
                 break;
 
                 /////////////////////////////////////////

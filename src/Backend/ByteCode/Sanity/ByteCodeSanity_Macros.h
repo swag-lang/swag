@@ -183,28 +183,3 @@
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;
 
-#define JUMPT(__isCst, __expr1)                           \
-    jmpAddState = nullptr;                                \
-    if (__isCst)                                          \
-    {                                                     \
-        ip->dynFlags.add(BCID_SAN_PASS);                  \
-        if (__expr1)                                      \
-            ip += ip->b.s32 + 1;                          \
-        else                                              \
-            ip = ip + 1;                                  \
-        continue;                                         \
-    }                                                     \
-    if (!context.statesHere.contains(ip + ip->b.s32 + 1)) \
-    {                                                     \
-        context.statesHere.insert(ip + ip->b.s32 + 1);    \
-        jmpAddState = newState(ip, ip + ip->b.s32 + 1);   \
-    }
-
-#define JUMP1(__expr)              \
-    SWAG_CHECK(getImmediateA(va)); \
-    JUMPT(va.isConstant(), __expr);
-
-#define JUMP2(__expr)              \
-    SWAG_CHECK(getImmediateA(va)); \
-    SWAG_CHECK(getImmediateC(vc)); \
-    JUMPT(va.isConstant() && vc.isConstant(), __expr);

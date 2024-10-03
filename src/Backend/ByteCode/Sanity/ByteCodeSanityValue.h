@@ -20,7 +20,8 @@ struct SanityValue
     Register                           reg;
     SanityValueKind                    kind = SanityValueKind::Invalid;
 
-    bool isNull() const;
+    bool isZero() const;
+    bool isNotZero() const;
     void setConstant(int8_t val);
     void setConstant(int16_t val);
     void setConstant(int32_t val);
