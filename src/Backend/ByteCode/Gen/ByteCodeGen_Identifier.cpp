@@ -426,11 +426,11 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-        const auto persistentReg = resolved->hasFlag(OVERLOAD_PERSISTENT_REG) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
+        const auto persistentReg = resolved->hasFlag(OVERLOAD_REG_PERSISTENT) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
 
         if (node->isSilentCall())
         {
-            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_REG_PERSISTENT));
             node->resultRegisterRc = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->parent->resultRegisterRc);
             freeRegisterRC(context, node->parent);
@@ -456,7 +456,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
-            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_REG_PERSISTENT));
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -517,7 +517,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
-            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_REG_PERSISTENT));
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -539,7 +539,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             node->resultRegisterRc = reserveRegisterRC(context, resolved);
-            resolved->setRegisters(node->resultRegisterRc, OVERLOAD_HINT_REG);
+            resolved->setRegisters(node->resultRegisterRc, OVERLOAD_REG_HINT);
 
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
             ByteCodeInstruction* inst = nullptr;
@@ -579,7 +579,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->symRegisters.size() > 0,
                     Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
-        SWAG_ASSERT(resolved->hasFlag(OVERLOAD_INLINE_REG));
+        SWAG_ASSERT(resolved->hasFlag(OVERLOAD_REG_INLINE));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 
         for (uint32_t i = 0; i < node->resultRegisterRc.size(); i++)

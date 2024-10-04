@@ -186,7 +186,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (orgLeft == left &&
         left->resolvedSymbolOverload() &&
-        left->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET) &&
+        left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_IS_LET) &&
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
         Diagnostic err{node, node->token, toErr(Err0090)};
@@ -205,7 +205,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         return context->report(err);
     }
 
-    if (left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
+    if (left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
     {
         Diagnostic err{node, node->token, toErr(Err0090)};
         if (hint.empty())

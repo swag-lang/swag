@@ -144,11 +144,11 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Keep the value in a persistent register, as it cannot be changed
-            if (isLet && !resolved->hasFlag(OVERLOAD_PERSISTENT_REG))
+            if (isLet && !resolved->hasFlag(OVERLOAD_REG_PERSISTENT))
             {
                 context->bc->staticRegs += node->resultRegisterRc.size();
                 node->resultRegisterRc.cannotFree = true;
-                resolved->setRegisters(node->resultRegisterRc, OVERLOAD_PERSISTENT_REG);
+                resolved->setRegisters(node->resultRegisterRc, OVERLOAD_REG_PERSISTENT);
 
                 switch (resolved->typeInfo->sizeOf)
                 {

@@ -67,7 +67,7 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
     if (overFlags.has(OVERLOAD_CONSTANT))
     {
         article = "a";
-        if (overFlags.has(OVERLOAD_IS_LET))
+        if (overFlags.has(OVERLOAD_VAR_IS_LET))
             return "variable";
         return "constant";
     }

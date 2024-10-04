@@ -2167,7 +2167,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         rc += context->bc->maxReservedRegisterRC++;
         if (resolved->typeInfo->numRegisters() == 2)
             rc += context->bc->maxReservedRegisterRC++;
-        resolved->setRegisters(rc, OVERLOAD_HINT_REG);
+        resolved->setRegisters(rc, OVERLOAD_REG_HINT);
         freeRegisterRC(context, rc);
 
         const auto     typeInfo     = TypeManager::concreteType(resolved->typeInfo);

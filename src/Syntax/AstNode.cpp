@@ -629,7 +629,7 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
 {
     if (overload->symbol->isNot(SymbolKind::Variable))
         return true;
-    if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+    if (overload->hasFlag(OVERLOAD_CONST_VALUE))
         return true;
     if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !hasOwnerInline())
         return false;

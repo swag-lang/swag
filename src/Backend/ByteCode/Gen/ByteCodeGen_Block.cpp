@@ -177,7 +177,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                     {
-                        overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
+                        overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_REG_INLINE);
                         SWAG_ASSERT(overload->symRegisters.countResults > 0);
                         if (!overload->symRegisters.cannotFree && canFreeRegParams)
                         {
@@ -215,7 +215,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                             {
-                                overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
+                                overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_REG_INLINE);
                                 if (!overload->symRegisters.cannotFree)
                                 {
                                     SWAG_ASSERT(canFreeRegParams);
@@ -247,7 +247,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             RegisterList rl;
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, rl));
-                            overload->setRegisters(rl, OVERLOAD_INLINE_REG);
+                            overload->setRegisters(rl, OVERLOAD_REG_INLINE);
 
                             SWAG_ASSERT(canFreeRegParams);
                             overload->symRegisters.cannotFree = true;

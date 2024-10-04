@@ -157,7 +157,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     toAdd.typeInfo            = funcParam->typeInfo;
                     toAdd.kind                = SymbolKind::Variable;
                     toAdd.computedValue       = callParam->computedValue();
-                    toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
+                    toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_CONST_VALUE;
                     toAdd.storageOffset       = callParam->computedValue()->storageOffset;
                     toAdd.storageSegment      = callParam->computedValue()->storageSegment;
                     toAdd.aliasName           = funcParam->token.text;

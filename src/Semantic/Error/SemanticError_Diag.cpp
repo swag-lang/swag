@@ -331,7 +331,7 @@ namespace
         if (bi.castErrorType == CastErrorType::Const)
         {
             const auto callOver = callParamNode->resolvedSymbolOverload();
-            if (callOver && callOver->hasFlag(OVERLOAD_IS_LET))
+            if (callOver && callOver->hasFlag(OVERLOAD_VAR_IS_LET))
                 errorParam.addNote(Diagnostic::note(callOver->node, callOver->node->token, toNte(Nte0013)));
         }
 

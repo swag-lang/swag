@@ -80,7 +80,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     {
         if (node->isNot(AstNodeKind::IdentifierRef) || node->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
         {
-            if (overload->hasFlag(OVERLOAD_IS_LET))
+            if (overload->hasFlag(OVERLOAD_VAR_IS_LET))
             {
                 Diagnostic err{node, node->token, toErr(Err0147)};
                 err.addNote(formNte(Nte0114, node->token.cstr()));
@@ -178,7 +178,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
     }
 
-    if (overload && overload->hasFlag(OVERLOAD_IS_LET))
+    if (overload && overload->hasFlag(OVERLOAD_VAR_IS_LET))
     {
         if (child->isNot(AstNodeKind::IdentifierRef) || child->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
         {
@@ -837,7 +837,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
         if (isConstAccess)
         {
             const auto overload = subArray->array->resolvedSymbolOverload();
-            if (overload && overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+            if (overload && overload->hasFlag(OVERLOAD_CONST_VALUE))
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(overload->computedValue.storageSegment);
@@ -906,7 +906,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
         if (arrayNode->access->hasFlagComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
+            if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
             {
                 arrayNode->setFlagsValueIsComputed();
                 const auto& text = arrayNode->array->resolvedSymbolOverload()->computedValue.text;
@@ -1021,7 +1021,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             // Try to dereference as a constant if we can
             if (arrayNode->access->hasFlagComputedValue())
             {
-                if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
+                if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
                 {
                     const auto& computedValue = arrayNode->array->resolvedSymbolOverload()->computedValue;
                     const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());

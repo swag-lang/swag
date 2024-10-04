@@ -786,7 +786,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
             {
                 SharedLock lk(oneSymbol->mutex);
-                toRemove = (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE));
+                toRemove = (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_CONST_VALUE));
             }
 
             if (toRemove)

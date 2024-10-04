@@ -538,7 +538,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
     // A constant variable must be initialized
     if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->isNot(AstNodeKind::FuncDeclParam))
     {
-        if (overFlags.has(OVERLOAD_IS_LET))
+        if (overFlags.has(OVERLOAD_VAR_IS_LET))
             return context->report({node, toErr(Err0443)});
         return context->report({node, toErr(Err0748)});
     }
@@ -937,12 +937,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
             node->addSpecFlag(AstVarDecl::SPEC_FLAG_LET_TO_CONST);
-            overFlags.add(OVERLOAD_IS_LET);
+            overFlags.add(OVERLOAD_VAR_IS_LET);
             isCompilerConstant = true;
         }
         else
         {
-            overFlags.add(OVERLOAD_IS_LET);
+            overFlags.add(OVERLOAD_VAR_IS_LET);
         }
     }
 

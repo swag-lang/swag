@@ -18,24 +18,24 @@ void SymbolOverload::from(const SymbolOverload* other)
 void SymbolOverload::setRegisters(const RegisterList& reg, OverloadFlags fl)
 {
     ScopedLock lk(symbol->mutex);
-    if (fl == OVERLOAD_HINT_REG)
+    if (fl == OVERLOAD_REG_HINT)
     {
-        if (hasFlag(OVERLOAD_INLINE_REG))
+        if (hasFlag(OVERLOAD_REG_INLINE))
             return;
-        if (hasFlag(OVERLOAD_PERSISTENT_REG))
+        if (hasFlag(OVERLOAD_REG_PERSISTENT))
             return;
     }
-    else if (fl.has(OVERLOAD_INLINE_REG))
+    else if (fl.has(OVERLOAD_REG_INLINE))
     {
-        SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG) || symRegisters == reg);
-        SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG));
-        flags.remove(OVERLOAD_HINT_REG);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_REG_INLINE) || symRegisters == reg);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_REG_PERSISTENT));
+        flags.remove(OVERLOAD_REG_HINT);
     }
     else
     {
-        SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG) || symRegisters == reg);
-        SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG));
-        flags.remove(OVERLOAD_HINT_REG);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_REG_PERSISTENT) || symRegisters == reg);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_REG_INLINE));
+        flags.remove(OVERLOAD_REG_HINT);
     }
 
     flags.add(fl);
@@ -62,7 +62,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     if (computedValue)
     {
         overload->computedValue = *computedValue;
-        overload->flags.add(OVERLOAD_COMPUTED_VALUE);
+        overload->flags.add(OVERLOAD_CONST_VALUE);
     }
 
     overload->symbol = this;

@@ -123,7 +123,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload() &&
-        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
+        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
     {
         if (!node->hasFlagComputedValue())
         {

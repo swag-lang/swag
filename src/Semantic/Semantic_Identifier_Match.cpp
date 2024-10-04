@@ -614,7 +614,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     }
 
     // Transform the variable to a constant node
-    if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+    if (overload->hasFlag(OVERLOAD_CONST_VALUE))
     {
         if (overload->node->isConstantGenTypeInfo())
             identifier->addAstFlag(AST_VALUE_GEN_TYPEINFO);
@@ -1302,7 +1302,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         {
             const auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             const auto arrayOver = arrayNode->array->resolvedSymbolOverload();
-            if (arrayOver && arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasFlagComputedValue())
+            if (arrayOver && arrayOver->hasFlag(OVERLOAD_CONST_VALUE) && arrayNode->access->hasFlagComputedValue())
             {
                 const auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 auto       ptr     = static_cast<uint8_t*>(arrayOver->computedValue.getStorageAddr());
@@ -1352,7 +1352,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
-    if (!overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+    if (!overload->hasFlag(OVERLOAD_CONST_VALUE))
     {
         if (dependentVar && identifierRef->is(AstNodeKind::IdentifierRef) && symbol->isNot(SymbolKind::Function))
         {
