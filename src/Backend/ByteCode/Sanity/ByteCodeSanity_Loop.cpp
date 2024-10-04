@@ -27,21 +27,21 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 
         // Store the last value of a given register, to restore it at the end, once the backtrace is done
         bool here = false;
-        for(const auto &it: map)
+        for (const auto& it : map)
         {
-            if(it.first == reg)
+            if (it.first == reg)
             {
                 here = true;
                 break;
             }
         }
 
-        if(!here)
+        if (!here)
         {
             SWAG_CHECK(state->getRegister(ra, reg));
             map.push_back({reg, *ra});
         }
-        
+
         switch (ip->op)
         {
             case ByteCodeOp::GetFromStack8:
@@ -125,12 +125,12 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
         }
     }
 
-    for(const auto &it: map)
+    for (const auto& it : map)
     {
         SWAG_CHECK(state->getRegister(ra, it.first));
         *ra = it.second;
     }
-    
+
     return true;
 }
 
@@ -271,7 +271,6 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeConstantSegPointer:
             case ByteCodeOp::MakeMutableSegPointer:
             case ByteCodeOp::MakeCompilerSegPointer:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -624,6 +623,12 @@ bool ByteCodeSanity::loop()
                 SanityValue::setIps(ip, ra);
                 break;
 
+            case ByteCodeOp::MakeConstantSegPointer:
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                ra->setConstantAddr(ip->b.u32);
+                SanityValue::setIps(ip, ra);
+                break;
+
             case ByteCodeOp::MakeStackPointer:
                 SWAG_CHECK(STATE()->checkStackOffset(ip->b.u32, 0, nullptr));
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -910,6 +915,8 @@ bool ByteCodeSanity::loop()
                     rc->setConstant(ra->reg.u64 + vb.reg.s64);
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 + vb.reg.s64);
+                else if (ra->isConstantAddr() && vb.isConstant())
+                    rc->setConstantAddr(ra->reg.u64 + vb.reg.s64);                
                 else
                     rc->setUnknown(ra->flags);
                 SanityValue::setIps(ip, ra, &vb, rc);
@@ -924,6 +931,8 @@ bool ByteCodeSanity::loop()
                     rc->setConstant(ra->reg.u64 - vb.reg.s64);
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 - vb.reg.s64);
+                else if (ra->isConstantAddr() && vb.isConstant())
+                    rc->setConstantAddr(ra->reg.u64 - vb.reg.s64);            
                 else
                     rc->setUnknown();
                 SanityValue::setIps(ip, ra, &vb, rc);
@@ -937,6 +946,8 @@ bool ByteCodeSanity::loop()
                     rc->setConstant(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
+                else if (ra->isConstantAddr() && vb.isConstant())
+                    rc->setConstantAddr(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
                 else
                     rc->setUnknown(ra->flags);
                 SanityValue::setIps(ip, ra, &vb, rc);
@@ -953,6 +964,11 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(STATE()->getStackKind(ra, addr, 1));
                     ra->reg.u64 = *addr;
                 }
+                else if (rb->isConstantAddr())
+                {
+                    addr = context.bc->sourceFile->module->constantSegment.address(rb->reg.u32);
+                    ra->setConstant(*addr);
+                }
                 else
                     ra->setUnknown();
                 SanityValue::setIps(ip, ra, rb);
@@ -967,6 +983,11 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(STATE()->checkStackInitialized(addr, 2));
                     SWAG_CHECK(STATE()->getStackKind(ra, addr, 2));
                     ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
+                }
+                else if (rb->isConstantAddr())
+                {
+                    addr = context.bc->sourceFile->module->constantSegment.address(rb->reg.u32);
+                    ra->setConstant(*reinterpret_cast<uint16_t*>(addr));
                 }
                 else
                     ra->setUnknown();
@@ -983,6 +1004,11 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(STATE()->getStackKind(ra, addr, 4));
                     ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
                 }
+                else if (rb->isConstantAddr())
+                {
+                    addr = context.bc->sourceFile->module->constantSegment.address(rb->reg.u32);
+                    ra->setConstant(*reinterpret_cast<uint32_t*>(addr));
+                }
                 else
                     ra->setUnknown();
                 SanityValue::setIps(ip, ra, rb);
@@ -997,6 +1023,11 @@ bool ByteCodeSanity::loop()
                     SWAG_CHECK(STATE()->checkStackInitialized(addr, 8));
                     SWAG_CHECK(STATE()->getStackKind(ra, addr, 8));
                     ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
+                }
+                else if (rb->isConstantAddr())
+                {
+                    addr = context.bc->sourceFile->module->constantSegment.address(rb->reg.u32);
+                    ra->setConstant(*reinterpret_cast<uint64_t*>(addr));
                 }
                 else
                     ra->setUnknown();

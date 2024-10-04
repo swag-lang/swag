@@ -300,7 +300,7 @@ bool ByteCodeSanity::process(ByteCode* bc)
     context.bc = bc;
 
 #if 0
-    if (bc->sourceFile && bc->sourceFile->name != "compiler5793.swg")
+    if (bc->sourceFile && bc->sourceFile->name != "compiler4699.swg")
         return true;
 #endif
 

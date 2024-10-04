@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Semantic/Type/TypeGenStructJob.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Report/Diagnostic.h"
-#include "Report/ErrorIds.h"
 #include "Semantic/Generic/Generic.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"

@@ -9,6 +9,7 @@ enum class SanityValueKind : uint8_t
 {
     Invalid,
     StackAddr,
+    ConstantAddr,
     Constant,
     Unknown,
 };
@@ -39,10 +40,12 @@ struct SanityValue
     void setConstant(double val);
     void setUnknown(SanityValueFlags fl = SANITY_VALUE_FLAG_NONE);
     void setStackAddr(uint64_t val);
+    void setConstantAddr(uint64_t val);
     void setKind(SanityValueKind val);
 
     bool isConstant() const { return kind == SanityValueKind::Constant; }
     bool isStackAddr() const { return kind == SanityValueKind::StackAddr; }
+    bool isConstantAddr() const { return kind == SanityValueKind::ConstantAddr; }
     bool isUnknown() const { return kind == SanityValueKind::Unknown; }
 
     static void setIps(ByteCodeInstruction* ip, SanityValue* ra = nullptr, SanityValue* rb = nullptr, SanityValue* rc = nullptr, SanityValue* rd = nullptr);

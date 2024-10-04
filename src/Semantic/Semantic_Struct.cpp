@@ -363,8 +363,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             funcChild->computeFullNameForeignExport();
             constSegment->addInitPtrFunc(offset, funcChild->fullnameForeignExport);
 
+            // Be sure to never have a null value in the constant segment, for sanity checks.02
             // This will be filled when the module will be loaded, with the real function address
-            *ptrITable = nullptr;
+            *reinterpret_cast<uint64_t*>(ptrITable) = DataSegment::FAKE_PTR;
+
             g_ModuleMgr->addPatchFuncAddress(constSegment, reinterpret_cast<void**>(constSegment->address(offset)), funcChild);
         }
         else
@@ -830,7 +832,7 @@ bool Semantic::solveConstraints(SemanticContext* context, AstStruct* structDecl)
     ScopedLock lk1(structDecl->mutex);
 
     // Execute where constraints
-    for(const auto it: structDecl->constraints)
+    for (const auto it : structDecl->constraints)
     {
         const auto expr = it->lastChild();
 

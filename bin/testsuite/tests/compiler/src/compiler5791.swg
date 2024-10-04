@@ -1,9 +1,9 @@
-#global skip
+//#global skip
 const CharProperties: [4] bool = [false, false, false, false]
 
 func isDigit(c: u8) => CharProperties[c]
 
-#[Swag.PrintGenBc]
+//#[Swag.PrintGenBc]
 func compareLeft(src, dst: const [..] u8)->s32
 {
     var csrc = @countof(src)

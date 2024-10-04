@@ -378,11 +378,18 @@ void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
     ScopedLock lk(mutexPatchMethod);
     patchMethods.push_back({funcDecl, storageOffset});
     funcDecl->addSpecFlag(AstFuncDecl::SPEC_FLAG_PATCH);
+
+    // Be sure to never have a null value in the constant segment, for sanity checks.02
+    if (kind == SegmentKind::Constant)
+    {
+        const auto addr                    = address(storageOffset);
+        *reinterpret_cast<uint64_t*>(addr) = FAKE_PTR;
+    }
 }
 
 void DataSegment::doPatchMethods(JobContext* context)
 {
-    ScopedLock lk(mutexPatchMethod);
+    SharedLock lk(mutexPatchMethod);
     for (const auto it : patchMethods)
     {
         const auto funcNode  = it.first;
@@ -440,7 +447,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     initPtr.push_back(ref);
 }
 
-void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
+void DataSegment::addInitPtrFunc(uint32_t storageOffset, const Utf8& funcName)
 {
     if (kind == SegmentKind::Compiler)
         return;
@@ -450,7 +457,7 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
 #endif
 
     ScopedLock lk(mutexPtr);
-    initFuncPtr[offset] = funcName;
+    initFuncPtr[storageOffset] = funcName;
 }
 
 bool DataSegment::readU64(Seek& seek, uint64_t& result)

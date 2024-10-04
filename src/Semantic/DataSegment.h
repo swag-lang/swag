@@ -99,7 +99,7 @@ struct DataSegment
     uint32_t addString(const Utf8& str, uint8_t** resultPtr = nullptr);
     uint32_t addStringNoLock(const Utf8& str, uint8_t** resultPtr = nullptr);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
-    void     addInitPtrFunc(uint32_t offset, const Utf8& funcName);
+    void     addInitPtrFunc(uint32_t storageOffset, const Utf8& funcName);
     void     addPatchPtr(int64_t* addr, int64_t value);
     void     applyPatchPtr() const;
     void     addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset);
@@ -138,6 +138,8 @@ struct DataSegment
 
     bool overflow = false;
     bool deleted  = false;
+
+    static constexpr uint64_t FAKE_PTR = 0x1111111122222222;
 
     SWAG_RACE_CONDITION_INSTANCE_SEGMENT(raceC);
 };

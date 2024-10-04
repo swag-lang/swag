@@ -90,6 +90,12 @@ void SanityValue::setStackAddr(uint64_t val)
     reg.u64 = val;
 }
 
+void SanityValue::setConstantAddr(uint64_t val)
+{
+    kind    = SanityValueKind::ConstantAddr;
+    reg.u64 = val;
+}
+
 void SanityValue::setKind(SanityValueKind val)
 {
     kind = val;
