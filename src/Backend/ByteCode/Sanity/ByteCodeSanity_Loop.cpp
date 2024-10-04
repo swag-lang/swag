@@ -13,17 +13,35 @@
 
 bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 {
-    const auto   value = &state->regs[reg];
-    SanityValue* ra    = nullptr;
-    SanityValue* rb    = nullptr;
-    uint8_t*     addr  = nullptr;
+    SanityValue*                             ra   = nullptr;
+    SanityValue*                             rb   = nullptr;
+    uint8_t*                                 addr = nullptr;
+    Vector<std::pair<uint32_t, SanityValue>> map;
 
-    for (uint32_t i = state->ips.size() - 2; i != UINT_MAX; i--)
+    bool done = false;
+    for (uint32_t i = state->ips.size() - 2; i != UINT_MAX && !done; i--)
     {
         const auto ip = state->ips[i];
         if (!ByteCode::hasWriteRefToReg(ip, reg))
-            return true;
+            break;
 
+        // Store the last value of a given register, to restore it at the end, once the backtrace is done
+        bool here = false;
+        for(const auto &it: map)
+        {
+            if(it.first == reg)
+            {
+                here = true;
+                break;
+            }
+        }
+
+        if(!here)
+        {
+            SWAG_CHECK(state->getRegister(ra, reg));
+            map.push_back({reg, *ra});
+        }
+        
         switch (ip->op)
         {
             case ByteCodeOp::GetFromStack8:
@@ -58,8 +76,9 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
             case ByteCodeOp::CastBool16:
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
                 SWAG_CHECK(state->getRegister(rb, ip->b.u32));
-                if (!value->reg.b)
+                if (ra->isZero())
                     rb->setConstant(0LL);
                 else
                     rb->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
@@ -73,11 +92,45 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
                 reg = ip->b.u32;
                 break;
 
+            case ByteCodeOp::NegBool:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                SWAG_CHECK(state->getRegister(rb, ip->b.u32));
+                if (ra->isZero())
+                    rb->setConstant(1LL);
+                else if (ra->isNotZero())
+                    rb->setConstant(0LL);
+                else
+                    rb->setUnknown();
+                reg = ip->b.u32;
+                break;
+
+            case ByteCodeOp::DeRef8:
+            case ByteCodeOp::DeRef16:
+            case ByteCodeOp::DeRef32:
+            case ByteCodeOp::DeRef64:
+                SWAG_CHECK(state->getRegister(rb, ip->b.u32));
+                rb->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
+                reg = ip->b.u32;
+                break;
+
+            case ByteCodeOp::IncPointer64:
+                SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                ra->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
+                reg = ip->a.u32;
+                break;
+
             default:
-                return true;
+                done = true;
+                break;
         }
     }
 
+    for(const auto &it: map)
+    {
+        SWAG_CHECK(state->getRegister(ra, it.first));
+        *ra = it.second;
+    }
+    
     return true;
 }
 
@@ -152,10 +205,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicGetContext:
             case ByteCodeOp::IntrinsicGetProcessInfos:
             case ByteCodeOp::InternalHasErr:
-            case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeMutableSegPointer:
-            case ByteCodeOp::MakeCompilerSegPointer:
             case ByteCodeOp::GetFromMutableSeg8:
             case ByteCodeOp::GetFromMutableSeg16:
             case ByteCodeOp::GetFromMutableSeg32:
@@ -219,6 +268,15 @@ bool ByteCodeSanity::loop()
                     rd->setUnknown();
                 }
                 SanityValue::setIps(ip, ra, rb, rc, rd);
+                break;
+
+            case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeConstantSegPointer:
+            case ByteCodeOp::MakeMutableSegPointer:
+            case ByteCodeOp::MakeCompilerSegPointer:
+                SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
+                ra->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
+                SanityValue::setIps(ip, ra);
                 break;
 
                 /////////////////////////////////////////
@@ -428,15 +486,23 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::JumpIfEqual64:
                 SWAG_CHECK(STATE()->getImmediateA(va));
                 SWAG_CHECK(STATE()->getImmediateC(vc));
-                if (va.isConstant() && vc.isConstant())
+
+                if (va.isConstant() && vc.isConstant() && va.reg.u64 == vc.reg.u64)
                 {
                     ip->dynFlags.add(BCID_SAN_PASS);
-                    if (va.reg.u64 == vc.reg.u64)
-                        ip += ip->b.s32 + 1;
-                    else
-                        ip = ip + 1;
+                    ip += ip->b.s32 + 1;
                     continue;
                 }
+
+                if ((va.isConstant() && vc.isConstant() && va.reg.u64 != vc.reg.u64) ||
+                    (va.isNotZero() && vc.isZero()) ||
+                    (va.isZero() && vc.isNotZero()))
+                {
+                    ip->dynFlags.add(BCID_SAN_PASS);
+                    ip = ip + 1;
+                    continue;
+                }
+
                 if (!context.statesHere.contains(ip + ip->b.s32 + 1))
                 {
                     context.statesHere.insert(ip + ip->b.s32 + 1);
@@ -845,7 +911,7 @@ bool ByteCodeSanity::loop()
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 + vb.reg.s64);
                 else
-                    rc->setUnknown();
+                    rc->setUnknown(ra->flags);
                 SanityValue::setIps(ip, ra, &vb, rc);
             }
             break;
@@ -872,7 +938,7 @@ bool ByteCodeSanity::loop()
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 + vb.reg.s64 * ip->d.u64);
                 else
-                    rc->setUnknown();
+                    rc->setUnknown(ra->flags);
                 SanityValue::setIps(ip, ra, &vb, rc);
                 break;
 
@@ -942,6 +1008,8 @@ bool ByteCodeSanity::loop()
                 SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
                 if (rb->isConstant())
                     ra->setConstant(rb->reg.b ? 0LL : 1LL);
+                else if (rb->isNotZero() && !rb->isConstant())
+                    ra->setConstant(0LL);
                 else
                     ra->setUnknown(rb->flags);
                 SanityValue::setIps(ip, ra, rb);

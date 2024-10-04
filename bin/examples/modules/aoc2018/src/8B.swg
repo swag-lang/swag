@@ -21,7 +21,7 @@ using Core
 
 private var total = 0
 
-#[Swag.Sanity(false)]
+//#[Swag.Sanity(false)]
 //#[Swag.PrintGenBc]
 func day8B() assume
 {
