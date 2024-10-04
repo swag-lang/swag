@@ -129,7 +129,7 @@ namespace Semantic
     void        setDefaultAccess(AstNode* node);
     void        setNodeAccess(AstNode* node);
 
-    bool           mustInline(const AstFuncDecl* funcDecl, AstNode* forCall);
+    bool           mustInline(const AstFuncDecl* funcDecl);
     AstFuncDecl*   getFunctionForReturn(AstNode* node);
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     DataSegment*   getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);

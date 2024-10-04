@@ -12,8 +12,11 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Semantic::mustInline(const AstFuncDecl* funcDecl, AstNode* /*forCall*/)
+bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
+    if (!funcDecl)
+        return false;
+    
     if (funcDecl->mustUserInline())
         return true;
 

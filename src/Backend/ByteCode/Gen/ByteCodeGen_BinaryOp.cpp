@@ -777,14 +777,14 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     const auto funcDecl = castAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile-time affectation (SEMFLAG_EXEC_RET_STACK)
-    if (Semantic::mustInline(funcDecl, node) && !node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
+    if (Semantic::mustInline(funcDecl) && !node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
         // The expansion will be done at the lowest level possible
         // Remember: inline functions are also compiled as non inlined (mostly for compile-time execution
         // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
         // again after the owner function has been duplicated).
-        if (!node->ownerFct || !Semantic::mustInline(node->ownerFct, nullptr))
+        if (!Semantic::mustInline(node->ownerFct))
         {
             // Need to wait for function full semantic resolve
             Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
