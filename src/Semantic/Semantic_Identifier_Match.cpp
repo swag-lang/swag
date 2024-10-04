@@ -891,12 +891,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     if (mustInline(funcDecl) && !isFunctionButNotACall(context, identifier, overload->symbol))
     {
-        // Mixin and macros must be inlined here, because no call is possible
-        bool forceInline = false;
-        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
-            forceInline = true;
-
-        if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) || forceInline)
+        if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) ||
+            funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
