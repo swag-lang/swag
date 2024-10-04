@@ -900,7 +900,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
-            if (!mustInline(identifier->ownerFct) || forceInline)
+            if (!mustInline(identifier->ownerFct))
             {
                 // Need to wait for function full semantic resolve
                 waitFuncDeclFullResolve(context->baseJob, funcDecl);

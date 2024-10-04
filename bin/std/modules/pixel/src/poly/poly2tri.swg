@@ -1021,6 +1021,7 @@ impl Tessellate
     mtd pointEvent(point: *Point)->*Node
     {
         let node = locateNode(point)
+        Debug.assert(node and node.point and node.next and node.next.point, "null node")
         let newNode = newFrontTriangle(point, node)
         if point.x <= node.point.x + Math.ConstF64.Epsilon:
             fill(node)

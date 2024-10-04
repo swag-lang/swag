@@ -1,5 +1,7 @@
 //#global testerror "Err0784"
-#global skip
+//#global skip
+
+var G = 0
 
 struct A
 {
@@ -10,7 +12,7 @@ struct A
 func assert(expr: bool)
 {
     if !expr:
-        @print("toto")
+        G = 2
 }
 
 impl A
