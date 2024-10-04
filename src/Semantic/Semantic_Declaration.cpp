@@ -189,7 +189,8 @@ bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 
 bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 {
-    SWAG_CHECK(SemanticError::warnUnusedVariables(context, context->node->ownerScope));
+    if(!mustInline(context->node->ownerFct))
+        SWAG_CHECK(SemanticError::warnUnusedVariables(context, context->node->ownerScope));
     return true;
 }
 
