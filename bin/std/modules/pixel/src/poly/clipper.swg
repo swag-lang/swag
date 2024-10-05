@@ -830,7 +830,7 @@ impl Transform
                     addGhostJoin(op1, horzEdge.bot)
                 }
 
-                if e == eMaxPair and isLastHorz
+                if e == eMaxPair and isLastHorz and eMaxPair
                 {
                     if horzEdge.outIdx >= 0:
                         addLocalMaxPoly(horzEdge, eMaxPair, horzEdge.top)

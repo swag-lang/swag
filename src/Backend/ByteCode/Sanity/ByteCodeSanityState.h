@@ -1,4 +1,5 @@
 #pragma once
+#include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanityValue.h"
 
 struct ByteCodeSanity;
@@ -6,10 +7,10 @@ struct ByteCodeInstruction;
 
 struct ByteCodeSanityState
 {
-    bool getImmediateA(SanityValue& result);
-    bool getImmediateB(SanityValue& result);
-    bool getImmediateC(SanityValue& result);
-    bool getImmediateD(SanityValue& result);
+    bool getImmediateA(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
+    bool getImmediateB(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
+    bool getImmediateC(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
+    bool getImmediateD(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
     bool getRegister(SanityValue*& result, uint32_t reg);
     
     bool checkStackOffset(uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue) const;

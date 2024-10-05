@@ -4,62 +4,70 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Report/ErrorIds.h"
 
-bool ByteCodeSanityState::getImmediateA(SanityValue& result)
+bool ByteCodeSanityState::getImmediateA(SanityValue& result, const ByteCodeInstruction *ipn)
 {
-    if (ip->hasFlag(BCI_IMM_A))
+    if(!ipn)
+        ipn = ip;
+    if (ipn->hasFlag(BCI_IMM_A))
     {
         result.kind = SanityValueKind::Constant;
-        result.reg  = ip->b;
+        result.reg  = ipn->b;
         return true;
     }
 
     SanityValue* ra = nullptr;
-    SWAG_CHECK(getRegister(ra, ip->a.u32));
+    SWAG_CHECK(getRegister(ra, ipn->a.u32));
     result = *ra;
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateB(SanityValue& result)
+bool ByteCodeSanityState::getImmediateB(SanityValue& result, const ByteCodeInstruction *ipn)
 {
-    if (ip->hasFlag(BCI_IMM_B))
+    if(!ipn)
+        ipn = ip;
+    if (ipn->hasFlag(BCI_IMM_B))
     {
         result.kind = SanityValueKind::Constant;
-        result.reg  = ip->b;
+        result.reg  = ipn->b;
         return true;
     }
 
     SanityValue* rb = nullptr;
-    SWAG_CHECK(getRegister(rb, ip->b.u32));
+    SWAG_CHECK(getRegister(rb, ipn->b.u32));
     result = *rb;
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateC(SanityValue& result)
+bool ByteCodeSanityState::getImmediateC(SanityValue& result, const ByteCodeInstruction *ipn)
 {
-    if (ip->hasFlag(BCI_IMM_C))
+    if(!ipn)
+        ipn = ip;
+    if (ipn->hasFlag(BCI_IMM_C))
     {
         result.kind = SanityValueKind::Constant;
-        result.reg  = ip->c;
+        result.reg  = ipn->c;
         return true;
     }
 
     SanityValue* rc = nullptr;
-    SWAG_CHECK(getRegister(rc, ip->c.u32));
+    SWAG_CHECK(getRegister(rc, ipn->c.u32));
     result = *rc;
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateD(SanityValue& result)
+bool ByteCodeSanityState::getImmediateD(SanityValue& result, const ByteCodeInstruction *ipn)
 {
-    if (ip->hasFlag(BCI_IMM_D))
+    if(!ipn)
+        ipn = ip;
+    if (ipn->hasFlag(BCI_IMM_D))
     {
         result.kind = SanityValueKind::Constant;
-        result.reg  = ip->d;
+        result.reg  = ipn->d;
         return true;
     }
 
     SanityValue* rd = nullptr;
-    SWAG_CHECK(getRegister(rd, ip->d.u32));
+    SWAG_CHECK(getRegister(rd, ipn->d.u32));
     result = *rd;
     return true;
 }

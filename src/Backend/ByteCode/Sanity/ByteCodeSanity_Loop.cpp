@@ -13,8 +13,10 @@
 
 bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 {
-    SanityValue*                             ra   = nullptr;
-    SanityValue*                             rb   = nullptr;
+    SanityValue*                             ra = nullptr;
+    SanityValue*                             rb = nullptr;
+    SanityValue*                             rc = nullptr;
+    SanityValue                              va, vb;
     uint8_t*                                 addr = nullptr;
     Vector<std::pair<uint32_t, SanityValue>> map;
 
@@ -117,6 +119,26 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
                 SWAG_CHECK(state->getRegister(ra, ip->a.u32));
                 ra->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
                 reg = ip->a.u32;
+                break;
+
+            case ByteCodeOp::CompareOpEqual64:
+                SWAG_CHECK(state->getImmediateA(va, ip));
+                SWAG_CHECK(state->getImmediateB(vb, ip));
+                SWAG_CHECK(state->getRegister(rc, ip->c.u32));
+                if (rc->isZero() && va.isNotZero() && vb.isTrueUnknown())
+                {
+                    SWAG_CHECK(state->getRegister(rb, ip->b.u32));
+                    rb->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
+                    reg = ip->b.u32;
+                }
+                else if (rc->isZero() && va.isTrueUnknown() && vb.isNotZero())
+                {
+                    SWAG_CHECK(state->getRegister(ra, ip->a.u32));
+                    ra->setUnknown(SANITY_VALUE_FLAG_NOT_ZERO);
+                    reg = ip->a.u32;
+                }
+                else
+                    done = true;
                 break;
 
             default:
@@ -318,13 +340,13 @@ bool ByteCodeSanity::loop()
                 const auto returnType   = typeInfoFunc->concreteReturnType();
                 if (returnType->isNullable() && !returnType->isClosure())
                 {
-                        uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
-                        if (!STATE()->forceParamsU.contains(ipIdx))
-                        {
-                            const auto state = newState(ip, ip);
-                            state->forceParamsU.push_back(ipIdx);
-                            // ra->setConstant(0LL);
-                        }
+                    uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
+                    if (!STATE()->forceParamsU.contains(ipIdx))
+                    {
+                        const auto state = newState(ip, ip);
+                        state->forceParamsU.push_back(ipIdx);
+                        // ra->setConstant(0LL);
+                    }
                 }
                 break;
             }

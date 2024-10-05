@@ -47,6 +47,7 @@ struct SanityValue
     bool isStackAddr() const { return kind == SanityValueKind::StackAddr; }
     bool isConstantAddr() const { return kind == SanityValueKind::ConstantAddr; }
     bool isUnknown() const { return kind == SanityValueKind::Unknown; }
+    bool isTrueUnknown() const { return kind == SanityValueKind::Unknown && flags == SANITY_VALUE_FLAG_NONE; }
 
     static void setIps(ByteCodeInstruction* ip, SanityValue* ra = nullptr, SanityValue* rb = nullptr, SanityValue* rc = nullptr, SanityValue* rd = nullptr);
 };
