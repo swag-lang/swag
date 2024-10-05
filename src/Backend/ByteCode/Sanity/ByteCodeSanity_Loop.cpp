@@ -166,6 +166,8 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::Ret:
             case ByteCodeOp::InternalPanic:
             case ByteCodeOp::IntrinsicPanic:
+            case ByteCodeOp::Unreachable:
+            case ByteCodeOp::InternalUnreachable:
                 return true;
 
             case ByteCodeOp::Nop:
@@ -193,8 +195,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::IntrinsicCVaEnd:
             case ByteCodeOp::IntrinsicFree:
             case ByteCodeOp::DebugNop:
-            case ByteCodeOp::Unreachable:
-            case ByteCodeOp::InternalUnreachable:
             case ByteCodeOp::IntrinsicBcBreakpoint:
             case ByteCodeOp::ClearRR8:
             case ByteCodeOp::ClearRR16:
@@ -318,16 +318,13 @@ bool ByteCodeSanity::loop()
                 const auto returnType   = typeInfoFunc->concreteReturnType();
                 if (returnType->isNullable() && !returnType->isClosure())
                 {
-#if 0
                         uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
                         if (!STATE()->forceParamsU.contains(ipIdx))
                         {
-                            const auto state = newState(context, ip, ip);
+                            const auto state = newState(ip, ip);
                             state->forceParamsU.push_back(ipIdx);
-                            ra->kind        = SanityValueKind::Constant;
-                            ra->reg.pointer = nullptr;
+                            // ra->setConstant(0LL);
                         }
-#endif
                 }
                 break;
             }
@@ -916,7 +913,7 @@ bool ByteCodeSanity::loop()
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 + vb.reg.s64);
                 else if (ra->isConstantAddr() && vb.isConstant())
-                    rc->setConstantAddr(ra->reg.u64 + vb.reg.s64);                
+                    rc->setConstantAddr(ra->reg.u64 + vb.reg.s64);
                 else
                     rc->setUnknown(ra->flags);
                 SanityValue::setIps(ip, ra, &vb, rc);
@@ -932,7 +929,7 @@ bool ByteCodeSanity::loop()
                 else if (ra->isStackAddr() && vb.isConstant())
                     rc->setStackAddr(ra->reg.u64 - vb.reg.s64);
                 else if (ra->isConstantAddr() && vb.isConstant())
-                    rc->setConstantAddr(ra->reg.u64 - vb.reg.s64);            
+                    rc->setConstantAddr(ra->reg.u64 - vb.reg.s64);
                 else
                     rc->setUnknown();
                 SanityValue::setIps(ip, ra, &vb, rc);
