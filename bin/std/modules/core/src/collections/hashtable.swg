@@ -86,7 +86,7 @@ impl HashTable
         #[Global]
         var d: V
 
-        let it = find(key)
+        let it = tryFind(key)
         if it:
             return &it.value
         return &d
@@ -94,7 +94,7 @@ impl HashTable
 
     mtd opIndexAffect(key: K, val: V)
     {
-        let it = find(key)
+        let it = tryFind(key)
         if it:
             it.value = val
         else:
@@ -398,7 +398,7 @@ impl HashTable
 
     // Find the given key, and returns the corresponding entry.
     // Returns null if the key is not there.
-    mtd const find(key: K)->nl *HashTableEntry
+    mtd const tryFind(key: K)->nl *HashTableEntry
     {
         if !table:
             return null
@@ -416,11 +416,30 @@ impl HashTable
         return null
     }
 
+    // Find the given key, and returns the corresponding entry.
+    // Returns null if the key is not there.
+    mtd const find(key: K)->*HashTableEntry
+    {
+        Debug.assert(table != null)
+
+        let hashVal = hashKey(key)
+        var index   = hashVal % capacity
+
+        while table[index].hash
+        {
+            if table[index].hash == hashVal and table[index].key == key:
+                return table + index
+            index = (index + 1) % capacity
+        }
+
+        unreachable
+    }
+
     // Find the given key, and returns the corresponding value.
     // If the key does not exist, then it will return 'val' instead
     mtd const get(key: K, val: V)->V
     {
-        let it = find(key)
+        let it = tryFind(key)
         if !it:
             return val
         return it.value
@@ -429,7 +448,7 @@ impl HashTable
     // Get the entry if it exists, or creates a new one with a default value
     mtd findOrAdd(key: K)->*HashTableEntry
     {
-        let it = find(key)
+        let it = tryFind(key)
         if it:
             return it
         var val: V

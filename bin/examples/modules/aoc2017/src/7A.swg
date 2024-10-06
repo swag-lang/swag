@@ -58,7 +58,7 @@ func day7A()
     var set: HashTable'(string, s32)
     foreach v in g
     {
-        let it = set.find(v)
+        let it = set.tryFind(v)
         set.add(v, it ? it.value + 1 : 1)
     }
 

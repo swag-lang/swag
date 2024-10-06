@@ -67,7 +67,7 @@ func day10B()
         if i == input.count - 1:
             return 1
 
-        let it = storage.find(i)
+        let it = storage.tryFind(i)
         if it:
             return it.value
 

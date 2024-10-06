@@ -325,10 +325,9 @@ impl MainWnd
         }
     }
 
-    mtd getCapture()->nl *Capture
+    mtd getCapture()->*Capture
     {
-        if !editWnd:
-            return null
+        Debug.assert(editWnd and editWnd.editView.capture)
         return editWnd.editView.capture
     }
 

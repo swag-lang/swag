@@ -68,7 +68,7 @@ impl PropWnd
             }
         }
 
-        return capture.getSelectedBaseForm()
+        return assume capture.getSelectedBaseForm()
     }
 
     mtd getSelectedFormType()->typeinfo
@@ -104,7 +104,7 @@ impl PropWnd
             }
         }
 
-        return capture.getSelectedFormType()
+        return assume capture.getSelectedFormType()
     }
 
     mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool, common = false)
@@ -115,7 +115,7 @@ impl PropWnd
         if !capture or !capture.selection.count
         {
             let form   = getSelectedBaseForm()
-            let field  = Reflection.getField(#self.type, #self.name)
+            let field  = assume Reflection.getField(#self.type, #self.name)
             var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
         }

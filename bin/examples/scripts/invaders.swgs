@@ -318,7 +318,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     return false
 }
 
-func loadBindTextures() assume
+func loadBindTextures()
 {
     func loadAndBindTexture(name: string)->Texture throw => g_Wnd.getApp().getRenderer().addImage(Path.combine(g_DataPath, name))
     func loadSound(name: string)->Audio.SoundFile throw  => Audio.SoundFile.load(Path.combine(g_DataPath, name), true)
@@ -327,18 +327,21 @@ func loadBindTextures() assume
     g_DataPath = Path.combine(g_DataPath, "datas")
     g_DataPath = Path.combine(g_DataPath, "invaders")
 
-    g_ExtraImg  = loadAndBindTexture("extra.png")
-    g_RedImg    = loadAndBindTexture("red.png")
-    g_GreenImg  = loadAndBindTexture("green.png")
-    g_YellowImg = loadAndBindTexture("yellow.png")
-    g_PlayerImg = loadAndBindTexture("player.png")
-    g_TvImg     = loadAndBindTexture("tv.png")
+    assume 
+    {
+        g_ExtraImg  = loadAndBindTexture("extra.png")
+        g_RedImg    = loadAndBindTexture("red.png")
+        g_GreenImg  = loadAndBindTexture("green.png")
+        g_YellowImg = loadAndBindTexture("yellow.png")
+        g_PlayerImg = loadAndBindTexture("player.png")
+        g_TvImg     = loadAndBindTexture("tv.png")
 
-    g_SoundExplosion = loadSound("explosion.wav")
-    g_SoundLaser     = loadSound("laser.wav")
-    g_SoundMusic     = loadSound("music.wav")
-
-    g_Font = Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
+        g_SoundExplosion = loadSound("explosion.wav")
+        g_SoundLaser     = loadSound("laser.wav")
+        g_SoundMusic     = loadSound("music.wav")
+    
+        g_Font = Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
+    }
 }
 
 #main

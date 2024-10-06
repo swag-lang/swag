@@ -242,7 +242,7 @@ impl IForm for FormText
 
                 Utf8.visitRunes(|c| t)
                 {
-                    var it = runes.find(c)
+                    var it = runes.tryFind(c)
                     if !it
                     {
                         var ftr: FormTextRune

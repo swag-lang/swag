@@ -345,7 +345,7 @@ bool ByteCodeSanity::loop()
                     {
                         const auto state = newState(ip, ip);
                         state->forceParamsU.push_back(ipIdx);
-                        // ra->setConstant(0LL);
+                        ra->setConstant(0LL);
                     }
                 }
                 break;

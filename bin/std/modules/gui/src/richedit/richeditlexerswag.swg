@@ -660,7 +660,7 @@ impl IRichEditLexer for RichEditLexerSwag
                         currentState = State.FunctionSpecOp
                     else
                     {
-                        let res = mapWords.find(word.toString())
+                        let res = mapWords.tryFind(word.toString())
                         if res:
                             currentState = res.value
                         elif word == "@":

@@ -67,7 +67,7 @@ func day6B()
     while ity
     {
         you.add(ity.value)
-        ity = map.find(ity.value)
+        ity = map.tryFind(ity.value)
     }
 
     var total: u64

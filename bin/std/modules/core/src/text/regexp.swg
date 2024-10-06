@@ -428,7 +428,7 @@ impl RegExp
 
     mtd backward(out: *Array'DfaState, what: rune, state: *DfaState)
     {
-        let grp = state.node.transitions.find(what)
+        let grp = state.node.transitions.tryFind(what)
         if grp
         {
             closeGroup(state)
@@ -464,7 +464,7 @@ impl RegExp
         #[Swag.Mixin]
         func checkTr(c: rune, length: s32)
         {
-            let #mix1 = curState.node.transitions.find(c)
+            let #mix1 = curState.node.transitions.tryFind(c)
             if #mix1
             {
                 var st = dref curState
@@ -583,7 +583,7 @@ impl RegExp
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
     {
-        var here = node.transitions.find(c)
+        var here = node.transitions.tryFind(c)
         if !here
         {
             var toT: Array'(*NfaNode)
@@ -833,7 +833,7 @@ impl RegExp
             let state = stack.popBack()
             outH.addOnce(state)
 
-            let find = state.transitions.find(0'rune)
+            let find = state.transitions.tryFind(0'rune)
             if !find:
                 continue
 
@@ -864,7 +864,7 @@ impl RegExp
         foreach state in inH
         {
             // The real terminal character
-            let pfind = state.transitions.find(c)
+            let pfind = state.transitions.tryFind(c)
             if pfind
             {
                 foreach t in pfind.value:

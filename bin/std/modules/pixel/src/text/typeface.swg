@@ -94,7 +94,7 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        let here = g_HashTypeFace.find(fullname)
+        let here = g_HashTypeFace.tryFind(fullname)
         if here:
             return here.value
 
@@ -112,7 +112,7 @@ public impl TypeFace
     {
         Sync.scopedLock(&lock)
 
-        let here = g_HashTypeFace.find(fullname)
+        let here = g_HashTypeFace.tryFind(fullname)
         if here:
             return here.value
 

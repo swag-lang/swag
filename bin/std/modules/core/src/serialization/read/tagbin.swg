@@ -349,7 +349,7 @@ impl TagBin
         // descriptors followed by values
         if sec.kind != .Ordered and !sec.skipFat
         {
-            var ent = sec.mapSeek.find(val.crc)
+            var ent = sec.mapSeek.tryFind(val.crc)
 
             // If ent is null, then we are requesting a field that does not exist
             // in the stream
@@ -362,7 +362,7 @@ impl TagBin
                     let value = Reflection.getAttributeValue(al, "name")
                     Debug.assert(value != null)
                     reqCrcName = Hash.Crc32.compute(cast(string) value)
-                    ent        = sec.mapSeek.find(reqCrcName)
+                    ent        = sec.mapSeek.tryFind(reqCrcName)
                     if ent:
                         break
                 }

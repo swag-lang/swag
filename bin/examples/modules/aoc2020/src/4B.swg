@@ -175,7 +175,7 @@ func day4B1()
         foreach r in Tokenize.split(l, ' ''u8)
         {
             let res1 = Tokenize.split(r, ':''u8)
-            let it   = map.find(res1[0])
+            let it   = map.tryFind(res1[0])
             if it and it.value.r.match(res1[1]):
                 pass |= it.value.b
         }

@@ -65,7 +65,7 @@ func day7A0()
             let splitVal = Tokenize.split(v, ' ''u8, 1)
             foreach can in splitVal[1..]
             {
-                let it = id.find(split[0])
+                let it = id.tryFind(split[0])
                 if it:
                     it.value.add(can)
                 else
@@ -80,7 +80,7 @@ func day7A0()
 
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
-        let it = id.find(what)
+        let it = id.tryFind(what)
         if !it:
             return false
 
@@ -125,7 +125,7 @@ func day7A1()
 
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
-        let it = id.find(what)
+        let it = id.tryFind(what)
         if !it:
             return false
 

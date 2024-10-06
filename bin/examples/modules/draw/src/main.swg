@@ -415,7 +415,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        let fnt = Res.fontFam.getFont(FontFamilyStyle.Regular)
+        let fnt = assume Res.fontFam.getFont(FontFamilyStyle.Regular)
         painter.fillCircle(100, 100, 5, Argb.Red)
         painter.drawString(100, 100, "abcdefghijkl", fnt, Argb.Black)
     }

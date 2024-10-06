@@ -90,7 +90,7 @@ public impl Font
 
         Sync.scopedLock(&lock)
 
-        let here = g_HashFont.find(str)
+        let here = g_HashFont.tryFind(str)
         if here:
             return here.value
 
@@ -135,7 +135,7 @@ public impl Font
         }
         else
         {
-            let entry = unicodeRef.find(c)
+            let entry = unicodeRef.tryFind(c)
             if entry:
                 return entry.value
         }
