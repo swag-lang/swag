@@ -162,6 +162,7 @@ struct TypeManager
     Map<TypeInfo*, TypeInfo*>                 mapConst;
     Map<TypeInfo*, TypeInfo*>                 mapUnConst;
     Map<TypeInfo*, TypeInfo*>                 mapNullable;
+    Map<TypeInfo*, TypeInfo*>                 mapNotNullable;
 
     TypeInfoNative* typeInfoS8          = nullptr;
     TypeInfoNative* typeInfoS16         = nullptr;

@@ -335,6 +335,16 @@ bool ByteCodeGen::emitCatch(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGen::emitAssumeNotNull(ByteCodeGenContext* context)
+{
+    if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
+        return true;
+
+    const auto node = context->node;
+    emitSafetyNullCheck(context, node->resultRegisterRc);
+    return true;
+}
+
 bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
 {
     if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)

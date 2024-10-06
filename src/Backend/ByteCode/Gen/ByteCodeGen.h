@@ -99,7 +99,7 @@ namespace ByteCodeGen
     void collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>* orderedChildren);
     void computeSourceLocation(const JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler = false);
     void releaseByteCodeJob(AstNode* node);
-    bool checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc);
+    bool checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfoFuncAttr* typeInfoFunc);
     bool sameStackFrame(ByteCodeGenContext* context, const SymbolOverload* overload);
     void freeStructParametersRegisters(ByteCodeGenContext* context);
     bool skipNodes(ByteCodeGenContext* context, AstNode* node);
@@ -162,6 +162,7 @@ namespace ByteCodeGen
     bool emitTry(ByteCodeGenContext* context);
     bool emitTryCatch(ByteCodeGenContext* context);
     bool emitCatch(ByteCodeGenContext* context);
+    bool emitAssumeNotNull(ByteCodeGenContext* context);
     bool emitAssume(ByteCodeGenContext* context);
     bool emitInitStackTrace(ByteCodeGenContext* context);
     bool emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode);

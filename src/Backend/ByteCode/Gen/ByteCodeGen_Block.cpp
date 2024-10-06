@@ -26,7 +26,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         parent = parent->parent;
     if (parent->is(AstNodeKind::IdentifierRef) && parent->parent)
         parent = parent->parent;
-    SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, node->func->typeInfo));
+    SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, typeInfoFunc));
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRc, node->func->returnType->typeInfo->numRegisters());

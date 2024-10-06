@@ -207,6 +207,7 @@ namespace Semantic
     void           setFuncDeclParamsIndex(const AstFuncDecl* funcNode);
     void           setOwnerMaxStackSize(AstNode* node, uint32_t size);
     void           setVarDeclResolve(AstVarDecl* varNode);
+    void           setEmitTryCatchAssume(AstNode* node, const TypeInfo* typeInfo);
 
     bool computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
     bool dealWithMatchResults(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode*& node, MatchIdParamsFlags flags, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, bool forStruct, uint32_t prevMatchesCount);
@@ -256,7 +257,7 @@ namespace Semantic
     bool preResolveFuncDecl(SemanticContext* context);
 
     bool postResolveStruct(SemanticContext* context);
-    
+
     bool resolveAffect(SemanticContext* context);
     bool resolveAfterKnownType(SemanticContext* context);
     bool resolveAppend(SemanticContext* context, AstNode* left, AstNode* right);

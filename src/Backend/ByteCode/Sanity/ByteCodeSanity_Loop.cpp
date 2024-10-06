@@ -338,7 +338,7 @@ bool ByteCodeSanity::loop()
                 const auto typeInfo     = reinterpret_cast<TypeInfo*>(ip->c.pointer);
                 const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 const auto returnType   = typeInfoFunc->concreteReturnType();
-                if (returnType->isNullable() && !returnType->isClosure())
+                if (returnType->isNullable() && !returnType->isClosure() && !ip->node->hasOwnerTryCatchAssume())
                 {
                     uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
                     if (!STATE()->forceParamsU.contains(ipIdx))

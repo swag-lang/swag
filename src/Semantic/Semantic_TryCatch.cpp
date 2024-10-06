@@ -131,11 +131,11 @@ bool Semantic::resolveAssume(SemanticContext* context)
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->setBcNotifyBefore(ByteCodeGen::emitInitStackTrace);
-    node->typeInfo = lastChild->typeInfo;
     node->addAstFlag(identifierRef->flags);
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
+    node->typeInfo = lastChild->typeInfo;
     return true;
 }
 
@@ -159,4 +159,33 @@ bool Semantic::resolveThrow(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGen::emitThrow;
     return true;
+}
+
+void Semantic::setEmitTryCatchAssume(AstNode* node, const TypeInfo *typeInfo)
+{
+    if (!node->hasOwnerTryCatchAssume())
+        return;
+
+    if (typeInfo->hasFlag(TYPEINFO_CAN_THROW))
+    {
+        switch (node->ownerTryCatchAssume()->kind)
+        {
+            case AstNodeKind::Try:
+                node->setBcNotifyAfter(ByteCodeGen::emitTry);
+                break;
+            case AstNodeKind::TryCatch:
+                node->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
+                break;
+            case AstNodeKind::Catch:
+                node->setBcNotifyAfter(ByteCodeGen::emitCatch);
+                break;
+            case AstNodeKind::Assume:
+                node->setBcNotifyAfter(ByteCodeGen::emitAssume);
+                break;
+        }
+    }
+    else if (typeInfo->isNullable() && node->ownerTryCatchAssume()->kind == AstNodeKind::Assume)
+    {
+        node->setBcNotifyAfter(ByteCodeGen::emitAssumeNotNull);
+    }
 }

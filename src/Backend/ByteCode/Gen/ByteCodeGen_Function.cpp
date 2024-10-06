@@ -1399,7 +1399,7 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
     accParams.clear();
 }
 
-bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc)
+bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfoFuncAttr* typeInfoFunc)
 {
     const bool raiseErrors = typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW);
     if (raiseErrors && !callNode->hasOwnerTryCatchAssume())
@@ -1412,6 +1412,9 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
 
     if (!raiseErrors)
     {
+        if (parent->is(AstNodeKind::Assume) && typeInfoFunc->returnType->isNullable())
+            return true;
+
         if (parent->is(AstNodeKind::Try) ||
             parent->is(AstNodeKind::Catch) ||
             parent->is(AstNodeKind::TryCatch) ||
@@ -2053,9 +2056,9 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             reserveRegisterRC(context, node->resultRegisterRc, numRegs);
             if (numRegs == 1)
             {
-                auto returnType = typeInfoFunc->concreteReturnType();
-                const auto ip = EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRc[0]);
-                ip->c.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
+                auto       returnType = typeInfoFunc->concreteReturnType();
+                const auto ip         = EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRc[0]);
+                ip->c.pointer         = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
                 if (node->hasSemFlag(SEMFLAG_FROM_REF) && !node->isForceTakeAddress())
                 {
@@ -2270,12 +2273,12 @@ bool ByteCodeGen::emitCastAs(ByteCodeGenContext* context)
     const auto r0 = reserveRegisterRC(context);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, child0->resultRegisterRc[0]);
     SWAG_CHECK(emitKindOfInterface(context, child0));
-    
+
     EMIT_INST4(context, ByteCodeOp::IntrinsicAs, child1->resultRegisterRc, child0->resultRegisterRc, r0, node->resultRegisterRc);
     freeRegisterRC(context, child0);
     freeRegisterRC(context, child1);
     freeRegisterRC(context, r0);
-    
+
     return true;
 }
 
@@ -2286,7 +2289,7 @@ bool ByteCodeGen::emitCastIs(ByteCodeGenContext* context)
     const auto child0      = node->firstChild();
     const auto child1      = node->secondChild();
     node->resultRegisterRc = reserveRegisterRC(context);
-   
+
     SWAG_CHECK(emitKindOfInterface(context, child0));
     EMIT_INST3(context, ByteCodeOp::IntrinsicIs, child1->resultRegisterRc, child0->resultRegisterRc, node->resultRegisterRc);
 

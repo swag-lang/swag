@@ -16,7 +16,7 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
     if (!funcDecl)
         return false;
-    
+
     if (funcDecl->mustUserInline())
         return true;
 
@@ -932,7 +932,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             return true;
         }
     }
-    
+
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
     OverloadFlags overFlags = 0;
@@ -1768,27 +1768,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // Try/Assume
+    setEmitTryCatchAssume(inlineNode, inlineNode->func->typeInfo);
     if (inlineNode->hasOwnerTryCatchAssume() &&
         inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
     {
-        switch (inlineNode->ownerTryCatchAssume()->kind)
-        {
-            case AstNodeKind::Try:
-                inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
-                break;
-            case AstNodeKind::TryCatch:
-                inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-                break;
-            case AstNodeKind::Catch:
-                inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
-                break;
-            case AstNodeKind::Assume:
-                inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
-                break;
-            default:
-                break;
-        }
-
         // Reset emit from the modifier if it exists, as the inline block will deal with that
         if (identifier->hasExtByteCode())
         {

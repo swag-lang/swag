@@ -694,25 +694,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
 
         // Try/Assume
-        if (identifier->hasOwnerTryCatchAssume() &&
-            identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
-        {
-            switch (identifier->ownerTryCatchAssume()->kind)
-            {
-                case AstNodeKind::Try:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
-                    break;
-                case AstNodeKind::TryCatch:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-                    break;
-                case AstNodeKind::Catch:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
-                    break;
-                case AstNodeKind::Assume:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
-                    break;
-            }
-        }
+        setEmitTryCatchAssume(identifier, identifier->typeInfo);
 
         // Need to make all types compatible, in case a cast is necessary
         SWAG_CHECK(Semantic::setSymbolMatchCallParams(context, oneMatch, identifier));
@@ -943,27 +925,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         identifier->byteCodeFct = ByteCodeGen::emitCall;
 
     // Try/Assume
-    if (identifier->hasOwnerTryCatchAssume() &&
-        identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
-    {
-        switch (identifier->ownerTryCatchAssume()->kind)
-        {
-            case AstNodeKind::Try:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
-                break;
-            case AstNodeKind::TryCatch:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-                break;
-            case AstNodeKind::Catch:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
-                break;
-            case AstNodeKind::Assume:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
-                break;
-            default:
-                break;
-        }
-    }
+    setEmitTryCatchAssume(identifier, identifier->typeInfo);
 
     // Setup parent if necessary
     if (returnType->isStruct())

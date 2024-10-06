@@ -294,11 +294,21 @@ bool TypeInfo::isMethod() const
     return true;
 }
 
+bool TypeInfo::isNullable() const
+{
+    if(flags.has(TYPEINFO_NULLABLE))
+        return true;
+    const auto in = TypeManager::concreteType(this);
+    if(in->flags.has(TYPEINFO_NULLABLE))
+        return true;
+    return false;
+}
+
 bool TypeInfo::couldBeNull() const
 {
     if (isString() || isAny() || isInterface() || isSlice() || isCString() || isLambdaClosure())
         return true;
-    if(isPointer() && !isConstPointerRef() && !isAutoConstPointerRef() && !isPointerRef())
+    if (isPointer() && !isConstPointerRef() && !isAutoConstPointerRef() && !isPointerRef())
         return true;
     return false;
 }
