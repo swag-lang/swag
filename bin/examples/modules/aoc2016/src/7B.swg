@@ -15,10 +15,10 @@ How many IPs in your puzzle input support SSL?
 
 using Core
 
-func day7B() assume
+func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var total = 0
     foreach l in lines

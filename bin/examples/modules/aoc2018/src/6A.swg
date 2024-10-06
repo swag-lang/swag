@@ -51,10 +51,10 @@ What is the size of the largest area that isn't infinite?
 
 using Core
 
-func day6A() assume
+func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    var lines    = File.readAllLines(dataPath)
+    var lines    = assume File.readAllLines(dataPath)
 
     var coords: Array'{ x, y: s32 }
     foreach l in lines

@@ -54,10 +54,10 @@ What is the total number of distinct ways you can arrange the adapters to connec
 
 using Core
 
-func day10B() assume
+func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
     var vals     = Slice.map(lines[..], func(x) => assume StrConv.toS64(x))
 
     vals.sort()

@@ -100,11 +100,6 @@ bool FormatAst::outputFuncSignature(FormatContext& context, AstNode* node, AstNo
         concat->addBlank();
         concat->addString("throw");
     }
-    else if (node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-    {
-        concat->addBlank();
-        concat->addString("assume");
-    }
 
     // Constraints
     if (constraints)

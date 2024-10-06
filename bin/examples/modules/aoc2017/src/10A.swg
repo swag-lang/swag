@@ -38,10 +38,10 @@ However, you should instead use the standard list size of 256 (with values 0 to 
 
 using Core
 
-func day10A() assume
+func day10A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    let slice    = Tokenize.split(File.readAllText(dataPath), ",")
+    let slice    = Tokenize.split(assume File.readAllText(dataPath), ",")
     let nums     = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
 
     var arr, tmp: Array's32

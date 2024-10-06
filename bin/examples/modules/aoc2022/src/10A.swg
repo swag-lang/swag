@@ -190,7 +190,7 @@ Find the signal strength during the 20th, 60th, 100th, 140th, 180th, and 220th c
 */
 using Core
 
-func day10A() assume
+func day10A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "10.txt")
     let lines    = assume File.readAllLines(dataPath)
@@ -210,7 +210,7 @@ func day10A() assume
         toCheck()
         if l != "noop"
         {
-            x += StrConv.toS32(l[5..])
+            x += assume StrConv.toS32(l[5..])
             toCheck()
         }
     }

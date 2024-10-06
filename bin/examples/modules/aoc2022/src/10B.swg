@@ -123,7 +123,7 @@ Render the image given by your program. What eight capital letters appear on you
 */
 using Core
 
-func day10B() assume
+func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "10.txt")
     let lines    = assume File.readAllLines(dataPath)
@@ -150,7 +150,7 @@ func day10B() assume
         toCheck()
         if l != "noop"
         {
-            x += StrConv.toS32(l[5..])
+            x += assume StrConv.toS32(l[5..])
             toCheck()
         }
     }

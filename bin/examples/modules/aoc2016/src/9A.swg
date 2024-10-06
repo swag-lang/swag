@@ -19,22 +19,22 @@ What is the decompressed length of the file (your puzzle input)? Don't count whi
 
 using Core
 
-func day9A() assume
+func day9A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    var line     = File.readAllText(dataPath)
+    var line     = assume File.readAllText(dataPath)
 
     var decode: String
 
-    var r     = Parser.RegExp.create(#"\((\d+)x(\d+)\)"#)
+    var r     = assume Parser.RegExp.create(#"\((\d+)x(\d+)\)"#)
     var start = 0'u64
     while start != @countof(line)
     {
         let res = r.partialMatch(line[start..])
         if res
         {
-            let n = StrConv.toS32(r[1])
-            var x = StrConv.toS32(r[2])
+            let n = assume StrConv.toS32(r[1])
+            var x = assume StrConv.toS32(r[2])
             start += @countof(res)
 
             while x

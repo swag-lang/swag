@@ -5,20 +5,20 @@ To be safe, the CPU also needs to know the highest value held in any register du
 
 using Core
 
-func day8B() assume
+func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var re     = Parser.RegExp.create(#"(\w+) (\w+) (-?\d+) if (\w+) ([[:ascii:]]+) (-?\d+)"#)
+    var re     = assume Parser.RegExp.create(#"(\w+) (\w+) (-?\d+) if (\w+) ([[:ascii:]]+) (-?\d+)"#)
     var regs:  HashTable'(string, s32)
     var total: s32
 
     foreach l in lines
     {
         @assert(re.match(l))
-        var v0 = StrConv.toS32(re[3])
-        let v1 = StrConv.toS32(re[6])
+        var v0 = assume StrConv.toS32(re[3])
+        let v1 = assume StrConv.toS32(re[6])
         if !regs.contains(re[1]):
             regs.add(re[1], 0)
         if !regs.contains(re[4]):

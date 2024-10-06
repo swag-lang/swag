@@ -28,10 +28,10 @@ Treating your puzzle input as a string of ASCII characters, what is the Knot Has
 
 using Core
 
-func day10B() assume
+func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    var nums     = File.readAllText(dataPath)
+    var nums     = assume File.readAllText(dataPath)
     nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32

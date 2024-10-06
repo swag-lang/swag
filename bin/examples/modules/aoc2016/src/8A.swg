@@ -40,10 +40,10 @@ There seems to be an intermediate check of the voltage used by the display: afte
 
 using Core
 
-func day8A() assume
+func day8A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     const W = 50
     const H = 6
@@ -55,23 +55,23 @@ func day8A() assume
         nscreen = screen
         switch
         {
-        case re.match(#"rect (\d+)x(\d+)"#, l):
-            for x in StrConv.toS32(re[1]):
-                for y in StrConv.toS32(re[2]):
+        case assume re.match(#"rect (\d+)x(\d+)"#, l):
+            for x in assume StrConv.toS32(re[1]):
+                for y in assume StrConv.toS32(re[2]):
                     screen[x, y] = true
 
-        case re.match(#"rotate column x=(\d+) by (\d+)"#, l):
-            let x = StrConv.toS32(re[1])
-            for StrConv.toS32(re[2])
+        case assume re.match(#"rotate column x=(\d+) by (\d+)"#, l):
+            let x = assume StrConv.toS32(re[1])
+            for assume StrConv.toS32(re[2])
             {
                 for i in H:
                     screen[x, (i + 1) % H] = nscreen[x, i]
                 nscreen = screen
             }
 
-        case re.match(#"rotate row y=(\d+) by (\d+)"#, l):
-            let y = StrConv.toS32(re[1])
-            for StrConv.toS32(re[2])
+        case assume re.match(#"rotate row y=(\d+) by (\d+)"#, l):
+            let y = assume StrConv.toS32(re[1])
+            for assume StrConv.toS32(re[2])
             {
                 for i in W:
                     screen[(i + 1) % W, y] = nscreen[i, y]

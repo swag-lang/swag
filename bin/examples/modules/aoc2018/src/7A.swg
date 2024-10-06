@@ -39,10 +39,10 @@ In what order should the steps in your instructions be completed?
 
 using Core
 
-func day7A() assume
+func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    var lines    = File.readAllLines(dataPath)
+    var lines    = assume File.readAllLines(dataPath)
 
     var steps: HashTable'(u8, { prev, next: String })
     foreach l in lines

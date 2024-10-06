@@ -4,9 +4,9 @@ func titi() throw
 }
 
 //#[Swag.PrintBc]
-func toto() assume
+func toto()
 {
-    titi()
+    assume titi()
 }
 
 #test

@@ -29,7 +29,7 @@ Given the recording in your puzzle input, what is the error-corrected version of
 
 using Core, Core.Hash
 
-func day6A() assume
+func day6A()
 {
     day6A0()
     day6A1()
@@ -37,10 +37,10 @@ func day6A() assume
 
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-func day6A0() assume
+func day6A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var freq: [8, 26] u32
     var best: [8] { val: u8, freq: u32 }
@@ -70,10 +70,10 @@ func day6A0() assume
     @assert(pwd == "afwlyyyq")
 }
 
-func day6A1() assume
+func day6A1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var freq: [8, 26] u32
     var best: [8] u32

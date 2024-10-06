@@ -27,19 +27,19 @@ private struct Pile
 private var set: HashTable'(string, Pile)
 private var result: s64
 
-func day7B() assume
+func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var r0 = Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
+    var r0 = assume Parser.RegExp.create(#"(\l+) \((\d+)\)"#)
     foreach l in lines
     {
         discard r0.partialMatch(l)
-        set.add(r0[1], Pile{StrConv.toS32(r0[2])})
+        set.add(r0[1], Pile{assume StrConv.toS32(r0[2])})
     }
 
-    var r1 = Parser.RegExp.create(#"\l+"#)
+    var r1 = assume Parser.RegExp.create(#"\l+"#)
     foreach l in lines
     {
         let n = r1.grepAll(l)

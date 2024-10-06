@@ -560,8 +560,6 @@ void GenDoc::generateContentFuncSignature(Utf8& code, const AstFuncDecl* funcNod
 
     if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
         code += " throw";
-    else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-        code += " assume";
 }
 
 void GenDoc::generateContentFunc(OneRef& c)

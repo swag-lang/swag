@@ -92,27 +92,27 @@ private func getBot(x: s32)->&Bot
     return bots.ref1(x)
 }
 
-private func execute(lines: Array'String) assume
+private func execute(lines: Array'String)
 {
     foreach l in lines
     {
         switch
         {
         case r0.match(l):
-            let bot = #ref getBot(StrConv.toS32(r0[2]))
-            bot.add(StrConv.toS32(r0[1]))
+            let bot = #ref getBot(assume StrConv.toS32(r0[2]))
+            bot.add(assume StrConv.toS32(r0[1]))
             bot.execute()
 
         case r1.match(l):
-            let bot = #ref getBot(StrConv.toS32(r1[1]))
+            let bot = #ref getBot(assume StrConv.toS32(r1[1]))
             if bot.count != 2
             {
                 bot.pending.add(l)
                 break
             }
 
-            let low  = #ref getBot(StrConv.toS32(r1[3]))
-            let high = #ref getBot(StrConv.toS32(r1[5]))
+            let low  = #ref getBot(assume StrConv.toS32(r1[3]))
+            let high = #ref getBot(assume StrConv.toS32(r1[5]))
 
             if r1[2] == "bot":
                 low.add(bot.eatLow())
@@ -130,15 +130,15 @@ private func execute(lines: Array'String) assume
     }
 }
 
-func day10AB() assume
+func day10AB()
 {
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    var lines    = File.readAllLines(dataPath)
+    var lines    = assume File.readAllLines(dataPath)
 
-    r0.compile(#"value (\d+) goes to bot (\d+)"#)
-    r1.compile(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#)
+    assume r0.compile(#"value (\d+) goes to bot (\d+)"#)
+    assume r1.compile(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#)
 
     execute(lines)
 

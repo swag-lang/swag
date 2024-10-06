@@ -23,20 +23,20 @@ What is the largest value in any register after completing the instructions in y
 
 using Core
 
-func day8A() assume
+func day8A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var re     = Parser.RegExp.create(#"(\w+) (\w+) (-?\d+) if (\w+) ([[:ascii:]]+) (-?\d+)"#)
+    var re     = assume Parser.RegExp.create(#"(\w+) (\w+) (-?\d+) if (\w+) ([[:ascii:]]+) (-?\d+)"#)
     var regs:  HashTable'(string, s32)
     var total: s32
 
     foreach l in lines
     {
         @assert(re.match(l))
-        var v0 = StrConv.toS32(re[3])
-        let v1 = StrConv.toS32(re[6])
+        var v0 = assume StrConv.toS32(re[3])
+        let v1 = assume StrConv.toS32(re[6])
         if !regs.contains(re[1]):
             regs.add(re[1], 0)
         if !regs.contains(re[4]):

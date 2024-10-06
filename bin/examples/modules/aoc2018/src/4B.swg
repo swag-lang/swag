@@ -9,10 +9,10 @@ What is the ID of the guard you chose multiplied by the minute you chose? (In th
 
 using Core, Core.Parser
 
-func day4B() assume
+func day4B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
-    let lines    = File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
     Slice.sort(lines[..])
 
     var curGuard, startSleep, curMin = 0
@@ -20,10 +20,10 @@ func day4B() assume
 
     foreach l in lines
     {
-        curMin = StrConv.parseS32(l[15..]).value
+        curMin = assume StrConv.parseS32(l[15..]).value
 
         if Utf8.contains(l, "begins shift"):
-            curGuard = StrConv.parseS32(l[26..]).value
+            curGuard = assume StrConv.parseS32(l[26..]).value
         elif Utf8.contains(l, "falls asleep"):
             startSleep = curMin
         elif Utf8.contains(l, "wakes up"):

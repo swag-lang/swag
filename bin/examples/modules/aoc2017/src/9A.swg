@@ -44,7 +44,7 @@ What is the total score for all groups in your input?
 
 using Core
 
-func day9A() assume
+func day9A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
     let line     = assume File.readAllText(dataPath)

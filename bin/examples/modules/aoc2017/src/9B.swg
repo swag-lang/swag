@@ -16,7 +16,7 @@ How many non-canceled characters are within the garbage in your puzzle input?
 
 using Core
 
-func day9B() assume
+func day9B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
     let line     = assume File.readAllText(dataPath)

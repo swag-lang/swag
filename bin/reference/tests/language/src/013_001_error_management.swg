@@ -134,20 +134,6 @@ func myFunc3()
 */
 
 /**
-## Implicit `assume`
-Instead of using `throw`, you can annotate the entire function with `assume`. This treats the entire function as if every error is critical, causing an automatic panic if any error occurs.
-*/
-func myFunc3A() assume
-{
-    // Since the function is annotated with `assume`, any error thrown by `count()` will
-    // cause an immediate panic, without the need for explicit `assume` statements.
-    var cpt = count("filename")  // Implicit `assume`
-
-    // Additional calls to `count()` are also covered by the implicit `assume`.
-    var cpt1 = count("filename")  // Implicit `assume`
-}
-
-/**
 # Blocks in Error Handling
 Blocks can be used in place of a single statement to group multiple operations together in error-handling constructs like `try`, `assume`, `catch`, and `trycatch`. These blocks do not create a new scope but allow you to execute several related operations under a single error-handling strategy.
 */

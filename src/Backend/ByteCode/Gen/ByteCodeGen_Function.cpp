@@ -2192,7 +2192,6 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     // Store the context in a persistent register
     if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT) ||
         funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW) ||
-        funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME) ||
         funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);

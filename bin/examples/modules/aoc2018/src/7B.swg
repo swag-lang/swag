@@ -34,10 +34,10 @@ With 5 workers and the 60+ second step durations described above, how long will 
 
 using Core
 
-func day7B() assume
+func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
-    var lines    = File.readAllLines(dataPath)
+    var lines    = assume File.readAllLines(dataPath)
 
     var steps: HashTable'(u8, { prev, next: String })
     foreach l in lines

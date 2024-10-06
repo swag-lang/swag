@@ -23,10 +23,10 @@ private var total = 0
 
 //#[Swag.Sanity(false)]
 //#[Swag.PrintGenBc]
-func day8B() assume
+func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let values   = Tokenize.split(File.readAllText(dataPath), ' ''u8)
+    let values   = Tokenize.split(assume File.readAllText(dataPath), ' ''u8)
     let nums     = Slice.map(values.toSlice(), func(v) => assume StrConv.toS32(v))
 
     func read(n: Array's32, s: u32)->{ nStart, sum: u32 }

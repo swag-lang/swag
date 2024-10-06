@@ -47,11 +47,11 @@ Before you're ready to help them, you need to make sure your information is corr
 
 using Core
 
-func day7A() assume
+func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let line     = assume File.readAllText(dataPath)
-    let g        = Parser.RegExp.grepAll(#"\l+"#, line)
+    let g        = assume Parser.RegExp.grepAll(#"\l+"#, line)
 
     //Console.print(g)
 

@@ -25,10 +25,10 @@ How many units remain after fully reacting the polymer you scanned? (Note: in th
 
 using Core
 
-func day5A() assume
+func day5A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    var line     = File.readAllText(dataPath)
+    var line     = assume File.readAllText(dataPath)
 
     var idx = 0
     while idx < line.length - 1

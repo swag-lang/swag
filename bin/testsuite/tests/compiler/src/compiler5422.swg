@@ -1,4 +1,4 @@
-#global testerror "Err0431"
+/*#global testerror "Err0431"
 
 func call()->s32 throw
 {
@@ -11,4 +11,4 @@ func toto() assume
     {
         return call()
     }
-}
+}*/
