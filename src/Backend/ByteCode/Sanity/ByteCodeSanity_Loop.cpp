@@ -363,12 +363,14 @@ bool ByteCodeSanity::loop()
                 const auto returnType   = typeInfoFunc->concreteReturnType();
                 if (returnType->isNullable())
                 {
-#if 0                        
-                         ra->kind        = SanityValueKind::Constant;
-                         ra->reg.pointer = nullptr;
-                         rb->kind        = SanityValueKind::Constant;
-                         rb->reg.pointer = nullptr;
-#endif
+                    uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
+                    if (!STATE()->forceParamsU.contains(ipIdx))
+                    {
+                        const auto state = newState(ip, ip);
+                        state->forceParamsU.push_back(ipIdx);
+                        //ra->setConstant(0LL);
+                        //rb->setConstant(0LL);
+                    }
                 }
                 break;
             }
