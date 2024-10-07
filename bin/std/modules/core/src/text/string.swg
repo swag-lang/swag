@@ -650,7 +650,7 @@ impl String
 
     // Returns a new String in lower case
     #[Overload]
-    func toUpper(str: string, set = CharacterSet.Latin1)->String
+    func toUpper(str: nl string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
         result.makeUpper(set)
@@ -668,7 +668,7 @@ impl String
 
     // Returns a new String in lower case
     #[Overload]
-    func toLower(str: string, set = CharacterSet.Latin1)->String
+    func toLower(str: nl string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
         result.makeLower(set)

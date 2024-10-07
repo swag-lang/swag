@@ -142,7 +142,7 @@ impl RegExp
 
     // You can get a capture group value by using the derefence syntax.
     // Returns 'null' if the capture group does not exist
-    public mtd opIndex(idx: u64)->nl string
+    public mtd opIndex(idx: u64)->string
     {
         foreach v in groups
         {
@@ -150,7 +150,7 @@ impl RegExp
                 return v.value
         }
 
-        return null
+        unreachable
     }
 
     mtd clearMatch()

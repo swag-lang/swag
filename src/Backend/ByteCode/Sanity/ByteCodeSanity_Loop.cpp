@@ -366,10 +366,10 @@ bool ByteCodeSanity::loop()
                     uint32_t ipIdx = static_cast<uint32_t>(ip - context.bc->out);
                     if (!STATE()->forceParamsU.contains(ipIdx))
                     {
-                        //const auto state = newState(ip, ip);
-                        //state->forceParamsU.push_back(ipIdx);
-                        //ra->setConstant(0LL);
-                        //rb->setConstant(0LL);
+                        const auto state = newState(ip, ip);
+                        state->forceParamsU.push_back(ipIdx);
+                        ra->setConstant(0LL);
+                        rb->setConstant(0LL);
                     }
                 }
                 break;

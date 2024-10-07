@@ -27,7 +27,7 @@ public func addTypedValue(value: *void, type: typeinfo)
     }
 
     buf.makeLinear()
-    addTypedData(g_ValueFormat, type, buf.toSlice())
+    addTypedData(g_ValueFormat, type, assume buf.toSlice())
 }
 
 // Get whatever value with a given 'type'

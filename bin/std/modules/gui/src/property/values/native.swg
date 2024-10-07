@@ -169,8 +169,8 @@ impl Properties
 
             item.sliderBox = slider
 
-            let minV = cast(f32) Reflection.getAttributeValue(value, SliderMinMax, "min")
-            let maxV = cast(f32) Reflection.getAttributeValue(value, SliderMinMax, "max")
+            let minV = cast(f32) assume Reflection.getAttributeValue(value, SliderMinMax, "min")
+            let maxV = cast(f32) assume Reflection.getAttributeValue(value, SliderMinMax, "max")
 
             switch typeNative.nativeKind
             {
@@ -202,8 +202,8 @@ impl Properties
             if Reflection.hasAttribute(value, MinMax)
             {
                 hasMinMax = true
-                minV      = cast(s64) Reflection.getAttributeValue(value, MinMax, "min")
-                maxV      = cast(s64) Reflection.getAttributeValue(value, MinMax, "max")
+                minV      = cast(s64) assume Reflection.getAttributeValue(value, MinMax, "min")
+                maxV      = cast(s64) assume Reflection.getAttributeValue(value, MinMax, "max")
             }
 
             item.editBox = ed

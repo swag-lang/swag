@@ -27,7 +27,7 @@ impl StringBuilder
     }
 
     // Append a string
-    mtd appendString(value: string)
+    mtd appendString(value: nl string)
     {
         buffer.addBytes(value)
     }

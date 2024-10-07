@@ -26,10 +26,10 @@ const MaxPages      = 8
 func dataPath()->String
 {
     var dataPath = Path.getDirectoryName(#curlocation.fileName)
-    dataPath = Path.getDirectoryName(dataPath)
-    dataPath = Path.getDirectoryName(dataPath)
-    dataPath = Path.getDirectoryName(dataPath)
-    dataPath = Path.getDirectoryName(dataPath)
+    dataPath = assume Path.getDirectoryName(dataPath)
+    dataPath = assume Path.getDirectoryName(dataPath)
+    dataPath = assume Path.getDirectoryName(dataPath)
+    dataPath = assume Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "std/tests/pixel/datas")
 }
 

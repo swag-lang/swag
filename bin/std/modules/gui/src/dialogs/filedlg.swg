@@ -167,7 +167,7 @@ internal impl FileDlg
 
         foreach &fi in curList
         {
-            let fname = Path.getFileName(fi.fullname)
+            let fname = assume Path.getFileName(fi.fullname)
 
             // Filter
             var show = true

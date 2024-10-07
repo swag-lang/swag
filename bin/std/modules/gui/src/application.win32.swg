@@ -250,15 +250,17 @@ impl Application
             if !sfi.hIcon
             {
                 ext = Path.getExtension(name)
+                if ext == null:
+                    ext = ".txt"
                 if small
                 {
-                    let here = mapFileSmallIcons.find(ext)
+                    let here = mapFileSmallIcons.tryFind(ext)
                     if here:
                         return Icon.from(&fileSmallIconsImageList, here.value)
                 }
                 else
                 {
-                    let here = mapFileBigIcons.find(ext)
+                    let here = mapFileBigIcons.tryFind(ext)
                     if here:
                         return Icon.from(&fileBigIconsImageList, here.value)
                 }
