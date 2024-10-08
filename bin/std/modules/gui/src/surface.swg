@@ -185,7 +185,7 @@ impl Surface
     {  
         var result: retval
         var bestSurf = 0'f32
-        var monitors = Env.getMonitors()
+        let monitors = Env.getMonitors()
         foreach m in monitors
         {
             var r1 = position
@@ -209,7 +209,7 @@ impl Surface
         if isMaximized or isMinimized:
             return
 
-        var monitor = getBestMonitor()
+        let monitor = getBestMonitor()
         if !monitor.rect.contains(Math.Point{position.x, position.y}):
             position.constrainIn(monitor.rect)
         setPosition(position)
