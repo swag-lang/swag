@@ -139,7 +139,7 @@ internal var g_HashLock: Sync.RWLock
 func crcToType(crc: u32)->nl typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    let e = g_HashCrcToType.find(crc)
+    let e = g_HashCrcToType.tryFind(crc)
     if !e:
         return null
     return e.value
@@ -149,7 +149,7 @@ func crcToType(crc: u32)->nl typeinfo
 func nameToType(name: string)->nl typeinfo
 {
     Sync.sharedLock(&g_HashLock)
-    let e = g_HashNameToType.find(name)
+    let e = g_HashNameToType.tryFind(name)
     if !e:
         return null
     return e.value

@@ -21,7 +21,7 @@ using Core
     map.add("g", {byr_r, 1})
     map.add("h", {byr_r, 1})
 
-    let it = map.find("a")
+    let it = map.tryFind("a")
     @assert(it != null)
     @assert(it.value.r.match("abcd"))
 }

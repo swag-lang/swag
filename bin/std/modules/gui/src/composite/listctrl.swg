@@ -1087,7 +1087,7 @@ impl ListCtrl
 
         foreach i in selModel
         {
-            let res = idxLineToIdxList.find(i)
+            let res = idxLineToIdxList.tryFind(i)
             if !res:
                 continue
             result.add(lines[res.value])
@@ -1105,7 +1105,7 @@ impl ListCtrl
 
         foreach i in checkModel
         {
-            let res = idxLineToIdxList.find(i)
+            let res = idxLineToIdxList.tryFind(i)
             if !res:
                 continue
             result.add(lines[res.value])
@@ -1121,7 +1121,7 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty():
             return null
         let range = selModel.selection.front()
-        let res   = idxLineToIdxList.find(range.start)
+        let res   = idxLineToIdxList.tryFind(range.start)
         if !res:
             return null
         let idx   = res.value
@@ -1235,7 +1235,7 @@ impl ListCtrl
         while tmp.count
         {
             let toI       = tmp.popBack()
-            let res       = idxLineToIdxList.find(toI.index)
+            let res       = idxLineToIdxList.tryFind(toI.index)
             if !res:
                 continue
             let idxInsert = res.value
@@ -1284,7 +1284,7 @@ impl ListCtrl
         }
 
         // Insert at the right position
-        let res = idxLineToIdxList.find(line.index)
+        let res = idxLineToIdxList.tryFind(line.index)
         if !res:
             return
         let idxInsert = res.value

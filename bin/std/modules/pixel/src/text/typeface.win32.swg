@@ -26,7 +26,7 @@ impl TypeFace
         Sync.scopedLock(&lock)
 
         let str  = String.from(fullname)
-        let here = g_HashTypeFace.find(str)
+        let here = g_HashTypeFace.tryFind(str)
         if here:
             return here.value
 
