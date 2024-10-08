@@ -238,11 +238,13 @@ impl Surface
         dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
         isDirty   = false
 
-        var cxt: PaintContext
-        cxt.painter  = &painter
-        cxt.renderer = &app.renderer
-        cxt.renderer.begin(rc)
-        cxt.painter.begin()
+        with var cxt: PaintContext
+        {
+            .painter  = &painter
+            .renderer = &app.renderer
+            .renderer.begin(rc)
+            .painter.begin()
+        }
 
         // Draw shadow around surface
         let subRect = &app.theme.rects.surfaceWnd_Shadow
@@ -268,11 +270,14 @@ impl Surface
         painter.end()
 
         // Paint to surface render target
-        cxt.renderer.bindRenderTarget(&rt, vp: &myRect)
-        cxt.renderer.setScissorRect(clipRect)
-        cxt.renderer.clear()
-        cxt.renderer.draw(&painter)
-        cxt.renderer.unbindRenderTarget()
+        with cxt
+        {
+            .renderer.bindRenderTarget(&rt, vp: &myRect)
+            .renderer.setScissorRect(clipRect)
+            .renderer.clear()
+            .renderer.draw(&painter)
+            .renderer.unbindRenderTarget()
+        }
 
         // Paint render target to screen
         painter.begin()
