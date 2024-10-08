@@ -180,24 +180,39 @@ impl Surface
         setPosition(pos)
     }
 
+    // Returns the monitor corresponding to the surface position
+    mtd getBestMonitor()->Env.Monitor
+    {  
+        var result: retval
+        var bestSurf = 0'f32
+        var monitors = Env.getMonitors()
+        foreach m in monitors
+        {
+            var r1 = position
+            r1.intersect(m.rect)
+            let surf = r1.width * r1.height
+            if surf > bestSurf
+            {
+                bestSurf = surf
+                result = m
+            }
+        }        
+
+        if bestSurf == 0:
+            result = monitors[0] 
+        return result     
+    }
+
     // Constraint a window to be inside the closest monitor
     mtd constaintToScreen()
     {
         if isMaximized or isMinimized:
             return
 
-        var monitors = Env.getMonitors()
-        foreach m in monitors
-        {
-            var r1 = position
-            r1.intersect(m.rect)
-            if !r1.isEmpty()
-            {
-                position.constrainIn(m.rect)
-                setPosition(position)
-                break
-            }
-        }
+        var monitor = getBestMonitor()
+        if !monitor.rect.contains(Math.Point{position.x, position.y}):
+            position.constrainIn(monitor.rect)
+        setPosition(position)
     }
 
     internal mtd createRT()
