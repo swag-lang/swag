@@ -35,13 +35,14 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto typeName = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
-    if(typeInfo->flags.has(TYPEINFO_NULLABLE))
-        typeName = "__nullable " + typeName;
+    auto       typeName            = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
+    const auto undecoratedTypeName = typeName;
 
-    const auto nonPartialTypeName = typeName;
+    if (typeInfo->flags.has(TYPEINFO_NULLABLE))
+        typeName += ".nullable";
     if (genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
-        typeName += "__partial";
+        typeName += ".partial";
+
     SWAG_ASSERT(!typeName.empty());
 
     auto& mapPerSeg = getMapPerSeg(storageSegment);
@@ -146,7 +147,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     const uint32_t    storageOffset = storageSegment->reserve(typeStruct->sizeOf, reinterpret_cast<uint8_t**>(&exportedTypeInfoValue));
 
     SWAG_ASSERT(!typeName.empty());
-    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSET_OF(exportedTypeInfoValue->fullName)));
+    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, undecoratedTypeName, storageSegment, OFFSET_OF(exportedTypeInfoValue->fullName)));
     SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSET_OF(exportedTypeInfoValue->name)));
     exportedTypeInfoValue->crc = Crc32::compute(static_cast<const uint8_t*>(exportedTypeInfoValue->fullName.buffer), static_cast<uint32_t>(exportedTypeInfoValue->fullName.count));
 
