@@ -16,13 +16,6 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
-    // Nullable keyword
-    if (tokenParse.is(TokenId::KwdNullable))
-    {
-        node->typeFlags.add(TYPE_FLAG_NULLABLE);
-        SWAG_CHECK(eatToken());
-    }
-
     if (inTypeVarDecl)
     {
         const auto             newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
@@ -62,6 +55,13 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0467)));
+        }
+
+        bool nullable = false;
+        if (tokenParse.is(TokenId::KwdNullable))
+        {
+            nullable = true;
+            SWAG_CHECK(eatToken());
         }
 
         Token constToken;
@@ -149,7 +149,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
         }
         else
         {
-            SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
+            SWAG_CHECK(doNullableTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
             typeExpr->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
 
             // type...
@@ -172,6 +172,8 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 curIsAlone  = false;
             }
         }
+
+        typeExpr->typeFlags.add(nullable ? TYPE_FLAG_NULLABLE : 0);
 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0377)));
 
@@ -319,7 +321,7 @@ bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
     if (tokenParse.is(TokenId::SymMinusGreat))
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &node->returnType));
+        SWAG_CHECK(doNullableTypeExpression(node, EXPR_FLAG_NONE, &node->returnType));
     }
 
     // End
@@ -486,13 +488,6 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     *result         = node;
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
-    // Nullable keyword
-    if (tokenParse.is(TokenId::KwdNullable))
-    {
-        node->typeFlags.add(TYPE_FLAG_NULLABLE);
-        SWAG_CHECK(eatToken());
-    }
-    
     // Const keyword
     if (tokenParse.is(TokenId::KwdConst))
     {
@@ -514,7 +509,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         node->typeFlags.add(TYPE_FLAG_IS_REF);
         node->typeFlags.add(TYPE_FLAG_IS_MOVE_REF);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        AstNode* subType;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &subType));
         return true;
     }
 
@@ -524,7 +520,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         node->typeFlags.add(TYPE_FLAG_IS_SUB_TYPE);
         node->typeFlags.add(TYPE_FLAG_IS_REF);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        AstNode* subType;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &subType));
         return true;
     }
 
@@ -556,7 +553,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
             if (node->arrayDim == 254)
                 return error(tokenParse, toErr(Err0486));
             node->arrayDim++;
-            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+            AstNode* subType;
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &subType));
             if (tokenParse.is(TokenId::SymRightSquare))
                 break;
             SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0097)));
@@ -573,7 +571,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         }
 
         node->typeFlags.add(TYPE_FLAG_IS_SUB_TYPE);
-        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        AstNode* subType;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &subType));
         return true;
     }
 
@@ -584,11 +583,33 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
         if (tokenParse.is(TokenId::SymCircumflex))
             node->typeFlags.add(TYPE_FLAG_IS_PTR_ARITHMETIC);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        AstNode* subType;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &subType));
         return true;
     }
 
     SWAG_CHECK(doSingleTypeExpression(node, exprFlags));
+    return true;
+}
+
+bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
+{
+    bool nullable = false;
+    if (tokenParse.is(TokenId::KwdNullable))
+    {
+        nullable = true;
+        SWAG_CHECK(eatToken());
+    }
+
+    SWAG_CHECK(doTypeExpression(parent, exprFlags, result));
+    SWAG_ASSERT((*result)->is(AstNodeKind::TypeExpression));
+
+    if (nullable)
+    {
+        const auto typeNode = castAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
+        typeNode->typeFlags.add(TYPE_FLAG_NULLABLE);
+    }
+
     return true;
 }
 
@@ -639,11 +660,11 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
 
     SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0329)}));
 
-    if (tokenParse.is(TokenId::KwdFunc) || tokenParse.is(TokenId::KwdNullable) && getNextToken().is(TokenId::KwdFunc))
+    if (tokenParse.is(TokenId::KwdFunc))
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
     else
         SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
-    
+
     return true;
 }
 

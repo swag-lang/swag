@@ -169,6 +169,7 @@ struct Parser
     bool doAlias(AstNode* parent, AstNode** result);
     bool doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags);
     bool doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
+    bool doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
     bool doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl);

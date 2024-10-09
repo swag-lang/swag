@@ -75,13 +75,13 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
             {
                 SWAG_CHECK(eatToken());
                 AstNode* resNode;
-                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &resNode));
+                SWAG_CHECK(doNullableTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &resNode));
                 resNode->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
                 break;
             }
 
             default:
-                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &dummyResult));
+                SWAG_CHECK(doNullableTypeExpression(param, EXPR_FLAG_IN_GENERIC_PARAMS, &dummyResult));
                 break;
         }
 
@@ -362,7 +362,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             else
             {
                 AstNode* typeExpression;
-                SWAG_CHECK(doTypeExpression(paramNode, EXPR_FLAG_NONE, &typeExpression));
+                SWAG_CHECK(doNullableTypeExpression(paramNode, EXPR_FLAG_NONE, &typeExpression));
 
                 // type...
                 if (tokenParse.is(TokenId::SymDotDotDot))
@@ -857,8 +857,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
             ParserPushFct   scopedFct(this, funcNode);
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.isNot(TokenId::KwdRetVal), error(tokenParse, toErr(Err0334)));
+
             AstNode* typeExpression;
-            SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
+            SWAG_CHECK(doNullableTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
         }
 
         if (tokenParse.is(TokenId::KwdThrow))
