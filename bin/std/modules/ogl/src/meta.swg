@@ -21,6 +21,33 @@ var g_Functions: Array'OneFunc
     g_Functions.add({msg.type, msg.name})
 }
 
+#[Compiler]
+func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
+{    
+    var result: retval = "("
+
+    foreach p, i in typeFunc.parameters
+    {
+        if i != 0:
+            result += ","
+        if namedArgs:
+            result += Format.toString("p%: ", i)
+        if p.pointedType.flags & .Nullable:
+            result += "nl "
+        result += p.pointedType.name
+    }
+
+    result += ")"
+
+    if typeFunc.returnType != void
+    {
+        result += "->"
+        result += typeFunc.returnType.name
+    }
+
+    return result
+}
+
 #placeholder glInitExtensions
 #message(CompilerMsgMask.PassAfterSemantic)
 {
@@ -34,33 +61,26 @@ var g_Functions: Array'OneFunc
         let typeFunc = cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
-        builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)
+        builderVars.appendFormat("var ext_%: func", e.name)
+        builderVars.appendString(getSig(typeFunc, false))
+        builderVars.appendString("\n")
 
         // Make a wrapper function
-        builderVars.appendFormat("public func %(", e.name)
+        builderVars.appendFormat("public func %", e.name)
+        builderVars.appendString(getSig(typeFunc, true))
+        builderVars.appendString("\n{\n")
+        builderVars.appendFormat("\treturn ext_%(", e.name)        
         foreach p, i in typeFunc.parameters
         {
             if i != 0:
-                builderVars.appendString(", ")
-            builderVars.appendFormat("p%: %", i, p.pointedType.name)
-        }
-
-        if typeFunc.returnType == void:
-            builderVars.appendFormat(")\n{\n")
-        else:
-            builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
-        builderVars.appendFormat("\treturn ext_%(", e.name)
-        foreach p, i in typeFunc.parameters
-        {
-            if i != 0:
-                builderVars.appendString(", ")
+                builderVars.appendString(",")
             builderVars.appendFormat("p%", i)
         }
 
         builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name)
+        builderInit.appendFormat("\text_% = cast(func%) getExtensionAddress(@dataof(\"%\"))\n", e.name, getSig(typeFunc, false), e.name)
     }
 
     let itf = @compiler()

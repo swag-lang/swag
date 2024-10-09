@@ -36,6 +36,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     }
 
     auto typeName = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
+    if(typeInfo->flags.has(TYPEINFO_NULLABLE))
+        typeName = "__nullable " + typeName;
 
     const auto nonPartialTypeName = typeName;
     if (genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
