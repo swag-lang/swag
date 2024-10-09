@@ -1,6 +1,6 @@
 #[Swag.Strict]
 {
-    alias AA = nl *void
+    alias AA = *void
     alias BB = *void
 }
 
