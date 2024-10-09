@@ -770,7 +770,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">moveref</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Reserved Keywords </h4>
 <p>These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features. </p>
-<div class="code-block"><span class="SCde"><span class="SInv">is</span>
+<div class="code-block"><span class="SCde"><span class="SLgc">is</span>
 <span class="SInv">not</span>
 <span class="SInv">do</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Basic Types </h4>
@@ -2849,7 +2849,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Multiple Values Pointers </h4>
 <p>For cases where you need <b>pointer arithmetic</b> and want a pointer to <b>multiple values</b> (like an array or a memory block), you declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. This type of pointer is especially useful for iterating over a sequence of elements stored in contiguous memory locations. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Safety("sanity", false)]</span>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Sanity(false)]</span>
 <span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> ptr: ^<span class="STpe">u8</span>                        <span class="SCmt">// Declaring a pointer to a memory block of 'u8' values</span>
@@ -3079,7 +3079,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> x: <span class="STpe">any</span>                         <span class="SCmt">// Declare an 'any' type variable</span>
     <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)                 <span class="SCmt">// 'x' is null</span>
-    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)                  <span class="SCmt">// 'x' does not contain an s32</span>
 
     x = <span class="SNum">6</span>                              <span class="SCmt">// Store an s32 value in 'x'</span>
     <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)                  <span class="SCmt">// Now 'x' contains an s32</span>
@@ -3171,8 +3170,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>When an <span class="code-inline">if</span> statement includes a variable declaration, you can add an additional condition using a <span class="code-inline">where</span> clause. The <span class="code-inline">where</span> clause is evaluated only if the initial test passes. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span> =&gt; <span class="SStr">"string"</span>
-    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="STpe">string</span>   =&gt; <span class="SKwd">null</span>
+    <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span>  =&gt; <span class="SStr">"string"</span>
+    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="SKwd">nl</span> <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
 
     <span class="SCmt">// The 'where' clause is only evaluated if 'str' is not null.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">'s'</span>:
@@ -4626,7 +4625,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called when @dataof is used, returns a pointer to the underlying data of type WhateverType</span>
-    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">nl</span> *<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
 
     <span class="SCmt">// Custom casting between the struct and another type, can be overloaded with different return types</span>
     <span class="SCmt">// Example usage: var x = cast(OneType) v</span>
@@ -7050,14 +7049,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// var v: Point's32</span>
 }</span></div>
-<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Multiple Evaluations </h4>
-<p>By utilizing the <span class="code-inline">where&lt;call&gt;</span> mode, the <span class="code-inline">where</span> clause is evaluated for <b>each</b> function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
+<h4 id="_009_000_generics_swg__009_003_where_constraints_swg">Multiple Evaluations with <span class="code-inline">verify</span> </h4>
+<p>By utilizing the <span class="code-inline">verify</span> mode, the constraint is evaluated for <b>each</b> function call, rather than just once per function instantiation. This is particularly useful for conditions that depend on the actual arguments passed to the function, as long as these arguments can be evaluated at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
         <span class="SCmt">// Function to ensure that `y` is not zero at compile time.</span>
         <span class="SKwd">func</span> <span class="SFct">div</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                        <span class="SCmt">// Division function with compile-time check</span>
-            <span class="SLgc">where</span>&lt;call&gt;
+            <span class="SLgc">verify</span>
             {
                 <span class="SCmt">// Verify if `y` is a compile-time constant.</span>
                 <span class="SLgc">if</span> !<span class="SItr">#isconstexpr</span>(y):
@@ -7082,7 +7081,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Function with different implementations based on whether `x` is known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for constexpr `x`</span>
-            <span class="SLgc">where</span>&lt;call&gt; <span class="SItr">#isconstexpr</span>(x)
+            <span class="SLgc">verify</span> <span class="SItr">#isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">555</span>                                  <span class="SCmt">// Return 555 if `x` is constexpr</span>
         }
@@ -7090,7 +7089,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmt">// Overload for the case where `x` is not known at compile time.</span>
         <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>                         <span class="SCmt">// Overload for non-constexpr `x`</span>
-            <span class="SLgc">where</span>&lt;call&gt; !<span class="SItr">#isconstexpr</span>(x)
+            <span class="SLgc">verify</span> !<span class="SItr">#isconstexpr</span>(x)
         {
             <span class="SLgc">return</span> <span class="SNum">666</span>                                  <span class="SCmt">// Return 666 if `x` is not constexpr</span>
         }
@@ -7414,9 +7413,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>A common use case for <span class="code-inline">defer</span> is in resource management, such as the creation and subsequent release  of resources. By placing the release logic immediately after the creation logic, the code becomes  more readable and ensures that resources are always properly managed, even in the event of an error or  early exit. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
+    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                    =&gt; <span class="SKwd">true</span>
     <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) = <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
-    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
+    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)          =&gt; b
 
     <span class="SKwd">var</span> resource = <span class="SKwd">false</span>
     <span class="SLgc">for</span> <span class="SNum">10</span>
@@ -7438,9 +7437,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>In more complex functions, <span class="code-inline">defer</span> proves invaluable for ensuring that resources are cleaned up  reliably, even in the presence of errors or early returns. This pattern is essential for writing  robust, error-resilient code that gracefully handles failure scenarios while ensuring that all necessary  cleanup is performed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
+    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                    =&gt; <span class="SKwd">true</span>
     <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) = <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
-    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
+    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)          =&gt; b
 
     <span class="SKwd">func</span> <span class="SFct">performTask</span>() -&gt; <span class="STpe">bool</span>
     {
@@ -7855,17 +7854,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> If an error is not caught, Swag will <b>panic</b> at runtime. This is because the top-level caller always assumes safe execution, ensuring that unhandled errors result in a program halt. </p>
 </div>
-<h5 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Implicit <span class="code-inline">assume</span> </h5>
-<p>Instead of using <span class="code-inline">throw</span>, you can annotate the entire function with <span class="code-inline">assume</span>. This treats the entire function as if every error is critical, causing an automatic panic if any error occurs. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3A</span>() <span class="SKwd">assume</span>
-{
-    <span class="SCmt">// Since the function is annotated with `assume`, any error thrown by `count()` will</span>
-    <span class="SCmt">// cause an immediate panic, without the need for explicit `assume` statements.</span>
-    <span class="SKwd">var</span> cpt = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit `assume`</span>
-
-    <span class="SCmt">// Additional calls to `count()` are also covered by the implicit `assume`.</span>
-    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)  <span class="SCmt">// Implicit `assume`</span>
-}</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_001_error_management_swg">Blocks in Error Handling </h4>
 <p>Blocks can be used in place of a single statement to group multiple operations together in error-handling constructs like <span class="code-inline">try</span>, <span class="code-inline">assume</span>, <span class="code-inline">catch</span>, and <span class="code-inline">trycatch</span>. These blocks do not create a new scope but allow you to execute several related operations under a single error-handling strategy. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>
@@ -9081,7 +9069,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 12-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 09-10-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
 </div>
 </div>
 </div>

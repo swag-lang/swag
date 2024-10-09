@@ -272,11 +272,11 @@
 <h1 id="">The actual code </h1>
 <p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
 <p>For a simple script, this is more easy to process events in that way. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: <span class="SCst">IEvent</span>)-&gt;<span class="STpe">bool</span>
 {
-    <span class="SLgc">switch</span> evt.kind
+    <span class="SLgc">switch</span> evt
     {
-    <span class="SLgc">case</span> <span class="SCst">Create</span>:
+    <span class="SLgc">case</span> <span class="SCst">CreateEvent</span>:
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
 
         <span class="SCmt">// 'loadAssets' can raise some errors (we'll see later). So here we 'assume' that</span>
@@ -284,10 +284,11 @@
         <span class="SKwd">assume</span> <span class="SFct">loadAssets</span>(wnd)
 
         <span class="SFct">start</span>()
-    <span class="SLgc">case</span> <span class="SCst">Resize</span>:
+
+    <span class="SLgc">case</span> <span class="SCst">ResizeEvent</span>:
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
-    <span class="SLgc">case</span> <span class="SCst">Paint</span>:
-        <span class="SKwd">let</span> paintEvt = <span class="SKwd">cast</span>(*<span class="SCst">PaintEvent</span>) evt
+
+    <span class="SLgc">case</span> <span class="SKwd">let</span> paintEvt <span class="SLgc">as</span> <span class="SCst">PaintEvent</span>:
         <span class="SKwd">let</span> painter  = paintEvt.bc.painter
 
         <span class="SCmt">// This is the elapsed time between two 'frames', in seconds.</span>
@@ -564,7 +565,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 12-09-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 09-10-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
 </div>
 </div>
 </div>
