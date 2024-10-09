@@ -45,7 +45,6 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
     while (true)
     {
         bool curIsAlone = true;
-        bool isConst    = false;
         bool forceType  = false;
 
         if (tokenParse.is(TokenId::CompilerType))
@@ -55,22 +54,6 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0467)));
-        }
-
-        bool nullable = false;
-        if (tokenParse.is(TokenId::KwdNullable))
-        {
-            nullable = true;
-            SWAG_CHECK(eatToken());
-        }
-
-        Token constToken;
-        if (tokenParse.is(TokenId::KwdConst))
-        {
-            curIsAlone = false;
-            isConst    = true;
-            constToken = tokenParse.token;
-            SWAG_CHECK(eatToken());
         }
 
         // Accept a parameter name
@@ -86,13 +69,12 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             }
             else if (tokenName.token.is(g_LangSpec->name_self))
             {
-                Diagnostic err(sourceFile, tokenParse.token, toErr(Err0651));
+                const Diagnostic err(sourceFile, tokenParse.token, toErr(Err0651));
                 return context->report(err);
             }
             else
             {
                 SWAG_VERIFY(inTypeVarDecl, error(tokenName.token, toErr(Err0636)));
-                SWAG_VERIFY(!isConst, error(constToken, toErr(Err0312)));
 
                 namedParam        = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, nullptr);
                 namedParam->token = tokenName.token;
@@ -117,7 +99,6 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             curIsAlone = false;
             SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0335)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
-            typeExpr->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
             typeExpr->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
@@ -150,14 +131,13 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
         else
         {
             SWAG_CHECK(doNullableTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
-            typeExpr->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
 
             // type...
             if (tokenParse.is(TokenId::SymDotDotDot))
             {
                 curIsAlone = false;
                 Ast::removeFromParent(typeExpr);
-                auto newTypeExpression               = Ast::newTypeExpression(nullptr, params);
+                const auto newTypeExpression         = Ast::newTypeExpression(nullptr, params);
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoTypedVariadic;
                 newTypeExpression->token.endLocation = tokenParse.token.endLocation;
                 SWAG_CHECK(eatToken());
@@ -172,8 +152,6 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 curIsAlone  = false;
             }
         }
-
-        typeExpr->typeFlags.add(nullable ? TYPE_FLAG_NULLABLE : 0);
 
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0377)));
 
@@ -228,7 +206,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 tokenAmb.endLocation   = tokenParse.token.startLocation;
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0025)};
-                auto       note = Diagnostic::note(lastParameter, formNte(Nte0001, lastParameter->type->token.cstr()));
+                const auto note = Diagnostic::note(lastParameter, formNte(Nte0001, lastParameter->type->token.cstr()));
                 note->hint      = formNte(Nte0046, lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
                 err.addNote(note);
                 return context->report(err);

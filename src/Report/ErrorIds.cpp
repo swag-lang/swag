@@ -456,7 +456,6 @@ void initErrors()
     SWAG_ERROR(Err0309, "misplaced [[Self]] type                           $ cannot use [[Self]] outside of an [[impl]], [[struct]], or [[interface]] block                                                           $ [[Self]] is a reserved alias for the corresponding struct");
     SWAG_ERROR(Err0310, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0311, "misplaced [[break]]                               $ cannot use [[break]] outside of a breakable block such as [[loop]], [[visit]], [[for]], etc.                                             $ ");
-    SWAG_ERROR(Err0312, "misplaced [[const]]                               $ cannot use [[const]] before a lambda parameter name                                                                                      $ ");
     SWAG_ERROR(Err0313, "misplaced [[const]]                               $ expected [[self]] after [[const]] when declaring a function parameter, found $$TKN$$ instead                                             $ ");
     SWAG_ERROR(Err0314, "misplaced [[const]] qualifier                     $ cannot use the [[const]] qualifier after [[func]], only after [[mtd]]                                                                    $ ");
     SWAG_ERROR(Err0315, "misplaced [[continue]]                            $ cannot use [[continue]] outside of a breakable block such as [[loop]], [[visit]], [[for]], etc.                                          $ ");
@@ -931,6 +930,8 @@ void initErrors()
     SWAG_ERROR(Err0781, "invalid nullable type                             $ cannot make the type [[%s]] nullable                                                                                                     $ ");
     SWAG_ERROR(Err0783, "conflicting attributes                            $ cannot use [[#[Swag.Macro]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
     SWAG_ERROR(Err0784, "conflicting attributes                            $ cannot use [[#[Swag.Mixin]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
+
+    SWAG_ERROR(Err0312, nullptr);
     SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////
