@@ -593,7 +593,7 @@ internal impl Properties
                     labelDesc.labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
                     labelDesc.vertAlignmentText = .Top
                     labelDesc.horzAlignmentText = .Left
-                    labelDesc.setText(dispDesc)
+                    labelDesc.setText(cast(string) dispDesc)
                     labelDesc.margin.w = listDescMarginAfter
                     item.labelDesc     = labelDesc
                 }

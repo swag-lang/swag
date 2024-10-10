@@ -166,6 +166,7 @@ impl Capture
     mtd hasChanged()
     {
         changed = true
+        editView.invalidate()
         editView.main.captureHasChanged()
     }
 
