@@ -1,4 +1,4 @@
-#global testerror "Err0633"
+#global testerror "Err0645"
 
 //#include <stdio.h>
 

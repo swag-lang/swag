@@ -1,4 +1,4 @@
-#global testerror "Err0365"
+#global testerror "Err0376"
 
 #[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
 attr T();

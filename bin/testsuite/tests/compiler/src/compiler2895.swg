@@ -1,4 +1,4 @@
-#global testerror "Err0186"
+#global testerror "Err0191"
 func and() => true
 {
 

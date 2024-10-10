@@ -2,7 +2,7 @@
 ;
 
 //#[Swag.PrintBc]
-#global testerror "Err0155";
+#global testerror "Err0160";
 #test
 {
 	var cpt = 0;

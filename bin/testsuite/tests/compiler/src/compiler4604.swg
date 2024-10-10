@@ -1,4 +1,4 @@
-#global testerror "Err0630"
+#global testerror "Err0642"
 interface IPokeValue
 {
     mtd(T) toto();

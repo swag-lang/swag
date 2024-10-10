@@ -1,4 +1,4 @@
-#global testerror "Err0518";
+#global testerror "Err0530";
 
 alias str = string;
 var a: str = "coucou";

@@ -1,4 +1,4 @@
-//#global testerror "Err0090"
+//#global testerror "Err0093"
 
 //#global skip
 interface Printable {

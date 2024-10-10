@@ -1,4 +1,4 @@
-#global testerror "Err0779"
+#global testerror "Err0017"
 
 interface I {}
 struct A { v = "a" }

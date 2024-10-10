@@ -1,4 +1,4 @@
-#global testerror "Err0664"
+#global testerror "Err0675"
 
 enum E { A; }
 enum F { B; }

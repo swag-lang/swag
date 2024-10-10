@@ -296,7 +296,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
         return Report::internalError(node, "bad access, but cannot find the culprit");
 
     const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-    const auto msg           = formErr(Err0286,
+    const auto msg           = formErr(Err0296,
                                        Naming::kindName(node).cstr(),
                                        node->token.cstr(),
                                        Naming::kindName(culprit).cstr(),

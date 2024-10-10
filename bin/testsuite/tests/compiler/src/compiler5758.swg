@@ -1,4 +1,4 @@
-#global testerror "Err0076"
+#global testerror "Err0079"
 struct(T, V) Point
     where T == s32
     where V != s32

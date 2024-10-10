@@ -1,4 +1,4 @@
-#global testerror "Err0284"
+#global testerror "Err0294"
 
 //#[Swag.Optimize("", false)]
 #[Swag.Safety("", true)]

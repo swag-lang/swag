@@ -1,4 +1,4 @@
-#global testerror "Err0137"
+#global testerror "Err0142"
 
 #[Swag.Compiler]
 const A = 10

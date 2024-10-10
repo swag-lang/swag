@@ -1,4 +1,4 @@
-#global testerror "Err0412"
+#global testerror "Err0423"
 #test
 {
 	for(i: 2)

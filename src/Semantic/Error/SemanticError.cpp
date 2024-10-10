@@ -14,12 +14,12 @@ void SemanticError::errorConstraintFailed(SemanticContext*, const ErrorParam& er
 
     if (errorParam.destFuncDecl)
     {
-        errID = Err0075;
+        errID = Err0078;
         node  = errorParam.destFuncDecl;
     }
     else
     {
-        errID = Err0076;
+        errID = Err0079;
         node  = errorParam.destStructDecl;
     }
 
@@ -83,7 +83,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, const AstNode* hintType)
 {
-    Utf8 text = formErr(Err0584, node->token.cstr(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0596, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";

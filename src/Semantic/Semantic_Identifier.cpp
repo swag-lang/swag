@@ -37,7 +37,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
                 const auto symbolName = c->resolvedSymbolName();
                 if (symbolName && symbolName->is(SymbolKind::Variable))
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0310)}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0321)}));
                     cptVar++;
                 }
             }
@@ -49,7 +49,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         symbolName->isNot(SymbolKind::Function) &&
         symbolName->isNot(SymbolKind::Variable))
     {
-        Diagnostic err{back, formErr(Err0350, Naming::aKindName(symbolName->kind).cstr())};
+        Diagnostic err{back, formErr(Err0361, Naming::aKindName(symbolName->kind).cstr())};
 
         err.addNote(toNte(Nte0011));
 
@@ -675,13 +675,13 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedSelf())
             {
-                Diagnostic err{dependentVar, formErr(Err0018, dependentVar->typeInfo->getDisplayNameC())};
+                Diagnostic err{dependentVar, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
                 err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0138));
                 err.addNote(toNte(Nte0041));
                 return context->report(err);
             }
 
-            Diagnostic err{dep.node, formErr(Err0018, dependentVar->typeInfo->getDisplayNameC())};
+            Diagnostic err{dep.node, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
             err.addNote(dependentVar, toNte(Nte0178));
             err.addNote(toNte(Nte0041));
             return context->report(err);
@@ -746,7 +746,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                             case AstNodeKind::CompilerIf:
                             case AstNodeKind::While:
                             {
-                                const auto       msg = formErr(Err0124, Naming::kindName(overload).cstr(), overload->node->token.cstr(), brotherParent->token.cstr());
+                                const auto       msg = formErr(Err0127, Naming::kindName(overload).cstr(), overload->node->token.cstr(), brotherParent->token.cstr());
                                 const Diagnostic err{node, node->token, msg};
                                 return context->report(err, Diagnostic::hereIs(overload->node));
                             }
@@ -825,18 +825,18 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                const Diagnostic err{identifier, identifier->token, formErr(Err0183, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                const Diagnostic err{identifier, identifier->token, formErr(Err0188, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
             }
 
-            const Diagnostic err{identifier, identifier->token, formErr(Err0184, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            const Diagnostic err{identifier, identifier->token, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
         }
 
         if (symbolKind == SymbolKind::TypeAlias &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCE_ALIAS)->isStruct())
         {
-            const Diagnostic err{identifier, identifier->token, formErr(Err0184, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            const Diagnostic err{identifier, identifier->token, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
         }
     }
@@ -874,7 +874,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                     oneParam->typeInfo->isTypedVariadic() ||
                     oneParam->typeInfo->isCVariadic())
                 {
-                    Diagnostic err{oneParam, toErr(Err0400)};
+                    Diagnostic err{oneParam, toErr(Err0411)};
                     err.hint = Diagnostic::isType(oneParam);
                     return context->report(err);
                 }
@@ -902,7 +902,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             const auto firstNode = symbol->nodes.front();
-            Diagnostic err{genericParameters, formErr(Err0624, Naming::aKindName(symbol->kind).cstr())};
+            Diagnostic err{genericParameters, formErr(Err0636, Naming::aKindName(symbol->kind).cstr())};
             err.addNote(node, node->token, formNte(Nte0127, node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
@@ -1087,7 +1087,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     const auto identifierRef = identifier->identifierRef();
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.is(context->sourceFile->scopeFile->name))
     {
-        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0732)}));
+        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0744)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }
@@ -1178,7 +1178,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (symbolsMatch.empty())
-        return context->report({identifier, formErr(Err0695, identifier->token.cstr())});
+        return context->report({identifier, formErr(Err0706, identifier->token.cstr())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.

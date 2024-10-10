@@ -1,4 +1,4 @@
-#global testerror "Err0443"
+#global testerror "Err0454"
 #test
 {
     let x: s32 = undefined

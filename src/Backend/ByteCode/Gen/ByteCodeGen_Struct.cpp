@@ -855,7 +855,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0698, typeStructVar->getDisplayNameC(), "opDrop")}));
+            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0709, typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
@@ -967,7 +967,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0698, typeStructVar->getDisplayNameC(), "opPostCopy")}));
+            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({typeParam->declNode, formErr(Err0709, typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
@@ -1078,7 +1078,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION),
-                        context->report({typeParam->declNode, formErr(Err0698, typeStructVar->getDisplayNameC(), "opPostMove")}));
+                        context->report({typeParam->declNode, formErr(Err0709, typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);
@@ -1167,7 +1167,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
     {
         if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
         {
-            const Diagnostic err{from, formErr(Err0087, typeInfo->getDisplayNameC())};
+            const Diagnostic err{from, formErr(Err0090, typeInfo->getDisplayNameC())};
             return context->report(err);
         }
 

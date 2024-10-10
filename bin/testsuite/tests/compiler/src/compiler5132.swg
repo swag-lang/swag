@@ -1,4 +1,4 @@
-#global testerror "Err0132"
+#global testerror "Err0137"
 const A = 0
 
 interface I

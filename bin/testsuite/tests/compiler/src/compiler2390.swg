@@ -1,4 +1,4 @@
-#global testerror "Err0661"
+#global testerror "Err0672"
 
 #[Swag.Test]
 func main1 (s: bool)

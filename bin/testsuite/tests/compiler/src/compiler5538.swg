@@ -1,4 +1,4 @@
-#global testerror "Err0428"
+#global testerror "Err0439"
 
 func sum(nums: f64...) {
     @assert @countof(nums) == 3

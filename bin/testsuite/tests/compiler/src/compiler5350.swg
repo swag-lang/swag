@@ -1,4 +1,4 @@
-#global testerror "Err0657"
+#global testerror "Err0669"
 struct String {}
 struct(K, V) HashTable {}
 

@@ -1,4 +1,4 @@
-#global testerror "Err0263"
+#global testerror "Err0273"
 enum RGB { R; G; B; }
 
 #[Swag.Using(s32)]

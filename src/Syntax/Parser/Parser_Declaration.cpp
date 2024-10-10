@@ -36,7 +36,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
             break;
 
         case TokenId::SymAttrStart:
-            return error(tokenParse, formErr(Err0352, tokenAttr.cstr(), tokenAttr.cstr()));
+            return error(tokenParse, formErr(Err0363, tokenAttr.cstr(), tokenAttr.cstr()));
 
         case TokenId::KwdPublic:
         case TokenId::KwdPrivate:
@@ -45,7 +45,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 
         default:
         {
-            Diagnostic err{sourceFile, tokenAttr, formErr(Err0349, tokenAttr.cstr(), tokenParse.cstr())};
+            Diagnostic err{sourceFile, tokenAttr, formErr(Err0360, tokenAttr.cstr(), tokenParse.cstr())};
             err.addNote(tokenParse.token, toNte(Nte0166));
             return context->report(err);
         }
@@ -57,8 +57,8 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
     SWAG_ASSERT(tokenParse.is(TokenId::KwdPublic) || tokenParse.is(TokenId::KwdInternal));
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0348, tokenParse.cstr())));
-    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, formErr(Err0497, tokenParse.cstr())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0359, tokenParse.cstr())));
+    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, formErr(Err0508, tokenParse.cstr())));
 
     Scope*     orgScope  = currentScope;
     Scope*     newScope  = currentScope;
@@ -111,7 +111,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0348, tokenParse.cstr())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0359, tokenParse.cstr())));
 
     auto       privName = tokenParse;
     const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
@@ -156,7 +156,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
 
             if (!varNode->is(AstNodeKind::VarDecl))
             {
-                const Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0266)};
+                const Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0276)};
                 return context->report(err);
             }
 
@@ -188,7 +188,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                     [[fallthrough]];
                 default:
                 {
-                    Diagnostic err{sourceFile, tokenParse, toErr(Err0396)};
+                    Diagnostic err{sourceFile, tokenParse, toErr(Err0407)};
                     err.addNote(child, child->token, toNte(Nte0197));
                     return context->report(err);
                 }
@@ -271,19 +271,19 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 break;
             case TokenId::SymLeftCurly:
                 if (!forPrivate)
-                    return error(tokenParse, toErr(Err0453));
+                    return error(tokenParse, toErr(Err0464));
                 break;
             case TokenId::SymSemiColon:
-                return error(tokenParse, toErr(Err0452));
+                return error(tokenParse, toErr(Err0463));
             default:
                 if (!forPrivate)
-                    return error(tokenParse, toErr(Err0210));
+                    return error(tokenParse, toErr(Err0215));
                 break;
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->acceptsInternalStuff())
-            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse, formErr(Err0502, tokenParse.cstr())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse, formErr(Err0514, tokenParse.cstr())));
 
         // Add/Get namespace
         {
@@ -359,7 +359,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         }
         else if (tokenParse.is(TokenId::SymSemiColon))
         {
-            return error(tokenParse, toErr(Err0209));
+            return error(tokenParse, toErr(Err0214));
         }
         else
         {
@@ -453,7 +453,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0067)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0070)));
 
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
@@ -470,7 +470,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (tokenParse.isNot(TokenId::SymColon))
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0413)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0424)};
             err.addNote(parent, forToken, formNte(Nte0111, forToken.cstr()));
             return context->report(err);
         }
@@ -478,11 +478,11 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         const auto tokenDo = tokenParse;
         SWAG_CHECK(eatToken());
 
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0067)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0070)));
 
         if (tokenParse.is(TokenId::SymLeftCurly))
         {
-            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0305)};
+            const Diagnostic err{sourceFile, tokenDo.token, toErr(Err0316)};
             return context->report(err);
         }
     }
@@ -493,7 +493,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         tokenParse.is(TokenId::SymRightParen) ||
         tokenParse.is(TokenId::SymRightSquare))
     {
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0619)};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0631)};
         err.addNote(statement, statement->token, toNte(Nte0200));
         return context->report(err);
     }
@@ -615,7 +615,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     if (tokenParse.isNot(TokenId::SymLeftCurly))
     {
         labelNode->addSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED);
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0598)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0610)));
         labelNode->inheritTokenName(tokenParse.token);
         labelNode->inheritTokenLocation(tokenParse.token);
         SWAG_CHECK(eatToken());
@@ -888,15 +888,15 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdPublic:
         case TokenId::KwdInternal:
         case TokenId::KwdPrivate:
-            return error(tokenParse, formErr(Err0348, tokenParse.cstr()));
+            return error(tokenParse, formErr(Err0359, tokenParse.cstr()));
 
         case TokenId::SymDot:
         {
             const auto withNode = parent->findParent(AstNodeKind::With);
-            SWAG_VERIFY(withNode, error(tokenParse, toErr(Err0393)));
+            SWAG_VERIFY(withNode, error(tokenParse, toErr(Err0404)));
             auto tokenDot = tokenParse;
             eatToken();
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0136)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0141)));
             SWAG_CHECK(doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With)));
             FormatAst::inheritFormatBefore(this, *result, &tokenDot);
             return true;
@@ -904,7 +904,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         case TokenId::NativeType:
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0649)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0661)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
                 err.addNote(toNte(Nte0067));
@@ -913,7 +913,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
-                return error(tokenParse, formErr(Err0701, tokenParse.cstr()));
+                return error(tokenParse, formErr(Err0712, tokenParse.cstr()));
             return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

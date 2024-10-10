@@ -11,7 +11,7 @@
     let arr: Arr'(s32, 0)
 }*/
 
-#global testerror "Err0075"
+#global testerror "Err0078"
 func(N: u32) toto()
     where N > 0
 {

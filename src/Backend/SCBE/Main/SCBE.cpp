@@ -257,7 +257,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     FILE* f = nullptr;
     if (fopen_s(&f, filename, "wb"))
     {
-        Report::errorOS(formErr(Err0720, filename.cstr()));
+        Report::errorOS(formErr(Err0732, filename.cstr()));
         return;
     }
 

@@ -1,4 +1,4 @@
-#global testerror "Err0076"
+#global testerror "Err0079"
 
 struct(T, N: u32) Arr
     where N > 0

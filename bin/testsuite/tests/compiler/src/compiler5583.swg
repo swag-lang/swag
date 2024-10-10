@@ -1,4 +1,4 @@
-#global testerror "Err0240"
+#global testerror "Err0247"
 
 #include(<stdio.h>)
 int main() {

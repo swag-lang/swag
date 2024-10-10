@@ -1,4 +1,4 @@
-//#global testerror "Err0023"
+//#global testerror "Err0024"
 
 func(T) add(x, y: T)->T
     //where cast(bool) (#typeof(T).flags & .Integer)

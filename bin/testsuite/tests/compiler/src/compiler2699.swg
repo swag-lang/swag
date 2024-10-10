@@ -1,6 +1,6 @@
-#global testerror "Err0490"
-#global testerror "Err0074"
-#global testerror "Err0026"
+#global testerror "Err0501"
+#global testerror "Err0077"
+#global testerror "Err0027"
 
 #[Swag.Inline]
 func titi()

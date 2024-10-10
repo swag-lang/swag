@@ -1,5 +1,5 @@
 
-#global testerror "Err0300"
+#global testerror "Err0311"
 
 #[Swag.Mixin]
 func toto(x: code)

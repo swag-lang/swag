@@ -1473,13 +1473,13 @@ bool GenDoc::constructAndSave()
         FILE* f = nullptr;
         if (fopen_s(&f, fullFileName, "wb"))
         {
-            Report::errorOS(formErr(Err0720, fullFileName.cstr()));
+            Report::errorOS(formErr(Err0732, fullFileName.cstr()));
             return false;
         }
 
         if (fwrite(helpOutput, 1, helpOutput.length(), f) != helpOutput.length())
         {
-            Report::errorOS(formErr(Err0722, fullFileName.cstr()));
+            Report::errorOS(formErr(Err0734, fullFileName.cstr()));
             (void) fclose(f);
             return false;
         }

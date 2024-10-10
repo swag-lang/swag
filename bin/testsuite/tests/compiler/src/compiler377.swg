@@ -1,4 +1,4 @@
-#global testerror "Err0550";
+#global testerror "Err0562";
 #test
 {
 	var cpt = 0;

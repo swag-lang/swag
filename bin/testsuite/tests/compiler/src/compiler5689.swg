@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0390"
+//#global testerror "Err0401"
 
 /* salut la foule
     /* */

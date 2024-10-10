@@ -1,4 +1,4 @@
-//#global testerror "Err0616"
+//#global testerror "Err0628"
 
 func toto(x = #curlocation)
 {

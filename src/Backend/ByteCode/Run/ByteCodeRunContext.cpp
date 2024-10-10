@@ -78,7 +78,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
 
 void ByteCodeRunContext::stackOverflow()
 {
-    OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0026, Utf8::toNiceSize(g_CommandLine.limitStackBC).cstr()));
+    OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0027, Utf8::toNiceSize(g_CommandLine.limitStackBC).cstr()));
 }
 
 uint32_t ByteCodeRunContext::getRegCount(uint32_t cur)

@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror "Err0180"
+#global testerror "Err0185"
 #test
 {
 	if(bool)
