@@ -210,7 +210,7 @@ public func waitJob(job: *Job)
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
 #[Swag.Macro]
-public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: nl *void = null, stmt: code)
+public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
     if !@countof(range):
         return

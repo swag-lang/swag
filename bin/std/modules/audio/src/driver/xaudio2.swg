@@ -320,7 +320,7 @@ public alias BusHandle = *IXAudio2SubmixVoice
 
 impl Bus
 {
-    func createNative(bus: *Bus, numChannels: u32, parent: nl *Bus = null) throw
+    func createNative(bus: *Bus, numChannels: u32, parent: *Bus = null) throw
     {
         var sfxSend:      XAUDIO2_SEND_DESCRIPTOR
         var sfxSendList:  XAUDIO2_VOICE_SENDS

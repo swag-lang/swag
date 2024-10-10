@@ -2,7 +2,7 @@
 
 #[Swag.Optimize("", false)]
 //#[Swag.PrintGenBc]
-func toto(x: nl func()->bool = null)
+func toto(x: func()->bool = null)
 {
     var y: func||()->bool = x
 }

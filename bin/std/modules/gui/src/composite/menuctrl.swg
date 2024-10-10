@@ -644,7 +644,7 @@ impl MenuCtrl
 public impl MenuCtrl
 {
     #[Swag.Discardable]
-    func createPopup(parent: *Wnd, id: nl WndId = null, owner: nl *Wnd = null)->*MenuCtrl
+    func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
@@ -657,7 +657,7 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: nl WndId = null, owner: nl *Wnd = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle = {}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent, null, pos, id)
         {
@@ -681,7 +681,7 @@ public impl MenuCtrl
 
     // Add a new item
     #[Swag.Overload]
-    mtd addItem(name: nl string, id: WndId, icon: Icon = {}, rightName: nl string = null, disabled = false, checked = false)
+    mtd addItem(name: nl string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
     {
         with let mitem = items.newPtr()
         {

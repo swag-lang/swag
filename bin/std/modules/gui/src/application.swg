@@ -462,7 +462,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: nl *Surface, cb: nl func||(*Application) = null)->WndId
+    public mtd doModalLoop(surface: nl *Surface, cb: func||(*Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1
@@ -543,7 +543,7 @@ impl Application
     }
 
     // Create a main surface, and run
-    func runSurface(x, y, width, height: s32, title: nl string = null, view: nl *Wnd = null, borders = true, canSize = true, hook: nl HookEvent = null, init: nl func(*Application) = null)
+    func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, borders = true, canSize = true, hook: HookEvent = null, init: func(*Application) = null)
     {
         var app: Application
 
@@ -561,7 +561,7 @@ impl Application
     }
 
     // Creates a new surface
-    mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: nl *Wnd = null, hook: nl HookEvent = null)->*Surface throw
+    mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {
         let surface = Memory.new'Surface()
         surface.app      = self

@@ -4,7 +4,7 @@ using Swag
 
 //#[Swag.PrintGenBc]
 #[Swag.Sanity(true)]
-func free(buffer: ^void, size: u64, allocator: nl IAllocator = null, hint: nl string = null, loc = #callerlocation)
+func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     var req: AllocatorRequest
     let talloc = allocator orelse @getcontext().allocator

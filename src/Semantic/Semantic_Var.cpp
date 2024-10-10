@@ -1279,6 +1279,25 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // Nullable
+    if (node->is(AstNodeKind::FuncDeclParam) && node->assignment)
+    {
+        if (node->assignment->typeInfo->isPointerNull() || (node->assignment->typeInfoCast && node->assignment->typeInfoCast->isPointerNull()))
+        {
+            if (!node->typeInfo->isNullable())
+            {
+                node->typeInfo = g_TypeMgr->makeNullable(node->typeInfo);
+            }
+            else
+            {
+                const auto typeNode = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                Diagnostic err{typeNode->token.sourceFile, typeNode->locNullable, typeNode->locNullable, formErr(Err0312)};
+                err.addNote(node->assignment, toNte(Nte0225));
+                return context->report(err);
+            }
+        }
+    }
+
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0774, Naming::kindName(node).cstr(), node->token.cstr())}));
 

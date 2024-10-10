@@ -930,8 +930,8 @@ void initErrors()
     SWAG_ERROR(Err0781, "invalid nullable type                             $ cannot make the type [[%s]] nullable                                                                                                     $ ");
     SWAG_ERROR(Err0783, "conflicting attributes                            $ cannot use [[#[Swag.Macro]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
     SWAG_ERROR(Err0784, "conflicting attributes                            $ cannot use [[#[Swag.Mixin]]] and [[#[Swag.NoInline]]] together because they are mutually exclusive                                       $ ");
-
-    SWAG_ERROR(Err0312, nullptr);
+    SWAG_ERROR(Err0312, "redundant nullable definition                     $ a function parameter with a [[null]] default value is implicitly nullable $ consider removing the nullable marker [[nl]]");
+    
     SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1162,7 +1162,7 @@ void initErrors()
     SWAG_ERROR(Nte0011, "this makes the conversion from [[%s]] to [[%s]] ambiguous");
     SWAG_ERROR(Nte0223, "this is the culprit");
     SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
-    SWAG_ERROR(Nte0225, nullptr);
+    SWAG_ERROR(Nte0225, "this implies a nullable value");
 }
 
 Utf8 formErr(ErrorID idx, ...)

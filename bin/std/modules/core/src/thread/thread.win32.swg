@@ -54,7 +54,7 @@ impl Thread
     }
 
     // Initialize a thread in pause state
-    mtd init(lambda: func||(Thread), userParam: nl *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+    mtd init(lambda: func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
         Debug.assert(!isValid(), "thread already created")
 

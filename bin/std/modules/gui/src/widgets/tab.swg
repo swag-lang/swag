@@ -521,7 +521,7 @@ impl Tab
 
     // Add a new view
     #[Swag.Discardable]
-    mtd addItem(tabName: string, icon: Icon = {}, view: nl *Wnd = null)->*TabItem
+    mtd addItem(tabName: string, icon: Icon = {}, view: *Wnd = null)->*TabItem
     {
         if view
         {

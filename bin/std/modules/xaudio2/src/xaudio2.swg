@@ -267,7 +267,7 @@ struct IXAudio2Itf
     unregisterForCallbacks:     func(me: *IXAudio2, pCallback: *IXAudio2EngineCallback)
     createSourceVoice:          func(me: *IXAudio2, ppSourceVoice: **IXAudio2SourceVoice, pSourceFormat: const *WAVEFORMATEX, flags: UINT32, maxFrequencyRatio: f32, pCallback: *IXAudio2VoiceCallback, pSendList: nl const *XAUDIO2_VOICE_SENDS, pEffectChain: nl const *XAUDIO2_EFFECT_CHAIN)->HRESULT
     createSubmixVoice:          func(me: *IXAudio2, ppSubmixVoice: **IXAudio2SubmixVoice, inputChannels: UINT32, inputSampleRate: UINT32, flags: UINT32, processingStage: UINT32, pSendList: nl const *XAUDIO2_VOICE_SENDS, pEffectChain: nl const *XAUDIO2_EFFECT_CHAIN)->HRESULT
-    createMasteringVoice:       func(me: *IXAudio2, voice: **IXAudio2MasteringVoice, inputChannels: UINT32 = XAUDIO2_DEFAULT_CHANNELS, inputSampleRate: UINT32 = XAUDIO2_DEFAULT_SAMPLERATE, flags: UINT32 = 0, szDeviceId: nl LPCWSTR = null, effectChain: nl *XAUDIO2_EFFECT_CHAIN = null, streamCategory = AUDIO_STREAM_CATEGORY.AudioCategory_GameEffects)->HRESULT
+    createMasteringVoice:       func(me: *IXAudio2, voice: **IXAudio2MasteringVoice, inputChannels: UINT32 = XAUDIO2_DEFAULT_CHANNELS, inputSampleRate: UINT32 = XAUDIO2_DEFAULT_SAMPLERATE, flags: UINT32 = 0, szDeviceId: LPCWSTR = null, effectChain: *XAUDIO2_EFFECT_CHAIN = null, streamCategory = AUDIO_STREAM_CATEGORY.AudioCategory_GameEffects)->HRESULT
     startEngine:                func(me: *IXAudio2)->HRESULT
     stopEngine:                 func(me: *IXAudio2)
     commitChanges:              func(me: *IXAudio2, operationSet: UINT32)->HRESULT

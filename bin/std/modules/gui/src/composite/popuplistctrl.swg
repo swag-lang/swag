@@ -247,7 +247,7 @@ impl PopupListCtrl
     }
 
     // Add a new item in the list
-    mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: nl *void = null, userData1: nl *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
         let item = items.newPtr()
         with item

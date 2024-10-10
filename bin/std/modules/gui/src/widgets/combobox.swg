@@ -221,7 +221,7 @@ impl ComboBox
 
     // Add a new item
     #[Swag.Discardable]
-    mtd addItem(name: nl string, id: nl WndId = null, icon: Icon = {}, userData0: nl *void = null, userData1: nl *void = null)->*ComboBoxItem
+    mtd addItem(name: nl string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
         let item = items.newPtr()
         with item

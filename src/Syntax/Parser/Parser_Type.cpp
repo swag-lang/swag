@@ -572,10 +572,12 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
 bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    bool nullable = false;
+    SourceLocation locNullable;
+    bool           nullable = false;
     if (tokenParse.is(TokenId::KwdNullable))
     {
-        nullable = true;
+        nullable    = true;
+        locNullable = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
     }
 
@@ -586,6 +588,7 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
     {
         const auto typeNode = castAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
         typeNode->typeFlags.add(TYPE_FLAG_NULLABLE);
+        typeNode->locNullable = locNullable;
     }
 
     return true;

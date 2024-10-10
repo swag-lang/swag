@@ -137,7 +137,7 @@ impl IActionUI for ActionCapture
 
 impl MainWnd
 {
-    mtd newCapture(img: Image, linked: nl string = null)
+    mtd newCapture(img: Image, linked: string = null)
     {
         if !img.isValid():
             return

@@ -983,7 +983,7 @@ impl ListCtrl
 
     // Add one line, and set first column
     #[Swag.Discardable, Swag.Overload]
-    mtd createLine(name: string, icon: Icon = {}, parentLine: nl *ListLine = null)->*ListLine
+    mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
         let line = createLine(parentLine)
         line.setItem(0, #self.name, #self.icon)

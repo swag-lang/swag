@@ -2,7 +2,7 @@
 struct Rectangle{ x: s32; }
 
 #[Swag.Overload]
-func create(parent: nl *void = null, id: string = null)
+func create(parent: *void = null, id: string = null)
 {
 }
 
