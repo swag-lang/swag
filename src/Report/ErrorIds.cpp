@@ -930,7 +930,7 @@ void initErrors()
     SWAG_ERROR(Err0782, "unresolved variable type                          $ cannot deduce the type of %s [[%s]]                                                                                                      $ ");
     SWAG_ERROR(Err0783, "unsupported [[#nameof]] argument                  $ cannot evaluate the [[#nameof]] argument                                                                                                 $ ");
     SWAG_ERROR(Err0784, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
-	   
+    
     SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////
