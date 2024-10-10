@@ -287,7 +287,7 @@ internal impl Properties
             }
 
         case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove:
-            var pt       = prop.surfaceToLocal(mouseEvt.surfacePos)
+            var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             // Resize of the grid column
             if prop.resizingColumn
@@ -429,7 +429,7 @@ internal impl Properties
             wndItem.invalidate()
             return true
 
-        case let paintEvt as PaintEvent where paintEvt.kind == .PrePaint:        
+        case let paintEvt as PaintEvent where paintEvt.kind == .PrePaint:
             paintBackItem(paintEvt.bc.painter, item, wndItem)
         }
 
@@ -589,13 +589,15 @@ internal impl Properties
             {
                 if kind != .Grid
                 {
-                    let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
-                    labelDesc.labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
-                    labelDesc.vertAlignmentText = .Top
-                    labelDesc.horzAlignmentText = .Left
-                    labelDesc.setText(cast(string) dispDesc)
-                    labelDesc.margin.w = listDescMarginAfter
-                    item.labelDesc     = labelDesc
+                    with let labelDesc = Label.create(line, "", {0, 0, position.width, 0})
+                    {
+                        .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                        .vertAlignmentText = .Top
+                        .horzAlignmentText = .Left
+                        .margin.w          = listDescMarginAfter
+                        .setText(cast(string) dispDesc)
+                        item.labelDesc = labelDesc
+                    }
                 }
             }
         }
