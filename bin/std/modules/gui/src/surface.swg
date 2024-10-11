@@ -203,17 +203,31 @@ impl Surface
         return result     
     }
 
-    // Constraint a window to be inside the closest monitor
-    mtd constaintToScreen()
+    // Constraint a window position to be inside the closest monitor
+    mtd constaintPositionToScreen(topLeft, bottomRight = true, margin = 0'f32)
     {
         if isMaximized or isMinimized:
             return
 
         let monitor = getBestMonitor()
-        if !monitor.rect.contains(Math.Point{position.x, position.y}):
-            position.constrainIn(monitor.rect)
-        setPosition(position)
-    }
+        var np      = position
+
+        if topLeft
+        {
+            np.x = Math.max(np.x, monitor.rect.x + margin)
+            np.x = Math.min(np.x, monitor.rect.right() - margin)
+            np.y = Math.max(np.y, monitor.rect.y + margin)
+            np.y = Math.min(np.y, monitor.rect.bottom() - margin)
+        }
+
+        if bottomRight
+        {
+            np.x = Math.min(np.x, monitor.rect.right() - margin - position.width)
+            np.y = Math.min(np.y, monitor.rect.bottom() - margin - position.height)
+        }
+
+        setPosition(np)
+    }    
 
     internal mtd createRT()
     {

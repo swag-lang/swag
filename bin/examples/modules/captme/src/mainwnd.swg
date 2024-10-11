@@ -120,7 +120,7 @@ impl IWnd for MainWnd
         menu.position.width += 2 * getThemeMetrics().surfaceWnd_ShadowSize
         menu.position.height += 2 * getThemeMetrics().surfaceWnd_ShadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
-        sf.constaintToScreen()
+        sf.constaintPositionToScreen()
         sf.wnd.view.backgroundStyle = .Window
 
         sf.show()

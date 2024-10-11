@@ -22,7 +22,7 @@ var g_App: Application
         g_App.maxRunFrame = 100
 
     catch g_App.loadState()
-    surface.constaintToScreen()
+    surface.constaintPositionToScreen(topLeft: true, margin: 10)
     surface.show()
 
     using Win32

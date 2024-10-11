@@ -297,18 +297,4 @@ impl Rectangle
         let y2 = max(a.bottom(), b.bottom())
         return Rectangle{x1, y1, x2 - x1, y2 - y1}
     }
-
-    // Constrain the rectangle to be inside another one, without changing its size
-    // (so the other rectangle must be bigger)
-    mtd constrainIn(other: Rectangle)
-    {
-        if x < other.x:
-            x += other.x - x
-        if y < other.y:
-            y += other.y - y
-        if right() > other.right():
-            x -= right() - other.right()
-        if bottom() > other.bottom():
-            y -= bottom() - other.bottom()
-    }
 }
