@@ -65,7 +65,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         if !g_Img.isValid():
             break
 
-        let painter  = paintEvt.bc.painter
+        let painter = paintEvt.bc.painter
 
         const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. "
 

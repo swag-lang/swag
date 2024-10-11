@@ -174,16 +174,6 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             concat->addString("case");
             concat->addBlank();
 
-            if (!c->matchVarName.text.empty())
-            {
-                concat->addString("let");
-                concat->addBlank();
-                concat->addString(c->matchVarName.text);
-                concat->addBlank();
-                concat->addString("as");
-                concat->addBlank();
-            }
-
             bool first = true;
             for (const auto it : c->expressions)
             {
@@ -195,6 +185,14 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
 
                 SWAG_CHECK(outputNode(context, it));
                 first = false;
+            }
+            
+            if (!c->matchVarName.text.empty())
+            {
+                concat->addBlank();
+                concat->addString("as");
+                concat->addBlank();
+                concat->addString(c->matchVarName.text);
             }
         }
 
