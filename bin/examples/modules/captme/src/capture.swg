@@ -642,7 +642,7 @@ impl Capture
         return result
     }
 
-    mtd getSelectionBoundRect(editForm: nl IForm = null)->Math.Rectangle
+    mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
     {
         if editForm:
             return editForm.boundRect()
@@ -661,7 +661,7 @@ impl Capture
         return bound
     }
 
-    mtd snap(x, y: nl *s32, right, bottom: bool, idxPt: u32 = 0, editForm: nl IForm = null)
+    mtd snap(x, y: nl *s32, right, bottom: bool, idxPt: u32 = 0, editForm: IForm = null)
     {
         const SnapToler = 10
 

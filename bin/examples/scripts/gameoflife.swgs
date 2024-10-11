@@ -18,7 +18,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
     switch evt
     {
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed or mouseEvt.kind == .MouseMove:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed or mouseEvt.kind == .MouseMove:
         if leftPressed or rightPressed
         {
             let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
@@ -41,7 +41,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             }
         }
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         let nextGen  = (g_CurGen + 1) % 2
 

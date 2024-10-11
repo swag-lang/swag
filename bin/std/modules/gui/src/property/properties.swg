@@ -228,11 +228,11 @@ internal impl Properties
 
         switch evt
         {
-        case let focusEvt as FocusEvent where focusEvt.kind == .CanSetFocus:
+        case FocusEvent as focusEvt where focusEvt.kind == .CanSetFocus:
             if prop.cursorSet:
                 focusEvt.canChangeFocus = false
 
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
             var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             prop.selItem = prop.hitTest(pt)
@@ -258,7 +258,7 @@ internal impl Properties
                 prop.updateStates()
             }
 
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseDoubleClick:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseDoubleClick:
             if mouseEvt.button != .Left:
                 break
 
@@ -271,10 +271,10 @@ internal impl Properties
                 prop.updateStates()
             }
 
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseReleased:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseReleased:
             prop.resizingColumn = false
 
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseLeave:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseLeave:
             if prop.hotItem and prop.kind == .Grid:
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
@@ -286,7 +286,7 @@ internal impl Properties
                 prop.invalidate()
             }
 
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseMove:
             var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             // Resize of the grid column
@@ -421,15 +421,15 @@ internal impl Properties
 
         switch evt
         {
-        case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed and mouseEvt.button == .Right:
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed and mouseEvt.button == .Right:
             popupMenu(item, mouseEvt.surfacePos)
             return true
 
-        case let ntfyEvt as NotifyEvent where ntfyEvt.ntfyKind == .ChildFocusChanged:
+        case NotifyEvent as ntfyEvt where ntfyEvt.ntfyKind == .ChildFocusChanged:
             wndItem.invalidate()
             return true
 
-        case let paintEvt as PaintEvent where paintEvt.kind == .PrePaint:
+        case PaintEvent as paintEvt where paintEvt.kind == .PrePaint:
             paintBackItem(paintEvt.bc.painter, item, wndItem)
         }
 

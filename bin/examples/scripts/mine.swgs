@@ -128,7 +128,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
         setup()
 
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
         var pos      = wnd.surfaceToLocal(mouseEvt.surfacePos)
         var x        = cast(s32) (pos.x / CellSize)
         var y        = cast(s32) (pos.y / CellSize)
@@ -155,7 +155,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         wnd.invalidate()
         return true
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter = paintEvt.bc.painter
 
         painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)

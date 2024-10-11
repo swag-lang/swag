@@ -105,10 +105,10 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     case CreateEvent:
         break
 
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove or mouseEvt.kind == .MousePressed:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MouseMove or mouseEvt.kind == .MousePressed:
         return true
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
 
         var leftPressed = wnd.getApp().mouse.isButtonPressed(.Left) or Env.hasArg("swag.test")

@@ -2064,13 +2064,13 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         loadBindTextures()
         restartGame()
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         g_Painter = paintEvt.bc.painter
         gameLoop()
         display()
         wnd.invalidate()
 
-    case let keyEvt as KeyEvent where keyEvt.kind == .KeyPressed:
+    case KeyEvent as keyEvt where keyEvt.kind == .KeyPressed:
         switch keyEvt.key
         {
         case Escape:

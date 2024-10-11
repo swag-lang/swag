@@ -308,7 +308,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     case ResizeEvent:
         g_Rect = wnd.getClientRect()
 
-    case let ptr as PaintEvent:
+    case PaintEvent as ptr:
         g_Painter = ptr.bc.painter
         gameLoop()
         display()

@@ -11,7 +11,7 @@
 
     switch v
     {
-    case let fn as Func:
+    case Func as fn:
         @assert(fn() == 66)
     }
 }

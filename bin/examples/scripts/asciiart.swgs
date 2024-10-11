@@ -61,7 +61,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
         g_Font = wnd.getTheme().createDefaultFont(10)
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         if !g_Img.isValid():
             break
 

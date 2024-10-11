@@ -7,7 +7,7 @@
     const aa = 0
     switch g
     {
-    case let ptr1 as aa where ptr1 == 66:
+    case aa as ptr1 where ptr1 == 66:
         g = 5
     }
 }

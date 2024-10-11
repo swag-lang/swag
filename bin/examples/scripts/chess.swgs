@@ -514,7 +514,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             wnd.invalidate()
         }
 
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
         if mouseEvt.button == .Left
         {
             var pos  = wnd.surfaceToLocal(mouseEvt.surfacePos)
@@ -549,7 +549,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         wnd.invalidate()
         return true
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         paintBoard(paintEvt)
         paintStates(paintEvt)
     }

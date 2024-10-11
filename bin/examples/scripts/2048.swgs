@@ -287,7 +287,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         randValue()
         randValue()
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         var rect     = wnd.getClientRect()
 

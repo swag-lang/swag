@@ -99,7 +99,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         createUI(wnd)
         compute()
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)

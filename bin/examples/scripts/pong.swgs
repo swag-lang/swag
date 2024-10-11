@@ -132,7 +132,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         g_PaddleLeft.pos.x  = BallRadius + PaddleWidth
         g_PaddleRight.pos.x = g_Rect.right() - BallRadius - PaddleWidth
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter = paintEvt.bc.painter
 
         updatePaddles(wnd)

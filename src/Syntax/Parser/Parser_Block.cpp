@@ -234,46 +234,23 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             switchNode->cases.push_back(caseNode);
             caseNode->caseIndex = switchNode->cases.size() - 1;
 
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdVar), error(tokenParse, toErr(Err0353)));
-            if (tokenParse.is(TokenId::KwdLet))
-            {
-                caseNode->allocateExtension(ExtensionKind::Semantic);
-                caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
-                SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0333)));
-                SWAG_VERIFY(caseNode->expressions.empty(), error(tokenParse, toErr(Err0332)));
-                SWAG_CHECK(eatToken());
-                SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0272)));
-                caseNode->matchVarName = tokenParse.token;
-                SWAG_CHECK(eatToken());
-                SWAG_VERIFY(tokenParse.is(TokenId::KwdAs), error(tokenParse, toErr(Err0428)));
-                SWAG_CHECK(eatToken());
-            }
-
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, formErr(Err0429, tokenParse.cstr())));
-            while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdWhere))
+            while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdAs) && tokenParse.isNot(TokenId::KwdWhere))
             {
                 AstNode* expression;
-                if (!caseNode->matchVarName.text.empty())
+                if (tokenParse.is(TokenId::SymLeftCurly) or getNextToken().is(TokenId::KwdAs))
                     SWAG_CHECK(doTypeExpression(caseNode, EXPR_FLAG_NONE, &expression));
                 else
-                    SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
-
-                // Match name. Only one value is possible
-                if (!caseNode->matchVarName.text.empty())
                 {
-                    SWAG_VERIFY(tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere), error(tokenParse, toErr(Err0428)));
-                    expression->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
-                    caseNode->expressions.push_back(expression);
-                    break;
+                    SWAG_CHECK(doExpression(caseNode, EXPR_FLAG_NONE, &expression));
+                    if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
+                        SWAG_CHECK(doRange(caseNode, expression, &expression));
                 }
-
-                if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
-                    SWAG_CHECK(doRange(caseNode, expression, &expression));
 
                 expression->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterValue);
                 caseNode->expressions.push_back(expression);
 
-                if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdWhere))
+                if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdAs) || tokenParse.is(TokenId::KwdWhere))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0094)));
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0095)));
@@ -283,9 +260,19 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         const auto      newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
         ParserPushScope scoped(this, newScope);
 
-        // Declare the match variable and make a cast
-        if (!caseNode->matchVarName.text.empty())
+        // Match name
+        if (tokenParse.is(TokenId::KwdAs))
         {
+            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0333)));
+            SWAG_VERIFY(caseNode->expressions.size() == 1, error(tokenParse, toErr(Err0332)));
+            
+            caseNode->allocateExtension(ExtensionKind::Semantic);
+            caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0272)));
+            caseNode->matchVarName = tokenParse.token;
+            SWAG_CHECK(eatToken());
+
             const auto varDecl = Ast::newVarDecl(caseNode->matchVarName.text, this, caseNode);
             varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_LET);
             varDecl->addAstFlag(AST_GENERATED | AST_NO_BYTECODE);

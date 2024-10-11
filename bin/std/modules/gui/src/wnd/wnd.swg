@@ -139,47 +139,47 @@ impl IWnd for Wnd
     {
         switch evt
         {
-        case let ptr as CreateEvent:
+        case CreateEvent as ptr:
             itf.onCreateEvent(ptr)
-        case let ptr as DestroyEvent:
+        case DestroyEvent as ptr:
             itf.onDestroyEvent(ptr)
-        case let ptr as StateEvent:
+        case StateEvent as ptr:
             itf.onStateEvent(ptr)
-        case let ptr as ResizeEvent:
+        case ResizeEvent as ptr:
             itf.onResizeEvent(ptr)
-        case let ptr as PaintEvent where ptr.kind == .PrePaint:
+        case PaintEvent as ptr where ptr.kind == .PrePaint:
             itf.onPrePaintEvent(ptr)
-        case let ptr as PaintEvent where ptr.kind == .Paint:
+        case PaintEvent as ptr where ptr.kind == .Paint:
             itf.onPaintEvent(ptr)
-        case let ptr as PaintEvent where ptr.kind == .PostPaint:
+        case PaintEvent as ptr where ptr.kind == .PostPaint:
             itf.onPostPaintEvent(ptr)
-        case let ptr as SysCommandEvent:
+        case SysCommandEvent as ptr:
             itf.onSysCommandEvent(ptr)
-        case let ptr as SysUserEvent:
+        case SysUserEvent as ptr:
             itf.onSysUserEvent(ptr)
-        case let ptr as KeyEvent:
+        case KeyEvent as ptr:
             itf.onKeyEvent(ptr)
-        case let ptr as MouseEvent where ptr.kind != .MouseAccept:
+        case MouseEvent as ptr where ptr.kind != .MouseAccept:
             itf.onMouseEvent(ptr)
-        case let ptr as SetThemeEvent:
+        case SetThemeEvent as ptr:
             itf.onSetThemeEvent(ptr)
-        case let ptr as TimerEvent:
+        case TimerEvent as ptr:
             itf.onTimerEvent(ptr)
-        case let ptr as FocusEvent:
+        case FocusEvent as ptr:
             itf.onFocusEvent(ptr)
-        case let ptr as CommandEvent:
+        case CommandEvent as ptr:
             if !executeAction(ptr):
                 itf.onCommandEvent(ptr)
-        case let ptr as CommandStateEvent where ptr.kind == .ComputeCommandState:
+        case CommandStateEvent as ptr where ptr.kind == .ComputeCommandState:
             if !updateAction(ptr):
                 itf.onComputeStateEvent(ptr)
-        case let ptr as CommandStateEvent where ptr.kind == .ApplyCommandState:
+        case CommandStateEvent as ptr where ptr.kind == .ApplyCommandState:
             itf.onApplyStateEvent(cast(*CommandStateEvent) evt)
-        case let ptr as FrameEvent:
+        case FrameEvent as ptr:
             itf.onFrameEvent(ptr)
-        case let ptr as SerializeStateEvent:
+        case SerializeStateEvent as ptr:
             itf.onSerializeStateEvent(ptr)
-        case let ptr as NotifyEvent:
+        case NotifyEvent as ptr:
             itf.onNotifyEvent(ptr)
         }
     }

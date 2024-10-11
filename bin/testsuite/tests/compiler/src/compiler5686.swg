@@ -8,7 +8,7 @@
     var r = 0
     switch g
     {
-    case let ptr1 as s32 where ptr1 == 66:
+    case s32 as ptr1 where ptr1 == 66:
         r = ptr1
     }
 

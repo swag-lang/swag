@@ -80,7 +80,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         let j = Random.shared().nextU64(0, cast(u64) NumElems - 1)
         g_Matrix[i, j].empty = true
 
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MouseMove:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MouseMove:
         let pt = wnd.surfaceToLocal(mouseEvt.surfacePos)
 
         g_HotX, g_HotY = -1
@@ -102,7 +102,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             }
         }
 
-    case let mouseEvt as MouseEvent where mouseEvt.kind == .MousePressed:
+    case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
         if g_Moving:
             break
         if g_HotX == -1:
@@ -128,7 +128,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             cur.moveDt = 0
         }
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         let dt       = wnd.getApp().getDt()
 

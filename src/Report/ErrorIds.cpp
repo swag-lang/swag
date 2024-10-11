@@ -476,8 +476,8 @@ void initErrors()
     SWAG_ERROR(Err0329, "misplaced [[fallthrough]]                         $ cannot use [[fallthrough]] outside of a [[switch]]                                                                                       $ ");
     SWAG_ERROR(Err0330, "misplaced [[for]]                                 $ cannot use the [[for]] keyword in an [[enum]] implementation                                                                             $ ");
     SWAG_ERROR(Err0331, "misplaced [[impl]]                                $ cannot associate [[impl]] with a function outside of an [[impl for]] block                                                               $ ");
-    SWAG_ERROR(Err0332, "misplaced [[let]]                                 $ cannot declare a match variable after multiple [[case]] values                                                                           $ the [[case]] should only contain one value");
-    SWAG_ERROR(Err0333, "misplaced [[let]]                                 $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
+    SWAG_ERROR(Err0332, "misplaced [[as]]                                  $ cannot declare a match variable after multiple [[case]] values                                                                           $ the [[case]] should only contain one value");
+    SWAG_ERROR(Err0333, "misplaced [[as]]                                  $ cannot declare a match variable in a [[switch]] without an expression                                                                    $ ");
     SWAG_ERROR(Err0334, "misplaced [[moveref]]                             $ cannot use [[moveref]] on a compile-time value                                                                                           $ [[moveref]] should be used on a pointer or a reference");
     SWAG_ERROR(Err0335, "misplaced [[moveref]]                             $ cannot use [[moveref]] on an immutable expression                                                                                        $ ");
     SWAG_ERROR(Err0336, "misplaced [[moveref]]                             $ cannot use [[moveref]] on the type [[%s]]                                                                                                $ [[moveref]] should be used on a pointer or a reference");
@@ -497,7 +497,6 @@ void initErrors()
     SWAG_ERROR(Err0350, "misplaced [[using]]                               $ cannot associate [[using]] with the type [[%s]]                                                                                          $ expected a namespace, a struct, an enum or a variable");
     SWAG_ERROR(Err0351, "misplaced [[using]] in interface                  $ cannot associate [[using]] with an interface function                                                                                    $ ");
     SWAG_ERROR(Err0352, "misplaced [[var]]                                 $ cannot use [[var]] in struct variable declarations                                                                                       $ a struct variable should be declared as [[fieldName: Type]] without [[var]]");
-    SWAG_ERROR(Err0353, "misplaced [[var]]                                 $ cannot use [[var]] to declare a match variable                                                                                           $ consider using [[let]] instead");
     SWAG_ERROR(Err0354, "misplaced [[verify]]                              $ cannot use a [[verify]] constraint on [[%s]]                                                                                             $ [[verify]] constraints are not supported for [[opDrop]], [[opPostCopy]], and [[opPostMove]]");
     SWAG_ERROR(Err0355, "misplaced [[verify]]                              $ cannot use a [[verify]] constraint on structs                                                                                            $ [[verify]] constraints are only valid for functions; consider using [[where]] instead");
     SWAG_ERROR(Err0356, "misplaced [[where]]                               $ cannot use a [[where]] clause in a [[switch]] without an expression                                                                      $ ");
@@ -572,7 +571,6 @@ void initErrors()
     SWAG_ERROR(Err0425, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments, found $$TKN$$ because                                                                     $ ");
     SWAG_ERROR(Err0426, "missing [[(]] before parameters                   $ expected [[(]] to start the list of parameters, found $$TKN$$ because                                                                    $ ");
     SWAG_ERROR(Err0427, "missing [[:]]                                     $ expected [[:]] after the [[loop]] variable name [[%s]]                                                                                   $ consider using the syntax [[loop [variable:] count]]");
-    SWAG_ERROR(Err0428, "missing [[as]]                                    $ expected [[as]] to declare the case value, found $$TKN$$ instead                                                                         $ ");
     SWAG_ERROR(Err0429, "missing [[case]] expression                       $ expected the [[case]] expression, found [[%s]] instead                                                                                   $ ");
     SWAG_ERROR(Err0430, "missing [[closure]] capture variable              $ expected another capture variable between the [[comma]] ',' and [['|']]                                                                  $ consider adding another variable or removing the trailing comma");
     SWAG_ERROR(Err0431, "missing [[foreach]] expression                    $ expected the element to visit before [[%s]]                                                                                              $ ");
@@ -931,6 +929,8 @@ void initErrors()
     SWAG_ERROR(Err0783, "unsupported [[#nameof]] argument                  $ cannot evaluate the [[#nameof]] argument                                                                                                 $ ");
     SWAG_ERROR(Err0784, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
     
+    SWAG_ERROR(Err0428, nullptr);
+    SWAG_ERROR(Err0353, nullptr);
     SWAG_ERROR(Err0785, nullptr);
 
     /////////////////////////////////////////////////////////////////////

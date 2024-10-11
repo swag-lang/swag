@@ -26,7 +26,7 @@ func toto(x: IEvent)
     var g = 0
     switch 
     {
-    case let ptr1: MouseEvent where ptr1.x == 66:
+    case MouseEvent as ptr1 where ptr1.x == 66:
         g = ptr1.x
     }
 

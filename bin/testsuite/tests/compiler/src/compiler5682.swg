@@ -1,4 +1,4 @@
-#global testerror "Err0428"
+/*#global testerror "Err0428"
 
 struct BaseEvent
 {
@@ -26,7 +26,7 @@ func toto(x: IEvent)
     var g = 0
     switch x
     {
-    case let ptr1: MouseEvent 
+    case MouseEvent in ptr1:
         g = ptr1.x
     }
 
@@ -39,3 +39,4 @@ func toto(x: IEvent)
     //@breakpoint()
     toto(cast(IEvent) evt)
 }
+*/

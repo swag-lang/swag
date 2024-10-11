@@ -158,7 +158,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         g_Rect = wnd.getClientRect()
         startGame()
 
-    case let paintEvt as PaintEvent:
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         g_Rect = wnd.getClientRect()
 

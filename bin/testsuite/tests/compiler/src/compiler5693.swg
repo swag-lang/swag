@@ -9,7 +9,7 @@
 
     switch v
     {
-    case let fn as {x: s32, y: s32}:
+    case {x: s32, y: s32} as fn:
         @assert(fn.x == 4)
         @assert(fn.y == 5)
         break
