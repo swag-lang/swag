@@ -85,7 +85,7 @@ func createView7(_tabView: *Tab, view: *Wnd)
     aa.v4c.add("tata")
     lt.addStruct(aa, "Section")
 
-    let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600}, flags: .SectionFilter | .SectionPane)
+    let lt1 = PropertiesCtrl.create(view, {500, 10, 600, 600}, flags: .SectionFilter | .SectionPane | .FindBar)
     lt1.addStruct(aa, "Section 0")
     lt1.addStruct(aa, "Section 1")
     lt1.addStruct(aa, "Section 2")

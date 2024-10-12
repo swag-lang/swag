@@ -5,6 +5,7 @@ using Core, Pixel
 enum PropertiesCtrlFlags
 {
     Zero          = 0
+    FindBar               // Add a find bar at the top
     SectionPane           // Display all sections in a pane on the left
     SectionFilter         // Display a section filter bar
 }
@@ -58,14 +59,17 @@ impl PropertiesCtrl
         }
 
         // Filter bar
-        with let filter = EditBox.create(ed, "")
+        if flags.has(.FindBar)
         {
-            .icon      = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
-            .dockStyle = .Top
-            .setNote("Search")
-            .margin.w = 8
-            .sigChanged += func|ed|(fil) { ed.prop.setStringFilter(fil.text); }
-            .editBoxFlags.add(.ClearButton)
+            with let filter = EditBox.create(ed, "")
+            {
+                .icon      = ed.getTheme().getIcon24(ThemeIcons24.Search, 18)
+                .dockStyle = .Top
+                .setNote("Search")
+                .margin.w = 8
+                .sigChanged += func|ed|(fil) { ed.prop.setStringFilter(fil.text); }
+                .editBoxFlags.add(.ClearButton)
+            }
         }
 
         // Section filter bar
