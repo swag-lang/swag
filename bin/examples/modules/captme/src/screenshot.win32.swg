@@ -40,6 +40,7 @@ private
     var g_BlackBrush: HBRUSH
     var g_RedBrush:   HBRUSH
     var g_PenRect:    HPEN
+    var g_CrossRect:  HPEN
 
     var g_MemDC:             HDC
     var g_MemBitmap:         HBITMAP
@@ -220,8 +221,12 @@ private
                 Rectangle(g_MemDC, x1, y1, x2, y2)
 
                 // Mouse cross
-                Rectangle(g_MemDC, g_MouseX, 0, g_MouseX + 1, g_ScreenHeight)
-                Rectangle(g_MemDC, 0, g_MouseY, g_ScreenWidth, g_MouseY + 1)
+                if g_CaptureOptions.drawCross
+                {
+                    SelectObject(g_MemDC, cast() g_CrossRect)
+                    Rectangle(g_MemDC, g_MouseX, 0, g_MouseX + 1, g_ScreenHeight)
+                    Rectangle(g_MemDC, 0, g_MouseY, g_ScreenWidth, g_MouseY + 1)
+                }
 
                 // Capture size
                 var str = Format.toString("% x %", x2 - x1, y2 - y1)
@@ -282,6 +287,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_BlackBrush = cast(HBRUSH) GetStockObject(BLACK_BRUSH)
         g_RedBrush   = cast(HBRUSH) catch CreateSolidBrush(RGB(255, 0, 0))
         g_PenRect    = CreatePen(PS_DOT, 1, RGB(255, 255, 0))
+        g_CrossRect  = CreatePen(PS_DOT, 1, RGB(255, 128, 255))
     }
 
     g_StartGrab    = false

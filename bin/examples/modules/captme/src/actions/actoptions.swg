@@ -42,8 +42,8 @@ impl IActionUI for ActionOptions
         let opt = PropertiesCtrl.create(dlg.getView(), flags: .SectionFilter | .FindBar)
         opt.setAllMargins(10)
         opt.dockStyle = .Center
-        opt.addStruct(main.captureOptions, "Capture")
-        opt.addStruct(main.editorOptions, "Editor")
+        opt.addStruct(g_CaptureOptions, "Capture")
+        opt.addStruct(g_EditorOptions, "Editor")
         opt.addStruct(main.getApp().options, "Application")
 
         opt.prop.sigChanged += func|main|(opt, item)

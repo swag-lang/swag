@@ -23,13 +23,11 @@ impl IActionUI for ActionDelay
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
-
         switch cxt.id
         {
         case CmdIdCaptureDelay:
             evt.setFlags |= .Name
-            switch main.captureOptions.delay
+            switch g_CaptureOptions.delay
             {
             case 0:
                 evt.name = "Delay Before Capture"
@@ -46,23 +44,23 @@ impl IActionUI for ActionDelay
         case CmdIdCaptureDelay0:
             evt.setFlags |= .Name | .Checked
             evt.name    = "No Delay"
-            evt.checked = main.captureOptions.delay == 0
+            evt.checked = g_CaptureOptions.delay == 0
         case CmdIdCaptureDelay1:
             evt.setFlags |= .Name | .Checked
             evt.name    = "1 second"
-            evt.checked = main.captureOptions.delay == 1
+            evt.checked = g_CaptureOptions.delay == 1
         case CmdIdCaptureDelay2:
             evt.setFlags |= .Name | .Checked
             evt.name    = "2 seconds"
-            evt.checked = main.captureOptions.delay == 2
+            evt.checked = g_CaptureOptions.delay == 2
         case CmdIdCaptureDelay5:
             evt.setFlags |= .Name | .Checked
             evt.name    = "5 seconds"
-            evt.checked = main.captureOptions.delay == 5
+            evt.checked = g_CaptureOptions.delay == 5
         case CmdIdCaptureDelay9:
             evt.setFlags |= .Name | .Checked
             evt.name    = "9 seconds"
-            evt.checked = main.captureOptions.delay == 9
+            evt.checked = g_CaptureOptions.delay == 9
         }
 
         return true
@@ -70,20 +68,18 @@ impl IActionUI for ActionDelay
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
-
         switch cxt.id
         {
         case CmdIdCaptureDelay0:
-            main.captureOptions.delay = 0
+            g_CaptureOptions.delay = 0
         case CmdIdCaptureDelay1:
-            main.captureOptions.delay = 1
+            g_CaptureOptions.delay = 1
         case CmdIdCaptureDelay2:
-            main.captureOptions.delay = 2
+            g_CaptureOptions.delay = 2
         case CmdIdCaptureDelay5:
-            main.captureOptions.delay = 5
+            g_CaptureOptions.delay = 5
         case CmdIdCaptureDelay9:
-            main.captureOptions.delay = 9
+            g_CaptureOptions.delay = 9
         }
 
         return true

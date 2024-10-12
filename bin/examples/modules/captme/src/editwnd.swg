@@ -69,7 +69,7 @@ impl IWnd for EditView
         // Background
         var rect = getClientRect()
         rect.offset(scrollPos)
-        painter.fillRect(rect, main.editorOptions.editBackColor)
+        painter.fillRect(rect, g_EditorOptions.editBackColor)
         if !capture:
             return
 

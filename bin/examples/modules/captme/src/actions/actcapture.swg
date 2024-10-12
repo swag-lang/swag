@@ -74,22 +74,22 @@ impl IActionUI for ActionCapture
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Hide Editor Before Capture"
-            evt.checked  = main.captureOptions.hideEditorBefore
+            evt.checked  = g_CaptureOptions.hideEditorBefore
             evt.accepted = true
         case CmdIdCaptureShowEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Show Editor After Capture"
-            evt.checked  = main.captureOptions.showEditorAfter
+            evt.checked  = g_CaptureOptions.showEditorAfter
             evt.accepted = true
         case CmdIdCaptureToEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Editor"
-            evt.checked  = main.captureOptions.sendToEditor
+            evt.checked  = g_CaptureOptions.sendToEditor
             evt.accepted = true
         case CmdIdCaptureToClipboard:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Clipboard"
-            evt.checked  = main.captureOptions.sendToClipboard
+            evt.checked  = g_CaptureOptions.sendToClipboard
             evt.accepted = true
         }
 
@@ -122,13 +122,13 @@ impl IActionUI for ActionCapture
             main.captureScreen(.Screen3)
 
         case CmdIdCaptureHideEditor:
-            main.captureOptions.hideEditorBefore = !main.captureOptions.hideEditorBefore
+            g_CaptureOptions.hideEditorBefore = !g_CaptureOptions.hideEditorBefore
         case CmdIdCaptureShowEditor:
-            main.captureOptions.showEditorAfter = !main.captureOptions.showEditorAfter
+            g_CaptureOptions.showEditorAfter = !g_CaptureOptions.showEditorAfter
         case CmdIdCaptureToEditor:
-            main.captureOptions.sendToEditor = !main.captureOptions.sendToEditor
+            g_CaptureOptions.sendToEditor = !g_CaptureOptions.sendToEditor
         case CmdIdCaptureToClipboard:
-            main.captureOptions.sendToClipboard = !main.captureOptions.sendToClipboard
+            g_CaptureOptions.sendToClipboard = !g_CaptureOptions.sendToClipboard
         }
 
         return true
@@ -172,16 +172,16 @@ impl MainWnd
     mtd captureScreen(mode: CaptureMode)
     {
         let wasHidden = surface.isHidden
-        if captureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
+        if g_CaptureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
             surface.hide()
 
-        if captureOptions.delay:
-            Threading.Thread.sleep(captureOptions.delay * 1000)
+        if g_CaptureOptions.delay:
+            Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
 
         var img     = catch screenShot(mode)
         let isValid = @err() == null and img.width > 0 and img.height > 0
 
-        if (isValid and captureOptions.showEditorAfter) or !wasHidden
+        if (isValid and g_CaptureOptions.showEditorAfter) or !wasHidden
         {
             if surface.isMinimized:
                 surface.showNormal()
@@ -192,9 +192,9 @@ impl MainWnd
         if !isValid:
             return
 
-        if captureOptions.sendToEditor:
+        if g_CaptureOptions.sendToEditor:
             newCapture(img)
-        if captureOptions.sendToClipboard:
+        if g_CaptureOptions.sendToClipboard:
             Clipboard.addImage(img)
     }
 }

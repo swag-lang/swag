@@ -25,41 +25,6 @@ enum BottomSize
     Big
 }
 
-#[Swag.Using(Properties)]
-struct CaptureOptions
-{
-    //#[Name("")]
-    {
-        #[Description("Hide the editor before taking the capture")]
-        hideEditorBefore = true
-
-        #[Description("Show the editor after taking the capture")]
-        showEditorAfter = true
-
-        #[Description("Send the capture to the editor")]
-        sendToEditor = true
-    
-        #[Description("Copy the capture to the clipboard")]
-        sendToClipboard = true
-    }
-
-    #[Description("The delay, in seconds, before taking the capture"), Unit("s")]
-    delay = 0
-}
-
-#[Swag.Using(Properties)]
-struct EditorOptions
-{
-    #[Description("Display the labels in the main toolbar")]
-    showToolBarLabels: bool = true
-
-    #[Description("Hide the editor instead of closing it")]
-    hideOnClose: bool = true
-
-    #[Description("The background color of the capture edit window")]
-    editBackColor: Color = Argb.Black
-}
-
 struct MainWnd
 {
     using wnd:          Wnd
@@ -92,9 +57,6 @@ struct MainWnd
     snap:               bool
     libraryMode:        bool
     fileDlgState:       FileDlgState
-
-    captureOptions:     CaptureOptions
-    editorOptions:      EditorOptions
 
     mdlFormShape:       FormShape
     mdlFormImage:       FormImage
@@ -179,7 +141,7 @@ impl IWnd for MainWnd
         {
         case Close:
             evt.accepted = true
-            if editorOptions.hideOnClose:
+            if g_EditorOptions.hideOnClose:
                 surface.hide()
             else:
                 postCommandEvent(CmdIdExit)
@@ -220,8 +182,8 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
-                .serialize("MainWnd.captureOptions", &captureOptions)
-                .serialize("MainWnd.editorOptions", &editorOptions)
+                .serialize("MainWnd.captureOptions", &g_CaptureOptions)
+                .serialize("MainWnd.editorOptions", &g_EditorOptions)
             }
         }
 
@@ -648,7 +610,7 @@ impl MainWnd
 
         foreach c in icons
         {
-            if editorOptions.showToolBarLabels
+            if g_EditorOptions.showToolBarLabels
             {
                 c.iconBtnFlags.remove(.HideName)
                 c.position.width, c.position.height = 64
@@ -664,7 +626,7 @@ impl MainWnd
             }
         }
 
-        topBar.position.height = editorOptions.showToolBarLabels ? 68 : 50
+        topBar.position.height = g_EditorOptions.showToolBarLabels ? 68 : 50
         editWnd.sendResizeEvent()
         topBar.sendResizeEvent()
         editToolBar.sendResizeEvent()
