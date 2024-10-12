@@ -359,6 +359,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         {
             TranslateMessage(&msg)
             DispatchMessageW(&msg)
+            g_App.mouse.update()
         }
 
         DeleteDC(g_MemDC)
