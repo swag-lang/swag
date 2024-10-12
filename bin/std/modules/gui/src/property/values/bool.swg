@@ -19,20 +19,14 @@ impl Properties
 
     mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        var flags    = AddItemFlags.Name
         let dispDesc = Reflection.getAttributeValue(value, Properties.Description, "desc")
-
-        // Display description instead of field name in list mode
-        if kind == .List and dispDesc != null:
-            flags.remove(.Name)
-
-        let item = addItem(value, data, parentItem, flags: flags)
+        let item     = addItem(value, data, parentItem, flags: AddItemFlags.Name)
 
         let lineHeight = getThemeMetrics().btnPush_Height
         let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
         line.dockStyle = .CenterKeepSizeVert
 
-        if !flags.has(.Name)
+        if !item.label
         {
             line.margin.y = listNameMarginBefore
             line.margin.w = listNameMarginAfter

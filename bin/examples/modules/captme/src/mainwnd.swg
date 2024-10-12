@@ -27,8 +27,11 @@ enum BottomSize
 
 struct EditorOptions
 {
-    #[Properties.Description("Display labels in the toolbar")]
+    #[Properties.Description("Display the labels in the main toolbar")]
     showToolBarLabels: bool = true
+
+    #[Properties.Description("Hide the editor instead of closing it")]
+    hideOnClose:       bool = true    
 
     #[Properties.Description("The background color of the capture edit window")]
     editBackColor: Color = Argb.Black
@@ -156,7 +159,10 @@ impl IWnd for MainWnd
         {
         case Close:
             evt.accepted = true
-            surface.hide()
+            if editorOptions.hideOnClose:
+                surface.hide()
+            else:
+                postCommandEvent(CmdIdExit)
         }
     }
 

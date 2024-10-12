@@ -23,7 +23,9 @@ var g_App: Application
 
     catch g_App.loadState()
     surface.constaintPositionToScreen(topLeft: true, margin: 10)
-    surface.show()
+
+    if !Env.hasArg("hide"):
+        surface.show()
 
     using Win32
     with var tnid: NOTIFYICONDATAA

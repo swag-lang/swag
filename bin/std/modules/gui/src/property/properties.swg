@@ -38,7 +38,7 @@ struct Properties
     gridMarginColumn:     s32 = 16
 
     // For list kind
-    listNameMarginBefore:     s32 = 25
+    listNameMarginBefore:     s32 = 20
     listNameMarginAfter:      s32 = 5
     listDescMarginAfter:      s32 = 5
 
@@ -240,7 +240,7 @@ internal impl Properties
 
             if mouseEvt.button != .Left:
                 break
-
+            
             // On column bar
             if prop.cursorSet
             {
@@ -258,9 +258,7 @@ internal impl Properties
                 prop.updateStates()
             }
 
-        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseDoubleClick:
-            if mouseEvt.button != .Left:
-                break
+        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseDoubleClick and mouseEvt.button == .Left:
 
             // Toggle/Expand
             if prop.kind == .Grid and
@@ -270,6 +268,12 @@ internal impl Properties
                 prop.selItem.flags.toggle(.Expanded)
                 prop.updateStates()
             }
+
+            // Toggle checkbox
+            elif prop.selItem.checkBox
+            {                    
+                prop.selItem.checkBox.toggle()
+            }            
 
         case MouseEvent as mouseEvt where mouseEvt.kind == .MouseReleased:
             prop.resizingColumn = false
@@ -544,37 +548,40 @@ internal impl Properties
             else:
                 dispName = Utf8.beautifyName(value.name)
 
-            with let label = Label.create(line, dispName, {0, 0, gridColumnSize, item.line.position.height})
+            if !dispName.isEmpty()
             {
-                if kind == .Grid
+                with let label = Label.create(line, dispName, {0, 0, gridColumnSize, item.line.position.height})
                 {
-                    .vertAlignmentText = .Center
-                    .horzAlignmentText = .Left
-                    .dockStyle         = .Left
-                    .margin.z          = gridMarginColumn
-                    .paddingText.x     = leftMargin
+                    if kind == .Grid
+                    {
+                        .vertAlignmentText = .Center
+                        .horzAlignmentText = .Left
+                        .dockStyle         = .Left
+                        .margin.z          = gridMarginColumn
+                        .paddingText.x     = leftMargin
+                    }
+                    else
+                    {
+                        .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
+                        .vertAlignmentText = kind == .Grid ? .Center : .Top
+                        .horzAlignmentText = .Left
+                        .margin.y          = listNameMarginBefore
+                        .margin.w          = listNameMarginAfter
+                    }
+
+                    .style.setFont(fontName)
                 }
-                else
+
+                item.label = label
+                if parentItem
                 {
-                    .labelFlags |= .WordWrap | .AutoHeight | .DontAdaptSingleLineHeight
-                    .vertAlignmentText = kind == .Grid ? .Center : .Top
-                    .horzAlignmentText = .Left
-                    .margin.y          = listNameMarginBefore
-                    .margin.w          = listNameMarginAfter
+                    item.filter += " "
+                    item.filter = parentItem.filter
+                    item.filter += " "
                 }
 
-                .style.setFont(fontName)
+                item.filter += dispName
             }
-
-            item.label = label
-            if parentItem
-            {
-                item.filter += " "
-                item.filter = parentItem.filter
-                item.filter += " "
-            }
-
-            item.filter += dispName
         }
 
         // Description

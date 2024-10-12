@@ -119,17 +119,8 @@ impl IWnd for CheckButton
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt)
-        {
-            if checked == .UnChecked and checkButtonFlags.has(.ThreeState):
-                checked = .Undefined
-            elif checked == .Checked:
-                checked = .UnChecked
-            else:
-                checked = .Checked
-            sigChanged.call(self)
-            postCommandEvent(id)
-        }
+        if processMouseEvent(evt):
+            toggle()
     }
 }
 
@@ -146,4 +137,17 @@ impl CheckButton
             pos.width = parent.getThemeMetrics().btnPush_Width
         return Wnd.create'CheckButton(parent, name, pos, id)
     }
+
+    // Toggle the button state
+    public mtd toggle()
+    {   
+        if checked == .UnChecked and checkButtonFlags.has(.ThreeState):
+            checked = .Undefined
+        elif checked == .Checked:
+            checked = .UnChecked
+        else:
+            checked = .Checked
+        sigChanged.call(self)
+        postCommandEvent(id)             
+    }    
 }
