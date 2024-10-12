@@ -207,6 +207,12 @@ impl RecentWnd
             .view.backgroundStyle = .View
         }
 
+        recent.loadRecent()
+        return recent
+    }
+
+    mtd loadRecent()
+    {  
         g_Library.fill()
 
         var res = g_Library.files
@@ -218,14 +224,14 @@ impl RecentWnd
         var cptRecent = 0
         foreach r, idx in res
         {
-            let capture = catch recent.addRecent(r.fullname, front: false)
+            let capture = catch addRecent(r.fullname, front: false)
             defer<err> Memory.delete(capture)
             if @err() != null:
                 continue
 
             if idx == 0
             {
-                recent.recentView.selected = 0
+                recentView.selected = 0
                 main.editWnd.editView.setCapture(capture)
             }
             else:
@@ -234,9 +240,7 @@ impl RecentWnd
             cptRecent += 1
             if cptRecent > MaxRecent:
                 break
-        }
-
-        return recent
+        }              
     }
 
     mtd updateRecent()
