@@ -167,6 +167,7 @@ struct RecentWnd
     main:                *MainWnd
     recentView:          *RecentView
     timer:               *Timer
+    loadDone:            bool
 }
 
 impl IWnd for RecentWnd
@@ -207,12 +208,15 @@ impl RecentWnd
             .view.backgroundStyle = .View
         }
 
-        recent.loadRecent()
         return recent
     }
 
     mtd loadRecent()
     {  
+        if loadDone:
+            return
+        loadDone = true
+
         g_Library.fill()
 
         var res = g_Library.files

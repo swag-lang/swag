@@ -185,6 +185,15 @@ impl IWnd for MainWnd
         }
     }
 
+    mtd impl onStateEvent(evt: *StateEvent)
+    {
+        if evt.kind == .Show
+        {
+            recentWnd.loadRecent()
+            evt.accepted = true
+        }
+    }
+
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch
@@ -348,7 +357,6 @@ impl MainWnd
 
     mtd getCapture()->*Capture
     {
-        Debug.assert(editWnd and editWnd.editView.capture)
         return editWnd.editView.capture
     }
 
