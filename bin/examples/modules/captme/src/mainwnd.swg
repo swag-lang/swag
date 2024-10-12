@@ -84,6 +84,7 @@ struct MainWnd
     editZoomBar:        *StackLayoutCtrl
     monitors:           Array'Env.Monitor
     pixSelFillCol:      Color = Argb.White
+    firstShow           = true
 
     editMode:           EditMode = .Shape
     lastEditMode:       EditMode = .Shape
@@ -185,11 +186,24 @@ impl IWnd for MainWnd
         }
     }
 
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
+    {
+        if !firstShow:
+            catch g_App.saveState()
+    }
+
     mtd impl onStateEvent(evt: *StateEvent)
     {
         if evt.kind == .Show
         {
-            recentWnd.loadRecent()
+            if firstShow
+            {
+                firstShow = false
+                catch g_App.loadState()
+                surface.constaintPositionToScreen(topLeft: true, margin: 10)
+                recentWnd.loadRecent()
+            }
+
             evt.accepted = true
         }
     }

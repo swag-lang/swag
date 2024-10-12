@@ -14,15 +14,12 @@ var g_App: Application
     img.setPixelFormat(.BGRA8)
     g_App.setAppIcon(img)
 
-    let surface = try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
+    let surface = try g_App.createSurface(0, 0, 10, 10, SurfaceFlags.OverlappedWindow)
     let mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
     if Env.hasArg("swag.test"):
         g_App.maxRunFrame = 100
-
-    catch g_App.loadState()
-    surface.constaintPositionToScreen(topLeft: true, margin: 10)
 
     if !Env.hasArg("hide"):
         surface.show()
@@ -41,7 +38,6 @@ var g_App: Application
     catch Shell_NotifyIconA(NIM_ADD, &tnid)
 
     g_App.run()
-    catch g_App.saveState()
 
     catch Shell_NotifyIconA(NIM_DELETE, &tnid)
 }
