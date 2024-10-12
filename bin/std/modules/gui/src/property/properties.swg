@@ -39,7 +39,7 @@ struct Properties
 
     // For list kind
     listNameMarginBefore:     s32 = 20
-    listNameMarginAfter:      s32 = 5
+    listNameMarginAfter:      s32 = 0
     listDescMarginAfter:      s32 = 5
 
     sigChanged:               SigArray'func||(*Self, *PropertiesItem)
@@ -898,6 +898,10 @@ impl Properties
             while scan and !scan.line.isVisible()
             {
                 scan.line.show()
+
+                (?, mustEnable) = getItemState(scan)
+                scan.line.enable(mustEnable)
+
                 scan = scan.parent
             }
         }
