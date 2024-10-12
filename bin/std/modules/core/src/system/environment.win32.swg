@@ -94,7 +94,7 @@ public func getMonitors()->Array'Monitor
     }
 
     EnumDisplayMonitors(null, null, cast(const *void) @mkcallback(&proc), cast(LPARAM) cast(u64) &result)
-   result.sort(func||(a, b) {
+    result.sort(func||(a, b) {
         return a.rect.x <=> b.rect.x
     })
 
@@ -114,6 +114,21 @@ public func locateInExplorer(name: string)
 public func locateUrl(name: string)
 {
     discard catch ShellExecuteA(null, null, @dataof(name), null, null, SW_SHOW)
+}
+
+// Return system metrics
+public func getMetric(what: Metrics)->s32
+{
+    #[Swag.Complete]
+    switch what
+    {
+    case DesktopWidth:  
+        return GetSystemMetrics(SM_CXMAXTRACK)
+    case DesktopHeight:  
+        return GetSystemMetrics(SM_CYMAXTRACK)
+    }
+
+    unreachable
 }
 
 var g_SysInfo: SYSTEM_INFO

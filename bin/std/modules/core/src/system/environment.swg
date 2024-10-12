@@ -45,6 +45,12 @@ struct Monitor
 
 internal var g_CmdLineArgs: const [..] string
 
+enum Metrics
+{
+    DesktopWidth        // With of the full desktop
+    DesktopHeight       // Height of the full desktop
+}
+
 #init
 {
     g_CmdLineArgs = @args()

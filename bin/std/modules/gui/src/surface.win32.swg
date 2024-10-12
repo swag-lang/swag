@@ -192,9 +192,12 @@ internal impl Surface
         result.hWnd = cast(const *void) CreateWindowExW(winFlagsEx, className, null, winFlags, x, y, width, height, null, null, GetModuleHandleW(null), result)
 
         // Extend frame inside client area. This will also activate composition.
-        let vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
-        var m:  MARGINS = {vm, vm, vm, vm}
-        DwmExtendFrameIntoClientArea(result.hWnd, &m)
+        if !flags.has(.NoShadow)
+        {
+            let vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
+            var m:  MARGINS = {vm, vm, vm, vm}
+            DwmExtendFrameIntoClientArea(result.hWnd, &m)
+        }
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
     }

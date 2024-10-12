@@ -47,6 +47,7 @@ enum SurfaceFlags
 
     Secondary
     TopMost
+    NoShadow
 
     OverlappedWindow = BigCaption | MinimizeBtn | MaximizeBtn | CloseBtn | Border | Sizeable
 }
@@ -261,11 +262,14 @@ impl Surface
         }
 
         // Draw shadow around surface
-        let subRect = &app.theme.rects.surfaceWnd_Shadow
-        painter.pushClippingRect(clipRect)
-        painter.setColorMaskFull()
         var myRect = Math.Rectangle{0, 0, position.width, position.height}
-        app.theme.drawSubRect(&painter, myRect, subRect, app.theme.colors.wnd_Shadow, false)
+        if !flags.has(.NoShadow)
+        {
+            let subRect = &app.theme.rects.surfaceWnd_Shadow
+            painter.pushClippingRect(clipRect)
+            painter.setColorMaskFull()
+            app.theme.drawSubRect(&painter, myRect, subRect, app.theme.colors.wnd_Shadow, false)
+        }
 
         // Hierarchy paint
         painter.pushClippingRect(wnd.getSurfaceRect())
@@ -329,7 +333,7 @@ impl Surface
         position.width  = width
         position.height = height
 
-        let sdw = app.theme.metrics.surfaceWnd_ShadowSize
+        let sdw = flags.has(.NoShadow) ? 0 : app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 
