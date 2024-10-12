@@ -39,9 +39,10 @@ impl IActionUI for ActionOptions
         let dlg = Dialog.createDialog(view.surface, 800, 600, title: "Options", flags: .Border | .CloseBtn | .Sizeable)
         dlg.addButton("Close", Dialog.BtnYes)
 
-        let opt = PropertiesCtrl.create(dlg.getView(), flags: .Zero)
+        let opt = PropertiesCtrl.create(dlg.getView(), flags: .SectionFilter)
         opt.setAllMargins(10)
         opt.dockStyle = .Center
+        opt.addStruct(main.captureOptions, "Capture")
         opt.addStruct(main.editorOptions, "Editor")
         opt.addStruct(main.getApp().options, "Application")
 

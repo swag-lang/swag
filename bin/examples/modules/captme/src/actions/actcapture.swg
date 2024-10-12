@@ -74,22 +74,22 @@ impl IActionUI for ActionCapture
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Hide Editor Before Capture"
-            evt.checked  = main.captureHideEditor
+            evt.checked  = main.captureOptions.hideEditorBefore
             evt.accepted = true
         case CmdIdCaptureShowEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Show Editor After Capture"
-            evt.checked  = main.captureShowEditor
+            evt.checked  = main.captureOptions.showEditorAfter
             evt.accepted = true
         case CmdIdCaptureToEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Editor"
-            evt.checked  = main.captureToEditor
+            evt.checked  = main.captureOptions.sendToEditor
             evt.accepted = true
         case CmdIdCaptureToClipboard:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Clipboard"
-            evt.checked  = main.captureToClipboard
+            evt.checked  = main.captureOptions.sendToClipboard
             evt.accepted = true
         }
 
@@ -122,13 +122,13 @@ impl IActionUI for ActionCapture
             main.captureScreen(.Screen3)
 
         case CmdIdCaptureHideEditor:
-            main.captureHideEditor = !main.captureHideEditor
+            main.captureOptions.hideEditorBefore = !main.captureOptions.hideEditorBefore
         case CmdIdCaptureShowEditor:
-            main.captureShowEditor = !main.captureShowEditor
+            main.captureOptions.showEditorAfter = !main.captureOptions.showEditorAfter
         case CmdIdCaptureToEditor:
-            main.captureToEditor = !main.captureToEditor
+            main.captureOptions.sendToEditor = !main.captureOptions.sendToEditor
         case CmdIdCaptureToClipboard:
-            main.captureToClipboard = !main.captureToClipboard
+            main.captureOptions.sendToClipboard = !main.captureOptions.sendToClipboard
         }
 
         return true
@@ -172,16 +172,16 @@ impl MainWnd
     mtd captureScreen(mode: CaptureMode)
     {
         let wasHidden = surface.isHidden
-        if captureHideEditor and !surface.isHidden and !surface.isMinimized:
+        if captureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
             surface.hide()
 
-        if captureDelay:
-            Threading.Thread.sleep(captureDelay * 1000)
+        if captureOptions.delay:
+            Threading.Thread.sleep(captureOptions.delay * 1000)
 
         var img     = catch screenShot(mode)
         let isValid = @err() == null and img.width > 0 and img.height > 0
 
-        if (isValid and captureShowEditor) or !wasHidden
+        if (isValid and captureOptions.showEditorAfter) or !wasHidden
         {
             if surface.isMinimized:
                 surface.showNormal()
@@ -192,9 +192,9 @@ impl MainWnd
         if !isValid:
             return
 
-        if captureToEditor:
+        if captureOptions.sendToEditor:
             newCapture(img)
-        if captureToClipboard:
+        if captureOptions.sendToClipboard:
             Clipboard.addImage(img)
     }
 }

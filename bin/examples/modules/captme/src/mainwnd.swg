@@ -25,68 +25,87 @@ enum BottomSize
     Big
 }
 
+#[Swag.Using(Properties)]
+struct CaptureOptions
+{
+    //#[Name("")]
+    {
+        #[Description("Hide the editor before taking the capture")]
+        hideEditorBefore = true
+
+        #[Description("Show the editor after taking the capture")]
+        showEditorAfter = true
+
+        #[Description("Send the capture to the editor")]
+        sendToEditor = true
+    
+        #[Description("Copy the capture to the clipboard")]
+        sendToClipboard = true
+    }
+
+    #[Description("The delay, in seconds, before taking the capture"), Unit("s")]
+    delay = 0
+}
+
+#[Swag.Using(Properties)]
 struct EditorOptions
 {
-    #[Properties.Description("Display the labels in the main toolbar")]
+    #[Description("Display the labels in the main toolbar")]
     showToolBarLabels: bool = true
 
-    #[Properties.Description("Hide the editor instead of closing it")]
-    hideOnClose:       bool = true    
+    #[Description("Hide the editor instead of closing it")]
+    hideOnClose: bool = true
 
-    #[Properties.Description("The background color of the capture edit window")]
+    #[Description("The background color of the capture edit window")]
     editBackColor: Color = Argb.Black
 }
 
 struct MainWnd
 {
-    using wnd:             Wnd
+    using wnd:          Wnd
 
-    icons24:               ImageList
-    icons48:               ImageList
-    appIcon:               ImageList
-    topBar:                *Wnd
-    editToolBar:           *Wnd
-    editWnd:               *EditWnd
-    quickWnd:              *QuickWnd
-    propWnd:               *PropWnd
-    libWnd:                *LibraryWnd
-    captureBtn:            *IconButton
-    libraryBtn:            *IconButton
-    zoomBtn:               *IconButton
-    sizeBtn:               *IconButton
-    recentWnd:             *RecentWnd
-    recentBar:             *Wnd
-    recentSizeBar:         *IconBar
-    quickStyleBar:         *SplitterCtrl
-    editZoomBar:           *StackLayoutCtrl
-    monitors:              Array'Env.Monitor
-    pixSelFillCol:         Color = Argb.White
+    icons24:            ImageList
+    icons48:            ImageList
+    appIcon:            ImageList
+    topBar:             *Wnd
+    editToolBar:        *Wnd
+    editWnd:            *EditWnd
+    quickWnd:           *QuickWnd
+    propWnd:            *PropWnd
+    libWnd:             *LibraryWnd
+    captureBtn:         *IconButton
+    libraryBtn:         *IconButton
+    zoomBtn:            *IconButton
+    sizeBtn:            *IconButton
+    recentWnd:          *RecentWnd
+    recentBar:          *Wnd
+    recentSizeBar:      *IconBar
+    quickStyleBar:      *SplitterCtrl
+    editZoomBar:        *StackLayoutCtrl
+    monitors:           Array'Env.Monitor
+    pixSelFillCol:      Color = Argb.White
 
-    editMode:              EditMode = .Shape
-    lastEditMode:          EditMode = .Shape
-    bottomSize:            BottomSize = Medium
-    snap:                  bool
-    libraryMode:           bool
-    fileDlgState:          FileDlgState
+    editMode:           EditMode = .Shape
+    lastEditMode:       EditMode = .Shape
+    bottomSize:         BottomSize = Medium
+    snap:               bool
+    libraryMode:        bool
+    fileDlgState:       FileDlgState
 
-    captureHideEditor      = true
-    captureShowEditor      = true
-    captureToEditor        = true
-    captureToClipboard     = false
-    captureDelay           = 0
-    editorOptions:         EditorOptions
+    captureOptions:     CaptureOptions
+    editorOptions:      EditorOptions
 
-    mdlFormShape:          FormShape
-    mdlFormImage:          FormImage
-    mdlFormStep:           FormStep
-    mdlFormArrow:          FormArrow
-    mdlFormLine:           FormLine
-    mdlFormPolygon:        FormPolygon
-    mdlFormText:           FormText
-    mdlFormDraw:           FormDraw
-    mdlHighlight:          IForm
-    mdlPixSel:             IForm
-    mdlFavorite:           IForm
+    mdlFormShape:       FormShape
+    mdlFormImage:       FormImage
+    mdlFormStep:        FormStep
+    mdlFormArrow:       FormArrow
+    mdlFormLine:        FormLine
+    mdlFormPolygon:     FormPolygon
+    mdlFormText:        FormText
+    mdlFormDraw:        FormDraw
+    mdlHighlight:       IForm
+    mdlPixSel:          IForm
+    mdlFavorite:        IForm
 }
 
 const Icons24 = #include("datas/icons24.png")
@@ -176,13 +195,9 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
-                .serialize("MainWnd.captureHideEditor", &captureHideEditor)
-                .serialize("MainWnd.captureShowEditor", &captureShowEditor)
-                .serialize("MainWnd.captureToEditor", &captureToEditor)
-                .serialize("MainWnd.captureToClipbpard", &captureToClipboard)
-                .serialize("MainWnd.captureDelay", &captureDelay)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
+                .serialize("MainWnd.captureOptions", &captureOptions)
                 .serialize("MainWnd.editorOptions", &editorOptions)
             }
         }
@@ -265,7 +280,7 @@ impl MainWnd
             case FormDraw:
                 editMode = .Draw
             }
-        }        
+        }
     }
 
     mtd getEditMode()->EditMode
