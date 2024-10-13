@@ -582,7 +582,6 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
     }
 
     SWAG_CHECK(doTypeExpression(parent, exprFlags, result));
-    SWAG_ASSERT((*result)->is(AstNodeKind::TypeExpression));
 
     if (nullable)
     {
