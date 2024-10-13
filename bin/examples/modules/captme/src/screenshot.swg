@@ -14,36 +14,25 @@ enum CaptureMode
 
 private
 {
-    var g_TryStartGrabX: f32
-    var g_TryStartGrabY: f32
     var g_StartGrabX:    f32
     var g_StartGrabY:    f32
     var g_EndGrabX:      f32
     var g_EndGrabY:      f32
-    var g_RStartGrabX:   f32
-    var g_RStartGrabY:   f32
-    var g_REndGrabX:     f32
-    var g_REndGrabY:     f32
-    var g_MouseX:        f32
-    var g_MouseY:        f32
     var g_ScreenWidth:   f32
     var g_ScreenHeight:  f32
 
-    var g_StartGrab:    bool
-    var g_TryStartGrab: bool
-    var g_AutoGrab:     bool
-    var g_GrabDone:     bool
+    var g_Exit:     bool
+    var g_GrabDone: bool
 
     var g_DesktopTexture:     Texture
     var g_GrayDesktopTexture: Texture
-    var g_Exit:               bool
 
     func getGrabRect()->Math.Rectangle
     {
         var result: retval
-        result.x = Math.min(g_StartGrabX, g_EndGrabX)
-        result.y = Math.min(g_StartGrabY, g_EndGrabY)
-        result.width = Math.max(g_StartGrabX, g_EndGrabX) - result.x
+        result.x      = Math.min(g_StartGrabX, g_EndGrabX)
+        result.y      = Math.min(g_StartGrabY, g_EndGrabY)
+        result.width  = Math.max(g_StartGrabX, g_EndGrabX) - result.x
         result.height = Math.max(g_StartGrabY, g_EndGrabY) - result.y
         return result
     }
@@ -51,7 +40,18 @@ private
 
 struct ScreenshotWnd
 {
-    using wnd: Wnd
+    using wnd:        Wnd
+
+    startGrab:     bool
+    tryStartGrab:  bool
+    autoGrab:      bool
+    rStartGrabX:   f32
+    rStartGrabY:   f32
+    rEndGrabX:     f32
+    rEndGrabY:     f32
+    tryStartGrabX: f32
+    tryStartGrabY: f32
+
 }
 
 impl IWnd for ScreenshotWnd
@@ -70,38 +70,36 @@ impl IWnd for ScreenshotWnd
         }
         elif evt.kind == .MousePressed and evt.button == .Left
         {
-            g_TryStartGrabX = evt.surfacePos.x
-            g_TryStartGrabY = evt.surfacePos.y
-            g_TryStartGrab  = true
+            tryStartGrabX = evt.surfacePos.x
+            tryStartGrabY = evt.surfacePos.y
+            tryStartGrab    = true
         }
         elif evt.kind == .MouseReleased and evt.button == .Left
         {
-            if g_StartGrab or g_TryStartGrab
+            if startGrab or tryStartGrab
             {
-                g_StartGrab    = false
-                g_TryStartGrab = false
-                g_GrabDone     = true
-                g_Exit         = true
+                startGrab    = false
+                tryStartGrab = false
+                g_GrabDone   = true
+                g_Exit       = true
             }
         }
         elif evt.kind == .MouseMove
         {
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
-            g_MouseX   = g_EndGrabX
-            g_MouseY   = g_EndGrabY
-            if g_TryStartGrab and
+            if tryStartGrab and
                Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
                Math.abs(g_EndGrabY - g_StartGrabY) > 1
             {
-                g_StartGrabX   = g_TryStartGrabX
-                g_StartGrabY   = g_TryStartGrabY
-                g_TryStartGrab = false
-                g_StartGrab    = true
+                g_StartGrabX = tryStartGrabX
+                g_StartGrabY = tryStartGrabY
+                tryStartGrab = false
+                startGrab    = true
             }
 
-            g_AutoGrab = false
-            if !g_StartGrab
+            autoGrab = false
+            if !startGrab
             {
                 g_StartGrabX = g_EndGrabX
                 g_StartGrabY = g_EndGrabY
@@ -109,7 +107,7 @@ impl IWnd for ScreenshotWnd
                 let r = getWndRectAtPos(surface, g_EndGrabX, g_EndGrabY)
                 if !r.isEmpty()
                 {
-                    g_AutoGrab   = true
+                    autoGrab     = true
                     g_StartGrabX = cast() r.x
                     g_StartGrabY = cast() r.y
                     g_EndGrabX   = cast() r.right()
@@ -126,20 +124,20 @@ impl IWnd for ScreenshotWnd
         var grabRect = getGrabRect()
 
         // Lerp grab rectangle
-        if g_AutoGrab
+        if autoGrab
         {
             let dt = 0.1'f32
-            g_RStartGrabX = Math.lerp(g_RStartGrabX, grabRect.x, dt)
-            g_RStartGrabY = Math.lerp(g_RStartGrabY, grabRect.y, dt)
-            g_REndGrabX   = Math.lerp(g_REndGrabX, grabRect.right(), dt)
-            g_REndGrabY   = Math.lerp(g_REndGrabY, grabRect.bottom(), dt)
-            let xx1 = cast(s32) g_RStartGrabX
-            let yy1 = cast(s32) g_RStartGrabY
-            let xx2 = cast(s32) g_REndGrabX
-            let yy2 = cast(s32) g_REndGrabY
-            if cast(s32) grabRect.x != xx1 or 
-               cast(s32) grabRect.y != yy1 or 
-               cast(s32) grabRect.right() != xx2 or 
+            rStartGrabX = Math.lerp(rStartGrabX, grabRect.x, dt)
+            rStartGrabY = Math.lerp(rStartGrabY, grabRect.y, dt)
+            rEndGrabX   = Math.lerp(rEndGrabX, grabRect.right(), dt)
+            rEndGrabY   = Math.lerp(rEndGrabY, grabRect.bottom(), dt)
+            let xx1 = cast(s32) rStartGrabX
+            let yy1 = cast(s32) rStartGrabY
+            let xx2 = cast(s32) rEndGrabX
+            let yy2 = cast(s32) rEndGrabY
+            if cast(s32) grabRect.x != xx1 or
+               cast(s32) grabRect.y != yy1 or
+               cast(s32) grabRect.right() != xx2 or
                cast(s32) grabRect.bottom() != yy2:
                 invalidate()
             grabRect.x = xx1
@@ -213,13 +211,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_GrayDesktopTexture = g_App.renderer.addImage(img)
         defer g_App.renderer.removeTexture(&g_GrayDesktopTexture)
 
-        g_Exit        = false
-        g_StartGrab   = false
-        g_GrabDone    = false
-        g_RStartGrabX = 0
-        g_RStartGrabY = 0
-        g_REndGrabX   = 0
-        g_REndGrabY   = 0
+        g_Exit     = false
+        g_GrabDone = false
 
         let sf  = catch g_App.createSurface(0, 0, cast(s32) g_ScreenWidth, cast(s32) g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
         let wnd = Wnd.create'ScreenshotWnd(sf.wnd)
@@ -239,8 +232,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
     // Grab
     let grabRect = getGrabRect()
-    let wGrab = cast(s32) Math.max(grabRect.width, 8)
-    let hGrab = cast(s32) Math.max(grabRect.height, 8)
+    let wGrab    = cast(s32) Math.max(grabRect.width, 8)
+    let hGrab    = cast(s32) Math.max(grabRect.height, 8)
     result = getDesktopImage()
     result.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, wGrab, hGrab)
     return result
