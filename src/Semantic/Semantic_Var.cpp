@@ -9,6 +9,7 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 uint32_t Semantic::alignOf(const AstVarDecl* node)
 {
@@ -765,19 +766,14 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         {
             const auto mySize = typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
 
+            if (context->sourceFile->name == "compiler5800.swg")
+                int a = 0;
+
             if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK))
             {
                 storageOffset = node->ownerFct->stackSize;
                 node->ownerFct->stackSize += mySize;
                 node->ownerFct->stackSize = static_cast<uint32_t>(TypeManager::align(node->ownerFct->stackSize, sizeof(void*)));
-
-                auto parentScope = node->ownerScope;
-                while (parentScope != node->ownerFct->scope)
-                {
-                    parentScope->startStackSize = max(parentScope->startStackSize, node->ownerFct->stackSize);
-                    parentScope->startStackSize = static_cast<uint32_t>(TypeManager::align(parentScope->startStackSize, alignOf(node)));
-                    parentScope                 = parentScope->parentScope;
-                }
             }
             else
             {
@@ -790,6 +786,17 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
                 node->ownerScope->startStackSize += mySize;
 
                 setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+            }
+
+            if (node->ownerFct)
+            {
+                auto parentScope = node->ownerScope;
+                while (parentScope != node->ownerFct->scope)
+                {
+                    parentScope->startStackSize = max(parentScope->startStackSize, node->ownerFct->stackSize);
+                    parentScope->startStackSize = static_cast<uint32_t>(TypeManager::align(parentScope->startStackSize, alignOf(node)));
+                    parentScope                 = parentScope->parentScope;
+                }
             }
         }
     }
