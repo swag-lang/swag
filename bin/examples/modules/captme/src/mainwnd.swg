@@ -89,8 +89,6 @@ impl IWnd for MainWnd
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
             .addSeparator()
-            .addItem(CmdIdNewFromClipboard)
-            .addSeparator()
             .addItem(CmdIdExit)
 
             .owner        = self
