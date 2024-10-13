@@ -60,28 +60,26 @@ impl IWnd for ScreenshotWnd
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if evt.kind == .MousePressed and evt.button == .Right
+        switch evt.kind
         {
+        case MousePressed where evt.button == .Right:
             g_Exit = true
-        }
-        elif evt.kind == .MousePressed and evt.button == .Left
-        {
+
+        case MousePressed where evt.button == .Left:
             tryStartGrabX = evt.surfacePos.x
             tryStartGrabY = evt.surfacePos.y
             tryStartGrab  = true
-        }
-        elif evt.kind == .MouseReleased and evt.button == .Left
-        {
+
+        case MouseReleased where evt.button == .Left:
             if startGrab or tryStartGrab
             {
-                startGrab    = false
-                tryStartGrab = false
-                g_GrabDone   = true
-                g_Exit       = true
+                startGrab, tryStartGrab = false
+                g_GrabDone, g_Exit = true
             }
-        }
-        elif evt.kind == .MouseMove
-        {
+
+        case MouseMove:
+            cursor = Cursor.from(CursorShape.Cross)
+
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
             if tryStartGrab and
@@ -127,7 +125,7 @@ impl IWnd for ScreenshotWnd
             lerpGrab.y      = Math.lerp(lerpGrab.y, grabRect.y, dt)
             lerpGrab.width  = Math.lerp(lerpGrab.width, grabRect.width, dt)
             lerpGrab.height = Math.lerp(lerpGrab.height, grabRect.height, dt)
-            
+
             var roundRect = lerpGrab
             roundRect.round()
 
