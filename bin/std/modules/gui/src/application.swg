@@ -834,6 +834,18 @@ impl Application
     mtd getFileIcon(name: string, small = true)->Icon      => getFileDirectoryIcon(name, false, small)
     mtd getDirectoryIcon(name: string, small = true)->Icon => getFileDirectoryIcon(name, true, small)
 
+    // Enable or disable the processing of hot keys
+    mtd enableHotKeys(state = true)
+    {
+        hotKeysDisabled = !state
+    }
+
+    // Disable the processing of hot keys
+    mtd disableHotKeys()
+    {
+        hotKeysDisabled = true
+    }    
+
     // Register a global os key action
     #[Swag.Overload]
     mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd) throw

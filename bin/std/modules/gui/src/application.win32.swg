@@ -10,6 +10,8 @@ public struct ApplicationNative
     fileBigIconsImage:           Image
     fileBigIconsImageList:       ImageList
     mapFileBigIcons:             HashTable'(string, s32)
+
+    hotKeysDisabled:             bool
 }
 
 impl Application
@@ -65,6 +67,8 @@ impl Application
 
     mtd sendHotKey(msg: MSG)
     {
+        if hotKeysDisabled:
+            return
         using Input
         var mdf: KeyModifiers
         if msg.lParam & MOD_ALT:

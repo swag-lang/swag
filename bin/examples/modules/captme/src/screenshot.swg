@@ -18,8 +18,8 @@ private
     var g_StartGrabY:   f32
     var g_EndGrabX:     f32
     var g_EndGrabY:     f32
-    var g_ScreenWidth:  f32
-    var g_ScreenHeight: f32
+    var g_ScreenWidth:  s32
+    var g_ScreenHeight: s32
 
     var g_Exit:     bool
     var g_GrabDone: bool
@@ -170,8 +170,8 @@ impl IWnd for ScreenshotWnd
         // Rectangles
         if g_CaptureOptions.drawCross and !autoGrab
         {
-            painter.drawLine(g_EndGrabX, 0, g_EndGrabX, g_ScreenHeight, Argb.White)
-            painter.drawLine(0, g_EndGrabY, g_ScreenWidth, g_EndGrabY, Argb.White)
+            painter.drawLine(g_EndGrabX, 0, g_EndGrabX, cast() g_ScreenHeight, Argb.White)
+            painter.drawLine(0, g_EndGrabY, cast() g_ScreenWidth, g_EndGrabY, Argb.White)
         }
 
         // Dimensions
@@ -231,9 +231,13 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
+        g_App.disableHotKeys()
+        defer g_App.enableHotKeys()
+
         var img = getDesktopImage()
         g_DesktopTexture = g_App.renderer.addImage(img)
         defer g_App.renderer.removeTexture(&g_DesktopTexture)
+        
         img.grayScale()
         img.fade(Argb.Black, 0.6)
         g_GrayDesktopTexture = g_App.renderer.addImage(img)
@@ -242,10 +246,14 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_Exit     = false
         g_GrabDone = false
 
-        let sf  = catch g_App.createSurface(0, 0, cast(s32) g_ScreenWidth, cast(s32) g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
+        let sx = Env.getMetric(.DesktopX)
+        let sy = Env.getMetric(.DesktopY)
+        let sf  = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
         let wnd = Wnd.create'ScreenshotWnd(sf.wnd)
         wnd.cursor = Cursor.from(CursorShape.Cross)
         wnd.setPosition(0, 0, sf.position.width, sf.position.height)
+        wnd.SetCapture()
+
         sf.setView(wnd)
         sf.show()
         sf.bringToTop()

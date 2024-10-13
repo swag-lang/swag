@@ -172,6 +172,12 @@ struct RecentWnd
 
 impl IWnd for RecentWnd
 {
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
+    {
+        if timer:
+            getApp().deleteTimer(timer)
+    }
+
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
         let capture = main.getCapture()

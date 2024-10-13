@@ -47,6 +47,8 @@ internal var g_CmdLineArgs: const [..] string
 
 enum Metrics
 {
+    DesktopX            // Left position of the full desktop
+    DesktopY            // Top position of the full desktop
     DesktopWidth        // With of the full desktop
     DesktopHeight       // Height of the full desktop
 }

@@ -122,10 +122,14 @@ public func getMetric(what: Metrics)->s32
     #[Swag.Complete]
     switch what
     {
+    case DesktopX:  
+        return GetSystemMetrics(SM_XVIRTUALSCREEN)        
+    case DesktopY:  
+        return GetSystemMetrics(SM_YVIRTUALSCREEN)              
     case DesktopWidth:  
-        return GetSystemMetrics(SM_CXMAXTRACK)
+        return GetSystemMetrics(SM_CXVIRTUALSCREEN)
     case DesktopHeight:  
-        return GetSystemMetrics(SM_CYMAXTRACK)
+        return GetSystemMetrics(SM_CYVIRTUALSCREEN)
     }
 
     unreachable
