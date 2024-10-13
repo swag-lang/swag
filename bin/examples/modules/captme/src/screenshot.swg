@@ -108,10 +108,10 @@ impl IWnd for ScreenshotWnd
                 if !r.isEmpty()
                 {
                     autoGrab     = true
-                    g_StartGrabX = cast() r.x
-                    g_StartGrabY = cast() r.y
-                    g_EndGrabX   = cast() r.right()
-                    g_EndGrabY   = cast() r.bottom()
+                    g_StartGrabX = r.x
+                    g_StartGrabY = r.y
+                    g_EndGrabX   = r.right()
+                    g_EndGrabY   = r.bottom()
                 }
             }
 
@@ -161,6 +161,17 @@ impl IWnd for ScreenshotWnd
             painter.drawLine(g_EndGrabX, 0, g_EndGrabX, g_ScreenHeight, Argb.White)
             painter.drawLine(0, g_EndGrabY, g_ScreenWidth, g_EndGrabY, Argb.White)
         }
+
+        let fontR = getFont().regular
+        let str = Format.toString("% x %", grabRect.width, grabRect.height)
+        var xx = grabRect.x
+        var yy = grabRect.y - fontR.height
+        if xx < 0 or yy < 0
+        {
+            xx = grabRect.x + 5
+            yy = grabRect.y + 5
+        }        
+        painter.drawString(xx, yy, str, fontR, Argb.White)
     }
 }
 
@@ -185,18 +196,18 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         let r = getBackgroundWndRect()
         if r.isEmpty():
             return result
-        g_StartGrabX = cast() r.x
-        g_StartGrabY = cast() r.y
-        g_EndGrabX   = cast() r.right()
-        g_EndGrabY   = cast() r.bottom()
+        g_StartGrabX = r.x
+        g_StartGrabY = r.y
+        g_EndGrabX   = r.right()
+        g_EndGrabY   = r.bottom()
     }
     elif captureMode >= .Screen0 and captureMode <= .Screen3
     {
         let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
-        g_StartGrabX = cast(s32) main.monitors[idx].rectReal.x
-        g_StartGrabY = cast(s32) main.monitors[idx].rectReal.y
-        g_EndGrabX   = g_StartGrabX + cast(s32) main.monitors[idx].rectReal.width
-        g_EndGrabY   = g_StartGrabY + cast(s32) main.monitors[idx].rectReal.height
+        g_StartGrabX = main.monitors[idx].rectReal.x
+        g_StartGrabY = main.monitors[idx].rectReal.y
+        g_EndGrabX   = g_StartGrabX + main.monitors[idx].rectReal.width
+        g_EndGrabY   = g_StartGrabY + main.monitors[idx].rectReal.height
     }
     elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX and g_EndGrabY != g_StartGrabY
     {
@@ -232,9 +243,9 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
     // Grab
     let grabRect = getGrabRect()
-    let wGrab    = cast(s32) Math.max(grabRect.width, 8)
-    let hGrab    = cast(s32) Math.max(grabRect.height, 8)
+    let wGrab    = Math.max(grabRect.width, 8)
+    let hGrab    = Math.max(grabRect.height, 8)
     result = getDesktopImage()
-    result.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, wGrab, hGrab)
+    result.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
     return result
 }

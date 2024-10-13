@@ -31,6 +31,7 @@ private
     }
 }
 
+
 func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
 {
     g_HitTest.x = cast() x
