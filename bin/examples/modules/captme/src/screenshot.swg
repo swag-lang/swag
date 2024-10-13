@@ -40,22 +40,54 @@ private
 
 struct ScreenshotWnd
 {
-    using wnd:         Wnd
+    using wnd:        Wnd
 
-    startGrab:         bool
-    tryStartGrab:      bool
-    autoGrab:          bool
-    lerpGrab:          Math.Rectangle
-    tryStartGrabX:     f32
-    tryStartGrabY:     f32
+    startGrab:        bool
+    tryStartGrab:     bool
+    autoGrab:         bool
+    lerpGrab:         Math.Rectangle
 }
 
 impl IWnd for ScreenshotWnd
 {
+    mtd testAutoGrab()
+    {
+        let pt = Input.getMousePos()
+        let r = getWndRectAtPos(surface, pt.x, pt.y)
+        if !r.isEmpty()
+        {
+            g_StartGrabX = r.x
+            g_StartGrabY = r.y
+            g_EndGrabX   = r.right()
+            g_EndGrabY   = r.bottom()
+        }     
+    }   
+
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed and evt.key == .Escape:
             g_Exit = true
+
+        if !tryStartGrab and !startGrab
+        {
+            if evt.key == .Shift or evt.key == .RShift
+            {
+                if evt.kind == .KeyPressed
+                {
+                    autoGrab = true   
+                    testAutoGrab()       
+                }
+                else
+                {
+                    let pt = Input.getMousePos()
+                    g_StartGrabX, g_EndGrabX = pt.x
+                    g_StartGrabY, g_EndGrabY = pt.y
+                    autoGrab = false
+                }
+            }
+        }
+
+        invalidate()
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
@@ -66,47 +98,37 @@ impl IWnd for ScreenshotWnd
             g_Exit = true
 
         case MousePressed where evt.button == .Left:
-            tryStartGrabX = evt.surfacePos.x
-            tryStartGrabY = evt.surfacePos.y
-            tryStartGrab  = true
+            tryStartGrab = true
 
         case MouseReleased where evt.button == .Left:
-            if startGrab or tryStartGrab
-            {
-                startGrab, tryStartGrab = false
-                g_GrabDone, g_Exit = true
-            }
+            g_GrabDone = startGrab or autoGrab
+            g_Exit = true
 
-        case MouseMove:
-            cursor = Cursor.from(CursorShape.Cross)
-
+        case MouseMove where tryStartGrab:
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
-            if tryStartGrab and
-               Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
+
+            if Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
                Math.abs(g_EndGrabY - g_StartGrabY) > 1
             {
-                g_StartGrabX = tryStartGrabX
-                g_StartGrabY = tryStartGrabY
                 tryStartGrab = false
                 startGrab    = true
             }
 
-            autoGrab = false
-            if !startGrab
-            {
-                g_StartGrabX = g_EndGrabX
-                g_StartGrabY = g_EndGrabY
+        case MouseMove where startGrab:
+            g_EndGrabX = evt.surfacePos.x
+            g_EndGrabY = evt.surfacePos.y
+            invalidate()
 
-                let r = getWndRectAtPos(surface, g_EndGrabX, g_EndGrabY)
-                if !r.isEmpty()
-                {
-                    autoGrab     = true
-                    g_StartGrabX = r.x
-                    g_StartGrabY = r.y
-                    g_EndGrabX   = r.right()
-                    g_EndGrabY   = r.bottom()
-                }
+        case MouseMove:
+            if !autoGrab
+            {
+                g_StartGrabX, g_EndGrabX = evt.surfacePos.x
+                g_StartGrabY, g_EndGrabY = evt.surfacePos.y
+            }
+            else
+            {
+                testAutoGrab()
             }
 
             invalidate()
@@ -134,6 +156,10 @@ impl IWnd for ScreenshotWnd
 
             grabRect = roundRect
         }
+        else
+        {
+            lerpGrab = grabRect
+        }
 
         let painter = evt.bc.painter
 
@@ -142,26 +168,30 @@ impl IWnd for ScreenshotWnd
 
         // Draw the normal desktop image inside the grab rectangle
         painter.drawTexture(grabRect, grabRect, g_DesktopTexture)
+        painter.drawRect(grabRect, Argb.White)
 
         // Rectangles
-        painter.drawRect(grabRect, Argb.White)
-        if g_CaptureOptions.drawCross
+        if g_CaptureOptions.drawCross and !autoGrab
         {
             painter.drawLine(g_EndGrabX, 0, g_EndGrabX, g_ScreenHeight, Argb.White)
             painter.drawLine(0, g_EndGrabY, g_ScreenWidth, g_EndGrabY, Argb.White)
         }
 
         // Dimensions
-        let fontR = getFont().regular
-        let str   = Format.toString("% x %", grabRect.width, grabRect.height)
-        var xx    = grabRect.x
-        var yy    = grabRect.y - fontR.height
-        if xx < 0 or yy < 0
+        if grabRect.width > 0 and grabRect.height > 0
         {
-            xx = grabRect.x + 5
-            yy = grabRect.y + 5
+            let fontR = getFont().regular
+            let str   = Format.toString("% x %", grabRect.width, grabRect.height)
+            var xx    = grabRect.x
+            var yy    = grabRect.y - fontR.height
+            if xx < 0 or yy < 0
+            {
+                xx = grabRect.x + 5
+                yy = grabRect.y + 5
+            }
+
+            painter.drawString(xx, yy, str, fontR, Argb.White)
         }
-        painter.drawString(xx, yy, str, fontR, Argb.White)
     }
 }
 
@@ -217,6 +247,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 
         let sf  = catch g_App.createSurface(0, 0, cast(s32) g_ScreenWidth, cast(s32) g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
         let wnd = Wnd.create'ScreenshotWnd(sf.wnd)
+        wnd.cursor = Cursor.from(CursorShape.Cross)
         wnd.setPosition(0, 0, sf.position.width, sf.position.height)
         sf.setView(wnd)
         sf.show()
