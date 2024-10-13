@@ -585,7 +585,7 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
 
     if (nullable)
     {
-        const auto typeNode = castAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
+        const auto typeNode = castAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression, AstNodeKind::TypeLambda);
         typeNode->typeFlags.add(TYPE_FLAG_NULLABLE);
         typeNode->locNullable = locNullable;
     }
