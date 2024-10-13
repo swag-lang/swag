@@ -147,13 +147,10 @@ impl IWnd for ScreenshotWnd
             lerpGrab.y      = Math.lerp(lerpGrab.y, grabRect.y, dt)
             lerpGrab.width  = Math.lerp(lerpGrab.width, grabRect.width, dt)
             lerpGrab.height = Math.lerp(lerpGrab.height, grabRect.height, dt)
-
             var roundRect = lerpGrab
             roundRect.round()
-
             if !grabRect.isEqualEpsilon(roundRect):
                 invalidate()
-
             grabRect = roundRect
         }
         else
