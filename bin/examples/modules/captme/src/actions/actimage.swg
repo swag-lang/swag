@@ -325,7 +325,7 @@ impl MainWnd
         }
 
         #scope Right
-        for x in capture.backImg.width - 1 to 0
+        for #back x in capture.backImg.width
         {
             if x + capture.backImagePos.x >= capture.width:
                 continue
@@ -357,7 +357,7 @@ impl MainWnd
         }
 
         #scope Down
-        for y in capture.backImg.height - 1 to 0
+        for #back y in capture.backImg.height
         {
             if y + capture.backImagePos.y >= capture.height:
                 continue
