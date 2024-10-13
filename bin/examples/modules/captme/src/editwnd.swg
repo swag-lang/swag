@@ -69,16 +69,24 @@ impl IWnd for EditView
         // Background
         var rect = getClientRect()
         rect.offset(scrollPos)
-        painter.fillRect(rect, g_EditorOptions.editBackColor)
+        painter.fillRect(rect, Argb.Black)
         if !capture:
             return
 
         // Capture content
-        rect = getCaptureRect()
-        capture.paint(painter, rect)
+        let captureRect = getCaptureRect()
+        capture.paint(painter, captureRect)
+
+        // Around capture
+        var col = g_EditorOptions.editBackColor
+        col.a = 200
+        painter.fillRect({rect.x, rect.y, captureRect.x, rect.height}, col)
+        painter.fillRect({captureRect.x, rect.y, captureRect.width, captureRect.y}, col)
+        painter.fillRect({captureRect.right(), rect.y, rect.right() - captureRect.right(), rect.height}, col)
+        painter.fillRect({captureRect.x, captureRect.bottom(), captureRect.width, rect.bottom() - captureRect.bottom()}, col)
 
         // Capture gizmo
-        capture.gizmo.rect = rect
+        capture.gizmo.rect = captureRect
         capture.gizmo.paint(painter, false)
     }
 }

@@ -437,7 +437,6 @@ impl Capture
         // Paint resulting image
         with painter
         {
-            .pushClippingRect(rect)
             .setShader()
             .setAntialiased(false)
         }
@@ -493,7 +492,6 @@ impl Capture
         {
             .setColorMaskColor()
             .setBlendingMode(.Alpha)
-            .popClippingRect()
             .releaseRenderTarget(rt)
             .releaseRenderTarget(rt1)
             .releaseRenderTarget(rt2)
@@ -547,10 +545,8 @@ impl Capture
         let zoom = rect.width / width
 
         // Background image
-        painter.pushClippingRect(rect)
         painter.setAntialiased(false)
         paintBackImage(painter, rect.x, rect.y, zoom)
-        painter.popClippingRect()
 
         // Shapes
         let app = editView.getApp()
