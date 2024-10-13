@@ -210,28 +210,28 @@ impl Rectangle
     // Perform a Math.round operation on all the coordinates
     mtd round()
     {
-        x      = cast() round(x)
-        y      = cast() round(y)
-        width  = cast() round(width)
-        height = cast() round(height)
+        x      = Math.round(x)
+        y      = Math.round(y)
+        width  = Math.round(width)
+        height = Math.round(height)
     }
 
     // Perform a Math.trunc operation on all the coordinates
     mtd trunc()
     {
-        x      = cast() trunc(x)
-        y      = cast() trunc(y)
-        width  = cast() trunc(width)
-        height = cast() trunc(height)
+        x      = Math.trunc(x)
+        y      = Math.trunc(y)
+        width  = Math.trunc(width)
+        height = Math.trunc(height)
     }
 
     // Perform a Math.ceil operation on all the coordinates
     mtd ceil()
     {
-        x      = cast() ceil(x)
-        y      = cast() ceil(y)
-        width  = cast() ceil(width)
-        height = cast() ceil(height)
+        x      = Math.ceil(x)
+        y      = Math.ceil(y)
+        width  = Math.ceil(width)
+        height = Math.ceil(height)
     }
 
     // Determines if the specfied point is contained within the rectangular region
