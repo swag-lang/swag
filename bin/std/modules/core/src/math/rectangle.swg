@@ -207,6 +207,15 @@ impl Rectangle
         return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
+    // Returns 'true' if the two rectangles are equal, with an 'epsilon'
+    mtd const isEqualEpsilon(other: Rectangle, eps = ConstF32.Epsilon)->bool
+    {
+        return isEqualEpsilon(x, other.x, eps) and
+               isEqualEpsilon(y, other.y, eps) and
+               isEqualEpsilon(width, other.width, eps) and
+               isEqualEpsilon(height, other.height, eps)
+    }
+
     // Perform a Math.round operation on all the coordinates
     mtd round()
     {

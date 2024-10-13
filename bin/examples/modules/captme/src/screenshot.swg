@@ -14,12 +14,12 @@ enum CaptureMode
 
 private
 {
-    var g_StartGrabX:    f32
-    var g_StartGrabY:    f32
-    var g_EndGrabX:      f32
-    var g_EndGrabY:      f32
-    var g_ScreenWidth:   f32
-    var g_ScreenHeight:  f32
+    var g_StartGrabX:   f32
+    var g_StartGrabY:   f32
+    var g_EndGrabX:     f32
+    var g_EndGrabY:     f32
+    var g_ScreenWidth:  f32
+    var g_ScreenHeight: f32
 
     var g_Exit:     bool
     var g_GrabDone: bool
@@ -40,18 +40,14 @@ private
 
 struct ScreenshotWnd
 {
-    using wnd:        Wnd
+    using wnd:         Wnd
 
-    startGrab:     bool
-    tryStartGrab:  bool
-    autoGrab:      bool
-    rStartGrabX:   f32
-    rStartGrabY:   f32
-    rEndGrabX:     f32
-    rEndGrabY:     f32
-    tryStartGrabX: f32
-    tryStartGrabY: f32
-
+    startGrab:         bool
+    tryStartGrab:      bool
+    autoGrab:          bool
+    lerpGrab:          Math.Rectangle
+    tryStartGrabX:     f32
+    tryStartGrabY:     f32
 }
 
 impl IWnd for ScreenshotWnd
@@ -72,7 +68,7 @@ impl IWnd for ScreenshotWnd
         {
             tryStartGrabX = evt.surfacePos.x
             tryStartGrabY = evt.surfacePos.y
-            tryStartGrab    = true
+            tryStartGrab  = true
         }
         elif evt.kind == .MouseReleased and evt.button == .Left
         {
@@ -127,23 +123,18 @@ impl IWnd for ScreenshotWnd
         if autoGrab
         {
             let dt = 0.1'f32
-            rStartGrabX = Math.lerp(rStartGrabX, grabRect.x, dt)
-            rStartGrabY = Math.lerp(rStartGrabY, grabRect.y, dt)
-            rEndGrabX   = Math.lerp(rEndGrabX, grabRect.right(), dt)
-            rEndGrabY   = Math.lerp(rEndGrabY, grabRect.bottom(), dt)
-            let xx1 = cast(s32) rStartGrabX
-            let yy1 = cast(s32) rStartGrabY
-            let xx2 = cast(s32) rEndGrabX
-            let yy2 = cast(s32) rEndGrabY
-            if cast(s32) grabRect.x != xx1 or
-               cast(s32) grabRect.y != yy1 or
-               cast(s32) grabRect.right() != xx2 or
-               cast(s32) grabRect.bottom() != yy2:
+            lerpGrab.x      = Math.lerp(lerpGrab.x, grabRect.x, dt)
+            lerpGrab.y      = Math.lerp(lerpGrab.y, grabRect.y, dt)
+            lerpGrab.width  = Math.lerp(lerpGrab.width, grabRect.width, dt)
+            lerpGrab.height = Math.lerp(lerpGrab.height, grabRect.height, dt)
+            
+            var roundRect = lerpGrab
+            roundRect.round()
+
+            if !grabRect.isEqualEpsilon(roundRect):
                 invalidate()
-            grabRect.x = xx1
-            grabRect.setRight(xx2)
-            grabRect.y = yy1
-            grabRect.setBottom(yy2)
+
+            grabRect = roundRect
         }
 
         let painter = evt.bc.painter
@@ -162,15 +153,16 @@ impl IWnd for ScreenshotWnd
             painter.drawLine(0, g_EndGrabY, g_ScreenWidth, g_EndGrabY, Argb.White)
         }
 
+        // Dimensions
         let fontR = getFont().regular
-        let str = Format.toString("% x %", grabRect.width, grabRect.height)
-        var xx = grabRect.x
-        var yy = grabRect.y - fontR.height
+        let str   = Format.toString("% x %", grabRect.width, grabRect.height)
+        var xx    = grabRect.x
+        var yy    = grabRect.y - fontR.height
         if xx < 0 or yy < 0
         {
             xx = grabRect.x + 5
             yy = grabRect.y + 5
-        }        
+        }
         painter.drawString(xx, yy, str, fontR, Argb.White)
     }
 }
