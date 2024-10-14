@@ -42,6 +42,7 @@ enum ThemeIcons24
     Update
     Duplicate
     Quit
+    Link
 }
 
 enum ThemeIcons64

@@ -123,7 +123,7 @@ impl IWnd for LibraryView
                 it.texture = evt.bc.renderer.addImage(it.capture.preview)
 
             it.rect = Math.Rectangle{x, y, W, H}
-            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, i == selectedItem)
+            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, i == selectedItem, null)
 
             // Waiting for texture
             if !it.texture.isValid()

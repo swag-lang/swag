@@ -5,6 +5,7 @@ const RecentPadding = 8.0
 struct RecentItem
 {
     file:        String
+    linked:      String
     preview:     Texture
     rect:        Math.Rectangle
     zoom:        f32
@@ -108,9 +109,9 @@ impl IWnd for RecentView
         }
     }
 
-    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
+    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool, linked: String)
     {
-        let colors = parent.getThemeColors()
+        let colors  = parent.getThemeColors()
 
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
 
@@ -132,11 +133,20 @@ impl IWnd for RecentView
         txtRect.width  = texture.width * ratio
         txtRect.height = texture.height * ratio
 
-        painter.fillRect(txtRect, Argb.LightGray)
-        painter.fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+        with painter
+        {
+            .fillRect(txtRect, Argb.LightGray)
+            .fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+            .setInterpolationMode(.Linear)
+            .drawTexture(txtRect, texture)
 
-        painter.setInterpolationMode(.Linear)
-        painter.drawTexture(txtRect, texture)
+            if linked != null
+            {     
+                var icon = parent.getTheme().getIcon24(.Link)
+                icon.sizeX, icon.sizeY = 16
+                icon.paint(painter, rect.x + 4, rect.y + 4, colors.hilightLight)
+            }
+        }
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
@@ -153,7 +163,7 @@ impl IWnd for RecentView
             var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
 
-            paintRecent(self, painter, i.preview, rect, idx == hotItem, idx == selected)
+            paintRecent(self, painter, i.preview, rect, idx == hotItem, idx == selected, i.linked)
             x = rect.right() + RecentPadding
         }
 
@@ -298,7 +308,7 @@ impl RecentWnd
     mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
         let capture = Capture.load(file)
-        addRecent(capture.file, capture.preview, front, sel)
+        addRecent(capture.file, capture.preview, front, sel, capture.linkedImage)
 
         // Too much recent. Remove the oldest
         if front and recentView.items.count > MaxRecent
@@ -314,7 +324,7 @@ impl RecentWnd
     }
 
     #[Swag.Overload]
-    mtd addRecent(file: string, preview: Image, front = true, sel = false)
+    mtd addRecent(file: string, preview: Image, front = true, sel = false, linked: string = null)
     {
         // Already there ?
         foreach it, i in recentView.items
@@ -339,6 +349,7 @@ impl RecentWnd
         let item = recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         item.file    = file
+        item.linked  = linked
         if front
         {
             recentView.items.insertAt(0, item)
