@@ -371,6 +371,7 @@ impl MainWnd
         registerAction'ActionGlobal()
         registerAction'ActionAbout()
         registerAction'ActionOptions()
+        registerAction'ActionView()
     }
 
     mtd registerShortcuts()
@@ -539,6 +540,8 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdZoom1)
             .addItem(CmdIdZoomFit)
+            .addSeparator()
+            .addItem(CmdIdViewClip)
             topMenu.addPopup("View", viewMenu)
         }
 

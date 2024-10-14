@@ -29,6 +29,9 @@ struct EditorOptions
     #[Description("Display the labels in the main toolbar")]
     showToolBarLabels: bool = true
 
+    #[Description("Hide everything outside the main capture rectangle")]
+    clipToSelection: bool = false
+
     #[Description("Hide the editor instead of closing it")]
     hideOnClose: bool = true
 

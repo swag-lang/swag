@@ -79,7 +79,7 @@ impl IWnd for EditView
 
         // Around capture
         var col = g_EditorOptions.editBackColor
-        col.a = 200
+        col.a = g_EditorOptions.clipToSelection ? 255 : 200
         painter.fillRect({rect.x, rect.y, captureRect.x, rect.height}, col)
         painter.fillRect({captureRect.x, rect.y, captureRect.width, captureRect.y}, col)
         painter.fillRect({captureRect.right(), rect.y, rect.right() - captureRect.right(), rect.height}, col)
