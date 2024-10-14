@@ -3,39 +3,42 @@ struct CaptureOptions
 {
     //#[Name("")]
     {
-        #[Description("Display a big capture cross at the mouse position")]
+        #[Description("Show a large cross at the mouse position during capture")]
         drawCross = true
 
-        #[Description("Hide the editor before taking the capture")]
+        #[Description("Temporarily hide the editor before starting the capture")]
         hideEditorBefore = true
 
-        #[Description("Show the editor after taking the capture")]
+        #[Description("Reopen the editor after the capture is complete")]
         showEditorAfter = true
 
-        #[Description("Send the capture to the editor")]
+        #[Description("Send the captured image to the editor")]
         sendToEditor = true
     
-        #[Description("Copy the capture to the clipboard")]
+        #[Description("Copy the captured image to the clipboard")]
         sendToClipboard = true
     }
 
-    #[Description("The delay, in seconds, before taking the capture"), Unit("s")]
+    #[Description("Set the delay time, in seconds, before capturing"), Unit("s")]
     delay = 0
 }
 
 #[Swag.Using(Properties)]
 struct EditorOptions
 {
-    #[Description("Display the labels in the main toolbar")]
-    showToolBarLabels: bool = true
+    #[Description("Show text labels in the main toolbar")]
+    showToolBarLabels = true
 
-    #[Description("Hide everything outside the main capture rectangle")]
-    clipToSelection: bool = false
+    #[Description("Mask everything outside the selected capture area")]
+    clipToSelection = false
 
-    #[Description("Hide the editor instead of closing it")]
-    hideOnClose: bool = true
+    #[Description("Require confirmation before overwriting a capture-linked image")]
+    confirmLinkedOverwrite = true
 
-    #[Description("The background color of the capture edit window")]
+    #[Description("Minimize the editor instead of closing it")]
+    hideOnClose = true
+
+    #[Description("Specify the background color of the capture editing window")]
     #[Opaque]
     editBackColor: Color = Argb.Black
 }

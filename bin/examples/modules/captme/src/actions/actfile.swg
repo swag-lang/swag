@@ -108,10 +108,14 @@ impl IActionUI for ActionFile
             main.openImage()
 
         case CmdIdUpdateLinkedImage:
-            var txt = Format.toString("This will overwrite the original image.\n")
-            txt += Format.toString("File is '%'", capture.linkedImage)
-            if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes:
-                break
+            if g_EditorOptions.confirmLinkedOverwrite
+            {
+                var txt = Format.toString("This will overwrite the original image.\n")
+                txt += Format.toString("<b>%</b>\n", capture.linkedImage)
+                if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes:
+                    break
+            }
+
             Cursor.wait()
             var img = capture.toImage()
             catch img.save(capture.linkedImage)

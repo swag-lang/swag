@@ -49,6 +49,7 @@ public impl MessageDlg
         var rsf:  RichStringFormat
         rsf.font = getFont()
         rsf.flags |= .WordWrap
+        rsf.horzAlignment = .Justify
         fake.drawRichString({0, 0, 512, 0}, &label.name, rsf)
         label.name.invalidate()
 
@@ -59,12 +60,13 @@ public impl MessageDlg
         w += cast(f32) ((buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding
         w += metrics.btnPush_Width
+
         var wl = label.name.boundRect.width + 2 * metrics.dialog_Padding
         wl += 2 * metrics.wnd_BorderSize
         w = Math.max(w, wl)
 
         // Height
-        var h = Math.min(512, label.name.boundRect.height + metrics.dialog_Padding)
+        var h = Math.min(512, label.name.boundRect.height + 2 * metrics.dialog_Padding)
         if labelIcon:
             h += labelIcon.position.height
         else:

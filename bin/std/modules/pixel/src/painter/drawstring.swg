@@ -52,6 +52,7 @@ struct RichStringFormat
     vertAlignment:     StringVertAlignment = Top
     lineGap:           s32
     flags:             StringFormatFlags = Default
+    justifyLimit:      f32 = 2
 }
 
 impl Painter
@@ -312,21 +313,25 @@ impl Painter
 
                 if curW + c.boundRect.width > pos.width
                 {
-                    line.start = startLine
-                    line.end   = cast(s32) idx
-
-                    // We: not want the current line to end with a space
-                    if lastWasSpace and idx
+                    if startLine != idx
                     {
-                        line.countSpaces -= 1
-                        if format.horzAlignment != .Justify:
-                            line.measure.width -= text.chunks[idx - 1].boundRect.width
-                        else:
-                            line.whiteSpaces -= text.chunks[idx - 1].boundRect.width
-                        line.end -= 1
+                        line.start = startLine
+                        line.end   = cast(s32) idx
+
+                        // We: not want the current line to end with a space
+                        if lastWasSpace and idx
+                        {
+                            line.countSpaces -= 1
+                            if format.horzAlignment != .Justify:
+                                line.measure.width -= text.chunks[idx - 1].boundRect.width
+                            else:
+                                line.whiteSpaces -= text.chunks[idx - 1].boundRect.width
+                            line.end -= 1
+                        }
+
+                        lines.add(line)
                     }
 
-                    lines.add(line)
                     startLine = cast(s32) idx
                     line.measure.width, line.measure.height = 0
                     line.measure.ascent, line.measure.descent = 0
@@ -435,8 +440,15 @@ impl Painter
                 {
                     let c = &text.chunks[idx]
                     c.pos.x = x1
-                    if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol:
-                        x1 += (pos.width - l.measure.width) / l.countSpaces
+
+                    if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
+                    {
+                        let spaceW = (pos.width - l.measure.width) / l.countSpaces
+                        if spaceW < l.measure.height * format.justifyLimit:
+                            x1 += spaceW
+                        else:
+                            x1 += c.boundRect.width
+                    }
                     else:
                         x1 += c.boundRect.width
                     c.pos.y = y1
