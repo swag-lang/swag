@@ -36,6 +36,7 @@ struct EditorOptions
     hideOnClose: bool = true
 
     #[Description("The background color of the capture edit window")]
+    #[Opaque]
     editBackColor: Color = Argb.Black
 }
 

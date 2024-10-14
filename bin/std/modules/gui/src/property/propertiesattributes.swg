@@ -24,6 +24,9 @@ impl Properties
     // Value edit size
     attr EditSize(size: s32)
 
+    // No Alpha edition in a color
+    attr Opaque()    
+
     // If the value changed, need to recompute the properties layout
     attr RecalcLayout()
 }
