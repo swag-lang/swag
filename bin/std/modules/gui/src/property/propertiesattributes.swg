@@ -12,21 +12,24 @@ impl Properties
     // Add a description
     attr Description(desc: string)
 
-    // Min and max values
-    attr MinMax(min, max: s64)
-
-    // Native float edit width a slider
-    attr SliderMinMax(min, max: f32)
-
-    // Editbox with a unit text
-    attr Unit(value: string)
-
-    // Value edit size
+    // The width of the edition widget
     attr EditSize(size: s32)
-
-    // No Alpha edition in a color
-    attr Opaque()    
 
     // If the value changed, need to recompute the properties layout
     attr RecalcLayout()
+
+    // Value edition with an editbox, min and max values
+    attr MinMax(min, max: s64)
+
+    // Value edition with an editbox, show a unit string
+    attr Unit(value: string)
+
+    // Float edition, edit width a slider instead of an editbox
+    attr SliderMinMax(min, max: f32)
+
+    // Color edition, force an opaque color
+    attr Opaque()    
+
+    // Color edition, keep the original alpha value
+    attr KeepAlpha()     
 }
