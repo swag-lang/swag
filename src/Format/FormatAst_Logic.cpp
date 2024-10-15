@@ -174,6 +174,8 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             concat->addString("case");
             concat->addBlank();
 
+            const auto startCol = concat->column;
+
             bool first = true;
             for (const auto it : c->expressions)
             {
@@ -182,11 +184,21 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
                     concat->addChar(',');
                     concat->addBlank();
                 }
+                
+                if (const auto parse = getTokenParse(it))
+                {
+                    if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))
+                    {
+                        concat->addEol();
+                        concat->alignToColumn(startCol);
+                    }
+                }
 
                 SWAG_CHECK(outputNode(context, it));
+
                 first = false;
             }
-            
+
             if (!c->matchVarName.text.empty())
             {
                 concat->addBlank();

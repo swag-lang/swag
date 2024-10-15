@@ -18,7 +18,9 @@ impl IActionUI for ActionMoveSel
     {
         switch cxt.id
         {
-        case CmdIdAlignLeft, CmdIdAlignCenter, CmdIdAlignRight, CmdIdAlignTop, CmdIdAlignMiddle, CmdIdAlignBottom, CmdIdBringToFront, CmdIdSendToBack, CmdIdBringForward, CmdIdSendBackward:
+        case CmdIdAlignLeft, CmdIdAlignCenter, CmdIdAlignRight,
+             CmdIdAlignTop, CmdIdAlignMiddle, CmdIdAlignBottom,
+             CmdIdBringToFront, CmdIdSendToBack, CmdIdBringForward, CmdIdSendBackward:
             return true
         }
 

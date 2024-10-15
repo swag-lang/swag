@@ -100,7 +100,8 @@ impl IWnd for RecentView
                         .addSeparator()
                         .addItem(CmdIdCopyAsImage)
                         .addSeparator()
-                        .addItem(CmdIdFileLocation)
+                        .addItem(CmdIdCaptureFileLocation)
+                        .addItem(CmdIdLinkedFileLocation)
                     }
 
                     discard menu.doModal(evt.surfacePos, autoDestroy: true)
@@ -111,42 +112,44 @@ impl IWnd for RecentView
 
     func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool, linked: String)
     {
-        let colors  = parent.getThemeColors()
+        let colors = parent.getThemeColors()
 
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
+
+        if texture.isValid()
+        {
+            var txtRect = rect
+            txtRect.inflate(-RecentPadding * 0.5)
+
+            let ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
+
+            txtRect.x      = rect.horzCenter() - (texture.width * 0.5 * ratio)
+            txtRect.y      = rect.vertCenter() - (texture.height * 0.5 * ratio)
+            txtRect.width  = texture.width * ratio
+            txtRect.height = texture.height * ratio
+
+            with painter
+            {
+                .fillRect(txtRect, Argb.LightGray)
+                .fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+                .setInterpolationMode(.Linear)
+                .drawTexture(txtRect, texture)
+            }
+        }
+
+        if linked != null
+        {
+            painter.fillRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, colors.wnd_Bk)
+            painter.drawRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, Argb.White, 2)
+            var icon = parent.getTheme().getIcon24(.Link)
+            icon.sizeX, icon.sizeY = 16
+            icon.paint(painter, rect.x + 8, rect.y + 8, Argb.White)
+        }
 
         if hot:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
         if selected:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
-
-        if !texture.isValid():
-            return
-
-        var txtRect = rect
-        txtRect.inflate(-RecentPadding * 0.5)
-
-        let ratio = Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
-
-        txtRect.x      = rect.horzCenter() - (texture.width * 0.5 * ratio)
-        txtRect.y      = rect.vertCenter() - (texture.height * 0.5 * ratio)
-        txtRect.width  = texture.width * ratio
-        txtRect.height = texture.height * ratio
-
-        with painter
-        {
-            .fillRect(txtRect, Argb.LightGray)
-            .fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-            .setInterpolationMode(.Linear)
-            .drawTexture(txtRect, texture)
-
-            if linked != null
-            {     
-                var icon = parent.getTheme().getIcon24(.Link)
-                icon.sizeX, icon.sizeY = 16
-                icon.paint(painter, rect.x + 4, rect.y + 4, colors.hilightLight)
-            }
-        }
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
@@ -228,7 +231,7 @@ impl RecentWnd
     }
 
     mtd loadRecent()
-    {  
+    {
         if loadDone:
             return
         loadDone = true
@@ -260,7 +263,7 @@ impl RecentWnd
             cptRecent += 1
             if cptRecent > MaxRecent:
                 break
-        }              
+        }
     }
 
     mtd updateRecent()
@@ -271,6 +274,10 @@ impl RecentWnd
         if timer:
             getApp().deleteTimer(timer)
         timer = getApp().addTimer(1's, self)
+
+        let item    = recentView.items[recentView.selected]
+        let capture = main.getCapture()
+        item.linked = capture.linkedImage
     }
 
     mtd removeRecent()
@@ -342,6 +349,8 @@ impl RecentWnd
 
                 if sel:
                     recentView.select(idxSel, true)
+
+                it.linked = linked
                 return
             }
         }

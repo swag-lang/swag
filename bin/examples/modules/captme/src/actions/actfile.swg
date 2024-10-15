@@ -1,14 +1,15 @@
 using Gui
 
-const CmdIdSaveAsImage       = "CmdIdSaveAsImage"
-const CmdIdSaveAsLinkedImage = "CmdIdSaveAsLinkedImage"
-const CmdIdOpenImage         = "CmdIdOpenImage"
-const CmdIdUpdateLinkedImage = "CmdIdUpdateLinkedImage"
-const CmdIdDupCapture        = "CmdIdDupCapture"
-const CmdIdDeleteCapture     = "CmdIdDeleteCapture"
-const CmdIdFileLocation      = "CmdIdFileLocation"
-const CmdIdNewImage          = "CmdIdNewImage"
-const CmdIdNewFromClipboard  = "CmdIdNewFromClipboard"
+const CmdIdSaveAsImage         = "CmdIdSaveAsImage"
+const CmdIdSaveAsLinkedImage   = "CmdIdSaveAsLinkedImage"
+const CmdIdOpenImage           = "CmdIdOpenImage"
+const CmdIdUpdateLinkedImage   = "CmdIdUpdateLinkedImage"
+const CmdIdDupCapture          = "CmdIdDupCapture"
+const CmdIdDeleteCapture       = "CmdIdDeleteCapture"
+const CmdIdCaptureFileLocation = "CmdIdCaptureFileLocation"
+const CmdIdLinkedFileLocation  = "CmdIdLinkedFileLocation"
+const CmdIdNewImage            = "CmdIdNewImage"
+const CmdIdNewFromClipboard    = "CmdIdNewFromClipboard"
 
 struct ActionFile {}
 impl IActionUI for ActionFile
@@ -17,7 +18,7 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdUpdateLinkedImage, CmdIdDupCapture, CmdIdDeleteCapture, CmdIdFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
+        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdUpdateLinkedImage, CmdIdDupCapture, CmdIdDeleteCapture, CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
             return true
         }
 
@@ -75,11 +76,17 @@ impl IActionUI for ActionFile
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Duplicate)
 
-        case CmdIdFileLocation:
+        case CmdIdCaptureFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
-            evt.name     = "Open File Location"
+            evt.name     = "Open Capture File Location"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.OpenFile)
+
+        case CmdIdLinkedFileLocation:
+            evt.setFlags |= .Name | .Disabled | .Icon
+            evt.name     = "Open Linked Image Location"
+            evt.disabled = !capture or capture.linkedImage.isEmpty()
+            evt.icon     = main.getTheme().getIcon24(.Link)            
         }
 
         return true
@@ -135,8 +142,11 @@ impl IActionUI for ActionFile
             main.recentWnd.recentView.select(0)
             g_Library.addFile(file)
 
-        case CmdIdFileLocation:
+        case CmdIdCaptureFileLocation:
             Env.locateInExplorer(capture.file)
+
+        case CmdIdLinkedFileLocation:
+            Env.locateInExplorer(capture.linkedImage)            
         }
 
         return true
@@ -212,6 +222,7 @@ impl MainWnd
             capture.linkedImage = dlg.getSelectedName()
             capture.changed     = true
             catch capture.save()
+            recentWnd.updateRecent()
         }
     }
 

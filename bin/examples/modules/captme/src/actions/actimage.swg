@@ -10,7 +10,8 @@ impl IActionUI for ActionImage
     {
         switch cxt.id
         {
-        case CmdIdTrimCanevas, CmdIdResizeImage, CmdIdResizeCanevas, CmdIdRestoreOrg:
+        case CmdIdTrimCanevas, CmdIdResizeImage,
+             CmdIdResizeCanevas, CmdIdRestoreOrg:
             return true
         }
 
