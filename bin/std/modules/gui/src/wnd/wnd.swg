@@ -1161,6 +1161,12 @@ impl Wnd
     // Events
     //////////////////////////////////////////////
 
+    // Register a new timer for the given 'target'
+    mtd addTimer(time: Time.Duration)->*Timer
+    {
+        return getApp().addTimer(time, self)
+    }
+
     mtd postQuitEvent()
     {
         surface.app.postQuitEvent()

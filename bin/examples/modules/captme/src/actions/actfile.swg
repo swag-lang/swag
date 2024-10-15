@@ -139,6 +139,11 @@ impl IActionUI for ActionFile
             catch img.save(capture.linkedImage)
             if @err() != null:
                 MessageDlg.error(main.surface, "Failed to update file")
+            else
+            {
+                var txt = Format.toString("Image <i>%</i> has been saved", capture.linkedImage)
+                discard EmbInfoCtrl.create(main.editWnd.view, txt, .Information, top: false, autoHide: true)
+            }
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file.")

@@ -13,10 +13,18 @@ struct EmbInfoCtrl
     label:              *Label
 }
 
+impl IWnd for EmbInfoCtrl
+{
+    mtd impl onTimerEvent(evt: *TimerEvent)
+    {
+        destroy()
+    }
+}
+
 impl EmbInfoCtrl
 {
-    // Create the popup list, but: not display it
-    func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
+    // Create the popup list, but do not display it
+    func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true, autoHide = false)->*EmbInfoCtrl
     {
         let theme  = parent.getTheme()
         let colors = parent.getThemeColors()
@@ -58,6 +66,10 @@ impl EmbInfoCtrl
             }
         }
 
+        if autoHide:
+            discard ctrl.addTimer(4's)
+
+        parent.applyLayout()
         return ctrl
     }
 }
