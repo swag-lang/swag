@@ -4,6 +4,7 @@ const CmdIdResizeCanevas = "CmdIdResizeCanevas"
 const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
 const CmdIdFlipImage     = "CmdIdFlipImage"
 const CmdIdMirrorImage   = "CmdIdMirrorImage"
+const CmdIdRotate90Image = "CmdIdRotate90Image"
 
 struct ActionImage {}
 impl IActionUI for ActionImage
@@ -14,7 +15,7 @@ impl IActionUI for ActionImage
         {
         case CmdIdTrimCanevas, CmdIdResizeImage,
              CmdIdResizeCanevas, CmdIdRestoreOrg,
-             CmdIdFlipImage, CmdIdMirrorImage:
+             CmdIdFlipImage, CmdIdMirrorImage, CmdIdRotate90Image:
             return true
         }
 
@@ -56,7 +57,12 @@ impl IActionUI for ActionImage
         case CmdIdMirrorImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Mirror Image"
-            evt.disabled = !capture            
+            evt.disabled = !capture
+
+        case CmdIdRotate90Image:
+            evt.setFlags |= .Name | .Disabled
+            evt.name     = "Rotate Image 90°"
+            evt.disabled = !capture
         }
 
         return true
@@ -71,10 +77,15 @@ impl IActionUI for ActionImage
         {
         case CmdIdResizeImage:
             main.resizeImage()
+
         case CmdIdFlipImage:
-            main.doProcessImage(CmdIdFlipImage)            
+            main.doProcessImage(CmdIdFlipImage)
+
         case CmdIdMirrorImage:
-            main.doProcessImage(CmdIdMirrorImage)             
+            main.doProcessImage(CmdIdMirrorImage)
+
+        case CmdIdRotate90Image:
+            main.doProcessImage(CmdIdRotate90Image)            
 
         case CmdIdResizeCanevas:
             main.resizeCanevas()
@@ -111,6 +122,8 @@ impl MainWnd
         capture.pushUndo(undo0)
 
         var img = capture.backImg
+        let oldW = img.width
+        let oldH = img.height
 
         switch cmdId
         {
@@ -120,6 +133,8 @@ impl MainWnd
             img.flip()
         case CmdIdMirrorImage:
             img.mirror()
+        case CmdIdRotate90Image:
+            img.turn(.T90)
         }
 
         let undo1 = capture.newUndo(.SetImage, serial)
@@ -134,6 +149,14 @@ impl MainWnd
             undo2.newSizeX = w - capture.width
             undo2.newSizeY = h - capture.height
             capture.pushUndo(undo2)
+
+        case CmdIdRotate90Image:
+            let undo2 = capture.newUndo(.MoveCapture, serial)
+            Console.print(img.height, " ")
+            undo2.newImg   = img
+            undo2.newSizeX = img.width - oldW
+            undo2.newSizeY = img.height - oldH
+            capture.pushUndo(undo2)        
         }
     }
 

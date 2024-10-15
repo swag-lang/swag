@@ -233,6 +233,9 @@ impl MainWnd
             return
         }
 
+        var txt = Format.toString("Image <i>%</i> has been saved", dlg.getSelectedName())
+        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, top: false, autoHide: true)
+
         if linked
         {
             capture.linkedImage = dlg.getSelectedName()
