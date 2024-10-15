@@ -118,7 +118,7 @@ impl IActionUI for ActionFile
             if g_EditorOptions.confirmLinkedOverwrite
             {
                 var txt = Format.toString("This will overwrite the original image.\n")
-                txt += Format.toString("<b>%</b>\n", capture.linkedImage)
+                txt += Format.toString("<i>%</i>", capture.linkedImage)
                 if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes:
                     break
             }
