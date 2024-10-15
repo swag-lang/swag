@@ -140,7 +140,7 @@ impl CheckButton
 
     // Toggle the button state
     public mtd toggle()
-    {   
+    {
         if checked == .UnChecked and checkButtonFlags.has(.ThreeState):
             checked = .Undefined
         elif checked == .Checked:
@@ -148,6 +148,11 @@ impl CheckButton
         else:
             checked = .Checked
         sigChanged.call(self)
-        postCommandEvent(id)             
-    }    
+        postCommandEvent(id)
+    }
+
+    // Returns 'true' if the button is checked
+    public mtd const isChecked()->bool => checked == .Checked
+    // Returns 'true' if the button is undefined
+    public mtd const isUndefined()->bool => checked == .Undefined
 }

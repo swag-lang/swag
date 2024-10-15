@@ -5,6 +5,7 @@ public struct MessageDlg
     using dialog:     Dialog
     labelIcon:        *Label
     label:            *Label
+    extension:        *Wnd
 }
 
 public struct MessageDlgOptions
@@ -12,7 +13,7 @@ public struct MessageDlgOptions
     icon:               Icon
     horzAlignmentText   = StringHorzAlignment.Center
     vertAlignmentText   = StringVertAlignment.Center
-
+    sigCreate:          func||(*MessageDlg)    
 }
 
 public impl MessageDlg
@@ -35,6 +36,9 @@ public impl MessageDlg
             .padding.z = metrics.dialog_Padding
             .padding.w = metrics.dialog_Padding
         }
+
+        if options.sigCreate:
+            options.sigCreate(dlg)
 
         dlg.setIcon(options.icon)
         dlg.sendResizeEvent()
@@ -87,6 +91,9 @@ public impl MessageDlg
         elif surface.flags & .BigCaption:
             h += metrics.wnd_BigCaptionCY
 
+        if extension:
+            h += extension.position.height
+
         var pos = surface.position
         pos.width  = w
         pos.height = h
@@ -121,6 +128,16 @@ public impl MessageDlg
             .horzAlignmentIcon = .Center
             .vertAlignmentIcon = .Center
         }
+    }
+
+    // Add a bottom extended window
+    mtd setExtension(wndExtension: *Wnd)
+    {
+        Debug.assert(extension == null)
+        extension = wndExtension
+        extension.dockStyle = .Bottom
+        extension.margin.x = getThemeMetrics().dialog_Padding
+        extension.margin.w = getThemeMetrics().dialog_Padding
     }
 
     // Message box with a 'ok'

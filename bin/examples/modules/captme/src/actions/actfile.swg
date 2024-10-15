@@ -119,7 +119,18 @@ impl IActionUI for ActionFile
             {
                 var txt = Format.toString("This will overwrite the original image.\n")
                 txt += Format.toString("<i>%</i>", capture.linkedImage)
-                if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes:
+
+                var opt: MessageDlgOptions
+                opt.sigCreate = func(dlg) 
+                {
+                    let chk = CheckButton.create(dlg.surface.getView(), "Do not ask again", {0, 0, 100, 40})
+                    chk.sigChanged += func(btn) {
+                        g_EditorOptions.confirmLinkedOverwrite = !btn.isChecked()
+                    }
+                    dlg.setExtension(chk)
+                }
+                
+                if MessageDlg.confirm(main.surface, txt, options: opt) != Dialog.BtnYes:
                     break
             }
 
