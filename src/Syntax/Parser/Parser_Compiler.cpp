@@ -103,7 +103,12 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
     }
     else if (tokenParse.isNot(TokenId::SymLeftCurly))
     {
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0424)};
+        auto cpy                = prevTokenParse;
+        cpy.token.startLocation = cpy.token.endLocation;
+        cpy.token.endLocation   = cpy.token.startLocation;
+
+        Diagnostic err{sourceFile, cpy, toErr(Err0424)};
+
         if (forIf)
             parent = parent->parent;
         err.addNote(parent, parent->token, formNte(Nte0110, parent->token.cstr()));

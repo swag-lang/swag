@@ -470,7 +470,11 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (tokenParse.isNot(TokenId::SymColon))
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0424)};
+            auto cpy = prevTokenParse;
+            cpy.token.startLocation = cpy.token.endLocation;
+            cpy.token.endLocation = cpy.token.startLocation; 
+            
+            Diagnostic err{sourceFile, cpy, toErr(Err0424)};
             err.addNote(parent, forToken, formNte(Nte0111, forToken.cstr()));
             return context->report(err);
         }
