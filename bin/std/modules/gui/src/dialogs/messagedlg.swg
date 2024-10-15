@@ -10,10 +10,10 @@ public struct MessageDlg
 
 public struct MessageDlgOptions
 {
-    icon:               Icon
-    horzAlignmentText   = StringHorzAlignment.Center
-    vertAlignmentText   = StringVertAlignment.Center
-    sigCreate:          func||(*MessageDlg)    
+    icon:                 Icon
+    horzAlignmentText     = StringHorzAlignment.Center
+    vertAlignmentText     = StringVertAlignment.Center
+    sigCreate:            func||(*MessageDlg)
 }
 
 public impl MessageDlg
@@ -32,9 +32,7 @@ public impl MessageDlg
             .labelFlags.add(.WordWrap)
             .horzAlignmentText = options.horzAlignmentText
             .vertAlignmentText = options.vertAlignmentText
-            .padding.x = metrics.dialog_Padding
-            .padding.z = metrics.dialog_Padding
-            .padding.w = metrics.dialog_Padding
+            .setAllPaddings(metrics.dialog_Padding)
         }
 
         if options.sigCreate:
@@ -78,8 +76,15 @@ public impl MessageDlg
         wl += 2 * metrics.wnd_BorderSize
         w = Math.max(w, wl)
 
+        if extension
+        { 
+            var wl1 = extension.position.width + 2 * metrics.dialog_Padding
+            wl1 += 2 * metrics.wnd_BorderSize
+            w = Math.max(w, wl1)                       
+        }
+
         // Height
-        var h = Math.min(512, label.name.boundRect.height + 2 * metrics.dialog_Padding)
+        var h = Math.min(512, label.name.boundRect.height + label.padding.y + label.padding.w)
         if labelIcon:
             h += labelIcon.position.height
         else:
@@ -103,6 +108,15 @@ public impl MessageDlg
         surface.setPosition(pos)
     }
 
+    // Add a bottom extended window
+    mtd setExtension(wndExtension: *Wnd)
+    {
+        Debug.assert(extension == null)
+        extension           = wndExtension
+        extension.dockStyle = .Bottom
+        extension.margin.x  = getThemeMetrics().dialog_Padding
+    }
+
     // Set big icon color (icon must has been set before)
     mtd setIconColor(color: Color)
     {
@@ -118,26 +132,16 @@ public impl MessageDlg
 
         if !labelIcon:
             labelIcon = Label.create(surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
+        label.padding.y = 0
 
         with labelIcon
         {
-            .dockStyle = .Top
-            .iconColor = color
-            .setAllPaddings(getThemeMetrics().dialog_Padding)
+            .dockStyle         = .Top
+            .iconColor         = color
             .icon              = icon
             .horzAlignmentIcon = .Center
             .vertAlignmentIcon = .Center
         }
-    }
-
-    // Add a bottom extended window
-    mtd setExtension(wndExtension: *Wnd)
-    {
-        Debug.assert(extension == null)
-        extension = wndExtension
-        extension.dockStyle = .Bottom
-        extension.margin.x = getThemeMetrics().dialog_Padding
-        extension.margin.w = getThemeMetrics().dialog_Padding
     }
 
     // Message box with a 'ok'
