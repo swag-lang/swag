@@ -530,6 +530,9 @@ impl MainWnd
             .addItem(CmdIdTrimCanevas)
             .addSeparator()
             .addItem(CmdIdFlattenAll)
+            .addSeparator()
+            .addItem(CmdIdFlipImage)
+            .addItem(CmdIdMirrorImage)
             topMenu.addPopup("Image", imageMenu)
         }
 

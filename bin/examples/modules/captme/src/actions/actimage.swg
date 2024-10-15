@@ -2,6 +2,8 @@ const CmdIdTrimCanevas   = "CmdIdTrimCanevas"
 const CmdIdResizeImage   = "CmdIdResizeImage"
 const CmdIdResizeCanevas = "CmdIdResizeCanevas"
 const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
+const CmdIdFlipImage     = "CmdIdFlipImage"
+const CmdIdMirrorImage   = "CmdIdMirrorImage"
 
 struct ActionImage {}
 impl IActionUI for ActionImage
@@ -11,7 +13,8 @@ impl IActionUI for ActionImage
         switch cxt.id
         {
         case CmdIdTrimCanevas, CmdIdResizeImage,
-             CmdIdResizeCanevas, CmdIdRestoreOrg:
+             CmdIdResizeCanevas, CmdIdRestoreOrg,
+             CmdIdFlipImage, CmdIdMirrorImage:
             return true
         }
 
@@ -37,13 +40,23 @@ impl IActionUI for ActionImage
 
         case CmdIdTrimCanevas:
             evt.setFlags |= .Name | .Disabled
-            evt.name     = "Trim"
+            evt.name     = "Trim Capture"
             evt.disabled = !capture
 
         case CmdIdRestoreOrg:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Restore to Original"
             evt.disabled = !capture or !capture.backImgOrg.isValid()
+
+        case CmdIdFlipImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name     = "Flip Image"
+            evt.disabled = !capture
+
+        case CmdIdMirrorImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name     = "Mirror Image"
+            evt.disabled = !capture            
         }
 
         return true
@@ -58,6 +71,10 @@ impl IActionUI for ActionImage
         {
         case CmdIdResizeImage:
             main.resizeImage()
+        case CmdIdFlipImage:
+            main.doProcessImage(CmdIdFlipImage)            
+        case CmdIdMirrorImage:
+            main.doProcessImage(CmdIdMirrorImage)             
 
         case CmdIdResizeCanevas:
             main.resizeCanevas()
@@ -77,6 +94,49 @@ impl IActionUI for ActionImage
 
 impl MainWnd
 {
+    mtd doProcessImage(cmdId: WndId, w, h: s32 = 0)
+    {
+        let capture = getCapture()
+
+        if capture.forms.count > 0
+        {
+            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes:
+                return
+        }
+
+        capture.serialUndo += 1
+        let serial = capture.serialUndo
+
+        let undo0 = capture.newUndo(.FlattenAll, serial)
+        capture.pushUndo(undo0)
+
+        var img = capture.backImg
+
+        switch cmdId
+        {
+        case CmdIdResizeImage:
+            img.resize(w, h, .Bilinear)
+        case CmdIdFlipImage:
+            img.flip()
+        case CmdIdMirrorImage:
+            img.mirror()
+        }
+
+        let undo1 = capture.newUndo(.SetImage, serial)
+        undo1.newImg = img
+        capture.pushUndo(undo1)
+
+        switch cmdId
+        {
+        case CmdIdResizeImage:
+            let undo2 = capture.newUndo(.MoveCapture, serial)
+            undo2.newImg   = img
+            undo2.newSizeX = w - capture.width
+            undo2.newSizeY = h - capture.height
+            capture.pushUndo(undo2)
+        }
+    }
+
     mtd resizeImage()
     {
         #[Swag.Global]
@@ -128,27 +188,7 @@ impl MainWnd
         if w == capture.width and h == capture.height:
             return
 
-        if capture.forms.count > 0
-        {
-            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes:
-                return
-        }
-
-        capture.serialUndo += 1
-        let serial = capture.serialUndo
-
-        let undo0 = capture.newUndo(.FlattenAll, serial)
-        capture.pushUndo(undo0)
-        var img = capture.backImg
-        img.resize(w, h, .Bilinear)
-        let undo1 = capture.newUndo(.SetImage, serial)
-        undo1.newImg = img
-        capture.pushUndo(undo1)
-        let undo2 = capture.newUndo(.MoveCapture, serial)
-        undo2.newImg   = img
-        undo2.newSizeX = w - capture.width
-        undo2.newSizeY = h - capture.height
-        capture.pushUndo(undo2)
+        doProcessImage(CmdIdResizeImage, w, h)
     }
 
     mtd resizeCanevas()
