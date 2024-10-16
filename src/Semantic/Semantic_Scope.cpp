@@ -228,6 +228,12 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     const auto startScope = identifierRef->startScope;
     if (startScope)
     {
+        if (startScope->is(ScopeKind::Impl))
+        {
+            Semantic::waitAllStructInterfaces(job, startScope->parentScope->owner->typeInfo);
+            YIELD();
+        }
+
         for (uint32_t i = 0; i < 2; i++)
         {
             SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));

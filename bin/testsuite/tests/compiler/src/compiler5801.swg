@@ -3,7 +3,7 @@ interface I
     mtd toto();
 }
 
-impl I for A
+impl I for B
 {
     mtd impl toto()
     {
@@ -11,7 +11,18 @@ impl I for A
     }
 }
 
-struct A {}
+impl I for A
+{
+}
+
+struct B
+{
+}
+
+struct A 
+{
+    using b: B
+}
 
 func titi()
 {
