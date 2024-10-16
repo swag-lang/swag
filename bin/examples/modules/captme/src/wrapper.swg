@@ -14,22 +14,37 @@ impl MainWnd
         {
         case FormShape as b:
             mdlFormShape = dref b
+            mdlFavorite  = &mdlFormShape
+            mdlHighlight = &mdlFormShape
+            mdlPixSel    = &mdlFormShape
         case FormImage as b:
             mdlFormImage = dref b
+            mdlFavorite  = &mdlFormImage
         case FormStep as b:
             mdlFormStep    = dref b
             mdlFormStep.ws = b.w
             mdlFormStep.hs = b.h
+            mdlFavorite = &mdlFormStep
         case FormArrow as b:
             mdlFormArrow = dref b
+            mdlFavorite  = &mdlFormArrow
         case FormLine as b:
             mdlFormLine = dref b
+            mdlFavorite  = &mdlFormLine
+            mdlHighlight = &mdlFormLine
         case FormPolygon as b:
             mdlFormPolygon = dref b
+            mdlFavorite    = &mdlFormPolygon
+            mdlHighlight   = &mdlFormPolygon
+            mdlPixSel      = &mdlFormPolygon
         case FormText as b:
             mdlFormText = dref b
+            mdlFavorite = &mdlFormText
         case FormDraw as b:
             mdlFormDraw = dref b
+            mdlFavorite  = &mdlFormDraw
+            mdlHighlight = &mdlFormDraw
+            mdlPixSel    = &mdlFormDraw
         }               
     }
 
