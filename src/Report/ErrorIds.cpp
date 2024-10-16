@@ -916,7 +916,6 @@ void initErrors()
     SWAG_ERROR(Err0770, "unexpected [[#import]] location                   $ expected a [[#import]] version as a string, found $$TKN$$ instead                                                                        $ ");
     SWAG_ERROR(Err0771, "unknown dependency                                $ cannot find the module dependency [[%s]]                                                                                                 $ ");
     SWAG_ERROR(Err0772, "unknown foreign function                          $ cannot find the foreign function [[%s]]                                                                                                  $ ");
-    SWAG_ERROR(Err0773, "unknown identifier                                $ cannot find the identifier [[%s]] in [[%s]]                                                                                              $ ");
     SWAG_ERROR(Err0774, "unknown value location                            $ cannot recognize [[\"%s\"]] as a valid [[location]] value                                                                                $ the acceptable values are [[\"swag\"]] and [[\"disk\"]]");
     SWAG_ERROR(Err0775, "unresolved dependency                             $ cannot resolve the dependency to the module [[%s]] because of a version mismatched                                                       $ ");
     SWAG_ERROR(Err0776, "unresolved dependency                             $ cannot resolve the dependency to the module [[%s]] because version [[%s]] was not found                                                  $ ");
@@ -932,6 +931,7 @@ void initErrors()
     SWAG_ERROR(Err0428, nullptr);
     SWAG_ERROR(Err0353, nullptr);
     SWAG_ERROR(Err0785, nullptr);
+    SWAG_ERROR(Err0773, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

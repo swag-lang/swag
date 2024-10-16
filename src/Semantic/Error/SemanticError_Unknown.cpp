@@ -56,6 +56,10 @@ namespace
             if (note)
                 notes.push_back(note);
         }
+        else if (!typeWhere)
+        {
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0682, identifier->token.cstr())};
+        }
         else if (typeWhere->isEnum())
         {
             err = new Diagnostic{identifier, identifier->token, formErr(Err0675, identifier->token.cstr(), typeWhere->getDisplayNameC())};
@@ -96,7 +100,7 @@ namespace
         }
         else
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0773, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0682, identifier->token.cstr())};
         }
 
         // Variable before
