@@ -136,7 +136,7 @@ impl MainWnd
         unreachable
     }
 
-    mtd editModeToForm(mode: EditMode)->nl IForm
+    mtd editModeToModel(mode: EditMode)->nl IForm
     {  
         var formItf: IForm
 

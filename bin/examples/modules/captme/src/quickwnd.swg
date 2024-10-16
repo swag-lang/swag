@@ -709,7 +709,7 @@ impl QuickWnd
             }
         }
 
-        let formItf     = main.editModeToForm(main.getEditMode())
+        let formItf     = main.editModeToModel(main.getEditMode())
         let baseForm    = cast(*BaseForm) @dataof(formItf)
         var canAddModel = false
         if baseForm
