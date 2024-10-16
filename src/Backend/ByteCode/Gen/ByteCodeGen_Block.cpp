@@ -859,6 +859,13 @@ bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, con
 
 bool ByteCodeGen::emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0)
 {
+    if (!caseNode->matchVarName.text.empty())
+    {
+        const auto resolved = caseNode->secondChild()->resolvedSymbolOverload();
+        Semantic::waitStructGenerated(context->baseJob, resolved->typeInfo);
+        YIELD();
+    }
+
     r0                = reserveRegisterRC(context);
     const auto rFlags = reserveRegisterRC(context);
     const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rFlags);
@@ -886,6 +893,7 @@ bool ByteCodeGen::emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, 
         EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r2, resolved->computedValue.storageOffset);
 
         SWAG_CHECK(emitAffectEqual(context, r2, r1, resolved->typeInfo, expr));
+        SWAG_ASSERT(context->result == ContextResult::Done);
 
         freeRegisterRC(context, r1);
         freeRegisterRC(context, r2);

@@ -1345,6 +1345,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
                 emitAffectEqual(context, r0, child->resultRegisterRc, noRef, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);
+
                 freeRegisterRC(context, child);
             }
         }

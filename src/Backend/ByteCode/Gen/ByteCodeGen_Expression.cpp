@@ -268,8 +268,8 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             context->node->resultRegisterRc = saveR;
 
             emitAffectEqual(context, r0, child->resultRegisterRc, child->typeInfo, child);
-
             SWAG_ASSERT(context->result == ContextResult::Done);
+
             freeRegisterRC(context, child);
 
             if (canDrop)
