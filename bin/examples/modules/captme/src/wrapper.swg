@@ -110,11 +110,10 @@ impl MainWnd
         }
     }
 
-    #[Swag.Overload]
-    func getEditMode(kindOf: typeinfo)->EditMode
+    func formToEditMode(f: IForm)->EditMode
     {
         #[Swag.Complete]
-        switch kindOf
+        switch f
         {
         case FormShape:
             return .Shape

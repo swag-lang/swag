@@ -205,27 +205,25 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
-    #[Swag.Overload]
     mtd getEditMode()->EditMode
     {
-        if editMode == .Selection
+        switch editMode
         {
+        case Selection:
             editMode = .Shape
             getCapture().updateEditModeFromSelection()
             let edMode = editMode
             editMode = .Selection
             return edMode
+
+        case Favorites:
+            return formToEditMode(mdlFavorite)
+        case Highlight:
+            return formToEditMode(mdlHighlight)            
+        case PixSel:
+            return formToEditMode(mdlPixSel)             
         }
 
-        var kindOf: typeinfo
-        if editMode == .Favorites:
-            kindOf = @kindof(mdlFavorite)
-        elif editMode == .Highlight:
-            kindOf = @kindof(mdlHighlight)
-        elif editMode == .PixSel:
-            kindOf = @kindof(mdlPixSel)
-        if kindOf:
-            return getEditMode(kindOf)
         return editMode
     }
 
