@@ -215,4 +215,40 @@ impl MainWnd
 
         unreachable      
     }    
+
+    func newFormFromForm(it: IForm)->*BaseForm
+    {  
+        var mdlValue: *BaseForm
+
+        #[Swag.Complete]
+        switch it
+        {
+        case FormShape as b:
+            mdlValue = Memory.new'FormShape()
+            it.copy(mdlValue, b)
+        case FormImage as b:
+            mdlValue = Memory.new'FormImage()
+            it.copy(mdlValue, b)
+        case FormStep as b:
+            mdlValue = Memory.new'FormStep()
+            it.copy(mdlValue, b)
+        case FormLine as b:
+            mdlValue = Memory.new'FormLine()
+            it.copy(mdlValue, b)
+        case FormPolygon as b:
+            mdlValue = Memory.new'FormPolygon()
+            it.copy(mdlValue, b)
+        case FormArrow as b:
+            mdlValue = Memory.new'FormArrow()
+            it.copy(mdlValue, b)
+        case FormText as b:
+            mdlValue = Memory.new'FormText()
+            it.copy(mdlValue, b)
+        case FormDraw as b:
+            mdlValue = Memory.new'FormDraw()
+            it.copy(mdlValue, b)
+        }   
+
+        return mdlValue           
+    }
 }
