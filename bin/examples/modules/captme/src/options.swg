@@ -40,7 +40,7 @@ struct EditorOptions
 
     #[Description("Specify the background color of the capture editing window")]
     #[Opaque]
-    editBackColor: Color = Argb.Black
+    editBackColor: Color = 0xFF2E2E2E
 }
 
 var g_CaptureOptions: CaptureOptions

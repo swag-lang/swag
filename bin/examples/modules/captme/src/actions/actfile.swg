@@ -18,7 +18,9 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdUpdateLinkedImage, CmdIdDupCapture, CmdIdDeleteCapture, CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
+        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage,
+             CmdIdUpdateLinkedImage, CmdIdDupCapture, CmdIdDeleteCapture,
+             CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
             return true
         }
 
@@ -86,7 +88,7 @@ impl IActionUI for ActionFile
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Open Linked Image Location"
             evt.disabled = !capture or capture.linkedImage.isEmpty()
-            evt.icon     = main.getTheme().getIcon24(.Link)            
+            evt.icon     = main.getTheme().getIcon24(.Link)
         }
 
         return true
@@ -121,15 +123,16 @@ impl IActionUI for ActionFile
                 txt += Format.toString("<i>%</i>", capture.linkedImage)
 
                 var opt: MessageDlgOptions
-                opt.sigCreate = func(dlg) 
+                opt.sigCreate = func(dlg)
                 {
                     let chk = CheckButton.create(dlg.surface.getView(), "Do not ask again", {0, 0, 100, 40})
-                    chk.sigChanged += func(btn) {
+                    chk.sigChanged += func(btn)
+                    {
                         g_EditorOptions.confirmLinkedOverwrite = !btn.isChecked()
                     }
                     dlg.setExtension(chk)
                 }
-                
+
                 if MessageDlg.confirm(main.surface, txt, options: opt) != Dialog.BtnYes:
                     break
             }
@@ -151,8 +154,18 @@ impl IActionUI for ActionFile
                 main.recentWnd.removeRecent()
 
         case CmdIdDupCapture:
+            Cursor.wait()
+
             let file = Library.newFileName()
             trycatch File.duplicate(file, capture.file)
+
+            let newCapture = trycatch Capture.load(file)
+            newCapture.file        = file
+            newCapture.linkedImage = null
+            newCapture.changed     = true
+            trycatch newCapture.save()
+            Memory.delete(newCapture)
+
             let dupCapture = trycatch main.recentWnd.addRecent(file)
             Memory.delete(dupCapture)
             main.recentWnd.recentView.select(0)
@@ -162,7 +175,7 @@ impl IActionUI for ActionFile
             Env.locateInExplorer(capture.file)
 
         case CmdIdLinkedFileLocation:
-            Env.locateInExplorer(capture.linkedImage)            
+            Env.locateInExplorer(capture.linkedImage)
         }
 
         return true
