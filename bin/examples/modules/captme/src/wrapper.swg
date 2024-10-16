@@ -135,4 +135,40 @@ impl MainWnd
 
         unreachable
     }
+
+    mtd editModeToForm(mode: EditMode)->nl IForm
+    {  
+        var formItf: IForm
+
+        #[Swag.Complete]
+        switch mode
+        {
+        case Arrow:
+            formItf = cast(IForm) mdlFormArrow
+        case Shape:
+            formItf = cast(IForm) mdlFormShape
+        case Image:
+            formItf = cast(IForm) mdlFormImage
+        case Step:
+            formItf = cast(IForm) mdlFormStep
+        case Line:
+            formItf = cast(IForm) mdlFormLine
+        case Polygon:
+            formItf = cast(IForm) mdlFormPolygon
+        case Text:
+            formItf = cast(IForm) mdlFormText
+        case Draw:
+            formItf = cast(IForm) mdlFormDraw
+        case Favorites:
+            formItf = mdlFavorite
+        case Highlight:
+            formItf = mdlHighlight
+        case PixSel:
+            formItf = mdlPixSel
+        case Selection:
+            break
+        }   
+
+        return formItf           
+    }
 }

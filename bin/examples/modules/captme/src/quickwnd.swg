@@ -739,37 +739,7 @@ impl QuickWnd
             }
         }
 
-        var formItf: IForm
-        let mode = main.getEditMode()
-        #[Swag.Complete]
-        switch mode
-        {
-        case Arrow:
-            formItf = cast(IForm) main.mdlFormArrow
-        case Shape:
-            formItf = cast(IForm) main.mdlFormShape
-        case Image:
-            formItf = cast(IForm) main.mdlFormImage
-        case Step:
-            formItf = cast(IForm) main.mdlFormStep
-        case Line:
-            formItf = cast(IForm) main.mdlFormLine
-        case Polygon:
-            formItf = cast(IForm) main.mdlFormPolygon
-        case Text:
-            formItf = cast(IForm) main.mdlFormText
-        case Draw:
-            formItf = cast(IForm) main.mdlFormDraw
-        case Favorites:
-            formItf = main.mdlFavorite
-        case Highlight:
-            formItf = main.mdlHighlight
-        case PixSel:
-            formItf = main.mdlPixSel
-        case Selection:
-            break
-        }
-
+        let formItf     = main.editModeToForm(main.getEditMode())
         let baseForm    = cast(*BaseForm) @dataof(formItf)
         var canAddModel = false
         if baseForm
