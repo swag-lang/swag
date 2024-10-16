@@ -9,8 +9,6 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 
-#pragma optimize("", off)
-
 bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 {
     SanityValue*                             ra = nullptr;

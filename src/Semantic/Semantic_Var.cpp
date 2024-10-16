@@ -9,7 +9,6 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 uint32_t Semantic::alignOf(const AstVarDecl* node)
 {
@@ -765,10 +764,6 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         else
         {
             const auto mySize = typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-
-            if (context->sourceFile->name == "compiler5800.swg")
-                int a = 0;
-
             if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK))
             {
                 storageOffset = node->ownerFct->stackSize;
