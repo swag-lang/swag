@@ -171,4 +171,48 @@ impl MainWnd
 
         return formItf           
     }
+
+    mtd newFormFromModel(mode: EditMode)->nl IForm
+    {  
+        #[Swag.Complete]
+        switch mode
+        {
+        case Arrow:
+            let mdl = Memory.new'FormArrow()
+            mdl.IForm.copy(mdl, &mdlFormArrow)
+            return mdl
+        case Shape:
+            let mdl = Memory.new'FormShape()
+            mdl.IForm.copy(mdl, &mdlFormShape)
+            return mdl
+        case Image:
+            let mdl = Memory.new'FormImage()
+            mdl.IForm.copy(mdl, &mdlFormImage)
+            return mdl
+        case Step:
+            let mdl = Memory.new'FormStep()
+            mdl.IForm.copy(mdl, &mdlFormStep)
+            return mdl
+        case Line:
+            let mdl = Memory.new'FormLine()
+            mdl.IForm.copy(mdl, &mdlFormLine)
+            return mdl
+        case Polygon:
+            let mdl = Memory.new'FormPolygon()
+            mdl.IForm.copy(mdl, &mdlFormPolygon)
+            return mdl
+        case Text:
+            let mdl = Memory.new'FormText()
+            mdl.IForm.copy(mdl, &mdlFormText)
+            return mdl
+        case Draw:
+            let mdl = Memory.new'FormDraw()
+            mdl.IForm.copy(mdl, &mdlFormDraw)
+            return mdl
+        case Favorites, Highlight, Selection, PixSel:
+            break
+        }  
+
+        unreachable      
+    }    
 }

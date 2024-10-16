@@ -793,47 +793,12 @@ impl QuickWnd
 
             btn1.sigPressed += func|self, main|(btn)
             {
-                let mode = main.getEditMode()
-                #[Swag.Complete]
-                switch mode
+                let mdl = self.main.newFormFromModel(main.getEditMode())
+                if mdl
                 {
-                case Arrow:
-                    let mdl = Memory.new'FormArrow()
-                    mdl.IForm.copy(mdl, &main.mdlFormArrow)
                     self.currentStyle.forms.add(mdl)
-                case Shape:
-                    let mdl = Memory.new'FormShape()
-                    mdl.IForm.copy(mdl, &main.mdlFormShape)
-                    self.currentStyle.forms.add(mdl)
-                case Image:
-                    let mdl = Memory.new'FormImage()
-                    mdl.IForm.copy(mdl, &main.mdlFormImage)
-                    self.currentStyle.forms.add(mdl)
-                case Step:
-                    let mdl = Memory.new'FormStep()
-                    mdl.IForm.copy(mdl, &main.mdlFormStep)
-                    self.currentStyle.forms.add(mdl)
-                case Line:
-                    let mdl = Memory.new'FormLine()
-                    mdl.IForm.copy(mdl, &main.mdlFormLine)
-                    self.currentStyle.forms.add(mdl)
-                case Polygon:
-                    let mdl = Memory.new'FormPolygon()
-                    mdl.IForm.copy(mdl, &main.mdlFormPolygon)
-                    self.currentStyle.forms.add(mdl)
-                case Text:
-                    let mdl = Memory.new'FormText()
-                    mdl.IForm.copy(mdl, &main.mdlFormText)
-                    self.currentStyle.forms.add(mdl)
-                case Draw:
-                    let mdl = Memory.new'FormDraw()
-                    mdl.IForm.copy(mdl, &main.mdlFormDraw)
-                    self.currentStyle.forms.add(mdl)
-                case Favorites, Highlight, Selection, PixSel:
-                    break
+                    self.updateQuickStyles()
                 }
-
-                self.updateQuickStyles()
             }
         }
 
