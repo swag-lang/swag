@@ -128,8 +128,6 @@ impl QuickWnd
         main.updateModel(qsPolygon.forms[0])
         main.updateModel(qsText.forms[0])
         main.updateModel(qsDraw.forms[0])
-        main.updateModel(qsHighlight.forms[0])
-        main.updateModel(qsPixSel.forms[0])
     }
 
     mtd btnPopup(btn: nl *Button, pos: Math.Point)
@@ -174,8 +172,8 @@ impl QuickWnd
         mtd add(startSize, borderSize, endSize: f32, color: Color)
         {
             let form = Memory.new'FormArrow()
-            form.borderSize = borderSize
             form.startSize  = startSize
+            form.borderSize = borderSize
             form.endSize    = endSize
             if startSize != 0:
                 form.beginCap = .ArrowAnchor
@@ -187,7 +185,7 @@ impl QuickWnd
             qsArrow.forms.add(it)
         }
 
-        const BorderSize = 25.0
+        const BorderSize = 10.0
         const ArrowSize  = 5.0
 
         add(0, BorderSize, ArrowSize, ColorRed)
@@ -213,7 +211,8 @@ impl QuickWnd
             qsLine.forms.add(it)
         }
 
-        const BorderSize = 25.0
+        const BorderSize = 10.0
+
         add(BorderSize, ColorRed)
         add(BorderSize, ColorGreen)
         add(BorderSize, ColorBlue)
@@ -237,13 +236,23 @@ impl QuickWnd
             qsShape.forms.add(it)
         }
 
-        const BorderSize = 5.0
-        add(BorderSize, .Ellipse, ColorRed, Argb.Zero)
-        add(BorderSize, .Ellipse, ColorYellow, Argb.Zero)
+        const BorderSize = 10.0
 
         add(BorderSize, .RoundRectangle, ColorRed, Argb.Zero)
+        add(BorderSize, .RoundRectangle, ColorGreen, Argb.Zero)
+        add(BorderSize, .RoundRectangle, ColorBlue, Argb.Zero)
+        add(BorderSize, .RoundRectangle, ColorYellow, Argb.Zero)
 
         add(BorderSize, .Rectangle, ColorRed, Argb.Zero)
+        add(BorderSize, .Rectangle, ColorGreen, Argb.Zero)
+        add(BorderSize, .Rectangle, ColorBlue, Argb.Zero)
+        add(BorderSize, .Rectangle, ColorYellow, Argb.Zero)
+
+        add(BorderSize, .Ellipse, ColorRed, Argb.Zero)
+        add(BorderSize, .Ellipse, ColorGreen, Argb.Zero)
+        add(BorderSize, .Ellipse, ColorBlue, Argb.Zero)
+        add(BorderSize, .Ellipse, ColorYellow, Argb.Zero)
+
         add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
 

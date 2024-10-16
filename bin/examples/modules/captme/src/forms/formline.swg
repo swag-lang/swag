@@ -218,16 +218,17 @@ impl IForm for FormLine
         let sSize = quickMode ? Math.min(startSize, 4) : startSize
         let eSize = quickMode ? Math.min(endSize, 4) : endSize
 
-        var pen = Pen.createDash(dashStyle, borderColor, bSize)
-        pen.beginCapStyle  = beginCap
-        pen.endCapStyle    = endCap
-        pen.capStartScaleX = sSize
-        pen.capEndScaleX   = eSize
-        pen.capStartScaleY = 2
-        pen.capEndScaleY   = 2
-
-        pen.dashBeginCapStyle = dashCap
-        pen.dashEndCapStyle   = dashCap
+        with var pen = Pen.createDash(dashStyle, borderColor, bSize)
+        {
+            .beginCapStyle     = beginCap
+            .endCapStyle       = endCap
+            .capStartScaleX    = sSize
+            .capEndScaleX      = eSize
+            .capStartScaleY    = 2
+            .capEndScaleY      = 2
+            .dashBeginCapStyle = dashCap
+            .dashEndCapStyle   = dashCap
+        }
 
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
     }

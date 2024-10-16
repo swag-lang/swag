@@ -31,6 +31,7 @@ impl IForm for FormShape
                alpha == other.alpha and
                kind == other.kind and
                dashStyle == other.dashStyle and
+               roundSize == other.roundSize and
                paintShadow == other.paintShadow
     }
 
@@ -40,6 +41,7 @@ impl IForm for FormShape
         let srcf = cast(*FormShape) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
+        dstf.roundSize   = srcf.roundSize
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind

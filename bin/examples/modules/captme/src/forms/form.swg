@@ -56,7 +56,7 @@ struct BaseForm
 
 impl BaseForm
 {
-    func adaptSize(size: f32, minSize, maxSize: f32, z: f32, quickMode: bool, dstMin: f32 = 2, dstMax: f32 = 6)->f32
+    func adaptSize(size: f32, minSize, maxSize: f32, z: f32, quickMode: bool, dstMin: f32 = 4, dstMax: f32 = 8)->f32
     {
         if !quickMode:
             return size * z
