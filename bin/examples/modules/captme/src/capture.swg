@@ -1219,51 +1219,8 @@ impl Capture
         if !selection.count:
             return
 
-        let f    = forms[selection.back()]
-        let t    = @kindof(f)
-        let form = cast(*BaseForm) @dataof(f)
-        if form.subKind == .Highlight:
-            editView.main.mdlHighlight = f
-        elif form.subKind == .PixSel:
-            editView.main.mdlPixSel = f
-
-        #[Swag.Complete]
-        switch t
-        {
-        case FormShape:
-            let b = cast(*FormShape) @dataof(f)
-            editView.main.mdlFormShape = dref b
-
-        case FormImage:
-            let b = cast(*FormImage) @dataof(f)
-            editView.main.mdlFormImage = dref b
-
-        case FormStep:
-            let b = cast(*FormStep) @dataof(f)
-            editView.main.mdlFormStep    = dref b
-            editView.main.mdlFormStep.ws = b.w
-            editView.main.mdlFormStep.hs = b.h
-
-        case FormArrow:
-            let b = cast(*FormArrow) @dataof(f)
-            editView.main.mdlFormArrow = dref b
-
-        case FormLine:
-            let b = cast(*FormLine) @dataof(f)
-            editView.main.mdlFormLine = dref b
-
-        case FormPolygon:
-            let b = cast(*FormPolygon) @dataof(f)
-            editView.main.mdlFormPolygon = dref b
-
-        case FormText:
-            let b = cast(*FormText) @dataof(f)
-            editView.main.mdlFormText = dref b
-
-        case FormDraw:
-            let b = cast(*FormDraw) @dataof(f)
-            editView.main.mdlFormDraw = dref b
-        }
+        let f = forms[selection.back()]
+        editView.main.updateModel(f)
     }
 
     mtd selectionHasChanged()
