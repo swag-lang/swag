@@ -692,43 +692,35 @@ impl QuickWnd
                 var type = @kindof(it)
 
                 #[Swag.Complete]
-                switch type
+                switch it
                 {
-                case FormShape:
-                    let b = cast(*FormShape) @dataof(it)
+                case FormShape as b:
                     self.main.mdlFormShape = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormShape
                     self.main.mdlHighlight = &self.main.mdlFormShape
                     self.main.mdlPixSel    = &self.main.mdlFormShape
-                case FormImage:
-                    let b = cast(*FormImage) @dataof(it)
+                case FormImage as b:
                     self.main.mdlFormImage = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormImage
-                case FormStep:
-                    let b = cast(*FormStep) @dataof(it)
+                case FormStep as b:
                     self.main.mdlFormStep = dref b
                     self.main.mdlFavorite = &self.main.mdlFormStep
-                case FormLine:
-                    let b = cast(*FormLine) @dataof(it)
+                case FormLine as b:
                     self.main.mdlFormLine  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormLine
                     self.main.mdlHighlight = &self.main.mdlFormLine
-                case FormPolygon:
-                    let b = cast(*FormPolygon) @dataof(it)
+                case FormPolygon as b:
                     self.main.mdlFormPolygon = dref b
                     self.main.mdlFavorite    = &self.main.mdlFormPolygon
                     self.main.mdlHighlight   = &self.main.mdlFormPolygon
                     self.main.mdlPixSel      = &self.main.mdlFormPolygon
-                case FormArrow:
-                    let b = cast(*FormArrow) @dataof(it)
+                case FormArrow as b:
                     self.main.mdlFormArrow = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormArrow
-                case FormText:
-                    let b = cast(*FormText) @dataof(it)
+                case FormText as b:
                     self.main.mdlFormText = dref b
                     self.main.mdlFavorite = &self.main.mdlFormText
-                case FormDraw:
-                    let b = cast(*FormDraw) @dataof(it)
+                case FormDraw as b:
                     self.main.mdlFormDraw  = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormDraw
                     self.main.mdlHighlight = &self.main.mdlFormDraw
@@ -741,38 +733,30 @@ impl QuickWnd
                     var mdlValue: *BaseForm
 
                     #[Swag.Complete]
-                    switch type
+                    switch it
                     {
-                    case FormShape:
-                        let b = cast(*FormShape) @dataof(it)
+                    case FormShape as b:
                         mdlValue = Memory.new'FormShape()
                         it.copy(mdlValue, b)
-                    case FormImage:
-                        let b = cast(*FormImage) @dataof(it)
+                    case FormImage as b:
                         mdlValue = Memory.new'FormImage()
                         it.copy(mdlValue, b)
-                    case FormStep:
-                        let b = cast(*FormStep) @dataof(it)
+                    case FormStep as b:
                         mdlValue = Memory.new'FormStep()
                         it.copy(mdlValue, b)
-                    case FormLine:
-                        let b = cast(*FormLine) @dataof(it)
+                    case FormLine as b:
                         mdlValue = Memory.new'FormLine()
                         it.copy(mdlValue, b)
-                    case FormPolygon:
-                        let b = cast(*FormPolygon) @dataof(it)
+                    case FormPolygon as b:
                         mdlValue = Memory.new'FormPolygon()
                         it.copy(mdlValue, b)
-                    case FormArrow:
-                        let b = cast(*FormArrow) @dataof(it)
+                    case FormArrow as b:
                         mdlValue = Memory.new'FormArrow()
                         it.copy(mdlValue, b)
-                    case FormText:
-                        let b = cast(*FormText) @dataof(it)
+                    case FormText as b:
                         mdlValue = Memory.new'FormText()
                         it.copy(mdlValue, b)
-                    case FormDraw:
-                        let b = cast(*FormDraw) @dataof(it)
+                    case FormDraw as b:
                         mdlValue = Memory.new'FormDraw()
                         it.copy(mdlValue, b)
                     }
@@ -792,10 +776,8 @@ impl QuickWnd
             }
         }
 
-        // The button with the current model
-        let mode = main.getEditMode()
-
         var formItf: IForm
+        let mode = main.getEditMode()
         #[Swag.Complete]
         switch mode
         {

@@ -205,115 +205,7 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
-    mtd updateModel(f: IForm)
-    { 
-        let t    = @kindof(f)
-        let form = cast(*BaseForm) @dataof(f)
-        if form.subKind == .Highlight:
-            mdlHighlight = f
-        elif form.subKind == .PixSel:
-            mdlPixSel = f
-
-        #[Swag.Complete]
-        switch t
-        {
-        case FormShape:
-            let b = cast(*FormShape) @dataof(f)
-            mdlFormShape = dref b
-
-        case FormImage:
-            let b = cast(*FormImage) @dataof(f)
-            mdlFormImage = dref b
-
-        case FormStep:
-            let b = cast(*FormStep) @dataof(f)
-            mdlFormStep    = dref b
-            mdlFormStep.ws = b.w
-            mdlFormStep.hs = b.h
-
-        case FormArrow:
-            let b = cast(*FormArrow) @dataof(f)
-            mdlFormArrow = dref b
-
-        case FormLine:
-            let b = cast(*FormLine) @dataof(f)
-            mdlFormLine = dref b
-
-        case FormPolygon:
-            let b = cast(*FormPolygon) @dataof(f)
-            mdlFormPolygon = dref b
-
-        case FormText:
-            let b = cast(*FormText) @dataof(f)
-            mdlFormText = dref b
-
-        case FormDraw:
-            let b = cast(*FormDraw) @dataof(f)
-            mdlFormDraw = dref b
-        }               
-    }
-
-    mtd updateEditMode(f: IForm)
-    {
-        let t    = @kindof(f)
-        let form = cast(*BaseForm) @dataof(f)
-
-        if editMode == .Favorites
-        {
-            #[Swag.Complete]
-            switch t
-            {
-            case FormShape:
-                mdlFavorite = mdlFormShape
-            case FormImage:
-                mdlFavorite = mdlFormImage
-            case FormStep:
-                mdlFavorite = mdlFormStep
-            case FormArrow:
-                mdlFavorite = mdlFormArrow
-            case FormLine:
-                mdlFavorite = mdlFormLine
-            case FormPolygon:
-                mdlFavorite = mdlFormPolygon
-            case FormText:
-                mdlFavorite = mdlFormText
-            case FormDraw:
-                mdlFavorite = mdlFormDraw
-            }
-        }
-        elif form.subKind == .Highlight
-        {
-            editMode = .Highlight
-        }
-        elif form.subKind == .PixSel
-        {
-            editMode = .PixSel
-        }
-        else
-        {
-            #[Swag.Complete]
-            switch t
-            {
-            case FormShape:
-                editMode = .Shape
-            case FormImage:
-                editMode = .Image
-            case FormStep:
-                editMode = .Step
-            case FormArrow:
-                editMode = .Arrow
-            case FormLine:
-                editMode = .Line
-            case FormPolygon:
-                editMode = .Polygon
-            case FormText:
-                editMode = .Text
-            case FormDraw:
-                editMode = .Draw
-            }
-        }
-    }
-
+    #[Swag.Overload]
     mtd getEditMode()->EditMode
     {
         if editMode == .Selection
@@ -332,31 +224,8 @@ impl MainWnd
             kindOf = @kindof(mdlHighlight)
         elif editMode == .PixSel:
             kindOf = @kindof(mdlPixSel)
-
-        if kindOf
-        {
-            #[Swag.Complete]
-            switch kindOf
-            {
-            case FormShape:
-                return EditMode.Shape
-            case FormArrow:
-                return EditMode.Arrow
-            case FormLine:
-                return EditMode.Line
-            case FormPolygon:
-                return EditMode.Polygon
-            case FormText:
-                return EditMode.Text
-            case FormDraw:
-                return EditMode.Draw
-            case FormStep:
-                return EditMode.Step
-            case FormImage:
-                return EditMode.Image
-            }
-        }
-
+        if kindOf:
+            return getEditMode(kindOf)
         return editMode
     }
 
