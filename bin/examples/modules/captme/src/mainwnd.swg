@@ -533,7 +533,8 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdFlipImage)
             .addItem(CmdIdMirrorImage)
-            .addItem(CmdIdRotate90Image)
+            .addItem(CmdIdRotateImageRight)
+            .addItem(CmdIdRotateImageLeft)
             topMenu.addPopup("Image", imageMenu)
         }
 

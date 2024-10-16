@@ -1,10 +1,11 @@
-const CmdIdTrimCanevas   = "CmdIdTrimCanevas"
-const CmdIdResizeImage   = "CmdIdResizeImage"
-const CmdIdResizeCanevas = "CmdIdResizeCanevas"
-const CmdIdRestoreOrg    = "CmdIdRestoreOrg"
-const CmdIdFlipImage     = "CmdIdFlipImage"
-const CmdIdMirrorImage   = "CmdIdMirrorImage"
-const CmdIdRotate90Image = "CmdIdRotate90Image"
+const CmdIdTrimCanevas      = "CmdIdTrimCanevas"
+const CmdIdResizeImage      = "CmdIdResizeImage"
+const CmdIdResizeCanevas    = "CmdIdResizeCanevas"
+const CmdIdRestoreOrg       = "CmdIdRestoreOrg"
+const CmdIdFlipImage        = "CmdIdFlipImage"
+const CmdIdMirrorImage      = "CmdIdMirrorImage"
+const CmdIdRotateImageRight = "CmdIdRotateImageRight"
+const CmdIdRotateImageLeft  = "CmdIdRotateImageLeft"
 
 struct ActionImage {}
 impl IActionUI for ActionImage
@@ -15,7 +16,8 @@ impl IActionUI for ActionImage
         {
         case CmdIdTrimCanevas, CmdIdResizeImage,
              CmdIdResizeCanevas, CmdIdRestoreOrg,
-             CmdIdFlipImage, CmdIdMirrorImage, CmdIdRotate90Image:
+             CmdIdFlipImage, CmdIdMirrorImage, 
+             CmdIdRotateImageRight, CmdIdRotateImageLeft:
             return true
         }
 
@@ -59,10 +61,15 @@ impl IActionUI for ActionImage
             evt.name     = "Mirror Image"
             evt.disabled = !capture
 
-        case CmdIdRotate90Image:
+        case CmdIdRotateImageRight:
             evt.setFlags |= .Name | .Disabled
-            evt.name     = "Rotate Image 90°"
+            evt.name     = "Rotate Image Right"
             evt.disabled = !capture
+
+        case CmdIdRotateImageLeft:
+            evt.setFlags |= .Name | .Disabled
+            evt.name     = "Rotate Image Left"
+            evt.disabled = !capture            
         }
 
         return true
@@ -84,8 +91,10 @@ impl IActionUI for ActionImage
         case CmdIdMirrorImage:
             main.doProcessImage(CmdIdMirrorImage)
 
-        case CmdIdRotate90Image:
-            main.doProcessImage(CmdIdRotate90Image)            
+        case CmdIdRotateImageRight:
+            main.doProcessImage(CmdIdRotateImageRight)            
+        case CmdIdRotateImageLeft:
+            main.doProcessImage(CmdIdRotateImageLeft)                  
 
         case CmdIdResizeCanevas:
             main.resizeCanevas()
@@ -133,8 +142,10 @@ impl MainWnd
             img.flip()
         case CmdIdMirrorImage:
             img.mirror()
-        case CmdIdRotate90Image:
+        case CmdIdRotateImageRight:
             img.turn(.T90)
+        case CmdIdRotateImageLeft:
+            img.turn(.T270)            
         }
 
         let undo1 = capture.newUndo(.SetImage, serial)
@@ -150,9 +161,8 @@ impl MainWnd
             undo2.newSizeY = h - capture.height
             capture.pushUndo(undo2)
 
-        case CmdIdRotate90Image:
+        case CmdIdRotateImageRight, CmdIdRotateImageLeft:
             let undo2 = capture.newUndo(.MoveCapture, serial)
-            Console.print(img.height, " ")
             undo2.newImg   = img
             undo2.newSizeX = img.width - oldW
             undo2.newSizeY = img.height - oldH
