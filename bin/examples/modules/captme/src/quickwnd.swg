@@ -128,6 +128,7 @@ impl QuickWnd
         main.updateModel(qsPolygon.forms[0])
         main.updateModel(qsText.forms[0])
         main.updateModel(qsDraw.forms[0])
+        updateSelection()
     }
 
     mtd btnPopup(btn: nl *Button, pos: Math.Point)
@@ -534,6 +535,8 @@ impl QuickWnd
             curMdl.show(!done)
             if !done:
                 curMdl.isChecked = true
+            layout.computeLayout()
+            setScrollSize(0, layout.resultHeight)
         }
 
         invalidate()
