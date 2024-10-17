@@ -1264,11 +1264,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // A global variable or a constant must have its value computed at that point
     if (!node->hasAstFlag(AST_FROM_GENERIC) && !isGeneric && node->assignment)
     {
-        if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL))
+        if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT))
         {
             if (node->assignment->typeInfo->isLambdaClosure())
             {
                 SWAG_VERIFY(!overFlags.has(OVERLOAD_CONSTANT), context->report({node->assignment, toErr(Err0570)}));
+                SWAG_VERIFY(!overFlags.has(OVERLOAD_VAR_STRUCT), context->report({node->assignment, toErr(Err0428)}));
                 const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
@@ -1277,7 +1278,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0015); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
             }
-            else
+            else if (overFlags.has(OVERLOAD_VAR_GLOBAL))
             {
                 PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0016); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));

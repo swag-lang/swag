@@ -1,3 +1,11 @@
+#global testerror "Err0428"
+func toto() {}
+
+struct A
+{
+    x = &toto
+}
+/*
 #global skip
 
 #[Swag.ConstExpr]
@@ -22,4 +30,4 @@ const t1 = C.from(52)
 {
     @assert(t.a == 52)
     @assert(t1.a == 52)
-}
+}*/
