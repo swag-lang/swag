@@ -25,19 +25,21 @@ var g_App: Application
         surface.show()
 
     // Icon task bar
-    using Win32
-    with var tnid: NOTIFYICONDATAA
+    with Win32
     {
-        .cbSize           = #sizeof(NOTIFYICONDATAA)
-        .hWnd             = surface.hWnd
-        .uID              = 1
-        .uFlags           = NIF_ICON | NIF_MESSAGE
-        .uCallbackMessage = WM_USER
-        .hIcon            = catch img.toHICON()
-    }
+        with var tnid: NOTIFYICONDATAA
+        {
+            .cbSize           = #sizeof(NOTIFYICONDATAA)
+            .hWnd             = surface.hWnd
+            .uID              = 1
+            .uFlags           = NIF_ICON | NIF_MESSAGE
+            .uCallbackMessage = WM_USER
+            .hIcon            = catch img.toHICON()
+        }
 
-    catch Shell_NotifyIconA(NIM_ADD, &tnid)
-    defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
+        catch Shell_NotifyIconA(NIM_ADD, &tnid)
+        defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
+    }
 
     g_App.run()
 

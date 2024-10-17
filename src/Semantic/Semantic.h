@@ -208,6 +208,7 @@ namespace Semantic
     void           setOwnerMaxStackSize(AstNode* node, uint32_t size);
     void           setVarDeclResolve(AstVarDecl* varNode);
     void           setEmitTryCatchAssume(AstNode* node, const TypeInfo* typeInfo);
+    Scope*         makeUsingScope(AstNode* node, TypeInfo* typeResolved);
 
     bool computeMatch(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef);
     bool dealWithMatchResults(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode*& node, MatchIdParamsFlags flags, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, bool forStruct, uint32_t prevMatchesCount);

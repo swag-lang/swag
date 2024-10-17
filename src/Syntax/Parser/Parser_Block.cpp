@@ -618,7 +618,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult));
+    SWAG_CHECK(doCurlyStatement(node, &dummyResult));
     return true;
 }
 

@@ -15,10 +15,10 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
 {
     auto       node    = context->node;
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
-    
+
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0348, Naming::kindName(node->ownerScope->kind).cstr())}));
-    
+
     const CollectedScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? COLLECTED_SCOPE_STRUCT_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
@@ -62,6 +62,37 @@ bool Semantic::resolveWithAfterKnownType(SemanticContext* context)
     return true;
 }
 
+Scope* Semantic::makeUsingScope(AstNode* node, TypeInfo* typeResolved)
+{
+    Scope* scope = nullptr;
+    switch (typeResolved->kind)
+    {
+        case TypeInfoKind::Namespace:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        case TypeInfoKind::Enum:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        case TypeInfoKind::Struct:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        default:
+            return nullptr;
+    }
+
+    node->addAlternativeScope(scope, COLLECTED_SCOPE_USING);
+    return scope;
+}
+
 bool Semantic::resolveWith(SemanticContext* context)
 {
     const auto n = context->node->findParent(AstNodeKind::With);
@@ -101,12 +132,16 @@ bool Semantic::resolveWith(SemanticContext* context)
             break;
 
         case TypeInfoKind::Namespace:
+            makeUsingScope(node, typeResolved);
+            break;
+
         case TypeInfoKind::Struct:
             break;
 
         case TypeInfoKind::Enum:
             if (fromVar)
                 return context->report({context->node, formErr(Err0543, typeResolved->getDisplayNameC())});
+            makeUsingScope(node, typeResolved);
             break;
 
         default:
@@ -131,34 +166,10 @@ bool Semantic::resolveUsing(SemanticContext* context)
             continue;
         }
 
-        Scope*     scope;
         const auto typeResolved = idRef->resolvedSymbolOverload()->typeInfo;
-        switch (typeResolved->kind)
-        {
-            case TypeInfoKind::Namespace:
-            {
-                const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
-                scope               = typeInfo->scope;
-                break;
-            }
-            case TypeInfoKind::Enum:
-            {
-                const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
-                scope               = typeInfo->scope;
-                break;
-            }
-            case TypeInfoKind::Struct:
-            {
-                const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
-                scope               = typeInfo->scope;
-                break;
-            }
-            default:
-                return context->report({node, formErr(Err0350, typeResolved->getDisplayNameC())});
-        }
-
-        node->parent->addAlternativeScope(scope, COLLECTED_SCOPE_USING);
-
+        const auto scope        = makeUsingScope(node->parent, typeResolved);
+        if (!scope)
+            return context->report({node, formErr(Err0350, typeResolved->getDisplayNameC())});
         if (!idRef->ownerFct)
             node->parent->token.sourceFile->addGlobalUsing(scope);
     }
@@ -189,7 +200,7 @@ bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 
 bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 {
-    if(!mustInline(context->node->ownerFct))
+    if (!mustInline(context->node->ownerFct))
         SWAG_CHECK(SemanticError::warnUnusedVariables(context, context->node->ownerScope));
     return true;
 }
