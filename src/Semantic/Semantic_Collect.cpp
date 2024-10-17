@@ -477,20 +477,23 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             // Do not initialize variable with type arguments, then again with an initialization
             const auto assign   = node->assignment;
             const auto overload = assign->resolvedSymbolOverload();
-            if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
+            if (overload->computedValue.storageSegment)
             {
-                Diagnostic err{assign, toErr(Err0056)};
-                err.addNote(node->type, toNte(Nte0189));
-                return context->report(err);
-            }
+                if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
+                {
+                    Diagnostic err{assign, toErr(Err0056)};
+                    err.addNote(node->type, toNte(Nte0189));
+                    return context->report(err);
+                }
 
-            // Copy from a constant
-            SWAG_ASSERT(assign->hasAstFlag(AST_CONST_EXPR));
-            uint8_t* addrDst;
-            storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
-            SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
-            const auto addrSrc = overload->computedValue.getStorageAddr();
-            std::copy_n(static_cast<uint8_t*>(addrSrc), typeInfo->sizeOf, addrDst);
+                // Copy from a constant
+                SWAG_ASSERT(assign->hasAstFlag(AST_CONST_EXPR));
+                uint8_t* addrDst;
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
+                SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
+                const auto addrSrc = overload->computedValue.getStorageAddr();
+                std::copy_n(static_cast<uint8_t*>(addrSrc), typeInfo->sizeOf, addrDst);
+            }
         }
         else
         {
