@@ -21,9 +21,10 @@ var g_App: Application
     
     if Env.hasArg("swag.test"):
         g_App.maxRunFrame = 100
-    if !Env.hasArg("hide"):
+    if !Env.hasArg("--hide"):
         surface.show()
 
+    // Icon task bar
     using Win32
     with var tnid: NOTIFYICONDATAA
     {
@@ -36,8 +37,8 @@ var g_App: Application
     }
 
     catch Shell_NotifyIconA(NIM_ADD, &tnid)
+    defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
 
     g_App.run()
 
-    catch Shell_NotifyIconA(NIM_DELETE, &tnid)
 }
