@@ -514,7 +514,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_INIT))
         return true;
 
-    auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol;
 
@@ -559,14 +559,14 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
     }
 
     // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
+    for (const auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
@@ -574,8 +574,8 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         YIELD();
     }
 
-    auto sourceFile = context->sourceFile;
-    auto opInit     = typeInfoStruct->opInit;
+    const auto sourceFile = context->sourceFile;
+    const auto opInit     = typeInfoStruct->opInit;
 
     typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_INIT);
     SWAG_ASSERT(typeInfoStruct->opInit);
@@ -599,7 +599,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
 
         if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
         {
-            ByteCodePrintOptions opt;
+            constexpr ByteCodePrintOptions opt;
             cxt.bc->print(opt);
         }
         return true;
@@ -608,7 +608,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
     // No special value, so we can just clear the struct
     if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        auto inst               = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
+        const auto inst         = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
         inst->b.mergeU64U32.low = 24;
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
@@ -621,16 +621,16 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
 
         if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
         {
-            ByteCodePrintOptions opt;
+            constexpr ByteCodePrintOptions opt;
             cxt.bc->print(opt);
         }
         return true;
     }
 
-    for (auto param : typeInfoStruct->fields)
+    for (const auto param : typeInfoStruct->fields)
     {
-        auto varDecl = castAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
-        auto typeVar = TypeManager::concreteType(param->typeInfo);
+        const auto varDecl = castAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
+        const auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
         auto inst               = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
@@ -646,7 +646,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         // A structure initialized with a literal
         if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
         {
-            auto varType = varDecl->type;
+            const auto varType = varDecl->type;
             SWAG_ASSERT(varType->computedValue()->storageSegment);
             SWAG_ASSERT(varType->computedValue()->storageOffset != 0xFFFFFFFF);
             emitMakeSegPointer(&cxt, varType->computedValue()->storageSegment, varType->computedValue()->storageOffset, 1);
@@ -661,7 +661,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
             {
                 if (varDecl->assignment->is(AstNodeKind::ExpressionList))
                 {
-                    auto exprList = castAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
+                    const auto exprList = castAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                     SWAG_ASSERT(exprList->computedValue()->storageSegment);
                     SWAG_ASSERT(exprList->computedValue()->storageOffset != UINT32_MAX);
                     emitMakeSegPointer(&cxt, exprList->computedValue()->storageSegment, exprList->computedValue()->storageOffset, 1);
@@ -672,8 +672,8 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
                     RegisterList r0 = 0;
                     if (varDecl->assignment->typeInfo->isString())
                     {
-                        auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
-                        auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
+                        const auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
+                        const auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
                         SWAG_ASSERT(storageOffset != UINT32_MAX);
                         emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
                         EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue()->text.length();
@@ -693,8 +693,8 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
             }
             else if (typeVar->isString())
             {
-                auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
-                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
+                const auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
+                const auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
                 EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue()->text.length();
@@ -708,8 +708,8 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
                      varDecl->computedValue() &&
                      varDecl->computedValue()->storageSegment)
             {
-                auto storageSegment = varDecl->computedValue()->storageSegment;
-                auto storageOffset  = varDecl->computedValue()->storageOffset;
+                const auto storageSegment = varDecl->computedValue()->storageSegment;
+                const auto storageOffset  = varDecl->computedValue()->storageOffset;
                 SWAG_ASSERT(storageSegment);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
@@ -746,8 +746,8 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         // Default initialization
         if (typeVar->isArrayOfStruct())
         {
-            auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-            auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+            const auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            const auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
             if (typeVarStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
                 emitOpCallUserArrayOfStruct(&cxt, typeVar, EmitOpUserKind::Init, false, 0);
             else
@@ -755,7 +755,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         }
         else if (typeVar->isStruct() && typeVar->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
-            auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            const auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
             EMIT_INST1(&cxt, ByteCodeOp::PushRAParam, 0);
             emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false);
@@ -777,7 +777,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
 
     if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
-        ByteCodePrintOptions opt;
+        constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 

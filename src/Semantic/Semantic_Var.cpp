@@ -1126,7 +1126,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         const auto leftConcreteType  = node->type->typeInfo;
         const auto rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
-
+        
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
         if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList() || rightConcreteType->isTuple())
@@ -1185,6 +1185,10 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
+
+        // :opAffectConstExp
+        if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT) && node->typeInfo->isStruct())
+            overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
 
         // When affect is from a const struct/array, remove the const
         if (node->assignment->isNot(AstNodeKind::Cast))
