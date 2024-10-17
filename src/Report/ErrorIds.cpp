@@ -950,8 +950,7 @@ void initErrors()
     SWAG_ERROR(Nte0012, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
     SWAG_ERROR(Nte0013, "a [[let]] variable is immutable and cannot be modified");
     SWAG_ERROR(Nte0014, "a [[public]] struct should export all of its special functions");
-    SWAG_ERROR(Nte0015, "a constant requires compile-time evaluation");
-    SWAG_ERROR(Nte0016, "a global variable requires compile-time evaluation");
+    SWAG_ERROR(Nte0015, "a %s requires compile-time evaluation");
     SWAG_ERROR(Nte0017, "a lambda can be converted to a closure type, but not vice versa");
     SWAG_ERROR(Nte0018, "a return type is missing");
     SWAG_ERROR(Nte0019, "a standard function in an [[impl]] block cannot overshadow a function from the corresponding interface");
@@ -1162,6 +1161,8 @@ void initErrors()
     SWAG_ERROR(Nte0223, "this is the culprit");
     SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
     SWAG_ERROR(Nte0225, "this implies a nullable value");
+
+    SWAG_ERROR(Nte0016, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

@@ -1270,14 +1270,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
-            else if (overFlags.has(OVERLOAD_CONSTANT))
+            else if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL))
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0015); }, true);
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
-            }
-            else if (overFlags.has(OVERLOAD_VAR_GLOBAL))
-            {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0016); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return formNte(Nte0015, Naming::kindName(node).cstr()); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
             }
         }
