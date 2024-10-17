@@ -154,13 +154,14 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 
 bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
-    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto overload = node->resolvedSymbolOverload();
 
     // Ghosting check
     // We simulate a reference to the local variable, in the same context, to raise an error
     // if ambiguous. That way we have a direct error at the declaration, even if the variable
     // is not used later
-    if (node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_LOCAL))
+    if (overload->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         const auto id = createTmpId(context, node, node->token.text);
         SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_GHOSTING));
@@ -168,11 +169,9 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     }
 
     // :opAffectConstExpr
-    if (node->resolvedSymbolOverload() &&
-        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
-        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
+    if (overload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
+        overload->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
     {
-        const auto overload = node->resolvedSymbolOverload();
         SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
         node->removeAstFlag(AST_NO_BYTECODE);
@@ -219,10 +218,8 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     }
 
     // Compiler #message
-    if (node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_GLOBAL))
-    {
+    if (overload->hasFlag(OVERLOAD_VAR_GLOBAL))
         sendCompilerMsgGlobalVar(context);
-    }
 
     return true;
 }
