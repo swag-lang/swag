@@ -972,7 +972,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     const auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
 
     // Register public global constant
-    if (isCompilerConstant && node->hasAttribute(ATTRIBUTE_PUBLIC))
+    if (overFlags.has(OVERLOAD_CONSTANT) && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         if (node->ownerScope->isGlobalOrImpl() && (node->type || node->assignment))
             node->ownerScope->addPublicNode(node);
@@ -990,7 +990,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // This is ok to not have an initialization for structs, as they are initialized by default
     if (!node->assignment && (!node->type || !concreteNodeType->isStruct()))
     {
-        SWAG_CHECK(checkForMissingInitialization(context, node, overFlags, concreteNodeType, isCompilerConstant));
+        SWAG_CHECK(checkForMissingInitialization(context, node, overFlags, concreteNodeType, overFlags.has(OVERLOAD_CONSTANT)));
     }
 
     bool thisIsAGenericType = !node->type && !node->assignment;
@@ -1054,30 +1054,6 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // A global variable or a constant must have its value computed at that point
-    if (!node->hasAstFlag(AST_FROM_GENERIC) && !isGeneric && node->assignment)
-    {
-        if (isCompilerConstant || overFlags.has(OVERLOAD_VAR_GLOBAL))
-        {
-            if (node->assignment->typeInfo->isLambdaClosure())
-            {
-                SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, toErr(Err0570)}));
-                const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
-                SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
-            }
-            else if (isCompilerConstant)
-            {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0015); }, true);
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
-            }
-            else
-            {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0016); }, true);
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
-            }
-        }
-    }
-
     // Be sure that an array without a size has an initializer, to deduce its size
     if (concreteNodeType && concreteNodeType->isArray())
     {
@@ -1104,7 +1080,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         overFlags.add(OVERLOAD_NOT_INITIALIZED);
 
-        if (isCompilerConstant)
+        if (overFlags.has(OVERLOAD_CONSTANT))
         {
             Diagnostic err{node->assignment, toErr(Err0455)};
             err.addNote(toNte(Nte0044));
@@ -1126,7 +1102,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         const auto leftConcreteType  = node->type->typeInfo;
         const auto rightConcreteType = TypeManager::concretePtrRefType(node->assignment->typeInfo);
-        
+
         // Do not cast for structs, as we can have special assignment with different types
         // Except if this is an initializer list {...}
         if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList() || rightConcreteType->isTuple())
@@ -1220,9 +1196,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->isListArray())
         {
             CastFlags castFlags = 0;
-            if (!isCompilerConstant)
+            if (!overFlags.has(OVERLOAD_CONSTANT))
                 castFlags = CAST_FLAG_FORCE_UN_CONST;
-            SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, overFlags, castFlags));
+            SWAG_CHECK(convertTypeListToArray(context, node, overFlags.has(OVERLOAD_CONSTANT), overFlags, castFlags));
         }
 
         // :ConcreteRef
@@ -1285,6 +1261,30 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // A global variable or a constant must have its value computed at that point
+    if (!node->hasAstFlag(AST_FROM_GENERIC) && !isGeneric && node->assignment)
+    {
+        if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL))
+        {
+            if (node->assignment->typeInfo->isLambdaClosure())
+            {
+                SWAG_VERIFY(!overFlags.has(OVERLOAD_CONSTANT), context->report({node->assignment, toErr(Err0570)}));
+                const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
+            }
+            else if (overFlags.has(OVERLOAD_CONSTANT))
+            {
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0015); }, true);
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
+            }
+            else
+            {
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0016); }, true);
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
+            }
+        }
+    }
+
     // Nullable
     if (node->is(AstNodeKind::FuncDeclParam) && node->assignment)
     {
@@ -1343,12 +1343,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // In case of a struct (or array of structs), be sure struct is now completed before
-    // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
-    // problems.
-    if (!isCompilerConstant || !node->hasAstFlag(AST_FROM_GENERIC))
+    // In case of a struct (or array of structs), be sure that the struct is now completed before.
+    // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various problems.
+    if (!overFlags.has(OVERLOAD_CONSTANT) || !node->hasAstFlag(AST_FROM_GENERIC))
     {
-        if (isCompilerConstant || overFlags.has(OVERLOAD_VAR_GLOBAL) || overFlags.has(OVERLOAD_VAR_LOCAL))
+        if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_LOCAL))
         {
             const auto typeInfo = TypeManager::concreteType(node->typeInfo);
             waitTypeCompleted(context->baseJob, typeInfo);
@@ -1359,7 +1358,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
 
-    if (isCompilerConstant)
+    if (overFlags.has(OVERLOAD_CONSTANT))
     {
         SWAG_CHECK(resolveConstantVar(context, node, overFlags, storageSegment, storageOffset, isLocalConstant, isGeneric));
         YIELD();
