@@ -163,11 +163,6 @@ impl QuickWnd
         return quick
     }
 
-    const ColorRed:    Color = 0xFFE80808
-    const ColorGreen:  Color = 0xFF60C447
-    const ColorBlue:   Color = 0xFF199CF4
-    const ColorYellow: Color = 0xFFFDDF1B
-
     mtd defaultQuickStyleArrow()
     {
         mtd add(startSize, borderSize, endSize: f32, color: Color)

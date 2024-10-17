@@ -172,7 +172,7 @@ impl MainWnd
         return formItf           
     }
 
-    mtd newFormFromModel(mode: EditMode)->nl IForm
+    mtd newFormFromModel(mode: EditMode, clear = false)->nl IForm
     {  
         #[Swag.Complete]
         switch mode
@@ -188,6 +188,8 @@ impl MainWnd
         case Image:
             let mdl = Memory.new'FormImage()
             mdl.IForm.copy(mdl, &mdlFormImage)
+            if clear:
+                mdl.image.release()
             return mdl
         case Step:
             let mdl = Memory.new'FormStep()
@@ -200,6 +202,8 @@ impl MainWnd
         case Polygon:
             let mdl = Memory.new'FormPolygon()
             mdl.IForm.copy(mdl, &mdlFormPolygon)
+            if clear:
+                mdl.points.clear()
             return mdl
         case Text:
             let mdl = Memory.new'FormText()
@@ -208,6 +212,8 @@ impl MainWnd
         case Draw:
             let mdl = Memory.new'FormDraw()
             mdl.IForm.copy(mdl, &mdlFormDraw)
+            if clear:
+                mdl.points.clear()
             return mdl
         case Favorites, Highlight, Selection, PixSel:
             break

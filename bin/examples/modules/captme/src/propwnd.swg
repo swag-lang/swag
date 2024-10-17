@@ -1,16 +1,3 @@
-const MinBorderSize     = 0.0
-const MaxBorderSize     = 50.0
-const MinTextBorderSize = 0.0
-const MaxTextBorderSize = 10.0
-const MinCapSize        = 1.0
-const MaxCapSize        = 8.0
-const MinFontSize       = 10.0
-const MaxFontSize       = 150.0
-const MinBoldSize       = 0.0
-const MaxBoldSize       = 10.0
-
-const CapSize        = 8.0
-const DashSize       = 8.0
 const BtnColorWidth  = 68.0
 const BtnColorHeight = 88.0
 const BtnStyleWidth  = 88.0
@@ -168,8 +155,16 @@ impl PropWnd
 
     func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     {
-        let frame  = btn.createAnchorPopup(356, 382)
-        var pal:   Array'Color
+        let frame = btn.createAnchorPopup(356, 382)
+        var pal:  Array'Color
+        pal.add(Argb.White)
+        pal.add(Argb.Gray)
+        pal.add(Argb.Black)
+        pal.add(ColorRed)
+        pal.add(ColorGreen)
+        pal.add(ColorBlue)
+        pal.add(ColorYellow)
+        pal.add(Argb.Purple)
         let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal)
         picker.setColor(color)
         return picker

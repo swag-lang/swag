@@ -109,12 +109,15 @@ impl Capture
         let app    = editView.getApp()
         let render = app.getRenderer()
 
-        painter.begin()
-        painter.setColorMaskFull()
-        painter.clear(Argb.Zero)
-        paintBackImage(&painter, 0, 0, zoom)
-        painter.setColorMaskColor()
-        painter.setParams(.Antialiased)
+        with painter
+        {
+            .begin()
+            .setColorMaskFull()
+            .clear(Argb.White)
+            paintBackImage(&painter, 0, 0, zoom)
+            .setColorMaskColor()
+            .setParams(.Antialiased)
+        }
 
         if onlySel
         {
@@ -143,12 +146,15 @@ impl Capture
         render.begin(editView.surface.rc)
 
         let rt = render.getRenderTarget(cast(s32) rect.width, cast(s32) rect.height)
-        render.bindRenderTarget(rt)
-        render.setScissorRect(rect)
-        render.clear()
-        render.draw(&painter)
-        render.unbindRenderTarget()
-        render.releaseRenderTarget(rt)
+        with render
+        {
+            .bindRenderTarget(rt)
+            .setScissorRect(rect)
+            .clear()
+            .draw(&painter)
+            .unbindRenderTarget()
+            .releaseRenderTarget(rt)
+        }
 
         render.end()
 
@@ -1096,54 +1102,10 @@ impl Capture
                     return true
                 firstMouseMove = false
 
-                var itf: IForm
-
                 let mode = editView.main.getEditMode()
-
-                #[Swag.Complete]
-                switch mode
-                {
-                case Shape:
-                    var form = Memory.new'FormShape()
-                    dref form = editView.main.mdlFormShape
-                    itf       = cast(IForm) form
-                case Image:
-                    var form = Memory.new'FormImage()
-                    dref form = editView.main.mdlFormImage
-                    form.image.release()
-                    itf = cast(IForm) form
-                case Step:
-                    var form = Memory.new'FormStep()
-                    dref form = editView.main.mdlFormStep
-                    itf       = cast(IForm) form
-                case Arrow:
-                    var form = Memory.new'FormArrow()
-                    dref form = editView.main.mdlFormArrow
-                    itf       = cast(IForm) form
-                case Line:
-                    var form = Memory.new'FormLine()
-                    dref form = editView.main.mdlFormLine
-                    itf       = cast(IForm) form
-                case Polygon:
-                    var form = Memory.new'FormPolygon()
-                    dref form = editView.main.mdlFormPolygon
-                    form.points.clear()
-                    itf = cast(IForm) form
-                case Text:
-                    var form = Memory.new'FormText()
-                    dref form = editView.main.mdlFormText
-                    itf       = cast(IForm) form
-                case Draw:
-                    var form = Memory.new'FormDraw()
-                    dref form = editView.main.mdlFormDraw
-                    form.points.clear()
-                    itf = cast(IForm) form
-                case Favorites, Highlight, Selection, PixSel:
-                    break
-                }
-
-                itf.setup(self)
-
+                let itf  = editView.main.newFormFromModel(mode, clear: true)
+                if itf:
+                    itf.setup(self)
                 let undo = newUndo(.CreateForm)
                 undo.oldForms.add(itf)
                 pushUndo(undo)
