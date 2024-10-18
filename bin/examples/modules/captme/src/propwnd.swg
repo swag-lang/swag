@@ -30,32 +30,8 @@ impl PropWnd
         let capture = main.getCapture()
         if !capture or capture.selection.count == 0
         {
-            #[Swag.Complete]
-            switch main.editMode
-            {
-            case Arrow:
-                return cast(*BaseForm) &main.mdlFormArrow
-            case Line:
-                return cast(*BaseForm) &main.mdlFormLine
-            case Shape:
-                return cast(*BaseForm) &main.mdlFormShape
-            case Image:
-                return cast(*BaseForm) &main.mdlFormImage
-            case Step:
-                return cast(*BaseForm) &main.mdlFormStep
-            case Polygon:
-                return cast(*BaseForm) &main.mdlFormPolygon
-            case Text:
-                return cast(*BaseForm) &main.mdlFormText
-            case Draw:
-                return cast(*BaseForm) &main.mdlFormDraw
-            case Highlight:
-                return @dataof(main.mdlHighlight)
-            case PixSel:
-                return @dataof(main.mdlPixSel)
-            case Favorites, Selection:
-                return @dataof(main.mdlFavorite)
-            }
+            let iform = assume main.editModeToModel(main.editMode)
+            return cast(*BaseForm) @dataof(iform)
         }
 
         return assume capture.getSelectedBaseForm()
@@ -66,32 +42,8 @@ impl PropWnd
         let capture = main.getCapture()
         if !capture or capture.selection.count == 0
         {
-            #[Swag.Complete]
-            switch main.editMode
-            {
-            case Arrow:
-                return FormArrow
-            case Line:
-                return FormLine
-            case Shape:
-                return FormShape
-            case Image:
-                return FormImage
-            case Step:
-                return FormStep
-            case Polygon:
-                return FormPolygon
-            case Text:
-                return FormText
-            case Draw:
-                return FormDraw
-            case Highlight:
-                return @kindof(main.mdlHighlight)
-            case PixSel:
-                return @kindof(main.mdlPixSel)
-            case Favorites, Selection:
-                return @kindof(main.mdlFavorite)
-            }
+            let iform = assume main.editModeToModel(main.editMode)
+            return @kindof(iform)
         }
 
         return assume capture.getSelectedFormType()
@@ -570,7 +522,7 @@ impl PropWnd
             rect.width = rect.height
             var color = btn.getThemeColors().btnIcon_Icon
 
-            #[Swag.Complete]
+            //#[Swag.Complete]
             switch curSel.kind
             {
             case Ellipse:

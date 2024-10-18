@@ -159,14 +159,12 @@ impl MainWnd
             formItf = cast(IForm) mdlFormText
         case Draw:
             formItf = cast(IForm) mdlFormDraw
-        case Favorites:
+        case Favorites, Selection:
             formItf = mdlFavorite
         case Highlight:
             formItf = mdlHighlight
         case PixSel:
             formItf = mdlPixSel
-        case Selection:
-            break
         }   
 
         return formItf           
