@@ -50,6 +50,8 @@ struct Capture
         serialBackTexture:     u32
         movingStart:           Math.Point
         movingEnd:             Math.Point
+        lastSelectPos:         Math.Point
+        lastSelectHit:         u64
         firstMouseMove:        bool
         movingCursorSet:       bool
         dirtyBackImg:          bool
@@ -937,6 +939,7 @@ impl Capture
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        let altPressed  = Input.Keyboard.isKeyPressed(.MenuCtrl) or Input.Keyboard.isKeyPressed(.RMenu)
 
         // Start of mode
         ///////////////////////
@@ -944,6 +947,7 @@ impl Capture
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
+                // Ctrl+Shift force the selection mode
                 if (shiftPressed and ctrlPressed) or view.main.editMode == .Selection
                 {
                     mouseMode      = .Selecting
@@ -953,23 +957,49 @@ impl Capture
                     view.invalidate()
                     drawSelRect = true
                 }
+
+                // Alt, draw above
+                elif altPressed
+                {  
+                    mouseMode      = .Creating
+                    firstMouseMove = true
+                    movingStart    = localPos
+                    view.captureMouse()
+                    view.invalidate()                                      
+                }
                 else
                 {
                     let hadSelection = selection.count != 0
-                    let here         = selection.contains(hotForm)
-                    if !(evt.modifiers & .Control) and !here
+                    var here         = selection.contains(hotForm)
+
+                    // Swap between objects at the same position if no mouse move
+                    if lastSelectPos.isEqualEpsilon(evt.surfacePos)
                     {
-                        if selection.count
+                        if !evt.modifiers.has(.Control) and selection.count
                         {
                             selection.clear()
                             selectionHasChanged()
                         }
+
+                        let res = hitTests(localPos, false)
+                        lastSelectHit += 1
+                        if lastSelectHit >= res.count:
+                            lastSelectHit = 0      
+                        hotForm = res[lastSelectHit]    
+                        here = selection.contains(hotForm)                  
                     }
+                    elif !evt.modifiers.has(.Control) and !here and selection.count
+                    {
+                        selection.clear()
+                        selectionHasChanged()
+                        lastSelectHit = 0
+                    }                    
 
                     if hotForm != Swag.U64.Max
                     {
                         if !here
                         {
+                            lastSelectPos = evt.surfacePos
                             selection.add(hotForm)
                             selectionHasChanged()
                         }
@@ -1128,8 +1158,17 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
-        if !forms.count:
+        let res = hitTests(localPos, true)
+        if res.isEmpty():
             return Swag.U64.Max
+        return res[0]
+    }
+
+    mtd hitTests(localPos: Math.Point, retFirst: bool)->Array'u64
+    {
+        var result: retval
+        if !forms.count:
+            return result
         for #back i in forms
         {
             let f = forms[i]
@@ -1138,11 +1177,13 @@ impl Capture
                 continue
             if !f.hitTest(localPos, editView.zoom):
                 continue
-            return i
+            result.add(i)
+            if retFirst:
+                break
         }
 
-        return Swag.U64.Max
-    }
+        return result
+    }    
 
     //////////////////////////////
     // SELECTION
