@@ -79,6 +79,7 @@ impl PropWnd
         main.editWnd.invalidate()
     }
 
+    #[Swag.Overload]
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
         with let ctrl = SliderCtrl.create(mainLayout, #self.name)
@@ -1021,6 +1022,24 @@ impl PropWnd
         }
     }
 
+    mtd propScale()
+    {
+        let curSelType = getSelectedFormType()
+        if curSelType != FormText:
+            return
+
+        let curSel = cast(*FormText) getSelectedBaseForm()
+        let ctrl   = createSlider("Scale", 0, 100, cast() curSel.scale)
+        ctrl.slider.sigStartChange += func|self|(slider)
+        {
+            self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), true, true)
+        }
+        ctrl.slider.sigChanged += func|self|(slider)
+        {
+            self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), false, true)
+        }
+    }    
+
     mtd propBoldSize()
     {
         let curSelType = getSelectedFormType()
@@ -1196,6 +1215,7 @@ impl PropWnd
         propNextStep()
         propText()
         propFontSize()
+        propScale()
         propBoldSize()
         propBorderSize()
         propStartSize()

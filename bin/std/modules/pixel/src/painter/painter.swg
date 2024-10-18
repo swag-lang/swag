@@ -461,13 +461,17 @@ impl Painter
     // Reset the current painting state
     mtd resetState()
     {
-        curState.paintParams  = .Default
-        curState.paintQuality = .Normal
-        curState.transform.setIdentity()
-        curState.interpolationMode = .Pixel
-        curState.blendingMode      = .Alpha
-        curState.colorMask.r, curState.colorMask.g, curState.colorMask.b = true
-        curState.colorMask.a = false
+        with curState
+        {
+            .paintParams  = .Default
+            .paintQuality = .Normal
+            .transform.setIdentity()
+            .interpolationMode = .Pixel
+            .blendingMode      = .Alpha
+            .colorMask.r, .colorMask.g, .colorMask.b = true
+            .colorMask.a = false
+        }
+
         resetClippingRect()
         resetTexture0()
         resetTextureFont()

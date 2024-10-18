@@ -339,23 +339,24 @@ impl Capture
         if boundRect.width <= 0 or boundRect.height <= 0:
             return
 
-        let base = cast(*BaseForm) @dataof(f)
+        with let base = cast(*BaseForm) @dataof(f)
+        {
+            var savePaintPos = .paintPos
 
-        var savePaintPos = base.paintPos
+            .paintPos.x      = rect.x + (boundRect.x * zoom)
+            .paintPos.y      = rect.y + (boundRect.y * zoom)
+            .paintPos.width  = boundRect.width * zoom
+            .paintPos.height = boundRect.height * zoom
 
-        base.paintPos.x      = rect.x + (boundRect.x * zoom)
-        base.paintPos.y      = rect.y + (boundRect.y * zoom)
-        base.paintPos.width  = boundRect.width * zoom
-        base.paintPos.height = boundRect.height * zoom
+            .paintPos.width += .paintPos.x - Math.round(.paintPos.x)
+            .paintPos.height += .paintPos.y - Math.round(.paintPos.y)
+            .paintPos.round()
 
-        base.paintPos.width += base.paintPos.x - Math.round(base.paintPos.x)
-        base.paintPos.height += base.paintPos.y - Math.round(base.paintPos.y)
-        base.paintPos.round()
-
-        let wt2 = cast(s32) base.paintPos.width
-        let ht2 = cast(s32) base.paintPos.height
-        var wt  = wt2
-        var ht  = ht2
+            let wt2 = cast(s32) .paintPos.width
+            let ht2 = cast(s32) .paintPos.height
+            var wt  = wt2
+            var ht  = ht2
+        }
 
         let rt = render.getRenderTarget(wt2, ht2)
         with painter
@@ -939,7 +940,7 @@ impl Capture
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
-        let altPressed  = Input.Keyboard.isKeyPressed(.MenuCtrl) or Input.Keyboard.isKeyPressed(.RMenu)
+        let altPressed   = Input.Keyboard.isKeyPressed(.MenuCtrl) or Input.Keyboard.isKeyPressed(.RMenu)
 
         // Start of mode
         ///////////////////////
@@ -960,12 +961,12 @@ impl Capture
 
                 // Alt, draw above
                 elif altPressed
-                {  
+                {
                     mouseMode      = .Creating
                     firstMouseMove = true
                     movingStart    = localPos
                     view.captureMouse()
-                    view.invalidate()                                      
+                    view.invalidate()
                 }
                 else
                 {
@@ -984,16 +985,16 @@ impl Capture
                         let res = hitTests(localPos, false)
                         lastSelectHit += 1
                         if lastSelectHit >= res.count:
-                            lastSelectHit = 0      
-                        hotForm = res[lastSelectHit]    
-                        here = selection.contains(hotForm)                  
+                            lastSelectHit = 0
+                        hotForm = res[lastSelectHit]
+                        here    = selection.contains(hotForm)
                     }
                     elif !evt.modifiers.has(.Control) and !here and selection.count
                     {
                         selection.clear()
                         selectionHasChanged()
                         lastSelectHit = 0
-                    }                    
+                    }
 
                     if hotForm != Swag.U64.Max
                     {
@@ -1183,7 +1184,7 @@ impl Capture
         }
 
         return result
-    }    
+    }
 
     //////////////////////////////
     // SELECTION

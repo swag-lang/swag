@@ -5,7 +5,7 @@ const MaxTextBorderSize = 20.0
 const MinCapSize        = 1.0
 const MaxCapSize        = 8.0
 const MinFontSize       = 10.0
-const MaxFontSize       = 200.0
+const MaxFontSize       = 150.0
 const MinBoldSize       = 0.0
 const MaxBoldSize       = 20.0
 

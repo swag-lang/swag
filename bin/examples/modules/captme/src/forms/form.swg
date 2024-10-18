@@ -46,6 +46,7 @@ struct BaseForm
     paintShadow          = true
     subKind:             FormSubKind = None
     joinStyle            = JoinStyle.Round
+    scale:               f32 = 0
 
     #[Serialization.NoSerialize]
     {

@@ -284,13 +284,14 @@ impl IForm for FormText
             }
         }
 
+        let zscale  = z * Math.map(scale, 0, 100, 1'f32, 2'f32)
         var y0      = 0'f32
-        let addSize = (bSize + sSize) * z
+        let addSize = (bSize + sSize) * zscale
 
         let count = paths.count / 2
 
-        var totalYZ = totalY * z
-        totalYZ += cast(f32) ((count - 1) * (lineSpacing * z))
+        var totalYZ = totalY * zscale
+        totalYZ += cast(f32) ((count - 1) * (lineSpacing * zscale))
 
         let aV = quickMode ? FormTextAlign.Center : alignVert
         let aH = quickMode ? FormTextAlign.Center : alignHorz
@@ -308,8 +309,8 @@ impl IForm for FormText
         {
             let pathl1 = &paths[i + 1]
 
-            let wt = (pathl1.bvMax.x - pathl1.bvMin.x) * z
-            let ht = (pathl1.bvMax.y - pathl1.bvMin.y) * z
+            let wt = (pathl1.bvMax.x - pathl1.bvMin.x) * zscale
+            let ht = (pathl1.bvMax.y - pathl1.bvMin.y) * zscale
 
             var x0 = 0'f32
             switch aH
@@ -327,39 +328,39 @@ impl IForm for FormText
             // Border
             if !Math.isZeroEpsilon(bSize) and borderColor.a
             {
-                painter.pushState()
-                painter.scaleTransform(z, z)
-                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
+                painter.pushTransform()
+                painter.scaleTransform(zscale, zscale)
+                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
                     let it = runes.find(c)
                     pl.paths.add(it.value.border.paths.toSlice())
                     painter.fillPath(&pl, borderColor)
                     pl.paths.count = 0
-                    painter.translateTransform(cast(f32) it.value.advance * z, 0)
+                    painter.translateTransform(cast(f32) it.value.advance * zscale, 0)
                 }
-                painter.popState()
+                painter.popTransform()
             }
 
             // Back
             if backColor.a
             {
-                painter.pushState()
-                painter.scaleTransform(z, z)
-                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
+                painter.pushTransform()
+                painter.scaleTransform(zscale, zscale)
+                painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
                     let it = runes.find(c)
                     pl.paths.add(it.value.back.paths.toSlice())
                     painter.fillPath(&pl, backColor)
                     pl.paths.count = 0
-                    painter.translateTransform(cast(f32) it.value.advance * z, 0)
+                    painter.translateTransform(cast(f32) it.value.advance * zscale, 0)
                 }
-                painter.popState()
+                painter.popTransform()
             }
 
             // Next line
-            y0 += ht + (lineSpacing * z)
+            y0 += ht + (lineSpacing * zscale)
         }
     }
 
