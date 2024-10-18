@@ -684,7 +684,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 
     node->typeInfo    = typeNode->typeInfo;
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
-    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
+    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
@@ -783,7 +783,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->toCastTypeInfo = castTo;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
-    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
+    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
@@ -824,7 +824,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
     node->typeInfo = cloneType;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitAutoCast;
-    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_SIDE_EFFECTS);
+    node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_GEN_TYPEINFO | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     return true;
 }

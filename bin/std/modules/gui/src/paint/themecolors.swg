@@ -4,8 +4,8 @@ using Pixel
 struct ThemeColors
 {
     const Transparent                     = 0x00000000
-    const Blue                            = 0xFF1473e6
-    const LightBlue                       = 0xFF2483f6
+    const Blue                            = 0xFF1473E6
+    const LightBlue                       = 0xFF2483F6
     const Disabled                        = 0x5FFFFFFF
     const LighterSmall                    = 0x0FFFFFFF
     const LighterMedium                   = 0x1FFFFFFF
@@ -42,8 +42,8 @@ struct ThemeColors
     wnd_CaptionNotActived:                Color = Gray4
     wnd_CaptionText:                      Color = White
     wnd_CaptionNotActivatedText:          Color = White
-    wnd_BtnCloseBk:                       Color = 0xFFd61425
-    wnd_BtnCloseHotBk:                    Color = 0xFFe62435
+    wnd_BtnCloseBk:                       Color = 0xFFD61425
+    wnd_BtnCloseHotBk:                    Color = 0xFFE62435
     wnd_Shadow:                           Color = 0x8C000000
 
     view_Bk:                              Color = 0xFF282828

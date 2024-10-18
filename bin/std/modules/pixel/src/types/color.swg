@@ -90,7 +90,7 @@ impl Color
     }
 
     // Retrieve all components as floating point values between 0 and 1
-    #[Inline]
+    #[Inline, ConstExpr]
     func toArgbf(const self)->{ a: f32, r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
@@ -102,7 +102,7 @@ impl Color
     }
 
     // Get the color as a [Math.Vector4]
-    #[Inline]
+    #[Inline, ConstExpr]
     func toVector4(const self)->Math.Vector4
     {
         var result: retval = undefined
@@ -114,7 +114,7 @@ impl Color
     }
 
     // Retrieve all components as floating point values between 0 and 1
-    #[Inline]
+    #[Inline, ConstExpr]
     func toRgbf(const self)->{ r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
@@ -125,7 +125,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromRgb(r, g, b: u8)->Color
     {
         var result: retval = undefined
@@ -134,7 +134,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromRgbf(r, g, b: f32)->Color
     {
         var result: retval = undefined
@@ -143,7 +143,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline, Overload]
+    #[Inline, Overload, ConstExpr]
     func fromArgb(a, r, g, b: u8)->Color
     {
         var result: retval = undefined
@@ -152,7 +152,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline, Overload]
+    #[Inline, Overload, ConstExpr]
     func fromArgb(argb: Argb)->Color
     {
         var result: retval = argb
@@ -160,7 +160,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline, Overload]
+    #[Inline, Overload, ConstExpr]
     func fromArgb(alpha: u8, argb: Argb)->Color
     {
         var result: retval = argb
@@ -169,7 +169,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline, Overload]
+    #[Inline, Overload, ConstExpr]
     func fromArgb(argb: u32)->Color
     {
         var result: retval = argb
@@ -177,7 +177,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromAbgr(abgr: u32)->Color
     {
         var result: retval
@@ -189,7 +189,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromArgbf(a, r, g, b: f32)->Color
     {
         var result: retval = undefined
@@ -198,7 +198,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromVector4(vec: Math.Vector4)->Color
     {
         var result: retval = undefined
@@ -207,7 +207,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, ConstExpr]
     func fromHsl(h, s, l: f32)->Color
     {
         var result: retval = undefined

@@ -12,6 +12,7 @@ void AstNode::inheritAstFlagsOr(const AstNodeFlags& flag)
 {
     for (const auto child : children)
         flags.add(child->flags.mask(flag));
+    SWAG_ASSERT(!flag.has(AST_COMPUTED_VALUE));
 }
 
 void AstNode::inheritAstFlagsOr(const AstNode* op, const AstNodeFlags& flag)
@@ -44,6 +45,7 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag)
             return;
     }
 
+    SWAG_ASSERT(!flag.has(AST_COMPUTED_VALUE));
     flags.add(flag);
 }
 
@@ -51,6 +53,8 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const 
 {
     flags.add(flag1);
     flags.add(flag2);
+    SWAG_ASSERT(!flag1.has(AST_COMPUTED_VALUE));
+    SWAG_ASSERT(!flag2.has(AST_COMPUTED_VALUE));
 
     for (const auto child : who->children)
     {
@@ -68,6 +72,9 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, const AstNodeFlags& flag1, const 
     flags.add(flag1);
     flags.add(flag2);
     flags.add(flag3);
+    SWAG_ASSERT(!flag1.has(AST_COMPUTED_VALUE));
+    SWAG_ASSERT(!flag2.has(AST_COMPUTED_VALUE));
+    SWAG_ASSERT(!flag3.has(AST_COMPUTED_VALUE));
 
     for (const auto child : who->children)
     {
@@ -215,13 +222,20 @@ void AstNode::inheritComputedValue(const AstNode* from)
 {
     if (!from)
         return;
+
     inheritAstFlagsOr(from, AST_COMPUTED_VALUE | AST_VALUE_GEN_TYPEINFO);
     if (hasAstFlag(AST_COMPUTED_VALUE))
     {
-        SWAG_ASSERT(from->hasComputedValue());
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
-        allocateExtension(ExtensionKind::Semantic);
-        extSemantic()->computedValue = from->computedValue();
+        if (from->hasComputedValue())
+        {
+            allocateExtension(ExtensionKind::Semantic);
+            extSemantic()->computedValue = from->computedValue();
+        }
+        else
+        {
+            SWAG_ASSERT(hasComputedValue());
+        }
     }
 }
 

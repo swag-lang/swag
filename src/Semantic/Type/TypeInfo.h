@@ -144,6 +144,7 @@ struct TypeInfo
     bool isNative() const { return kind == TypeInfoKind::Native; }
     bool isArray() const { return kind == TypeInfoKind::Array; }
     bool isEnum() const { return kind == TypeInfoKind::Enum; }
+    bool isNamespace() const { return kind == TypeInfoKind::Namespace; }
     bool isAlias() const { return kind == TypeInfoKind::Alias; }
     bool isFuncAttr() const { return kind == TypeInfoKind::FuncAttr; }
     bool isListArray() const { return kind == TypeInfoKind::TypeListArray; }

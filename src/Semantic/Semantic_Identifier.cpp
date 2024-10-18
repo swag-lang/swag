@@ -1064,7 +1064,15 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
 
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
+        {
             SWAG_CHECK(setupIdentifierRef(context, identifier));
+
+            // Be sure to setup constexpr
+            if(identifier->typeInfo->isStruct() ||
+                identifier->typeInfo->isNamespace() ||
+                identifier->typeInfo->isEnum())
+                identifier->addAstFlag(AST_CONST_EXPR);
+        }
 
         symbolsMatch.clear();
         return true;

@@ -1,12 +1,12 @@
 #[Swag.ConstExpr]
 struct C
 {
-    a: s32
+    a, b, c, d: s32
 }
 
 impl C
 {
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.ConstExpr]
     func from(x: s32)->C
     {
         return {x}

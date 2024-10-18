@@ -174,6 +174,11 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     {
         SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
+        {
+            PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return formNte(Nte0015, Naming::kindName(node).cstr()); }, true);
+            SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
+        }
+
         node->removeAstFlag(AST_NO_BYTECODE);
         node->removeAstFlag(AST_COMPUTED_VALUE);
         node->assignment->removeAstFlag(AST_NO_BYTECODE);
