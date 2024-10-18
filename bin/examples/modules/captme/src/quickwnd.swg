@@ -347,19 +347,19 @@ impl QuickWnd
             qsText.forms.add(it)
         }
 
-        add(3, 48, Argb.White, ColorRed)
-        add(3, 48, Argb.White, ColorGreen)
-        add(3, 48, Argb.White, ColorBlue)
-        add(3, 48, Argb.White, ColorYellow)
+        add(4, 24, Argb.White, ColorRed)
+        add(4, 24, Argb.White, ColorGreen)
+        add(4, 48, Argb.White, ColorBlue)
+        add(4, 48, Argb.White, ColorYellow)
 
         add(4, 72, Argb.White, ColorRed)
         add(4, 72, Argb.White, ColorGreen)
         add(4, 72, Argb.White, ColorBlue)
         add(4, 72, Argb.White, ColorYellow)
 
-        add(3, 48, Argb.Zero, Argb.White)
-        add(3, 48, Argb.Zero, Argb.Gray)
-        add(3, 48, Argb.Zero, Argb.Black)
+        add(4, 48, Argb.Zero, Argb.White)
+        add(4, 48, Argb.Zero, Argb.Gray)
+        add(4, 48, Argb.Zero, Argb.Black)
 
         add(4, 72, Argb.Zero, Argb.White)
         add(4, 72, Argb.Zero, Argb.Gray)

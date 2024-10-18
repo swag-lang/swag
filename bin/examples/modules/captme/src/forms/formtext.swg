@@ -164,7 +164,7 @@ impl IForm for FormText
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         let bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
-        let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)
+        let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 20, 48)
         let sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
 
         var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
