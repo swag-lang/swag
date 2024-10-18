@@ -214,9 +214,9 @@ impl IForm for FormLine
     {
         computePaintCoords(z)
 
-        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        let sSize = quickMode ? Math.min(startSize, 4) : startSize
-        let eSize = quickMode ? Math.min(endSize, 4) : endSize
+        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode, 8, 12)
+        let sSize = quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : startSize
+        let eSize = quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : endSize
 
         with var pen = Pen.createDash(dashStyle, borderColor, bSize)
         {

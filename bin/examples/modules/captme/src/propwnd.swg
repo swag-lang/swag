@@ -3,6 +3,9 @@ const BtnColorHeight = 88.0
 const BtnStyleWidth  = 88.0
 const BtnStyleHeight = 68.0
 
+const CapSize  = 8.0
+const DashSize = 8.0
+
 const CmdIdTextHLeft   = "CmdIdTextHLeft"
 const CmdIdTextHCenter = "CmdIdTextHCenter"
 const CmdIdTextHRight  = "CmdIdTextHRight"
