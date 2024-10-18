@@ -165,14 +165,15 @@ impl QuickWnd
 
     mtd defaultQuickStyleArrow()
     {
-        mtd add(startSize, borderSize, endSize: f32, color: Color)
+        mtd add(startSize, borderSize, endSize: f32, color: Color, startCap = LineCapStyle.ArrowAnchor, dash = DashStyle.None)
         {
             let form = Memory.new'FormArrow()
             form.startSize  = startSize
             form.borderSize = borderSize
             form.endSize    = endSize
+            form.dashStyle  = dash
             if startSize != 0:
-                form.beginCap = .ArrowAnchor
+                form.beginCap = startCap
             if endSize != 0:
                 form.endCap = .ArrowAnchor
             form.borderColor = color
@@ -193,6 +194,11 @@ impl QuickWnd
         add(ArrowSize, BorderSize, ArrowSize, ColorGreen)
         add(ArrowSize, BorderSize, ArrowSize, ColorBlue)
         add(ArrowSize, BorderSize, ArrowSize, ColorYellow)
+
+        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorRed, .RoundAnchor, .Dot)
+        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorGreen, .RoundAnchor, .Dot)
+        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorBlue, .RoundAnchor, .Dot)
+        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorYellow, .RoundAnchor, .Dot)        
     }
 
     mtd defaultQuickStyleLine()

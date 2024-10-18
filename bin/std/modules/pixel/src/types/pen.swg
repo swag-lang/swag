@@ -63,6 +63,7 @@ struct Pen
     plotOffset:            f32
 
     dashStyle:             DashStyle = None
+    dashBlankScale:        f32 = 1.0
     beginCapStyle:         LineCapStyle = Round
     endCapStyle:           LineCapStyle = Round
     joinStyle:             JoinStyle = Miter

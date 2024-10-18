@@ -547,6 +547,9 @@ impl Painter
                 lengthInPattern += addBlank
             }
 
+            if blankPatternIdx:
+                lengthInPattern *= pen.dashBlankScale
+
             // The current remaining length in the current segment is greater
             // than what's left in the current pattern. We draw to cover the
             // current pattern, and change the pattern to be the next
