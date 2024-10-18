@@ -77,6 +77,7 @@ impl IForm for FormText
         dstf.joinStyle   = srcf.joinStyle
         dstf.fontName    = srcf.fontName
         dstf.fontStyle   = srcf.fontStyle
+        dstf.scale       = srcf.scale
     }
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
