@@ -44,6 +44,7 @@ struct BaseForm
     dashStyle:           DashStyle = None
     quickModeOpaque:     bool
     paintShadow          = true
+    smooth:              bool
     subKind:             FormSubKind = None
     joinStyle            = JoinStyle.Round
     scale:               f32 = 0

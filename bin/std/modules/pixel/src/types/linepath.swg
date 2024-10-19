@@ -423,6 +423,37 @@ impl LinePath
         return minDist
     }
 
+    mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
+    {
+        let minDist = getFlattenDistance(quality)
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{ factor: f32, pos: Vector2 }
+        tmp.add({0, endPosBuffer})
+        tmp.add({1, p0 + p1 + p2 + p3})
+
+        for var i = 0; i < tmp.count - 1; i += 1
+        {
+            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
+
+            var point: Vector2 = undefined
+            point = p0 * t * t * t
+            point += p1 * t * t
+            point += p2 * t
+            point += p3
+
+            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist:
+                continue
+
+            tmp.insertAt(cast(u64) i + 1, {t, point})
+            i -= 1
+        }
+
+        for i in 1 until tmp.count:
+            flattenLine(tmp[i].pos)
+    }    
+
     #[Swag.Overload]
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
@@ -481,37 +512,6 @@ impl LinePath
             var point: Vector2 = undefined
             point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
-
-            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist:
-                continue
-
-            tmp.insertAt(cast(u64) i + 1, {t, point})
-            i -= 1
-        }
-
-        for i in 1 until tmp.count:
-            flattenLine(tmp[i].pos)
-    }
-
-    mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
-    {
-        let minDist = getFlattenDistance(quality)
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{ factor: f32, pos: Vector2 }
-        tmp.add({0, endPosBuffer})
-        tmp.add({1, p0 + p1 + p2 + p3})
-
-        for var i = 0; i < tmp.count - 1; i += 1
-        {
-            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-
-            var point: Vector2 = undefined
-            point = p0 * t * t * t
-            point += p1 * t * t
-            point += p2 * t
-            point += p3
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
             if dist < minDist:

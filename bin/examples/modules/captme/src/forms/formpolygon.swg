@@ -31,6 +31,7 @@ impl IForm for FormPolygon
                borderSize == other.borderSize and
                backColor == other.backColor and
                alpha == other.alpha and
+               smooth == other.smooth and
                paintShadow == other.paintShadow
     }
 
@@ -43,6 +44,7 @@ impl IForm for FormPolygon
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.paintShadow = srcf.paintShadow
+        dstf.smooth      = srcf.smooth
     }
 
     mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -235,8 +237,14 @@ impl IForm for FormPolygon
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        for i in 1 until paintPoints.count:
-            linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+        for i in 1 until paintPoints.count
+        {
+            if smooth:
+                linePath.curveTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+            else:
+                linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+        }
+
         linePath.close()
 
         if quickMode
