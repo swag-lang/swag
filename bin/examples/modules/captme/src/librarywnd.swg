@@ -154,6 +154,23 @@ impl LibraryView
             Memory.delete(c)
     }
 
+    mtd updateRecent(capture: *Capture)
+    {   
+        foreach &it in items
+        {
+            if capture.file == it.fi.fullname
+            {
+                if it.capture and it.texture.isValid()
+                {
+                    getApp().getRenderer().removeTexture(&it.texture)
+                    it.texture = getApp().getRenderer().addImage(capture.preview)
+                }
+
+                break
+            }
+        }
+    }
+
     mtd fill() throw
     {
         if thread.isValid()

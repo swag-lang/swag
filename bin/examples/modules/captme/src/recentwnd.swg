@@ -203,6 +203,8 @@ impl IWnd for RecentWnd
         item.preview = getApp().getRenderer().addImage(capture.preview)
         invalidate()
 
+        main.libWnd.view.updateRecent(capture)
+
         getApp().deleteTimer(evt.timer)
         timer = null
         catch capture.save()
