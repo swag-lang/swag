@@ -353,50 +353,7 @@ public impl LinePath
                 flattenBezier(pos, elem.p1, elem.p2, quality)
 
             case Curve:
-                var p0, p1, p2, p3: Vector2 = undefined
-                if lastElem <= 1
-                {
-                    flattenLine(pos)
-                    break
-                }
-
-                if i == 0
-                {
-                    p0 = isClosed ? elements[lastElem - 1].position : (startPoint - pos) + startPoint
-                    p1 = startPoint
-                    p2 = pos
-                    p3 = elements[i + 1].position
-                }
-                elif i < lastElem
-                {
-                    p0 = i == 1 ? startPoint : elements[i - 2].position
-                    p1 = elements[i - 1].position
-                    p2 = pos
-                    p3 = elements[i + 1].position
-                }
-                else
-                {
-                    p0 = elements[i - 2].position
-                    p1 = elements[i - 1].position
-                    p2 = pos
-                    p3 = isClosed ? elements[1].position : pos + (pos - p1)
-                }
-
-                const Alpha   = 0.5
-                const Tension = 0.0
-
-                let t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
-                let t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
-                let t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
-
-                let m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
-                let m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
-
-                let sa = 2.0 * (p1 - p2) + m1 + m2
-                let sb = -3.0 * (p1 - p2) - m1 - m1 - m2
-                let sc = m1
-                let sd = p1
-                flattenCurve(sa, sb, sc, sd, quality)
+                flattenCurve(pos, i, quality)
 
             case Arc:
                 flattenArc(pos, elem.p1, elem.p2, quality)
@@ -423,6 +380,58 @@ impl LinePath
         return minDist
     }
 
+    #[Swag.Overload]
+    mtd flattenCurve(pos: Math.Vector2, i: u64, quality: PaintQuality)
+    {
+        var p0, p1, p2, p3: Vector2 = undefined
+        let lastElem = elements.count - 1
+
+        if lastElem <= 1
+        {
+            flattenLine(pos)
+            return
+        }
+
+        if i == 0
+        {
+            p0 = isClosed ? elements[lastElem - 1].position : (startPoint - pos) + startPoint
+            p1 = startPoint
+            p2 = pos
+            p3 = elements[i + 1].position
+        }
+        elif i < lastElem
+        {
+            p0 = i == 1 ? startPoint : elements[i - 2].position
+            p1 = elements[i - 1].position
+            p2 = pos
+            p3 = elements[i + 1].position
+        }
+        else
+        {
+            p0 = elements[i - 2].position
+            p1 = elements[i - 1].position
+            p2 = pos
+            p3 = isClosed ? elements[1].position : pos + (pos - p1)
+        }
+
+        const Alpha   = 0.5
+        const Tension = 0.0
+
+        let t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
+        let t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
+        let t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
+
+        let m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
+        let m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
+
+        let sa = 2.0 * (p1 - p2) + m1 + m2
+        let sb = -3.0 * (p1 - p2) - m1 - m1 - m2
+        let sc = m1
+        let sd = p1
+        flattenCurve(sa, sb, sc, sd, quality)
+    }
+
+    #[Swag.Overload]
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
         let minDist = getFlattenDistance(quality)
@@ -452,7 +461,7 @@ impl LinePath
 
         for i in 1 until tmp.count:
             flattenLine(tmp[i].pos)
-    }    
+    }
 
     #[Swag.Overload]
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
