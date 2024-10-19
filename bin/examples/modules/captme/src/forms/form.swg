@@ -1,7 +1,7 @@
 interface IForm
 {
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags);
-    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool);
+    mtd paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool);
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool;
     mtd isInside(pt: Math.Point)->bool;
     mtd hitTest(pt: Math.Point, z: f32)->bool;
@@ -10,7 +10,7 @@ interface IForm
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd movePoint(pt: u32, newPosX, newPosY: s32);
-    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;
+    mtd edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;
     mtd setup(capt: nl *Capture);
     mtd isSame(ptr: *BaseForm)->bool;
     mtd copy(dst, src: *BaseForm);
@@ -64,4 +64,30 @@ impl BaseForm
             return size * z
         return Math.map(size * z, minSize, maxSize, dstMin, dstMax)
     }
+
+    func drawHitTest(itf: IForm, pt: Math.Point, z: f32)->bool
+    {
+        var painter: Painter{fake: true}
+        painter.begin()
+        itf.paint(null, &painter, z, false)
+        painter.end()
+
+        var pos = Math.Vector2{pt.x, pt.y}
+        foreach cmd in painter.commandBuffer
+        {
+            if cmd.id != .DrawTriangles:
+                continue
+            for var i = 0; i < cmd.drawTriangles.count; i += 3
+            {
+                let tri = cmd.drawTriangles.start + i
+                let xx0 = painter.vertexBuffer[tri].pos
+                let xx1 = painter.vertexBuffer[tri + 1].pos
+                let xx2 = painter.vertexBuffer[tri + 2].pos
+                if pos.isInTriangle(xx0, xx1, xx2):
+                    return true
+            }
+        }
+
+        return false
+    }    
 }

@@ -77,12 +77,12 @@ impl IForm for FormImage
             dstf.image = srcf.image
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        let xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        let ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        let xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
-        let yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        let xa = cast(s32) (movingStart.x / zoom)
+        let ya = cast(s32) (movingStart.y / zoom)
+        let xb = cast(s32) (localPos.x / zoom)
+        let yb = cast(s32) (localPos.y / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left
         {
@@ -210,8 +210,7 @@ impl IForm for FormImage
     {
         if flags & (.Hot | .Selected)
         {
-            gizmo.rect = paintPos
-
+            gizmo.rect = boundRect() * z
             if mustEditInside()
             {
                 gizmo.rect.offset(freePos.x * z, freePos.y * z)
@@ -232,15 +231,14 @@ impl IForm for FormImage
 
     mtd impl isInside(pt: Math.Point)->bool
     {
-        var br = boundRect()
-        return br.contains(pt)
+        return boundRect().contains(pt)
     }
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
         if mustEditInside()
         {
-            var pp = Math.Rectangle{paintPos.x, paintPos.y, paintPos.width, paintPos.height}
+            var pp = boundRect() * z
             pp.offset(freePos.x * z, freePos.y * z)
             pp.width  = freePos.width * z
             pp.height = freePos.height * z
@@ -291,7 +289,7 @@ impl IForm for FormImage
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        var pp    = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pp    = boundRect() * z
         var pen   = Pen.createSolid(borderColor, bSize)
 
         if !quickMode

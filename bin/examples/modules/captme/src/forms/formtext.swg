@@ -80,12 +80,12 @@ impl IForm for FormText
         dstf.scale       = srcf.scale
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        let xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        let ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        let xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
-        let yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        let xa = cast(s32) (movingStart.x / zoom)
+        let ya = cast(s32) (movingStart.y / zoom)
+        let xb = cast(s32) (localPos.x / zoom)
+        let yb = cast(s32) (localPos.y / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left:
             return false
@@ -147,7 +147,7 @@ impl IForm for FormText
     {
         if flags & (.Hot | .Selected)
         {
-            gizmo.rect = paintPos
+            gizmo.rect = boundRect() * z
             gizmo.paint(painter, flags & .Selected ? false : true)
         }
     }
@@ -159,7 +159,8 @@ impl IForm for FormText
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        return true
+        let pp = boundRect() * z
+        return pp.contains(pt)
     }
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
@@ -168,7 +169,8 @@ impl IForm for FormText
         let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 20, 48)
         let sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
 
-        var pp = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        let boundRect = boundRect() * z
+        var pp = boundRect
         pp.inflate(-bSize * 0.5)
 
         if text.isEmpty()
@@ -325,12 +327,16 @@ impl IForm for FormText
             }
 
             var pl: LinePathList
+            let tt = painter.curState.transform
 
             // Border
             if !Math.isZeroEpsilon(bSize) and borderColor.a
             {
                 painter.pushTransform()
+                painter.curState.transform.tx = 0
+                painter.curState.transform.ty = 0
                 painter.scaleTransform(zscale, zscale)
+                painter.translateTransform(tt.tx, tt.ty)
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
@@ -347,7 +353,10 @@ impl IForm for FormText
             if backColor.a
             {
                 painter.pushTransform()
+                painter.curState.transform.tx = 0
+                painter.curState.transform.ty = 0
                 painter.scaleTransform(zscale, zscale)
+                painter.translateTransform(tt.tx, tt.ty)
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {

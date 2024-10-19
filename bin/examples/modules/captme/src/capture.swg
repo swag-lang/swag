@@ -336,9 +336,10 @@ impl Capture
         let render = &app.renderer
 
         var boundRect = f.boundRect()
-        if boundRect.width <= 0 or boundRect.height <= 0:
-            return
+        boundRect.width = Math.max(boundRect.width, 1)
+        boundRect.height = Math.max(boundRect.height, 1)
 
+        boundRect.inflate(200)
         with let base = cast(*BaseForm) @dataof(f)
         {
             var savePaintPos = .paintPos
@@ -367,7 +368,10 @@ impl Capture
             .clear(Argb.Zero)
             .setColorMaskColor()
             .setBlendingMode(.Alpha)
+            painter.pushTransform()
+            painter.translateTransform(-boundRect.x * zoom, -boundRect.y * zoom)
             f.paint(app, painter, zoom, quickMode)
+            painter.popTransform()
             .unbindRenderTarget()
         }
 
@@ -559,8 +563,10 @@ impl Capture
 
         // Shapes
         let app = editView.getApp()
-        foreach f in forms:
+        foreach f in forms
+        {
             paintForm(app, painter, rect, f, zoom)
+        }
 
         // Gizmos
         foreach f, i in forms
@@ -570,7 +576,11 @@ impl Capture
                 flags |= .Hot
             if selection.contains(i):
                 flags |= .Selected
+
+            painter.pushTransform()
+            painter.translateTransform(rect.x, rect.y)
             f.paintGizmo(painter, zoom, flags)
+            painter.popTransform()
         }
 
         // Selection rectangle
@@ -871,6 +881,8 @@ impl Capture
 
         var localPos = view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
+        localPos.x -= paintRect.x
+        localPos.y -= paintRect.y
 
         if mouseMode == .None
         {
@@ -1143,7 +1155,7 @@ impl Capture
             }
 
             let f = forms.back()
-            if !f.edit(evt, paintRect, movingStart, localPos, view.zoom)
+            if !f.edit(evt, movingStart, localPos, view.zoom)
             {
                 view.releaseMouse()
                 view.invalidate()
@@ -1173,9 +1185,6 @@ impl Capture
         for #back i in forms
         {
             let f = forms[i]
-            let b = cast(*BaseForm) @dataof(f)
-            if !b.paintPos.contains(localPos):
-                continue
             if !f.hitTest(localPos, editView.zoom):
                 continue
             result.add(i)

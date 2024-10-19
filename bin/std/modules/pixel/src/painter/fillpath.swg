@@ -217,6 +217,9 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, color: Color)
     {
+        if color.a == 0:
+            return
+
         sharedSolidBrush.type  = .SolidColor
         sharedSolidBrush.color = color
         fillPolygon(path, sharedSolidBrush)
@@ -226,6 +229,9 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, brush: Brush)
     {
+        if brush.color.a == 0:
+            return
+
         path.flatten(curState.paintQuality)
         if path.polygon.isConvex
         {

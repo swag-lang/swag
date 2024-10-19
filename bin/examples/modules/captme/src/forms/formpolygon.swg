@@ -5,9 +5,8 @@ struct FormPolygon
 
     #[Serialization.NoSerialize]
     {
-        gizmo:           GizmoPoints
-        paintPoints:     Array'Math.Vector2
-        linePath:        LinePath
+        gizmo:      GizmoPoints
+        linePath:   LinePath
     }
 }
 
@@ -47,7 +46,7 @@ impl IForm for FormPolygon
         dstf.smooth      = srcf.smooth
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
@@ -56,13 +55,13 @@ impl IForm for FormPolygon
             return false
         }
 
-        let x0 = cast(s32) ((localPos.x - paintRect.x) / zoom)
-        let y0 = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        let x0 = cast(s32) (localPos.x / zoom)
+        let y0 = cast(s32) (localPos.y / zoom)
 
         if points.count < 2
         {
-            let xs = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-            let ys = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+            let xs = cast(s32) (movingStart.x / zoom)
+            let ys = cast(s32) (movingStart.y / zoom)
             points.add({xs, ys})
             points.add({x0, y0})
         }
@@ -155,19 +154,6 @@ impl IForm for FormPolygon
         return result
     }
 
-    mtd computePaintCoords(z: f32)
-    {
-        var rect = boundRect()
-
-        paintPoints.clear()
-        foreach pt in points
-        {
-            let x0 = (pt.x * z) - (rect.x * z) + paintPos.x
-            let x1 = (pt.y * z) - (rect.y * z) + paintPos.y
-            paintPoints.add({x0, x1})
-        }
-    }
-
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
@@ -177,10 +163,9 @@ impl IForm for FormPolygon
     {
         if flags & (.Hot | .Selected)
         {
-            computePaintCoords(z)
             gizmo.anchors.clear()
-            foreach pt in paintPoints:
-                gizmo.anchors.add({pt.x, pt.y})
+            foreach pt in points:
+                gizmo.anchors.add({pt.x * z, pt.y * z})
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
         }
@@ -193,34 +178,12 @@ impl IForm for FormPolygon
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        let bSize = borderSize * z * 0.5
-        computePaintCoords(z)
-
-        // Just the outline
-        if backColor.a == 0
-        {
-            var v = Math.Vector2{pt.x, pt.y}
-            for i in paintPoints
-            {
-                let ni = (i + 1) % paintPoints.count
-                let p0 = Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-                let p1 = Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-                if v.distanceToSegment(p0, p1) <= bSize:
-                    return true
-            }
-
-            return false
-        }
-
-        // Content
-        return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
+        return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        computePaintCoords(z)
-
+        var bSize     = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = backColor
         if quickMode and alpha != 100 and subKind == .Highlight:
@@ -236,13 +199,13 @@ impl IForm for FormPolygon
 
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
-        linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        for i in 1 until paintPoints.count
+        linePath.start(points[0].x * z, points[0].y * z)
+        for i in 1 until points.count
         {
             if smooth:
-                linePath.curveTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+                linePath.curveTo(points[i].x * z, points[i].y * z)
             else:
-                linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+                linePath.lineTo(points[i].x * z, points[i].y * z)
         }
 
         linePath.close()

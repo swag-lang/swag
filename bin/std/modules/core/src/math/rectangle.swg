@@ -21,6 +21,14 @@ impl Rectangle
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
+    mtd(op: string) const opBinary(value: f32)->Rectangle
+    {
+        #if op == "*":
+            return {x*value, y*value, width*value, height*value}
+        #else:
+            #error "unsupported binary operation [[" ++ op ++ "]]"
+    }    
+
     // Initialize the rectangle with two position
     mtd set(topLeft, bottomRight: Math.Point)
     {

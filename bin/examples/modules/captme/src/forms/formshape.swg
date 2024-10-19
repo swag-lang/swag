@@ -30,6 +30,7 @@ impl IForm for FormShape
                backColor == other.backColor and
                alpha == other.alpha and
                kind == other.kind and
+               subKind == other.subKind and
                dashStyle == other.dashStyle and
                roundSize == other.roundSize and
                paintShadow == other.paintShadow
@@ -45,16 +46,17 @@ impl IForm for FormShape
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind
+        dstf.subKind     = srcf.subKind
         dstf.dashStyle   = srcf.dashStyle
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        let xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        let ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        var xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
-        var yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        let xa = cast(s32) (movingStart.x / zoom)
+        let ya = cast(s32) (movingStart.y / zoom)
+        var xb = cast(s32) (localPos.x / zoom)
+        var yb = cast(s32) (localPos.y / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
 
         var xbu = 0
@@ -121,7 +123,9 @@ impl IForm for FormShape
         y += newPosY
     }
 
-    mtd impl movePoint(pt: u32, newPosX, newPosY: s32) {}
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32) 
+    {        
+    }
 
     mtd impl boundRect()->Math.Rectangle
     {
@@ -137,7 +141,7 @@ impl IForm for FormShape
     {
         if flags & (.Hot | .Selected)
         {
-            gizmo.rect = paintPos
+            gizmo.rect = boundRect() * z
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(painter, flags & .Selected ? false : true, col)
         }
@@ -159,27 +163,10 @@ impl IForm for FormShape
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        switch kind
-        {
-        case Ellipse:
-            var pos = Math.Vector2{pt.x, pt.y}
-            var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
-            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5):
-                return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2 * borderSize), (paintPos.height * 0.5) - (2 * borderSize)):
-                return false
-
-        case Rectangle, RoundRectangle:
-            var rect = paintPos
-            rect.inflate(-2 * borderSize)
-            if backColor.a == 0 and rect.contains(pt):
-                return false
-        }
-
-        return true
+        return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
@@ -192,7 +179,7 @@ impl IForm for FormShape
             painter.setAntialiased(false)
         }
 
-        var pp  = Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        var pp  = boundRect() * z
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.borderPos = .Inside
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)

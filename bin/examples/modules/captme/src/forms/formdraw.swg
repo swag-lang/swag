@@ -2,11 +2,6 @@ struct FormDraw
 {
     using base:     BaseForm
     points:         Array'Math.Vector2
-
-    #[Serialization.NoSerialize]
-    {
-        paintPoints: Array'Math.Vector2
-    }
 }
 
 impl FormDraw
@@ -42,18 +37,18 @@ impl IForm for FormDraw
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         if evt.kind == .MouseReleased and evt.button == .Left:
             return false
 
-        let x0 = (localPos.x - paintRect.x) / zoom
-        let y0 = (localPos.y - paintRect.y) / zoom
+        let x0 = localPos.x / zoom
+        let y0 = localPos.y / zoom
 
         if points.count < 2
         {
-            let xs = (movingStart.x - paintRect.x) / zoom
-            let ys = (movingStart.y - paintRect.y) / zoom
+            let xs = movingStart.x / zoom
+            let ys = movingStart.y / zoom
             points.add({xs, ys})
             points.add({x0, y0})
         }
@@ -142,19 +137,6 @@ impl IForm for FormDraw
         return result
     }
 
-    mtd computePaintCoords(z: f32)
-    {
-        var rect = boundRect()
-
-        paintPoints.clear()
-        foreach pt in points
-        {
-            let x0 = (pt.x * z) - (rect.x * z) + paintPos.x
-            let x1 = (pt.y * z) - (rect.y * z) + paintPos.y
-            paintPoints.add({x0, x1})
-        }
-    }
-
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return false
@@ -169,10 +151,10 @@ impl IForm for FormDraw
             let col          = subKind == .PixSel ? Argb.Yellow : Argb.White
             let color        = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
-            let start = paintPoints[0]
+            let start = points[0] * z
             painter.fillCircle(start.x, start.y, anchorSize2, color)
             painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, 1)
-            let end = paintPoints.back()
+            let end = points.back() * z
             painter.fillCircle(end.x, end.y, anchorSize2, color)
             painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, 1)
         }
@@ -185,34 +167,18 @@ impl IForm for FormDraw
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        var bSize = borderSize * z * 0.5
-        bSize = Math.max(bSize, 2)
-
-        computePaintCoords(z)
-
-        if subKind == .PixSel:
-            return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
-
-        var v = Math.Vector2{pt.x, pt.y}
-        for i in 0 until paintPoints.count - 1
-        {
-            if v.distanceToSegment(paintPoints[i], paintPoints[i + 1]) <= bSize:
-                return true
-        }
-
-        return false
+        return BaseForm.drawHitTest(self, pt, z)
     }
 
     mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         bSize = Math.max(bSize, 2)
-        computePaintCoords(z)
 
         var pl: LinePath
-        pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        for i in 1 until paintPoints.count:
-            pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
+        pl.start(points[0].x * z, points[0].y * z)
+        for i in 1 until points.count:
+            pl.lineTo(points[i].x * z, points[i].y * z)
 
         if subKind == .PixSel
         {

@@ -10,8 +10,7 @@ struct FormLine
 
     #[Serialization.NoSerialize]
     {
-        gizmo:              GizmoPoints
-        x0, y0, x1, y1:     f32
+        gizmo: GizmoPoints
     }
 }
 
@@ -48,12 +47,12 @@ impl IForm for FormLine
         dstf.paintShadow = srcf.paintShadow
     }
 
-    mtd impl edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
-        ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
-        yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        xa = cast(s32) (movingStart.x / zoom)
+        ya = cast(s32) (movingStart.y / zoom)
+        xb = cast(s32) (localPos.x / zoom)
+        yb = cast(s32) (localPos.y / zoom)
 
         var xbu = 0
         var ybu = 0
@@ -102,65 +101,11 @@ impl IForm for FormLine
 
     mtd impl boundRect()->Math.Rectangle
     {
-        var result: retval
-
-        var va = Math.Vector2{xa, ya}
-        var vb = Math.Vector2{xb, yb}
-
-        func bound(va, vb, da, db: Math.Vector2)->Math.Vector4
-        {
-            var va1 = va + da
-            var va2 = va - da
-            var vb1 = vb + db
-            var vb2 = vb - db
-
-            var result: retval
-            result.x = Math.min(va1.x, va2.x, vb1.x, vb2.x)
-            result.y = Math.min(va1.y, va2.y, vb1.y, vb2.y)
-            result.z = Math.max(va1.x, va2.x, vb1.x, vb2.x)
-            result.w = Math.max(va1.y, va2.y, vb1.y, vb2.y)
-            return result
-        }
-
-        let (w0, l0r) = Painter.capStyleExtent(beginCap, borderSize, startSize)
-        let (w1, l1r) = Painter.capStyleExtent(endCap, borderSize, endSize)
-
-        var d = vb - va
-        d.normalizeSafe()
-        var d1 = d.cross(1)
-        d1.normalizeSafe()
-
-        var l0 = l0r
-        var l1 = l1r
-        if beginCap == .ArrowAnchor:
-            l0 = 2 * 2 * borderSize
-        if endCap == .ArrowAnchor:
-            l1 = 2 * 2 * borderSize
-
-        var v1 = bound(va, vb, d * l0 + d1 * w0, d * l1 + d1 * w1)
-        var v2 = bound(va, vb, d * l0 - d1 * w0, d * l1 - d1 * w1)
-
-        v1.x = Math.min(v1.x, v2.x)
-        v1.y = Math.min(v1.y, v2.y)
-        v1.z = Math.max(v1.z, v2.z)
-        v1.w = Math.max(v1.w, v2.w)
-
-        /////
-        result.x      = v1.x
-        result.y      = v1.y
-        result.width  = v1.z - v1.x
-        result.height = v1.w - v1.y
-
-        return result
-    }
-
-    mtd computePaintCoords(z: f32)
-    {
-        var rect = boundRect()
-        x0 = (xa * z) - (rect.x * z) + paintPos.x
-        y0 = (ya * z) - (rect.y * z) + paintPos.y
-        x1 = (xb * z) - (rect.x * z) + paintPos.x
-        y1 = (yb * z) - (rect.y * z) + paintPos.y
+        let x0 = Math.min(xa, xb)
+        let y0 = Math.min(ya, yb)
+        let x1 = Math.max(xa, xb)
+        let y1 = Math.max(ya, yb)
+        return Math.Rectangle{x0, y0, x1 - x0, y1 - y0}
     }
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
@@ -172,9 +117,8 @@ impl IForm for FormLine
     {
         if flags & (.Hot | .Selected)
         {
-            computePaintCoords(z)
-            gizmo.anchors[0] = {x0, y0}
-            gizmo.anchors[1] = {x1, y1}
+            gizmo.anchors[0] = {xa * z, ya * z}
+            gizmo.anchors[1] = {xb * z, yb * z}
             gizmo.paint(null, painter, flags & .Selected ? false : true)
         }
     }
@@ -186,34 +130,11 @@ impl IForm for FormLine
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        var painter: Painter{fake: true}
-        painter.begin()
-        paint(null, &painter, z, false)
-        painter.end()
-
-        var pos = Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
-        foreach cmd in painter.commandBuffer
-        {
-            if cmd.id != .DrawTriangles:
-                continue
-            for var i = 0; i < cmd.drawTriangles.count; i += 3
-            {
-                let tri = cmd.drawTriangles.start + i
-                let xx0 = painter.vertexBuffer[tri].pos
-                let xx1 = painter.vertexBuffer[tri + 1].pos
-                let xx2 = painter.vertexBuffer[tri + 2].pos
-                if pos.isInTriangle(xx0, xx1, xx2):
-                    return true
-            }
-        }
-
-        return false
+        return BaseForm.drawHitTest(self, pt, z)
     }
 
     mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        computePaintCoords(z)
-
         let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode, 8, 12)
         let sSize = quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : startSize
         let eSize = quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : endSize
@@ -231,12 +152,7 @@ impl IForm for FormLine
             .dashEndCapStyle   = dashCap
         }
 
-        let xx0 = x0 - paintPos.x
-        let xx1 = x1 - paintPos.x
-        let yy0 = y0 - paintPos.y
-        let yy1 = y1 - paintPos.y
-
-        painter.drawLine(xx0, yy0, xx1, yy1, pen)
+        painter.drawLine(xa * z, ya * z, xb * z, yb * z, pen)
     }
 
     mtd impl setup(capt: nl *Capture)
