@@ -30,4 +30,14 @@ impl Painter
         sharedLinePath.lineTo(endX, endY)
         drawPath(&sharedLinePath, pen)
     }
+
+    #[Swag.Overload]
+    mtd drawBezier(startX, startY, endX, endY: f32, ptX, ptY: f32, pen: Pen)
+    {
+        if (startX == endX and startY == endY) or pen.brush.color.a == 0 or pen.size == 0:
+            return
+        sharedLinePath.start(startX, startY)
+        sharedLinePath.bezierTo(endX, endY, ptX, ptY)
+        drawPath(&sharedLinePath, pen)
+    }    
 }

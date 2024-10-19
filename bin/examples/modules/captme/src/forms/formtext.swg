@@ -285,7 +285,7 @@ impl IForm for FormText
             }
         }
 
-        let zscale  = z * Math.map(scale, 0, 100, 1'f32, 2'f32)
+        let zscale  = z * (quickMode ? 1 : Math.map(scale, 0, 100, 1'f32, 2'f32))
         var y0      = 0'f32
         let addSize = (bSize + sSize) * zscale
 

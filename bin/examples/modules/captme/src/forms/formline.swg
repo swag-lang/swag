@@ -231,13 +231,18 @@ impl IForm for FormLine
             .dashEndCapStyle   = dashCap
         }
 
-        painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
+        let xx0 = x0 - paintPos.x
+        let xx1 = x1 - paintPos.x
+        let yy0 = y0 - paintPos.y
+        let yy1 = y1 - paintPos.y
+
+        painter.drawLine(xx0, yy0, xx1, yy1, pen)
     }
 
     mtd impl setup(capt: nl *Capture)
     {
         capture = capt
-        gizmo.anchors.resize(2)
+        gizmo.anchors.resize(3)
 
         gizmo.sigChanged = func|self|(diff, pt, first)
         {
