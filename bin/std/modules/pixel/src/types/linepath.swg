@@ -345,16 +345,12 @@ public impl LinePath
             {
             case Line:
                 flattenLine(pos)
-
             case Bezier1:
                 flattenBezier(pos, elem.p1, quality)
-
             case Bezier2:
                 flattenBezier(pos, elem.p1, elem.p2, quality)
-
             case Curve:
                 flattenCurve(pos, i, quality)
-
             case Arc:
                 flattenArc(pos, elem.p1, elem.p2, quality)
             }
