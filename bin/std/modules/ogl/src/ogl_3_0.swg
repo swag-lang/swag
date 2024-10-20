@@ -1,6 +1,6 @@
 #global public
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glBeginConditionalRender(id: GLuint, mode: GLenum);
     func glBeginTransformFeedback(primitiveMode: GLenum);

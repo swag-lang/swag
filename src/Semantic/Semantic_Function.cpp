@@ -911,7 +911,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // We should never reference an empty function
     // So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
     // real function at some point.
-    if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
+    if (funcNode->hasAttribute(ATTRIBUTE_PLACEHOLDER))
     {
         const auto symbolName = funcNode->resolvedSymbolName();
         ScopedLock lk(symbolName->mutex);

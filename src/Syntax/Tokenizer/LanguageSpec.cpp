@@ -54,6 +54,7 @@ void LanguageSpec::setupNames()
     name_ExportType    = "ExportType";
     name_Sanity        = "Sanity";
     name_Using         = "Using";
+    name_PlaceHolder   = "PlaceHolder";
 
     name_Swag_AttrUsage     = "Swag.AttrUsage";
     name_Swag_AttrMulti     = "Swag.AttrMulti";
@@ -589,6 +590,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Opaque", ATTRIBUTE_OPAQUE);
     attributesFlags.add("NotGeneric", ATTRIBUTE_NOT_GENERIC);
     attributesFlags.add("NoDoc", ATTRIBUTE_NO_DOC);
+    attributesFlags.add("PlaceHolder", ATTRIBUTE_PLACEHOLDER);
 }
 
 void LanguageSpec::setup()

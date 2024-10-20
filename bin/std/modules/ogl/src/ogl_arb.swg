@@ -99,7 +99,7 @@ const GL_MAX_FRAMEBUFFER_HEIGHT                     = 0x9316
 const GL_MAX_FRAMEBUFFER_LAYERS                     = 0x9317
 const GL_MAX_FRAMEBUFFER_SAMPLES                    = 0x9318
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glFramebufferParameteri(target: GLenum, pname: GLenum, param: GLint);
     func glGetFramebufferParameteriv(target: GLenum, pname: GLenum, params: *GLint);
@@ -183,7 +183,7 @@ const GL_RENDERBUFFER_STENCIL_SIZE                    = 0x8D55
 const GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE           = 0x8D56
 const GL_MAX_SAMPLES                                  = 0x8D57
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glBindFramebuffer(target: GLenum, framebuffer: GLuint);
     func glBindRenderbuffer(target: GLenum, renderbuffer: GLuint);
@@ -215,7 +215,7 @@ const GL_SHADER_INCLUDE_ARB      = 0x8DAE
 const GL_NAMED_STRING_LENGTH_ARB = 0x8DE9
 const GL_NAMED_STRING_TYPE_ARB   = 0x8DEA
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glCompileShaderIncludeARB(shader: GLuint, count: GLsizei, path: const **GLchar, length: const *GLint);
     func glDeleteNamedStringARB(namelen: GLint, name: const *GLchar);

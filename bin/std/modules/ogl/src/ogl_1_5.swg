@@ -4,7 +4,7 @@ using Swag
 alias GLintptr   = s64
 alias GLsizeiptr = u64
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glBeginQuery(target: GLenum, id: GLuint);
     func glBindBuffer(target: GLenum, buffer: GLuint);

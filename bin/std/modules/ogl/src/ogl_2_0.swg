@@ -1,6 +1,6 @@
 #global public
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glAttachShader(program: GLuint, shader: GLuint);
     func glBindAttribLocation(program: GLuint, index: GLuint, name: const *GLchar);

@@ -1,6 +1,6 @@
 #global public
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glUniformMatrix2x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
     func glUniformMatrix2x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);

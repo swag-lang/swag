@@ -1,7 +1,7 @@
 #global public
 using Swag
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glActiveTexture(texture: GLenum);
     func glClientActiveTexture(texture: GLenum);

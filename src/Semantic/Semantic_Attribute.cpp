@@ -81,10 +81,12 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     const bool  isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
     const bool  isFuncParam = kind == AstNodeKind::FuncDeclParam;
     const char* specificMsg = nullptr;
+    auto        nakedName   = Naming::kindName(checkNode);
 
     // Check specific hard coded attributes
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
-    if (oneAttribute->typeInfo->declNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP))
+    const bool isBootstrap = oneAttribute->typeInfo->declNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP);
+    if (isBootstrap)
     {
         if (oneAttribute->token.is(g_LangSpec->name_Complete))
         {
@@ -124,6 +126,16 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
                 return true;
             specificMsg = "a type [[alias]]";
         }
+        else if (oneAttribute->token.is(g_LangSpec->name_PlaceHolder))
+        {
+            if (kind == AstNodeKind::FuncDecl && checkNode->isEmptyFct() && !checkNode->isForeign())
+                return true;
+            if(!checkNode->isEmptyFct())
+                nakedName = "defined function";
+            else if(checkNode->isForeign())
+                nakedName = "foreign function";
+            specificMsg = "an empty function";
+        }
     }
 
     if (!specificMsg)
@@ -146,31 +158,29 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
             return true;
         if (typeInfo->attributeUsage.has(ATTR_USAGE_FUNC_PARAM) && isFuncParam)
             return true;
+
+        const auto mask = typeInfo->attributeUsage.mask(ATTR_USAGE_MASK_TYPE);
+        if (mask == ATTR_USAGE_ENUM)
+            specificMsg = "an enum";
+        else if (mask == ATTR_USAGE_ENUM_VALUE)
+            specificMsg = "an enum value";
+        else if (mask == ATTR_USAGE_STRUCT_VAR)
+            specificMsg = "a struct variable";
+        else if (mask == ATTR_USAGE_GLOBAL_VAR)
+            specificMsg = "a global variable";
+        else if (mask == ATTR_USAGE_VAR)
+            specificMsg = "a variable";
+        else if (mask == ATTR_USAGE_STRUCT)
+            specificMsg = "a struct";
+        else if (mask == ATTR_USAGE_FUNC)
+            specificMsg = "a function";
+        else if (mask == ATTR_USAGE_FUNC_PARAM)
+            specificMsg = "a function parameter";
+        else if (mask == ATTR_USAGE_FILE)
+            specificMsg = "a file";
+        else if (mask == ATTR_USAGE_CONSTANT)
+            specificMsg = "a constant";
     }
-
-    const auto mask = typeInfo->attributeUsage.mask(ATTR_USAGE_MASK_TYPE);
-    if (mask == ATTR_USAGE_ENUM)
-        specificMsg = "an enum";
-    else if (mask == ATTR_USAGE_ENUM_VALUE)
-        specificMsg = "an enum value";
-    else if (mask == ATTR_USAGE_STRUCT_VAR)
-        specificMsg = "a struct variable";
-    else if (mask == ATTR_USAGE_GLOBAL_VAR)
-        specificMsg = "a global variable";
-    else if (mask == ATTR_USAGE_VAR)
-        specificMsg = "a variable";
-    else if (mask == ATTR_USAGE_STRUCT)
-        specificMsg = "a struct";
-    else if (mask == ATTR_USAGE_FUNC)
-        specificMsg = "a function";
-    else if (mask == ATTR_USAGE_FUNC_PARAM)
-        specificMsg = "a function parameter";
-    else if (mask == ATTR_USAGE_FILE)
-        specificMsg = "a file";
-    else if (mask == ATTR_USAGE_CONSTANT)
-        specificMsg = "a constant";
-
-    auto nakedName = Naming::kindName(checkNode);
 
     if (specificMsg)
     {
@@ -179,7 +189,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         Diagnostic err{oneAttribute, formErr(Err0376, oneAttribute->token.cstr())};
         err.addNote(formNte(Nte0084, specificMsg));
         err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0024, nakedName.cstr()));
-        err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+        if (!isBootstrap)
+            err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);
     }
 
@@ -188,7 +199,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     else
         nakedName = Naming::aKindName(checkNode);
     Diagnostic err{oneAttribute, formErr(Err0378, oneAttribute->token.cstr(), nakedName.cstr())};
-    err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+    if (!isBootstrap)
+        err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
 }
 
@@ -344,10 +356,10 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                 if (EXCLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
                     return context->report({child, toErr(Err0045)});
-                
+
                 if (EXCLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
                     return context->report({child, toErr(Err0046)});
-                
+
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
                     return context->report({child, toErr(Err0047)});
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
@@ -358,7 +370,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
                     return context->report({child, toErr(Err0050)});
                 if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_NO_INLINE))
-                    return context->report({child, toErr(Err0051)});                 
+                    return context->report({child, toErr(Err0051)});
             }
 
             //////

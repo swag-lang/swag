@@ -3,7 +3,7 @@ using Core, Swag, Core.StrConv
 #[AttrUsage(AttributeUsage.Function)]
 attr Extension()
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func extension1();
     func extension2();

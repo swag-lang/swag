@@ -45,7 +45,7 @@ const GL_DEBUG_OUTPUT                     = 0x92E0
 //alias GLDEBUGPROC = func(source: GLenum, type: GLenum, id: GLuint, severity: GLenum, length: GLsizei, message: const *GLchar, userParam: const *void)
 alias GLDEBUGPROC = func(GLenum, GLenum, GLuint, GLenum, GLsizei, const *GLchar, const *void)
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glDebugMessageCallback(callback: GLDEBUGPROC, userParam: const *void);
     func glDebugMessageControl(source: GLenum, type: GLenum, severity: GLenum, count: GLsizei, ids: const *GLuint, enabled: GLboolean);

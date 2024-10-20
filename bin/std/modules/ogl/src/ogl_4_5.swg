@@ -1,6 +1,6 @@
 #global public
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glGetGraphicsResetStatus()->GLenum;
     func glGetnCompressedTexImage(target: GLenum, lod: GLint, bufSize: GLsizei, pixels: *GLvoid);

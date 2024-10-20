@@ -1,6 +1,6 @@
 #global public
 
-#[Extension]
+#[Extension, Swag.PlaceHolder]
 {
     func glVertexAttribDivisor(index: GLuint, divisor: GLuint);
 }

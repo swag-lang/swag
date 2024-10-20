@@ -51,6 +51,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr NoInline()
 
+    // An empty function will be generated
+    #[AttrUsage(AttributeUsage.Function)]
+    attr PlaceHolder()    
+
     // Disable '@print'
     #[AttrUsage(AttributeUsage.Function)]
     attr NoPrint()    
