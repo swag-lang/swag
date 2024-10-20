@@ -19,5 +19,5 @@ var G: s32
 
 #message(Swag.CompilerMsgMask.PassAfterSemantic)
 {
-    //@assert(G == 2)
+    @assert(G == 2)
 }

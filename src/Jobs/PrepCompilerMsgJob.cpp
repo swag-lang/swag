@@ -14,6 +14,7 @@ JobResult PrepCompilerMsgJob::execute()
     context.baseJob    = this;
     baseContext        = &context;
 
+    bool mustWait = false;
     for (uint32_t i = startIndex; i < endIndex; i++)
     {
         auto& msg = module->compilerMessages[pass][i];
@@ -35,11 +36,13 @@ JobResult PrepCompilerMsgJob::execute()
             if (!module->typeGen.genExportedTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
                 return JobResult::ReleaseJob;
             if (context.result != ContextResult::Done)
-                return JobResult::KeepJobAlive;
+                mustWait = true;
 
             msg.concrete.type = reinterpret_cast<ExportedTypeInfo*>(storageSegment->address(storageOffset));
         }
     }
 
+    if (mustWait)
+        return JobResult::KeepJobAlive;
     return JobResult::ReleaseJob;
 }
