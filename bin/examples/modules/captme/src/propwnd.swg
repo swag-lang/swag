@@ -1043,21 +1043,21 @@ impl PropWnd
     mtd propSmooth()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormPolygon:
+        if curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:
             return
 
         let curSel = cast(*BaseForm) getSelectedBaseForm()
-        let ctrl = ComboCtrl.create(mainLayout, "Type")
+        let ctrl = ComboCtrl.create(mainLayout, "Line")
         ctrl.comboSize = 210
         with ctrl.combo
         {
-            .addItem("Lines")
-            .addItem("Curves")
-            .selectItem(curSel.smooth ? 1 : 0)
+            .addItem("Straight")
+            .addItem("Bezier")
+            .selectItem(curSel.bezier ? 1 : 0)
             .sigChanged += func|self|(combo, val)
             {
                 var b = val == 1 ? true : false
-                self.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.smooth), true, true)
+                self.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.bezier), true, true)
             }
         }
     }     

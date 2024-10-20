@@ -311,13 +311,13 @@ impl QuickWnd
 
     mtd defaultQuickStylePolygon()
     {
-        mtd add(borderSize: f32, color: Color, smooth = false)
+        mtd add(borderSize: f32, color: Color, bezier = false)
         {
             let form = Memory.new'FormPolygon()
             form.borderSize  = borderSize
             form.borderColor = color
             form.backColor   = 0
-            form.smooth      = smooth
+            form.bezier      = bezier
             let it = cast(IForm) form
             it.setup(null)
             qsPolygon.forms.add(it)

@@ -50,8 +50,8 @@ struct BaseForm
     backColor:           Color = Argb.Red
     dashStyle:           DashStyle = None
     quickModeOpaque:     bool
-    paintShadow          = true
-    smooth:              bool
+    bezier:              bool
+    paintShadow:         bool = true
     subKind:             FormSubKind = None
     joinStyle            = JoinStyle.Round
     scale:               f32 = 0

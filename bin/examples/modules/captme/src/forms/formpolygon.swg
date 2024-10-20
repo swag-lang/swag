@@ -33,7 +33,7 @@ impl IForm for FormPolygon
                borderSize == other.borderSize and
                backColor == other.backColor and
                alpha == other.alpha and
-               smooth == other.smooth and
+               bezier == other.bezier and
                paintShadow == other.paintShadow
     }
 
@@ -46,7 +46,7 @@ impl IForm for FormPolygon
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.paintShadow = srcf.paintShadow
-        dstf.smooth      = srcf.smooth
+        dstf.bezier      = srcf.bezier
     }
 
     mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -200,7 +200,7 @@ impl IForm for FormPolygon
         linePath.start(points[0].x * z, points[0].y * z)
         for i in 1 until points.count
         {
-            if smooth:
+            if bezier:
                 linePath.curveTo(points[i].x * z, points[i].y * z)
             else:
                 linePath.lineTo(points[i].x * z, points[i].y * z)

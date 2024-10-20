@@ -7,7 +7,8 @@ struct FormLine
     startSize:          f32 = 4
     endSize:            f32 = 4
     xa, ya, xb, yb:     f32
-
+    xc, yc:             f32 = 10
+    
     #[Serialization.NoSerialize]
     {
         gizmo: GizmoPoints
@@ -28,6 +29,7 @@ impl IForm for FormLine
                startSize == other.startSize and
                endSize == other.endSize and
                dashCap == other.dashCap and
+               bezier == other.bezier and
                paintShadow == other.paintShadow
     }
 
@@ -44,6 +46,7 @@ impl IForm for FormLine
         dstf.startSize   = srcf.startSize
         dstf.endSize     = srcf.endSize
         dstf.dashCap     = srcf.dashCap
+        dstf.bezier      = srcf.bezier
         dstf.paintShadow = srcf.paintShadow
     }
 
@@ -87,15 +90,17 @@ impl IForm for FormLine
 
     mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
-        if pt == 0
+        switch pt
         {
+        case 0:
             xa += newPosX
             ya += newPosY
-        }
-        else
-        {
+        case 1:
             xb += newPosX
             yb += newPosY
+        case 2:
+            xc += newPosX
+            yc += newPosY
         }
     }
 
@@ -119,6 +124,8 @@ impl IForm for FormLine
         {
             gizmo.anchors[0] = {xa * z, ya * z}
             gizmo.anchors[1] = {xb * z, yb * z}
+            if gizmo.anchors.count == 3:
+                gizmo.anchors[2] = {(xa + xc) * z, (ya + yc) * z}
             gizmo.paint(null, painter, flags & .Selected ? false : true)
         }
     }
@@ -135,10 +142,30 @@ impl IForm for FormLine
 
     mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let z     = cxt.z
-        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
+        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
+        bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
         let sSize = cxt.quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, cxt, 1, 4) : startSize
         let eSize = cxt.quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, cxt, 1, 4) : endSize
+
+        if bezier
+        {
+            if gizmo.anchors.count == 2
+            {
+                xc = Math.abs(xb - xa) * 0.25
+                yc = Math.abs(ya - yb)
+                gizmo.anchors.resize(3)
+            }
+
+            if cxt.quickMode
+            {    
+                xc = xa
+                yc = Math.abs(ya - yb) * 0.75
+            }
+        }
+        elif gizmo.anchors.count == 3
+        {
+            gizmo.anchors.resize(2)
+        }
 
         with var pen = Pen.createDash(dashStyle, borderColor, bSize)
         {
@@ -153,7 +180,11 @@ impl IForm for FormLine
             .dashEndCapStyle   = dashCap
         }
 
-        painter.drawLine(xa * z, ya * z, xb * z, yb * z, pen)
+        let z = cxt.z
+        if bezier:
+            painter.drawBezier(xa * z, ya * z, xb * z, yb * z, (xa + xc) * z, (ya + yc) * z, pen)
+        else:
+            painter.drawLine(xa * z, ya * z, xb * z, yb * z, pen)
     }
 
     mtd impl setup(capt: nl *Capture)
