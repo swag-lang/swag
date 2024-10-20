@@ -124,35 +124,27 @@ impl IForm for FormPolygon
 
     mtd impl boundRect()->Math.Rectangle
     {
-        if !points.count
-        {
-            points.add({0, 0})
-            points.add({48, 0})
-            points.add({24, 48})
-        }
+        if !points.count:
+            setDefaultShape()
 
         var result: retval
 
-        let bSize = borderSize * 0.5
         var x0    = Swag.F32.Max
         var y0    = Swag.F32.Max
         var x1    = 0'f32
         var y1    = 0'f32
         foreach &pt in points
         {
-            x0 = Math.min(x0, pt.x - bSize)
-            y0 = Math.min(y0, pt.y - bSize)
-            x1 = Math.max(x1, pt.x + bSize)
-            y1 = Math.max(y1, pt.y + bSize)
+            x0 = Math.min(x0, pt.x)
+            y0 = Math.min(y0, pt.y)
+            x1 = Math.max(x1, pt.x)
+            y1 = Math.max(y1, pt.y)
         }
 
         result.x      = x0
         result.y      = y0
         result.width  = x1 - x0
         result.height = y1 - y0
-
-        if joinStyle == .Miter or joinStyle == .MiterBevel:
-            result.inflate(borderSize * 3) // Magic number !
 
         return result
     }
