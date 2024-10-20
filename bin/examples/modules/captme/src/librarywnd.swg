@@ -35,8 +35,9 @@ struct LibraryView
     mutexLoaded:     Sync.Mutex
     loaded:          Array'*Capture
     thread:          Thread
-    hotItem          = Swag.U64.Max
-    selectedItem     = Swag.U64.Max
+    hotItem          = Swag.U32.Max
+    focusItem        = Swag.U32.Max
+    selModel:        SelModel
     filterYear:      u64
     filterMonth:     u64
     filterDay:       u64
@@ -53,12 +54,12 @@ impl IWnd for LibraryView
         pos += scrollWnd.getScrollPos()
 
         // Hit test
-        var ht = Swag.U64.Max
+        var ht = Swag.U32.Max
         foreach it, idx in items
         {
             if it.rect.contains(pos)
             {
-                ht = idx
+                ht = cast(u32) idx
                 break
             }
         }
@@ -69,15 +70,28 @@ impl IWnd for LibraryView
             hotItem = ht
         }
 
-        if evt.kind == .MousePressed and hotItem != Swag.U64.Max and evt.button == .Left
+        let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+        let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+
+        if evt.kind == .MouseReleased and hotItem != Swag.U32.Max and evt.button == .Left
         {
-            selectedItem = hotItem
+            if !ctrlPressed and !shiftPressed:
+                selModel.unselectAll()
+
+            if shiftPressed and focusItem < items.count:
+                selModel.select(hotItem, focusItem, true)
+            elif ctrlPressed and selModel.isSelected(hotItem):
+                selModel.select(hotItem, false)
+            else:
+                selModel.select(hotItem, true)
+
+            focusItem = hotItem
             invalidate()
         }
 
-        if evt.kind == .MouseDoubleClick and selectedItem != Swag.U64.Max and evt.button == .Left
+        if evt.kind == .MouseDoubleClick and focusItem < items.count and evt.button == .Left
         {
-            let item = &items[selectedItem]
+            let item = &items[focusItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true)
             mainWnd.swapLibraryMode()
@@ -123,7 +137,8 @@ impl IWnd for LibraryView
                 it.texture = evt.bc.renderer.addImage(it.capture.preview)
 
             it.rect = Math.Rectangle{x, y, W, H}
-            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, i == selectedItem, null)
+            let selected = selModel.isSelected(cast() i)
+            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, null)
 
             // Waiting for texture
             if !it.texture.isValid()
@@ -210,8 +225,8 @@ impl LibraryView
             items.add(item)
         }
 
-        hotItem      = Swag.U64.Max
-        selectedItem = Swag.U64.Max
+        hotItem = Swag.U32.Max
+        selModel.unselectAll()
 
         // Launch thread to read all captures
         try
