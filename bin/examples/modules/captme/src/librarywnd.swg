@@ -97,6 +97,16 @@ impl IWnd for LibraryView
             mainWnd.swapLibraryMode()
             mainWnd.updateState()
         }
+
+        if evt.kind == .MousePressed and evt.button == .Right and focusItem < items.count
+        {
+            with let menu = MenuCtrl.createPopup(self)
+            {
+                .addItem(CmdIdDeleteCapture)
+            }
+
+            discard menu.doModal(evt.surfacePos, autoDestroy: true)
+        }        
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
@@ -267,10 +277,38 @@ impl LibraryWnd
         }
     }
 
+    mtd const hasSelected()->bool
+    {
+        return !view.selModel.isEmpty()
+    }
+
+    mtd removeSelected()
+    {        
+        foreach it, i in view.items
+        {
+            if view.selModel.isSelected(cast() i)
+            {           
+                g_Library.removeFile(it.fi.fullname)     
+            }
+        }
+    }
+
     mtd fill()
     {
         if listCtrl.getLineCount():
             return
+        g_Library.onDeleteFile += func|self|(file)
+        {    
+            foreach it, i in self.view.items
+            {
+                if it.fi.fullname == file
+                {   
+                    self.view.selModel.select(cast() i, false)        
+                    self.view.items.removeAtOrdered(i)
+                    break
+                }
+            }                    
+        }
 
         let line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
         var item = line.setItem(1, Format.toString("% ", g_Library.files.count))

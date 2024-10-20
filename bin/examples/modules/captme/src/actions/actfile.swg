@@ -75,7 +75,10 @@ impl IActionUI for ActionFile
         case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Delete"
-            evt.disabled = !capture
+            if main.libraryMode:
+                evt.disabled = !main.libWnd.hasSelected()
+            else:
+                evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Remove)
 
         case CmdIdDupCapture:
@@ -165,9 +168,14 @@ impl IActionUI for ActionFile
             }
 
         case CmdIdDeleteCapture:
-            let res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
-            if res == MessageDlg.BtnYes:
-                main.recentWnd.removeRecent()
+            let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
+            if res == MessageDlg.BtnYes
+            {
+                if main.libraryMode:
+                    main.libWnd.removeSelected()
+                else:
+                    main.recentWnd.removeRecent()
+            }
 
         case CmdIdDupCapture:
             Cursor.wait()

@@ -2,7 +2,8 @@ var g_Library: Library
 
 struct Library
 {
-    files: Array'File.FileInfo
+    files:          Array'File.FileInfo
+    onDeleteFile:   SigArray'func||(string)
 }
 
 impl Library
@@ -39,7 +40,13 @@ impl Library
         {
             if fi.fullname == name
             {
-                files.removeAtOrdered(idx)
+                catch File.delete(name)
+                if @err() == null
+                {
+                    files.removeAtOrdered(idx)
+                    onDeleteFile.call(name)
+                }
+
                 break
             }
         }

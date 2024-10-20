@@ -239,6 +239,27 @@ impl RecentWnd
         loadDone = true
 
         g_Library.fill()
+        g_Library.onDeleteFile += func|self|(file)
+        {
+            foreach it, i in self.recentView.items
+            {
+                if it.file == file
+                { 
+                    // Remove from recent
+                    self.recentView.items.deletePtr(it)
+                    self.recentView.items.removeAtOrdered(i)
+
+                    // Select new one
+                    if self.recentView.selected == i
+                    {
+                        self.recentView.selected = Swag.U64.Max
+                        self.recentView.select(i)    
+                    }
+
+                    break                               
+                }
+            }            
+        }
 
         var res = g_Library.files
         res.sort(func(a, b)
@@ -289,28 +310,13 @@ impl RecentWnd
 
         let item = recentView.items[recentView.selected]
 
-        catch File.delete(item.file)
-        if @err() != null
-        {
-            MessageDlg.error(surface, "Failed to delete capture file")
-            return
-        }
-
-        g_Library.removeFile(item.file)
-
         // Be sure there's no pending save
         if timer:
             getApp().deleteTimer(timer)
-        timer = null
+        timer = null    
 
-        // Remove from recent
-        recentView.items.deletePtr(item)
-        recentView.items.removeAtOrdered(recentView.selected)
-
-        // Select new one
-        let sel = recentView.selected
-        recentView.selected = Swag.U64.Max
-        recentView.select(sel)
+        // Delete file
+        g_Library.removeFile(item.file)
     }
 
     #[Swag.Overload]
