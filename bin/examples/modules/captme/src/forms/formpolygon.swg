@@ -15,9 +15,12 @@ impl FormPolygon
     mtd setDefaultShape()
     {
         points.clear()
-        points.add({0, 0})
-        points.add({48, 0})
-        points.add({24, 48})
+        points.add({0, 10})
+        points.add({16, 0})
+        points.add({36, 10})
+        points.add({48, 32})
+        points.add({36, 48})
+        points.add({0, 48})
     }
 }
 
