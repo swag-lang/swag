@@ -958,15 +958,18 @@ bool ByteCodeGen::emitSwitchCaseAfterValue(ByteCodeGenContext* context)
         else if (switchExpr->typeInfo->isInterface())
         {
             SWAG_CHECK(emitSwitchCaseInterface(context, expr, caseNode, r0, sizeofRet));
+            SWAG_ASSERT(context->result == ContextResult::Done);
         }
         else if (switchExpr->typeInfo->isAny())
         {
             SWAG_CHECK(emitSwitchCaseAny(context, expr, caseNode, r0));
+            YIELD();
         }
         else
         {
             r0 = reserveRegisterRC(context);
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
+            SWAG_ASSERT(context->result == ContextResult::Done);
         }
 
         caseNode->allJumps.push_back(context->bc->numInstructions);
