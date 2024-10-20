@@ -209,7 +209,7 @@ struct TypeInfo
     void        forceComputeName();
     void        computeScopedName(Utf8& newName) const;
     Utf8        getName();
-    Utf8        getTypeName(bool forceNoScope);
+    Utf8        getScopedName();
     const Utf8& computeWhateverName(ComputeNameKind nameKind);
     const Utf8& computeWhateverNameNoLock(ComputeNameKind nameKind);
 

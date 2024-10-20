@@ -36,11 +36,9 @@ Utf8 TypeInfo::getName()
     return name;
 }
 
-Utf8 TypeInfo::getTypeName(bool forceNoScope)
+Utf8 TypeInfo::getScopedName()
 {
     SharedLock lk(mutex);
-    if (forceNoScope)
-        return name;
     return scopedName;
 }
 

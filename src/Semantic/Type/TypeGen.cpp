@@ -29,14 +29,10 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
             break;
     }
 
-    if (!genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
-    {
-        typeInfo->computeScopedName();
-        SWAG_ASSERT(!typeInfo->scopedName.empty());
-    }
-
-    auto       typeName            = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
+    typeInfo->computeScopedName();
+    auto       typeName            = typeInfo->getScopedName();
     const auto undecoratedTypeName = typeName;
+    SWAG_ASSERT(!typeName.empty());
 
     if (typeInfo->flags.has(TYPEINFO_NULLABLE))
         typeName += ".nullable";
