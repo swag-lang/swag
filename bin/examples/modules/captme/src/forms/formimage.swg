@@ -286,13 +286,14 @@ impl IForm for FormImage
         }
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        let z     = cxt.z
+        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
         var pp    = boundRect() * z
         var pen   = Pen.createSolid(borderColor, bSize)
 
-        if !quickMode
+        if !cxt.quickMode
         {
             let renderer = app.getRenderer()
             let x1       = cast(s32) (x - capture.backImagePos.x)
@@ -383,7 +384,7 @@ impl IForm for FormImage
             painter.fillRect(pp, borderColor)
         else
         {
-            if quickMode
+            if cxt.quickMode
             {
                 pp.height -= 10
 

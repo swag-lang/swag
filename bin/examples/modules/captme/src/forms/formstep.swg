@@ -149,8 +149,9 @@ impl IForm for FormStep
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
+        let z     = cxt.z
         var fSize = Math.min(w, h) * 0.6
         fSize = Math.max(fSize, 8)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
@@ -168,7 +169,7 @@ impl IForm for FormStep
             pathl.clear()
 
             var t:       String
-            let curIndex = quickMode ? 1 : index
+            let curIndex = cxt.quickMode ? 1 : index
 
             #[Swag.Complete]
             switch typeIndex
@@ -188,7 +189,7 @@ impl IForm for FormStep
         }
 
         var bk = backColor
-        if quickMode and alpha != 100:
+        if cxt.quickMode and alpha != 100:
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         var pp = boundRect() * z
@@ -199,19 +200,19 @@ impl IForm for FormStep
         case Ellipse:
             let sizeX = pp.width * 0.5
             let sizeY = pp.height * 0.5
-            if quickMode and alpha != 100:
+            if cxt.quickMode and alpha != 100:
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
 
         case Rectangle:
-            if quickMode and alpha != 100:
+            if cxt.quickMode and alpha != 100:
                 painter.fillRect(pp, backBrush)
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
             var round = cast(f32) Math.min(w, h)
             round /= 3
-            if quickMode and alpha != 100:
+            if cxt.quickMode and alpha != 100:
                 painter.fillRoundRect(pp, round, round, backBrush)
             painter.fillRoundRect(pp, round, round, backColor)
         }

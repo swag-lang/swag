@@ -163,11 +163,15 @@ impl IForm for FormText
         return pp.contains(pt)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 4)
-        let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 20, 48)
-        let sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
+        var cxtCpy = cxt
+        cxtCpy.z = 1
+
+        let bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, cxtCpy, 2, 4)
+        let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, cxtCpy, 20, 48)
+        let sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, cxtCpy, 1, 2)
+        let z     = cxt.z
 
         let boundRect = boundRect() * z
         var pp = boundRect
@@ -287,7 +291,7 @@ impl IForm for FormText
             }
         }
 
-        let zscale  = z * (quickMode ? 1 : Math.map(scale, 0, 100, 1'f32, 2'f32))
+        let zscale  = z * (cxt.quickMode ? 1 : Math.map(scale, 0, 100, 1'f32, 2'f32))
         var y0      = 0'f32
         let addSize = (bSize + sSize) * zscale
 
@@ -296,8 +300,8 @@ impl IForm for FormText
         var totalYZ = totalY * zscale
         totalYZ += cast(f32) ((count - 1) * (lineSpacing * zscale))
 
-        let aV = quickMode ? FormTextAlign.Center : alignVert
-        let aH = quickMode ? FormTextAlign.Center : alignHorz
+        let aV = cxt.quickMode ? FormTextAlign.Center : alignVert
+        let aH = cxt.quickMode ? FormTextAlign.Center : alignHorz
         switch aV
         {
         case LeftTop:

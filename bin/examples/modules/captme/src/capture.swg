@@ -370,7 +370,10 @@ impl Capture
             .setBlendingMode(.Alpha)
             painter.pushTransform()
             painter.translateTransform(-boundRect.x * zoom, -boundRect.y * zoom)
-            f.paint(app, painter, zoom, quickMode)
+            var cxt: FormPaintContext
+            cxt.z = zoom
+            cxt.quickMode = quickMode
+            f.paint(app, painter, cxt)
             painter.popTransform()
             .unbindRenderTarget()
         }
@@ -594,6 +597,7 @@ impl Capture
                 .height = movingEnd.y - movingStart.y
             }
 
+            r.offset(paintRect.x, paintRect.y)
             painter.fillRect(r, Color.fromArgb(0x1f, Argb.Cyan))
             painter.drawRect(r, Argb.Cyan, 2)
         }
@@ -1079,8 +1083,7 @@ impl Capture
 
             foreach f, idx in forms
             {
-                let b = cast(*BaseForm) @dataof(f)
-                if b.paintPos.intersectWith(r) and !selection.contains(idx):
+                if f.boundRect().intersectWith(r) and !selection.contains(idx):
                     selection.add(idx)
             }
 

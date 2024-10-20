@@ -166,10 +166,11 @@ impl IForm for FormShape
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, z, quickMode)
+        let z     = cxt.z
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
+        let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, cxt)
 
         if subKind == .PixSel
         {
@@ -185,7 +186,7 @@ impl IForm for FormShape
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         var bk = backColor
-        if quickMode and alpha != 100 and subKind == .Highlight:
+        if cxt.quickMode and alpha != 100 and subKind == .Highlight:
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         if subKind == .PixSel
@@ -213,7 +214,7 @@ impl IForm for FormShape
             case Ellipse:
                 let sizeX = pp.width * 0.5
                 let sizeY = pp.height * 0.5
-                if quickMode and alpha != 100 and subKind == .Highlight:
+                if cxt.quickMode and alpha != 100 and subKind == .Highlight:
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
@@ -223,7 +224,7 @@ impl IForm for FormShape
                     painter.fillRect(pp, borderColor)
                 else
                 {
-                    if quickMode and alpha != 100 and subKind == .Highlight:
+                    if cxt.quickMode and alpha != 100 and subKind == .Highlight:
                         painter.fillRect(pp, backBrush)
                     painter.fillRect(pp, bk)
                     painter.drawRect(pp, pen)
@@ -232,7 +233,7 @@ impl IForm for FormShape
             case RoundRectangle:
                 var pp1 = pp
                 pp1.inflate(-bSize * 0.5)
-                if quickMode and alpha != 100 and subKind == .Highlight:
+                if cxt.quickMode and alpha != 100 and subKind == .Highlight:
                     painter.fillRoundRect(pp1, rSize, rSize, backBrush)
                 painter.fillRoundRect(pp1, rSize, rSize, bk)
                 painter.drawRoundRect(pp, rSize, rSize, pen)

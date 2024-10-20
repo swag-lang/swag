@@ -170,9 +170,10 @@ impl IForm for FormDraw
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        let z = cxt.z
+        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
         bSize = Math.max(bSize, 2)
 
         var pl: LinePath
@@ -191,7 +192,7 @@ impl IForm for FormDraw
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.joinStyle = .Round
 
-        if quickMode and alpha != 100 and subKind == .Highlight
+        if cxt.quickMode and alpha != 100 and subKind == .Highlight
         {
             var pen1 = pen
             pen1.brush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)

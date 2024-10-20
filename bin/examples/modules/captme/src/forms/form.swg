@@ -1,7 +1,7 @@
 interface IForm
 {
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags);
-    mtd paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool);
+    mtd paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext);
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool;
     mtd isInside(pt: Math.Point)->bool;
     mtd hitTest(pt: Math.Point, z: f32)->bool;
@@ -14,6 +14,13 @@ interface IForm
     mtd setup(capt: nl *Capture);
     mtd isSame(ptr: *BaseForm)->bool;
     mtd copy(dst, src: *BaseForm);
+}
+
+struct FormPaintContext
+{
+    z:             f32
+    quickMode:     bool
+    hitTest:       bool
 }
 
 #[Swag.EnumFlags]
@@ -58,18 +65,23 @@ struct BaseForm
 
 impl BaseForm
 {
-    func adaptSize(size: f32, minSize, maxSize: f32, z: f32, quickMode: bool, dstMin: f32 = 4, dstMax: f32 = 8)->f32
+    func adaptSize(size: f32, minSize, maxSize: f32, cxt: FormPaintContext, dstMin: f32 = 4, dstMax: f32 = 8)->f32
     {
-        if !quickMode:
-            return size * z
-        return Math.map(size * z, minSize, maxSize, dstMin, dstMax)
+        if !cxt.quickMode:
+            return size * cxt.z
+        return Math.map(size * cxt.z, minSize, maxSize, dstMin, dstMax)
     }
 
     func drawHitTest(itf: IForm, pt: Math.Point, z: f32)->bool
     {
         var painter: Painter{fake: true}
         painter.begin()
-        itf.paint(null, &painter, z, false)
+
+        var cxt: FormPaintContext
+        cxt.z       = z
+        cxt.hitTest = true
+        itf.paint(null, &painter, cxt)
+
         painter.end()
 
         var pos = Math.Vector2{pt.x, pt.y}
@@ -89,5 +101,5 @@ impl BaseForm
         }
 
         return false
-    }    
+    }
 }

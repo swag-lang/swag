@@ -184,12 +184,13 @@ impl IForm for FormPolygon
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        var bSize     = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        let z         = cxt.z
+        var bSize     = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = backColor
-        if quickMode and alpha != 100 and subKind == .Highlight:
+        if cxt.quickMode and alpha != 100 and subKind == .Highlight:
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         if subKind == .PixSel
@@ -213,7 +214,7 @@ impl IForm for FormPolygon
 
         linePath.close()
 
-        if quickMode
+        if cxt.quickMode
         {
             if alpha != 100 and subKind == .Highlight:
                 painter.fillPath(&linePath, backBrush)

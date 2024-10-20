@@ -133,11 +133,12 @@ impl IForm for FormLine
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, z: f32, quickMode: bool)
+    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode, 8, 12)
-        let sSize = quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : startSize
-        let eSize = quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, z, quickMode, 1, 4) : endSize
+        let z     = cxt.z
+        let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
+        let sSize = cxt.quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, cxt, 1, 4) : startSize
+        let eSize = cxt.quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, cxt, 1, 4) : endSize
 
         with var pen = Pen.createDash(dashStyle, borderColor, bSize)
         {

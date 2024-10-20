@@ -198,7 +198,7 @@ impl QuickWnd
         add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorRed, .RoundAnchor, .Dot)
         add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorGreen, .RoundAnchor, .Dot)
         add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorBlue, .RoundAnchor, .Dot)
-        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorYellow, .RoundAnchor, .Dot)        
+        add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorYellow, .RoundAnchor, .Dot)
     }
 
     mtd defaultQuickStyleLine()
@@ -333,7 +333,7 @@ impl QuickWnd
         add(BorderSize, ColorRed, true)
         add(BorderSize, ColorGreen, true)
         add(BorderSize, ColorBlue, true)
-        add(BorderSize, ColorYellow, true)        
+        add(BorderSize, ColorYellow, true)
 
         add(BorderSize, Argb.White)
         add(BorderSize, Argb.Black)
@@ -597,9 +597,13 @@ impl QuickWnd
     {
         func paintForm(painter: *Painter, btnp: *QuickButton)
         {
+            var cxt: FormPaintContext
+            cxt.z         = 1
+            cxt.quickMode = true
+
             painter.setParams(.Antialiased)
             let sel  = cast(*BaseForm) @dataof(btnp.formItf)
-            let s    = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
+            let s    = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, cxt)
             var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2 * s, 48 - 2 * s}
 
             var title = ""

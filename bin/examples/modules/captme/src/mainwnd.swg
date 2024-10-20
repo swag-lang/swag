@@ -211,7 +211,8 @@ impl MainWnd
         {
         case Selection:
             editMode = .Shape
-            getCapture().updateEditModeFromSelection()
+            if getCapture():
+                getCapture().updateEditModeFromSelection()
             let edMode = editMode
             editMode = .Selection
             return edMode
