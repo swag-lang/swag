@@ -4,9 +4,9 @@
     mtd b();// {}
 }
 
-struct A5808 {}
+struct B {}
 
-impl I5806 for A5808
+impl I5806 for B
 {
     /*mtd impl b()
     {

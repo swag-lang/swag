@@ -1117,18 +1117,18 @@ ByteCode* Module::getRuntimeFct(const Utf8& fctName)
     return it->second;
 }
 
-void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
+void Module::addImplForToSolve(const TypeInfoStruct* typeStruct)
 {
     ScopedLock lk(mutexFile);
 
-    auto it = implForToSolve.find(structName);
+    auto it = implForToSolve.find(typeStruct->structName);
     if (it == implForToSolve.end())
     {
-        implForToSolve[structName] = {};
-        it                         = implForToSolve.find(structName);
+        implForToSolve[typeStruct->structName] = {};
+        it                                     = implForToSolve.find(typeStruct->structName);
     }
 
-    it->second.count += count;
+    it->second.count++;
 }
 
 bool Module::waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct)

@@ -204,7 +204,7 @@ struct Module
     bool     mustGenerateLegit() const;
     uint32_t getHasBeenBuilt();
 
-    void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
+    void addImplForToSolve(const TypeInfoStruct* typeStruct);
     void decImplForToSolve(const TypeInfoStruct* typeStruct);
     bool waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct);
 

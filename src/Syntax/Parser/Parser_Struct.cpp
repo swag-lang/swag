@@ -117,13 +117,13 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         SWAG_ASSERT(scopeKind == ScopeKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
 
         // Register the 'impl for' block name, because we are not sure that the newScope will be the correct one
         // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
         // See test 2909 for that kind of case...
-        module->addImplForToSolve(structName);
+        module->addImplForToSolve(typeStruct);
 
-        const auto typeStruct = castTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
 

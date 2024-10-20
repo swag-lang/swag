@@ -39,6 +39,7 @@ Utf8 TypeInfo::getName()
 Utf8 TypeInfo::getScopedName()
 {
     SharedLock lk(mutex);
+    computeWhateverNameNoLock(ComputeNameKind::ScopedName);
     return scopedName;
 }
 
@@ -294,10 +295,10 @@ bool TypeInfo::isMethod() const
 
 bool TypeInfo::isNullable() const
 {
-    if(flags.has(TYPEINFO_NULLABLE))
+    if (flags.has(TYPEINFO_NULLABLE))
         return true;
     const auto in = TypeManager::concreteType(this);
-    if(in->flags.has(TYPEINFO_NULLABLE))
+    if (in->flags.has(TYPEINFO_NULLABLE))
         return true;
     return false;
 }

@@ -29,7 +29,6 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
             break;
     }
 
-    typeInfo->computeScopedName();
     auto       typeName            = typeInfo->getScopedName();
     const auto undecoratedTypeName = typeName;
     SWAG_ASSERT(!typeName.empty());
