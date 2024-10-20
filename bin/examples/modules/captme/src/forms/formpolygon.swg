@@ -5,8 +5,8 @@ struct FormPolygon
 
     #[Serialization.NoSerialize]
     {
-        gizmo:      GizmoPoints
-        linePath:   LinePath
+        gizmo:        GizmoPoints
+        linePath:     LinePath
     }
 }
 
@@ -186,8 +186,9 @@ impl IForm for FormPolygon
 
     mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let z         = cxt.z
-        var bSize     = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
+        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
+        bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
+
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = backColor
         if cxt.quickMode and alpha != 100 and subKind == .Highlight:
@@ -203,6 +204,7 @@ impl IForm for FormPolygon
 
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
+        let z = cxt.z
         linePath.start(points[0].x * z, points[0].y * z)
         for i in 1 until points.count
         {

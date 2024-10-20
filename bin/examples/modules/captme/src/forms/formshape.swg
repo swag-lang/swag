@@ -123,9 +123,7 @@ impl IForm for FormShape
         y += newPosY
     }
 
-    mtd impl movePoint(pt: u32, newPosX, newPosY: s32) 
-    {        
-    }
+    mtd impl movePoint(pt: u32, newPosX, newPosY: s32) {}
 
     mtd impl boundRect()->Math.Rectangle
     {
@@ -168,8 +166,8 @@ impl IForm for FormShape
 
     mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
     {
-        let z     = cxt.z
-        var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
+        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
+        bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
         let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, cxt)
 
         if subKind == .PixSel
@@ -180,6 +178,7 @@ impl IForm for FormShape
             painter.setAntialiased(false)
         }
 
+        let z   = cxt.z
         var pp  = boundRect() * z
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
         pen.borderPos = .Inside
