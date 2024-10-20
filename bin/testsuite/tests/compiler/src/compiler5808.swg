@@ -1,4 +1,5 @@
-/*interface I5806
+#global testerror "Err0707"
+interface I5806
 {
     mtd a() { b(); }
     mtd b();// {}
@@ -12,4 +13,3 @@ impl I5806 for B
     {
     }    */
 }
-*/

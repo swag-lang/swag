@@ -15,7 +15,7 @@ impl I for A
 
     mtd impl toto3746()
     {
-        titi3746's32()
+        self.titi3746's32()
     }
 }
 

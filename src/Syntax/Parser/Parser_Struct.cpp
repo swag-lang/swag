@@ -61,6 +61,8 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
         const auto last = castAst<AstIdentifier>(identifierStruct->lastChild(), AstNodeKind::Identifier);
         SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, toErr(Err0637)}));
+
+        std::swap(implNode->children[0], implNode->children[1]);
     }
     else
     {

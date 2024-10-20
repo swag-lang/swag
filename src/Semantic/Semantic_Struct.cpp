@@ -72,49 +72,49 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     const auto module     = sourceFile->module;
 
     // Race condition in case a templated function is instantiated in the impl block during that access
-    const auto first = node->firstChildSafe();
-    const auto back  = node->secondChildSafe();
+    const auto nameItf    = node->secondChildSafe();
+    const auto nameStruct = node->firstChildSafe();
 
-    const auto typeStruct = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(nameStruct->typeInfo, TypeInfoKind::Struct);
 
     if (node->identifierFor->typeInfo->isGeneric())
         return true;
 
     // Make a concrete type for the given struct
     auto& typeGen = module->typeGen;
-    back->allocateComputedValue();
-    back->computedValue()->storageSegment = getConstantSegFromContext(back);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, back->computedValue()->storageSegment, &back->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    nameStruct->allocateComputedValue();
+    nameStruct->computedValue()->storageSegment = getConstantSegFromContext(nameStruct);
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, nameStruct->computedValue()->storageSegment, &nameStruct->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
     // Make a concrete type for the given interface
-    first->allocateComputedValue();
-    first->computedValue()->storageSegment = getConstantSegFromContext(first);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue()->storageSegment, &first->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    nameItf->allocateComputedValue();
+    nameItf->computedValue()->storageSegment = getConstantSegFromContext(nameItf);
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, nameItf->typeInfo, nameItf->computedValue()->storageSegment, &nameItf->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
-    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
+    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(nameItf->typeInfo, TypeInfoKind::Interface);
     const auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
     SWAG_ASSERT(typeParamItf);
 
-    const auto constSegment = back->computedValue()->storageSegment;
+    const auto constSegment = nameStruct->computedValue()->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
 
     // :itableHeader
     ScopedLock lk(typeStruct->mutex);
 
     {
-        const auto addr     = constSegment->address(first->computedValue()->storageOffset);
+        const auto addr     = constSegment->address(nameItf->computedValue()->storageOffset);
         const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - 2 * sizeof(void*)));
         *itfTable           = addr;
-        constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), first->computedValue()->storageOffset, constSegment->kind);
+        constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), nameItf->computedValue()->storageOffset, constSegment->kind);
     }
 
     {
-        const auto addr     = constSegment->address(back->computedValue()->storageOffset);
+        const auto addr     = constSegment->address(nameStruct->computedValue()->storageOffset);
         const auto itfTable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset - sizeof(void*)));
         *itfTable           = addr;
-        constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue()->storageOffset, constSegment->kind);
+        constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), nameStruct->computedValue()->storageOffset, constSegment->kind);
     }
 
     return true;
@@ -147,8 +147,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     SWAG_ASSERT(first->is(AstNodeKind::IdentifierRef));
     SWAG_ASSERT(back->is(AstNodeKind::IdentifierRef));
-    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
-    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
+    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Interface);
+    const auto typeStruct        = castTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Struct);
 
     // Be sure interface has been fully solved
     {
