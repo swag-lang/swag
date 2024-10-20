@@ -335,7 +335,6 @@ public impl LinePath
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
 
-        let lastElem = elements.count - 1
         foreach elem, i in elements
         {
             var pos = elem.position
