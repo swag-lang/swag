@@ -86,8 +86,11 @@ impl IWnd for EditView
         painter.fillRect({captureRect.x, captureRect.bottom(), captureRect.width, rect.bottom() - captureRect.bottom()}, col)
 
         // Capture gizmo
-        capture.gizmo.rect = captureRect
+        painter.pushTransform()
+        painter.translateTransform(captureRect.x, captureRect.y)
+        capture.gizmo.rect = Math.Rectangle{0, 0, captureRect.width, captureRect.height}
         capture.gizmo.paint(painter, false)
+        painter.popTransform()
     }
 }
 
