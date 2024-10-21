@@ -1040,6 +1040,26 @@ impl PropWnd
         }
     }    
 
+    mtd propRotate()
+    {
+        let curSelType = getSelectedFormType()
+        if curSelType != FormText and curSelType != FormShape:
+            return       
+        let curSel = cast(*FormText) getSelectedBaseForm()
+        if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
+            return
+
+        let ctrl   = createSlider("Rotate", -180, 180, cast() curSel.rotate)
+        ctrl.slider.sigStartChange += func|self|(slider)
+        {
+            self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
+        }
+        ctrl.slider.sigChanged += func|self|(slider)
+        {
+            self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
+        }
+    }      
+
     mtd propSmooth()
     {
         let curSelType = getSelectedFormType()
@@ -1237,17 +1257,19 @@ impl PropWnd
         propNextStep()
         propText()
         propFontSize()
-        propScale()
         propBoldSize()
         propBorderSize()
         propStartSize()
         propEndSize()
         propRoundSize()
-        propOpacity()
         propJoinStyle()
         propSmooth()
-        propShadow()
         propPixSel()
+
+        propOpacity()
+        propShadow()
+        propScale()
+        propRotate()
 
         mainLayout.computeLayout()
         if mainLayout.childs.count:

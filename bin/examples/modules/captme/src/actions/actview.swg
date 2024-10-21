@@ -22,7 +22,7 @@ impl IActionUI for ActionView
         {
         case CmdIdViewClip:
             evt.setFlags |= .Name | .Disabled | .Checked
-            evt.name     = "Clip To Selection"
+            evt.name     = "Hide Outside Box"
             evt.checked  = g_EditorOptions.clipToSelection
         }
 

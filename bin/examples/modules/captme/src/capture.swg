@@ -454,7 +454,7 @@ impl Capture
         with painter
         {
             .setShader()
-            .setAntialiased(false)
+            .setAntialiased(false)           
         }
 
         var colForm: Color
@@ -465,33 +465,46 @@ impl Capture
         else:
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        var dstRect = Math.Rectangle{0, 0, wt, ht}
+        var dstRect   = Math.Rectangle{0, 0, wt, ht}
+        var paintRect = dstRect
+
         if base.paintShadow
         {
-            with var paintShadowRect = dstRect
-            {
-                .x = base.paintPos.x - Margin
-                .y = base.paintPos.y - Margin
-                .offset(base.shadowOffset.x, base.shadowOffset.y)
-            }
+            paintRect.x = base.paintPos.x - Margin
+            paintRect.y = base.paintPos.y - Margin
+            paintRect.offset(base.shadowOffset.x, base.shadowOffset.y)
+        }
+        else
+        {
+            paintRect.x = base.paintPos.x
+            paintRect.y = base.paintPos.y
+        }        
 
+        // Rotation
+        painter.pushTransform()
+        painter.translateTransform(paintRect.horzCenter(), paintRect.vertCenter())
+        if base.subKind != .Highlight and base.subKind != .PixSel
+        {
+            let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi)   
+            painter.rotateTransformInPlace(angle)
+        }
+
+        paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
+        defer painter.popTransform()
+
+        if base.paintShadow
+        {
             with painter
             {
                 .setColorMaskColor()
-                .drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+                .drawTexture(paintRect, dstRect, rt1.colorBuffer, colForm)
                 .setBlendingMode(.Max)
                 .setColorMaskAlpha()
-                .drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+                .drawTexture(paintRect, dstRect, rt1.colorBuffer, colForm)
             }
         }
         else
         {
-            with var paintRect = dstRect
-            {
-                .x = base.paintPos.x
-                .y = base.paintPos.y
-            }
-
             with painter
             {
                 .setColorMaskColor()

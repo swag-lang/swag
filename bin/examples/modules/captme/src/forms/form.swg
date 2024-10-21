@@ -55,6 +55,7 @@ struct BaseForm
     subKind:             FormSubKind = None
     joinStyle            = JoinStyle.Round
     scale:               f32 = 0
+    rotate:              f32 = 0
 
     #[Serialization.NoSerialize]
     {
