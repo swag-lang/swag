@@ -1266,10 +1266,15 @@ impl PropWnd
         propSmooth()
         propPixSel()
 
-        propOpacity()
-        propShadow()
+        let sep = Wnd.create'Wnd(mainLayout, {0, 0, 0, 1})
+        sep.margin.y = 15
+        sep.margin.w = 8
+        sep.backgroundStyle = .View
+
         propScale()
         propRotate()
+        propOpacity()
+        propShadow()
 
         mainLayout.computeLayout()
         if mainLayout.childs.count:
