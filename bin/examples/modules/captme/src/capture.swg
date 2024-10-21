@@ -99,6 +99,7 @@ impl Capture
         let zoom = Math.min(PreviewWidth / width, PreviewHeight / height)
         preview = toImage(zoom)
         preview.applyKernel(.GaussianBlur3x3A)
+        changed = true
     }
 
     mtd toImage(zoom: f32 = 1, onlySel = false)->Image

@@ -4,6 +4,7 @@
 struct EnumerationOptions
 {
     matchExtension:            string
+    matchFileName:             string
     skipAttributes             = File.FileAttributes.Zero
     recurse                    = false
     wantFiles                  = true

@@ -92,7 +92,15 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                     catch FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
                     fi.lastWriteTime.setSYSTEMTIME(fileTime)
 
-                    if !options.matchExtension or Path.isExtension(fi.fullname, options.matchExtension)
+                    mustAdd = false
+                    if options.matchExtension and Path.isExtension(fi.fullname, options.matchExtension):
+                        mustAdd = true
+                    elif options.matchFileName and filename == options.matchFileName:
+                        mustAdd = true
+                    elif !options.matchExtension and !options.matchFileName:
+                        mustAdd = true
+
+                    if mustAdd
                     {
                         if !options.filterLambda or options.filterLambda(fi)
                         {

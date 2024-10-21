@@ -158,6 +158,7 @@ impl MainWnd
         capture.computePreview()
         recentWnd.addRecent(capture.file, capture.preview)
         recentWnd.recentView.selected = 0
+
         catch capture.save()
         g_Library.addFile(capture.file)
 

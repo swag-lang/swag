@@ -151,7 +151,11 @@ func duplicate(newName, oldName: string) throw
 // Get informations about a file
 func getFileInfo(fullName: string)->FileInfo throw
 {
-    var file = Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
+    var options: Directory.EnumerationOptions
+    options.matchFileName   = Path.getFileName(fullName)
+    options.wantDirectories = false
+    options.recurse         = false
+    var file = Directory.enumerate(Path.getDirectoryName(fullName), options)
     if file.count == 0:
         throw FileNotFoundError{fileName: Errors.mkString(fullName)}
     return file[0]
