@@ -380,6 +380,7 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 var dash = cast(DashStyle) cast(u64) btn.userData
                 var pen  = Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
+                pen.dashBlankScale = 0.25
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -660,8 +661,9 @@ impl PropWnd
             bc.painter.setParams(.Antialiased)
             var curSel = me.getSelectedBaseForm()
             var rect   = pos
-            rect.inflate(-9, -9)
+            rect.inflate(-10, -10)
             var pen = Pen.createDash(curSel.dashStyle, btn.getThemeColors().btnIcon_Icon, DashSize)
+            pen.dashBlankScale = 0.25
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 

@@ -52,7 +52,6 @@ struct MainWnd
     firstShow           = true
 
     editMode:           EditMode = .Shape
-    lastEditMode:       EditMode = .Shape
     bottomSize:         BottomSize = Medium
     snap:               bool
     libraryMode:        bool
@@ -293,6 +292,7 @@ impl MainWnd
     mtd registerShortcuts()
     {
         registerKeyShortcut(.Control, .C, CmdIdCopy)
+        registerKeyShortcut(.Control, .X, CmdIdCut)
         registerKeyShortcut(.Control, .V, CmdIdPaste)
         registerKeyShortcut(.Control, .Insert, CmdIdCopy)
         registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
@@ -427,8 +427,8 @@ impl MainWnd
             .addItem(CmdIdRedo)
             .addSeparator()
             .addItem(CmdIdCopy)
+            .addItem(CmdIdCut)
             .addItem(CmdIdPaste)
-            .addItem(CmdIdCopyAsImage)
             .addSeparator()
             .addItem(CmdIdSelectAll)
             .addItem(CmdIdDeSelectAll)
@@ -440,6 +440,8 @@ impl MainWnd
 
         with let imageMenu = MenuCtrl.createPopup(parent, owner: self)
         {
+            .addItem(CmdIdCopyAsImage)
+            .addSeparator()
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
             .addItem(CmdIdResizeImage)

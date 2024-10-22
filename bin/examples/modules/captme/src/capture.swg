@@ -243,6 +243,12 @@ impl Capture
         Clipboard.addTypedValue(&arr, #typeof(arr))
     }
 
+    mtd cut()
+    {
+        copy()
+        pushUndo(newUndo(.DeleteSelection))
+    }
+
     mtd pasteImageInside()
     {
         let img = Clipboard.getImage()
@@ -846,6 +852,7 @@ impl Capture
             }
 
             .addItem(CmdIdCopy)
+            .addItem(CmdIdCut)
             .addItem(CmdIdPaste)
             .addSeparator()
             .addItem(CmdIdPasteImageInside)

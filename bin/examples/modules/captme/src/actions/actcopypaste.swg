@@ -2,6 +2,7 @@ using Gui
 
 const CmdIdCopy             = "CmdIdCopy"
 const CmdIdPaste            = "CmdIdPaste"
+const CmdIdCut              = "CmdIdCut"
 const CmdIdPasteImageInside = "CmdIdPasteImageInside"
 const CmdIdCopyAsImage      = "CmdIdCopyAsImage"
 
@@ -12,7 +13,7 @@ impl IActionUI for ActionCopyPaste
     {
         switch cxt.id
         {
-        case CmdIdCopy, CmdIdPaste, CmdIdPasteImageInside, CmdIdCopyAsImage:
+        case CmdIdCopy, CmdIdCut, CmdIdPaste, CmdIdPasteImageInside, CmdIdCopyAsImage:
             return true
         }
 
@@ -32,6 +33,12 @@ impl IActionUI for ActionCopyPaste
             evt.disabled = !hasSel
             evt.name     = "Copy"
             evt.icon     = main.getTheme().getIcon24(.Copy)
+
+        case CmdIdCut:
+            evt.setFlags |= .Disabled | .Name | .Icon
+            evt.disabled = !hasSel
+            evt.name     = "Cut"
+            evt.icon     = main.getTheme().getIcon24(.Cut)            
 
         case CmdIdPaste:
             evt.setFlags |= .Disabled | .Name | .Icon
@@ -70,7 +77,7 @@ impl IActionUI for ActionCopyPaste
         case CmdIdCopyAsImage:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = capture == null
-            evt.name     = "Copy As Image"
+            evt.name     = "Copy Image to Clipboard"
         }
 
         return true
@@ -85,6 +92,8 @@ impl IActionUI for ActionCopyPaste
         {
         case CmdIdCopy:
             capture.copy()
+        case CmdIdCut:
+            capture.cut()
         case CmdIdPaste:
             capture.paste()
         case CmdIdPasteImageInside:

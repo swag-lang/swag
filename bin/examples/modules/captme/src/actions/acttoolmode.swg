@@ -124,9 +124,7 @@ impl IActionUI for ActionToolMode
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main    = cast(*MainWnd) cxt.wnd
-        let capture = main.getCapture()
-
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdModeShape:
@@ -152,11 +150,9 @@ impl IActionUI for ActionToolMode
         case CmdIdModeFavorites:
             main.editMode = .Favorites
         case CmdIdModeSelection:
-            main.lastEditMode = main.editMode
-            main.editMode     = .Selection
+            main.editMode = .Selection
         }
 
-        capture.selection.clear()
         main.updateState()
         return true
     }

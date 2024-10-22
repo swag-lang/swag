@@ -83,8 +83,7 @@ impl IActionUI for ActionSelection
             capture.selectionHasChanged()
 
         case CmdIdDeleteSelection:
-            let undo = capture.newUndo(.DeleteSelection)
-            capture.pushUndo(undo)
+            capture.pushUndo(capture.newUndo(.DeleteSelection))
 
         case CmdIdSnap:
             main.snap = !main.snap
