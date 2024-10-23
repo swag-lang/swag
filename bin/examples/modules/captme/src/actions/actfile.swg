@@ -179,6 +179,7 @@ impl IActionUI for ActionFile
 
         case CmdIdDupCapture:
             Cursor.wait()
+            catch capture.save()
 
             let file = Library.newFileName()
             trycatch File.duplicate(file, capture.file)
@@ -189,11 +190,10 @@ impl IActionUI for ActionFile
             newCapture.changed     = true
             trycatch newCapture.save()
             Memory.delete(newCapture)
-
-            let dupCapture = trycatch main.recentWnd.addRecent(file)
-            Memory.delete(dupCapture)
-            main.recentWnd.recentView.select(0)
             g_Library.addFile(file)
+            
+            let dupCapture = trycatch main.recentWnd.addRecent(file, true, true)
+            Memory.delete(dupCapture)
 
         case CmdIdCaptureFileLocation:
             Env.locateInExplorer(capture.file)
