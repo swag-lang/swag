@@ -925,7 +925,8 @@ impl Capture
             if selection.count == 1
             {
                 let selForm = forms[selection[0]]
-                if selForm.mouse(view, localPos, evt)
+                let p = cast(*BaseForm) @dataof(selForm)
+                if (!view.main.freezeSelection or !p.freeze) and selForm.mouse(view, localPos, evt)
                 {
                     evt.accepted = true
                     if evt.kind != .MouseLeave:
@@ -952,7 +953,14 @@ impl Capture
             }
             else
             {
-                let ht = hitTest(localPos)
+                var ht = hitTest(localPos)
+                if ht != Swag.U64.Max
+                {
+                    let p = cast(*BaseForm) @dataof(forms[ht])
+                    if view.main.freezeSelection and p.freeze:
+                        ht = Swag.U64.Max
+                }
+
                 if ht != hotForm
                 {
                     view.invalidate()
@@ -977,7 +985,6 @@ impl Capture
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
-        let altPressed   = Input.Keyboard.isKeyPressed(.MenuCtrl) or Input.Keyboard.isKeyPressed(.RMenu)
 
         // Start of mode
         ///////////////////////
@@ -994,16 +1001,6 @@ impl Capture
                     view.captureMouse()
                     view.invalidate()
                     drawSelRect = true
-                }
-
-                // Alt, draw above
-                elif altPressed
-                {
-                    mouseMode      = .Creating
-                    firstMouseMove = true
-                    movingStart    = localPos
-                    view.captureMouse()
-                    view.invalidate()
                 }
                 else
                 {

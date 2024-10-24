@@ -5,6 +5,7 @@ const CmdIdDeSelectAll     = "CmdIdDeSelectAll"
 const CmdIdInvertSelection = "CmdIdInvertSelection"
 const CmdIdDeleteSelection = "CmdIdDeleteSelection"
 const CmdIdSnap            = "CmdIdSnap"
+const CmdIdFreeze          = "CmdIdFreeze"
 
 struct ActionSelection {}
 impl IActionUI for ActionSelection
@@ -13,7 +14,7 @@ impl IActionUI for ActionSelection
     {
         switch cxt.id
         {
-        case CmdIdSelectAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap:
+        case CmdIdSelectAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap, CmdIdFreeze:
             return true
         }
 
@@ -53,6 +54,11 @@ impl IActionUI for ActionSelection
             evt.setFlags |= .Name | .Checked
             evt.name    = "Snap To Forms"
             evt.checked = main.snap
+
+        case CmdIdFreeze:
+            evt.setFlags |= .Name | .Checked | .Name
+            evt.name    = "Freeze Selection"
+            evt.checked = main.freezeSelection            
         }
 
         return true
@@ -87,6 +93,31 @@ impl IActionUI for ActionSelection
 
         case CmdIdSnap:
             main.snap = !main.snap
+
+        case CmdIdFreeze:
+            if main.freezeSelection
+            {
+                main.embInfoFreeze.destroy()
+                main.embInfoFreeze = null
+                main.freezeSelection = false
+            }
+            else
+            {  
+                main.embInfoFreeze = EmbInfoCtrl.create(main.editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
+                main.embInfoFreeze.sigOnClose += func|main|(ctrl)
+                { 
+                    main.freezeSelection = false                   
+                }
+
+                capture.selection.clear()
+                capture.selectionHasChanged()
+                main.freezeSelection = true
+                foreach it in capture.forms
+                {
+                    let p = cast(*BaseForm) @dataof(it)
+                    p.freeze = true
+                }                              
+            }
         }
 
         return true

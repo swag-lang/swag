@@ -50,10 +50,12 @@ struct MainWnd
     monitors:           Array'Env.Monitor
     pixSelFillCol:      Color = Argb.White
     firstShow           = true
+    embInfoFreeze:      *EmbInfoCtrl
 
     editMode:           EditMode = .Shape
     bottomSize:         BottomSize = Medium
     snap:               bool
+    freezeSelection:    bool
     libraryMode:        bool
     fileDlgState:       FileDlgState
 
@@ -66,7 +68,7 @@ struct MainWnd
     mdlFormText:        FormText
     mdlFormDraw:        FormDraw
     mdlHighlight:       IForm
-    mdlPixSel:          IForm
+    mdlPixSel:          IForm    
     mdlFavorite:        IForm
 }
 
@@ -302,6 +304,7 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift, .B, CmdIdSendBackward)
         registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
         registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
+        registerKeyShortcut(.Control, .Space, CmdIdFreeze)
         registerKeyShortcut(.Control, .A, CmdIdSelectAll)
         registerKeyShortcut(.Control, .D, CmdIdDeSelectAll)
         registerKeyShortcut(.Control, .Add, CmdIdZoomIn)
@@ -433,6 +436,8 @@ impl MainWnd
             .addItem(CmdIdSelectAll)
             .addItem(CmdIdDeSelectAll)
             .addItem(CmdIdInvertSelection)
+            .addSeparator()
+            .addItem(CmdIdFreeze)
             .addSeparator()
             .addItem(CmdIdSnap)
             topMenu.addPopup("Edit", editMenu)

@@ -57,6 +57,7 @@ struct IconButton
     checkedForm          = IconButtonCheckedForm.Full
     arrowPos             = IconButtonArrowPos.None
     textPos              = IconButtonTextPos.Bottom
+    forceFgColor:        Color
 
     sigHidePopup:        SigArray'func||(*Self)
     sigShowPopup:        SigArray'func||(*Self)
@@ -169,6 +170,12 @@ impl IWnd for IconButton
             colorIcon    = isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
             colorText    = isChecked ? colors.btnIcon_CheckedText : colors.btnIcon_Text
             colorChecked = colors.btnIcon_CheckedMark
+        }
+
+        if forceFgColor.a
+        {
+            colorIcon = forceFgColor
+            colorText = forceFgColor
         }
 
         // Background

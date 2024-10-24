@@ -338,7 +338,11 @@ struct ThemeColors
     imageRect_Fg:                         Color = White
 
     embInfo_CriticalBk:                   Color = 0xFF8F0000
+    embInfo_CriticalText:                 Color = White
     embInfo_InformationBk:                Color = 0xFF303050
+    embInfo_InformationText:              Color = White
+    embInfo_MessageBk:                    Color = 0xFFAD8F1B
+    embInfo_MessageText:                  Color = Gray5
 
     prop_FocusBk:                         Color = Color.getLighter(Color.fromArgb(Gray5), 0.05)
     prop_FocusBorder:                     Color = Gray3

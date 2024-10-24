@@ -19,6 +19,7 @@ struct Label
 
     icon:                 Icon
     iconColor:            Color
+    textColor:            Color
     labelFlags            = LabelFlags.Zero
     horzAlignmentIcon     = StringHorzAlignment.Center
     vertAlignmentIcon     = StringVertAlignment.Center
@@ -144,7 +145,16 @@ impl Label
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
 
-        if isDisabled
+        if textColor.a
+        {
+            sf.palette[0]  = textColor
+            sf.palette[1]  = textColor
+            sf.palette[2]  = textColor
+            sf.palette[3]  = textColor
+            sf.colorUrl    = textColor
+            sf.colorHotUrl = textColor
+        }
+        elif isDisabled
         {
             sf.palette[0]  = theme.colors.label_DisabledText
             sf.palette[1]  = theme.colors.label_DisabledText

@@ -61,6 +61,7 @@ struct BaseForm
     {
         capture:      *Capture
         paintPos:     Math.Rectangle
+        freeze:       bool
     }
 }
 

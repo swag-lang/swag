@@ -164,7 +164,7 @@ impl IActionUI for ActionFile
             else
             {
                 var txt = Format.toString("Image <i>%</i> has been saved", capture.linkedImage)
-                discard EmbInfoCtrl.create(main.editWnd.view, txt, .Information, top: false, autoHide: true)
+                discard EmbInfoCtrl.create(main.editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
             }
 
         case CmdIdDeleteCapture:
@@ -271,7 +271,7 @@ impl MainWnd
         }
 
         var txt = Format.toString("Image <i>%</i> has been saved", dlg.getSelectedName())
-        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, top: false, autoHide: true)
+        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, .Bottom | .AutoHide)
 
         if linked
         {
