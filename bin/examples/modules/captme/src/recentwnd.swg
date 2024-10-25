@@ -102,6 +102,8 @@ impl IWnd for RecentView
                         .addSeparator()
                         .addItem(CmdIdCaptureFileLocation)
                         .addItem(CmdIdLinkedFileLocation)
+                        .addSeparator()
+                        .addItem(CmdIdFileDetails)
                     }
 
                     discard menu.doModal(evt.surfacePos, autoDestroy: true)

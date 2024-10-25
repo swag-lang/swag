@@ -103,6 +103,8 @@ impl IWnd for LibraryView
             with let menu = MenuCtrl.createPopup(self)
             {
                 .addItem(CmdIdDeleteCapture)
+                .addSeparator()
+                .addItem(CmdIdFileDetails)
             }
 
             discard menu.doModal(evt.surfacePos, autoDestroy: true)
@@ -268,6 +270,13 @@ impl LibraryView
 
 impl LibraryWnd
 {
+    mtd getCapture()->nl *Capture
+    {
+        if view.focusItem < view.items.count:
+            return view.items[view.focusItem].capture
+        return null
+    }
+
     mtd requestClose()
     {
         if view.thread.isValid()

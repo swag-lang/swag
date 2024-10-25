@@ -376,6 +376,8 @@ impl MainWnd
             .addItem(CmdIdUpdateLinkedImage)
             .addItem(CmdIdUnlinkImage)
             .addSeparator()
+            .addItem(CmdIdFileDetails)
+            .addSeparator()
             .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
         }

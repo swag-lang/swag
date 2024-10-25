@@ -11,6 +11,7 @@ const CmdIdCaptureFileLocation = "CmdIdCaptureFileLocation"
 const CmdIdLinkedFileLocation  = "CmdIdLinkedFileLocation"
 const CmdIdNewImage            = "CmdIdNewImage"
 const CmdIdNewFromClipboard    = "CmdIdNewFromClipboard"
+const CmdIdFileDetails         = "CmdIdFileDetails"
 
 struct ActionFile {}
 impl IActionUI for ActionFile
@@ -19,7 +20,7 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage,
+        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdFileDetails,
              CmdIdUpdateLinkedImage, CmdIdUnlinkImage, CmdIdDupCapture, CmdIdDeleteCapture,
              CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
             return true
@@ -74,12 +75,12 @@ impl IActionUI for ActionFile
 
         case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
-            evt.name     = "Delete"
+            evt.name = "Delete"
             if main.libraryMode:
                 evt.disabled = !main.libWnd.hasSelected()
             else:
                 evt.disabled = !capture
-            evt.icon     = main.getTheme().getIcon24(.Remove)
+            evt.icon = main.getTheme().getIcon24(.Remove)
 
         case CmdIdDupCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
@@ -98,6 +99,14 @@ impl IActionUI for ActionFile
             evt.name     = "Open Linked Image Location"
             evt.disabled = !capture or capture.linkedImage.isEmpty()
             evt.icon     = main.getTheme().getIcon24(.Link)
+
+        case CmdIdFileDetails:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "File Details"
+            if main.libraryMode:
+                evt.disabled = !main.libWnd.hasSelected()
+            else:
+                evt.disabled = !capture
         }
 
         return true
@@ -191,7 +200,7 @@ impl IActionUI for ActionFile
             trycatch newCapture.save()
             Memory.delete(newCapture)
             g_Library.addFile(file)
-            
+
             let dupCapture = trycatch main.recentWnd.addRecent(file, true, true)
             Memory.delete(dupCapture)
 
@@ -200,6 +209,38 @@ impl IActionUI for ActionFile
 
         case CmdIdLinkedFileLocation:
             Env.locateInExplorer(capture.linkedImage)
+
+        case CmdIdFileDetails:
+            var file: *Capture
+            if main.libraryMode:
+                file = main.libWnd.getCapture()
+            else:
+                file = capture
+            if !file:
+                break
+
+            func addLine(lt: *Wnd, title, val: string)
+            {
+                let wnd = Wnd.create'StackLayoutCtrl(lt)
+                wnd.layoutKind      = .Left
+                wnd.position.height = 20
+                let lbl1 = Label.create(wnd, title, {0, 0, 100, 0})
+                lbl1.horzAlignmentText = .Left
+                let lbl2 = Label.create(wnd, val, {0, 0, 1000, 0})
+                lbl2.horzAlignmentText = .Left
+            }
+
+            let dlg = Dialog.createDialog(main.surface, 600, 400, title: "Details", flags: .Border | .CloseBtn | .Sizeable)
+            dlg.addButton("OK", Dialog.BtnOk, true)
+            let lt = StackLayoutCtrl.create(dlg)
+            lt.dockStyle = .Center
+            lt.padding   = 5
+            addLine(lt, "<b>File<b>", Format.toString("%", file.file))
+            if file.linkedImage != null:
+                addLine(lt, "<b>Linked Image<b>", Format.toString("%", file.linkedImage))
+            addLine(lt, "<b>Size<b>", Format.toString("%x%", file.width, file.height))
+            lt.computeLayout()
+            discard dlg.doModal()
         }
 
         return true
