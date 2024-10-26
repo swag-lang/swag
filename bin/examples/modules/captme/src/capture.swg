@@ -1101,7 +1101,8 @@ impl Capture
 
             foreach f, idx in forms
             {
-                if f.boundRect().intersectWith(r) and !selection.contains(idx):
+                let pp = f.boundRect() * view.zoom
+                if pp.intersectWith(r) and !selection.contains(idx):
                     selection.add(idx)
             }
 
