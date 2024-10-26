@@ -236,16 +236,16 @@ impl IForm for FormImage
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
+        var pp = boundRect() * z
         if mustEditInside()
         {
-            var pp = boundRect() * z
             pp.offset(freePos.x * z, freePos.y * z)
             pp.width  = freePos.width * z
             pp.height = freePos.height * z
             return pp.contains(pt)
         }
 
-        return true
+        return pp.contains(pt)
     }
 
     mtd backCaptureMask(app: *Application, mask: *Image)
