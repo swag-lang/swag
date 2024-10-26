@@ -571,7 +571,7 @@ impl Capture
         }
     }
 
-    mtd paint(painter: *Painter, rect: Math.Rectangle)
+    mtd paint(painter: *Painter, clip, rect: Math.Rectangle)
     {
         painter.fillRect(rect, Argb.LightGray)
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
@@ -588,6 +588,9 @@ impl Capture
         let app = editView.getApp()
         foreach f in forms
         {
+            let pp = f.boundRect() * zoom
+            if !pp.intersectWith(clip):
+                continue
             paintForm(app, painter, rect, f, zoom)
         }
 
@@ -596,9 +599,9 @@ impl Capture
         {
             var flags = FormFlags.Zero
             if i == hotForm:
-                flags |= .Hot
+                flags.add(.Hot)
             if selection.contains(i):
-                flags |= .Selected
+                flags.add(.Selected)
 
             painter.pushTransform()
             painter.translateTransform(rect.x, rect.y)

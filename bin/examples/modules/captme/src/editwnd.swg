@@ -75,7 +75,9 @@ impl IWnd for EditView
 
         // Capture content
         let captureRect = getCaptureRect()
-        capture.paint(painter, captureRect)
+        var clip = rect
+        clip.inflate(100, 100)
+        capture.paint(painter, clip, captureRect)
 
         // Around capture
         var col = g_EditorOptions.editBackColor
