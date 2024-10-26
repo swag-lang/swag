@@ -156,13 +156,13 @@ impl IForm for FormPolygon
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.anchors.clear()
             foreach pt in points:
                 gizmo.anchors.add({pt.x * z, pt.y * z})
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
-            gizmo.paint(null, painter, flags & .Selected ? false : true, col)
+            gizmo.paint(null, painter, !flags.has(.Selected), col)
         }
     }
 
@@ -176,7 +176,7 @@ impl IForm for FormPolygon
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
         bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)

@@ -132,10 +132,10 @@ impl IForm for FormStep
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.rect = boundRect() * z
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            gizmo.paint(painter, !flags.has(.Selected))
         }
     }
 
@@ -149,7 +149,7 @@ impl IForm for FormStep
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z     = cxt.z
         var fSize = Math.min(w, h) * 0.6

@@ -120,13 +120,13 @@ impl IForm for FormLine
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.anchors[0] = {xa * z, ya * z}
             gizmo.anchors[1] = {xb * z, yb * z}
             if gizmo.anchors.count == 3:
                 gizmo.anchors[2] = {(xa + xc) * z, (ya + yc) * z}
-            gizmo.paint(null, painter, flags & .Selected ? false : true)
+            gizmo.paint(null, painter, !flags.has(.Selected))
         }
     }
 
@@ -140,7 +140,7 @@ impl IForm for FormLine
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
         bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)

@@ -144,7 +144,7 @@ impl IForm for FormDraw
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             const anchorSize = 8
             let anchorSize2  = anchorSize * 0.5
@@ -170,7 +170,7 @@ impl IForm for FormDraw
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z = cxt.z
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)

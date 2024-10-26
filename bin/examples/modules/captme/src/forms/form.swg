@@ -1,7 +1,7 @@
 interface IForm
 {
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags);
-    mtd paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext);
+    mtd paint(painter: *Painter, cxt: FormPaintContext);
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool;
     mtd isInside(pt: Math.Point)->bool;
     mtd hitTest(pt: Math.Point, z: f32)->bool;
@@ -82,7 +82,7 @@ impl BaseForm
         var cxt: FormPaintContext
         cxt.z       = z
         cxt.hitTest = true
-        itf.paint(null, &painter, cxt)
+        itf.paint(&painter, cxt)
 
         painter.end()
 

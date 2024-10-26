@@ -380,7 +380,7 @@ impl Capture
             var cxt: FormPaintContext
             cxt.z = zoom
             cxt.quickMode = quickMode
-            f.paint(app, painter, cxt)
+            f.paint(painter, cxt)
             painter.popTransform()
             .unbindRenderTarget()
         }

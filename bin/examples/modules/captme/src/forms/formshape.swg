@@ -137,11 +137,11 @@ impl IForm for FormShape
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.rect = boundRect() * z
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
-            gizmo.paint(painter, flags & .Selected ? false : true, col)
+            gizmo.paint(painter, !flags.has(.Selected), col)
         }
     }
 
@@ -164,7 +164,7 @@ impl IForm for FormShape
         return BaseForm.drawHitTest(self, pt, z)
     }
 
-    mtd impl paint(app: nl *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)

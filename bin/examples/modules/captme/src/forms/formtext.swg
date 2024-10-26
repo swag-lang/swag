@@ -145,10 +145,10 @@ impl IForm for FormText
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.rect = boundRect() * z
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            gizmo.paint(painter, !flags.has(.Selected))
         }
     }
 
@@ -163,7 +163,7 @@ impl IForm for FormText
         return pp.contains(pt)
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var cxtCpy = cxt
         cxtCpy.z = 1

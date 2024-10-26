@@ -331,7 +331,7 @@ impl MainWnd
                 .paintShadow      = false
                 .isReadyToCapture = true
                 .IForm.setup(capture)
-                .IForm.backCapture(getApp())
+                .IForm.backCapture()
             }
 
             undo.oldForms.add(cast(IForm) nf)
@@ -345,7 +345,7 @@ impl MainWnd
         foreach f, idx in undo.oldForms
         {
             let nf = cast(*FormImage) f
-            nf.IForm.backCaptureMask(getApp(), masks.buffer + idx)
+            nf.IForm.backCaptureMask(masks.buffer + idx)
         }
 
         undo = capture.newUndo(.DeleteSelection, serial)

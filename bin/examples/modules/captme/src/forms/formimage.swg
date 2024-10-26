@@ -208,7 +208,7 @@ impl IForm for FormImage
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
-        if flags & (.Hot | .Selected)
+        if flags.has(.Hot | .Selected)
         {
             gizmo.rect = boundRect() * z
             if mustEditInside()
@@ -216,11 +216,11 @@ impl IForm for FormImage
                 gizmo.rect.offset(freePos.x * z, freePos.y * z)
                 gizmo.rect.width  = freePos.width * z
                 gizmo.rect.height = freePos.height * z
-                gizmo.paint(painter, flags & .Selected ? false : true, Argb.Yellow)
+                gizmo.paint(painter, !flags.has(.Selected), Argb.Yellow)
             }
             else
             {
-                gizmo.paint(painter, flags & .Selected ? false : true)
+                gizmo.paint(painter, !flags.has(.Selected))
             }
         }
         else
@@ -248,9 +248,9 @@ impl IForm for FormImage
         return pp.contains(pt)
     }
 
-    mtd backCaptureMask(app: *Application, mask: *Image)
+    mtd backCaptureMask(mask: *Image)
     {
-        let renderer = app.getRenderer()
+        let renderer = g_App.getRenderer()
 
         image.visitPixels(mask)
         {
@@ -262,12 +262,12 @@ impl IForm for FormImage
         }
 
         renderer.removeTexture(&texture)
-        texture = app.getRenderer().addImage(image)
+        texture = g_App.getRenderer().addImage(image)
     }
 
-    mtd backCapture(app: *Application)
+    mtd backCapture()
     {
-        let renderer = app.getRenderer()
+        let renderer = g_App.getRenderer()
         let x1       = cast(s32) (x - capture.backImagePos.x)
         let y1       = cast(s32) (y - capture.backImagePos.y)
 
@@ -278,15 +278,15 @@ impl IForm for FormImage
             textureKind      = kind
             renderer.removeTexture(&texture)
             image   = capture.backImg.toCrop(x1, y1, w, h)
-            texture = app.getRenderer().addImage(image)
+            texture = g_App.getRenderer().addImage(image)
         }
         elif image.isValid()
         {
-            texture = app.getRenderer().addImage(image)
+            texture = g_App.getRenderer().addImage(image)
         }
     }
 
-    mtd impl paint(app: *Application, painter: *Painter, cxt: FormPaintContext)
+    mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z     = cxt.z
         let bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
@@ -295,7 +295,7 @@ impl IForm for FormImage
 
         if !cxt.quickMode
         {
-            let renderer = app.getRenderer()
+            let renderer = g_App.getRenderer()
             let x1       = cast(s32) (x - capture.backImagePos.x)
             let y1       = cast(s32) (y - capture.backImagePos.y)
 
@@ -318,7 +318,7 @@ impl IForm for FormImage
                 if !texture.isValid() or
                    textureKind != kind
                 {
-                    backCapture(app)
+                    backCapture()
                 }
 
             case Blur, Pixelate:
@@ -346,7 +346,7 @@ impl IForm for FormImage
                         let nh  = Math.max(cast(s32) (img.height / st), 4)
                         img.resize(nw, nh, .Quadratic)
                         img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
-                        texture = app.getRenderer().addImage(img)
+                        texture = g_App.getRenderer().addImage(img)
                     }
                 }
 
@@ -374,7 +374,7 @@ impl IForm for FormImage
                         let sth          = cast(s32) Math.map(cast(f32) strength, 0, 100, 1, h / ZoomFactor)
                         var img          = capture.backImg.toCrop(x1 + stw, y1 + sth, w - stw * 2, h - sth * 2)
                         img.resize(w, h, .Raw)
-                        texture = app.getRenderer().addImage(img)
+                        texture = g_App.getRenderer().addImage(img)
                     }
                 }
             }
