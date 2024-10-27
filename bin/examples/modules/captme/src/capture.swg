@@ -357,6 +357,8 @@ impl Capture
             .paintPos.width  = boundRect.width * zoom
             .paintPos.height = boundRect.height * zoom
 
+            var saveNoClipPos = .paintPos
+
             if !quickMode and !clip.isEmpty()
             {
                 if .paintPos.x >= clip.right():
@@ -492,32 +494,24 @@ impl Capture
         var srcRect = Math.Rectangle{0, 0, wt, ht}
 
         var paintRect: Math.Rectangle
-        paintRect.x      = base.paintPos.x
-        paintRect.y      = base.paintPos.y
+        paintRect.x      = base.paintPos.x + clipOffset.x
+        paintRect.y      = base.paintPos.y + clipOffset.y
         paintRect.width  = wt
         paintRect.height = ht
 
-        if base.paintShadow
-        {
-            paintRect.offset(-cast(f32) Margin)
-            paintRect.offset(base.shadowOffset.x, base.shadowOffset.y)
-        }
+        if base.paintShadow:
+            paintRect.offset(base.shadowOffset.x - Margin, base.shadowOffset.y - Margin)
 
         // Rotation
         painter.pushTransform()
-        painter.translateTransform(paintRect.horzCenter(), paintRect.vertCenter())
-        paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
-        paintRect.offset(clipOffset.x, clipOffset.y)
 
         if base.subKind != .Highlight and base.subKind != .PixSel and !Math.isZeroEpsilon(base.rotate)
         {
+            painter.translateTransform(saveNoClipPos.horzCenter(), saveNoClipPos.vertCenter())
+            paintRect.offset(-saveNoClipPos.horzCenter(), -saveNoClipPos.vertCenter())
+
             let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi)
             painter.rotateTransformInPlace(angle)
-        }
-        else
-        {
-            paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
-            paintRect.offset(clipOffset.x, clipOffset.y)
         }
 
         defer painter.popTransform()
