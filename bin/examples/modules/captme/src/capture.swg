@@ -489,7 +489,8 @@ impl Capture
         else:
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        var srcRect    = Math.Rectangle{0, 0, wt, ht}
+        var srcRect = Math.Rectangle{0, 0, wt, ht}
+
         var paintRect: Math.Rectangle
         paintRect.x      = base.paintPos.x
         paintRect.y      = base.paintPos.y
