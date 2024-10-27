@@ -343,7 +343,7 @@ impl Capture
         let render = &app.renderer
 
         var boundRect = f.boundRect()
-        boundRect.width = Math.max(boundRect.width, 1)
+        boundRect.width  = Math.max(boundRect.width, 1)
         boundRect.height = Math.max(boundRect.height, 1)
         boundRect.inflate(200)
 
@@ -358,7 +358,7 @@ impl Capture
             .paintPos.height = boundRect.height * zoom
 
             if !quickMode and !clip.isEmpty()
-            {  
+            {
                 if .paintPos.x >= clip.right():
                     return
                 if .paintPos.y >= clip.bottom():
@@ -370,7 +370,7 @@ impl Capture
                 if .paintPos.right() > clip.right():
                     .paintPos.setRight(clip.right())
                 if .paintPos.bottom() > clip.bottom():
-                    .paintPos.setBottom(clip.bottom())                                
+                    .paintPos.setBottom(clip.bottom())
             }
 
             .paintPos.width += .paintPos.x - Math.round(.paintPos.x)
@@ -395,7 +395,7 @@ impl Capture
             .pushTransform()
             .translateTransform((-boundRect.x * zoom) - clipOffset.x, (-boundRect.y * zoom) - clipOffset.y)
             var cxt: FormPaintContext
-            cxt.z = zoom
+            cxt.z         = zoom
             cxt.quickMode = quickMode
             f.paint(painter, cxt)
             .popTransform()
@@ -478,47 +478,45 @@ impl Capture
         with painter
         {
             .setShader()
-            .setAntialiased(false)           
+            .setAntialiased(false)
         }
 
         var colForm: Color
         if quickMode and base.subKind == .Highlight:
-            colForm = Argb.White            
+            colForm = Argb.White
         elif quickMode and base.subKind == .PixSel:
             colForm = Argb.White
         else:
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        var dstRect   = Math.Rectangle{0, 0, wt, ht}
-        var paintRect = dstRect
+        var srcRect    = Math.Rectangle{0, 0, wt, ht}
+        var paintRect: Math.Rectangle
+        paintRect.x      = base.paintPos.x
+        paintRect.y      = base.paintPos.y
+        paintRect.width  = wt
+        paintRect.height = ht
 
         if base.paintShadow
         {
-            paintRect.x = base.paintPos.x - Margin
-            paintRect.y = base.paintPos.y - Margin
+            paintRect.offset(-cast(f32) Margin)
             paintRect.offset(base.shadowOffset.x, base.shadowOffset.y)
         }
-        else
-        {
-            paintRect.x = base.paintPos.x
-            paintRect.y = base.paintPos.y
-        }        
 
         // Rotation
         painter.pushTransform()
         painter.translateTransform(paintRect.horzCenter(), paintRect.vertCenter())
         paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
-        paintRect.offset(clipOffset.x, clipOffset.y)            
+        paintRect.offset(clipOffset.x, clipOffset.y)
 
         if base.subKind != .Highlight and base.subKind != .PixSel and !Math.isZeroEpsilon(base.rotate)
         {
-            let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi) 
+            let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi)
             painter.rotateTransformInPlace(angle)
         }
         else
         {
             paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
-            paintRect.offset(clipOffset.x, clipOffset.y)            
+            paintRect.offset(clipOffset.x, clipOffset.y)
         }
 
         defer painter.popTransform()
@@ -528,10 +526,10 @@ impl Capture
             with painter
             {
                 .setColorMaskColor()
-                .drawTexture(paintRect, dstRect, rt1.colorBuffer, colForm)
+                .drawTexture(paintRect, srcRect, rt1.colorBuffer, colForm)
                 .setBlendingMode(.Max)
                 .setColorMaskAlpha()
-                .drawTexture(paintRect, dstRect, rt1.colorBuffer, colForm)
+                .drawTexture(paintRect, srcRect, rt1.colorBuffer, colForm)
             }
         }
         else
@@ -540,10 +538,10 @@ impl Capture
             {
                 .setColorMaskColor()
                 .setInterpolationMode(.Pixel)
-                .drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
+                .drawTexture(paintRect, srcRect, rt.colorBuffer, colForm)
                 .setBlendingMode(.Max)
                 .setColorMaskAlpha()
-                .drawTexture(paintRect, dstRect, rt.colorBuffer, colForm)
+                .drawTexture(paintRect, srcRect, rt.colorBuffer, colForm)
                 .setInterpolationMode(.Linear)
             }
         }
@@ -952,7 +950,7 @@ impl Capture
             if selection.count == 1
             {
                 let selForm = forms[selection[0]]
-                let p = cast(*BaseForm) @dataof(selForm)
+                let p       = cast(*BaseForm) @dataof(selForm)
                 if (!view.main.freezeSelection or !p.freeze) and selForm.mouse(view, localPos, evt)
                 {
                     evt.accepted = true
