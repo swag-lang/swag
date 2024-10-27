@@ -130,7 +130,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
-                paintForm(app, &painter, rect, f, zoom, snapMode: true)
+                paintForm(app, &painter, {}, rect, f, zoom, snapMode: true)
             }
         }
         else
@@ -140,7 +140,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
-                paintForm(app, &painter, rect, f, zoom, snapMode: true)
+                paintForm(app, &painter, {}, rect, f, zoom, snapMode: true)
             }
         }
 
@@ -338,15 +338,16 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
+    func paintForm(app: *Application, painter: *Painter, clip, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
         let render = &app.renderer
 
         var boundRect = f.boundRect()
         boundRect.width = Math.max(boundRect.width, 1)
         boundRect.height = Math.max(boundRect.height, 1)
-
         boundRect.inflate(200)
+
+        var clipOffset: Math.Vector2
         with let base = cast(*BaseForm) @dataof(f)
         {
             var savePaintPos = .paintPos
@@ -356,12 +357,28 @@ impl Capture
             .paintPos.width  = boundRect.width * zoom
             .paintPos.height = boundRect.height * zoom
 
+            if !quickMode and !clip.isEmpty()
+            {  
+                if .paintPos.x >= clip.right():
+                    return
+                if .paintPos.y >= clip.bottom():
+                    return
+                if .paintPos.x < clip.x:
+                    clipOffset.x = clip.x - .paintPos.x
+                if .paintPos.y < clip.y:
+                    clipOffset.y = clip.y - .paintPos.y
+                if .paintPos.right() > clip.right():
+                    .paintPos.setRight(clip.right())
+                if .paintPos.bottom() > clip.bottom():
+                    .paintPos.setBottom(clip.bottom())                                
+            }
+
             .paintPos.width += .paintPos.x - Math.round(.paintPos.x)
             .paintPos.height += .paintPos.y - Math.round(.paintPos.y)
             .paintPos.round()
 
-            let wt2 = cast(s32) .paintPos.width
-            let ht2 = cast(s32) .paintPos.height
+            let wt2 = cast(s32) (.paintPos.width - clipOffset.x)
+            let ht2 = cast(s32) (.paintPos.height - clipOffset.y)
             var wt  = wt2
             var ht  = ht2
         }
@@ -375,13 +392,13 @@ impl Capture
             .clear(Argb.Zero)
             .setColorMaskColor()
             .setBlendingMode(.Alpha)
-            painter.pushTransform()
-            painter.translateTransform(-boundRect.x * zoom, -boundRect.y * zoom)
+            .pushTransform()
+            .translateTransform((-boundRect.x * zoom) - clipOffset.x, (-boundRect.y * zoom) - clipOffset.y)
             var cxt: FormPaintContext
             cxt.z = zoom
             cxt.quickMode = quickMode
             f.paint(painter, cxt)
-            painter.popTransform()
+            .popTransform()
             .unbindRenderTarget()
         }
 
@@ -397,7 +414,7 @@ impl Capture
             rt2 = render.getRenderTarget(wt, ht)
 
             // Draw the image with a margin around
-            var srcRect = Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+            var srcRect = Math.Rectangle{0, 0, wt2, ht2}
             var dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
             with painter
             {
@@ -443,8 +460,8 @@ impl Capture
             with var imgRect = Math.Rectangle{0, 0, wt, ht}
             {
                 .offset(cast(f32) Margin)
-                .width  = base.paintPos.width
-                .height = base.paintPos.height
+                .width  = wt2
+                .height = ht2
                 .offset(-base.shadowOffset.x, -base.shadowOffset.y)
             }
 
@@ -466,7 +483,7 @@ impl Capture
 
         var colForm: Color
         if quickMode and base.subKind == .Highlight:
-            colForm = Argb.White
+            colForm = Argb.White            
         elif quickMode and base.subKind == .PixSel:
             colForm = Argb.White
         else:
@@ -490,13 +507,20 @@ impl Capture
         // Rotation
         painter.pushTransform()
         painter.translateTransform(paintRect.horzCenter(), paintRect.vertCenter())
-        if base.subKind != .Highlight and base.subKind != .PixSel
+        paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
+        paintRect.offset(clipOffset.x, clipOffset.y)            
+
+        if base.subKind != .Highlight and base.subKind != .PixSel and !Math.isZeroEpsilon(base.rotate)
         {
-            let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi)   
+            let angle = Math.map(base.rotate, -180, 180, -Math.ConstF32.Pi, Math.ConstF32.Pi) 
             painter.rotateTransformInPlace(angle)
         }
+        else
+        {
+            paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
+            paintRect.offset(clipOffset.x, clipOffset.y)            
+        }
 
-        paintRect.offset(-paintRect.horzCenter(), -paintRect.vertCenter())
         defer painter.popTransform()
 
         if base.paintShadow
@@ -591,7 +615,7 @@ impl Capture
             let pp = f.boundRect() * zoom
             if !pp.intersectWith(clip):
                 continue
-            paintForm(app, painter, rect, f, zoom)
+            paintForm(app, painter, clip, rect, f, zoom)
         }
 
         // Gizmos
