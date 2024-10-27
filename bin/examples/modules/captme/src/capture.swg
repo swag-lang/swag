@@ -502,6 +502,7 @@ impl Capture
         if base.paintShadow:
             paintRect.offset(base.shadowOffset.x - Margin, base.shadowOffset.y - Margin)
 
+
         // Rotation
         painter.pushTransform()
 
@@ -605,10 +606,21 @@ impl Capture
         let app = editView.getApp()
         foreach f in forms
         {
-            let pp = f.boundRect() * zoom
+            var pp = f.boundRect() * zoom
             if !pp.intersectWith(clip):
                 continue
-            paintForm(app, painter, clip, rect, f, zoom)
+
+            if f.mustClipToBound()
+            {
+                pp.offset(rect.x, rect.y)
+                painter.pushClippingRect(pp)            
+                paintForm(app, painter, clip, rect, f, zoom)
+                painter.popClippingRect()
+            }
+            else
+            {      
+                paintForm(app, painter, clip, rect, f, zoom)          
+            }
         }
 
         // Gizmos

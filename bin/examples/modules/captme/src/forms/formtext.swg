@@ -80,6 +80,11 @@ impl IForm for FormText
         dstf.scale       = srcf.scale
     }
 
+    mtd impl mustClipToBound()->bool 
+    { 
+        return true 
+    }
+
     mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         let xa = cast(s32) (movingStart.x / zoom)

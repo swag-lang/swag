@@ -14,6 +14,7 @@ interface IForm
     mtd setup(capt: nl *Capture);
     mtd isSame(ptr: *BaseForm)->bool;
     mtd copy(dst, src: *BaseForm);
+    mtd mustClipToBound()->bool { return false; }
 }
 
 struct FormPaintContext
