@@ -193,6 +193,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 
             if (front->isGeneratedSelf())
             {
+                if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL | AstFuncDecl::SPEC_FLAG_DEFAULT_IMPL))
+                    continue;
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
                 Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
                 err.hint = toNte(Nte0157);

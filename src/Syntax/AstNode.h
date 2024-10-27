@@ -734,7 +734,8 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_CHECK_ATTR           = 0x0800;
     static constexpr SpecFlags SPEC_FLAG_IS_LAMBDA_EXPRESSION = 0x1000;
     static constexpr SpecFlags SPEC_FLAG_IMPL                 = 0x2000;
-    static constexpr SpecFlags SPEC_FLAG_METHOD               = 0x4000;
+    static constexpr SpecFlags SPEC_FLAG_DEFAULT_IMPL         = 0x4000;
+    static constexpr SpecFlags SPEC_FLAG_METHOD               = 0x8000;
 
     ~           AstFuncDecl();
     AstNode*    clone(CloneContext& context);
