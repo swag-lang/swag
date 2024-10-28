@@ -90,13 +90,13 @@ impl IActionUI for ActionFile
 
         case CmdIdCaptureFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
-            evt.name     = "Open Capture File Location"
+            evt.name     = "Locate Capture File"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.OpenFile)
 
         case CmdIdLinkedFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
-            evt.name     = "Open Linked Image Location"
+            evt.name     = "Locate Linked Image"
             evt.disabled = !capture or capture.linkedImage.isEmpty()
             evt.icon     = main.getTheme().getIcon24(.Link)
 
