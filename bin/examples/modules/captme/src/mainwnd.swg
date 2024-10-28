@@ -55,7 +55,7 @@ struct MainWnd
     editMode:           EditMode = .Shape
     bottomSize:         BottomSize = Medium
     snap:               bool
-    freezeSelection:    bool
+    freezeSel:          bool
     libraryMode:        bool
     fileDlgState:       FileDlgState
 
@@ -229,6 +229,35 @@ impl MainWnd
         return editMode
     }
 
+    mtd freezeSelection(freeze: bool)
+    {        
+        if !freeze and embInfoFreeze
+        {
+            embInfoFreeze.destroy()
+            embInfoFreeze = null
+            freezeSel = false
+        }
+        elif freeze and !embInfoFreeze
+        {
+            embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
+            embInfoFreeze.sigOnClose += func|self|(ctrl)
+            { 
+                self.freezeSel = false                   
+            } 
+
+            let capture = getCapture()
+            capture.selection.clear()
+            capture.selectionHasChanged()
+            freezeSel = true
+
+            foreach it in capture.forms
+            {
+                let p = cast(*BaseForm) @dataof(it)
+                p.freeze = true
+            }  
+        }                            
+    }
+
     mtd updateState()
     {
         updateCommandState()
@@ -300,8 +329,8 @@ impl MainWnd
         registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
         registerKeyShortcut(.Control, .Z, CmdIdUndo)
         registerKeyShortcut(.Control, .Y, CmdIdRedo)
-        registerKeyShortcut(.CtrlShift, .F, CmdIdBringForward)
-        registerKeyShortcut(.CtrlShift, .B, CmdIdSendBackward)
+        registerKeyShortcut(.CtrlShift, .F, CmdIdSendToFront)
+        registerKeyShortcut(.CtrlShift, .B, CmdIdSendToBack)
         registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
         registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
         registerKeyShortcut(.Control, .Space, CmdIdFreeze)

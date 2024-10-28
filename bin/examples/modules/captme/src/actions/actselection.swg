@@ -58,7 +58,7 @@ impl IActionUI for ActionSelection
         case CmdIdFreeze:
             evt.setFlags |= .Name | .Checked | .Name
             evt.name    = "Freeze Selection"
-            evt.checked = main.freezeSelection            
+            evt.checked = main.freezeSel            
         }
 
         return true
@@ -95,29 +95,10 @@ impl IActionUI for ActionSelection
             main.snap = !main.snap
 
         case CmdIdFreeze:
-            if main.freezeSelection
-            {
-                main.embInfoFreeze.destroy()
-                main.embInfoFreeze = null
-                main.freezeSelection = false
-            }
-            else
-            {  
-                main.embInfoFreeze = EmbInfoCtrl.create(main.editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
-                main.embInfoFreeze.sigOnClose += func|main|(ctrl)
-                { 
-                    main.freezeSelection = false                   
-                }
-
-                capture.selection.clear()
-                capture.selectionHasChanged()
-                main.freezeSelection = true
-                foreach it in capture.forms
-                {
-                    let p = cast(*BaseForm) @dataof(it)
-                    p.freeze = true
-                }                              
-            }
+            if main.freezeSel:
+                main.freezeSelection(false)
+            else:
+                main.freezeSelection(true)
         }
 
         return true

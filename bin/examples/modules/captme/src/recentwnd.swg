@@ -54,6 +54,7 @@ impl RecentView
                 view.zoomToFit(false)
             else:
                 view.setZoom(item.zoom)
+            view.main.freezeSelection(false)
             invalidate()
         }
     }

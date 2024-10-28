@@ -908,10 +908,10 @@ impl Capture
 
         with let popup1 = MenuCtrl.createPopup(view)
         {
-            .addItem(CmdIdBringToFront)
+            .addItem(CmdIdSendToFront)
             .addItem(CmdIdSendToBack)
-            .addItem(CmdIdBringForward)
-            .addItem(CmdIdSendBackward)
+            .addItem(CmdIdMoveForward)
+            .addItem(CmdIdMoveBackward)
             menu.addPopup("Arrange", popup1)
         }
 
@@ -958,7 +958,7 @@ impl Capture
             {
                 let selForm = forms[selection[0]]
                 let p       = cast(*BaseForm) @dataof(selForm)
-                if (!view.main.freezeSelection or !p.freeze) and selForm.mouse(view, localPos, evt)
+                if (!view.main.freezeSel or !p.freeze) and selForm.mouse(view, localPos, evt)
                 {
                     evt.accepted = true
                     if evt.kind != .MouseLeave:
@@ -989,7 +989,7 @@ impl Capture
                 if ht != Swag.U64.Max
                 {
                     let p = cast(*BaseForm) @dataof(forms[ht])
-                    if view.main.freezeSelection and p.freeze:
+                    if view.main.freezeSel and p.freeze:
                         ht = Swag.U64.Max
                 }
 
