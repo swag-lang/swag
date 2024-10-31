@@ -100,22 +100,21 @@ impl IWnd for SurfaceWnd
             if !movingSurface and surface.flags.has(.Sizeable)
             {
                 let newSizingBorder = hitTestBorders(evt.surfacePos)
-                if newSizingBorder != sizingBorder
-                {
+                if newSizingBorder != sizingBorder:
                     sizingBorder = newSizingBorder
-                    switch newSizingBorder
-                    {
-                    case Left, Right:
-                        surface.app.setFrameCursor(Cursor.from(.SizeWE))
-                    case Top, Bottom:
-                        surface.app.setFrameCursor(Cursor.from(.SizeNS))
-                    case Right | Bottom, Left | Top:
-                        surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
-                    case Right | Top, Left | Bottom:
-                        surface.app.setFrameCursor(Cursor.from(.SizeNESW))
-                    }
-                }
             }
+
+            switch sizingBorder
+            {
+            case Left, Right:
+                surface.app.setFrameCursor(Cursor.from(.SizeWE))
+            case Top, Bottom:
+                surface.app.setFrameCursor(Cursor.from(.SizeNS))
+            case Right | Bottom, Left | Top:
+                surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
+            case Right | Top, Left | Bottom:
+                surface.app.setFrameCursor(Cursor.from(.SizeNESW))
+            }            
 
             if !movingSurface:
                 break
