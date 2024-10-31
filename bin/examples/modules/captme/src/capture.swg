@@ -463,7 +463,7 @@ impl Capture
                 .offset(cast(f32) Margin)
                 .width  = wt2
                 .height = ht2
-                .offset(-base.shadowOffset.x, -base.shadowOffset.y)
+                .offset(-base.shadowOffsetX, -base.shadowOffsetY)
             }
 
             with painter
@@ -499,8 +499,7 @@ impl Capture
         paintRect.height = ht
 
         if base.paintShadow:
-            paintRect.offset(base.shadowOffset.x - Margin, base.shadowOffset.y - Margin)
-
+            paintRect.offset(base.shadowOffsetX - Margin, base.shadowOffsetY - Margin)
 
         // Rotation
         painter.pushTransform()

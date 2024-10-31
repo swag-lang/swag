@@ -1060,7 +1060,48 @@ impl PropWnd
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
         }
-    }      
+    }     
+
+    mtd propShadow()
+    {
+        let curSel = getSelectedBaseForm()
+        if curSel.subKind == .PixSel:
+            return          
+
+        let ctrl = ComboCtrl.create(mainLayout, "Shadow")
+        ctrl.comboSize = 210
+        with ctrl.combo
+        {
+            .addItem("No Shadow")
+            .addItem("Small")
+            .selectItem(curSel.paintShadow ? 1 : 0)
+            .sigChanged += func|self|(combo, val)
+            {
+                var b = val == 1 ? true : false
+                self.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.paintShadow), true, true)
+            }
+        }
+
+        let slideX = createSlider("Offset X", -100, 100, cast() curSel.shadowOffsetX)
+        slideX.slider.sigStartChange += func|self|(sliderX)
+        {
+            self.pushTypedValue(cast<bit>(u32) sliderX.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetX), true, true)
+        }
+        slideX.slider.sigChanged += func|self|(sliderX)
+        {
+            self.pushTypedValue(cast<bit>(u32) sliderX.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetX), false, true)
+        }        
+
+        let sliderY = createSlider("Offset Y", -100, 100, cast() curSel.shadowOffsetY)
+        sliderY.slider.sigStartChange += func|self|(sliderY)
+        {
+            self.pushTypedValue(cast<bit>(u32) sliderY.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetY), true, true)
+        }
+        sliderY.slider.sigChanged += func|self|(sliderY)
+        {
+            self.pushTypedValue(cast<bit>(u32) sliderY.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetY), false, true)
+        }         
+    }         
 
     mtd propSmooth()
     {
@@ -1195,27 +1236,6 @@ impl PropWnd
             {
                 var v = val + 1
                 self.pushTypedValue(cast() v, BaseForm, #nameof(BaseForm.joinStyle), true, true)
-            }
-        }
-    }
-
-    mtd propShadow()
-    {
-        let curSel = getSelectedBaseForm()
-        if curSel.subKind == .PixSel:
-            return
-
-        let ctrl = ComboCtrl.create(mainLayout, "Shadow")
-        ctrl.comboSize = 210
-        with ctrl.combo
-        {
-            .addItem("No Shadow")
-            .addItem("Small")
-            .selectItem(curSel.paintShadow ? 1 : 0)
-            .sigChanged += func|self|(combo, val)
-            {
-                var b = val == 1 ? true : false
-                self.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.paintShadow), true, true)
             }
         }
     }

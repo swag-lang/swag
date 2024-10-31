@@ -45,7 +45,8 @@ struct BaseForm
     w, h:                s32 = 32
 
     alpha:               u8 = 100
-    shadowOffset:        Math.Vector2 = {2, 2}
+    shadowOffsetX:       f32 = 2
+    shadowOffsetY:       f32 = 2
     borderSize:          f32 = 5
     borderColor:         Color = Argb.White
     backColor:           Color = Argb.Red
