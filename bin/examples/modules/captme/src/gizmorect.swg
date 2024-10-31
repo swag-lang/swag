@@ -47,7 +47,6 @@ impl GizmoRect
                 {
                     moving, firstMoving = false
                     hotAnchor = Swag.U32.Max
-                    view.getApp().popCursor()
                     view.releaseMouse()
                     if !trackChange and sigChanged:
                         sigChanged(self, false, 0)
@@ -59,7 +58,6 @@ impl GizmoRect
         case MouseLeave:
             if hotAnchor != Swag.U32.Max
             {
-                view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
                 return true
             }
@@ -155,31 +153,31 @@ impl GizmoRect
 
                 if trackChange and sigChanged:
                     sigChanged(self, false, hitMove)
-                return true
             }
             else
             {
-                if hotAnchor != Swag.U32.Max:
-                    view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
                 foreach c, i in anchors where c.contains(pos)
                 {
-                    switch i
-                    {
-                    case 0, 7:
-                        view.getApp().pushCursor(Cursor.from(.SizeNWSE))
-                    case 1, 6:
-                        view.getApp().pushCursor(Cursor.from(.SizeNS))
-                    case 2, 5:
-                        view.getApp().pushCursor(Cursor.from(.SizeNESW))
-                    case 3, 4:
-                        view.getApp().pushCursor(Cursor.from(.SizeWE))
-                    }
-
                     hotAnchor = i
-                    return true
+                    break
                 }
             }
+
+            switch hotAnchor
+            {                
+                case 0, 7:
+                    view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
+                case 1, 6:
+                    view.getApp().setFrameCursor(Cursor.from(.SizeNS))
+                case 2, 5:
+                    view.getApp().setFrameCursor(Cursor.from(.SizeNESW))
+                case 3, 4:
+                    view.getApp().setFrameCursor(Cursor.from(.SizeWE))
+            }
+
+            if hotAnchor != Swag.U32.Max:
+                return true
         }
 
         return false

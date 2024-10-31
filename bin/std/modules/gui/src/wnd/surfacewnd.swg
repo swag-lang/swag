@@ -19,7 +19,6 @@ public struct SurfaceWnd
     closeBtn:          *IconButton
     movingSurface:     bool
     sizingBorder:      SizingBorder = Zero
-    cursorSet:         bool
 }
 
 impl IWnd for SurfaceWnd
@@ -83,21 +82,10 @@ impl IWnd for SurfaceWnd
 
         case MouseLeave:
             sizingBorder = .Zero
-            if cursorSet
-            {
-                cursorSet = false
-                surface.app.popCursor()
-            }
 
         case MouseReleased:
             if evt.button != .Left:
                 break
-
-            if cursorSet
-            {
-                cursorSet = false
-                surface.app.popCursor()
-            }
 
             releaseMouse()
             movingSurface = false
@@ -115,33 +103,18 @@ impl IWnd for SurfaceWnd
                 if newSizingBorder != sizingBorder
                 {
                     sizingBorder = newSizingBorder
-                    if cursorSet
-                    {
-                        cursorSet = false
-                        surface.app.popCursor()
-                    }
-
                     switch newSizingBorder
                     {
                     case Left, Right:
-                        cursorSet = true
-                        surface.app.pushCursor(Cursor.from(.SizeWE))
+                        surface.app.setFrameCursor(Cursor.from(.SizeWE))
                     case Top, Bottom:
-                        cursorSet = true
-                        surface.app.pushCursor(Cursor.from(.SizeNS))
+                        surface.app.setFrameCursor(Cursor.from(.SizeNS))
                     case Right | Bottom, Left | Top:
-                        cursorSet = true
-                        surface.app.pushCursor(Cursor.from(.SizeNWSE))
+                        surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
                     case Right | Top, Left | Bottom:
-                        cursorSet = true
-                        surface.app.pushCursor(Cursor.from(.SizeNESW))
+                        surface.app.setFrameCursor(Cursor.from(.SizeNESW))
                     }
                 }
-            }
-            elif !movingSurface and cursorSet
-            {
-                cursorSet = false
-                surface.app.popCursor()
             }
 
             if !movingSurface:

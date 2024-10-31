@@ -29,4 +29,16 @@ impl Cursor
     {
         apply(Cursor.from(CursorShape.Wait))
     }
+
+    // Returns true if the cursor is defined
+    mtd isValid()->bool
+    {
+        return native.cursor != null
+    }
+
+    // Destroy the cursor
+    mtd destroy()
+    {     
+        native.cursor = null   
+    }
 }

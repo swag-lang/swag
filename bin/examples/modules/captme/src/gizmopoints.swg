@@ -34,7 +34,6 @@ impl GizmoPoints
             {
                 moving, firstMoving = false
                 hotAnchor = Swag.U32.Max
-                view.getApp().popCursor()
                 view.releaseMouse()
                 return true
             }
@@ -48,12 +47,9 @@ impl GizmoPoints
                 firstMoving = false
                 if sigChanged:
                     sigChanged(diff, hotAnchor, false)
-                return true
             }
             else
             {
-                if hotAnchor != Swag.U32.Max:
-                    view.getApp().popCursor()
                 hotAnchor = Swag.U32.Max
 
                 var rect: Math.Rectangle = undefined
@@ -64,11 +60,17 @@ impl GizmoPoints
                     rect.width, rect.height = anchorSize
                     if rect.contains(pos)
                     {
-                        view.getApp().pushCursor(Cursor.from(.SizeNWSE))
+                        
                         hotAnchor = cast(u32) i
-                        return true
+                        break
                     }
                 }
+            }
+
+            if hotAnchor != Swag.U32.Max
+            {
+                view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
+                return true
             }
         }
 

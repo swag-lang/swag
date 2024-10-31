@@ -56,12 +56,11 @@ impl IWnd for Label
                 if chunk
                 {
                     chunk.isHotUrl = true
-                    getApp().pushCursor(Cursor.from(.Hand))
+                    getApp().setFrameCursor(Cursor.from(.Hand))
                 }
                 elif hotChunk
                 {
                     hotChunk.isHotUrl = false
-                    getApp().popCursor()
                 }
 
                 hotChunk = chunk
@@ -72,7 +71,6 @@ impl IWnd for Label
             {
                 hotChunk.isHotUrl = false
                 hotChunk          = null
-                getApp().popCursor()
                 invalidate()
             }
         }

@@ -283,14 +283,7 @@ internal impl Properties
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
 
-            if prop.cursorSet and !prop.resizingColumn
-            {
-                prop.cursorSet = false
-                prop.getApp().popCursor()
-                prop.invalidate()
-            }
-
-        case MouseEvent as mouseEvt where mouseEvt.kind == .MouseMove:
+        case MouseEvent as mouseEvt where (mouseEvt.kind == .MouseMove or mouseEvt.kind == .MouseSetCursor):
             var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             // Resize of the grid column
@@ -321,15 +314,13 @@ internal impl Properties
                 let x = prop.getColumnX()
                 if pt.x >= x - 3 and pt.x <= x + 3 and hit and !hit.flags.has(.NoSeparator)
                 {
-                    if !prop.cursorSet:
-                        prop.getApp().pushCursor(Cursor.from(.SizeWE))
+                    prop.getApp().setFrameCursor(Cursor.from(.SizeWE))
                     prop.cursorSet = true
                     prop.invalidate()
                 }
                 elif prop.cursorSet
                 {
                     prop.cursorSet = false
-                    prop.getApp().popCursor()
                     prop.invalidate()
                 }
             }

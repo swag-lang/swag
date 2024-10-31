@@ -204,6 +204,7 @@ struct MouseEvent
         MouseEnter
         MouseLeave
         MouseWheel
+        MouseSetCursor
     }
 
     using base:     Event

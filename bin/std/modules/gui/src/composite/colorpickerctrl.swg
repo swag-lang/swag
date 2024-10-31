@@ -176,7 +176,7 @@ impl ColorPickerCtrl
             picker.sigPressed += func|v|(cb)
             {
                 var app = cb.getApp()
-                app.pushCursor(Cursor.from(.Cross))
+                app.setFrameCursor(Cursor.from(.Cross))
 
                 var save  = v.getColor()
                 var sfade = app.fadeDisabledSurface
@@ -198,7 +198,6 @@ impl ColorPickerCtrl
                 })
 
                 app.fadeDisabledSurface = sfade
-                app.popCursor()
             }
 
             .pickBox.sigChanged += func|v|(cb)

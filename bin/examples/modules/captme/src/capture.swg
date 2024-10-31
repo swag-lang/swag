@@ -53,7 +53,6 @@ struct Capture
         lastSelectPos:         Math.Point
         lastSelectHit:         u64
         firstMouseMove:        bool
-        movingCursorSet:       bool
         dirtyBackImg:          bool
         drawSelRect:           bool
     }
@@ -969,12 +968,6 @@ impl Capture
             // Popup
             if evt.kind == .MousePressed and evt.button == .Right
             {
-                if movingCursorSet
-                {
-                    movingCursorSet = false
-                    app.popCursor()
-                }
-
                 popupMenu(view, evt.surfacePos)
                 return true
             }
@@ -999,21 +992,10 @@ impl Capture
                     hotForm = ht
                 }
             }
-
-            if hotForm != Swag.U64.Max
-            {
-                if !movingCursorSet
-                {
-                    movingCursorSet = true
-                    app.pushCursor(Cursor.from(.SizeAll))
-                }
-            }
-            elif movingCursorSet
-            {
-                movingCursorSet = false
-                app.popCursor()
-            }
         }
+
+        if hotForm != Swag.U64.Max:
+            app.setFrameCursor(Cursor.from(.SizeAll))
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
@@ -1102,12 +1084,6 @@ impl Capture
                 mouseMode   = .None
                 drawSelRect = false
                 view.main.updateState()
-            }
-
-            if mouseMode == .Moving and hotForm == Swag.U64.Max
-            {
-                app.popCursor()
-                movingCursorSet = false
             }
 
             if mouseMode == .Moving or firstMouseMove

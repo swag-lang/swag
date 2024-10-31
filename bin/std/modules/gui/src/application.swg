@@ -20,7 +20,7 @@ struct Application
     surfaces:               Array'(*Surface)
     postDestroy:            Array'(*Wnd)
     hookOnEvent:            Array'(*Wnd)
-    cursorStack:            Array'(Cursor)
+    frameCursor:            Cursor
     endModalExit:           WndId
     inModalLoop:            u32
     quitCode:               s32
@@ -172,22 +172,29 @@ internal impl Application
             mouseEnterWnd = targetWnd
         }
 
-        changeCursor(targetWnd)
-        if !targetWnd:
-            return
-
-        evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.modifiers  = keyb.getPressedModifiers()
 
         // Move
-        var move = mouse.getMove()
-        if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5
+        if targetWnd
         {
+            var move = mouse.getMove()
+            evt.surfacePos = targetWnd.screenToSurface(mousePos)
             evt.kind = .MouseMove
             evt.move = move
             targetWnd.sendEvent(&evt)
-            ToolTip.resetTimer(evt.surfacePos)
+            if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5:
+                ToolTip.resetTimer(evt.surfacePos)
         }
+
+        if frameCursor.isValid():
+            Cursor.apply(frameCursor)
+        elif targetWnd and targetWnd.cursor.isValid():
+            Cursor.apply(targetWnd.cursor)
+        else:
+            Cursor.apply(Cursor.from(CursorShape.Arrow))
+        frameCursor.destroy()
+        if !targetWnd:
+            return
 
         // Detect changes
         for i in mouse.previousState.pressed
@@ -786,25 +793,9 @@ impl Application
     }
 
     // Push a new mouse cursor
-    mtd pushCursor(cursor: Cursor)
+    mtd setFrameCursor(cursor: Cursor)
     {
-        cursorStack.add(cursor)
-    }
-
-    // Pop a new mouse cursor
-    mtd popCursor()
-    {
-        cursorStack.removeBack()
-    }
-
-    internal mtd changeCursor(wnd: *Wnd)
-    {
-        if cursorStack.count:
-            Cursor.apply(cursorStack.back())
-        elif wnd and wnd.cursor.native.cursor != null:
-            Cursor.apply(wnd.cursor)
-        else:
-            Cursor.apply(Cursor.from(CursorShape.Arrow))
+        frameCursor = cursor
     }
 
     // Run until exit
