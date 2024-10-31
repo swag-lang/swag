@@ -175,14 +175,14 @@ impl ColorPickerCtrl
 
             picker.sigPressed += func|v|(cb)
             {
-                var app = cb.getApp()
-                app.setFrameCursor(Cursor.from(.Cross))
-
+                var app   = cb.getApp()
                 var save  = v.getColor()
                 var sfade = app.fadeDisabledSurface
                 app.fadeDisabledSurface = false
                 discard app.doModalLoop(null, func|v, save|(app)
                 {
+                    app.setFrameCursor(Cursor.from(.Cross))
+
                     if app.mouse.isButtonPressed(.Right)
                     {
                         v.setColor(save)
