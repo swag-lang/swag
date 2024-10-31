@@ -94,6 +94,7 @@ impl IWnd for LibraryView
             let item = &items[focusItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true, linked: item.capture.linkedImage)
+            mainWnd.recentWnd.setScrollPos(0, 0)
             mainWnd.swapLibraryMode()
             mainWnd.updateState()
         }
