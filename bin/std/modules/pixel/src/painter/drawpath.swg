@@ -105,6 +105,47 @@ impl Painter
         return Math.Vector2.Zero
     }
 
+    mtd drawCapArrowAnchor2(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
+    {
+        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
+        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx2 = sx * sy * 2
+
+        var p = p1
+        let d = d1 * sx
+        let n = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
+        let n1 = n.toNormalize()
+        p -= n
+
+        {
+            let v0    = Math.Vector2{p.x + d.x - n1.x * sx2, p.y + d.y - n1.y * sx2}
+            let v1    = Math.Vector2{p.x, p.y}
+            let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
+            let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
+
+            if curState.paintParams & .Antialiased
+            {
+                addEdgeAA(prim1, v0, v2)
+                addEdgeAA(prim1, v0, v1)
+            }
+        }
+
+        {
+            let v0    = Math.Vector2{p.x - d.x - n1.x * sx2, p.y - d.y - n1.y * sx2}
+            let v1    = Math.Vector2{p.x, p.y}
+            let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
+            let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
+
+            if curState.paintParams & .Antialiased
+            {
+                addEdgeAA(prim1, v0, v2)
+                addEdgeAA(prim1, v0, v1)
+            }
+        }        
+
+        return n - n.toNormalizeSafe()
+    }
+
     mtd drawCapArrowAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
         let sx = start ? pen.capStartScaleX : pen.capEndScaleX
@@ -181,6 +222,9 @@ impl Painter
 
         case ArrowAnchor:
             return drawCapArrowAnchor(p, d, sens, pen, start)
+
+        case ArrowAnchor2:
+            return drawCapArrowAnchor2(p, d, sens, pen, start)
 
         case RoundAnchor:
             return drawCapRoundAnchor(p, d, pen, start)
@@ -781,6 +825,8 @@ public impl Painter
         case Square:
             return {lineSize * 0.5, lineSize * 0.5}
         case ArrowAnchor:
+            return {lineSize * 0.5 * capScale, 0}
+        case ArrowAnchor2:
             return {lineSize * 0.5 * capScale, 0}
         case SquareAnchor:
             return {lineSize * 0.5 * capScale, lineSize * 0.5 * capScale}

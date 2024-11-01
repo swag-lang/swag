@@ -8,6 +8,7 @@ enum LineCapStyle
     Round
     Square
     ArrowAnchor
+    ArrowAnchor2
     SquareAnchor
     RoundAnchor
 }
