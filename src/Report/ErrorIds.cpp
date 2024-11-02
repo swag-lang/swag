@@ -988,7 +988,7 @@ void initErrors()
     SWAG_ERROR(Nte0051, "consider using [[//]] to start a line comment");
     SWAG_ERROR(Nte0052, "consider using [[?]] to unpack and discard a variable");
     SWAG_ERROR(Nte0053, "consider using [[#decltype]] to retrieve the type of an expression");
-    SWAG_ERROR(Nte0054, "consider using [[const Value = #include \"path\"]] to embed an external file in a constant byte array");
+    SWAG_ERROR(Nte0054, "consider using [[const Value = #include(\"path\")]] to embed an external file in a constant byte array");
     SWAG_ERROR(Nte0055, "consider using [[func(]] or [[closure(]] to declare a lambda type");
     SWAG_ERROR(Nte0056, "consider using [[func]] instead of [[mtd]] to avoid the implicit [[self]] parameter.");
     SWAG_ERROR(Nte0057, "consider using [[func]] to declare a function");
