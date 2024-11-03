@@ -43,6 +43,7 @@ struct ScreenshotWnd
     using wnd:        Wnd
 
     startGrab:        bool
+    cancelGrag:       bool
     tryStartGrab:     bool
     autoGrab:         bool
     lerpGrab:         Math.Rectangle
@@ -95,12 +96,20 @@ impl IWnd for ScreenshotWnd
         switch evt.kind
         {
         case MousePressed where evt.button == .Right:
-            g_Exit = true
+            startGrab = false
+            tryStartGrab = false
+            cancelGrag = true
 
         case MousePressed where evt.button == .Left:
             tryStartGrab = true
 
         case MouseReleased where evt.button == .Left:
+            if cancelGrag
+            {
+                cancelGrag = false
+                break
+            }
+
             g_GrabDone = startGrab or autoGrab
             g_Exit = true
 

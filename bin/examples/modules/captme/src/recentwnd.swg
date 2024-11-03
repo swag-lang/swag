@@ -373,8 +373,11 @@ impl RecentWnd
         if front
         {
             recentView.items.insertAt(0, item)
-            if sel:
+            if sel
+            {
                 recentView.select(0, force: true)
+                setScrollPos(0, 0)
+            }
         }
         else
         {
