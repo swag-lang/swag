@@ -3,6 +3,9 @@ using Gui
 const CmdIdRecentSmall  = "CmdIdRecentSmall"
 const CmdIdRecentMedium = "CmdIdRecentMedium"
 const CmdIdRecentBig    = "CmdIdRecentBig"
+const CmdIdLibSmall     = "CmdIdLibSmall"
+const CmdIdLibMedium    = "CmdIdLibMedium"
+const CmdIdLibBig       = "CmdIdLibBig"
 
 struct ActionRecentSize {}
 impl IActionUI for ActionRecentSize
@@ -13,6 +16,8 @@ impl IActionUI for ActionRecentSize
         {
         case CmdIdRecentSmall, CmdIdRecentMedium, CmdIdRecentBig:
             return true
+        case CmdIdLibSmall, CmdIdLibMedium, CmdIdLibBig:
+            return true            
         }
 
         return false
@@ -41,6 +46,22 @@ impl IActionUI for ActionRecentSize
             evt.toolTip = "Big recent view"
             evt.checked = main.bottomSize == .Big
             evt.icon    = Icon.from(&main.icons24, 2)
+
+        case CmdIdLibSmall:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Small view"
+            evt.checked = main.libWnd.previewSize == .Small
+
+        case CmdIdLibMedium:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Medium view"
+            evt.checked = main.libWnd.previewSize == .Medium
+
+        case CmdIdLibBig:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Big view"
+            evt.checked = main.libWnd.previewSize == .Big
+      
         }
 
         return true
@@ -60,6 +81,15 @@ impl IActionUI for ActionRecentSize
 
         case CmdIdRecentBig:
             main.setBottomSize(.Big)
+
+        case CmdIdLibSmall:
+            main.libWnd.setPreviewSize(.Small)
+
+        case CmdIdLibMedium:
+            main.libWnd.setPreviewSize(.Medium)
+
+        case CmdIdLibBig:
+            main.libWnd.setPreviewSize(.Big)   
         }
 
         return true

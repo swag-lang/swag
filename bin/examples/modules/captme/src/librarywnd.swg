@@ -1,5 +1,12 @@
 using Threading, Time
 
+enum PreviewSize
+{
+    Small
+    Medium
+    Big
+}
+
 struct LibraryWnd
 {
     using wnd:     Wnd
@@ -7,6 +14,9 @@ struct LibraryWnd
     main:          *MainWnd
     view:          *LibraryView
     listCtrl:      *ListCtrl
+    editZoomBar:   *Wnd
+    zoomBtn:       *IconButton
+    previewSize:    PreviewSize
 }
 
 struct LibraryItem
@@ -126,8 +136,21 @@ impl IWnd for LibraryView
         loaded.clear()
         mutexLoaded.unlock()
 
-        const H      = 128.0
-        const W      = H * 4.0 / 3.0
+        var H: f32 = 128.0
+        var W: f32 = 0
+        switch libWnd.previewSize
+        {
+        case Small:  
+            H = 128
+            W = H * 4.0 / 3.0
+        case Medium: 
+            H = 256
+            W = H * 4.0 / 3.0
+        case Big:    
+            H = 512
+            W = H * 4.0 / 3.0
+        }
+
         const Margin = 8.0
 
         foreach &it, i in items
@@ -271,6 +294,12 @@ impl LibraryView
 
 impl LibraryWnd
 {
+    mtd setPreviewSize(size: PreviewSize)
+    {
+        previewSize = size
+        invalidate()
+    }
+
     mtd getCapture()->nl *Capture
     {
         if view.focusItem < view.items.count:
@@ -467,6 +496,33 @@ impl LibraryWnd
             }
         }
         res.listCtrl = list
+
+        // Bottom bar
+        with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, {0, 0, 300, 32})
+        {
+            .dockStyle       = .Bottom
+            .backgroundStyle = .Window
+        }
+
+        var ic = res.getTheme().getIcon24(.Search, 20)
+        with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
+        {
+            .iconBtnFlags.add(.Center)
+            .textPos  = .Right
+            .arrowPos = .RightUp
+            .sigPressed += func|res|(btn)
+            {
+                var pos  = btn.getSurfaceRect()
+                with var menu = MenuCtrl.createPopup(res)
+                {
+                    .menuCtrlFlags |= .NoKeyShortcuts
+                    .addItem(CmdIdLibSmall)
+                    .addItem(CmdIdLibMedium)
+                    .addItem(CmdIdLibBig)
+                }
+                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+            }
+        }        
 
         return res
     }
