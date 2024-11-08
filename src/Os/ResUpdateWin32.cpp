@@ -454,12 +454,12 @@ bool ResUpdateWin32::load(const WCHAR* filename)
 
     this->filename = filename;
 
-    EnumResourceNamesW(module, RT_STRING, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    EnumResourceNamesW(module, RT_VERSION, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
+    //EnumResourceNamesW(module, RT_STRING, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
+    //EnumResourceNamesW(module, RT_VERSION, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
     EnumResourceNamesW(module, RT_GROUP_ICON, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
     EnumResourceNamesW(module, RT_ICON, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    EnumResourceNamesW(module, RT_MANIFEST, onEnumResourceManifest, reinterpret_cast<LONG_PTR>(this));
-    EnumResourceNamesW(module, RT_RCDATA, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
+    //EnumResourceNamesW(module, RT_MANIFEST, onEnumResourceManifest, reinterpret_cast<LONG_PTR>(this));
+    //EnumResourceNamesW(module, RT_RCDATA, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
 
     return true;
 }
@@ -1065,7 +1065,7 @@ BOOL CALLBACK ResUpdateWin32::onEnumResourceLanguage(HANDLE hModule, LPCWSTR lps
 // static
 BOOL CALLBACK ResUpdateWin32::onEnumResourceName(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam)
 {
-    EnumResourceLanguagesW(hModule, lpszType, lpszName, (ENUMRESLANGPROCW) onEnumResourceLanguage, lParam);
+    EnumResourceLanguagesW(hModule, lpszType, lpszName, reinterpret_cast<ENUMRESLANGPROCW>(onEnumResourceLanguage), lParam);
     return TRUE;
 }
 
