@@ -57,6 +57,13 @@ impl IWnd for LibraryView
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
+        if evt.kind == .MouseLeave
+        {
+            hotItem = Swag.U32.Max
+            invalidate()
+            return
+        }
+
         if evt.kind == .MouseWheel:
             evt.accepted = false
 
@@ -297,6 +304,16 @@ impl LibraryWnd
     mtd setPreviewSize(size: PreviewSize)
     {
         previewSize = size
+        switch size
+        {
+        case Small:
+            zoomBtn.name.set("small")
+        case Medium:
+            zoomBtn.name.set("medium")            
+        case Big:
+            zoomBtn.name.set("big")            
+        }
+
         invalidate()
     }
 
@@ -524,6 +541,7 @@ impl LibraryWnd
             }
         }        
 
+        res.setPreviewSize(.Small)
         return res
     }
 }
