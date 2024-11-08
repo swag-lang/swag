@@ -28,16 +28,8 @@ struct GRPICONHEADER
 };
 #pragma pack(pop)
 
-bool ResUpdateWin32::setIcon(const std::wstring& path)
+bool ResUpdateWin32::patchIcon(const std::wstring& filename, const std::wstring& path)
 {
-    const LANGID&             langId = 1033;
-    std::unique_ptr<ICONVAL>& pIcon  = iconBundleMap[langId].iconBundles[0];
-    if (!pIcon)
-        pIcon = std::make_unique<ICONVAL>();
-
-    auto& icon = *pIcon;
-    DWORD bytes;
-
     auto file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE)
     {
@@ -45,6 +37,7 @@ bool ResUpdateWin32::setIcon(const std::wstring& path)
         return false;
     }
 
+    DWORD       bytes;
     ICONHEADER& header = icon.header;
     if (!ReadFile(file, &header, 3 * sizeof(WORD), &bytes, nullptr))
     {
@@ -102,47 +95,21 @@ bool ResUpdateWin32::setIcon(const std::wstring& path)
         entry->width        = header.entries[i].width;
         entry->reserved2    = 0;
     }
-
-    return true;
-}
-
-bool ResUpdateWin32::commit(const std::wstring& filename)
-{
+        
     const auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
-    for (const auto& iLangIconInfoPair : iconBundleMap)
+
+    bool result0 = true;
+    if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(0), 1033, icon.grpHeader.data(), icon.grpHeader.size()))
+        result0 = false;
+
+    for (size_t i = 0; i < icon.header.count; ++i)
     {
-        const auto langId    = iLangIconInfoPair.first;
-        const auto maxIconId = iLangIconInfoPair.second.maxIconId;
-        for (const auto& iNameBundlePair : iLangIconInfoPair.second.iconBundles)
-        {
-            const UINT                      bundleId = iNameBundlePair.first;
-            const std::unique_ptr<ICONVAL>& pIcon    = iNameBundlePair.second;
-            if (!pIcon)
-                continue;
-
-            auto& icon = *pIcon;
-            if (!icon.grpHeader.empty())
-            {
-                if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(bundleId), langId, icon.grpHeader.data(), icon.grpHeader.size()))
-                    break;
-
-                for (size_t i = 0; i < icon.header.count; ++i)
-                {
-                    if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), langId, icon.images[i].data(), icon.images[i].size()))
-                        break;
-                }
-
-                for (size_t i = icon.header.count; i < maxIconId; ++i)
-                {
-                    if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), langId, nullptr, 0))
-                        break;
-                }
-            }
-        }
+        if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), 1033, icon.images[i].data(), icon.images[i].size()))
+            result0 = false;
     }
 
-    const BOOL bResult = EndUpdateResourceW(handle, FALSE);
-    return bResult ? true : false;
+    const BOOL result1 = EndUpdateResourceW(handle, FALSE);
+    return result0 && result1;
 }
 
 #endif

@@ -27,24 +27,9 @@ struct ICONVAL
     std::vector<BYTE>              grpHeader;
 };
 
-struct Translate
-{
-    LANGID wLanguage;
-    WORD   wCodePage;
-};
-
-using IconTable = std::map<UINT, std::unique_ptr<ICONVAL>>;
-struct IconResInfo
-{
-    UINT      maxIconId = 0;
-    IconTable iconBundles;
-};
-using IconTableMap = std::map<LANGID, IconResInfo>;
-
 struct ResUpdateWin32
 {
-    bool         setIcon(const std::wstring &path);
-    bool         commit(const std::wstring& filename);
-    Utf8         error;
-    IconTableMap iconBundleMap;
+    bool    patchIcon(const std::wstring& filename, const std::wstring& path);
+    Utf8    error;
+    ICONVAL icon;
 };
