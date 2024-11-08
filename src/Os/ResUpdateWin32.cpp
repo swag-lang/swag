@@ -446,21 +446,9 @@ bool ResUpdateWin32::load(const WCHAR* filename)
         module = LoadLibraryExW(abspath, nullptr, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
     else
         module = LoadLibraryExW(filename, nullptr, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
-
     if (module == nullptr)
-    {
         return false;
-    }
-
     this->filename = filename;
-
-    //EnumResourceNamesW(module, RT_STRING, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    //EnumResourceNamesW(module, RT_VERSION, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    EnumResourceNamesW(module, RT_GROUP_ICON, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    EnumResourceNamesW(module, RT_ICON, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-    //EnumResourceNamesW(module, RT_MANIFEST, onEnumResourceManifest, reinterpret_cast<LONG_PTR>(this));
-    //EnumResourceNamesW(module, RT_RCDATA, onEnumResourceName, reinterpret_cast<LONG_PTR>(this));
-
     return true;
 }
 
@@ -1059,13 +1047,6 @@ BOOL CALLBACK ResUpdateWin32::onEnumResourceLanguage(HANDLE hModule, LPCWSTR lps
                 break;
         }
     }
-    return TRUE;
-}
-
-// static
-BOOL CALLBACK ResUpdateWin32::onEnumResourceName(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam)
-{
-    EnumResourceLanguagesW(hModule, lpszType, lpszName, reinterpret_cast<ENUMRESLANGPROCW>(onEnumResourceLanguage), lParam);
     return TRUE;
 }
 

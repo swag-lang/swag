@@ -123,7 +123,6 @@ struct ResUpdateWin32
     bool         commit();
 
     bool                 serializeStringTable(const StringValues& values, UINT blockId, std::vector<char>* out);
-    static BOOL CALLBACK onEnumResourceName(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
     static BOOL CALLBACK onEnumResourceManifest(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
     static BOOL CALLBACK onEnumResourceLanguage(HANDLE hModule, LPCWSTR lpszType, LPCWSTR lpszName, WORD wIDLanguage, LONG_PTR lParam);
 
