@@ -4,18 +4,6 @@
 
 #pragma warning(push, 0)
 
-struct ScopedResourceUpdater
-{
-           ScopedResourceUpdater(const WCHAR* filename, bool deleteOld);
-    ~      ScopedResourceUpdater();
-    HANDLE get() const;
-    bool   commit();
-    bool   endUpdate(bool doesCommit) const;
-
-    HANDLE handle;
-    bool   commited = false;
-};
-
 #pragma pack(push, 2)
 struct GRPICONENTRY
 {
@@ -39,39 +27,6 @@ struct GRPICONHEADER
     GRPICONENTRY entries[1];
 };
 #pragma pack(pop)
-
-#pragma pack(push, 1)
-struct VS_VERSION_HEADER
-{
-    WORD wLength;
-    WORD wValueLength;
-    WORD wType;
-};
-
-struct VS_VERSION_STRING
-{
-    VS_VERSION_HEADER Header;
-    WCHAR             szKey[1];
-};
-
-struct VS_VERSION_ROOT_INFO
-{
-    WCHAR            szKey[16];
-    WORD             Padding1[1];
-    VS_FIXEDFILEINFO Info;
-};
-
-struct VS_VERSION_ROOT
-{
-    VS_VERSION_HEADER    Header;
-    VS_VERSION_ROOT_INFO Info;
-};
-#pragma pack(pop)
-
-// The default en-us LANGID.
-LANGID kLangEnUs          = 1033;
-LANGID kCodePageEnUs      = 1200;
-UINT   kDefaultIconBundle = 0;
 
 class ScopedFile
 {
@@ -108,7 +63,7 @@ bool ResUpdateWin32::load(const WCHAR* filename)
 
 bool ResUpdateWin32::setIcon(const WCHAR* path)
 {
-    const LANGID&             langId     = kLangEnUs;
+    const LANGID&             langId     = 1033;
     const UINT                iconBundle = 0;
     std::unique_ptr<ICONVAL>& pIcon      = iconBundleMap[langId].iconBundles[iconBundle];
     if (!pIcon)
@@ -186,9 +141,11 @@ bool ResUpdateWin32::commit()
     FreeLibrary(module);
     module = nullptr;
 
-    ScopedResourceUpdater ru(filename.c_str(), false);
-    if (ru.get() == nullptr)
-        return false;
+    //ScopedResourceUpdater ru(filename.c_str(), false);
+    auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
+    
+    //if (ru.get() == nullptr)
+    //    return false;
 
     for (const auto& iLangIconInfoPair : iconBundleMap)
     {
@@ -204,53 +161,25 @@ bool ResUpdateWin32::commit()
             auto& icon = *pIcon;
             if (!icon.grpHeader.empty())
             {
-                if (!UpdateResourceW(ru.get(), RT_GROUP_ICON, MAKEINTRESOURCEW(bundleId), langId, icon.grpHeader.data(), icon.grpHeader.size()))
-                    return false;
+                if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(bundleId), langId, icon.grpHeader.data(), icon.grpHeader.size()))
+                    break;
 
                 for (size_t i = 0; i < icon.header.count; ++i)
                 {
-                    if (!UpdateResourceW(ru.get(), RT_ICON, MAKEINTRESOURCEW(i + 1), langId, icon.images[i].data(), icon.images[i].size()))
-                        return false;
+                    if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), langId, icon.images[i].data(), icon.images[i].size()))
+                        break;
                 }
 
                 for (size_t i = icon.header.count; i < maxIconId; ++i)
                 {
-                    if (!UpdateResourceW(ru.get(), RT_ICON, MAKEINTRESOURCEW(i + 1), langId, nullptr, 0))
-                        return false;
+                    if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), langId, nullptr, 0))
+                        break;
                 }
             }
         }
     }
 
-    return ru.commit();
-}
-
-ScopedResourceUpdater::ScopedResourceUpdater(const WCHAR* filename, bool deleteOld) :
-    handle(BeginUpdateResourceW(filename, deleteOld))
-{
-}
-
-ScopedResourceUpdater::~ScopedResourceUpdater()
-{
-    if (!commited)
-        (void) endUpdate(false);
-}
-
-HANDLE ScopedResourceUpdater::get() const
-{
-    return handle;
-}
-
-bool ScopedResourceUpdater::commit()
-{
-    commited = true;
-    return endUpdate(true);
-}
-
-bool ScopedResourceUpdater::endUpdate(bool doesCommit) const
-{
-    const BOOL fDiscard = doesCommit ? FALSE : TRUE;
-    const BOOL bResult  = EndUpdateResourceW(handle, fDiscard);
+    const BOOL bResult  = EndUpdateResourceW(handle, FALSE);
     return bResult ? true : false;
 }
 
