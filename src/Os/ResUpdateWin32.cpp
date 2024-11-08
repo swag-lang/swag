@@ -28,22 +28,7 @@ struct GRPICONHEADER
 };
 #pragma pack(pop)
 
-class ScopedFile
-{
-public:
-    ScopedFile(const WCHAR* path) :
-        file_(CreateFileW(path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr))
-    {
-    }
-    ~ScopedFile() { CloseHandle(file_); }
-
-    operator HANDLE() { return file_; }
-
-private:
-    HANDLE file_;
-};
-
-bool ResUpdateWin32::setIcon(const WCHAR* path)
+bool ResUpdateWin32::setIcon(const std::wstring& path)
 {
     const LANGID&             langId = 1033;
     std::unique_ptr<ICONVAL>& pIcon  = iconBundleMap[langId].iconBundles[0];
@@ -53,7 +38,7 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
     auto& icon = *pIcon;
     DWORD bytes;
 
-    ScopedFile file(path);
+    auto file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE)
     {
         error = "cannot open icon file";
@@ -63,12 +48,14 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
     ICONHEADER& header = icon.header;
     if (!ReadFile(file, &header, 3 * sizeof(WORD), &bytes, nullptr))
     {
+        CloseHandle(file);
         error = "cannot read icon header";
         return false;
     }
 
     if (header.reserved != 0 || header.type != 1)
     {
+        CloseHandle(file);
         error = "reserved header is not 0 or image type is not icon";
         return false;
     }
@@ -76,6 +63,7 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
     header.entries.resize(header.count);
     if (!ReadFile(file, header.entries.data(), header.count * sizeof(ICONENTRY), &bytes, nullptr))
     {
+        CloseHandle(file);
         error = "cannot read icon metadata";
         return false;
     }
@@ -87,10 +75,13 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
         SetFilePointer(file, header.entries[i].imageOffset, nullptr, FILE_BEGIN);
         if (!ReadFile(file, icon.images[i].data(), icon.images[i].size(), &bytes, nullptr))
         {
+            CloseHandle(file);
             error = "cannot read icon data";
             return false;
         }
     }
+
+    CloseHandle(file);
 
     icon.grpHeader.resize(3 * sizeof(WORD) + header.count * sizeof(GRPICONENTRY));
     GRPICONHEADER* pGrpHeader = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
@@ -115,7 +106,7 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
     return true;
 }
 
-bool ResUpdateWin32::commit(const std::wstring &filename)
+bool ResUpdateWin32::commit(const std::wstring& filename)
 {
     const auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
     for (const auto& iLangIconInfoPair : iconBundleMap)

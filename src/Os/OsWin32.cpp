@@ -1155,13 +1155,18 @@ namespace OS
         ResUpdateWin32 sc;
         
         const Utf8 f{buildCfg->resIcoFileName};
-        if(!sc.setIcon(f.toWString().c_str()))
+        if(!sc.setIcon(f.toWString()))
         {
             Report::errorOS(formErr(Err0353, fileName.cstr(), sc.error.cstr()));
             return false;
         }
         
-        sc.commit(fileName.toWString().c_str());
+        if(!sc.commit(fileName.toWString()))
+        {
+            Report::errorOS(formErr(Err0353, fileName.cstr(), "failed to patch file"));
+            return false;            
+        }
+        
         return true;
     }
 }
