@@ -1153,20 +1153,20 @@ namespace OS
             return true;
 
         ResUpdateWin32 sc;
-        if (!sc.Load(fileName.toWString().c_str()))
+        if (!sc.load(fileName.toWString().c_str()))
         {
             Report::errorOS(formErr(Err0353, fileName.cstr(), "failed to load file"));
             return false;
         }
         
         const Utf8 f{buildCfg->resIcoFileName};
-        if(!sc.SetIcon(f.toWString().c_str()))
+        if(!sc.setIcon(f.toWString().c_str()))
         {
-            Report::errorOS(formErr(Err0353, fileName.cstr(), sc.error_.cstr()));
+            Report::errorOS(formErr(Err0353, fileName.cstr(), sc.error.cstr()));
             return false;
         }
         
-        sc.Commit();
+        sc.commit();
         return true;
     }
 }

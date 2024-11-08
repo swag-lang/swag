@@ -13,28 +13,28 @@
 #define RU_VS_PRODUCT_VERSION   L"ProductVersion"
 #define RU_VS_SPECIAL_BUILD     L"SpecialBuild"
 
-struct IconsValue
+struct ICONENTRY
 {
-    typedef struct _ICONENTRY
-    {
-        BYTE  width;
-        BYTE  height;
-        BYTE  colorCount;
-        BYTE  reserved;
-        WORD  planes;
-        WORD  bitCount;
-        DWORD bytesInRes;
-        DWORD imageOffset;
-    } ICONENTRY;
+    BYTE  width;
+    BYTE  height;
+    BYTE  colorCount;
+    BYTE  reserved;
+    WORD  planes;
+    WORD  bitCount;
+    DWORD bytesInRes;
+    DWORD imageOffset;
+};
 
-    typedef struct _ICONHEADER
-    {
-        WORD                   reserved;
-        WORD                   type;
-        WORD                   count;
-        std::vector<ICONENTRY> entries;
-    } ICONHEADER;
+struct ICONHEADER
+{
+    WORD                   reserved;
+    WORD                   type;
+    WORD                   count;
+    std::vector<ICONENTRY> entries;
+};
 
+struct ICONVAL
+{
     ICONHEADER                     header;
     std::vector<std::vector<BYTE>> images;
     std::vector<BYTE>              grpHeader;
@@ -46,9 +46,8 @@ struct Translate
     WORD   wCodePage;
 };
 
-typedef std::pair<std::wstring, std::wstring>      VersionString;
-typedef std::pair<const BYTE* const, const size_t> OffsetLengthPair;
-
+using VersionString    = std::pair<std::wstring, std::wstring>;
+using OffsetLengthPair = std::pair<const BYTE* const, const size_t>;
 struct VersionStringTable
 {
     Translate                  encoding;
@@ -61,39 +60,35 @@ public:
     VersionInfo();
     VersionInfo(HMODULE hModule, WORD languageId);
 
-    std::vector<BYTE> Serialize() const;
+    std::vector<BYTE>       serialize() const;
+    bool                    hasFixedFileInfo() const;
+    VS_FIXEDFILEINFO&       getFixedFileInfo();
+    const VS_FIXEDFILEINFO& getFixedFileInfo() const;
+    void                    setFixedFileInfo(const VS_FIXEDFILEINFO& value);
 
-    bool                    HasFixedFileInfo() const;
-    VS_FIXEDFILEINFO&       GetFixedFileInfo();
-    const VS_FIXEDFILEINFO& GetFixedFileInfo() const;
-    void                    SetFixedFileInfo(const VS_FIXEDFILEINFO& value);
+    void               fillDefaultData();
+    void               deserializeVersionInfo(const BYTE* pData, size_t size);
+    VersionStringTable deserializeVersionStringTable(const BYTE* tableData);
+    void               deserializeVersionStringFileInfo(const BYTE* offset, size_t length, std::vector<VersionStringTable>& stringTables);
+    void               deserializeVarFileInfo(const unsigned char* offset, std::vector<Translate>& translations);
+    OffsetLengthPair   getChildrenData(const BYTE* entryData);
 
     std::vector<VersionStringTable> stringTables;
     std::vector<Translate>          supportedTranslations;
-
-private:
-    VS_FIXEDFILEINFO fixedFileInfo_;
-
-    void FillDefaultData();
-    void DeserializeVersionInfo(const BYTE* pData, size_t size);
-
-    VersionStringTable DeserializeVersionStringTable(const BYTE* tableData);
-    void               DeserializeVersionStringFileInfo(const BYTE* offset, size_t length, std::vector<VersionStringTable>& stringTables);
-    void               DeserializeVarFileInfo(const unsigned char* offset, std::vector<Translate>& translations);
-    OffsetLengthPair   GetChildrenData(const BYTE* entryData);
+    VS_FIXEDFILEINFO                fixedFileInfo;
 };
 
 class ResUpdateWin32
 {
 public:
-    typedef std::vector<std::wstring>                   StringValues;
-    typedef std::map<UINT, StringValues>                StringTable;
-    typedef std::map<WORD, StringTable>                 StringTableMap;
-    typedef std::map<LANGID, VersionInfo>               VersionStampMap;
-    typedef std::map<UINT, std::unique_ptr<IconsValue>> IconTable;
-    typedef std::vector<BYTE>                           RcDataValue;
-    typedef std::map<ptrdiff_t, RcDataValue>            RcDataMap;
-    typedef std::map<LANGID, RcDataMap>                 RcDataLangMap;
+    using StringValues    = std::vector<std::wstring>;
+    using StringTable     = std::map<UINT, StringValues>;
+    using StringTableMap  = std::map<WORD, StringTable>;
+    using VersionStampMap = std::map<LANGID, VersionInfo>;
+    using IconTable       = std::map<UINT, std::unique_ptr<ICONVAL>>;
+    using RcDataValue     = std::vector<BYTE>;
+    using RcDataMap       = std::map<ptrdiff_t, RcDataValue>;
+    using RcDataLangMap   = std::map<LANGID, RcDataMap>;
 
     struct IconResInfo
     {
@@ -101,52 +96,48 @@ public:
         IconTable iconBundles;
     };
 
-    typedef std::map<LANGID, IconResInfo> IconTableMap;
+    using IconTableMap = std::map<LANGID, IconResInfo>;
 
      ResUpdateWin32();
     ~ResUpdateWin32();
 
-    bool         Load(const WCHAR* filename);
-    bool         SetVersionString(WORD languageId, const WCHAR* name, const WCHAR* value);
-    bool         SetVersionString(const WCHAR* name, const WCHAR* value);
-    const WCHAR* GetVersionString(WORD languageId, const WCHAR* name);
-    const WCHAR* GetVersionString(const WCHAR* name);
-    bool         SetProductVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         SetProductVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         SetFileVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         SetFileVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         ChangeString(WORD languageId, UINT id, const WCHAR* value);
-    bool         ChangeString(UINT id, const WCHAR* value);
-    bool         ChangeRcData(UINT id, const WCHAR* pathToResource);
-    const WCHAR* GetString(WORD languageId, UINT id);
-    const WCHAR* GetString(UINT id);
-    bool         SetIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle);
-    bool         SetIcon(const WCHAR* path, const LANGID& langId);
-    bool         SetIcon(const WCHAR* path);
-    bool         SetExecutionLevel(const WCHAR* value);
-    bool         IsExecutionLevelSet();
-    bool         SetApplicationManifest(const WCHAR* value);
-    bool         IsApplicationManifestSet();
-    bool         Commit();
+    bool         load(const WCHAR* filename);
+    bool         setVersionString(WORD languageId, const WCHAR* name, const WCHAR* value);
+    bool         setVersionString(const WCHAR* name, const WCHAR* value);
+    const WCHAR* getVersionString(WORD languageId, const WCHAR* name);
+    const WCHAR* getVersionString(const WCHAR* name);
+    bool         setProductVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
+    bool         setProductVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
+    bool         setFileVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
+    bool         setFileVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
+    bool         changeString(WORD languageId, UINT id, const WCHAR* value);
+    bool         changeString(UINT id, const WCHAR* value);
+    bool         changeRcData(UINT id, const WCHAR* pathToResource);
+    const WCHAR* getString(WORD languageId, UINT id);
+    const WCHAR* getString(UINT id);
+    bool         setIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle);
+    bool         setIcon(const WCHAR* path, const LANGID& langId);
+    bool         setIcon(const WCHAR* path);
+    bool         setExecutionLevel(const WCHAR* value);
+    bool         isExecutionLevelSet();
+    bool         setApplicationManifest(const WCHAR* value);
+    bool         isApplicationManifestSet();
+    bool         commit();
 
-public:
-    Utf8 error_;
+    bool                 serializeStringTable(const StringValues& values, UINT blockId, std::vector<char>* out);
+    static BOOL CALLBACK onEnumResourceName(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
+    static BOOL CALLBACK onEnumResourceManifest(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
+    static BOOL CALLBACK onEnumResourceLanguage(HANDLE hModule, LPCWSTR lpszType, LPCWSTR lpszName, WORD wIDLanguage, LONG_PTR lParam);
 
-private:
-    bool SerializeStringTable(const StringValues& values, UINT blockId, std::vector<char>* out);
-
-    static BOOL CALLBACK OnEnumResourceName(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
-    static BOOL CALLBACK OnEnumResourceManifest(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
-    static BOOL CALLBACK OnEnumResourceLanguage(HANDLE hModule, LPCWSTR lpszType, LPCWSTR lpszName, WORD wIDLanguage, LONG_PTR lParam);
-
-    HMODULE         module_;
-    std::wstring    filename_;
-    std::wstring    executionLevel_;
-    std::wstring    originalExecutionLevel_;
-    std::wstring    applicationManifestPath_;
-    std::wstring    manifestString_;
-    VersionStampMap versionStampMap_;
-    StringTableMap  stringTableMap_;
-    IconTableMap    iconBundleMap_;
-    RcDataLangMap   rcDataLngMap_;
+    Utf8            error;
+    HMODULE         module;
+    std::wstring    filename;
+    std::wstring    executionLevel;
+    std::wstring    originalExecutionLevel;
+    std::wstring    applicationManifestPath;
+    std::wstring    manifestString;
+    VersionStampMap versionStampMap;
+    StringTableMap  stringTableMap;
+    IconTableMap    iconBundleMap;
+    RcDataLangMap   rcDataLngMap;
 };
