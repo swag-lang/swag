@@ -73,21 +73,6 @@ LANGID kLangEnUs          = 1033;
 LANGID kCodePageEnUs      = 1200;
 UINT   kDefaultIconBundle = 0;
 
-template<typename T>
-T round1(T value, int modula = 4)
-{
-    return value + ((value % modula > 0) ? (modula - value % modula) : 0);
-}
-
-std::wstring ReadFileToString(const wchar_t* filename)
-{
-    std::wifstream wif(filename);
-    wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-    std::wstringstream wss;
-    wss << wif.rdbuf();
-    return wss.str();
-}
-
 class ScopedFile
 {
 public:
@@ -121,9 +106,11 @@ bool ResUpdateWin32::load(const WCHAR* filename)
     return true;
 }
 
-bool ResUpdateWin32::setIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle)
+bool ResUpdateWin32::setIcon(const WCHAR* path)
 {
-    std::unique_ptr<ICONVAL>& pIcon = iconBundleMap[langId].iconBundles[iconBundle];
+    const LANGID&             langId     = kLangEnUs;
+    const UINT                iconBundle = 0;
+    std::unique_ptr<ICONVAL>& pIcon      = iconBundleMap[langId].iconBundles[iconBundle];
     if (!pIcon)
         pIcon = std::make_unique<ICONVAL>();
 
@@ -190,20 +177,6 @@ bool ResUpdateWin32::setIcon(const WCHAR* path, const LANGID& langId, UINT iconB
     }
 
     return true;
-}
-
-bool ResUpdateWin32::setIcon(const WCHAR* path, const LANGID& langId)
-{
-    if (iconBundleMap[langId].iconBundles.empty())
-        return setIcon(path, langId, kDefaultIconBundle);
-    const UINT iconBundle = iconBundleMap[langId].iconBundles.begin()->first;
-    return setIcon(path, langId, iconBundle);
-}
-
-bool ResUpdateWin32::setIcon(const WCHAR* path)
-{
-    const LANGID langId = iconBundleMap.empty() ? kLangEnUs : iconBundleMap.begin()->first;
-    return setIcon(path, langId);
 }
 
 bool ResUpdateWin32::commit()

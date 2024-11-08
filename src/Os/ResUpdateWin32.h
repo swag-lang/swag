@@ -46,8 +46,6 @@ struct ResUpdateWin32
     ~ResUpdateWin32();
 
     bool load(const WCHAR* filename);
-    bool setIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle);
-    bool setIcon(const WCHAR* path, const LANGID& langId);
     bool setIcon(const WCHAR* path);
     bool commit();
 
