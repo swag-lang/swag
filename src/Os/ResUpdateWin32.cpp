@@ -1,33 +1,24 @@
 #include "pch.h"
 #ifdef WIN32
 #include "ResUpdateWin32.h"
-#include <algorithm>
 #include <atlstr.h>
-#include <codecvt>
-#include <fstream>
-#include <iomanip>
-#include <sstream>
 
 #pragma warning(push, 0)
 
-class ScopedResourceUpdater
+struct ScopedResourceUpdater
 {
-public:
-     ScopedResourceUpdater(const WCHAR* filename, bool deleteOld);
-    ~ScopedResourceUpdater();
+           ScopedResourceUpdater(const WCHAR* filename, bool deleteOld);
+    ~      ScopedResourceUpdater();
+    HANDLE get() const;
+    bool   commit();
+    bool   endUpdate(bool doesCommit) const;
 
-    HANDLE Get() const;
-    bool   Commit();
-
-private:
-    bool EndUpdate(bool doesCommit);
-
-    HANDLE handle_;
-    bool   commited_ = false;
+    HANDLE handle;
+    bool   commited = false;
 };
 
 #pragma pack(push, 2)
-typedef struct _GRPICONENTRY
+struct GRPICONENTRY
 {
     BYTE width;
     BYTE height;
@@ -39,51 +30,43 @@ typedef struct _GRPICONENTRY
     WORD bytesInRes2;
     WORD reserved2;
     WORD id;
-} GRPICONENTRY;
-#pragma pack(pop)
+};
 
-#pragma pack(push, 2)
-typedef struct _GRPICONHEADER
+struct GRPICONHEADER
 {
     WORD         reserved;
     WORD         type;
     WORD         count;
     GRPICONENTRY entries[1];
-} GRPICONHEADER;
+};
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-typedef struct _VS_VERSION_HEADER
+struct VS_VERSION_HEADER
 {
     WORD wLength;
     WORD wValueLength;
     WORD wType;
-} VS_VERSION_HEADER;
-#pragma pack(pop)
+};
 
-#pragma pack(push, 1)
-typedef struct _VS_VERSION_STRING
+struct VS_VERSION_STRING
 {
     VS_VERSION_HEADER Header;
     WCHAR             szKey[1];
-} VS_VERSION_STRING;
-#pragma pack(pop)
+};
 
-#pragma pack(push, 1)
-typedef struct _VS_VERSION_ROOT_INFO
+struct VS_VERSION_ROOT_INFO
 {
     WCHAR            szKey[16];
     WORD             Padding1[1];
     VS_FIXEDFILEINFO Info;
-} VS_VERSION_ROOT_INFO;
-#pragma pack(pop)
+};
 
-#pragma pack(push, 1)
-typedef struct _VS_VERSION_ROOT
+struct VS_VERSION_ROOT
 {
     VS_VERSION_HEADER    Header;
     VS_VERSION_ROOT_INFO Info;
-} VS_VERSION_ROOT;
+};
 #pragma pack(pop)
 
 // The default en-us LANGID.
@@ -531,7 +514,7 @@ bool ResUpdateWin32::setVersionString(WORD languageId, const WCHAR* name, const 
 bool ResUpdateWin32::setVersionString(const WCHAR* name, const WCHAR* value)
 {
     LANGID langId = versionStampMap.empty() ? kLangEnUs
-                                             : versionStampMap.begin()->first;
+                                            : versionStampMap.begin()->first;
     return setVersionString(langId, name, value);
 }
 
@@ -586,7 +569,7 @@ bool ResUpdateWin32::setProductVersion(WORD languageId, UINT id, unsigned short 
 bool ResUpdateWin32::setProductVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4)
 {
     LANGID langId = versionStampMap.empty() ? kLangEnUs
-                                             : versionStampMap.begin()->first;
+                                            : versionStampMap.begin()->first;
     return setProductVersion(langId, 1, v1, v2, v3, v4);
 }
 
@@ -608,7 +591,7 @@ bool ResUpdateWin32::setFileVersion(WORD languageId, UINT id, unsigned short v1,
 bool ResUpdateWin32::setFileVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4)
 {
     LANGID langId = versionStampMap.empty() ? kLangEnUs
-                                             : versionStampMap.begin()->first;
+                                            : versionStampMap.begin()->first;
     return setFileVersion(langId, 1, v1, v2, v3, v4);
 }
 
@@ -636,7 +619,7 @@ bool ResUpdateWin32::changeString(WORD languageId, UINT id, const WCHAR* value)
 bool ResUpdateWin32::changeString(UINT id, const WCHAR* value)
 {
     LANGID langId = stringTableMap.empty() ? kLangEnUs
-                                            : stringTableMap.begin()->first;
+                                           : stringTableMap.begin()->first;
     return changeString(langId, id, value);
 }
 
@@ -705,7 +688,7 @@ const WCHAR* ResUpdateWin32::getString(WORD languageId, UINT id)
 const WCHAR* ResUpdateWin32::getString(UINT id)
 {
     LANGID langId = stringTableMap.empty() ? kLangEnUs
-                                            : stringTableMap.begin()->first;
+                                           : stringTableMap.begin()->first;
     return getString(langId, id);
 }
 
@@ -793,7 +776,7 @@ bool ResUpdateWin32::setIcon(const WCHAR* path, const LANGID& langId)
 bool ResUpdateWin32::setIcon(const WCHAR* path)
 {
     LANGID langId = iconBundleMap.empty() ? kLangEnUs
-                                           : iconBundleMap.begin()->first;
+                                          : iconBundleMap.begin()->first;
     return setIcon(path, langId);
 }
 
@@ -807,7 +790,7 @@ bool ResUpdateWin32::commit()
     module = nullptr;
 
     ScopedResourceUpdater ru(filename.c_str(), false);
-    if (ru.Get() == nullptr)
+    if (ru.get() == nullptr)
     {
         return false;
     }
@@ -818,7 +801,7 @@ bool ResUpdateWin32::commit()
         LANGID            langId = i.first;
         std::vector<BYTE> out    = i.second.serialize();
 
-        if (!UpdateResourceW(ru.Get(), RT_VERSION, MAKEINTRESOURCEW(1), langId,
+        if (!UpdateResourceW(ru.get(), RT_VERSION, MAKEINTRESOURCEW(1), langId,
                              &out[0], static_cast<DWORD>(out.size())))
         {
             return false;
@@ -859,7 +842,7 @@ bool ResUpdateWin32::commit()
         std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
         std::string                                               stringSection = converter.to_bytes(stringSectionW);
 
-        if (!UpdateResourceW(ru.Get(), RT_MANIFEST, MAKEINTRESOURCEW(1),
+        if (!UpdateResourceW(ru.get(), RT_MANIFEST, MAKEINTRESOURCEW(1),
                              kLangEnUs, // this is hardcoded at 1033, ie, en-us, as that is what RT_MANIFEST default uses
                              &stringSection.at(0), sizeof(char) * stringSection.size()))
         {
@@ -895,7 +878,7 @@ bool ResUpdateWin32::commit()
         std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
         std::string                                               stringSection = converter.to_bytes(stringSectionW);
 
-        if (!UpdateResourceW(ru.Get(), RT_MANIFEST, MAKEINTRESOURCEW(1),
+        if (!UpdateResourceW(ru.get(), RT_MANIFEST, MAKEINTRESOURCEW(1),
                              kLangEnUs, // this is hardcoded at 1033, ie, en-us, as that is what RT_MANIFEST default uses
                              &stringSection.at(0), sizeof(char) * stringSection.size()))
         {
@@ -914,7 +897,7 @@ bool ResUpdateWin32::commit()
                 return false;
             }
 
-            if (!UpdateResourceW(ru.Get(), RT_STRING, MAKEINTRESOURCEW(j.first + 1), i.first,
+            if (!UpdateResourceW(ru.get(), RT_STRING, MAKEINTRESOURCEW(j.first + 1), i.first,
                                  &stringTableBuffer[0], static_cast<DWORD>(stringTableBuffer.size())))
             {
                 return false;
@@ -926,7 +909,7 @@ bool ResUpdateWin32::commit()
     {
         for (const auto& rcDataMap : rcDataLangPair.second)
         {
-            if (!UpdateResourceW(ru.Get(), RT_RCDATA, reinterpret_cast<LPWSTR>(rcDataMap.first),
+            if (!UpdateResourceW(ru.get(), RT_RCDATA, reinterpret_cast<LPWSTR>(rcDataMap.first),
                                  rcDataLangPair.first, (LPVOID) rcDataMap.second.data(), rcDataMap.second.size()))
             {
                 return false;
@@ -949,7 +932,7 @@ bool ResUpdateWin32::commit()
             // update icon.
             if (icon.grpHeader.size() > 0)
             {
-                if (!UpdateResourceW(ru.Get(), RT_GROUP_ICON, MAKEINTRESOURCEW(bundleId),
+                if (!UpdateResourceW(ru.get(), RT_GROUP_ICON, MAKEINTRESOURCEW(bundleId),
                                      langId, icon.grpHeader.data(), icon.grpHeader.size()))
                 {
                     return false;
@@ -957,7 +940,7 @@ bool ResUpdateWin32::commit()
 
                 for (size_t i = 0; i < icon.header.count; ++i)
                 {
-                    if (!UpdateResourceW(ru.Get(), RT_ICON, MAKEINTRESOURCEW(i + 1),
+                    if (!UpdateResourceW(ru.get(), RT_ICON, MAKEINTRESOURCEW(i + 1),
                                          langId, icon.images[i].data(), icon.images[i].size()))
                     {
                         return false;
@@ -966,7 +949,7 @@ bool ResUpdateWin32::commit()
 
                 for (size_t i = icon.header.count; i < maxIconId; ++i)
                 {
-                    if (!UpdateResourceW(ru.Get(), RT_ICON, MAKEINTRESOURCEW(i + 1),
+                    if (!UpdateResourceW(ru.get(), RT_ICON, MAKEINTRESOURCEW(i + 1),
                                          langId, nullptr, 0))
                     {
                         return false;
@@ -976,7 +959,7 @@ bool ResUpdateWin32::commit()
         }
     }
 
-    return ru.Commit();
+    return ru.commit();
 }
 
 bool ResUpdateWin32::serializeStringTable(const StringValues& values, UINT blockId, std::vector<char>* out)
@@ -1054,7 +1037,7 @@ BOOL CALLBACK ResUpdateWin32::onEnumResourceLanguage(HANDLE hModule, LPCWSTR lps
             }
             case reinterpret_cast<ptrdiff_t>(RT_GROUP_ICON):
             {
-                UINT iconId                                               = reinterpret_cast<ptrdiff_t>(lpszName);
+                UINT iconId                                              = reinterpret_cast<ptrdiff_t>(lpszName);
                 instance->iconBundleMap[wIDLanguage].iconBundles[iconId] = nullptr;
                 break;
             }
@@ -1065,8 +1048,8 @@ BOOL CALLBACK ResUpdateWin32::onEnumResourceLanguage(HANDLE hModule, LPCWSTR lps
                 DWORD      cbResource   = SizeofResource(moduleHandle, hResInfo);
                 HGLOBAL    hResData     = LoadResource(moduleHandle, hResInfo);
 
-                const auto* pResource                       = (const BYTE*) LockResource(hResData);
-                const auto  resId                           = reinterpret_cast<ptrdiff_t>(lpszName);
+                const auto* pResource                      = (const BYTE*) LockResource(hResData);
+                const auto  resId                          = reinterpret_cast<ptrdiff_t>(lpszName);
                 instance->rcDataLngMap[wIDLanguage][resId] = std::vector<BYTE>(pResource, pResource + cbResource);
 
                 UnlockResource(hResData);
@@ -1130,34 +1113,31 @@ BOOL CALLBACK ResUpdateWin32::onEnumResourceManifest(HMODULE hModule, LPCTSTR lp
 }
 
 ScopedResourceUpdater::ScopedResourceUpdater(const WCHAR* filename, bool deleteOld) :
-    handle_(BeginUpdateResourceW(filename, deleteOld))
+    handle(BeginUpdateResourceW(filename, deleteOld))
 {
 }
 
 ScopedResourceUpdater::~ScopedResourceUpdater()
 {
-    if (!commited_)
-    {
-        EndUpdate(false);
-    }
+    if (!commited)
+        (void) endUpdate(false);
 }
 
-HANDLE ScopedResourceUpdater::Get() const
+HANDLE ScopedResourceUpdater::get() const
 {
-    return handle_;
+    return handle;
 }
 
-bool ScopedResourceUpdater::Commit()
+bool ScopedResourceUpdater::commit()
 {
-    commited_ = true;
-    return EndUpdate(true);
+    commited = true;
+    return endUpdate(true);
 }
 
-bool ScopedResourceUpdater::EndUpdate(bool doesCommit)
+bool ScopedResourceUpdater::endUpdate(bool doesCommit) const
 {
-    BOOL  fDiscard = doesCommit ? FALSE : TRUE;
-    BOOL  bResult  = EndUpdateResourceW(handle_, fDiscard);
-    DWORD e        = GetLastError();
+    const BOOL fDiscard = doesCommit ? FALSE : TRUE;
+    const BOOL bResult  = EndUpdateResourceW(handle, fDiscard);
     return bResult ? true : false;
 }
 

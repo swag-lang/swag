@@ -54,9 +54,8 @@ struct VersionStringTable
     std::vector<VersionString> strings;
 };
 
-class VersionInfo
+struct VersionInfo
 {
-public:
     VersionInfo();
     VersionInfo(HMODULE hModule, WORD languageId);
 
@@ -78,9 +77,8 @@ public:
     VS_FIXEDFILEINFO                fixedFileInfo;
 };
 
-class ResUpdateWin32
+struct ResUpdateWin32
 {
-public:
     using StringValues    = std::vector<std::wstring>;
     using StringTable     = std::map<UINT, StringValues>;
     using StringTableMap  = std::map<WORD, StringTable>;
