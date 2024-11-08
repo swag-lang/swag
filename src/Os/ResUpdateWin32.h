@@ -43,14 +43,8 @@ using IconTableMap = std::map<LANGID, IconResInfo>;
 
 struct ResUpdateWin32
 {
-    ~ResUpdateWin32();
-
-    bool load(const WCHAR* filename);
-    bool setIcon(const WCHAR* path);
-    bool commit();
-
+    bool         setIcon(const WCHAR* path);
+    bool         commit(const std::wstring& filename);
     Utf8         error;
-    HMODULE      module = nullptr;
-    std::wstring filename;
     IconTableMap iconBundleMap;
 };

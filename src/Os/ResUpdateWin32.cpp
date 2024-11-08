@@ -43,29 +43,10 @@ private:
     HANDLE file_;
 };
 
-ResUpdateWin32::~ResUpdateWin32()
-{
-    if (module != nullptr)
-    {
-        FreeLibrary(module);
-        module = nullptr;
-    }
-}
-
-bool ResUpdateWin32::load(const WCHAR* filename)
-{
-    module = LoadLibraryExW(filename, nullptr, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
-    if (module == nullptr)
-        return false;
-    this->filename = filename;
-    return true;
-}
-
 bool ResUpdateWin32::setIcon(const WCHAR* path)
 {
-    const LANGID&             langId     = 1033;
-    const UINT                iconBundle = 0;
-    std::unique_ptr<ICONVAL>& pIcon      = iconBundleMap[langId].iconBundles[iconBundle];
+    const LANGID&             langId = 1033;
+    std::unique_ptr<ICONVAL>& pIcon  = iconBundleMap[langId].iconBundles[0];
     if (!pIcon)
         pIcon = std::make_unique<ICONVAL>();
 
@@ -134,19 +115,9 @@ bool ResUpdateWin32::setIcon(const WCHAR* path)
     return true;
 }
 
-bool ResUpdateWin32::commit()
+bool ResUpdateWin32::commit(const std::wstring &filename)
 {
-    if (module == nullptr)
-        return false;
-    FreeLibrary(module);
-    module = nullptr;
-
-    //ScopedResourceUpdater ru(filename.c_str(), false);
-    auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
-    
-    //if (ru.get() == nullptr)
-    //    return false;
-
+    const auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
     for (const auto& iLangIconInfoPair : iconBundleMap)
     {
         const auto langId    = iLangIconInfoPair.first;
@@ -179,7 +150,7 @@ bool ResUpdateWin32::commit()
         }
     }
 
-    const BOOL bResult  = EndUpdateResourceW(handle, FALSE);
+    const BOOL bResult = EndUpdateResourceW(handle, FALSE);
     return bResult ? true : false;
 }
 

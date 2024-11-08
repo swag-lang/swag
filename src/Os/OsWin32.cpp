@@ -1153,11 +1153,6 @@ namespace OS
             return true;
 
         ResUpdateWin32 sc;
-        if (!sc.load(fileName.toWString().c_str()))
-        {
-            Report::errorOS(formErr(Err0353, fileName.cstr(), "failed to load file"));
-            return false;
-        }
         
         const Utf8 f{buildCfg->resIcoFileName};
         if(!sc.setIcon(f.toWString().c_str()))
@@ -1166,7 +1161,7 @@ namespace OS
             return false;
         }
         
-        sc.commit();
+        sc.commit(fileName.toWString().c_str());
         return true;
     }
 }
