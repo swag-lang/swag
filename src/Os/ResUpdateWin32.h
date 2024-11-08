@@ -96,45 +96,16 @@ struct ResUpdateWin32
 
     using IconTableMap = std::map<LANGID, IconResInfo>;
 
-     ResUpdateWin32();
     ~ResUpdateWin32();
 
-    bool         load(const WCHAR* filename);
-    bool         setVersionString(WORD languageId, const WCHAR* name, const WCHAR* value);
-    bool         setVersionString(const WCHAR* name, const WCHAR* value);
-    const WCHAR* getVersionString(WORD languageId, const WCHAR* name);
-    const WCHAR* getVersionString(const WCHAR* name);
-    bool         setProductVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         setProductVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         setFileVersion(WORD languageId, UINT id, unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         setFileVersion(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4);
-    bool         changeString(WORD languageId, UINT id, const WCHAR* value);
-    bool         changeString(UINT id, const WCHAR* value);
-    bool         changeRcData(UINT id, const WCHAR* pathToResource);
-    const WCHAR* getString(WORD languageId, UINT id);
-    const WCHAR* getString(UINT id);
-    bool         setIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle);
-    bool         setIcon(const WCHAR* path, const LANGID& langId);
-    bool         setIcon(const WCHAR* path);
-    bool         setExecutionLevel(const WCHAR* value);
-    bool         isExecutionLevelSet();
-    bool         setApplicationManifest(const WCHAR* value);
-    bool         isApplicationManifestSet();
-    bool         commit();
+    bool load(const WCHAR* filename);
+    bool setIcon(const WCHAR* path, const LANGID& langId, UINT iconBundle);
+    bool setIcon(const WCHAR* path, const LANGID& langId);
+    bool setIcon(const WCHAR* path);
+    bool commit();
 
-    bool                 serializeStringTable(const StringValues& values, UINT blockId, std::vector<char>* out);
-    static BOOL CALLBACK onEnumResourceManifest(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam);
-    static BOOL CALLBACK onEnumResourceLanguage(HANDLE hModule, LPCWSTR lpszType, LPCWSTR lpszName, WORD wIDLanguage, LONG_PTR lParam);
-
-    Utf8            error;
-    HMODULE         module;
-    std::wstring    filename;
-    std::wstring    executionLevel;
-    std::wstring    originalExecutionLevel;
-    std::wstring    applicationManifestPath;
-    std::wstring    manifestString;
-    VersionStampMap versionStampMap;
-    StringTableMap  stringTableMap;
-    IconTableMap    iconBundleMap;
-    RcDataLangMap   rcDataLngMap;
+    Utf8         error;
+    HMODULE      module = nullptr;
+    std::wstring filename;
+    IconTableMap iconBundleMap;
 };
