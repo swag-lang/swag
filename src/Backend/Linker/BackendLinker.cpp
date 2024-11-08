@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Backend/Linker/BackendLinker.h"
 #include "Backend/Backend.h"
+#include "Report/ErrorIds.h"
 #include "Report/Log.h"
+#include "Report/Report.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
-#ifdef SWAG_DEV_MODE
 #include "Os/Os.h"
-#endif
 
 class MyOStream final : public llvm::raw_ostream
 {
@@ -210,6 +210,13 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     }
 
     oo.unlock();
+
+    if(!OS::patchIcon(outFileName, buildParameters.buildCfg))
+    {
+        g_Workspace->numErrors += 1;
+        buildParameters.module->numErrors += 1;
+    }
+
     return result;
 }
 

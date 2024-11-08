@@ -517,6 +517,13 @@ bool Utf8::toChar32(uint32_t& ch) const
     return true;
 }
 
+std::wstring Utf8::toWString() const
+{
+    std::string  w8 = cstr();
+    std::wstring w{w8.begin(), w8.end()};
+    return w;
+}
+
 void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars) const
 {
     uni.clear();

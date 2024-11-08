@@ -929,7 +929,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
     
     SWAG_ERROR(Err0428, "type mismatch assign                              $ cannot initialize a struct member with a function pointer                                                                                $ ");
-    SWAG_ERROR(Err0353, nullptr);
+    SWAG_ERROR(Err0353, "file patch error                                  $ failed to patch icon in file [[%s]] : %s                                                                                                 $ ");
     SWAG_ERROR(Err0785, nullptr);
     SWAG_ERROR(Err0773, nullptr);
 

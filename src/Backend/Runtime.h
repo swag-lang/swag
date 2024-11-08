@@ -324,10 +324,9 @@ struct BuildCfg
     BuildCfgLLVM backendLLVM;
     BuildCfgSCBE backendSCBE;
 
-    // Paths
-    SwagSlice repoPath;
-
-    // Documentation
+    // Resources
+    SwagSlice      repoPath;
+    SwagSlice      resIcoFileName;
     BuildCfgGenDoc genDoc;
 };
 

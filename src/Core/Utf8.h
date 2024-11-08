@@ -102,10 +102,11 @@ struct Utf8
     void        operator+=(uint32_t c);
     void        operator+=(char c);
 
-    void toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
-    void toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
-    void replace(const char* src, const char* dst);
-    bool toChar32(uint32_t& ch) const;
+    void         toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
+    void         toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
+    void         replace(const char* src, const char* dst);
+    bool         toChar32(uint32_t& ch) const;
+    std::wstring toWString() const;
 
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
     static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength);

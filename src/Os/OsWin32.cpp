@@ -3,6 +3,7 @@
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
+#include "OS/ResUpdateWin32.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -1144,6 +1145,29 @@ namespace OS
         csbi.dwCursorPosition.Y = 0;
 
         SetConsoleCursorPosition(g_ConsoleHandle, csbi.dwCursorPosition);
+    }
+
+    bool patchIcon(const Utf8& fileName, const BuildCfg* buildCfg)
+    {
+        if (!buildCfg->resIcoFileName.count)
+            return true;
+
+        ResUpdateWin32 sc;
+        if (!sc.Load(fileName.toWString().c_str()))
+        {
+            Report::errorOS(formErr(Err0353, fileName.cstr(), "failed to load file"));
+            return false;
+        }
+        
+        const Utf8 f{buildCfg->resIcoFileName};
+        if(!sc.SetIcon(f.toWString().c_str()))
+        {
+            Report::errorOS(formErr(Err0353, fileName.cstr(), sc.error_.cstr()));
+            return false;
+        }
+        
+        sc.Commit();
+        return true;
     }
 }
 

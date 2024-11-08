@@ -256,6 +256,7 @@
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Loop.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.cpp" />
+    <ClCompile Include="..\src\Os\ResUpdateWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -390,6 +391,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Macros.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.h" />
+    <ClInclude Include="..\src\Os\ResUpdateWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

@@ -293,6 +293,7 @@
     <ClInclude Include="..\src\Main\Statistics.h" />
     <ClInclude Include="..\src\Main\Version.h" />
     <ClInclude Include="..\src\Os\Os.h" />
+    <ClInclude Include="..\src\Os\ResUpdateWin32.h" />
     <ClInclude Include="..\src\Report\Assert.h" />
     <ClInclude Include="..\src\Report\Diagnostic.h" />
     <ClInclude Include="..\src\Report\ErrorContext.h" />
@@ -493,6 +494,7 @@
     <ClCompile Include="..\src\Main\Main.cpp" />
     <ClCompile Include="..\src\Main\Statistics.cpp" />
     <ClCompile Include="..\src\Os\OsWin32.cpp" />
+    <ClCompile Include="..\src\Os\ResUpdateWin32.cpp" />
     <ClCompile Include="..\src\Report\Assert.cpp" />
     <ClCompile Include="..\src\Report\Diagnostic.cpp" />
     <ClCompile Include="..\src\Report\ErrorContext.cpp" />
