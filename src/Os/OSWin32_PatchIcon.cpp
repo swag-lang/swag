@@ -1,11 +1,6 @@
 #include "pch.h"
 #ifdef WIN32
-#include "Backend/Context.h"
 #include "Os/Os.h"
-#include "Report/ErrorIds.h"
-#include "Report/Report.h"
-
-#pragma warning(push, 0)
 
 namespace OS
 {
@@ -59,10 +54,10 @@ namespace OS
         GRPICONENTRY entries[1];
     };
 #pragma pack(pop)
-    
+
     bool patchIcon(const std::wstring& filename, const std::wstring& path, Utf8& error)
     {
-        auto file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        const auto file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (file == INVALID_HANDLE_VALUE)
         {
             error = "cannot open icon file";
@@ -98,8 +93,8 @@ namespace OS
         for (size_t i = 0; i < header.count; ++i)
         {
             icon.images[i].resize(header.entries[i].bytesInRes);
-            SetFilePointer(file, header.entries[i].imageOffset, nullptr, FILE_BEGIN);
-            if (!ReadFile(file, icon.images[i].data(), icon.images[i].size(), &bytes, nullptr))
+            SetFilePointer(file, static_cast<LONG>(header.entries[i].imageOffset), nullptr, FILE_BEGIN);
+            if (!ReadFile(file, icon.images[i].data(), static_cast<DWORD>(icon.images[i].size()), &bytes, nullptr))
             {
                 CloseHandle(file);
                 error = "cannot read icon data";
@@ -114,16 +109,16 @@ namespace OS
         pGrpHeader->reserved      = 0;
         pGrpHeader->type          = 1;
         pGrpHeader->count         = header.count;
-        for (size_t i = 0; i < header.count; ++i)
+        for (WORD i = 0; i < header.count; ++i)
         {
             GRPICONENTRY* entry = pGrpHeader->entries + i;
             entry->bitCount     = 0;
             entry->bytesInRes   = header.entries[i].bitCount;
-            entry->bytesInRes2  = header.entries[i].bytesInRes;
+            entry->bytesInRes2  = static_cast<WORD>(header.entries[i].bytesInRes);
             entry->colourCount  = header.entries[i].colorCount;
             entry->height       = header.entries[i].height;
             entry->id           = i + 1;
-            entry->planes       = header.entries[i].planes;
+            entry->planes       = static_cast<BYTE>(header.entries[i].planes);
             entry->reserved     = header.entries[i].reserved;
             entry->width        = header.entries[i].width;
             entry->reserved2    = 0;
@@ -132,12 +127,12 @@ namespace OS
         const auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
 
         bool result0 = true;
-        if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(0), 1033, icon.grpHeader.data(), icon.grpHeader.size()))
+        if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(0), 1033, icon.grpHeader.data(), static_cast<DWORD>(icon.grpHeader.size())))
             result0 = false;
 
         for (size_t i = 0; i < icon.header.count; ++i)
         {
-            if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), 1033, icon.images[i].data(), icon.images[i].size()))
+            if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), 1033, icon.images[i].data(), static_cast<DWORD>(icon.images[i].size())))
                 result0 = false;
         }
 

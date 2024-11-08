@@ -493,7 +493,7 @@
     <ClCompile Include="..\src\Main\Main.cpp" />
     <ClCompile Include="..\src\Main\Statistics.cpp" />
     <ClCompile Include="..\src\Os\OsWin32.cpp" />
-    <ClCompile Include="..\src\Os\ResUpdateWin32.cpp" />
+    <ClCompile Include="..\src\Os\OSWin32_PatchIcon.cpp" />
     <ClCompile Include="..\src\Report\Assert.cpp" />
     <ClCompile Include="..\src\Report\Diagnostic.cpp" />
     <ClCompile Include="..\src\Report\ErrorContext.cpp" />
