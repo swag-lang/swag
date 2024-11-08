@@ -3,7 +3,6 @@
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
-#include "OS/ResUpdateWin32.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -1145,24 +1144,6 @@ namespace OS
         csbi.dwCursorPosition.Y = 0;
 
         SetConsoleCursorPosition(g_ConsoleHandle, csbi.dwCursorPosition);
-    }
-
-    bool patchIcon(const Utf8& fileName, const BuildCfg* buildCfg)
-    {
-        if (!buildCfg->resIcoFileName.count)
-            return true;
-
-        ResUpdateWin32 sc;
-
-        const Utf8 f{buildCfg->resIcoFileName};
-        Utf8       error;
-        if (!sc.patchIcon(fileName.toWString(), f.toWString(), error))
-        {
-            Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
-            return false;
-        }
-
-        return true;
     }
 }
 

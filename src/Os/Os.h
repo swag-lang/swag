@@ -47,7 +47,7 @@ namespace OS
     Utf8 getLastErrorAsString();
     void errorBox(const char* title, const char* expr);
     void assertBox(const char* expr, const char* file, int line);
-    bool patchIcon(const Utf8& fileName, const BuildCfg* buildCfg);
+    bool patchIcon(const std::wstring& filename, const std::wstring& path, Utf8& error);
 
     void visitFiles(const char* folder, const std::function<void(const char*)>& user);
     void visitFolders(const char* folder, const std::function<void(const char*)>& user, const char* match = "*");

@@ -293,7 +293,6 @@
     <ClInclude Include="..\src\Main\Statistics.h" />
     <ClInclude Include="..\src\Main\Version.h" />
     <ClInclude Include="..\src\Os\Os.h" />
-    <ClInclude Include="..\src\Os\ResUpdateWin32.h" />
     <ClInclude Include="..\src\Report\Assert.h" />
     <ClInclude Include="..\src\Report\Diagnostic.h" />
     <ClInclude Include="..\src\Report\ErrorContext.h" />

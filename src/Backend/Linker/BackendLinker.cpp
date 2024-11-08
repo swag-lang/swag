@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Backend/Linker/BackendLinker.h"
 #include "Backend/Backend.h"
+#include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
-#include "Os/Os.h"
 
 class MyOStream final : public llvm::raw_ostream
 {
@@ -211,13 +211,29 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
 
     oo.unlock();
 
-    if(!OS::patchIcon(outFileName, buildParameters.buildCfg))
+    if (!patchIcon(outFileName, buildParameters.buildCfg))
     {
         g_Workspace->numErrors += 1;
         buildParameters.module->numErrors += 1;
     }
 
     return result;
+}
+
+bool BackendLinker::patchIcon(const Utf8& fileName, const BuildCfg* buildCfg)
+{
+    if (!buildCfg->resIcoFileName.count)
+        return true;
+
+    const Utf8 f{buildCfg->resIcoFileName};
+    Utf8       error;
+    if (!OS::patchIcon(fileName.toWString(), f.toWString(), error))
+    {
+        Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
+        return false;
+    }
+
+    return true;
 }
 
 bool BackendLinker::link(const BuildParameters& buildParameters)
