@@ -29,7 +29,5 @@ struct ICONVAL
 
 struct ResUpdateWin32
 {
-    bool    patchIcon(const std::wstring& filename, const std::wstring& path);
-    Utf8    error;
-    ICONVAL icon;
+    bool patchIcon(const std::wstring& filename, const std::wstring& path, Utf8& error);
 };

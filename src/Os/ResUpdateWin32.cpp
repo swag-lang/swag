@@ -28,7 +28,7 @@ struct GRPICONHEADER
 };
 #pragma pack(pop)
 
-bool ResUpdateWin32::patchIcon(const std::wstring& filename, const std::wstring& path)
+bool ResUpdateWin32::patchIcon(const std::wstring& filename, const std::wstring& path, Utf8& error)
 {
     auto file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE)
@@ -38,6 +38,7 @@ bool ResUpdateWin32::patchIcon(const std::wstring& filename, const std::wstring&
     }
 
     DWORD       bytes;
+    ICONVAL     icon;
     ICONHEADER& header = icon.header;
     if (!ReadFile(file, &header, 3 * sizeof(WORD), &bytes, nullptr))
     {
@@ -95,7 +96,7 @@ bool ResUpdateWin32::patchIcon(const std::wstring& filename, const std::wstring&
         entry->width        = header.entries[i].width;
         entry->reserved2    = 0;
     }
-        
+
     const auto handle = BeginUpdateResourceW(filename.c_str(), TRUE);
 
     bool result0 = true;

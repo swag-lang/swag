@@ -1153,14 +1153,15 @@ namespace OS
             return true;
 
         ResUpdateWin32 sc;
-        
+
         const Utf8 f{buildCfg->resIcoFileName};
-        if(!sc.patchIcon(fileName.toWString(), f.toWString()))
+        Utf8       error;
+        if (!sc.patchIcon(fileName.toWString(), f.toWString(), error))
         {
-            Report::errorOS(formErr(Err0353, fileName.cstr(), sc.error.cstr()));
+            Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
             return false;
         }
-        
+
         return true;
     }
 }
