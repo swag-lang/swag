@@ -65,7 +65,7 @@ impl IActionUI for ActionFile
         case CmdIdUpdateLinkedImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Update Linked Image"
-            evt.disabled = !capture or capture.linkedImage.length == 0
+            evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Update)
 
         case CmdIdUnlinkImage:
@@ -145,6 +145,12 @@ impl IActionUI for ActionFile
             }
 
         case CmdIdUpdateLinkedImage:
+            if capture.linkedImage.length == 0
+            {    
+                main.saveAsImage(linked: true)
+                break            
+            }
+
             if g_EditorOptions.confirmLinkedOverwrite
             {
                 var txt = Format.toString("This will overwrite the original image.\n")
