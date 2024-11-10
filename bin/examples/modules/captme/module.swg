@@ -15,3 +15,10 @@
         cfg.backendSubKind = .Default
     }
 }
+
+#message(Swag.CompilerMsgMask.PassBeforeOutput)
+{
+    let itf = @compiler()
+    let cfg = itf.getBuildCfg()
+    cfg.resIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"   
+}

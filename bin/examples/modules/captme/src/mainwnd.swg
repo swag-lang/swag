@@ -741,14 +741,3 @@ impl MainWnd
         return res
     }
 }
-
-#message(Swag.CompilerMsgMask.PassBeforeOutput)
-{
-    let itf = @compiler()
-    let cfg = itf.getBuildCfg()
-
-    #[Swag.Global]
-    var g_Ico: String
-    g_Ico = Path.combine(Path.getDirectoryName(#file), "datas/appicon.ico")
-    cfg.resIcoFileName = g_Ico.toString()
-}

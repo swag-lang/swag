@@ -153,52 +153,52 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                 }
             }
         }
-
-        return;
     }
-
-    // Scan source folder
-    Vector<Path> directories;
-    directories.push_back(path);
-
-    Path tmp1;
-    Path modulePath;
-    while (!directories.empty())
+    else
     {
-        Path tmp = std::move(directories.back());
-        directories.pop_back();
+        // Scan source folder
+        Vector<Path> directories;
+        directories.push_back(path);
 
-        OS::visitFilesFolders(tmp, [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
-            if (isFolder)
-            {
-                tmp1 = tmp;
-                tmp1.append(cFileName);
-                directories.emplace_back(std::move(tmp1));
-            }
-            else
-            {
-                const Utf8 fileN = cFileName;
-                if (theModule->isNot(ModuleKind::Test) || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
+        Path tmp1;
+        Path modulePath;
+        while (!directories.empty())
+        {
+            Path tmp = std::move(directories.back());
+            directories.pop_back();
+
+            OS::visitFilesFolders(tmp, [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
+                if (isFolder)
                 {
-                    const auto pz = strrchr(cFileName, '.');
-                    if (pz && !_strcmpi(pz, ".swg"))
+                    tmp1 = tmp;
+                    tmp1.append(cFileName);
+                    directories.emplace_back(std::move(tmp1));
+                }
+                else
+                {
+                    const Utf8 fileN = cFileName;
+                    if (theModule->isNot(ModuleKind::Test) || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
                     {
-                        addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
-                    }
-                    else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
-                    {
-                        addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
-                    }
+                        const auto pz = strrchr(cFileName, '.');
+                        if (pz && !_strcmpi(pz, ".swg"))
+                        {
+                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
+                        }
+                        else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
+                        {
+                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
+                        }
 
-                    // Even if this is not a .swg file, as this is in the src directory, the file time contribute
-                    // to the rebuild detection (in case file is #load by another for example)
-                    else
-                    {
-                        theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
+                        // Even if this is not a .swg file, as this is in the src directory, the file time contribute
+                        // to the rebuild detection (in case file is #load by another for example)
+                        else
+                        {
+                            theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     // Add the config file, second pass
