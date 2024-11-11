@@ -1184,6 +1184,10 @@ impl Capture
                 let undo = newUndo(.CreateForm)
                 undo.oldForms.add(itf)
                 pushUndo(undo)
+
+                selection.clear()
+                selection.add(forms.count - 1)
+                selectionHasChanged()
             }
 
             let f = forms.back()
