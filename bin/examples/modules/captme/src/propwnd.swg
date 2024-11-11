@@ -1108,8 +1108,10 @@ impl PropWnd
         let curSelType = getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:
             return
-
         let curSel = cast(*BaseForm) getSelectedBaseForm()
+        if curSel.subKind == .PixSel:
+            return
+
         let ctrl = ComboCtrl.create(mainLayout, "Line")
         ctrl.comboSize = 210
         with ctrl.combo
@@ -1222,6 +1224,8 @@ impl PropWnd
         if curSelType != FormText and curSelType != FormPolygon:
             return
         let curSel = getSelectedBaseForm()
+        if curSel.subKind == .PixSel:
+            return
 
         let ctrl = ComboCtrl.create(mainLayout, "Joins")
         ctrl.comboSize = 210

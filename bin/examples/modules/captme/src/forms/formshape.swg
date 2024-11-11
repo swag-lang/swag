@@ -166,21 +166,31 @@ impl IForm for FormShape
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
+        var dash  = dashStyle
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
         let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, cxt)
 
         if subKind == .PixSel
         {
-            bSize       = 2
-            dashStyle   = .Dash
+            if cxt.hitTest
+            {
+                bSize = 10
+                dash  = .None
+            }
+            else
+            {
+                bSize = 2
+                dash  = .Dash
+            }
+
             borderColor = Argb.White
             painter.setAntialiased(false)
         }
 
         let z   = cxt.z
         var pp  = boundRect() * z
-        var pen = Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dash, borderColor, bSize)
         pen.borderPos = .Inside
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 

@@ -178,6 +178,7 @@ impl IForm for FormPolygon
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
+        var dash  = dashStyle
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
         bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
 
@@ -188,13 +189,22 @@ impl IForm for FormPolygon
 
         if subKind == .PixSel
         {
-            bSize     = 2
-            bk.a      = 0
-            dashStyle = .Dash
+            if cxt.hitTest
+            {
+                bSize = 10
+                dash  = .None
+            }
+            else
+            {
+                bSize = 2
+                dash  = .Dash
+            }            
+            
+            bk.a = 0
             painter.removeParams(.Antialiased)
         }
 
-        var pen = Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dash, borderColor, bSize)
 
         let z = cxt.z
         linePath.start(points[0].x * z, points[0].y * z)

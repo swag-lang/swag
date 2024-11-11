@@ -1178,6 +1178,9 @@ impl Capture
                 let itf  = editView.main.newFormFromModel(mode, clear: true)
                 if itf:
                     itf.setup(self)
+                let base = cast(*BaseForm) @dataof(itf)
+                if base and editView.main.editMode == .PixSel:
+                    base.subKind = .PixSel
                 let undo = newUndo(.CreateForm)
                 undo.oldForms.add(itf)
                 pushUndo(undo)

@@ -172,10 +172,11 @@ impl IForm for FormDraw
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
-        let z = cxt.z
+        var dash  = dashStyle
         var bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
         bSize = Math.max(bSize, 2)
 
+        let z   = cxt.z
         var pl: LinePath
         pl.start(points[0].x * z, points[0].y * z)
         for i in 1 until points.count:
@@ -184,12 +185,22 @@ impl IForm for FormDraw
         if subKind == .PixSel
         {
             pl.close()
-            bSize     = 2
-            dashStyle = .Dash
+
+            if cxt.hitTest
+            {
+                bSize = 10
+                dash  = .None
+            }
+            else
+            {
+                bSize = 2
+                dash  = .Dash
+            }
+
             painter.removeParams(.Antialiased)
         }
 
-        var pen = Pen.createDash(dashStyle, borderColor, bSize)
+        var pen = Pen.createDash(dash, borderColor, bSize)
         pen.joinStyle = .Round
 
         if cxt.quickMode and alpha != 100 and subKind == .Highlight
