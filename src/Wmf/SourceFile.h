@@ -15,6 +15,7 @@ using AttributeFlagsV = uint64_t;
 using AttributeFlags  = AtomicFlags<AttributeFlagsV>;
 
 using FileFlags                              = Flags<uint32_t>;
+constexpr FileFlags FILE_DEFAULT             = 0x00000000;
 constexpr FileFlags FILE_EXTERNAL            = 0x00000001;
 constexpr FileFlags FILE_FROM_AST            = 0x00000002;
 constexpr FileFlags FILE_CFG                 = 0x00000004;

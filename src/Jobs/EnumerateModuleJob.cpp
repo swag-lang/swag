@@ -18,15 +18,15 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 uint64_t             writeTime,
                                                 const SourceFile*    prePass,
                                                 Module*              imported,
-                                                bool                 markDown)
+                                                FileFlags            flags)
 {
     const auto file = Allocator::alloc<SourceFile>();
     file->addFlag(theModule->is(ModuleKind::Test) ? FILE_FROM_TESTS : 0);
+    file->addFlag(flags);
     file->name     = fileName;
     file->imported = imported;
 
-    file->addFlag(markDown ? FILE_MARK_DOWN : 0);
-    if (markDown)
+    if (file->hasFlag(FILE_MARK_DOWN))
         file->buildPass = BuildPass::Syntax;
 
     if (prePass)
@@ -61,7 +61,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
         // they are done during "idle" time.
         theModule->addFile(file);
 
-        if (!markDown)
+        if (!file->hasFlag(FILE_MARK_DOWN))
         {
             const auto syntaxJob  = Allocator::alloc<SyntaxJob>();
             syntaxJob->sourceFile = file;
@@ -103,9 +103,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
             }
         }
 
-        auto       fileName  = filePath.filename();
-        const auto writeTime = OS::getFileWriteTime(filePath);
-        addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime, nullptr, nullptr, true);
+        addFileToModule(theModule, allFiles, filePath.parent_path(), filePath.filename(), OS::getFileWriteTime(filePath), nullptr, nullptr, FILE_EMBEDDED);
     }
 
     // Sort files, and register them in a constant order
@@ -141,11 +139,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                 const auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
-                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, false);
+                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, FILE_DEFAULT);
                 }
                 else if (pz && !_strcmpi(pz, ".md"))
                 {
-                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, true);
+                    addFileToModule(theModule, allFiles, f->path, f->name, f->writeTime, f, nullptr, FILE_MARK_DOWN);
                 }
                 else
                 {
@@ -182,11 +180,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                         const auto pz = strrchr(cFileName, '.');
                         if (pz && !_strcmpi(pz, ".swg"))
                         {
-                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
+                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, FILE_DEFAULT);
                         }
                         else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
                         {
-                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
+                            addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, FILE_MARK_DOWN);
                         }
 
                         // Even if this is not a .swg file, as this is in the src directory, the file time contribute
@@ -207,9 +205,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         auto cfgFile = theModule->path;
         cfgFile      = ModuleDepManager::getAliasPath(cfgFile);
         cfgFile.append(SWAG_CFG_FILE);
-        const auto writeTime = OS::getFileWriteTime(cfgFile);
-        const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
-        file->addFlag(FILE_CFG);
+        addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, OS::getFileWriteTime(cfgFile), nullptr, nullptr, FILE_CFG);
     }
 
     // Sort files, and register them in a constant order
@@ -395,8 +391,7 @@ JobResult EnumerateModuleJob::execute()
             {
                 if (f->hasFlag(FILE_CFG))
                     continue;
-                const auto newFile = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
-                newFile->addFlag(FILE_EMBEDDED);
+                const auto newFile           = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, FILE_EMBEDDED);
                 newFile->globalUsingEmbedded = mod->buildParameters.globalUsing;
             }
 
