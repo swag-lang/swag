@@ -715,6 +715,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
              ip[1].op == ByteCodeOp::MakeStackPointer &&
              ByteCode::isMemCpy(ip + 2) &&
              ip->a.u32 == ip[2].b.u32 &&
+             !ip[1].hasFlag(BCI_START_STMT) &&
              ip[1].a.u32 == ip[2].a.u32)
     {
         switch (ip[2].op)
