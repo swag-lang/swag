@@ -140,6 +140,7 @@ impl IActionUI for ActionFile
             {
                 capture.linkedImage.clear()
                 capture.changed = true
+                capture.linkedUpToDate = false
                 catch capture.save()
                 main.recentWnd.updateRecent()
             }
@@ -148,6 +149,9 @@ impl IActionUI for ActionFile
             if capture.linkedImage.length == 0
             {    
                 main.saveAsImage(linked: true)
+                capture.linkedUpToDate = true
+                catch capture.save()
+                main.recentWnd.updateRecent()
                 break            
             }
 
@@ -181,6 +185,11 @@ impl IActionUI for ActionFile
                 var txt = Format.toString("Image <i>%</i> has been saved", capture.linkedImage)
                 discard EmbInfoCtrl.create(main.editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
             }
+
+            capture.linkedUpToDate = true
+            catch capture.save()
+            main.recentWnd.updateRecent()
+
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")

@@ -41,6 +41,21 @@ var g_App: Application
         defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
     }
 
-    g_App.run()
+    Env.associateFileExtension(".png", "captme.exe", Env.getExe())
 
+    let args = Env.getArgs()
+    foreach arg in args
+    {
+        if Image.canLoad(arg)        
+        {
+            let imgToLoad = catch Image.load(arg)
+            if imgToLoad.isValid():
+                mainWnd.newCapture(imgToLoad, arg)
+            break
+        }
+    }
+
+    g_App.run()
 }
+
+

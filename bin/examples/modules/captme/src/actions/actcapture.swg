@@ -156,7 +156,7 @@ impl MainWnd
         editWnd.editView.zoomToFit(false)
 
         capture.computePreview()
-        recentWnd.addRecent(capture.file, capture.preview)
+        recentWnd.addRecent(capture.file, capture.preview, linked: linked)
         recentWnd.recentView.selected = 0
 
         catch capture.save()

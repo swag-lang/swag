@@ -140,3 +140,47 @@ var g_SysInfo: SYSTEM_INFO
 {
     GetSystemInfo(&g_SysInfo)
 }
+
+// Associate an extension to an executable
+#[Swag.Discardable]
+public func associateFileExtension(extension, appName, appPath: string)->bool
+{
+    using Win32
+    var hKey: HKEY
+
+    /////
+
+    let extKey = Format.toString("Software\\Classes\\%\\OpenWithProgids", extension)
+    if RegCreateKeyExA(HKEY_CURRENT_USER, extKey.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) != ERROR_SUCCESS
+    {
+        return false
+    }
+
+    let valApp = Format.toString("%", appName)
+    if RegSetValueExA(hKey, null, 0, REG_SZ, valApp.buffer, cast(u32) (valApp.length + 1)) != ERROR_SUCCESS
+    {
+        RegCloseKey(hKey)
+        return false
+    }
+
+    RegCloseKey(hKey)
+
+    /////
+
+    let commandKey = Format.toString("Software\\Classes\\Applications\\%\\shell\\open\\command", appName)
+    if RegCreateKeyExA(HKEY_CURRENT_USER, commandKey.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) != ERROR_SUCCESS
+    {
+        return false
+    }
+
+    var command = Format.toString("\"%\" \"%%1\"", appPath)
+    command.replace("/", "\\")
+    if RegSetValueExA(hKey, null, 0, REG_SZ, command.buffer, cast(u32) (command.length + 1)) != ERROR_SUCCESS
+    {
+        RegCloseKey(hKey)
+        return false
+    }
+
+    RegCloseKey(hKey)
+    return true
+}

@@ -18,6 +18,9 @@ func hasArg(arg: string)->bool
     return Slice.contains(g_CmdLineArgs, arg)
 }
 
+// Get current executable
+func getExe()->string => g_CmdLineArgs[0]
+
 enum SpecialDirectory
 {
     Font
