@@ -3105,7 +3105,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (castFlags.has(CAST_FLAG_EXPLICIT) || toTypePointer->isSelf() || toTypePointer->isConst() || castFlags.has(CAST_FLAG_UFCS))
         {
             // to *void or *structure
-            if (toTypePointer->pointedType->isVoid() ||
+            if (toTypePointer->isPointerNull() ||
+                toTypePointer->pointedType->isVoid() ||
                 toTypePointer->pointedType->isSame(fromType, castFlags.with(CAST_FLAG_CAST)))
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
