@@ -685,7 +685,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             if (part == HintPart::Underline)
                 log->setColor(errorColor);
             else if (part == HintPart::Arrow)
-                log->setColor(noteColor);
+                log->setColor(errorColor);
             else if (part == HintPart::ErrorLevel)
                 log->setColor(errorColorHint);
             else
@@ -744,8 +744,8 @@ uint32_t Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
     {
         auto& rr  = ranges[ii];
         rr.hasBar = true;
-        setColorRanges(log, rr.errorLevel, HintPart::Arrow);
         alignRangeColumn(log, curColumn, rr.mid);
+        setColorRanges(log, rr.errorLevel, HintPart::Arrow);
         log->print(LogSymbol::VerticalLine);
         curColumn++;
     }
@@ -829,8 +829,10 @@ void Diagnostic::printRanges(Log* log)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
             alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unFormat.length()));
+            setColorRanges(log, r.errorLevel, HintPart::Text);
             log->print(r.hint);
             log->write(" ");
+            setColorRanges(log, r.errorLevel, HintPart::Arrow);
             log->print(LogSymbol::HorizontalLine);
             log->print(LogSymbol::DownLeft);
         }
@@ -842,6 +844,7 @@ void Diagnostic::printRanges(Log* log)
             if (!ranges.back().hasBar)
             {
                 alignRangeColumn(log, curColumn, r.mid);
+                setColorRanges(log, r.errorLevel, HintPart::Arrow);
                 log->print(LogSymbol::VerticalLineUp);
                 log->writeEol();
                 printMargin(log, false, true);
@@ -856,6 +859,7 @@ void Diagnostic::printRanges(Log* log)
         else
         {
             alignRangeColumn(log, curColumn, r.mid);
+            setColorRanges(log, r.errorLevel, HintPart::Arrow);
             log->print(LogSymbol::DownRight);
             log->print(LogSymbol::HorizontalLine);
             log->write(" ");
