@@ -143,7 +143,9 @@ impl IWnd for RecentView
 
         if linked != null
         {
-            let color = linkedUpToDate ? Argb.White : Argb.Yellow
+            var color: Color = Argb.White
+            if !linkedUpToDate:
+                color = ColorYellow
             painter.fillRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, colors.wnd_Bk)
             painter.drawRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, color, 2)
             var icon = parent.getTheme().getIcon24(.Link)
