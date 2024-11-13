@@ -181,7 +181,7 @@ impl IWnd for LibraryView
 
             it.rect = Math.Rectangle{x, y, W, H}
             let selected = selModel.isSelected(cast() i)
-            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, null)
+            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, it.capture.changed, null)
 
             // Waiting for texture
             if !it.texture.isValid()

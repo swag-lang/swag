@@ -28,7 +28,7 @@ struct Capture
     nextStepIndex:           u32 = 1
 
     linkedImage:             String
-    linkedUpToDate:          bool
+    linkedUpToDate:          bool = true
 
     // Dyn
     #[NoSerialize]
@@ -175,7 +175,7 @@ impl Capture
     mtd hasChanged()
     {
         changed = true
-        linkedUpToDate = true
+        linkedUpToDate = false
         editView.invalidate()
         editView.main.captureHasChanged()
         editView.main.recentWnd.updateRecent()
