@@ -1082,6 +1082,7 @@ impl PropWnd
             }
         }
 
+/*
         let slideX = createSlider("Offset X", -100, 100, cast() curSel.shadowOffsetX)
         slideX.slider.sigStartChange += func|self|(sliderX)
         {
@@ -1100,7 +1101,8 @@ impl PropWnd
         sliderY.slider.sigChanged += func|self|(sliderY)
         {
             self.pushTypedValue(cast<bit>(u32) sliderY.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetY), false, true)
-        }         
+        }  
+*/      
     }         
 
     mtd propSmooth()
