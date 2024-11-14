@@ -139,7 +139,7 @@ impl IActionUI for ActionFile
             if res == MessageDlg.BtnYes
             {
                 capture.linkedImage.clear()
-                capture.changed = true
+                capture.changed        = true
                 capture.linkedUpToDate = false
                 catch capture.save()
                 main.recentWnd.updateRecent()
@@ -147,12 +147,12 @@ impl IActionUI for ActionFile
 
         case CmdIdUpdateLinkedImage:
             if capture.linkedImage.length == 0
-            {    
+            {
                 main.saveAsImage(linked: true)
                 capture.linkedUpToDate = true
                 catch capture.save()
                 main.recentWnd.updateRecent()
-                break            
+                break
             }
 
             if g_EditorOptions.confirmLinkedOverwrite
@@ -189,7 +189,6 @@ impl IActionUI for ActionFile
             capture.linkedUpToDate = true
             catch capture.save()
             main.recentWnd.updateRecent()
-
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
@@ -319,7 +318,18 @@ impl MainWnd
         Cursor.wait()
         let capture = getCapture()
         var img     = capture.toImage()
-        catch img.save(dlg.getSelectedName())
+
+        var optImg: any
+        var optPng: Png.EncodeOptions
+
+        if Path.getExtensionLowerCase(dlg.getSelectedName()) == ".png"
+        {
+            optPng.compressionLevel = Compress.Deflate.CompressionLevel.BestSpeed
+            optPng.filtering        = false
+            optImg                  = &optPng
+        }
+
+        catch img.save(dlg.getSelectedName(), optImg)
         if @err() != null
         {
             MessageDlg.error(surface, "Failed to save file")
