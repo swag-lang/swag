@@ -23,13 +23,21 @@ struct EmbInfoCtrl
     label:              *Label
     ctrlFlags:          EmbInfoCtrlFlags = .Zero
     sigOnClose:         SigArray'func||(*Self)
+    timer:              *Timer
 }
 
 impl IWnd for EmbInfoCtrl
 {
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
+        timer = null
         destroy()
+    }
+
+    mtd impl onDestroyEvent(evt: *DestroyEvent)
+    {
+        if timer:
+            getApp().deleteTimer(timer)
     }
 }
 
@@ -89,7 +97,7 @@ impl EmbInfoCtrl
         }
 
         if flags.has(.AutoHide):
-            discard ctrl.addTimer(4's)
+            ctrl.timer = ctrl.addTimer(4's)
 
         parent.applyLayout()
         return ctrl
