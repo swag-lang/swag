@@ -74,7 +74,7 @@ impl ThemeStyle
         refr.count += 1
 
         // Ask user
-        var evt = SetThemeEvent{}
+        var evt = ThemeEvent{}
         evt.accepted = false
         evt.style    = self
         evt.parent   = parent

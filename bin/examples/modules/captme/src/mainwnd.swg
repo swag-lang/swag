@@ -121,14 +121,23 @@ impl IWnd for MainWnd
     {
         #if #os == Swag.TargetOs.Windows
         {
-            if evt.param1 == Win32.WM_LBUTTONDBLCLK
+            switch evt.userMsg
             {
-                surface.show()
-                surface.bringToTop()
-            }
-            elif evt.param1 == Win32.WM_RBUTTONDOWN
-            {
-                popupBar()
+            case Win32.WM_USER:
+                if evt.param1 == Win32.WM_LBUTTONDBLCLK
+                {
+                    surface.show()
+                    surface.bringToTop()
+                }
+                elif evt.param1 == Win32.WM_RBUTTONDOWN
+                {
+                    popupBar()
+                }
+
+            case Win32.WM_USER + 1:
+                let ptr = cast(const ^u8) evt.param1
+                let len = @strlen(ptr)
+                loadExternalImage(@mkstring(ptr, len))
             }
         }
     }
@@ -206,6 +215,30 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
+    mtd loadExternalImage(arg: string)
+    {
+        let imgToLoad = catch Image.load(arg)            
+        if !imgToLoad.isValid():
+            return
+
+        var done = false
+        foreach md in imgToLoad.metaDatas
+        {
+            if md.tag == "Captme.File"
+            {
+                let dupCapture = catch recentWnd.addRecent(md.value, true, true)
+                Memory.delete(dupCapture)
+                done = true
+                break
+            }
+        }
+
+        if !done
+        {
+            newCapture(imgToLoad, arg)
+        }
+    }
+
     mtd getEditMode()->EditMode
     {
         switch editMode

@@ -280,14 +280,14 @@ impl IEvent for SysCommandEvent
 {
 }
 
-struct SetThemeEvent
+struct ThemeEvent
 {
     using base:     Event
     style:          *ThemeStyle
     parent:         *ThemeStyle
 }
 
-impl IEvent for SetThemeEvent
+impl IEvent for ThemeEvent
 {
 }
 

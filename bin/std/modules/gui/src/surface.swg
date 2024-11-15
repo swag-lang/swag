@@ -16,6 +16,7 @@ struct Surface
     painter:           Painter
     rt:                RenderTarget
     userData:          *void
+    surfaceID:         String
 
     rc:                RenderingContext
     minSize:           Math.Point

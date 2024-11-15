@@ -160,6 +160,7 @@ internal impl Surface
         #[Swag.Global]
         var doneClass: bool
         let className = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
+        let surfaceName = @dataof(Utf16.toZeroTerminated(result.surfaceID))
         if !doneClass
         {
             doneClass = true
@@ -189,7 +190,7 @@ internal impl Surface
             winFlagsEx |= WS_EX_TOPMOST
 
         // Create window
-        result.hWnd = cast(const *void) CreateWindowExW(winFlagsEx, className, null, winFlags, x, y, width, height, null, null, GetModuleHandleW(null), result)
+        result.hWnd = cast(const *void) CreateWindowExW(winFlagsEx, className, surfaceName, winFlags, x, y, width, height, null, null, GetModuleHandleW(null), result)
 
         // Extend frame inside client area. This will also activate composition.
         if !flags.has(.NoShadow)
@@ -210,6 +211,15 @@ internal impl Surface
 
 impl Surface
 {
+    func sendCustomMessage(surfaceID: string, id: u32, param: u64)->bool
+    {
+        let hwnd = Win32.FindWindowA(@dataof("Swag.Gui.Surface"), @dataof(surfaceID))
+        if !hwnd:
+            return false
+        discard SendMessageA(hwnd, WM_USER + id, 0, param)
+        return true
+    }
+
     // Set the surface position
     mtd setPosition(pos: Math.Rectangle)
     {

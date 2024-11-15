@@ -2,6 +2,17 @@ var g_App: Application
 
 #main
 {
+    let args = Env.getArgs()
+    foreach arg in args
+    {
+        if !Image.canLoad(arg):
+            continue
+        let a = @dataof(arg)
+        if Surface.sendCustomMessage("Captme", 1, cast(u64) a):
+            return            
+
+    }
+
     try Jobs.setNumWorkers()
     try Library.init()
 
@@ -14,7 +25,7 @@ var g_App: Application
     img.setPixelFormat(.BGRA8)
     g_App.setAppIcon(img)
 
-    let surface = try g_App.createSurface(0, 0, 10, 10, SurfaceFlags.OverlappedWindow)
+    let surface = try g_App.createSurface(0, 0, 10, 10, SurfaceFlags.OverlappedWindow, surfaceID: "Captme")
     let mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
@@ -43,32 +54,13 @@ var g_App: Application
 
     Env.associateFileExtension(".png", "captme.exe", Env.getExe())
 
-    let args = Env.getArgs()
     foreach arg in args
     {
         if !Image.canLoad(arg):
             continue
-
-        let imgToLoad = catch Image.load(arg)            
-        if !imgToLoad.isValid():
-            break
-
-        var done = false
-        foreach md in imgToLoad.metaDatas
-        {
-            if md.tag == "Captme.File"
-            {
-                let dupCapture = catch mainWnd.recentWnd.addRecent(md.value, true, true)
-                Memory.delete(dupCapture)
-                done = true
-                break
-            }
-        }
-
-        if !done
-        {
-            mainWnd.newCapture(imgToLoad, arg)
-        }
+            Console.print(arg)
+        mainWnd.loadExternalImage(arg)      
+        break
     }
 
     g_App.run()

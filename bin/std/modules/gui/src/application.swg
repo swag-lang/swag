@@ -568,11 +568,12 @@ impl Application
     }
 
     // Creates a new surface
-    mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
+    mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null, surfaceID: string = null)->*Surface throw
     {
         let surface = Memory.new'Surface()
-        surface.app      = self
-        surface.position = {x, y, width, height}
+        surface.app       = self
+        surface.position  = {x, y, width, height}
+        surface.surfaceID = surfaceID
 
         if !mainSurface
         {

@@ -65,7 +65,7 @@ interface IWnd
     mtd onMouseEvent(evt: *MouseEvent);
     mtd onSysCommandEvent(evt: *SysCommandEvent);
     mtd onSysUserEvent(evt: *SysUserEvent);
-    mtd onSetThemeEvent(evt: *SetThemeEvent);
+    mtd onThemeEvent(evt: *ThemeEvent);
     mtd onTimerEvent(evt: *TimerEvent);
     mtd onFocusEvent(evt: *FocusEvent);
     mtd onCommandEvent(evt: *CommandEvent);
@@ -161,8 +161,8 @@ impl IWnd for Wnd
             itf.onKeyEvent(ptr)
         case MouseEvent as ptr where ptr.kind != .MouseAccept:
             itf.onMouseEvent(ptr)
-        case SetThemeEvent as ptr:
-            itf.onSetThemeEvent(ptr)
+        case ThemeEvent as ptr:
+            itf.onThemeEvent(ptr)
         case TimerEvent as ptr:
             itf.onTimerEvent(ptr)
         case FocusEvent as ptr:
@@ -193,7 +193,7 @@ impl IWnd for Wnd
     mtd impl onPrePaintEvent(evt: *PaintEvent) {}
     mtd impl onPaintEvent(evt: *PaintEvent) {}
     mtd impl onPostPaintEvent(evt: *PaintEvent) {}
-    mtd impl onSetThemeEvent(evt: *SetThemeEvent) { invalidate(); sendResizeEvent(); }
+    mtd impl onThemeEvent(evt: *ThemeEvent) { invalidate(); sendResizeEvent(); }
     mtd impl onTimerEvent(evt: *TimerEvent) {}
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent) {}
     mtd impl onFrameEvent(evt: *FrameEvent) {}
