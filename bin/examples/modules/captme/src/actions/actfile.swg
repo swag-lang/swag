@@ -326,7 +326,7 @@ impl MainWnd
         {
             optPng.compressionLevel = Compress.Deflate.CompressionLevel.BestSpeed
             optPng.filtering        = false
-            optImg                  = &optPng
+            optImg                  = optPng
         }
 
         catch img.save(dlg.getSelectedName(), optImg)
