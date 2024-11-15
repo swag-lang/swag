@@ -52,8 +52,10 @@ var g_App: Application
         defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
     }
 
-    Env.associateFileExtension(".png", "captme.exe", Env.getExe())
-    Env.associateFileExtension(".jpg", "captme.exe", Env.getExe())
+    let name = Format.toString("Captme %.%.%", #swagversion, #swagrevision, #swagbuildnum)  
+    Env.registerApplication("Captme.exe", name)
+    Env.associateFileExtension(".png", "Captme.exe", Env.getExe())
+    Env.associateFileExtension(".jpg", "Captme.exe", Env.getExe())
 
     foreach arg in args
     {

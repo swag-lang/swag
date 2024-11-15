@@ -211,6 +211,7 @@ internal impl Surface
 
 impl Surface
 {
+    // Send a custom message to the surface application with name 'surfaceID'
     func sendCustomMessage(surfaceID: string, id: u32, param: u64)->bool
     {
         let hwnd = Win32.FindWindowA(@dataof("Swag.Gui.Surface"), @dataof(surfaceID))

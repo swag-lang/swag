@@ -141,11 +141,33 @@ var g_SysInfo: SYSTEM_INFO
     GetSystemInfo(&g_SysInfo)
 }
 
+// Register an application in the system
+#[Swag.Discardable]
+public func registerApplication(appName, appFriendly: string)->bool
+{
+    var hKey: HKEY
+
+    let commandKey = Format.toString("Software\\Classes\\Applications\\%", appName)
+    if RegCreateKeyExA(HKEY_CURRENT_USER, commandKey.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) != ERROR_SUCCESS
+    {
+        return false
+    }
+
+    var command = Format.toString("%", appFriendly)
+    if RegSetValueExA(hKey, @dataof("FriendlyAppName"), 0, REG_SZ, command.buffer, cast(u32) (command.length + 1)) != ERROR_SUCCESS
+    {
+        RegCloseKey(hKey)
+        return false
+    }
+
+    RegCloseKey(hKey)
+    return true    
+}
+
 // Associate an extension to an executable
 #[Swag.Discardable]
 public func associateFileExtension(extension, appName, appPath: string)->bool
 {
-    using Win32
     var hKey: HKEY
 
     /////
@@ -164,6 +186,22 @@ public func associateFileExtension(extension, appName, appPath: string)->bool
     }
 
     RegCloseKey(hKey)
+
+    /////
+
+    let supportedTypes = Format.toString("Software\\Classes\\Applications\\%\\SupportedTypes", appName)
+    if RegCreateKeyExA(HKEY_CURRENT_USER, supportedTypes.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) != ERROR_SUCCESS
+    {
+        return false
+    }
+
+    if RegSetValueExA(hKey, @dataof(extension), 0, REG_SZ, null, 0) != ERROR_SUCCESS
+    {
+        RegCloseKey(hKey)
+        return false
+    }
+
+    RegCloseKey(hKey)    
 
     /////
 
