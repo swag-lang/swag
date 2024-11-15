@@ -11,6 +11,12 @@ void Job::addDependentJob(Job* job)
     dependentJobs.add(job);
 }
 
+void Job::addDependentJobOnce(Job* job)
+{
+    ScopedLock lk(executeMutex);
+    dependentJobs.addOnce(job);
+}
+
 void Job::setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo)
 {
     waitingSymbolSolved = symbolToWait;

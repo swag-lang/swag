@@ -5,6 +5,7 @@ struct Job;
 struct DependentJobs
 {
     void add(Job* job);
+    void addOnce(Job* job);
     void clear();
     void setRunning();
 

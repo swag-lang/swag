@@ -13,6 +13,17 @@ void DependentJobs::add(Job* job)
     list.push_back(job);
 }
 
+void DependentJobs::addOnce(Job* job)
+{
+    for (const auto j : list)
+    {
+        if (j == job)
+            return;
+    }
+
+    list.push_back(job);
+}
+
 void DependentJobs::clear()
 {
     list.clear();

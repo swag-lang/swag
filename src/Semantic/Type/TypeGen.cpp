@@ -72,7 +72,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
                 const auto itJob = mapPerSeg.exportedTypesJob.find(typeName);
                 if (itJob != mapPerSeg.exportedTypesJob.end())
                 {
-                    itJob->second->addDependentJob(context->baseJob);
+                    itJob->second->addDependentJobOnce(context->baseJob);
                     context->baseJob->setPending(JobWaitKind::GenExportedType, nullptr, nullptr, typeInfo);
                 }
             }

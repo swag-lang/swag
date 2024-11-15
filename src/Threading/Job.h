@@ -97,6 +97,7 @@ struct Job
     virtual ~         Job() = default;
 
     void addDependentJob(Job* job);
+    void addDependentJobOnce(Job* job);
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
     void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
 
