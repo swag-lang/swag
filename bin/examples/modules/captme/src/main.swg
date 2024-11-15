@@ -53,6 +53,7 @@ var g_App: Application
     }
 
     Env.associateFileExtension(".png", "captme.exe", Env.getExe())
+    Env.associateFileExtension(".jpg", "captme.exe", Env.getExe())
 
     foreach arg in args
     {
