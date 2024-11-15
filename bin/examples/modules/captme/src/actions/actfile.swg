@@ -177,18 +177,7 @@ impl IActionUI for ActionFile
 
             Cursor.wait()
             var img = capture.toImage()
-            catch img.save(capture.linkedImage)
-            if @err() != null:
-                MessageDlg.error(main.surface, "Failed to update file")
-            else
-            {
-                var txt = Format.toString("Image <i>%</i> has been saved", capture.linkedImage)
-                discard EmbInfoCtrl.create(main.editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
-            }
-
-            capture.linkedUpToDate = true
-            catch capture.save()
-            main.recentWnd.updateRecent()
+            main.doSaveImage(capture, &img, capture.linkedImage)
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
@@ -292,6 +281,39 @@ impl MainWnd
             newCapture(img, dlg.getSelectedName())
     }
 
+    mtd doSaveImage(capture: *Capture, img: *Image, nameFile: string)
+    {
+        var optImg: any
+        var optPng: Png.EncodeOptions
+
+        if Path.getExtensionLowerCase(nameFile) == ".png"
+        {
+            optPng.compressionLevel = Compress.Deflate.CompressionLevel.BestSpeed
+            optPng.filtering        = false
+            optImg                  = optPng
+        }
+
+        var md: ImageMetaData
+        md.tag   = "Captme.File"
+        md.value = capture.file
+        img.metaDatas.add(md)
+
+        catch img.save(nameFile, optImg)
+        if @err() != null
+        {
+            MessageDlg.error(surface, "Failed to save file")
+            return
+        }
+
+        capture.changed        = true
+        capture.linkedUpToDate = true
+        catch capture.save()
+        recentWnd.updateRecent()
+
+        var txt = Format.toString("Image <i>%</i> has been saved", nameFile)
+        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
+    }
+
     mtd saveAsImage(linked = false)
     {
         var opt: FileDlgOptions
@@ -318,34 +340,9 @@ impl MainWnd
         Cursor.wait()
         let capture = getCapture()
         var img     = capture.toImage()
-
-        var optImg: any
-        var optPng: Png.EncodeOptions
-
-        if Path.getExtensionLowerCase(dlg.getSelectedName()) == ".png"
-        {
-            optPng.compressionLevel = Compress.Deflate.CompressionLevel.BestSpeed
-            optPng.filtering        = false
-            optImg                  = optPng
-        }
-
-        catch img.save(dlg.getSelectedName(), optImg)
-        if @err() != null
-        {
-            MessageDlg.error(surface, "Failed to save file")
-            return
-        }
-
-        var txt = Format.toString("Image <i>%</i> has been saved", dlg.getSelectedName())
-        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, .Bottom | .AutoHide)
-
-        if linked
-        {
+        if linked:
             capture.linkedImage = dlg.getSelectedName()
-            capture.changed     = true
-            catch capture.save()
-            recentWnd.updateRecent()
-        }
+        doSaveImage(capture, &img, dlg.getSelectedName())
     }
 
     mtd newImage()

@@ -65,9 +65,10 @@ private
     }
 
     const PngSignature: [8] u8 = [137, 80, 78, 71, 13, 10, 26, 10]
-    const TypeIHdr:     [4] u8 = [73, 72, 68, 82]
-    const TypeIDat:     [4] u8 = [73, 68, 65, 84]
-    const TypeIEnd:     [4] u8 = [73, 69, 78, 68]
+    const TypeIHdr:     [4] u8 = ['I', 'H', 'D', 'R']
+    const TypeIDat:     [4] u8 = ['I', 'D', 'A', 'T']
+    const TypeIEnd:     [4] u8 = ['I', 'E', 'N', 'D']
+    const TypeTEXt:     [4] u8 = ['t', 'E', 'X', 't']
 
     struct SubImage
     {
@@ -218,6 +219,20 @@ impl Encoder
         dst[11] = ihdr.filterMethod
         dst[12] = ihdr.interlaceMethod
         writeChunk(TypeIHdr, dst, 13)
+    }
+
+    mtd writeMetaDatas(image: Image) throw
+    {
+        foreach md in image.metaDatas
+        {     
+            if !md.tag.length or !md.value.length:
+                continue
+             writePtr = writeHeader(TypeTEXt, md.tag.length + 1 + md.value.length)   
+             Memory.copy(writePtr, md.tag.buffer, md.tag.length)   
+             writePtr[md.tag.length] = 0
+             Memory.copy(writePtr + md.tag.length + 1, md.value.buffer, md.value.length)   
+             finishChunk()
+        }
     }
 
     mtd calculateScanlineWidth(width: u32)->u32 throw
@@ -621,6 +636,7 @@ public impl IImageEncoder for Encoder
             ihdr.colorType |= .Alpha
 
         writeChunksBeforeIDat()
+        writeMetaDatas(image)
         calculateSubImages()
 
         bytesPerPixel = numChannels() * (ihdr.bitDepth / 8)

@@ -10,7 +10,6 @@ using Swag, Core, Core.Errors
 
 private
 {
-
     enum ChunkType: u32
     {
         IHDR = @byteswap('I''u32 << 24 | 'H''u32 << 16 | 'D''u32 << 8 | 'R''u32)
@@ -545,6 +544,17 @@ impl Decoder
                 }
 
                 paletteCount = cast(u32) (len / 3)
+
+            case TEXt:   
+                var chunk = readChunk(ch)
+                let len = @strlen(chunk.datas)
+                if len
+                {
+                    var md: ImageMetaData
+                    md.tag = cast(string) chunk.datas[..<len]
+                    md.value = cast(string) chunk.datas[len+1..]
+                    result.metaDatas.add(md)
+                }
 
             default:
                 discard readChunk(ch)

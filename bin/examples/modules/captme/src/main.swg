@@ -46,12 +46,28 @@ var g_App: Application
     let args = Env.getArgs()
     foreach arg in args
     {
-        if Image.canLoad(arg)        
-        {
-            let imgToLoad = catch Image.load(arg)
-            if imgToLoad.isValid():
-                mainWnd.newCapture(imgToLoad, arg)
+        if !Image.canLoad(arg):
+            continue
+
+        let imgToLoad = catch Image.load(arg)            
+        if !imgToLoad.isValid():
             break
+
+        var done = false
+        foreach md in imgToLoad.metaDatas
+        {
+            if md.tag == "Captme.File"
+            {
+                let dupCapture = catch mainWnd.recentWnd.addRecent(md.value, true, true)
+                Memory.delete(dupCapture)
+                done = true
+                break
+            }
+        }
+
+        if !done
+        {
+            mainWnd.newCapture(imgToLoad, arg)
         }
     }
 

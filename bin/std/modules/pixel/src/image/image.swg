@@ -1,6 +1,13 @@
 #global public
 using Swag, Core, Core.Serialization
 
+// One image metadata pair
+struct ImageMetaData
+{
+    tag:    String
+    value:  String
+}
+
 // An image buffer, in various pixel formats.
 struct Image
 {
@@ -12,6 +19,7 @@ struct Image
     pf:         PixelFormat     // Format of one pixel
     bpp:        u8              // Bits per pixel
     bpp8:       u8              // Bytes per pixel
+    metaDatas:  Array'ImageMetaData
 
     #[Core.Serialization.NoSerialize]
     workingBuffer: *Image // Temporary buffer for filters and transformations
