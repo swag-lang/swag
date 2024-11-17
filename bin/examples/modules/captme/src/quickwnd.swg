@@ -702,7 +702,7 @@ impl QuickWnd
                     return
                 self.main.updateModel(it)
 
-                var capture = self.main.getCapture()
+                var capture = assume self.main.getCapture()
                 if capture.selection.count
                 {
                     let mdlValue = MainWnd.newFormFromForm(it)

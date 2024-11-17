@@ -90,7 +90,7 @@ impl MainWnd
     mtd getPixSels()->Array'IForm
     {
         var result: retval
-        let capture = getCapture()
+        let capture = assume getCapture()
         foreach s in capture.selection
         {
             let f = capture.forms[s]
@@ -108,7 +108,7 @@ impl MainWnd
         if forms.count == 0:
             return
 
-        let capture = getCapture()
+        let capture = assume getCapture()
         let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -146,7 +146,7 @@ impl MainWnd
         if forms.count == 0:
             return
 
-        let capture = getCapture()
+        let capture = assume getCapture()
         let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -184,7 +184,7 @@ impl MainWnd
         if forms.count == 0:
             return
 
-        let capture = getCapture()
+        let capture = assume getCapture()
         let undo    = capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -307,7 +307,7 @@ impl MainWnd
         if forms.count == 0:
             return
 
-        let capture = getCapture()
+        let capture = assume getCapture()
 
         capture.serialUndo += 1
         let serial = capture.serialUndo

@@ -305,7 +305,7 @@ impl RecentWnd
         timer = getApp().addTimer(1's, self)
 
         let item    = recentView.items[recentView.selected]
-        let capture = main.getCapture()
+        let capture = assume main.getCapture()
         item.linked         = capture.linkedImage
         item.linkedUpToDate = capture.linkedUpToDate
         invalidate()

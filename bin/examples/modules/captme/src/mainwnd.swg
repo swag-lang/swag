@@ -245,8 +245,9 @@ impl MainWnd
         {
         case Selection:
             editMode = .Shape
-            if getCapture():
-                getCapture().updateEditModeFromSelection()
+            let capture = getCapture()
+            if capture:
+                capture.updateEditModeFromSelection()
             let edMode = editMode
             editMode = .Selection
             return edMode
@@ -278,7 +279,7 @@ impl MainWnd
                 self.freezeSel = false                   
             } 
 
-            let capture = getCapture()
+            let capture = assume getCapture()
             capture.selection.clear()
             capture.selectionHasChanged()
             freezeSel = true
@@ -308,8 +309,10 @@ impl MainWnd
         }
     }
 
-    mtd getCapture()->*Capture
+    mtd getCapture()->nl *Capture
     {
+        if libraryMode:
+            return libWnd.getCapture()
         return editWnd.editView.capture
     }
 

@@ -703,7 +703,8 @@ impl PropWnd
             .toolTip   = "Reset the global step count to 1"
             btn.sigPressed += func|self|(btn)
             {
-                self.main.getCapture().nextStepIndex = 1
+                let capture = assume self.main.getCapture()
+                capture.nextStepIndex = 1
             }
         }
     }
@@ -720,7 +721,7 @@ impl PropWnd
         }
         if dlg.doModal() != Dialog.BtnOk:
             return curText
-        let capture = self.main.getCapture()
+        let capture = assume self.main.getCapture()
         let undo    = capture.newUndo(.SetText)
         undo.text = dlg.getText()
         capture.pushUndo(undo)
@@ -758,7 +759,7 @@ impl PropWnd
             if idx == Swag.U32.Max:
                 return
 
-            var capture = self.main.getCapture()
+            var capture = assume self.main.getCapture()
             var undo    = capture.newUndo(.SetFont)
 
             var sel = combo.items[idx]
@@ -791,7 +792,7 @@ impl PropWnd
             let curSel = cast(*FormText) self.getSelectedBaseForm()
             if curSel.text != edit.text
             {
-                let capture = self.main.getCapture()
+                let capture = assume self.main.getCapture()
                 let undo    = capture.newUndo(.SetText)
                 undo.text = edit.text
                 capture.pushUndo(undo)
@@ -822,7 +823,7 @@ impl PropWnd
 
             .sigCheckChanged += func|self|(btn)
             {
-                let capture = self.main.getCapture()
+                let capture = assume self.main.getCapture()
                 let curSel  = cast(*FormText) self.getSelectedBaseForm()
                 var style   = curSel.fontStyle
                 switch btn.id

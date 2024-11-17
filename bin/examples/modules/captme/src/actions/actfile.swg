@@ -115,7 +115,7 @@ impl IActionUI for ActionFile
     mtd impl execute(cxt: ActionContext)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
-        let capture = main.getCapture()
+        let capture = assume main.getCapture()
 
         switch cxt.id
         {
@@ -214,13 +214,6 @@ impl IActionUI for ActionFile
             Env.locateInExplorer(capture.linkedImage)
 
         case CmdIdFileDetails:
-            var file: *Capture
-            if main.libraryMode:
-                file = main.libWnd.getCapture()
-            else:
-                file = capture
-            if !file:
-                break
 
             func addLine(lt: *Wnd, title, val: string)
             {
@@ -238,10 +231,10 @@ impl IActionUI for ActionFile
             let lt = StackLayoutCtrl.create(dlg)
             lt.dockStyle = .Center
             lt.padding   = 5
-            addLine(lt, "<b>File<b>", Format.toString("%", file.file))
-            if file.linkedImage != null:
-                addLine(lt, "<b>Linked Image<b>", Format.toString("%", file.linkedImage))
-            addLine(lt, "<b>Size<b>", Format.toString("%x%", file.width, file.height))
+            addLine(lt, "<b>File<b>", Format.toString("%", capture.file))
+            if capture.linkedImage != null:
+                addLine(lt, "<b>Linked Image<b>", Format.toString("%", capture.linkedImage))
+            addLine(lt, "<b>Size<b>", Format.toString("%x%", capture.width, capture.height))
             lt.computeLayout()
             discard dlg.doModal()
         }
@@ -316,6 +309,8 @@ impl MainWnd
 
     mtd saveAsImage(linked = false)
     {
+        let capture = assume getCapture()
+
         var opt: FileDlgOptions
         with opt
         {
@@ -326,7 +321,7 @@ impl MainWnd
             .shortcuts.add({Env.SpecialDirectory.Desktop, "Desktop"})
             .shortcuts.add({Env.SpecialDirectory.UserPictures, "My Images"})
             .shortcuts.add({Env.SpecialDirectory.CommonPictures, "Images"})
-            .editName = Path.getFileNameWithoutExtension(getCapture().file)
+            .editName = Path.getFileNameWithoutExtension(capture.file)
             .filters.add({"PNG - Portable Network Graphics (*.png)", ".png"})
             .filters.add({"JPG - JPEG Image (*.jpg)", ".jpg"})
             .filters.add({"BMP - Windows Bitmap (*.bmp)", ".bmp"})
@@ -338,7 +333,6 @@ impl MainWnd
             return
 
         Cursor.wait()
-        let capture = getCapture()
         var img     = capture.toImage()
         if linked:
             capture.linkedImage = dlg.getSelectedName()

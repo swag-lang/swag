@@ -122,6 +122,9 @@ impl IWnd for LibraryView
             {
                 .addItem(CmdIdDeleteCapture)
                 .addSeparator()
+                .addItem(CmdIdCaptureFileLocation)                
+                .addItem(CmdIdLinkedFileLocation)   
+                .addSeparator()
                 .addItem(CmdIdFileDetails)
             }
 

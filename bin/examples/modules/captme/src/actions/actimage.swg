@@ -78,7 +78,7 @@ impl IActionUI for ActionImage
     mtd impl execute(cxt: ActionContext)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
-        let capture = main.getCapture()
+        let capture = assume main.getCapture()
 
         switch cxt.id
         {
@@ -116,7 +116,7 @@ impl MainWnd
 {
     mtd doProcessImage(cmdId: WndId, w, h: s32 = 0)
     {
-        let capture = getCapture()
+        let capture = assume getCapture()
 
         if capture.forms.count > 0
         {
@@ -175,7 +175,7 @@ impl MainWnd
         #[Swag.Global]
         var g_KeepRatio: bool = true
 
-        let capture = getCapture()
+        let capture = assume getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
         let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Image")
@@ -231,7 +231,7 @@ impl MainWnd
         #[Swag.Global]
         var g_ResizeMode: u64 = 5
 
-        let capture = getCapture()
+        let capture = assume getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
         let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
@@ -352,7 +352,7 @@ impl MainWnd
 
     mtd trimCanevas()
     {
-        let capture = getCapture()
+        let capture = assume getCapture()
         capture.selection.clear()
 
         var minX = Swag.F32.Max
