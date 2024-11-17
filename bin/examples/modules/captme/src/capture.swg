@@ -888,6 +888,8 @@ impl Capture
             .addItem(CmdIdCut)
             .addItem(CmdIdPaste)
             .addSeparator()
+            .addItem(CmdIdCopyAsImage)
+            .addSeparator()
             .addItem(CmdIdPasteImageInside)
             .addItem(CmdIdClearImageInside)
             .addSeparator()
@@ -919,7 +921,6 @@ impl Capture
         with menu
         {
             .addSeparator()
-            .addItem(CmdIdCopyAsImage)
             .addItem(CmdIdSelectAll)
             .addItem(CmdIdDeSelectAll)
             .addSeparator()
