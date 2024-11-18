@@ -109,8 +109,7 @@ impl Capture
         var rect     = Math.Rectangle{width: width * zoom, height: height * zoom}
         var painter: Pixel.Painter
 
-        let app    = editView.getApp()
-        let render = app.getRenderer()
+        let render = g_App.getRenderer()
 
         with painter
         {
@@ -130,7 +129,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
-                paintForm(app, &painter, {}, rect, f, zoom, snapMode: true)
+                paintForm(&painter, {}, rect, f, zoom, snapMode: true)
             }
         }
         else
@@ -140,7 +139,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
-                paintForm(app, &painter, {}, rect, f, zoom, snapMode: true)
+                paintForm(&painter, {}, rect, f, zoom, snapMode: true)
             }
         }
 
@@ -340,9 +339,9 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, clip, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
+    func paintForm(painter: *Painter, clip, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
-        let render = &app.renderer
+        let render = &g_App.renderer
 
         var boundRect = f.boundRect()
         boundRect.width  = Math.max(boundRect.width, 1)
@@ -604,7 +603,6 @@ impl Capture
         paintBackImage(painter, rect.x, rect.y, zoom)
 
         // Shapes
-        let app = editView.getApp()
         foreach f in forms
         {
             var pp = f.boundRect() * zoom
@@ -615,12 +613,12 @@ impl Capture
             {
                 pp.offset(rect.x, rect.y)
                 painter.pushClippingRect(pp)            
-                paintForm(app, painter, clip, rect, f, zoom)
+                paintForm(painter, clip, rect, f, zoom)
                 painter.popClippingRect()
             }
             else
             {      
-                paintForm(app, painter, clip, rect, f, zoom)          
+                paintForm(painter, clip, rect, f, zoom)          
             }
         }
 

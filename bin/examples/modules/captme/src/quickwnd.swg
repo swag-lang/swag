@@ -637,7 +637,7 @@ impl QuickWnd
             }
 
             btnp.formItf.setBaseForm(cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
-            Capture.paintForm(btnp.getApp(), painter, {}, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
+            Capture.paintForm(painter, {}, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             if @countof(title):
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
