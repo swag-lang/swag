@@ -135,9 +135,9 @@ impl IWnd for MainWnd
                 }
 
             case Win32.WM_USER + 1:
-                let ptr = cast(const ^u8) evt.param1
-                let len = @strlen(ptr)
-                loadExternalImage(@mkstring(ptr, len))
+                if !Clipboard.hasString():
+                    break
+                loadExternalImage(Clipboard.getString())
             }
         }
     }

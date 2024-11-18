@@ -7,8 +7,8 @@ var g_App: Application
     {
         if !Image.canLoad(arg):
             continue
-        let a = @dataof(arg)
-        if Surface.sendCustomMessage("Captme", 1, cast(u64) a):
+        Clipboard.addString(arg)
+        if Surface.sendCustomMessage("Captme", 1, 0):
             return            
 
     }
