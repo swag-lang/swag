@@ -8,9 +8,12 @@ struct ImageDecoder
 
 public struct DecodeOptions
 {
-    // Decode image informations (width, height...) but: no read pixels
+    // Decode image informations (width, height...) but do no read pixels
     // Used to fast retrieve informations about the image
     decodePixels = true
+
+    // Decode meta datas
+    decodeMetaDatas = true
 }
 
 // Interface to decode a buffer

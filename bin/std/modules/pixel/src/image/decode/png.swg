@@ -526,8 +526,7 @@ impl Decoder
                         throw InvalidFormatError{"invalid chunk"}
                 }
 
-                chIsHere = true
-                seenIDAT = true
+                chIsHere, seenIDAT = true
 
             case PLTE:
                 if seenIDAT:
@@ -547,14 +546,17 @@ impl Decoder
 
             case TEXt:   
                 var chunk = readChunk(ch)
-                let len = @strlen(chunk.datas)
-                if len > 1
+                if decOptions.decodeMetaDatas
                 {
-                    var md: ImageMetaData
-                    md.tag = cast(string) chunk.datas[..<len]
-                    if len != @countof(chunk.datas) - 1:
-                        md.value = cast(string) chunk.datas[len+1..]
-                    result.metaDatas.add(md)
+                    let len = @strlen(chunk.datas)
+                    if len > 1
+                    {
+                        var md: ImageMetaData
+                        md.tag = cast(string) chunk.datas[..<len]
+                        if len != @countof(chunk.datas) - 1:
+                            md.value = cast(string) chunk.datas[len+1..]
+                        result.metaDatas.add(md)
+                    }
                 }
 
             default:

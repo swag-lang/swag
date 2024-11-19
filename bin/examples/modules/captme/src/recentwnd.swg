@@ -304,8 +304,11 @@ impl RecentWnd
             getApp().deleteTimer(timer)
         timer = getApp().addTimer(1's, self)
 
-        let item    = recentView.items[recentView.selected]
-        let capture = assume main.getCapture()
+        let capture = main.getCapture()
+        if !capture:
+            return
+
+        let item            = recentView.items[recentView.selected]
         item.linked         = capture.linkedImage
         item.linkedUpToDate = capture.linkedUpToDate
         invalidate()

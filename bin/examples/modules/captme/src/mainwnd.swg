@@ -237,6 +237,12 @@ impl MainWnd
         {
             newCapture(imgToLoad, arg)
         }
+
+        if libraryMode
+        {
+            swapLibraryMode()
+            updateState()
+        }
     }
 
     mtd getEditMode()->EditMode
