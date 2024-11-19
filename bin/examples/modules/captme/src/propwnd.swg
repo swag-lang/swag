@@ -1046,7 +1046,7 @@ impl PropWnd
     mtd propRotate()
     {
         let curSelType = getSelectedFormType()
-        if curSelType != FormText and curSelType != FormShape:
+        if curSelType != FormText and curSelType != FormShape and curSelType != FormImage:
             return       
         let curSel = cast(*FormText) getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:

@@ -204,6 +204,8 @@ public struct Decoder
     scanLine1:                    Array'u8
     quantBuf:                     Array'u8
     sampleBuf:                    Array'u8
+    decOptions:                   DecodeOptions
+    metaDatas:                    Array'ImageMetaData
 }
 
 impl Decoder
@@ -1774,7 +1776,10 @@ impl Decoder
             case M_DRI:
                 readDriMarker()
             default:
-                readVariableMarker(c)
+                if cast(u32) c & cast(u32) M_APP0 == cast(u32) M_APP0:
+                    readAppMarker(c)
+                else:
+                    readVariableMarker(c)
             }
         }
 
@@ -1910,6 +1915,36 @@ impl Decoder
             compSampV[i] = getBits1(4)
             compQuant[i] = getBits1(8)
         }
+    }
+
+    mtd readAppMarker(marker: Marker) throw
+    {
+        var left = getBits1(16)
+        if left < 2:
+            throw InvalidFormatError{"Bad app marker"}
+        left -= 2
+
+        if !decOptions.decodeMetaDatas
+        {
+            while left
+            {
+                getBits1(8)
+                left -= 1
+            }
+        }
+        else
+        {
+            var meta: ImageMetaData
+            meta.tag = Format.toString("%", marker);
+
+            while left
+            {
+                meta.value += getBits1(8)
+                left -= 1
+            }
+
+            metaDatas.add(meta)
+        }        
     }
 
     mtd readSosMarker() throw
@@ -2064,17 +2099,21 @@ public impl IImageDecoder for Decoder
 
     mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
+        var result: retval
+        decOptions = options
+
         init(buffer)
         start()
 
         // Creates image
-        var result: retval
         result.init(imageSizeX, imageSizeY, PixelFormat.BGR8)
         if !options.decodePixels:
             return result
         result.allocPixels()
 
         doit(result.pixels.buffer)
+        result.metaDatas = #move metaDatas
+
         return result
     }
 }
