@@ -48,6 +48,6 @@ const REG_QWORD_LITTLE_ENDIAN        = 11'u32 // 64-bit number (same as REG_QWOR
 #[Foreign("advapi32"), Swag.Discardable]
 {
     func RegCreateKeyExA(hKey: HKEY, lpSubKey: LPCSTR, reserved: DWORD, lpClass: nl LPSTR, dwOptions: DWORD, samDesired: REGSAM, lpSecurityAttributes: nl const *SECURITY_ATTRIBUTES, hkResult: *HKEY, lpdwDisposition: LPDWORD)->LSTATUS;
-    func RegSetValueExA(hKey: HKEY, lpValueName: LPCSTR, reserved: DWORD, dwType : DWORD, lpData: const *BYTE, cbData: DWORD)->LSTATUS;    
+    func RegSetValueExA(hKey: HKEY, lpValueName: LPCSTR, reserved: DWORD, dwType : DWORD, lpData: nl const *BYTE, cbData: DWORD)->LSTATUS;    
     func RegCloseKey(hKey: HKEY)->LSTATUS;
 }

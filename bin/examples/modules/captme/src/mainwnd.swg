@@ -243,6 +243,8 @@ impl MainWnd
             swapLibraryMode()
             updateState()
         }
+
+        surface.bringToTop()
     }
 
     mtd getEditMode()->EditMode
@@ -283,6 +285,7 @@ impl MainWnd
             embInfoFreeze.sigOnClose += func|self|(ctrl)
             { 
                 self.freezeSel = false                   
+                self.embInfoFreeze = null
             } 
 
             let capture = assume getCapture()
