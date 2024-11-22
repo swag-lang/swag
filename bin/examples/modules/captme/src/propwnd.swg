@@ -25,6 +25,14 @@ struct PropWnd
 
 impl PropWnd
 {
+    mtd hasRealSelection()->bool
+    {
+        let capture = main.getCapture()
+        if !capture or capture.selection.count == 0:
+            return false
+        return true
+    }
+
     mtd getSelectedBaseForm()->*BaseForm
     {
         let capture = main.getCapture()
@@ -972,6 +980,62 @@ impl PropWnd
         }
     }
 
+    mtd propXY()
+    {
+        if !hasRealSelection():
+            return
+        let curSelType = getSelectedFormType()
+        if curSelType != FormShape and curSelType != FormText:
+            return            
+        let curSel = getSelectedBaseForm()
+
+        {
+            let l = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let edit0 = EditCtrl.create(l, "x", Format.toString("%", curSel.x), flags: .AutoLoseFocus)
+            edit0.labelSize = 15
+            edit0.editSize = 0
+            edit0.edit.setInputU64()
+            edit0.edit.sigLoseFocus += func|self|(ed)
+            {
+                let (v, ?, ?) = catch StrConv.parseS32(ed.text)
+                self.pushTypedValue(v, BaseForm, #nameof(BaseForm.x), true, true)
+            }
+
+            let edit1 = EditCtrl.create(l, "y", Format.toString("%", curSel.y), flags: .AutoLoseFocus)
+            edit1.labelSize = 15
+            edit1.editSize = 0
+            edit1.edit.setInputU64()
+            edit1.edit.sigLoseFocus += func|self|(ed)
+            {
+                let (v, ?, ?) = catch StrConv.parseS32(ed.text)
+                self.pushTypedValue(v, BaseForm, #nameof(BaseForm.y), true, true)
+            }   
+        }
+
+        {
+            let l = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let edit0 = EditCtrl.create(l, "w", Format.toString("%", curSel.w), flags: .AutoLoseFocus)
+            edit0.labelSize = 15
+            edit0.editSize = 0
+            edit0.edit.setInputU64(1, 10000)
+            edit0.edit.sigLoseFocus += func|self|(ed)
+            {
+                let (v, ?, ?) = catch StrConv.parseS32(ed.text)
+                self.pushTypedValue(v, BaseForm, #nameof(BaseForm.w), true, true)
+            }
+
+            let edit1 = EditCtrl.create(l, "h", Format.toString("%", curSel.h), flags: .AutoLoseFocus)
+            edit1.labelSize = 15
+            edit1.editSize = 0
+            edit1.edit.setInputU64(1, 10000)
+            edit1.edit.sigLoseFocus += func|self|(ed)
+            {
+                let (v, ?, ?) = catch StrConv.parseS32(ed.text)
+                self.pushTypedValue(v, BaseForm, #nameof(BaseForm.h), true, true)
+            }   
+        }
+    }    
+
     mtd propBorderSize()
     {
         let curSelType = getSelectedFormType()
@@ -1259,6 +1323,14 @@ impl PropWnd
         discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartMove)
     }
 
+    mtd propSep()
+    {
+        let sep = Wnd.create'Wnd(mainLayout, {0, 0, 0, 1})
+        sep.margin.y = 15
+        sep.margin.w = 8
+        sep.backgroundStyle = .View
+    }
+
     mtd selectionHasChanged()
     {
         foreach it in mainLayout.childs:
@@ -1295,15 +1367,16 @@ impl PropWnd
         propSmooth()
         propPixSel()
 
-        let sep = Wnd.create'Wnd(mainLayout, {0, 0, 0, 1})
-        sep.margin.y = 15
-        sep.margin.w = 8
-        sep.backgroundStyle = .View
+        propSep()
 
         propScale()
         propRotate()
         propOpacity()
         propShadow()
+
+        propSep()
+
+        propXY()
 
         mainLayout.computeLayout()
         if mainLayout.childs.count:

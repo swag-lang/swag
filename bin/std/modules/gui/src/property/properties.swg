@@ -496,8 +496,12 @@ internal impl Properties
 
         if kind == .Grid:
             line = Wnd.create'Wnd(edView, {0, 0, position.width, height orelse gridLineHeight})
-        else:
-            line = StackLayoutCtrl.create(edView, .TopAutoSize, {0, 0, position.width, height orelse gridLineHeight})
+        else
+        {
+            let stk = StackLayoutCtrl.create(edView, .Top, {0, 0, position.width, height orelse gridLineHeight})
+            stk.fitToContent = true
+            line = stk
+        }
 
         with line
         {

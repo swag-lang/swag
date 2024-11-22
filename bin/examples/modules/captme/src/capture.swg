@@ -1209,6 +1209,8 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
+        if g_App.keyb.isKeyPressed(Input.Key.O):
+            return Swag.U64.Max
         let res = hitTests(localPos, true)
         if res.isEmpty():
             return Swag.U64.Max

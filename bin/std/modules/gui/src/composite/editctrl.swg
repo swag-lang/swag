@@ -5,7 +5,7 @@ struct EditCtrl
 {
     using frameWnd:     FrameWnd
     labelSize:          f32 = 60
-    editSize:           f32 = 60
+    editSize:           f32 = 60        // 0 to fit to parent size
 
     label:              *Label
     edit:               *EditBox
@@ -21,8 +21,12 @@ impl IWnd for EditCtrl
         var rect    = getClientRect()
         let metrics = getThemeMetrics()
 
-        label.setPosition(0, 0, labelSize, metrics.editBox_Height)
-        edit.setPosition(label.position.right() + 5, rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
+        let y = rect.vertCenter() - metrics.editBox_Height / 2
+        label.setPosition(0, y, labelSize, metrics.editBox_Height)
+        if editSize == 0:
+            edit.setPosition(label.position.right() + 5, y, position.width - 5 - labelSize, metrics.editBox_Height)
+        else:
+            edit.setPosition(label.position.right() + 5, y, editSize, metrics.editBox_Height)
     }
 }
 
@@ -42,10 +46,8 @@ impl EditCtrl
         {
             .label                   = Label.create(ctrl, #self.name, {})
             .label.horzAlignmentText = .Right
-
-            .edit              = EditBox.create(ctrl, text, {})
-            .edit.editBoxFlags = flags
-
+            .edit                    = EditBox.create(ctrl, text, {})
+            .edit.editBoxFlags       = flags
             .sendResizeEvent()
         }
 

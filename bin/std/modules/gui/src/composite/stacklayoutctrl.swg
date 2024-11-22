@@ -3,15 +3,15 @@ using Core
 
 enum StackLayoutKind
 {
-    Top
-    TopAutoSize
-    Bottom
-    Left
-    LeftAutoSize
-    Right
-    HorzCenter
+    Top             // From top to bottom
+    Bottom          // From bottom to top
+    Left            // From left to right
+    Right           // From right to left
+    HorzCenter      // Center horizontally
     HorzCenterVertCenter
-    VertCenter
+    VertCenter      // Center vertically
+    HorzFit         // From left to right; fit the available room
+    VertFit         // From top to bottom; fit the available room
 }
 
 struct StackLayoutCtrl
@@ -20,6 +20,7 @@ struct StackLayoutCtrl
 
     layoutKind:     StackLayoutKind = Top
     spacing:        f32 = 5
+    fitToContent:   bool
 }
 
 impl IWnd for StackLayoutCtrl
@@ -30,6 +31,27 @@ impl IWnd for StackLayoutCtrl
         {
             wnd.IWnd.onResizeEvent(evt)
             return
+        }
+
+        if layoutKind == .HorzFit
+        {   
+            var w = position.width
+            w -= spacing * cast(s32) childs.count - 1
+            w /= cast(s32) childs.count
+            foreach c in childs
+            {
+                c.position.width = w
+            }
+        }
+        elif layoutKind == .VertFit
+        {   
+            var h = position.height
+            h -= spacing * cast(s32) childs.count - 1
+            h /= cast(s32) childs.count            
+            foreach c in childs
+            {
+                c.position.height = h
+            }
         }
 
         if layoutKind == .HorzCenter or layoutKind == .HorzCenterVertCenter
@@ -75,21 +97,18 @@ impl IWnd for StackLayoutCtrl
             {
                 switch layoutKind
                 {
-                case Top, TopAutoSize:
+                case Top, VertFit:
                     c.dockStyle = .Top
                     if i > 0:
                         c.margin.y = Math.max(c.margin.y, spacing)
-
                 case Bottom:
                     c.dockStyle = .Bottom
                     if i > 0:
                         c.margin.w = Math.max(c.margin.w, spacing)
-
-                case Left, LeftAutoSize:
+                case Left, HorzFit:
                     c.dockStyle = .Left
                     if i > 0:
                         c.margin.x = Math.max(c.margin.x, spacing)
-
                 case Right:
                     c.dockStyle = .Right
                     if i > 0:
@@ -102,17 +121,20 @@ impl IWnd for StackLayoutCtrl
 
         wnd.IWnd.onResizeEvent(evt)
 
-        switch layoutKind
+        if fitToContent
         {
-        case TopAutoSize:
-            let b = childs.back()
-            let y = b.position.bottom() + padding.w
-            position.height = y
+            switch layoutKind
+            {
+            case Top, VertFit:
+                let b = childs.back()
+                let y = b.position.bottom() + padding.w
+                position.height = y
 
-        case LeftAutoSize:
-            let b = childs.back()
-            let x = b.position.right() + padding.z
-            position.width = x
+            case Left, HorzFit:
+                let b = childs.back()
+                let x = b.position.right() + padding.z
+                position.width = x
+            }
         }
     }
 }
