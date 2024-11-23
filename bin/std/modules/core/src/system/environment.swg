@@ -2,24 +2,31 @@
 #global namespace Env
 
 // Get the program command line arguments as a [..] string
-func getArgs()->const [..] string => g_CmdLineArgs
+func getArgs()->const [..] string => @args()
 
 // Get a given argument, or null
 func getArg(idx: u32)->nl string
 {
-    if idx >= @countof(g_CmdLineArgs):
+    let args = @args()
+    if idx >= @countof(args):
         return null
-    return g_CmdLineArgs[idx]
+    return args[idx]
 }
 
 // Get a given argument, or null
 func hasArg(arg: string)->bool
 {
-    return Slice.contains(g_CmdLineArgs, arg)
+    return Slice.contains(@args(), arg)
 }
 
 // Get current executable
-func getExe()->string => g_CmdLineArgs[0]
+func getExe()->string
+{
+    let args = @args()
+    if @countof(args) == 0:
+        return ""
+    return args[0]
+}
 
 enum SpecialDirectory
 {
@@ -56,7 +63,9 @@ enum Metrics
     DesktopHeight       // Height of the full desktop
 }
 
-#init
+#premain
 {
-    g_CmdLineArgs = @args()
+    let str = getNativeArgs()
+    if @countof(str):
+        @pinfos().args = str
 }

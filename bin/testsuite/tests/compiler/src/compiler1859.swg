@@ -112,9 +112,9 @@ func aaa(ptr: *s64)
             var ptr = @getcontext()
         }
 
-        print(cast(s64) @countof(@args()))
+        /*print(cast(s64) @countof(@args()))
         print(@args()[0])
-        print("\n")
+        print("\n")*/
 
         {
             var x = 666's64

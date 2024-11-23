@@ -222,3 +222,15 @@ public func associateFileExtension(extension, appName, appPath: string)->bool
     RegCloseKey(hKey)
     return true
 }
+
+var g_StoreArgs: String
+func getNativeArgs()->string
+{    
+    let ptr = GetCommandLineW()
+    g_StoreArgs = Utf8.fromUtf16(@mkslice(ptr, Utf16.lengthZeroTerminated(ptr)))
+
+    if @countof(@pinfos().args):
+        g_StoreArgs.append(@pinfos().args)
+
+    return g_StoreArgs
+}

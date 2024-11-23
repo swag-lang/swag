@@ -108,7 +108,6 @@ namespace __Win32RT
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: *const *void);
         func DebugBreak();
         func LoadLibraryA(name: const *u8);
-        func GetCommandLineA()->const ^u8;
         func TlsAlloc()->u32;
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
@@ -255,7 +254,6 @@ func __raiseException666(message: string, loc: Swag.SourceCodeLocation, kind: Sw
 }
 
 ////////////////////////////////////////////////////////////
-func __getCommandLine()                   => __Win32RT.GetCommandLineA()
 func __loaddll(name: string)              => __Win32RT.LoadLibraryA(@dataof(name))
 func __exit()                             => __Win32RT.ExitProcess(0)
 func __tlsAlloc()                         => cast(u64) __Win32RT.TlsAlloc()

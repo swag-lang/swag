@@ -145,6 +145,9 @@ var __argc            = 0'u32
 
 func __convertArgcArgv(args: const ^u8)
 {
+    if args == null:
+        return
+        
     var cmdLine = args
     __argc = 0
     while dref cmdLine
@@ -182,12 +185,8 @@ func __convertArgcArgv(args: const ^u8)
 
 func @args()->const [..] string
 {
-    if __argc == 0
-    {
-        let ptr = @dataof(@pinfos().args) orelse __getCommandLine()
-        __convertArgcArgv(ptr)
-    }
-
+    if __argc == 0:
+        __convertArgcArgv(@dataof(@pinfos().args))
     return @mkslice(&__argv[0], cast(u64) __argc)
 }
 

@@ -345,6 +345,8 @@ struct PROCESS_INFORMATION
     func OutputDebugStringA(lpOutputString: LPCSTR);
     func OutputDebugStringW(lpOutputString: LPCWSTR);
     func DebugActiveProcess(procId: DWORD);
+    func GetCommandLineA()->const ^u8;
+    func GetCommandLineW()->const ^u16;
 
     func GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR)->const *void;
     func GetCurrentProcess()->HANDLE;
