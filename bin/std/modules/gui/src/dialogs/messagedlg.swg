@@ -60,7 +60,7 @@ public impl MessageDlg
         var rsf:  RichStringFormat
         rsf.font = getFont()
         rsf.flags |= .WordWrap
-        rsf.horzAlignment = .Justify
+        rsf.horzAlignment = label.horzAlignmentText
         fake.drawRichString({0, 0, 512, 0}, &label.name, rsf)
         label.name.invalidate()
 

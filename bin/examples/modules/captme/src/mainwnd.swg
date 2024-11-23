@@ -218,8 +218,12 @@ impl MainWnd
     mtd loadExternalImage(arg: string)
     {
         let imgToLoad = catch Image.load(arg)            
-        if !imgToLoad.isValid():
+        if @err() != null
+        {
+            let str = Format.toString("Failed to load file: %", arg)
+            MessageDlg.error(surface, str)
             return
+        }
 
         var done = false
         foreach md in imgToLoad.metaDatas
