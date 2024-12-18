@@ -1,6 +1,7 @@
-const CmdIdTrimCanevas      = "CmdIdTrimCanevas"
+const CmdIdTrimCapture      = "CmdIdTrimCapture"
 const CmdIdResizeImage      = "CmdIdResizeImage"
-const CmdIdResizeCanevas    = "CmdIdResizeCanevas"
+const CmdIdExpandImage      = "CmdIdExpandImage"
+const CmdIdExpandCapture    = "CmdIdExpandCapture"
 const CmdIdRestoreOrg       = "CmdIdRestoreOrg"
 const CmdIdFlipImage        = "CmdIdFlipImage"
 const CmdIdMirrorImage      = "CmdIdMirrorImage"
@@ -14,8 +15,8 @@ impl IActionUI for ActionImage
     {
         switch cxt.id
         {
-        case CmdIdTrimCanevas, CmdIdResizeImage,
-             CmdIdResizeCanevas, CmdIdRestoreOrg,
+        case CmdIdTrimCapture, CmdIdResizeImage, CmdIdExpandImage,
+             CmdIdExpandCapture, CmdIdRestoreOrg,
              CmdIdFlipImage, CmdIdMirrorImage, 
              CmdIdRotateImageRight, CmdIdRotateImageLeft:
             return true
@@ -36,12 +37,17 @@ impl IActionUI for ActionImage
             evt.name     = "Resize Image..."
             evt.disabled = !capture
 
-        case CmdIdResizeCanevas:
+        case CmdIdExpandImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name     = "Resize Capture..."
+            evt.name     = "Expand Image..."
+            evt.disabled = !capture            
+
+        case CmdIdExpandCapture:
+            evt.setFlags |= .Name | .Disabled
+            evt.name     = "Expand Capture..."
             evt.disabled = !capture
 
-        case CmdIdTrimCanevas:
+        case CmdIdTrimCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Trim Capture"
             evt.disabled = !capture
@@ -84,10 +90,11 @@ impl IActionUI for ActionImage
         {
         case CmdIdResizeImage:
             main.resizeImage()
+        case CmdIdExpandImage:
+            main.expandImage()            
 
         case CmdIdFlipImage:
             main.doProcessImage(CmdIdFlipImage)
-
         case CmdIdMirrorImage:
             main.doProcessImage(CmdIdMirrorImage)
 
@@ -96,11 +103,10 @@ impl IActionUI for ActionImage
         case CmdIdRotateImageLeft:
             main.doProcessImage(CmdIdRotateImageLeft)                  
 
-        case CmdIdResizeCanevas:
-            main.resizeCanevas()
-
-        case CmdIdTrimCanevas:
-            main.trimCanevas()
+        case CmdIdExpandCapture:
+            main.expandCapture()    
+        case CmdIdTrimCapture:
+            main.trimCapture()
 
         case CmdIdRestoreOrg:
             let undo = capture.newUndo(.RestoreOrg)
@@ -114,21 +120,12 @@ impl IActionUI for ActionImage
 
 impl MainWnd
 {
-    mtd doProcessImage(cmdId: WndId, w, h: s32 = 0)
+    mtd doProcessImage(cmdId: WndId, l, t, r, b, w, h: s32 = 0)
     {
         let capture = assume getCapture()
 
-        if capture.forms.count > 0
-        {
-            if MessageDlg.confirm(surface, "The capture must be flattened first.") != Dialog.BtnYes:
-                return
-        }
-
         capture.serialUndo += 1
         let serial = capture.serialUndo
-
-        let undo0 = capture.newUndo(.FlattenAll, serial)
-        capture.pushUndo(undo0)
 
         var img = capture.backImg
         let oldW = img.width
@@ -138,6 +135,8 @@ impl MainWnd
         {
         case CmdIdResizeImage:
             img.resize(w, h, .Bilinear)
+        case CmdIdExpandImage:
+            img.expand(l, t, r, b)            
         case CmdIdFlipImage:
             img.flip()
         case CmdIdMirrorImage:
@@ -221,10 +220,10 @@ impl MainWnd
         if w == capture.width and h == capture.height:
             return
 
-        doProcessImage(CmdIdResizeImage, w, h)
-    }
+        doProcessImage(CmdIdResizeImage, w: w, h: h)
+    }  
 
-    mtd resizeCanevas()
+    mtd expandImage()
     {
         #[Swag.Global]
         var g_KeepRatio: bool = true
@@ -234,7 +233,128 @@ impl MainWnd
         let capture = assume getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
-        let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Canevas")
+        let dlg = Dialog.createDialog(surface, 350, 265, title: "Expand Image")
+        dlg.addButton("Resize", Dialog.BtnOk, true)
+        dlg.addButton("Cancel", Dialog.BtnCancel)
+        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.backImg.width), {30, 15}, flags: .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.backImg.height), {30, 50}, flags: .RightAlign)
+        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
+        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
+
+        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
+        {
+            if btnRatio.checked == .Checked
+            {
+                let w = trycatch StrConv.toS32(edt.text)
+                let h = Math.max(1, cast(s32) (w / ratio))
+                edit1.edit.setTextSilent(Format.toString("%", h))
+            }
+        }
+        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
+        {
+            if btnRatio.checked == .Checked
+            {
+                let h = trycatch StrConv.toS32(edt.text)
+                let w = Math.max(1, cast(s32) (h * ratio))
+                edit0.edit.setTextSilent(Format.toString("%", w))
+            }
+        }
+
+        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
+        {
+            let btn = CheckButton.create(dlg, " ", pos)
+            btn.checked  = g_ResizeMode == id ? .Undefined : .UnChecked
+            btn.userData = cast(*void) id
+            btn.sigChanged += func(btn)
+            {
+                foreach c in btn.parent.childs
+                {
+                    if c.userData
+                    {
+                        let btnc = cast(*CheckButton) c
+                        btnc.checked = c != btn ? .UnChecked : .Undefined
+                        btnc.invalidate()
+                    }
+                }
+            }
+        }
+
+        const X = 175
+        const Y = 15
+        const S = 20
+        const O = 4
+        createBtn(dlg, {X, Y, S, S}, 1)
+        createBtn(dlg, {X + S + O, Y, S, S}, 2)
+        createBtn(dlg, {X + S + O + S + O, Y, S, S}, 3)
+        createBtn(dlg, {X, Y + S + O, S, S}, 4)
+        createBtn(dlg, {X + S + O, Y + S + O, S, S}, 5)
+        createBtn(dlg, {X + S + O + S + O, Y + S + O, S, S}, 6)
+        createBtn(dlg, {X, Y + S + O + S + O, S, S}, 7)
+        createBtn(dlg, {X + S + O, Y + S + O + S + O, S, S}, 8)
+        createBtn(dlg, {X + S + O + S + O, Y + S + O + S + O, S, S}, 9)
+
+        let res = dlg.doModal()
+
+        g_KeepRatio = btnRatio.checked == .Checked
+        foreach c in dlg.childs
+        {
+            if c.userData
+            {
+                let btnc = cast(*CheckButton) c
+                if btnc.checked != .UnChecked
+                {
+                    g_ResizeMode = cast(u64) btnc.userData
+                    break
+                }
+            }
+        }
+
+        if res != Dialog.BtnOk:
+            return
+
+        let w = trycatch StrConv.toS32(edit0.edit.text)
+        if w < Capture.MinSize or w > Capture.MaxSize:
+            return
+        let h = trycatch StrConv.toS32(edit1.edit.text)
+        if h < Capture.MinSize or h > Capture.MaxSize:
+            return
+        if w == capture.backImg.width and h == capture.backImg.height:
+            return
+
+        var l, t, r, b: s32 = 0
+        let cw = w - cast(s32) capture.backImg.width
+        let ch = h - cast(s32) capture.backImg.height
+
+        switch g_ResizeMode
+        {
+        case 1, 4, 7: r += cw
+        case 2, 5, 8: l += cw / 2; r += cw / 2
+        case 3, 6, 9: l += cw
+        }
+
+        switch g_ResizeMode
+        {
+        case 1, 2, 3: b += ch
+        case 4, 5, 6: t += ch / 2; b += ch / 2
+        case 7, 8, 9: t += ch
+        }        
+
+        doProcessImage(CmdIdExpandImage, l, t, r, b)
+    }
+
+    mtd expandCapture()
+    {
+        #[Swag.Global]
+        var g_KeepRatio: bool = true
+        #[Swag.Global]
+        var g_ResizeMode: u64 = 5
+
+        let capture = assume getCapture()
+        let ratio   = cast(f32) capture.width / capture.height
+
+        let dlg = Dialog.createDialog(surface, 350, 265, title: "Expand Capture")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags: .RightAlign)
@@ -350,7 +470,7 @@ impl MainWnd
         capture.pushUndo(undo)
     }
 
-    mtd trimCanevas()
+    mtd trimCapture()
     {
         let capture = assume getCapture()
         capture.selection.clear()

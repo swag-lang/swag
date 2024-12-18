@@ -530,8 +530,9 @@ impl MainWnd
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
             .addItem(CmdIdResizeImage)
-            .addItem(CmdIdResizeCanevas)
-            .addItem(CmdIdTrimCanevas)
+            .addItem(CmdIdExpandImage)
+            .addItem(CmdIdExpandCapture)
+            .addItem(CmdIdTrimCapture)
             .addSeparator()
             .addItem(CmdIdFlattenAll)
             .addSeparator()
@@ -768,7 +769,8 @@ impl MainWnd
                 var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags.add(.NoKeyShortcuts)
                 menu.addItem(CmdIdResizeImage)
-                menu.addItem(CmdIdResizeCanevas)
+                menu.addItem(CmdIdExpandImage)
+                menu.addItem(CmdIdExpandCapture)
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
