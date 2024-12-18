@@ -9,7 +9,7 @@ using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_HDC:       HDC
 var g_ImageIdx:  u32 = 7
-var g_EffectIdx: u32 = 0
+var g_EffectIdx: u32 = 49
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
 
@@ -244,8 +244,10 @@ func loadImg()
         g_MyImage.setPixelFormat(.BGR8)
     case 48:
         g_MyImage.setPixelFormat(.BGRA8)
-
     case 49:
+        g_MyImage.expand(-50, 10, 10, 10)        
+
+    case 50:
         var img1 = assume Image.load(imagePath("testa.gif"))
         img1.setPixelFormat(.RGBA8)
         g_MyImage.setPixelFormat(.RGBA8)

@@ -96,6 +96,8 @@ impl Capture
 
     mtd computePreview()
     {
+        if !editView:
+            return
         let zoom = Math.min(PreviewWidth / width, PreviewHeight / height)
         preview = toImage(zoom)
         preview.applyKernel(.GaussianBlur3x3A)
