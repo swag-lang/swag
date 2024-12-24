@@ -228,9 +228,9 @@ impl MainWnd
         var done = false
         foreach md in imgToLoad.metaDatas
         {
-            if md.tag == "Captme.File"
+            if md.isTag("Captme.File")
             {
-                let dupCapture = catch recentWnd.addRecent(md.value, true, true)
+                let dupCapture = catch recentWnd.addRecent(cast(string) md.toSlice(), true, true)
                 Memory.delete(dupCapture)
                 done = true
                 break

@@ -1939,7 +1939,7 @@ impl Decoder
 
             while left
             {
-                meta.value += getBits1(8)
+                meta.value.add(cast(u8) getBits1(8))
                 left -= 1
             }
 

@@ -43,13 +43,15 @@ func createView6(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        let lt = StackLayoutCtrl.create(view, .TopAutoSize, {5, 240, 200, 200})
+        let lt = StackLayoutCtrl.create(view, .Top, {5, 240, 200, 200})
+        lt.fitToContent    = true
         lt.padding         = 15
         lt.spacing         = 15
         lt.backgroundStyle = .Window
         lt.style.addStyleSheetColors("wnd_Bk Green")
 
-        let lt1 = StackLayoutCtrl.create(lt, .TopAutoSize)
+        let lt1 = StackLayoutCtrl.create(lt, .Top)
+        lt1.fitToContent    = true
         lt1.backgroundStyle = .Window
         lt1.style.addStyleSheetColors("wnd_Bk Red")
         PushButton.create(lt1, "toto1")
@@ -57,7 +59,8 @@ func createView6(_tabView: *Tab, view: *Wnd)
         PushButton.create(lt1, "toto3")
         lt1.computeLayout()
 
-        let lt2 = StackLayoutCtrl.create(lt, .TopAutoSize)
+        let lt2 = StackLayoutCtrl.create(lt, .Top)
+        lt2.fitToContent    = true
         lt2.backgroundStyle = .Window
         lt2.style.addStyleSheetColors("wnd_Bk Blue")
         PushButton.create(lt2, "tata1")

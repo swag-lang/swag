@@ -225,12 +225,12 @@ impl Encoder
     {
         foreach md in image.metaDatas
         {     
-            if !md.tag.length or !md.value.length:
+            if !md.tag.count or !md.value.count:
                 continue
-             writePtr = writeHeader(TypeTEXt, md.tag.length + 1 + md.value.length)   
-             Memory.copy(writePtr, md.tag.buffer, md.tag.length)   
-             writePtr[md.tag.length] = 0
-             Memory.copy(writePtr + md.tag.length + 1, md.value.buffer, md.value.length)   
+             writePtr = writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)   
+             Memory.copy(writePtr, md.tag.buffer, md.tag.count)   
+             writePtr[md.tag.count] = 0
+             Memory.copy(writePtr + md.tag.count + 1, md.value.buffer, md.value.count)   
              finishChunk()
         }
     }

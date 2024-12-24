@@ -1,13 +1,6 @@
 #global public
 using Swag, Core, Core.Serialization
 
-// One image metadata pair
-struct ImageMetaData
-{
-    tag:    String
-    value:  String
-}
-
 // An image buffer, in various pixel formats.
 struct Image
 {
