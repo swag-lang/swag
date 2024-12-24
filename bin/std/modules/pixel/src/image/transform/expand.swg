@@ -4,8 +4,8 @@ impl Image
 {
     mtd const getWH(l, t, r, b: s32) -> {w, h: s32}
     {
-        var cw = width + l + r
-        var ch = height + t + b
+        let cw = width + l + r
+        let ch = height + t + b
         Debug.assert(cw > 0 and ch > 0)
         return {cw, ch}
     }
