@@ -3,18 +3,19 @@ using Core
 
 struct ImageMetaData
 {
+    sig:    u32
     tag:    Array'u8
     value:  Array'u8
 }
 
 impl ImageMetaData
 {
-    // Returns true if the metadata has the tag 'test'
-    mtd isTag(test: const [..] u8)->bool
+    // Returns true if the metadata has the tag 'val'
+    mtd isTag(val: const [..] u8)->bool
     {
-        if @countof(test) != tag.count:
+        if @countof(val) != tag.count:
             return false
-        return Memory.compare(@dataof(test), tag.buffer, @countof(test)) == 0
+        return Memory.compare(@dataof(val), tag.buffer, @countof(val)) == 0
     }
 
     // Convert the value to a slice

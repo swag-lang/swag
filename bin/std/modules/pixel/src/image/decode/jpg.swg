@@ -87,7 +87,6 @@ private
         M_DHP   = 0xDE
         M_EXP   = 0xDF
         M_APP0  = 0xE0
-        M_APP1  = 0xE1
         M_APP15 = 0xEF
         M_JPG0  = 0xF0
         M_JPG13 = 0xFD
@@ -1935,13 +1934,23 @@ impl Decoder
         else
         {
             var meta: ImageMetaData
-            meta.tag = Format.toString("%", marker);
+            meta.sig = cast(u32) marker - cast(u32) Marker.M_APP0
 
             while left
             {
-                meta.value.add(cast(u8) getBits1(8))
+                let c = cast(u8) getBits1(8)
                 left -= 1
+                if c == 0:
+                    break
+                meta.tag.add(c)
             }
+
+            while left
+            {
+                let c = cast(u8) getBits1(8)
+                meta.value.add(c)
+                left -= 1
+            }            
 
             metaDatas.add(meta)
         }        

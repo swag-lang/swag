@@ -3,21 +3,6 @@ using Core
 
 private
 {
-
-    struct APP0InfoType
-    {
-        marker:            u16
-        length:            u16
-        jfifSignature:     [5] u8
-        versionHi:         u8
-        versionLo:         u8
-        xyUnits:           u8
-        xDensity:          u16
-        yDensity:          u16
-        thumbnWidth:       u8
-        thumbnHeight:      u8
-    }
-
     struct SOF0InfoType
     {
         marker:            u16
@@ -94,7 +79,6 @@ private
         valuesCbAC:      [162] u8
     }
 
-    const APP0info = APP0InfoType{0xFFE0, 16, ['J', 'F', 'I', 'F', 0], 1, 1, 0, 1, 1, 0, 0}
     const SOF0info = SOF0InfoType{0xFFC0, 17, 8, 0, 0, 3, 1, 0x11, 0, 2, 0x11, 1, 3, 0x11, 1}
     const SOSinfo  = SOSInfoType{0xFFDA, 12, 3, 1, 0, 2, 0x11, 3, 0x11, 0, 0x3F, 0}
 
@@ -444,22 +428,16 @@ impl Encoder
         }
     }
 
-    mtd writeAPP0info()
+    mtd writeMetaDatas()
     {
-        writeWord(APP0info.marker)
-        writeWord(APP0info.length)
-        writeByte('J')
-        writeByte('F')
-        writeByte('I')
-        writeByte('F')
-        writeByte(0)
-        writeByte(APP0info.versionHi)
-        writeByte(APP0info.versionLo)
-        writeByte(APP0info.xyUnits)
-        writeWord(APP0info.xDensity)
-        writeWord(APP0info.yDensity)
-        writeByte(APP0info.thumbnWidth)
-        writeByte(APP0info.thumbnHeight)
+        foreach md in srcImage.metaDatas
+        {
+            writeWord(0xFFE0'u16 + cast(u16) md.sig)
+            writeWord(3 + cast(u16) md.tag.count + cast(u16) md.value.count)
+            writeBytes(md.tag.toSlice())
+            writeByte(0)
+            writeBytes(md.value.toSlice())
+        }
     }
 
     mtd writeDQTinfo()
@@ -760,7 +738,7 @@ public impl IImageEncoder for Encoder
 
         writeWord(0xFFD8) // SOI
 
-        writeAPP0info()
+        writeMetaDatas()
         writeDQTinfo()
         writeSOF0info()
         writeDHTinfo()

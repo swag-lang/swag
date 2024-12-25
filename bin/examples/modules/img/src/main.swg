@@ -65,6 +65,23 @@ func loadImg()
 {
     using Pixel, Color
 
+    {
+        var data = imagePath("h2v1.jpg")
+
+        g_MyImage = assume Image.load(data)
+        var md: ImageMetaData
+        md.tag = "toto"
+        md.value = "titi"
+        g_MyImage.metaDatas.clear()
+        g_MyImage.metaDatas.add(md)
+        catch g_MyImage.save(data)
+
+        var opt: DecodeOptions
+        opt.decodeMetaDatas = true
+        g_MyImage = assume Image.load(data, opt)
+        Console.print(g_MyImage.metaDatas)
+    }
+
     var imgName = "rgba.bmp"
     switch g_ImageIdx
     {
