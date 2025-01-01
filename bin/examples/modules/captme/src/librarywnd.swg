@@ -25,6 +25,7 @@ struct LibraryItem
     capture:     *Capture
     texture:     Texture
     rect:        Math.Rectangle
+    visible:     bool
 }
 
 impl LibraryItem
@@ -163,8 +164,15 @@ impl IWnd for LibraryView
 
         const Margin = 8.0
 
+        let spos = scrollWnd.getScrollPos()
         foreach &it, i in items
         {
+            it.visible = true
+            if y + H < spos.y:
+                it.visible = false
+            if y > spos.y + position.height:
+                it.visible = false
+            
             // Retrieve the loaded capture if it exists
             if !it.capture
             {
@@ -283,20 +291,37 @@ impl LibraryView
         {
             thread.init(func|self|(th: Thread)
             {
-                foreach &it in self.items
+                var remain = true
+                while remain
                 {
-                    let capture = catch Capture.load(it.fi.fullname)
-                    if capture
+                    remain = false
+                    foreach &it in self.items
                     {
-                        capture.backImg.release()
-                        self.mutexLoaded.lock()
-                        self.loaded.add(capture)
-                        self.mutexLoaded.unlock()
-                        self.postInvalidateEvent()
-                    }
+                        if th.requestEnd
+                        {
+                            remain = false
+                            break       
+                        }
 
-                    if th.requestEnd:
+                        if it.capture:
+                            continue
+
+                        remain = true
+                        if !it.visible:
+                            continue
+
+                        let capture = catch Capture.load(it.fi.fullname)
+                        if capture
+                        {
+                            capture.backImg.release()
+                            self.mutexLoaded.lock()
+                            self.loaded.add(capture)
+                            self.mutexLoaded.unlock()
+                            self.postInvalidateEvent()
+                        }
+
                         break
+                    }
                 }
             })
             thread.start()
