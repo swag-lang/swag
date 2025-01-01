@@ -223,11 +223,28 @@ impl LibraryView
         }
     }
 
+    #[Swag.Overload]
+    mtd loadOne(it: *LibraryItem)
+    {  
+        let capture = catch Capture.load(it.fi.fullname)
+        if !capture:
+            return
+        
+        capture.backImg.release()
+        mutexLoaded.lock()
+        it.capture = capture
+        mutexLoaded.unlock()
+        postInvalidateEvent()
+    }
+
+    #[Swag.Overload]
     mtd loadOne(th: Thread)
     {
         var remain = true
         while remain
         {
+            var notVis: *LibraryItem
+            
             remain = false
             foreach &it in items
             {
@@ -241,21 +258,19 @@ impl LibraryView
                     continue
 
                 remain = true
-                if !it.visible:
-                    continue
-
-                let capture = catch Capture.load(it.fi.fullname)
-                if capture
+                if !it.visible
                 {
-                    capture.backImg.release()
-                    mutexLoaded.lock()
-                    it.capture = capture
-                    mutexLoaded.unlock()
-                    postInvalidateEvent()
+                    notVis = it
+                    continue
                 }
 
+                loadOne(it)
                 break
-            }         
+            }    
+
+            if notVis:
+                loadOne(notVis)
+
         }        
     }
 
