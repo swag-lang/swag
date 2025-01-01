@@ -244,7 +244,7 @@ impl LibraryView
         while remain
         {
             var notVis: *LibraryItem
-            
+
             remain = false
             foreach &it in items
             {
@@ -319,12 +319,9 @@ impl LibraryView
         // Launch thread to read all captures
         try
         {
-            thread.init(func|self|(th: Thread)
-            {
-                self.loadOne(th)
-            })
+            thread.init(func|self|(th: Thread) { self.loadOne(th); })
             thread.start()
-        }
+        }   
 
         invalidate()
     }
