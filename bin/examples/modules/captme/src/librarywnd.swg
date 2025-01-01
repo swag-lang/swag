@@ -44,7 +44,6 @@ struct LibraryView
     mainWnd:         *MainWnd
     items:           Array'LibraryItem
     mutexLoaded:     Sync.Mutex
-    loaded:          Array'*Capture
     thread:          Thread
     hotItem          = Swag.U32.Max
     focusItem        = Swag.U32.Max
@@ -141,12 +140,6 @@ impl IWnd for LibraryView
         var x = clientRect.x
         var y = clientRect.y
 
-        // Get loaded captures from thread
-        mutexLoaded.lock()
-        var copyLoaded = loaded
-        loaded.clear()
-        mutexLoaded.unlock()
-
         var H: f32 = 128.0
         var W: f32 = 0
         switch libWnd.previewSize
@@ -174,27 +167,19 @@ impl IWnd for LibraryView
                 it.visible = false
             
             // Retrieve the loaded capture if it exists
-            if !it.capture
-            {
-                foreach l, idx in copyLoaded
-                {
-                    if l.file == it.fi.fullname
-                    {
-                        it.capture = l
-                        break
-                    }
-                }
-            }
+            mutexLoaded.lock()
+            let capture = it.capture
+            mutexLoaded.unlock()
 
             // We have a capture but not yet a texture. Create it.
-            if it.capture and !it.texture.isValid():
-                it.texture = evt.bc.renderer.addImage(it.capture.preview)
+            if capture and !it.texture.isValid():
+                it.texture = evt.bc.renderer.addImage(capture.preview)
 
             it.rect = Math.Rectangle{x, y, W, H}
             let selected = selModel.isSelected(cast() i)
 
-            if it.capture:
-                RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, it.capture.linkedUpToDate, it.capture.linkedImage)
+            if capture:
+                RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, capture.linkedUpToDate, capture.linkedImage)
             else:
                 RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, false, null)
 
@@ -221,12 +206,6 @@ impl IWnd for LibraryView
 
 impl LibraryView
 {
-    mtd opDrop()
-    {
-        foreach c in loaded:
-            Memory.delete(c)
-    }
-
     mtd updateRecent(capture: *Capture)
     {   
         foreach &it in items
@@ -242,6 +221,42 @@ impl LibraryView
                 break
             }
         }
+    }
+
+    mtd loadOne(th: Thread)
+    {
+        var remain = true
+        while remain
+        {
+            remain = false
+            foreach &it in items
+            {
+                if th.requestEnd
+                {
+                    remain = false
+                    break       
+                }
+
+                if it.capture:
+                    continue
+
+                remain = true
+                if !it.visible:
+                    continue
+
+                let capture = catch Capture.load(it.fi.fullname)
+                if capture
+                {
+                    capture.backImg.release()
+                    mutexLoaded.lock()
+                    it.capture = capture
+                    mutexLoaded.unlock()
+                    postInvalidateEvent()
+                }
+
+                break
+            }         
+        }        
     }
 
     mtd fill() throw
@@ -291,38 +306,7 @@ impl LibraryView
         {
             thread.init(func|self|(th: Thread)
             {
-                var remain = true
-                while remain
-                {
-                    remain = false
-                    foreach &it in self.items
-                    {
-                        if th.requestEnd
-                        {
-                            remain = false
-                            break       
-                        }
-
-                        if it.capture:
-                            continue
-
-                        remain = true
-                        if !it.visible:
-                            continue
-
-                        let capture = catch Capture.load(it.fi.fullname)
-                        if capture
-                        {
-                            capture.backImg.release()
-                            self.mutexLoaded.lock()
-                            self.loaded.add(capture)
-                            self.mutexLoaded.unlock()
-                            self.postInvalidateEvent()
-                        }
-
-                        break
-                    }
-                }
+                self.loadOne(th)
             })
             thread.start()
         }
