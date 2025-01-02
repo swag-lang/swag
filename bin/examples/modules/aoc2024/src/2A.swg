@@ -41,27 +41,36 @@ Your actual left and right lists contain many location IDs. What is the total di
 
 using Core
 
-func day1A()
+func day2A()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "1.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "2.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var arr0, arr1: Array's32
+    var total = 0
     foreach l in lines
     {   
         let first = Tokenize.split(l, ' ''u8)
-        arr0.add(assume StrConv.toS32(first[0]))
-        arr1.add(assume StrConv.toS32(first[1]))
+
+        var prev = 0, ls = 0
+        var bad = false
+        foreach v in first
+        {
+            let a = assume StrConv.toS32(v)        
+            if #index
+            {
+                let diff = a - prev
+                if @abs(diff) < 1 or @abs(diff) > 3:
+                    bad = true
+                if ls and Math.sign(diff) != ls:
+                    bad = true
+                ls = Math.sign(diff)
+            }
+
+            prev = a
+        }
+
+        total += bad == false ? 1 : 0
     }
 
-    arr0.sort()
-    arr1.sort()
-
-    var total = 0
-    for i in arr0
-    {
-        total += @abs(arr1[i] - arr0[i])
-    }
-
-    @assert(total == 2742123)
+    @assert(total == 549)
 }
