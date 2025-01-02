@@ -48,9 +48,9 @@ func day4A()
 
     func test(a, b, c, d: rune)->bool
     {
-        if a == 'X''u8 and b == 'M''u8 and c == 'A''u8 and d == 'S''u8:
+        if a == 'X' and b == 'M' and c == 'A' and d == 'S':
             return true
-        if a == 'S''u8 and b == 'A''u8 and c == 'M''u8 and d == 'X''u8:
+        if a == 'S' and b == 'A' and c == 'M' and d == 'X':
             return true
         return false            
     }
