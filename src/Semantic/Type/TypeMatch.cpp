@@ -160,7 +160,7 @@ namespace
 
                 context.result = MatchResult::BadSignature;
             }
-            else if (wantedTypeInfo->isGeneric())
+            else if (wantedTypeInfo->isGeneric() && context.result == MatchResult::Ok)
             {
                 Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, i, castFlags.mask(CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_AUTO_OP_CAST));
                 if (context.semContext->result != ContextResult::Done)
