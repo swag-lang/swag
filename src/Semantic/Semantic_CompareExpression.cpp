@@ -190,7 +190,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right)
 {
     const auto node         = context->node;
-    const auto leftTypeInfo = left->typeInfo;
+    const auto leftTypeInfo = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
 
 #define CMP3(__a, __b) ((__a) < (__b) ? -1 : ((__a) > (__b) ? 1 : 0))
 
@@ -263,6 +263,12 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoS32;
     }
+    else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
+    {
+        Diagnostic err{context->node, context->node->token, formErr(Err0575, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(err);
+    }
 
     return true;
 }
@@ -270,7 +276,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
     const auto node         = context->node;
-    const auto leftTypeInfo = left->typeInfo;
+    const auto leftTypeInfo = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
 
     if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
@@ -334,6 +340,12 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
     }
+    else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
+    {
+        Diagnostic err{context->node, context->node->token, formErr(Err0575, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(err);
+    }
 
     return true;
 }
@@ -341,7 +353,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
     const auto node         = context->node;
-    const auto leftTypeInfo = left->typeInfo;
+    const auto leftTypeInfo = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
 
     if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
@@ -403,6 +415,12 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
     {
         SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
+    }
+    else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
+    {
+        Diagnostic err{context->node, context->node->token, formErr(Err0575, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(err);
     }
 
     return true;
