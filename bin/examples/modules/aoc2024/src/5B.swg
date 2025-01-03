@@ -13,6 +13,7 @@ Find the updates which are not in the correct order. What do you get if you add 
 */
 
 using Core
+private var order: HashTable'(s32, Array's32)
 
 func day5B()
 {
@@ -20,7 +21,6 @@ func day5B()
     let lines    = assume File.readAllLines(dataPath)
 
     var first = true
-    var order: HashTable'(s32, Array's32)
     var total = 0
 
     foreach f in lines
@@ -70,13 +70,23 @@ func day5B()
                 {
                     let v0 = assume StrConv.toS32(x)
                     let v1 = assume StrConv.toS32(y)
+
+                    let r0 = order.tryFind(v0)
+                    if r0 and r0.value.contains(v1):
+                        return -1                    
+
+                    let r1 = order.tryFind(v1)
+                    if r1 and r1.value.contains(v0):
+                        return 1
+
                     return v0 <=> v1
                 })
 
-                Console.print(split)
+                total += assume StrConv.toS32(split[split.count / 2])
+                //Console.print(split, "\n")
             }
         }
     }
 
-    //@assert(total == 4462)
+    @print(total)
 }
