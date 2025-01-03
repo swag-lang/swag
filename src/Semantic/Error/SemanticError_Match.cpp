@@ -96,10 +96,7 @@ namespace
             SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
             Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
             SWAG_ASSERT(parts.size() > 1);
-
-            Vector<Utf8> split;
-            Utf8::tokenize(parts[1], ',', split);
-            addMsg.push_back(split[0]);
+            addMsg.push_back(parts[1]);
         }
 
         // Determine if all "per overload" errors are the same
