@@ -38,25 +38,24 @@ func day5B()
         }
         else
         {   
-            var split = Tokenize.split(f, ',''u8)   
+            var split = Slice.map(Tokenize.split(f, ',''u8).toSlice(), func(x) => assume StrConv.toS32(x))
 
             var ok = true
             for i in split         
             {
-                let v0 = assume StrConv.toS32(split[i])
+                let v0 = split[i]
 
                 for j in i + 1 until split.count
                 {
-                    let v1 = assume StrConv.toS32(split[j])
-                    let r0 = order.tryFind(v0)
-                    if r0 and !r0.value.contains(v1)
+                    let v1 = split[j]
+
+                    if let r0 = order.tryFind(v0) where !r0.value.contains(v1)
                     {
                         ok = false
                         break
                     }
-
-                    let r1 = order.tryFind(v1)
-                    if r1 and r1.value.contains(v0)
+                   
+                    if let r1 = order.tryFind(v1) where r1.value.contains(v0)
                     {
                         ok = false
                         break
@@ -67,26 +66,19 @@ func day5B()
             if !ok
             {
                 split.sort(func(x, y)
-                {
-                    let v0 = assume StrConv.toS32(x)
-                    let v1 = assume StrConv.toS32(y)
-
-                    let r0 = order.tryFind(v0)
-                    if r0 and r0.value.contains(v1):
-                        return -1                    
-
-                    let r1 = order.tryFind(v1)
-                    if r1 and r1.value.contains(v0):
+                {                   
+                    if let r0 = order.tryFind(x) where r0.value.contains(y):
+                        return -1                                        
+                    if let r1 = order.tryFind(y) where r1.value.contains(x):
                         return 1
 
-                    return v0 <=> v1
+                    return x <=> y
                 })
 
-                total += assume StrConv.toS32(split[split.count / 2])
-                //Console.print(split, "\n")
+                total += split[split.count / 2]
             }
         }
     }
 
-    @print(total)
+    @assert(total == 6767)
 }
