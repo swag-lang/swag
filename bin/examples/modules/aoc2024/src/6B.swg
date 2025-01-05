@@ -159,12 +159,14 @@ func day6B()
 
                 continue                
             }
+
+            let r = #ref arr.ref2(sx,sy,w)
             
             if first:
                 what = 'O'   
-            elif arr.ref2(sx,sy,w) == what:
+            elif r == what:
                return true            
-            arr.ref2(sx,sy,w) = what            
+            r = what            
 
             sx += dx
             sy += dy
