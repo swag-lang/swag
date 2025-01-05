@@ -116,16 +116,19 @@ func day6B()
         arr0.add(l.toSlice())
     }
 
-    func test(arr: *Array'u8, sx0, sy0: s32)->bool
+    func test(arr: *Array'u8, sx0, sy0: s32, first: bool)->bool
     {
         var sx = sx0
         var sy = sy0
         var dx = 0, dy = -1
-        var what = 0'u8
+        var what = 'D''u8
         for
         {
-            if sx+dx < 0 or sx+dx >= w or sy+dy < 0 or sy+dy >= h:
+            if sx+dx < 0 or sx+dx >= w or sy+dy < 0 or sy+dy >= h
+            {
+                arr.ref2(sx,sy,w) = what            
                 return false
+            }
 
             if arr.ref2(sx+dx,sy+dy,w) == '#'
             {
@@ -152,12 +155,14 @@ func day6B()
                     dx = 0
                     dy = -1
                     what = 'D'
-                }    
+                } 
 
                 continue                
             }
-
-            if arr.ref2(sx,sy,w) == what:
+            
+            if first:
+                what = 'O'   
+            elif arr.ref2(sx,sy,w) == what:
                return true            
             arr.ref2(sx,sy,w) = what            
 
@@ -168,20 +173,21 @@ func day6B()
         return true
     }
 
+    //Time.Stopwatch.scopeMeasure()
+
+    discard test(&arr0, sx, sy, true)
+
     var total = 0
-    for x in w
+    foreach v in arr0
     {
-        for y in h
-        {
-            if arr0.ref2(x,y,w) == '#' or arr0.ref2(x,y,w) == '^':
-                continue
+        if v != 'O':
+            continue
 
-            var arr1 = arr0
-            arr1.ref2(x, y, w) = '#'
+        var arr1 = arr0
+        arr1[#index] = '#'
 
-            if test(&arr1, sx, sy):
-                total += 1
-        }
+        if test(&arr1, sx, sy, false):
+            total += 1
     }
 
     @assert(total == 1836)
