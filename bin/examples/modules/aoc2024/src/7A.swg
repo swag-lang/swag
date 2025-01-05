@@ -46,33 +46,21 @@ func day7A()
         let split1 = Tokenize.split(split0[1], " ")
         let vals   = Slice.map(split1.toSlice(), func(x) => assume StrConv.toS64(x))
 
-        func checkMath(target: s64, result: &s64, operands: [..] s64, operator: u8)->bool
+        func checkMath(target: s64, resin: s64, operands: [..] s64, operator: u8)->bool
         {
+            var result: s64
             if operator == '+': 
-                result += operands[0] 
+                result = resin + operands[0] 
             else: 
-                result *= operands[0]               
+                result = resin * operands[0]               
 
             if result > target:         return false
             if @countof(operands) == 1: return target == result
 
-            var result0 = result            
-            if checkMath(target, &result0, operands[1..], '+'): return true
-            var result1 = result   
-            if checkMath(target, &result1, operands[1..], '*'): return true
-            
-            return false
+            return checkMath(target, result, operands[1..], '+') or checkMath(target, result, operands[1..], '*')
         }
 
-        var result0 = vals[0]
-        if checkMath(res, &result0, vals[1..], '+')
-        {
-            total += res
-            continue
-        }
-
-        var result1 = vals[0]
-        if checkMath(res, &result1, vals[1..], '*'):
+        if checkMath(res, vals[0], vals[1..], '+') or checkMath(res, vals[0], vals[1..], '*'):
             total += res
     }
 
