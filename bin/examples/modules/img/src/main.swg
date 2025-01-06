@@ -79,7 +79,6 @@ func loadImg()
         var opt: DecodeOptions
         opt.decodeMetaDatas = true
         g_MyImage = assume Image.load(data, opt)
-        Console.print(g_MyImage.metaDatas)
     }
 
     var imgName = "rgba.bmp"

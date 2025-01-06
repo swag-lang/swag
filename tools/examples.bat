@@ -17,3 +17,4 @@
 ..\bin\swag run -w:..\bin\examples -m:aoc2021 --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag run -w:..\bin\examples -m:aoc2022 --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag run -w:..\bin\examples -m:aoc2023 --args:"swag.test" %1 %2 %3 %4
+..\bin\swag run -w:..\bin\examples -m:aoc2024 --args:"swag.test" %1 %2 %3 %4

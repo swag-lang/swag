@@ -364,6 +364,16 @@
 <li><a href="#Win32_GW_HWNDPREV">GW_HWNDPREV</a></li>
 <li><a href="#Win32_GW_MAX">GW_MAX</a></li>
 <li><a href="#Win32_GW_OWNER">GW_OWNER</a></li>
+<li><a href="#Win32_HKEY_CLASSES_ROOT">HKEY_CLASSES_ROOT</a></li>
+<li><a href="#Win32_HKEY_CURRENT_CONFIG">HKEY_CURRENT_CONFIG</a></li>
+<li><a href="#Win32_HKEY_CURRENT_USER">HKEY_CURRENT_USER</a></li>
+<li><a href="#Win32_HKEY_CURRENT_USER_LOCAL_SETTINGS">HKEY_CURRENT_USER_LOCAL_SETTINGS</a></li>
+<li><a href="#Win32_HKEY_DYN_DATA">HKEY_DYN_DATA</a></li>
+<li><a href="#Win32_HKEY_LOCAL_MACHINE">HKEY_LOCAL_MACHINE</a></li>
+<li><a href="#Win32_HKEY_PERFORMANCE_DATA">HKEY_PERFORMANCE_DATA</a></li>
+<li><a href="#Win32_HKEY_PERFORMANCE_NLSTEXT">HKEY_PERFORMANCE_NLSTEXT</a></li>
+<li><a href="#Win32_HKEY_PERFORMANCE_TEXT">HKEY_PERFORMANCE_TEXT</a></li>
+<li><a href="#Win32_HKEY_USERS">HKEY_USERS</a></li>
 <li><a href="#Win32_HWND_BOTTOM">HWND_BOTTOM</a></li>
 <li><a href="#Win32_HWND_NOTOPMOST">HWND_NOTOPMOST</a></li>
 <li><a href="#Win32_HWND_TOP">HWND_TOP</a></li>
@@ -403,6 +413,15 @@
 <li><a href="#Win32_INVALID_FILE_SIZE">INVALID_FILE_SIZE</a></li>
 <li><a href="#Win32_INVALID_HANDLE_VALUE">INVALID_HANDLE_VALUE</a></li>
 <li><a href="#Win32_INVALID_SET_FILE_POINTER">INVALID_SET_FILE_POINTER</a></li>
+<li><a href="#Win32_KEY_CREATE_LINK">KEY_CREATE_LINK</a></li>
+<li><a href="#Win32_KEY_CREATE_SUB_KEY">KEY_CREATE_SUB_KEY</a></li>
+<li><a href="#Win32_KEY_ENUMERATE_SUB_KEYS">KEY_ENUMERATE_SUB_KEYS</a></li>
+<li><a href="#Win32_KEY_NOTIFY">KEY_NOTIFY</a></li>
+<li><a href="#Win32_KEY_QUERY_VALUE">KEY_QUERY_VALUE</a></li>
+<li><a href="#Win32_KEY_SET_VALUE">KEY_SET_VALUE</a></li>
+<li><a href="#Win32_KEY_WOW64_32KEY">KEY_WOW64_32KEY</a></li>
+<li><a href="#Win32_KEY_WOW64_64KEY">KEY_WOW64_64KEY</a></li>
+<li><a href="#Win32_KEY_WOW64_RES">KEY_WOW64_RES</a></li>
 <li><a href="#Win32_LANG_ENGLISH">LANG_ENGLISH</a></li>
 <li><a href="#Win32_LWA_ALPHA">LWA_ALPHA</a></li>
 <li><a href="#Win32_LWA_COLORKEY">LWA_COLORKEY</a></li>
@@ -478,6 +497,21 @@
 <li><a href="#Win32_PM_NOREMOVE">PM_NOREMOVE</a></li>
 <li><a href="#Win32_PM_NOYIELD">PM_NOYIELD</a></li>
 <li><a href="#Win32_PM_REMOVE">PM_REMOVE</a></li>
+<li><a href="#Win32_REG_BINARY">REG_BINARY</a></li>
+<li><a href="#Win32_REG_DWORD">REG_DWORD</a></li>
+<li><a href="#Win32_REG_DWORD_BIG_ENDIAN">REG_DWORD_BIG_ENDIAN</a></li>
+<li><a href="#Win32_REG_DWORD_LITTLE_ENDIAN">REG_DWORD_LITTLE_ENDIAN</a></li>
+<li><a href="#Win32_REG_EXPAND_SZ">REG_EXPAND_SZ</a></li>
+<li><a href="#Win32_REG_FULL_RESOURCE_DESCRIPTOR">REG_FULL_RESOURCE_DESCRIPTOR</a></li>
+<li><a href="#Win32_REG_LINK">REG_LINK</a></li>
+<li><a href="#Win32_REG_MULTI_SZ">REG_MULTI_SZ</a></li>
+<li><a href="#Win32_REG_NONE">REG_NONE</a></li>
+<li><a href="#Win32_REG_OPTION_NON_VOLATILE">REG_OPTION_NON_VOLATILE</a></li>
+<li><a href="#Win32_REG_QWORD">REG_QWORD</a></li>
+<li><a href="#Win32_REG_QWORD_LITTLE_ENDIAN">REG_QWORD_LITTLE_ENDIAN</a></li>
+<li><a href="#Win32_REG_RESOURCE_LIST">REG_RESOURCE_LIST</a></li>
+<li><a href="#Win32_REG_RESOURCE_REQUIREMENTS_LIST">REG_RESOURCE_REQUIREMENTS_LIST</a></li>
+<li><a href="#Win32_REG_SZ">REG_SZ</a></li>
 <li><a href="#Win32_SC_ARRANGE">SC_ARRANGE</a></li>
 <li><a href="#Win32_SC_CLOSE">SC_CLOSE</a></li>
 <li><a href="#Win32_SC_CONTEXTHELP">SC_CONTEXTHELP</a></li>
@@ -1172,6 +1206,7 @@
 <h3>Type Aliases</h3>
 <h4></h4>
 <ul>
+<li><a href="#Win32_ACCESS_MASK">ACCESS_MASK</a></li>
 <li><a href="#Win32_ATOM">ATOM</a></li>
 <li><a href="#Win32_BOOL">BOOL</a></li>
 <li><a href="#Win32_BYTE">BYTE</a></li>
@@ -1189,6 +1224,7 @@
 <li><a href="#Win32_HGLOBAL">HGLOBAL</a></li>
 <li><a href="#Win32_HICON">HICON</a></li>
 <li><a href="#Win32_HINSTANCE">HINSTANCE</a></li>
+<li><a href="#Win32_HKEY">HKEY</a></li>
 <li><a href="#Win32_HLOCAL">HLOCAL</a></li>
 <li><a href="#Win32_HMENU">HMENU</a></li>
 <li><a href="#Win32_HMODULE">HMODULE</a></li>
@@ -1214,9 +1250,11 @@
 <li><a href="#Win32_LPWCH">LPWCH</a></li>
 <li><a href="#Win32_LPWSTR">LPWSTR</a></li>
 <li><a href="#Win32_LRESULT">LRESULT</a></li>
+<li><a href="#Win32_LSTATUS">LSTATUS</a></li>
 <li><a href="#Win32_PCSTR">PCSTR</a></li>
 <li><a href="#Win32_PCWSTR">PCWSTR</a></li>
 <li><a href="#Win32_PLONG">PLONG</a></li>
+<li><a href="#Win32_REGSAM">REGSAM</a></li>
 <li><a href="#Win32_SHORT">SHORT</a></li>
 <li><a href="#Win32_SHSTDAPI">SHSTDAPI</a></li>
 <li><a href="#Win32_SIZE_T">SIZE_T</a></li>
@@ -1308,6 +1346,8 @@
 <li><a href="#Win32_GetAsyncKeyState">Win32.GetAsyncKeyState</a></li>
 <li><a href="#Win32_GetClientRect">Win32.GetClientRect</a></li>
 <li><a href="#Win32_GetClipboardData">Win32.GetClipboardData</a></li>
+<li><a href="#Win32_GetCommandLineA">Win32.GetCommandLineA</a></li>
+<li><a href="#Win32_GetCommandLineW">Win32.GetCommandLineW</a></li>
 <li><a href="#Win32_GetConsoleScreenBufferInfo">Win32.GetConsoleScreenBufferInfo</a></li>
 <li><a href="#Win32_GetCurrentDirectoryA">Win32.GetCurrentDirectoryA</a></li>
 <li><a href="#Win32_GetCurrentDirectoryW">Win32.GetCurrentDirectoryW</a></li>
@@ -1388,6 +1428,9 @@
 <li><a href="#Win32_QueryPerformanceCounter">Win32.QueryPerformanceCounter</a></li>
 <li><a href="#Win32_QueryPerformanceFrequency">Win32.QueryPerformanceFrequency</a></li>
 <li><a href="#Win32_ReadFile">Win32.ReadFile</a></li>
+<li><a href="#Win32_RegCloseKey">Win32.RegCloseKey</a></li>
+<li><a href="#Win32_RegCreateKeyExA">Win32.RegCreateKeyExA</a></li>
+<li><a href="#Win32_RegSetValueExA">Win32.RegSetValueExA</a></li>
 <li><a href="#Win32_RegisterClassA">Win32.RegisterClassA</a></li>
 <li><a href="#Win32_RegisterClassW">Win32.RegisterClassW</a></li>
 <li><a href="#Win32_RegisterClipboardFormatA">Win32.RegisterClipboardFormatA</a></li>
@@ -1406,6 +1449,8 @@
 <li><a href="#Win32_SHGetSpecialFolderPathW">Win32.SHGetSpecialFolderPathW</a></li>
 <li><a href="#Win32_SHGetStockIconInfo">Win32.SHGetStockIconInfo</a></li>
 <li><a href="#Win32_ScreenToClient">Win32.ScreenToClient</a></li>
+<li><a href="#Win32_SendMessageA">Win32.SendMessageA</a></li>
+<li><a href="#Win32_SendMessageW">Win32.SendMessageW</a></li>
 <li><a href="#Win32_SetActiveWindow">Win32.SetActiveWindow</a></li>
 <li><a href="#Win32_SetCapture">Win32.SetCapture</a></li>
 <li><a href="#Win32_SetClipboardData">Win32.SetClipboardData</a></li>
@@ -2439,6 +2484,56 @@
 <td></td>
 </tr>
 <tr>
+<td id="Win32_HKEY_CLASSES_ROOT">HKEY_CLASSES_ROOT</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_CURRENT_CONFIG">HKEY_CURRENT_CONFIG</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_CURRENT_USER">HKEY_CURRENT_USER</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_CURRENT_USER_LOCAL_SETTINGS">HKEY_CURRENT_USER_LOCAL_SETTINGS</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_DYN_DATA">HKEY_DYN_DATA</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_LOCAL_MACHINE">HKEY_LOCAL_MACHINE</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_PERFORMANCE_DATA">HKEY_PERFORMANCE_DATA</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_PERFORMANCE_NLSTEXT">HKEY_PERFORMANCE_NLSTEXT</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_PERFORMANCE_TEXT">HKEY_PERFORMANCE_TEXT</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY_USERS">HKEY_USERS</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Win32_HWND_BOTTOM">HWND_BOTTOM</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></td>
 <td></td>
@@ -2631,6 +2726,51 @@
 <tr>
 <td id="Win32_INVALID_SET_FILE_POINTER">INVALID_SET_FILE_POINTER</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_CREATE_LINK">KEY_CREATE_LINK</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_CREATE_SUB_KEY">KEY_CREATE_SUB_KEY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_ENUMERATE_SUB_KEYS">KEY_ENUMERATE_SUB_KEYS</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_NOTIFY">KEY_NOTIFY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_QUERY_VALUE">KEY_QUERY_VALUE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_SET_VALUE">KEY_SET_VALUE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_WOW64_32KEY">KEY_WOW64_32KEY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_WOW64_64KEY">KEY_WOW64_64KEY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_KEY_WOW64_RES">KEY_WOW64_RES</td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3007,6 +3147,81 @@
 <td id="Win32_PM_REMOVE">PM_REMOVE</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
+</tr>
+<tr>
+<td id="Win32_REG_BINARY">REG_BINARY</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Free form binary. </td>
+</tr>
+<tr>
+<td id="Win32_REG_DWORD">REG_DWORD</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>32-bit number. </td>
+</tr>
+<tr>
+<td id="Win32_REG_DWORD_BIG_ENDIAN">REG_DWORD_BIG_ENDIAN</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>32-bit number. </td>
+</tr>
+<tr>
+<td id="Win32_REG_DWORD_LITTLE_ENDIAN">REG_DWORD_LITTLE_ENDIAN</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>32-bit number (same as REG_DWORD). </td>
+</tr>
+<tr>
+<td id="Win32_REG_EXPAND_SZ">REG_EXPAND_SZ</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Unicode nul terminated string. </td>
+</tr>
+<tr>
+<td id="Win32_REG_FULL_RESOURCE_DESCRIPTOR">REG_FULL_RESOURCE_DESCRIPTOR</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Resource list in the hardware description. </td>
+</tr>
+<tr>
+<td id="Win32_REG_LINK">REG_LINK</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Symbolic Link (unicode). </td>
+</tr>
+<tr>
+<td id="Win32_REG_MULTI_SZ">REG_MULTI_SZ</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Multiple Unicode strings. </td>
+</tr>
+<tr>
+<td id="Win32_REG_NONE">REG_NONE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>No value type. </td>
+</tr>
+<tr>
+<td id="Win32_REG_OPTION_NON_VOLATILE">REG_OPTION_NON_VOLATILE</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_REG_QWORD">REG_QWORD</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>64-bit number. </td>
+</tr>
+<tr>
+<td id="Win32_REG_QWORD_LITTLE_ENDIAN">REG_QWORD_LITTLE_ENDIAN</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>64-bit number (same as REG_QWORD). </td>
+</tr>
+<tr>
+<td id="Win32_REG_RESOURCE_LIST">REG_RESOURCE_LIST</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Resource list in the resource map. </td>
+</tr>
+<tr>
+<td id="Win32_REG_RESOURCE_REQUIREMENTS_LIST">REG_RESOURCE_REQUIREMENTS_LIST</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_REG_SZ">REG_SZ</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Unicode nul terminated string. </td>
 </tr>
 <tr>
 <td id="Win32_SC_ARRANGE">SC_ARRANGE</td>
@@ -6463,14 +6678,19 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Win32_ATOM"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Type Aliases</span></span>
+<span id="Win32_ACCESS_MASK"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\advapi32.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="table-enumeration">
+<tr>
+<td id="Win32_ACCESS_MASK">ACCESS_MASK</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_ACCESS_MASK">ACCESS_MASK</a></span></span></td>
+<td></td>
+</tr>
 <tr>
 <td id="Win32_ATOM">ATOM</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_ATOM">ATOM</a></span></span></td>
@@ -6554,6 +6774,11 @@
 <tr>
 <td id="Win32_HINSTANCE">HINSTANCE</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HKEY">HKEY</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_HKEY">HKEY</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6682,6 +6907,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Win32_LSTATUS">LSTATUS</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_LSTATUS">LSTATUS</a></span></span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Win32_PCSTR">PCSTR</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_PCSTR">PCSTR</a></span></span></td>
 <td></td>
@@ -6694,6 +6924,11 @@
 <tr>
 <td id="Win32_PLONG">PLONG</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_PLONG">PLONG</a></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_REGSAM">REGSAM</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Win32_REGSAM">REGSAM</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6774,7 +7009,7 @@
 <span id="Win32_AcquireSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">AcquireSRWLockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L381" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L383" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6786,7 +7021,7 @@
 <span id="Win32_AcquireSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">AcquireSRWLockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L382" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L384" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6798,7 +7033,7 @@
 <span id="Win32_BeginPaint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">BeginPaint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1041" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1043" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6810,7 +7045,7 @@
 <span id="Win32_BringWindowToTop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">BringWindowToTop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1048" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1050" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7029,7 +7264,7 @@
 <span id="Win32_CancelWaitableTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CancelWaitableTimer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L391" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L393" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7041,7 +7276,7 @@
 <span id="Win32_ChildWindowFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ChildWindowFromPoint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L989" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L991" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7053,7 +7288,7 @@
 <span id="Win32_ChildWindowFromPointEx"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ChildWindowFromPointEx</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L990" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L992" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7065,7 +7300,7 @@
 <span id="Win32_ClientToScreen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ClientToScreen</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1047" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1049" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7077,7 +7312,7 @@
 <span id="Win32_CloseClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CloseClipboard</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1008" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1010" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7089,7 +7324,7 @@
 <span id="Win32_CloseHandle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CloseHandle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L395" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L397" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7125,7 +7360,7 @@
 <span id="Win32_CreateConsoleScreenBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateConsoleScreenBuffer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L355" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L357" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7137,7 +7372,7 @@
 <span id="Win32_CreateDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L831" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L833" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7149,7 +7384,7 @@
 <span id="Win32_CreateDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L838" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L840" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7161,7 +7396,7 @@
 <span id="Win32_CreateEventA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateEventA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L549" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L551" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7173,7 +7408,7 @@
 <span id="Win32_CreateEventW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateEventW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L557" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L559" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7185,7 +7420,7 @@
 <span id="Win32_CreateFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L692" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L694" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7197,7 +7432,7 @@
 <span id="Win32_CreateFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L700" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L702" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7209,7 +7444,7 @@
 <span id="Win32_CreateIconIndirect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateIconIndirect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1208" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1210" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7221,7 +7456,7 @@
 <span id="Win32_CreateMutexA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateMutexA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L565" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L567" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7233,7 +7468,7 @@
 <span id="Win32_CreateMutexW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateMutexW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L573" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L575" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7245,7 +7480,7 @@
 <span id="Win32_CreateProcessA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateProcessA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L537" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L539" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7257,7 +7492,7 @@
 <span id="Win32_CreateProcessW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateProcessW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L543" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L545" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7269,7 +7504,7 @@
 <span id="Win32_CreateThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateThread</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L478" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L480" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7281,7 +7516,7 @@
 <span id="Win32_CreateTimerQueueTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateTimerQueueTimer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L581" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L583" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7293,7 +7528,7 @@
 <span id="Win32_CreateWaitableTimerA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWaitableTimerA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L389" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L391" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7305,7 +7540,7 @@
 <span id="Win32_CreateWaitableTimerW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWaitableTimerW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L392" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7389,7 +7624,7 @@
 <span id="Win32_DeleteFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L624" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L626" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7401,7 +7636,7 @@
 <span id="Win32_DeleteFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L630" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L632" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7413,7 +7648,7 @@
 <span id="Win32_DeleteTimerQueueTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteTimerQueueTimer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L587" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L589" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7425,7 +7660,7 @@
 <span id="Win32_DestroyIcon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DestroyIcon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1196" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7437,7 +7672,7 @@
 <span id="Win32_DestroyWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DestroyWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7449,7 +7684,7 @@
 <span id="Win32_DispatchMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DispatchMessageA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1051" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1053" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7461,7 +7696,7 @@
 <span id="Win32_DispatchMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DispatchMessageW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1052" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1054" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7473,7 +7708,7 @@
 <span id="Win32_EmptyClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EmptyClipboard</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1009" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1011" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7485,7 +7720,7 @@
 <span id="Win32_EnableWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnableWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1032" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1034" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7497,7 +7732,7 @@
 <span id="Win32_EndPaint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EndPaint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1042" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1044" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7509,7 +7744,7 @@
 <span id="Win32_EnumDisplayMonitors"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnumDisplayMonitors</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1057" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1059" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7521,7 +7756,7 @@
 <span id="Win32_EnumWindows"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnumWindows</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1058" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1060" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7533,7 +7768,7 @@
 <span id="Win32_ExitProcess"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ExitProcess</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L377" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L379" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7592,7 +7827,7 @@
 <span id="Win32_FileTimeToLocalFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FileTimeToLocalFileTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L396" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L398" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7604,7 +7839,7 @@
 <span id="Win32_FileTimeToSystemTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FileTimeToSystemTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L606" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L608" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7616,7 +7851,7 @@
 <span id="Win32_FillRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FillRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1025" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1027" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7628,7 +7863,7 @@
 <span id="Win32_FindClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindClose</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L740" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7640,7 +7875,7 @@
 <span id="Win32_FindFirstFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L708" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L710" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7652,7 +7887,7 @@
 <span id="Win32_FindFirstFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L716" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L718" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7664,7 +7899,7 @@
 <span id="Win32_FindFirstVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L746" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L748" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7676,7 +7911,7 @@
 <span id="Win32_FindFirstVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L754" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L756" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7688,7 +7923,7 @@
 <span id="Win32_FindNextFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L724" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L726" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7700,7 +7935,7 @@
 <span id="Win32_FindNextFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L732" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L734" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7712,7 +7947,7 @@
 <span id="Win32_FindNextVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L762" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L764" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7724,7 +7959,7 @@
 <span id="Win32_FindNextVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L770" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L772" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7736,7 +7971,7 @@
 <span id="Win32_FindVolumeClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindVolumeClose</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L778" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L780" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7748,7 +7983,7 @@
 <span id="Win32_FindWindowA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindWindowA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L991" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L993" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7760,7 +7995,7 @@
 <span id="Win32_FindWindowW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindWindowW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L992" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L994" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7874,7 +8109,7 @@
 <span id="Win32_GetActiveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetActiveWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L995" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L997" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7910,7 +8145,7 @@
 <span id="Win32_GetClientRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetClientRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1026" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1028" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7922,7 +8157,7 @@
 <span id="Win32_GetClipboardData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetClipboardData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1011" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1013" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7931,10 +8166,34 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Win32_GetCommandLineA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCommandLineA</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L348" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">GetCommandLineA</span>()-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Win32_GetCommandLineW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCommandLineW</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L349" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">GetCommandLineW</span>()-&gt;<span class="SKwd">const</span> ^<span class="STpe">u16</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Win32_GetConsoleScreenBufferInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetConsoleScreenBufferInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L472" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L474" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7946,7 +8205,7 @@
 <span id="Win32_GetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L664" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L666" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7958,7 +8217,7 @@
 <span id="Win32_GetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L672" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L674" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7970,7 +8229,7 @@
 <span id="Win32_GetCurrentProcess"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentProcess</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L350" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7982,7 +8241,7 @@
 <span id="Win32_GetCurrentProcessId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentProcessId</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L351" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7994,7 +8253,7 @@
 <span id="Win32_GetCurrentThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentThread</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L379" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L381" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8006,7 +8265,7 @@
 <span id="Win32_GetCurrentThreadId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentThreadId</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L378" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L380" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8018,7 +8277,7 @@
 <span id="Win32_GetCursorPos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCursorPos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1023" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1025" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8030,7 +8289,7 @@
 <span id="Win32_GetDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetDC</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1001" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1003" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8042,7 +8301,7 @@
 <span id="Win32_GetDesktopWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetDesktopWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L993" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L995" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8054,7 +8313,7 @@
 <span id="Win32_GetFileAttributesA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L636" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L638" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8066,7 +8325,7 @@
 <span id="Win32_GetFileAttributesExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L652" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L654" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8078,7 +8337,7 @@
 <span id="Win32_GetFileAttributesExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L658" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L660" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8090,7 +8349,7 @@
 <span id="Win32_GetFileAttributesW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L644" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L646" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8102,7 +8361,7 @@
 <span id="Win32_GetFileSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L805" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L807" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8114,7 +8373,7 @@
 <span id="Win32_GetForegroundWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetForegroundWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L996" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L998" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8126,7 +8385,7 @@
 <span id="Win32_GetFullPathNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L814" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L816" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8138,7 +8397,7 @@
 <span id="Win32_GetFullPathNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L823" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L825" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8150,7 +8409,7 @@
 <span id="Win32_GetIconInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetIconInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8186,7 +8445,7 @@
 <span id="Win32_GetLocalTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetLocalTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L372" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8198,7 +8457,7 @@
 <span id="Win32_GetLogicalDriveStringsA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetLogicalDriveStringsA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L360" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L362" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8210,7 +8469,7 @@
 <span id="Win32_GetLogicalDriveStringsW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetLogicalDriveStringsW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L361" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8246,7 +8505,7 @@
 <span id="Win32_GetModuleHandleA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetModuleHandleA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L352" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L354" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8258,7 +8517,7 @@
 <span id="Win32_GetModuleHandleW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetModuleHandleW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L353" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8270,7 +8529,7 @@
 <span id="Win32_GetMonitorInfoA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMonitorInfoA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8282,7 +8541,7 @@
 <span id="Win32_GetMonitorInfoW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMonitorInfoW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8294,7 +8553,7 @@
 <span id="Win32_GetNextWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetNextWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L998" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1000" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8306,7 +8565,7 @@
 <span id="Win32_GetProcAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetProcAddress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L349" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8318,7 +8577,7 @@
 <span id="Win32_GetStdHandle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetStdHandle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8330,7 +8589,7 @@
 <span id="Win32_GetSystemInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L363" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L365" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8342,7 +8601,7 @@
 <span id="Win32_GetSystemMetrics"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemMetrics</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1018" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1020" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8354,7 +8613,7 @@
 <span id="Win32_GetSystemTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L373" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L375" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8366,7 +8625,7 @@
 <span id="Win32_GetTopWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetTopWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L994" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L996" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8378,7 +8637,7 @@
 <span id="Win32_GetVolumePathNamesForVolumeNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L784" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L786" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8390,7 +8649,7 @@
 <span id="Win32_GetVolumePathNamesForVolumeNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L790" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L792" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8402,7 +8661,7 @@
 <span id="Win32_GetWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L997" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L999" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8414,7 +8673,7 @@
 <span id="Win32_GetWindowLongPtrA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowLongPtrA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L986" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L988" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8426,7 +8685,7 @@
 <span id="Win32_GetWindowLongPtrW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowLongPtrW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L987" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L989" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8438,7 +8697,7 @@
 <span id="Win32_GetWindowRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1027" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1029" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8450,7 +8709,7 @@
 <span id="Win32_GetWindowTextA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowTextA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1028" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1030" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8462,7 +8721,7 @@
 <span id="Win32_GetWindowTextW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowTextW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1029" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1031" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8474,7 +8733,7 @@
 <span id="Win32_GlobalAlloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalAlloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L364" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L366" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8486,7 +8745,7 @@
 <span id="Win32_GlobalLock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalLock</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L366" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L368" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8498,7 +8757,7 @@
 <span id="Win32_GlobalSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L368" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L370" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8510,7 +8769,7 @@
 <span id="Win32_GlobalUnlock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalUnlock</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L367" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L369" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8726,7 +8985,7 @@
 <span id="Win32_InitializeSRWLock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">InitializeSRWLock</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L383" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L385" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8738,7 +8997,7 @@
 <span id="Win32_InvalidateRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">InvalidateRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1044" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1046" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8750,7 +9009,7 @@
 <span id="Win32_IsClipboardFormatAvailable"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IsClipboardFormatAvailable</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1010" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1012" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8774,7 +9033,7 @@
 <span id="Win32_IsWindowVisible"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IsWindowVisible</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L999" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1001" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8822,7 +9081,7 @@
 <span id="Win32_LocalFree"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">LocalFree</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L365" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L367" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8989,7 +9248,7 @@
 <span id="Win32_MapVirtualKeyA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MapVirtualKeyA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1003" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1005" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9001,7 +9260,7 @@
 <span id="Win32_MapVirtualKeyW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MapVirtualKeyW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1004" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1006" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9013,7 +9272,7 @@
 <span id="Win32_MessageBoxA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MessageBoxA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1033" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1035" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9025,7 +9284,7 @@
 <span id="Win32_MessageBoxW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MessageBoxW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1034" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1036" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9037,7 +9296,7 @@
 <span id="Win32_MonitorFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MonitorFromPoint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1014" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1016" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9049,7 +9308,7 @@
 <span id="Win32_MonitorFromWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MonitorFromWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1015" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1017" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9061,7 +9320,7 @@
 <span id="Win32_MoveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MoveWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9249,7 +9508,7 @@
 <span id="Win32_OpenClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">OpenClipboard</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1007" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1009" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9408,7 +9667,7 @@
 <span id="Win32_PostMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PostMessageA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9420,7 +9679,7 @@
 <span id="Win32_PostMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PostMessageW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9444,7 +9703,7 @@
 <span id="Win32_QueryPerformanceCounter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">QueryPerformanceCounter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L370" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L372" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9456,7 +9715,7 @@
 <span id="Win32_QueryPerformanceFrequency"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">QueryPerformanceFrequency</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L371" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L373" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9501,7 +9760,7 @@
 <span id="Win32_ReadFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReadFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L394" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L396" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9510,10 +9769,46 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Win32_RegCloseKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegCloseKey</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\advapi32.swg#L52" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">RegCloseKey</span>(hKey: <span class="SCst"><a href="#Win32_HKEY">HKEY</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Win32_LSTATUS">LSTATUS</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Win32_RegCreateKeyExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegCreateKeyExA</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\advapi32.swg#L50" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">RegCreateKeyExA</span>(hKey: <span class="SCst"><a href="#Win32_HKEY">HKEY</a></span>, lpSubKey: <span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, reserved: <span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClass: <span class="SKwd">nl</span> <span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, dwOptions: <span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, samDesired: <span class="SCst"><a href="#Win32_REGSAM">REGSAM</a></span>, lpSecurityAttributes: <span class="SKwd">nl</span> <span class="SKwd">const</span> *<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, hkResult: *<span class="SCst"><a href="#Win32_HKEY">HKEY</a></span>, lpdwDisposition: <span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Win32_LSTATUS">LSTATUS</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Win32_RegSetValueExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegSetValueExA</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\advapi32.swg#L51" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">RegSetValueExA</span>(hKey: <span class="SCst"><a href="#Win32_HKEY">HKEY</a></span>, lpValueName: <span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, reserved: <span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwType: <span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: <span class="SKwd">nl</span> <span class="SKwd">const</span> *<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, cbData: <span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Win32_LSTATUS">LSTATUS</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Win32_RegisterClassA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClassA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1119" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9525,7 +9820,7 @@
 <span id="Win32_RegisterClassW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClassW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9537,7 +9832,7 @@
 <span id="Win32_RegisterClipboardFormatA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClipboardFormatA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9549,7 +9844,7 @@
 <span id="Win32_RegisterClipboardFormatW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClipboardFormatW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9561,7 +9856,7 @@
 <span id="Win32_RegisterHotKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterHotKey</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1094" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1096" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9573,7 +9868,7 @@
 <span id="Win32_ReleaseCapture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseCapture</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1036" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1038" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9585,7 +9880,7 @@
 <span id="Win32_ReleaseDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseDC</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1043" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1045" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9597,7 +9892,7 @@
 <span id="Win32_ReleaseMutex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseMutex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L519" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L521" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9609,7 +9904,7 @@
 <span id="Win32_ReleaseSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseSRWLockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L384" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L386" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9621,7 +9916,7 @@
 <span id="Win32_ReleaseSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseSRWLockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L385" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L387" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9633,7 +9928,7 @@
 <span id="Win32_ResetEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ResetEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L525" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L527" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9645,7 +9940,7 @@
 <span id="Win32_ResumeThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ResumeThread</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L487" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L489" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10603,7 +10898,7 @@
 <span id="Win32_ScreenToClient"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ScreenToClient</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1046" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1048" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10612,10 +10907,34 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Win32_SendMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SendMessageA</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L985" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">SendMessageA</span>(hWnd: <span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Win32_SendMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SendMessageW</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L986" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">SendMessageW</span>(hWnd: <span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Win32_SetActiveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetActiveWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1039" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1041" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10627,7 +10946,7 @@
 <span id="Win32_SetCapture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCapture</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1035" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1037" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10639,7 +10958,7 @@
 <span id="Win32_SetClipboardData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetClipboardData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1012" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1014" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10651,7 +10970,7 @@
 <span id="Win32_SetConsoleActiveScreenBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleActiveScreenBuffer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L358" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10663,7 +10982,7 @@
 <span id="Win32_SetConsoleOutputCP"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleOutputCP</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L359" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10675,7 +10994,7 @@
 <span id="Win32_SetConsoleTextAttribute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleTextAttribute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L466" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L468" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10687,7 +11006,7 @@
 <span id="Win32_SetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L680" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L682" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10699,7 +11018,7 @@
 <span id="Win32_SetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L686" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L688" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10711,7 +11030,7 @@
 <span id="Win32_SetCursor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCursor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1037" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1039" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10735,7 +11054,7 @@
 <span id="Win32_SetEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L531" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L533" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10747,7 +11066,7 @@
 <span id="Win32_SetFilePointer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFilePointer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L797" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L799" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10759,7 +11078,7 @@
 <span id="Win32_SetFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFileTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L618" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L620" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10771,7 +11090,7 @@
 <span id="Win32_SetFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1038" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1040" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10783,7 +11102,7 @@
 <span id="Win32_SetLayeredWindowAttributes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetLayeredWindowAttributes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1160" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1162" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10795,7 +11114,7 @@
 <span id="Win32_SetThreadDpiAwarenessContext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetThreadDpiAwarenessContext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1016" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1018" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10807,7 +11126,7 @@
 <span id="Win32_SetThreadPriority"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetThreadPriority</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L495" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L497" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10819,7 +11138,7 @@
 <span id="Win32_SetWaitableTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWaitableTimer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L392" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L394" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10831,7 +11150,7 @@
 <span id="Win32_SetWindowLongPtrA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowLongPtrA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1054" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1056" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10843,7 +11162,7 @@
 <span id="Win32_SetWindowLongPtrW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowLongPtrW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1055" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1057" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10855,7 +11174,7 @@
 <span id="Win32_SetWindowPos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowPos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1156" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10915,7 +11234,7 @@
 <span id="Win32_ShowWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ShowWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1031" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1033" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10927,7 +11246,7 @@
 <span id="Win32_Sleep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Sleep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L377" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10939,7 +11258,7 @@
 <span id="Win32_SleepEx"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SleepEx</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L376" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L378" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10963,7 +11282,7 @@
 <span id="Win32_SystemTimeToFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SystemTimeToFileTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L612" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L614" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10975,7 +11294,7 @@
 <span id="Win32_ToUnicode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ToUnicode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1005" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1007" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10987,7 +11306,7 @@
 <span id="Win32_TranslateMessage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TranslateMessage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1050" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1052" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10999,7 +11318,7 @@
 <span id="Win32_TryAcquireSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TryAcquireSRWLockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L386" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L388" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11011,7 +11330,7 @@
 <span id="Win32_TryAcquireSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TryAcquireSRWLockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L387" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11023,7 +11342,7 @@
 <span id="Win32_UnregisterHotKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">UnregisterHotKey</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11035,7 +11354,7 @@
 <span id="Win32_UpdateWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">UpdateWindow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11420,7 +11739,7 @@
 <span id="Win32_WaitForMultipleObjects"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WaitForMultipleObjects</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L511" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L513" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11432,7 +11751,7 @@
 <span id="Win32_WaitForSingleObject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WaitForSingleObject</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L502" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L504" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11444,7 +11763,7 @@
 <span id="Win32_WindowFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WindowFromPoint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L988" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L990" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11456,7 +11775,7 @@
 <span id="Win32_WriteConsoleOutputCharacterA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteConsoleOutputCharacterA</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L357" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L359" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11468,7 +11787,7 @@
 <span id="Win32_WriteConsoleOutputCharacterW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteConsoleOutputCharacterW</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L360" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11480,7 +11799,7 @@
 <span id="Win32_WriteFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L598" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L600" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11499,7 +11818,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 09-10-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 06-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
 </div>
 </div>
 </div>

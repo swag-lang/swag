@@ -141,7 +141,7 @@
 <tr><td> <a href="std.xaudio2.php">std.xaudio2</a>   </td><td> <span class="code-inline">xaudio2</span> wrapper</td></tr>
 </table>
 <div class="swag-watermark">
-Generated on 09-10-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 06-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
 </div>
 </div>
 </div>

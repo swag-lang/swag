@@ -288,7 +288,7 @@
     <span class="SLgc">case</span> <span class="SCst">ResizeEvent</span>:
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
 
-    <span class="SLgc">case</span> <span class="SKwd">let</span> paintEvt <span class="SLgc">as</span> <span class="SCst">PaintEvent</span>:
+    <span class="SLgc">case</span> <span class="SCst">PaintEvent</span> <span class="SLgc">as</span> paintEvt:
         <span class="SKwd">let</span> painter  = paintEvt.bc.painter
 
         <span class="SCmt">// This is the elapsed time between two 'frames', in seconds.</span>
@@ -565,7 +565,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 09-10-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.40.0</div>
+Generated on 06-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
 </div>
 </div>
 </div>
