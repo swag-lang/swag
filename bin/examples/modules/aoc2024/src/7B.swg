@@ -33,6 +33,11 @@ Determine which equations could possibly be true. What is their total calibratio
 
 using Core
 
+func appendNumbers(a, b: u64)->u64 
+{
+    return a * Math.powerOf10(cast(f32) b) + b
+}
+
 func day7B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "7.txt")
@@ -53,28 +58,8 @@ func day7B()
                 result = resin + operands[0] 
             elif operator == '*': 
                 result = resin * operands[0]               
-            else
-            {        
-                var r0 = Format.toString("%", resin)       
-                var r1 = Format.toString("%", operands[0])
-                r0 += r1
-                var result0 = assume StrConv.toU64(r0)
-
-                /*var mul = 1
-                var ope = operands[0]
-
-                result = resin
-                while ope
-                {
-                    result *= 10
-                    result += (ope % 10) * mul
-                    ope /= 10
-                    mul *= 10
-                }*/
-
-                //@print(result0, " ", result, " ", resin, " ", operands[0], "\n")
-                result = result0
-            }
+            else:
+                result = appendNumbers(resin, operands[0])
 
             if result > target:         return false
             if @countof(operands) == 1: return target == result

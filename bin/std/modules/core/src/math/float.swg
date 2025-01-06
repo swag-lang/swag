@@ -82,6 +82,19 @@ alias ConstF64 = Const'f64
         let r = (val - minSrc) / (maxSrc - minSrc)
         return minDst + r * (maxDst - minDst)
     }
+    
+    // Calculates the smallest power of 10 greater than or equal to the given number `val`
+    func powerOf10(val: f32)->s32
+    {
+        if val == 0: return 1
+        return cast() pow(10, floor(log10(val)) + 1)
+    }
+
+    func powerOf10(val: f64)->s32
+    {
+        if val == 0: return 1
+        return cast() pow(10, floor(log10(val)) + 1)
+    }    
 }
 
 #[Swag.ConstExpr, Swag.Inline, Swag.Overload]
