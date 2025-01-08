@@ -51,27 +51,22 @@ func day8B()
 
     for l in lines
     {
-        foreach f, c in lines[l]
+        foreach f, c in lines[l] where f != '.'
         {
-            if f != '.':
-                antennas.add({f, c, l})
+            antennas.add({f, c, l})
         }
     }
 
     foreach &antenna0, a in antennas
     {
-        foreach &antenna1, b in antennas
+        foreach &antenna1, b in antennas where a != b and antenna0.f == antenna1.f
         {
-            if a == b or antenna0.f != antenna1.f:
-                continue
             let dx = antenna1.x - antenna0.x
             let dy = antenna1.y - antenna0.y
             var ax = antenna0.x
             var ay = antenna0.y
-            for
-            {
-                if ax < 0 or ay < 0 or ax >= w or ay >= h:
-                    break
+            while ax >= 0 and ay >= 0 and ax < w and ay < h
+            {                
                 antinodes.add({cast(u32) ax, cast(u32) ay})
                 ax -= dx
                 ay -= dy
