@@ -39,6 +39,7 @@ Calculate the impact of the signal using this updated model. How many unique loc
 
 using Core
 
+//#[Swag.PrintBc]
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "8.txt")
@@ -57,9 +58,9 @@ func day8B()
         }
     }
 
-    foreach &antenna0, a in antennas
+    foreach antenna0, a in antennas
     {
-        foreach &antenna1, b in antennas where a != b and antenna0.f == antenna1.f
+        foreach antenna1, b in antennas where a != b and antenna0.f == antenna1.f
         {
             let dx = antenna1.x - antenna0.x
             let dy = antenna1.y - antenna0.y
