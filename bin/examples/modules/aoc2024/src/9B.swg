@@ -44,9 +44,9 @@ func day9B()
     //Time.Stopwatch.scopeMeasure()
 
     var last = map.count - #over 1
-    toCheck -= 1
-    for
+    while toCheck
     {
+        toCheck -= 1
         while map[last].what != toCheck:
             last -= 1
 
@@ -54,27 +54,22 @@ func day9B()
         while i < last and (map[i].what != -1 or map[i].num < map[last].num):
             i += 1         
           
-        if i < last
+        if i >= last:
+            continue
+
+        map[i].what = map[last].what       
+        map[last].what = -1
+
+        if map[i].num == map[last].num
         {
-            map[i].what = map[last].what       
-
-            if map[i].num == map[last].num
-            {
-                map[last].what = -1
-                last -= 1            
-            }
-            else
-            {
-                let n = map[i].num - map[last].num
-                map[i].num = map[last].num
-                map[last].what = -1
-                map.insertAt(i + 1, {-1, n})
-            }
+            last -= 1            
         }
-
-        if toCheck == 0:
-            break
-        toCheck -= 1
+        else
+        {
+            let n = map[i].num - map[last].num
+            map[i].num = map[last].num
+            map.insertAt(i + 1, {-1, n})
+        }
     }
 
     var idx, total: u64
