@@ -28,6 +28,7 @@ func day9B()
     var line     = assume File.readAllText(dataPath)
 
     var map: Array'{what, num: s64}
+    
     var toCheck: s64
     foreach t in line
     {
@@ -40,8 +41,6 @@ func day9B()
             toCheck += 1
         }
     }
-
-    //Time.Stopwatch.scopeMeasure()
 
     var last = map.count - #over 1
     while toCheck
@@ -60,11 +59,7 @@ func day9B()
         map[i].what = map[last].what       
         map[last].what = -1
 
-        if map[i].num == map[last].num
-        {
-            last -= 1            
-        }
-        else
+        if map[i].num != map[last].num
         {
             let n = map[i].num - map[last].num
             map[i].num = map[last].num
