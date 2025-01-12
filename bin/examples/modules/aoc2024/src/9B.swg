@@ -13,9 +13,9 @@ The first example from above now proceeds differently:
 0099.1117772...333.44.5555.6666.....8888..
 0099.111777244.333....5555.6666.....8888..
 00992111777.44.333....5555.6666.....8888..
-The process of updating the filesystem checksum is the same; now, this example's checksum would be 2858.
+The process of updating the filesystem total is the same; now, this example's total would be 2858.
 
-Start over, now compacting the amphipod's hard drive using this new method instead. What is the resulting filesystem checksum?
+Start over, now compacting the amphipod's hard drive using this new method instead. What is the resulting filesystem total?
 */
 
 using Core
@@ -28,18 +28,18 @@ func day9B()
 
 func day9BA()
 {
-    //Time.Stopwatch.scopeMeasure()
-    
+    Time.Stopwatch.scopeMeasure()
+
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     var line     = assume File.readAllText(dataPath)
 
-    var map: Array'{what, num: s64}
-    
+    var map: Array'{ what, num: s64 }
+
     var toCheck: s64
     foreach t in line
     {
         let r = t - '0'
-        if #index & 1:        
+        if #index & 1:
             map.add({-1, r})
         else
         {
@@ -57,12 +57,12 @@ func day9BA()
 
         var i = 0'u64
         while i < last and (map[i].what != -1 or map[i].num < map[last].num):
-            i += 1         
-          
+            i += 1
+
         if i >= last:
             continue
 
-        map[i].what = map[last].what       
+        map[i].what    = map[last].what
         map[last].what = -1
 
         if map[i].num != map[last].num
@@ -75,100 +75,100 @@ func day9BA()
 
     var idx, total: u64
     foreach v in map
-    {  
+    {
         if v.what == -1
         {
             idx += v.num
         }
         else
         {
-            for v.num      
-            {            
+            for v.num
+            {
                 total += idx * v.what
                 idx += 1
             }
         }
     }
 
-    @assert(total == 6183632723350)                               
+    @assert(total == 6183632723350)
 }
 
 func day9BB()
 {
-/*    func file_sum(a, n, block_id: s32)->s32
+    func file_sum(a, n, block_id: s64)->u64
     {
-        let s = (((2 * a) + n - 1) * n) / 2
-        return s * block_id;
+        let s = cast(u64) ((((2 * a) + n - 1) * n) / 2)
+        return s * block_id
     }
 
     Time.Stopwatch.scopeMeasure()
-    
-    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
-    var line     = assume File.readAllText(dataPath)  
 
-    var checksum2 = 0'u64
-    var files_by_size: Array'(Array's32)
-    var moved: HashTable'(s32, u8)
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
+    var line     = assume File.readAllText(dataPath)
+
+    var filesBySize: [10] Array's32
+    var moved:       HashTable'(s32, u8)
 
     let n = cast(s32) line.length
-    let last_block_ptr = n % 2 == 0 ? n - 2 : n - 1
-    var block_ind = 0
+    let l = n % 2 == 0 ? n - 2 : n - 1
+    for var i = l; i >= 0; i -= 2:
+        filesBySize[line[i] - '0'].add(i)
 
-    for var i = last_block_ptr; i >= 0; i -= 2:
-        files_by_size[line[i] - '0'].add(i)
-
-    var ptr = 0
-    while ptr < n
+    var total = 0'u64
+    var idx, blockIdx = 0
+    while idx < n
     {
-        if ptr % 2 == 0
+        if idx % 2 == 0
         {
-            if !moved.contains(ptr)
+            if !moved.contains(idx)
             {
-                checksum2 += file_sum(block_ind, line[ptr] - '0', ptr/2)
-                block_ind += (line[ptr] - '0')
-            } else 
+                total += file_sum(blockIdx, line[idx] - '0', idx / 2)
+                blockIdx += line[idx] - '0'
+            }
+            else
             {
-                block_ind += (moved[ptr] - '0')
+                blockIdx += moved[idx] - '0'
             }
 
-            ptr += 1
-        } 
-        else 
+            idx += 1
+        }
+        else
         {
-            var cur_space = line[ptr] - '0'
-            var max_ind = -1
-            var vec_ind = -1
+            var numSpaces = line[idx] - '0'
+            var maxIdx, vecIdx = -1
 
-            for var j = 1; j <= cur_space; j += 1
+            for var j = 1; j <= numSpaces; j += 1
             {
-                let temp = #ref files_by_size[j]
-                if !temp.isEmpty() and (max_ind < temp.front()) and temp.front() > ptr
+                let temp = &filesBySize[j]
+                if temp.isEmpty():
+                    continue
+                if maxIdx < temp.front() and temp.front() > idx
                 {
-                    max_ind = temp.front()
-                    vec_ind = j
+                    maxIdx = temp.front()
+                    vecIdx = j
                 }
             }
 
-            if max_ind == -1
+            if maxIdx == -1
             {
-                ptr += 1
-                block_ind += cur_space
+                idx += 1
+                blockIdx += numSpaces
                 continue
             }
 
-            cur_space = line[max_ind] - '0'
-            checksum2 += file_sum(block_ind, cur_space, max_ind/2)
-            files_by_size[vec_ind].removeBack()
+            numSpaces = line[maxIdx] - '0'
+            total += file_sum(blockIdx, numSpaces, maxIdx / 2)
+            filesBySize[vecIdx].removeAtOrdered(0)
 
-            moved[max_ind] = line[max_ind]
-            block_ind += cur_space
-            line[max_ind] = '0'
-            line[ptr] -= cur_space
+            moved[maxIdx] = line[maxIdx]
+            blockIdx += numSpaces
+            line[maxIdx] = '0'
+            line[idx] -= numSpaces
 
-            if line[ptr] == '0':
-                ptr += 1
+            if line[idx] == '0':
+                idx += 1
         }
     }
 
-    @print(checksum2) */
+    @assert(total == 6183632723350)
 }
