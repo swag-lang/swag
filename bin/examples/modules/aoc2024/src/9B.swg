@@ -93,6 +93,7 @@ func day9BA()
     @assert(total == 6183632723350)
 }
 
+//#[Swag.PrintBc]
 func day9BB()
 {
     func fileSum(a, n, block_id: s64)->u64
@@ -109,14 +110,12 @@ func day9BB()
     var filesBySize: [10] Array's32
     var moved:       HashTable'(s32, u8)
 
-    let n = cast(s32) line.length
-    let l = n % 2 == 0 ? n - 2 : n - 1
-    for var i = l; i >= 0; i -= 2:
+    for var i = 0; i < line.length; i += 2:
         filesBySize[line[i] - '0'].add(i)
 
     var total = 0'u64
     var idx, blockIdx = 0
-    while idx < n
+    while idx < line.length
     {
         if idx % 2 == 0
         {
@@ -142,9 +141,9 @@ func day9BB()
                 let temp = &filesBySize[j]
                 if temp.isEmpty():
                     continue
-                if maxIdx < temp.front() and temp.front() > idx
+                if maxIdx < temp.back() and temp.back() > idx
                 {
-                    maxIdx = temp.front()
+                    maxIdx = temp.back()
                     vecIdx = j
                 }
             }
@@ -158,7 +157,7 @@ func day9BB()
 
             numSpaces = line[maxIdx] - '0'
             total += fileSum(blockIdx, numSpaces, maxIdx / 2)
-            filesBySize[vecIdx].removeAtOrdered(0)
+            filesBySize[vecIdx].removeBack()
 
             moved[maxIdx] = line[maxIdx]
             blockIdx += numSpaces
