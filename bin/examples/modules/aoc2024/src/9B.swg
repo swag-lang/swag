@@ -95,7 +95,7 @@ func day9BA()
 
 func day9BB()
 {
-    func file_sum(a, n, block_id: s64)->u64
+    func fileSum(a, n, block_id: s64)->u64
     {
         let s = cast(u64) ((((2 * a) + n - 1) * n) / 2)
         return s * block_id
@@ -122,7 +122,7 @@ func day9BB()
         {
             if !moved.contains(idx)
             {
-                total += file_sum(blockIdx, line[idx] - '0', idx / 2)
+                total += fileSum(blockIdx, line[idx] - '0', idx / 2)
                 blockIdx += line[idx] - '0'
             }
             else
@@ -137,7 +137,7 @@ func day9BB()
             var numSpaces = line[idx] - '0'
             var maxIdx, vecIdx = -1
 
-            for var j = 1; j <= numSpaces; j += 1
+            for j in 1 to numSpaces
             {
                 let temp = &filesBySize[j]
                 if temp.isEmpty():
@@ -157,7 +157,7 @@ func day9BB()
             }
 
             numSpaces = line[maxIdx] - '0'
-            total += file_sum(blockIdx, numSpaces, maxIdx / 2)
+            total += fileSum(blockIdx, numSpaces, maxIdx / 2)
             filesBySize[vecIdx].removeAtOrdered(0)
 
             moved[maxIdx] = line[maxIdx]
