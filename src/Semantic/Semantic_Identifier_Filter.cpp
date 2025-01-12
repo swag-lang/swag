@@ -131,6 +131,9 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         const auto over     = curMatch->symbolOverload;
         const auto overSym  = over->symbol;
 
+        if (curMatch->remove)
+            continue;
+
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
         if (overSym->name.find(g_LangSpec->name_sharp_alias) == 0)
@@ -443,6 +446,25 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                             break;
                         }
                     }
+                }
+            }
+        }
+    }
+    
+    for (uint32_t i = 0; i < countMatches; i++)
+    {
+        const auto curMatch = matches[i];
+
+        // One symbol that comes from an alternative scope of a contextual call "struct".call is less
+        // prio than a symbol from direct scopes 
+        if (curMatch->altFlags.has(COLLECTED_SCOPE_CONTEXT_CALL))
+        {
+            for (uint32_t j = 0; j < countMatches; j++)
+            {
+                if (!matches[j]->altFlags.has(COLLECTED_SCOPE_CONTEXT_CALL) && !matches[j]->remove)
+                {
+                    curMatch->remove = true;
+                    break;
                 }
             }
         }

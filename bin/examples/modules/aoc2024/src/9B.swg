@@ -22,6 +22,12 @@ using Core
 
 func day9B()
 {
+    day9BA()
+    day9BB()
+}
+
+func day9BA()
+{
     //Time.Stopwatch.scopeMeasure()
     
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
@@ -85,4 +91,84 @@ func day9B()
     }
 
     @assert(total == 6183632723350)                               
+}
+
+func day9BB()
+{
+/*    func file_sum(a, n, block_id: s32)->s32
+    {
+        let s = (((2 * a) + n - 1) * n) / 2
+        return s * block_id;
+    }
+
+    Time.Stopwatch.scopeMeasure()
+    
+    let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
+    var line     = assume File.readAllText(dataPath)  
+
+    var checksum2 = 0'u64
+    var files_by_size: Array'(Array's32)
+    var moved: HashTable'(s32, u8)
+
+    let n = cast(s32) line.length
+    let last_block_ptr = n % 2 == 0 ? n - 2 : n - 1
+    var block_ind = 0
+
+    for var i = last_block_ptr; i >= 0; i -= 2:
+        files_by_size[line[i] - '0'].add(i)
+
+    var ptr = 0
+    while ptr < n
+    {
+        if ptr % 2 == 0
+        {
+            if !moved.contains(ptr)
+            {
+                checksum2 += file_sum(block_ind, line[ptr] - '0', ptr/2)
+                block_ind += (line[ptr] - '0')
+            } else 
+            {
+                block_ind += (moved[ptr] - '0')
+            }
+
+            ptr += 1
+        } 
+        else 
+        {
+            var cur_space = line[ptr] - '0'
+            var max_ind = -1
+            var vec_ind = -1
+
+            for var j = 1; j <= cur_space; j += 1
+            {
+                let temp = #ref files_by_size[j]
+                if !temp.isEmpty() and (max_ind < temp.front()) and temp.front() > ptr
+                {
+                    max_ind = temp.front()
+                    vec_ind = j
+                }
+            }
+
+            if max_ind == -1
+            {
+                ptr += 1
+                block_ind += cur_space
+                continue
+            }
+
+            cur_space = line[max_ind] - '0'
+            checksum2 += file_sum(block_ind, cur_space, max_ind/2)
+            files_by_size[vec_ind].removeBack()
+
+            moved[max_ind] = line[max_ind]
+            block_ind += cur_space
+            line[max_ind] = '0'
+            line[ptr] -= cur_space
+
+            if line[ptr] == '0':
+                ptr += 1
+        }
+    }
+
+    @print(checksum2) */
 }

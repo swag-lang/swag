@@ -181,7 +181,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
             if (concreteType->isStruct())
             {
                 const auto contextualStruct = castAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
-                newFunc->addAlternativeScope(contextualStruct->scope);
+                newFunc->addAlternativeScope(contextualStruct->scope, COLLECTED_SCOPE_CONTEXT_CALL);
             }
         }
     }

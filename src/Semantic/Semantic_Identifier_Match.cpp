@@ -1452,6 +1452,7 @@ bool Semantic::registerMatch(SemanticContext*            context,
             match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
             match->dependentVar     = dependentVar;
             match->ufcs             = oneOverload.ufcs;
+            match->altFlags         = oneOverload.altFlags;
             match->oneOverload      = &oneOverload;
             match->matchFlags       = oneOverload.symMatchContext.matchFlags;
             match->castFlagsResult  = oneOverload.symMatchContext.castFlagsResult;
@@ -1475,6 +1476,7 @@ bool Semantic::registerMatch(SemanticContext*            context,
             match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
             match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
             match->ufcs                        = oneOverload.ufcs;
+            match->altFlags                    = oneOverload.altFlags;
             if (overload->node->hasAstFlag(AST_HAS_CONSTRAINTS) && overload->node->is(AstNodeKind::FuncDecl))
                 genericMatchesSI.push_back(match);
             else
@@ -1512,6 +1514,7 @@ bool Semantic::registerMatch(SemanticContext*            context,
             match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
             match->dependentVar     = dependentVar;
             match->ufcs             = oneOverload.ufcs;
+            match->altFlags         = oneOverload.altFlags;
             match->oneOverload      = &oneOverload;
             match->typeWasForced    = typeWasForced;
             match->matchFlags       = oneOverload.symMatchContext.matchFlags;
@@ -1559,6 +1562,7 @@ bool Semantic::doSimpleMatch(SemanticContext* context, VectorNative<OneMatch*>& 
             match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
             match->dependentVar     = oneOverload.dependentVar;
             match->ufcs             = oneOverload.ufcs;
+            match->altFlags         = oneOverload.altFlags;
             matches.push_back(match);
             return true;
         }
@@ -1969,6 +1973,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 OneOverload t;
                 t.overload         = over;
                 t.scope            = p.scope;
+                t.altFlags         = p.altFlags;
                 t.cptOverloads     = symbol->overloads.size();
                 t.cptOverloadsInit = symbol->cptOverloadsInit;
                 toSolveOverload.push_back(t);
@@ -2033,6 +2038,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 tryMatch->dependentVarLeaf  = dependentVarLeaf;
                 tryMatch->overload          = symbolOverload;
                 tryMatch->scope             = oneOver.scope;
+                tryMatch->altFlags          = oneOver.altFlags;
                 tryMatch->ufcs              = ufcsFirstParam || isForcedUFCS;
                 tryMatch->cptOverloads      = oneOver.cptOverloads;
                 tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;

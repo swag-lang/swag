@@ -27,17 +27,18 @@ struct CastCollectInterfaceField
 
 struct OneTryMatch
 {
-    SymbolMatchContext symMatchContext;
-    SymbolOverload*    overload          = nullptr;
-    Scope*             scope             = nullptr;
-    AstNode*           dependentVar      = nullptr;
-    AstNode*           dependentVarLeaf  = nullptr;
-    AstNode*           callParameters    = nullptr;
-    AstNode*           genericParameters = nullptr;
-    TypeInfo*          type              = nullptr;
-    uint32_t           cptOverloads      = 0;
-    uint32_t           cptOverloadsInit  = 0;
-    bool               ufcs              = false;
+    SymbolMatchContext  symMatchContext;
+    SymbolOverload*     overload          = nullptr;
+    Scope*              scope             = nullptr;
+    AstNode*            dependentVar      = nullptr;
+    AstNode*            dependentVarLeaf  = nullptr;
+    AstNode*            callParameters    = nullptr;
+    AstNode*            genericParameters = nullptr;
+    TypeInfo*           type              = nullptr;
+    uint32_t            cptOverloads      = 0;
+    uint32_t            cptOverloadsInit  = 0;
+    CollectedScopeFlags altFlags          = 0;
+    bool                ufcs              = false;
 
     void reset()
     {
@@ -80,11 +81,12 @@ struct OneMatch
     TypeInfo*       typeWasForced     = nullptr;
     AstNode*        genericParameters = nullptr;
 
-    MatchFlags      matchFlags                  = 0;
-    CastFlagsResult castFlagsResult             = 0;
-    uint32_t        coerceCast                  = 0;
-    uint32_t        numOverloadsWhenChecked     = 0;
-    uint32_t        numOverloadsInitWhenChecked = 0;
+    MatchFlags          matchFlags                  = 0;
+    CastFlagsResult     castFlagsResult             = 0;
+    CollectedScopeFlags altFlags                    = 0;
+    uint32_t            coerceCast                  = 0;
+    uint32_t            numOverloadsWhenChecked     = 0;
+    uint32_t            numOverloadsInitWhenChecked = 0;
 
     bool ufcs   = false;
     bool remove = false;
@@ -120,10 +122,11 @@ struct OneMatch
 
 struct OneOverload
 {
-    SymbolOverload* overload;
-    Scope*          scope;
-    uint32_t        cptOverloads;
-    uint32_t        cptOverloadsInit;
+    SymbolOverload*     overload;
+    Scope*              scope;
+    uint32_t            cptOverloads;
+    uint32_t            cptOverloadsInit;
+    CollectedScopeFlags altFlags;
 };
 
 struct OneSymbolMatch
