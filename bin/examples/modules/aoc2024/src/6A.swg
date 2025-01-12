@@ -115,6 +115,7 @@ func day6A()
         arr.add(l.toSlice())
     }
 
+    @assert(arr.count != 0)
 
     var dx = 0, dy = -1
     var total = 1
