@@ -136,15 +136,18 @@ func day9BB()
             var numSpaces = line[idx] - '0'
             var maxIdx, vecIdx = -1
 
-            for j in 1 to numSpaces
+            if numSpaces
             {
-                let temp = &filesBySize[j]
-                if temp.isEmpty():
-                    continue
-                if maxIdx < temp.back() and temp.back() > idx
+                for j in 1 to numSpaces
                 {
-                    maxIdx = temp.back()
-                    vecIdx = j
+                    let temp = &filesBySize[j]
+                    if temp.isEmpty():
+                        continue
+                    if maxIdx < temp.back() and temp.back() > idx
+                    {
+                        maxIdx = temp.back()
+                        vecIdx = j
+                    }
                 }
             }
 
