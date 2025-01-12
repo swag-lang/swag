@@ -299,7 +299,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
 void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (!ip->hasFlag(BCI_NOT_PURE) &&
+    if (!ip->dynFlags.has(BCID_INV_CPY) &&
         !ByteCode::hasWriteRegInA(ip) &&
         !ByteCode::hasWriteRegInB(ip) &&
         ByteCode::hasWriteRegInC(ip) &&
@@ -310,7 +310,7 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
         if (ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
             ip[1].op == ByteCodeOp::CopyRBtoRA64)
         {
-            ip->addFlag(BCI_NOT_PURE);
+            ip->dynFlags.add(BCID_INV_CPY);
             ip->c.u32 = ip[1].a.u32;
             std::swap(ip[1].a, ip[1].b);
             context->setDirtyPass();

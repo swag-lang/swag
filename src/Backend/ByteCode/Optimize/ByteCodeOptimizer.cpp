@@ -366,7 +366,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop)
         return;
-    if (ip->hasFlag(BCI_NOT_PURE) && ip->op != ByteCodeOp::ClearRA)
+    if (ip->op == ByteCodeOp::SaveRRtoRA)
         return;
     const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
     if (flags.has(OPFLAG_NOT_PURE))

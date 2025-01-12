@@ -26,6 +26,8 @@ func day9B()
     day9BB()
 }
 
+//#[Swag.Optimize("", false)]
+//#[Swag.PrintBc]
 func day9BA()
 {
     Time.Stopwatch.scopeMeasure()
@@ -93,7 +95,6 @@ func day9BA()
     @assert(total == 6183632723350)
 }
 
-//#[Swag.PrintBc]
 func day9BB()
 {
     func fileSum(a, n, block_id: s64)->u64
