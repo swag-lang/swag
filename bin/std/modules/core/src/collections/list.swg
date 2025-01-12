@@ -1,17 +1,17 @@
 #global export
 using Swag
 
-struct(T) ListNode
+struct(T) ListEntry
 {
-    prev:      *ListNode
-    next:      *ListNode
+    prev:      *ListEntry
+    next:      *ListEntry
     value:     T
 }
 
 struct(T) List
 {
-    head:      *ListNode
-    tail:      *ListNode
+    head:      *ListEntry
+    tail:      *ListEntry
     count:     u64
 }
 
@@ -76,9 +76,9 @@ impl List
 
     // Add a new element on front
     #[Discardable, Overload]
-    mtd addFront(value: T)->*ListNode
+    mtd addFront(value: T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = value
         count += 1
 
@@ -97,9 +97,9 @@ impl List
 
     // Add a new element on front
     #[Discardable, Overload]
-    mtd addFront(value: &&T)->*ListNode
+    mtd addFront(value: &&T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = #move value
         count += 1
 
@@ -118,9 +118,9 @@ impl List
 
     // Add a new element on front
     #[Discardable, Overload]
-    mtd addBack(value: T)->*ListNode
+    mtd addBack(value: T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = value
         count += 1
 
@@ -139,9 +139,9 @@ impl List
 
     // Add a new element on front
     #[Discardable, Overload]
-    mtd addBack(value: &&T)->*ListNode
+    mtd addBack(value: &&T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = #move value
         count += 1
 
@@ -160,9 +160,9 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertBefore(node: *ListNode, value: T)->*ListNode
+    mtd insertBefore(node: *ListEntry, value: T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = value
         count += 1
 
@@ -177,9 +177,9 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertBefore(node: *ListNode, value: &&T)->*ListNode
+    mtd insertBefore(node: *ListEntry, value: &&T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = #move value
         count += 1
 
@@ -195,9 +195,9 @@ impl List
 
     // Insert a node before the reference
     #[Discardable, Overload]
-    mtd insertAfter(node: *ListNode, value: T)->*ListNode
+    mtd insertAfter(node: *ListEntry, value: T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = value
         count += 1
 
@@ -212,9 +212,9 @@ impl List
     }
 
     #[Discardable, Overload]
-    mtd insertAfter(node: *ListNode, value: &&T)->*ListNode
+    mtd insertAfter(node: *ListEntry, value: &&T)->*ListEntry
     {
-        let n = Memory.new'ListNode()
+        let n = Memory.new'ListEntry()
         n.value = #move value
         count += 1
 

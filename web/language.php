@@ -9069,7 +9069,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 06-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
+Generated on 12-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
 </div>
 </div>
 </div>

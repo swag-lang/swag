@@ -205,7 +205,6 @@ public impl BitArray
     }
 
     // Performs the bitwise AND operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
-    //
     // The current 'BitArray' will be modified to store the result of the bitwise AND operation.
     mtd andWith(other: Self)
     {
@@ -217,7 +216,6 @@ public impl BitArray
     }
 
     // Performs the bitwise OR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
-    //
     // The current BitArray will be modified to store the result of the bitwise OR operation.
     mtd orWith(other: Self)
     {
@@ -229,7 +227,6 @@ public impl BitArray
     }
 
     // Performs the bitwise XOR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
-    //
     // The current BitArray will be modified to store the result of the bitwise XOR operation.
     mtd xorWith(other: Self)
     {

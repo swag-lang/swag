@@ -181,7 +181,7 @@
 <li><a href="#Core_HashTable">HashTable</a></li>
 <li><a href="#Core_HashTableEntry">HashTableEntry</a></li>
 <li><a href="#Core_List">List</a></li>
-<li><a href="#Core_ListNode">ListNode</a></li>
+<li><a href="#Core_ListEntry">ListEntry</a></li>
 <li><a href="#Core_StaticArray">StaticArray</a></li>
 </ul>
 <h4>compress</h4>
@@ -3511,7 +3511,7 @@
 <span id="Core_BitArray_andWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">andWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L209" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3655,7 +3655,7 @@
 <span id="Core_BitArray_orWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">orWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L220" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3711,7 +3711,7 @@
 <span id="Core_BitArray_xorWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">xorWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L234" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9242,7 +9242,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
 {
-    k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
+    k: <span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
 }
 )</span></div>
 <p>
@@ -12080,12 +12080,12 @@
 <table class="table-enumeration">
 <tr>
 <td>head</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>tail</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12117,19 +12117,19 @@
 <td>Clear all elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListNode</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Insert a node before the reference. </td>
 </tr>
 </table>
@@ -12156,8 +12156,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12170,8 +12170,8 @@
 </table>
 </p>
 <p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12197,8 +12197,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12211,8 +12211,8 @@
 </table>
 </p>
 <p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12249,28 +12249,28 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_ListNode"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ListNode</span></span>
+<span id="Core_ListEntry"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ListEntry</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_ListNode">ListNode</a></span>(<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>prev</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>next</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>value</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ListNode">ListNode</a></span>.<span class="SCst">T</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -29538,7 +29538,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 06-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
+Generated on 12-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
 </div>
 </div>
 </div>
