@@ -656,15 +656,12 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             return context->report(err);
         }
 
-        if (sourceFile->module->is(ModuleKind::Config))
+        auto prevCount = parent->children.count;
+        SWAG_CHECK(doUsing(parent, &dummyResult, true));
+        while (prevCount != parent->children.count)
         {
-            auto prevCount = parent->children.count;
-            SWAG_CHECK(doUsing(parent, &dummyResult, true));
-            while (prevCount != parent->children.count)
-            {
-                sourceFile->module->buildParameters.globalUsing.push_back(parent->children[prevCount]);
-                prevCount++;
-            }
+            sourceFile->module->buildParameters.globalUsing.push_back(parent->children[prevCount]);
+            prevCount++;
         }
     }
 
