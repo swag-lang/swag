@@ -65,28 +65,29 @@ void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruct
 
 void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-#define OPT_J(__t1, __t2)                     \
-    do                                        \
-    {                                         \
-        if (ip[1].op == (__t1) &&             \
-            ip[1].a.u32 == ip[0].a.u32 &&     \
-            !ip[1].flags.has(BCI_IMM_A) &&    \
-            !ip[1].hasFlag(BCI_START_STMT))   \
-        {                                     \
-            SET_OP(ip + 1, (__t2));           \
-            ip[1].a.u64 = ip[0].b.u64;        \
-            break;                            \
-        }                                     \
-        if (ip[2].op == (__t1) &&             \
-            ip[2].a.u32 == ip[0].a.u32 &&     \
-            !ip[2].flags.has(BCI_IMM_A) &&    \
-            !ip[1].hasFlag(BCI_START_STMT) && \
-            !ip[2].hasFlag(BCI_START_STMT))   \
-        {                                     \
-            SET_OP(ip + 2, (__t2));           \
-            ip[2].a.u64 = ip[0].b.u64;        \
-            break;                            \
-        }                                     \
+#define OPT_J(__t1, __t2)                                     \
+    do                                                        \
+    {                                                         \
+        if (ip[1].op == (__t1) &&                             \
+            ip[1].a.u32 == ip[0].a.u32 &&                     \
+            !ip[1].flags.has(BCI_IMM_A) &&                    \
+            !ip[1].hasFlag(BCI_START_STMT))                   \
+        {                                                     \
+            SET_OP(ip + 1, (__t2));                           \
+            ip[1].a.u64 = ip[0].b.u64;                        \
+            break;                                            \
+        }                                                     \
+        if (ip[2].op == (__t1) &&                             \
+            ip[2].a.u32 == ip[0].a.u32 &&                     \
+            !ip[2].flags.has(BCI_IMM_A) &&                    \
+            !ByteCode::hasWriteRefToReg(ip + 1, ip->a.u32) && \
+            !ip[1].hasFlag(BCI_START_STMT) &&                 \
+            !ip[2].hasFlag(BCI_START_STMT))                   \
+        {                                                     \
+            SET_OP(ip + 2, (__t2));                           \
+            ip[2].a.u64 = ip[0].b.u64;                        \
+            break;                                            \
+        }                                                     \
     } while (0)
 
     switch (ip->op)

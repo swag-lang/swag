@@ -1,3 +1,4 @@
+//#[Swag.PrintBc]
 func toto()
 {
     var toto = 0
