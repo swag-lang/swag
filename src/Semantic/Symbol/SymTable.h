@@ -51,6 +51,7 @@ struct SymTable
     static void disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 
     mutable SharedMutex        mutex;
+    Mutex                      mutexDrop;
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;
     VectorNative<SymbolName*>  allSymbols;

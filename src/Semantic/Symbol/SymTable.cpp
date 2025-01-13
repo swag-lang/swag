@@ -252,7 +252,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
         return;
     }
 
-    ScopedLock lk(mutex);
+    ScopedLock lk(mutexDrop);
 
     // Be sure this is done only once
     for (const auto& td : structVarsToDrop)
