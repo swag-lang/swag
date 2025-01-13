@@ -673,7 +673,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         OPT_PASS(optimizePassImmediate2);
         OPT_PASS(optimizePassConst);
         OPT_PASS(optimizePassDupCopyRBRA);
-        OPT_PASS(optimizePassDupCopy);
+        OPT_PASS(optimizePassDupSetRA);
         OPT_PASS(optimizePassRetCopyLocal);
         OPT_PASS(optimizePassRetCopyGlobal);
         OPT_PASS(optimizePassRetCopyStructVal);

@@ -276,7 +276,7 @@ bool ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
     return true;
 }
 
-void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op)
+void ByteCodeOptimizer::optimizePassDupSetRAOp(ByteCodeOptContext* context, ByteCodeOp op)
 {
     auto& mapRA = context->mapRegInstA;
     mapRA.clear();
@@ -319,25 +319,25 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 }
 
 // Remove duplicated pure instructions (set RA to a constant)
-bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassDupSetRA(ByteCodeOptContext* context)
 {
     // See setContextFlags if you add one instruction
     if (!(context->contextBcFlags & OCF_HAS_DUP_COPY))
         return true;
 
-    optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRA);
-    optimizePassDupCopyOp(context, ByteCodeOp::GetParam64);
-    optimizePassDupCopyOp(context, ByteCodeOp::GetIncParam64);
+    optimizePassDupSetRAOp(context, ByteCodeOp::CopyRRtoRA);
+    optimizePassDupSetRAOp(context, ByteCodeOp::GetParam64);
+    optimizePassDupSetRAOp(context, ByteCodeOp::GetIncParam64);
 
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeMutableSegPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeCompilerSegPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeStackPointer);
-    optimizePassDupCopyOp(context, ByteCodeOp::MakeLambda);
-    optimizePassDupCopyOp(context, ByteCodeOp::ClearRA);
-    optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate32);
-    optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate64);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeBssSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeConstantSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeMutableSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeCompilerSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeStackPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeLambda);
+    optimizePassDupSetRAOp(context, ByteCodeOp::ClearRA);
+    optimizePassDupSetRAOp(context, ByteCodeOp::SetImmediate32);
+    optimizePassDupSetRAOp(context, ByteCodeOp::SetImmediate64);
 
     return true;
 }
