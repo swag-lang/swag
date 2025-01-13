@@ -1,0 +1,1 @@
+..\bin\swag ../bin/examples/tools/release.swgs
