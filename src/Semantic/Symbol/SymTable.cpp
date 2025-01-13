@@ -252,6 +252,8 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
         return;
     }
 
+    ScopedLock lk(mutex);
+
     // Be sure this is done only once
     for (const auto& td : structVarsToDrop)
     {
@@ -266,6 +268,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     st.overload      = overload;
     st.typeInfo      = typeInfo;
     st.storageOffset = storageOffset;
+
     structVarsToDrop.push_back(st);
 }
 
