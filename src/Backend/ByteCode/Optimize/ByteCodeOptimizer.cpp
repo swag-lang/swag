@@ -171,17 +171,12 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         case ByteCodeOp::MakeBssSegPointer:
         case ByteCodeOp::MakeConstantSegPointer:
         case ByteCodeOp::MakeMutableSegPointer:
+        case ByteCodeOp::MakeCompilerSegPointer:
+        case ByteCodeOp::MakeStackPointer:
+        case ByteCodeOp::MakeLambda:
+        case ByteCodeOp::ClearRA:
         case ByteCodeOp::SetImmediate32:
         case ByteCodeOp::SetImmediate64:
-        case ByteCodeOp::GetParam64x2:
-        case ByteCodeOp::GetParam64DeRef8:
-        case ByteCodeOp::GetParam64DeRef16:
-        case ByteCodeOp::GetParam64DeRef32:
-        case ByteCodeOp::GetParam64DeRef64:
-        case ByteCodeOp::GetIncParam64DeRef8:
-        case ByteCodeOp::GetIncParam64DeRef16:
-        case ByteCodeOp::GetIncParam64DeRef32:
-        case ByteCodeOp::GetIncParam64DeRef64:
             context->contextBcFlags |= OCF_HAS_DUP_COPY;
             break;
 
