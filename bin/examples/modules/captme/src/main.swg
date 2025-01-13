@@ -5,11 +5,13 @@ var g_App: Application
     let args = Env.getArgs()
     foreach arg in args
     {
+        if !Path.isValidPathName(arg):
+            continue
         if !Image.canLoad(arg):
             continue
         Clipboard.addString(arg)
         if Surface.sendCustomMessage("Captme", 1, 0):
-            return            
+            return
 
     }
 
@@ -29,7 +31,7 @@ var g_App: Application
     let mainWnd = MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
-    
+
     if Env.hasArg("swag.test"):
         g_App.maxRunFrame = 100
     if !Env.hasArg("--hide"):
@@ -52,17 +54,19 @@ var g_App: Application
         defer catch Shell_NotifyIconA(NIM_DELETE, &tnid)
     }
 
-    let name = Format.toString("Captme %.%.%", #swagversion, #swagrevision, #swagbuildnum)  
+    let name = Format.toString("Captme %.%.%", #swagversion, #swagrevision, #swagbuildnum)
     Env.registerApplication("Captme.exe", name)
     Env.associateFileExtension(".png", "Captme.exe", Env.getExe())
     Env.associateFileExtension(".jpg", "Captme.exe", Env.getExe())
 
     foreach arg in args
     {
+        if !Path.isValidPathName(arg):
+            continue
         if !Image.canLoad(arg):
             continue
             Console.print(arg)
-        mainWnd.loadExternalImage(arg)      
+        mainWnd.loadExternalImage(arg)
         break
     }
 
