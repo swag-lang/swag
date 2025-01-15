@@ -2575,18 +2575,38 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
+            case ByteCodeOp::JumpIfStackEqual16:
+                MK_JMPCMP_STACK_16(JZ);
+                break;
+            case ByteCodeOp::JumpIfStackNotEqual16:
+                MK_JMPCMP_STACK_16(JNZ);
+                break;
+
             case ByteCodeOp::JumpIfStackEqual32:
                 MK_JMPCMP_STACK_32(JZ);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
                 MK_JMPCMP_STACK_32(JNZ);
                 break;
+
             case ByteCodeOp::JumpIfStackEqual64:
                 MK_JMPCMP_STACK_64(JZ);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
                 MK_JMPCMP_STACK_64(JNZ);
                 break;
+
+            case ByteCodeOp::JumpIfStackZero16:
+                pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
+                pp.emitTestN(RAX, RAX, CPUBits::B16);
+                pp.emitJump(JZ, i, ip->b.s32);
+                break;
+            case ByteCodeOp::JumpIfStackNotZero16:
+                pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
+                pp.emitTestN(RAX, RAX, CPUBits::B16);
+                pp.emitJump(JNZ, i, ip->b.s32);
+                break;
+
             case ByteCodeOp::JumpIfStackZero32:
                 pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
@@ -2597,6 +2617,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
+
             case ByteCodeOp::JumpIfStackZero64:
                 pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B64);
@@ -2607,6 +2628,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitTestN(RAX, RAX, CPUBits::B64);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
+
             case ByteCodeOp::JumpIfStackFalse:
                 pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B8);

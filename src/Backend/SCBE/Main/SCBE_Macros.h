@@ -744,6 +744,26 @@
         pp.emitJump(__op, i, ip->b.s32);                                                       \
     } while (0)
 
+#define MK_JMPCMP_STACK_16(__op)                                                      \
+    do                                                                                \
+    {                                                                                 \
+        pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);                     \
+        if (!ip->hasFlag(BCI_IMM_C))                                                  \
+        {                                                                             \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16);       \
+        }                                                                             \
+        else if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7fffffff)                   \
+        {                                                                             \
+            pp.emitCmpNIndirectDst(offsetStack + ip->a.u32, ip->c.u32, CPUBits::B16); \
+        }                                                                             \
+        else                                                                          \
+        {                                                                             \
+            MK_IMMC_16(RCX);                                                          \
+            pp.emitCmpN(RAX, RCX, CPUBits::B16);                                      \
+        }                                                                             \
+        pp.emitJump(__op, i, ip->b.s32);                                              \
+    } while (0)
+
 #define MK_JMPCMP_STACK_32(__op)                                                      \
     do                                                                                \
     {                                                                                 \
