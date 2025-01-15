@@ -95,7 +95,11 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
         case ByteCodeOp::GetFromStack8:
             OPT_J(ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
             OPT_J(ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
-            break;
+            OPT_J(ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);
+            OPT_J(ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8);
+            OPT_J(ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
+            OPT_J(ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
+            break;        
 
         case ByteCodeOp::GetFromStack16:
             OPT_J(ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16);

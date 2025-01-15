@@ -443,6 +443,19 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->ip += ip->b.s32;
             break;
 
+        case ByteCodeOp::JumpIfStackEqual8:
+            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
+            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
+            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) == IMMC_U8(ip))
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfStackNotEqual8:
+            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
+            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
+            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) != IMMC_U8(ip))
+                context->ip += ip->b.s32;
+            break;
+
         case ByteCodeOp::JumpIfStackEqual16:
             SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
             SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 2);
@@ -479,6 +492,19 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
             SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 8);
             if (*reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) != IMMC_U64(ip))
+                context->ip += ip->b.s32;
+            break;
+
+        case ByteCodeOp::JumpIfStackZero8:
+            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
+            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
+            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) == 0)
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfStackNotZero8:
+            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
+            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
+            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) != 0)
                 context->ip += ip->b.s32;
             break;
 
