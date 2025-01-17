@@ -2603,6 +2603,27 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_STACK_64(JNZ);
                 break;
 
+            case ByteCodeOp::JumpIfDeRefEqual8:
+                MK_JMPCMP_DEREF_8(JZ);
+            break;
+            case ByteCodeOp::JumpIfDeRefNotEqual8:
+                MK_JMPCMP_DEREF_8(JNZ);
+            break;
+            
+            case ByteCodeOp::JumpIfDeRefEqual16:
+                MK_JMPCMP_DEREF_16(JZ);
+            break;
+            case ByteCodeOp::JumpIfDeRefNotEqual16:
+                MK_JMPCMP_DEREF_16(JNZ);
+            break;            
+
+            case ByteCodeOp::JumpIfDeRefEqual32:
+                MK_JMPCMP_DEREF_32(JZ);
+                break;
+            case ByteCodeOp::JumpIfDeRefNotEqual32:
+                MK_JMPCMP_DEREF_32(JNZ);
+                break;
+
             case ByteCodeOp::JumpIfDeRefEqual64:
                 MK_JMPCMP_DEREF_64(JZ);
                 break;

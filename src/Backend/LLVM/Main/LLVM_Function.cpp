@@ -3990,6 +3990,87 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
+            case ByteCodeOp::JumpIfDeRefEqual8:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I8_TY(), ptr);
+                auto r1         = MK_IMMC_8();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+            case ByteCodeOp::JumpIfDeRefNotEqual8:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I8_TY(), ptr);
+                auto r1         = MK_IMMC_8();
+                auto b0         = builder.CreateICmpNE(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
+            case ByteCodeOp::JumpIfDeRefEqual16:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I16_TY(), ptr);
+                auto r1         = MK_IMMC_16();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+            case ByteCodeOp::JumpIfDeRefNotEqual16:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I16_TY(), ptr);
+                auto r1         = MK_IMMC_16();
+                auto b0         = builder.CreateICmpNE(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
+            case ByteCodeOp::JumpIfDeRefEqual32:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I32_TY(), ptr);
+                auto r1         = MK_IMMC_32();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+            case ByteCodeOp::JumpIfDeRefNotEqual32:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto p0         = GEP64(allocR, ip->a.u32);
+                auto ptr        = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), p0), builder.getInt64(ip->d.s64));
+                auto r0         = builder.CreateLoad(I32_TY(), ptr);
+                auto r1         = MK_IMMC_32();
+                auto b0         = builder.CreateICmpNE(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
             case ByteCodeOp::JumpIfDeRefEqual64:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);

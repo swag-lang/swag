@@ -149,6 +149,21 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64, true);
             break;
 
+        case ByteCodeOp::DeRef8:
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfDeRefEqual8);
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfDeRefNotEqual8);
+            break;
+
+        case ByteCodeOp::DeRef16:
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfDeRefEqual16);
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfDeRefNotEqual16);
+            break;
+
+        case ByteCodeOp::DeRef32:
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfDeRefEqual32);
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfDeRefNotEqual32);
+            break;
+
         case ByteCodeOp::DeRef64:
             reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfDeRefEqual64);
             reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfDeRefNotEqual64);

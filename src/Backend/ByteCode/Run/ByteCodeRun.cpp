@@ -443,6 +443,33 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->ip += ip->b.s32;
             break;
 
+        case ByteCodeOp::JumpIfDeRefEqual8:
+            if (*reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U8(ip))
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfDeRefNotEqual8:
+            if (*reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U8(ip))
+                context->ip += ip->b.s32;
+            break;
+
+        case ByteCodeOp::JumpIfDeRefEqual16:
+            if (*reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U16(ip))
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfDeRefNotEqual16:
+            if (*reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U16(ip))
+                context->ip += ip->b.s32;
+            break;
+
+        case ByteCodeOp::JumpIfDeRefEqual32:
+            if (*reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U32(ip))
+                context->ip += ip->b.s32;
+            break;
+        case ByteCodeOp::JumpIfDeRefNotEqual32:
+            if (*reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U32(ip))
+                context->ip += ip->b.s32;
+            break;
+
         case ByteCodeOp::JumpIfDeRefEqual64:
             if (*reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U64(ip))
                 context->ip += ip->b.s32;
@@ -450,7 +477,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::JumpIfDeRefNotEqual64:
             if (*reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U64(ip))
                 context->ip += ip->b.s32;
-        break;                       
+            break;
 
         case ByteCodeOp::JumpIfStackEqual8:
             SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
