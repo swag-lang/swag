@@ -67,8 +67,19 @@ void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruct
 
 namespace
 {
-    void reduceStackJumpsStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1)
+    void reduceStackJumpsStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1, bool checkOrder = false)
     {
+        if (checkOrder &&
+            ip[1].op == op0 &&
+            ip[1].c.u32 == ip[0].a.u32 &&
+            !ip[1].flags.has(BCI_IMM_A) &&
+            !ip[1].flags.has(BCI_IMM_C))
+        {
+            std::swap(ip[1].a, ip[1].c);
+            context->setDirtyPass();
+            return;
+        }
+
         if (ip[1].op == op0 &&
             ip[1].a.u32 == ip[0].a.u32 &&
             !ip[1].flags.has(BCI_IMM_A) &&
@@ -113,29 +124,29 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8, true);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8, true);
             break;
 
         case ByteCodeOp::GetFromStack16:
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfStackZero16);
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfStackNotZero16);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16, true);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16, true);
             break;
 
         case ByteCodeOp::GetFromStack32:
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfStackNotZero32);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32, true);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32, true);
             break;
 
         case ByteCodeOp::GetFromStack64:
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
             reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfStackNotZero64);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64, true);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64, true);
             break;
 
         case ByteCodeOp::DeRef64:
