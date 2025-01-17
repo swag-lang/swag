@@ -55,6 +55,7 @@ struct ByteCodeOptimizer
     static bool optimizePassDupSetRA(ByteCodeOptContext* context);
     static bool optimizePassDupBlocks(ByteCodeOptContext* inContext);
 
+    static void reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceAffectOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip);
@@ -72,7 +73,6 @@ struct ByteCodeOptimizer
     static void reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);

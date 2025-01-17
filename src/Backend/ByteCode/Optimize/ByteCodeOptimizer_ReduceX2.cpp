@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
 void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip)
@@ -63,73 +65,82 @@ void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruct
     }
 }
 
-void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+namespace
 {
-#define OPT_J(__t1, __t2)                                 \
-    if (ip[1].op == (__t1) &&                             \
-        ip[1].a.u32 == ip[0].a.u32 &&                     \
-        !ip[1].flags.has(BCI_IMM_A) &&                    \
-        !ip[1].hasFlag(BCI_START_STMT))                   \
-    {                                                     \
-        SET_OP(ip + 1, (__t2));                           \
-        ip[1].a.u64 = ip[0].b.u64;                        \
-        break;                                            \
-    }                                                     \
-    if (ip[2].op == (__t1) &&                             \
-        ip[2].a.u32 == ip[0].a.u32 &&                     \
-        !ip[2].flags.has(BCI_IMM_A) &&                    \
-        !ByteCode::hasWriteRefToReg(ip + 1, ip->a.u32) && \
-        !ip[1].hasFlag(BCI_START_STMT) &&                 \
-        !ip[2].hasFlag(BCI_START_STMT))                   \
-    {                                                     \
-        SET_OP(ip + 2, (__t2));                           \
-        ip[2].a.u64 = ip[0].b.u64;                        \
-        break;                                            \
-    }                                                     \
-    if (ip[3].op == (__t1) &&                             \
-        ip[3].a.u32 == ip[0].a.u32 &&                     \
-        !ip[3].flags.has(BCI_IMM_A) &&                    \
-        !ByteCode::hasWriteRefToReg(ip + 1, ip->a.u32) && \
-        !ByteCode::hasWriteRefToReg(ip + 2, ip->a.u32) && \
-        !ip[1].hasFlag(BCI_START_STMT) &&                 \
-        !ip[2].hasFlag(BCI_START_STMT) &&                 \
-        !ip[3].hasFlag(BCI_START_STMT))                   \
-    {                                                     \
-        SET_OP(ip + 3, (__t2));                           \
-        ip[3].a.u64 = ip[0].b.u64;                        \
-        break;                                            \
+    void reduceStackJumpsStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1)
+    {
+        if (ip[1].op == op0 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            !ip[1].flags.has(BCI_IMM_A) &&
+            !ip[1].hasFlag(BCI_START_STMT))
+        {
+            SET_OP(ip + 1, op1);
+            ip[1].a.u64 = ip[0].b.u64;
+        }
     }
 
+    void reduceStackJumpsDeRefOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1)
+    {
+        if (ip[1].op == op0 &&
+            ip[1].c.u32 == ip[0].a.u32 &&
+            !ip[1].flags.has(BCI_IMM_A) &&
+            !ip[1].flags.has(BCI_IMM_C))
+        {
+            std::swap(ip[1].a, ip[1].c);
+            context->setDirtyPass();
+            return;
+        }
+
+        if (ip[1].op == op0 &&
+            ip[0].a.u32 != ip[0].b.u32 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            !ip[1].flags.has(BCI_IMM_A) &&
+            !ip[1].hasFlag(BCI_START_STMT))
+        {
+            SET_OP(ip + 1, op1);
+            ip[1].a.u64 = ip[0].b.u64;
+            ip[1].d.u64 = ip[0].c.u64;
+        }
+    }
+}
+
+void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
     switch (ip->op)
     {
         case ByteCodeOp::GetFromStack8:
-            OPT_J(ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
-            OPT_J(ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
-            OPT_J(ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);
-            OPT_J(ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8);
-            OPT_J(ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
-            OPT_J(ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8);
             break;
 
         case ByteCodeOp::GetFromStack16:
-            OPT_J(ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16);
-            OPT_J(ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16);
-            OPT_J(ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfStackZero16);
-            OPT_J(ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfStackNotZero16);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfStackZero16);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfStackNotZero16);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16);
             break;
 
         case ByteCodeOp::GetFromStack32:
-            OPT_J(ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
-            OPT_J(ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32);
-            OPT_J(ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
-            OPT_J(ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfStackNotZero32);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfStackNotZero32);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32);
             break;
 
         case ByteCodeOp::GetFromStack64:
-            OPT_J(ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
-            OPT_J(ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64);
-            OPT_J(ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
-            OPT_J(ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfStackNotZero64);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfStackNotZero64);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
+            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64);
+            break;
+
+        case ByteCodeOp::DeRef64:
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfDeRefEqual64);
+            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfDeRefNotEqual64);
             break;
     }
 }

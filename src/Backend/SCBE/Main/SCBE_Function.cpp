@@ -2603,6 +2603,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_STACK_64(JNZ);
                 break;
 
+            case ByteCodeOp::JumpIfDeRefEqual64:
+                MK_JMPCMP_DEREF_64(JZ);
+                break;
+            case ByteCodeOp::JumpIfDeRefNotEqual64:
+                MK_JMPCMP_DEREF_64(JNZ);
+                break;
+
             case ByteCodeOp::JumpIfStackFalse:
                 pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B8);
