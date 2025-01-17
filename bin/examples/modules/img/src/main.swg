@@ -65,7 +65,7 @@ func loadImg()
 {
     using Pixel, Color
 
-    {
+    /*{
         var data = imagePath("h2v1.jpg")
 
         g_MyImage = assume Image.load(data)
@@ -79,7 +79,7 @@ func loadImg()
         var opt: DecodeOptions
         opt.decodeMetaDatas = true
         g_MyImage = assume Image.load(data, opt)
-    }
+    }*/
 
     var imgName = "rgba.bmp"
     switch g_ImageIdx
@@ -261,7 +261,7 @@ func loadImg()
     case 48:
         g_MyImage.setPixelFormat(.BGRA8)
     case 49:
-        g_MyImage.expand(-50, 10, 10, 10)        
+        g_MyImage.expand(-50, 10, 10, 10)
 
     case 50:
         var img1 = assume Image.load(imagePath("testa.gif"))
