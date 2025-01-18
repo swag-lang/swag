@@ -1,6 +1,4 @@
 #include "pch.h"
-
-#include "Backend/ByteCode/Debugger/ByteCodeDebugger.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 
 void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip)
@@ -67,50 +65,68 @@ void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruct
 
 namespace
 {
-    void reduceStackJumpsStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1, bool checkOrder = false)
+    void reduceStackJumpsOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1)
     {
-        if (checkOrder &&
-            ip[1].op == op0 &&
-            ip[1].c.u32 == ip[0].a.u32 &&
-            !ip[1].flags.has(BCI_IMM_A) &&
-            !ip[1].flags.has(BCI_IMM_C))
+        bool isDeRef = false;
+
+        switch (op1)
         {
-            std::swap(ip[1].a, ip[1].c);
-            context->setDirtyPass();
+            case ByteCodeOp::JumpIfDeRefEqual8:
+            case ByteCodeOp::JumpIfDeRefEqual16:
+            case ByteCodeOp::JumpIfDeRefEqual32:
+            case ByteCodeOp::JumpIfDeRefEqual64:
+            case ByteCodeOp::JumpIfDeRefNotEqual8:
+            case ByteCodeOp::JumpIfDeRefNotEqual16:
+            case ByteCodeOp::JumpIfDeRefNotEqual32:
+            case ByteCodeOp::JumpIfDeRefNotEqual64:
+                isDeRef = true;
+                break;
+        }
+
+        if (isDeRef && (ip[0].a.u32 == ip[0].b.u32))
             return;
-        }
 
-        if (ip[1].op == op0 &&
-            ip[1].a.u32 == ip[0].a.u32 &&
-            !ip[1].flags.has(BCI_IMM_A) &&
-            !ip[1].hasFlag(BCI_START_STMT))
+        for (int i = 1; i <= 3; i++)
         {
-            SET_OP(ip + 1, op1);
-            ip[1].a.u64 = ip[0].b.u64;
-        }
-    }
+            if (ip[i].op != op0)
+                continue;
+            if (ip[i].hasFlag(BCI_START_STMT))
+                continue;
 
-    void reduceStackJumpsDeRefOp(ByteCodeOptContext* context, ByteCodeInstruction* ip, ByteCodeOp op0, ByteCodeOp op1)
-    {
-        if (ip[1].op == op0 &&
-            ip[1].c.u32 == ip[0].a.u32 &&
-            !ip[1].flags.has(BCI_IMM_A) &&
-            !ip[1].flags.has(BCI_IMM_C))
-        {
-            std::swap(ip[1].a, ip[1].c);
-            context->setDirtyPass();
-            return;
-        }
+            if (ByteCode::hasOpFlag(op0, OPFLAG_READ_C) &&
+                ip[i].c.u32 == ip[0].a.u32 &&
+                !ip[i].hasFlag(BCI_IMM_A | BCI_IMM_C) &&
+                !ip[i].hasDynFlag(BCID_SWAP))
+            {
+                ip[i].addDynFlag(BCID_SWAP);
+                std::swap(ip[i].a, ip[i].c);
+                context->setDirtyPass();
+                return;
+            }
 
-        if (ip[1].op == op0 &&
-            ip[0].a.u32 != ip[0].b.u32 &&
-            ip[1].a.u32 == ip[0].a.u32 &&
-            !ip[1].flags.has(BCI_IMM_A) &&
-            !ip[1].hasFlag(BCI_START_STMT))
-        {
-            SET_OP(ip + 1, op1);
-            ip[1].a.u64 = ip[0].b.u64;
-            ip[1].d.u64 = ip[0].c.u64;
+            if (ip[i].a.u32 == ip[0].a.u32 &&
+                !ip[i].hasFlag(BCI_IMM_A))
+            {
+                for (int j = 1; j < i; j++)
+                {
+                    if (ip[j].hasFlag(BCI_START_STMT) ||
+                        ByteCode::hasWriteRefToReg(ip + j, ip->a.u32) ||
+                        (isDeRef && ByteCode::hasWriteRefToReg(ip + j, ip->b.u32)))
+                        return;
+
+                    if (!ip[j].hasOpFlag(OPFLAG_REG_ONLY | OPFLAG_REG_READ))
+                    {
+                        //printf("%s\n", g_ByteCodeOpDesc[(int) ip[j].op].name);
+                        return;
+                    }
+                }
+
+                SET_OP(ip + i, op1);
+                ip[i].a.u64 = ip[0].b.u64;
+                if (isDeRef)
+                    ip[i].d.u64 = ip[0].c.u64;
+                break;
+            }
         }
     }
 }
@@ -120,53 +136,53 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
     switch (ip->op)
     {
         case ByteCodeOp::GetFromStack8:
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8, true);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8, true);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfStackNotEqual8);
             break;
 
         case ByteCodeOp::GetFromStack16:
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfStackZero16);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfStackNotZero16);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16, true);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16, true);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfStackZero16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfStackNotZero16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfStackEqual16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfStackNotEqual16);
             break;
 
         case ByteCodeOp::GetFromStack32:
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfStackNotZero32);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32, true);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32, true);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfStackZero32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfStackNotZero32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfStackEqual32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfStackNotEqual32);
             break;
 
         case ByteCodeOp::GetFromStack64:
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfStackNotZero64);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64, true);
-            reduceStackJumpsStackOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64, true);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfStackZero64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfStackNotZero64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfStackEqual64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfStackNotEqual64);
             break;
 
         case ByteCodeOp::DeRef8:
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfDeRefEqual8);
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfDeRefNotEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfDeRefEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfDeRefNotEqual8);
             break;
 
         case ByteCodeOp::DeRef16:
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfDeRefEqual16);
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfDeRefNotEqual16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfDeRefEqual16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfDeRefNotEqual16);
             break;
 
         case ByteCodeOp::DeRef32:
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfDeRefEqual32);
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfDeRefNotEqual32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfDeRefEqual32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfDeRefNotEqual32);
             break;
 
         case ByteCodeOp::DeRef64:
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfDeRefEqual64);
-            reduceStackJumpsDeRefOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfDeRefNotEqual64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfDeRefEqual64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfDeRefNotEqual64);
             break;
     }
 }
@@ -360,7 +376,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
 void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (!ip->dynFlags.has(BCID_INV_CPY) &&
+    if (!ip->dynFlags.has(BCID_SWAP) &&
         !ByteCode::hasWriteRegInA(ip) &&
         !ByteCode::hasWriteRegInB(ip) &&
         ByteCode::hasWriteRegInC(ip) &&
@@ -371,7 +387,7 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
         if (ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
             ip[1].op == ByteCodeOp::CopyRBtoRA64)
         {
-            ip->dynFlags.add(BCID_INV_CPY);
+            ip->dynFlags.add(BCID_SWAP);
             ip->c.u32 = ip[1].a.u32;
             std::swap(ip[1].a, ip[1].b);
             context->setDirtyPass();

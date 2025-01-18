@@ -16,21 +16,20 @@ constexpr InstructionFlags BCI_IMM_C          = 0x0010;
 constexpr InstructionFlags BCI_IMM_D          = 0x0020;
 constexpr InstructionFlags BCI_VARIADIC       = 0x0040;
 constexpr InstructionFlags BCI_POST_COPY_MOVE = 0x0080;
-// constexpr InstructionFlags BCI_NOT_PURE = 0x0100;
-constexpr InstructionFlags BCI_TRY_CATCH     = 0x0200;
-constexpr InstructionFlags BCI_CAN_OVERFLOW  = 0x0400;
-constexpr InstructionFlags BCI_START_STMT_N  = 0x0800;
-constexpr InstructionFlags BCI_START_STMT_S  = 0x1000;
-constexpr InstructionFlags BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
-constexpr InstructionFlags BCI_NO_BACKEND    = 0x2000;
-constexpr InstructionFlags BCI_CANT_OVERFLOW = 0x4000;
-constexpr InstructionFlags BCI_NOT_NULL      = 0x8000;
+constexpr InstructionFlags BCI_NOT_NULL       = 0x0100;
+constexpr InstructionFlags BCI_TRY_CATCH      = 0x0200;
+constexpr InstructionFlags BCI_CAN_OVERFLOW   = 0x0400;
+constexpr InstructionFlags BCI_START_STMT_N   = 0x0800;
+constexpr InstructionFlags BCI_START_STMT_S   = 0x1000;
+constexpr InstructionFlags BCI_START_STMT     = BCI_START_STMT_N | BCI_START_STMT_S;
+constexpr InstructionFlags BCI_NO_BACKEND     = 0x2000;
+constexpr InstructionFlags BCI_CANT_OVERFLOW  = 0x4000;
 
 using InstructionDynFlags                    = Flags<uint8_t>;
 constexpr InstructionDynFlags BCID_OPT_FLAG  = 0x01;
 constexpr InstructionDynFlags BCID_SAN_PASS  = 0x02;
 constexpr InstructionDynFlags BCID_SAFETY_OF = 0x04;
-constexpr InstructionDynFlags BCID_INV_CPY   = 0x08;
+constexpr InstructionDynFlags BCID_SWAP      = 0x08;
 
 struct ByteCodeInstruction
 {
@@ -38,6 +37,11 @@ struct ByteCodeInstruction
     void                   addFlag(InstructionFlags fl) { flags.add(fl); }
     void                   removeFlag(InstructionFlags fl) { flags.remove(fl); }
     void                   inheritFlag(const ByteCodeInstruction* ip, InstructionFlags fl) { flags.add(ip->flags.mask(fl)); }
+
+    SWAG_FORCE_INLINE bool hasDynFlag(InstructionDynFlags fl) const { return dynFlags.has(fl); }
+    SWAG_FORCE_INLINE void addDynFlag(InstructionDynFlags fl) { dynFlags.add(fl); }
+
+    SWAG_FORCE_INLINE bool hasOpFlag(OpFlags fl) const { return g_ByteCodeOpDesc[static_cast<int>(op)].flags.has(fl); }
 
     // Keep 'op' first to dereference it in the runner without an offset
     ByteCodeOp          op;
