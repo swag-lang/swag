@@ -93,7 +93,7 @@ namespace
             if (ip[i].hasFlag(BCI_START_STMT))
                 continue;
 
-            if (ByteCode::hasOpFlag(op0, OPFLAG_READ_C) &&
+            if (ByteCode::hasOpFlag(op0, OPF_READ_C) &&
                 ip[i].c.u32 == ip[0].a.u32 &&
                 !ip[i].hasFlag(BCI_IMM_A | BCI_IMM_C) &&
                 !ip[i].hasDynFlag(BCID_SWAP))
@@ -114,11 +114,8 @@ namespace
                         (isDeRef && ByteCode::hasWriteRefToReg(ip + j, ip->b.u32)))
                         return;
 
-                    if (!ip[j].hasOpFlag(OPFLAG_REG_ONLY | OPFLAG_REG_READ))
-                    {
-                        //printf("%s\n", g_ByteCodeOpDesc[(int) ip[j].op].name);
+                    if (!ip[j].hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
                         return;
-                    }
                 }
 
                 SET_OP(ip + i, op1);

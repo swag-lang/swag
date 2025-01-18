@@ -17,7 +17,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             return;
 
         const auto flags1 = ByteCode::opFlags(ip1->op);
-        if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
+        if (flags1.has(OPF_READ_A) && !ip1->hasFlag(BCI_IMM_A))
         {
             if (ip1->a.u32 == regScan)
             {
@@ -27,7 +27,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
+        if (flags1.has(OPF_READ_B) && !ip1->hasFlag(BCI_IMM_B))
         {
             if (ip1->b.u32 == regScan)
             {
@@ -37,7 +37,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
+        if (flags1.has(OPF_READ_C) && !ip1->hasFlag(BCI_IMM_C))
         {
             if (ip1->c.u32 == regScan)
             {
@@ -47,7 +47,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
+        if (flags1.has(OPF_READ_D) && !ip1->hasFlag(BCI_IMM_D))
         {
             if (ip1->d.u32 == regScan)
             {
@@ -57,7 +57,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_WRITE_A))
+        if (flags1.has(OPF_WRITE_A))
         {
             if (ip1->a.u32 == regScan)
             {
@@ -66,7 +66,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_WRITE_B))
+        if (flags1.has(OPF_WRITE_B))
         {
             if (ip1->b.u32 == regScan)
             {
@@ -75,7 +75,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_WRITE_C))
+        if (flags1.has(OPF_WRITE_C))
         {
             if (ip1->c.u32 == regScan)
             {
@@ -84,7 +84,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
             }
         }
 
-        if (flags1.has(OPFLAG_WRITE_D))
+        if (flags1.has(OPF_WRITE_D))
         {
             if (ip1->d.u32 == regScan)
             {
@@ -364,7 +364,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
     if (ip->op == ByteCodeOp::SaveRRtoRA)
         return;
     const auto flags = ByteCode::opFlags(ip->op);
-    if (flags.has(OPFLAG_NOT_PURE))
+    if (flags.has(OPF_NOT_PURE))
         return;
 
     SWAG_ASSERT(ip->op != ByteCodeOp::End);

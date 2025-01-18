@@ -205,7 +205,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.clear();
         }
 
-        if (flags.has(OPFLAG_WRITE_A) && !ip->hasFlag(BCI_IMM_A))
+        if (flags.has(OPF_WRITE_A) && !ip->hasFlag(BCI_IMM_A))
         {
             const auto it = mapCopyRA.find(ip->a.u32);
             if (it)
@@ -219,7 +219,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->a.u32);
         }
 
-        if (flags.has(OPFLAG_WRITE_B) && !ip->hasFlag(BCI_IMM_B))
+        if (flags.has(OPF_WRITE_B) && !ip->hasFlag(BCI_IMM_B))
         {
             const auto it = mapCopyRA.find(ip->b.u32);
             if (it)
@@ -233,7 +233,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->b.u32);
         }
 
-        if (flags.has(OPFLAG_WRITE_C) && !ip->hasFlag(BCI_IMM_C))
+        if (flags.has(OPF_WRITE_C) && !ip->hasFlag(BCI_IMM_C))
         {
             const auto it = mapCopyRA.find(ip->c.u32);
             if (it)
@@ -247,7 +247,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->c.u32);
         }
 
-        if (flags.has(OPFLAG_WRITE_D) && !ip->hasFlag(BCI_IMM_D))
+        if (flags.has(OPF_WRITE_D) && !ip->hasFlag(BCI_IMM_D))
         {
             const auto it = mapCopyRA.find(ip->d.u32);
             if (it)

@@ -842,11 +842,11 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
     // A = something followed by B = A
     // make B = something, this gives the opportunity to remove one of them
     if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
-        opFlags.has(OPFLAG_WRITE_A) &&
-        !opFlags.has(OPFLAG_READ_A) &&
-        (!opFlags.has(OPFLAG_READ_B) || ip->hasFlag(BCI_IMM_B) || ip->b.u32 != ip->a.u32) &&
-        (!opFlags.has(OPFLAG_READ_C) || ip->hasFlag(BCI_IMM_C) || ip->c.u32 != ip->a.u32) &&
-        (!opFlags.has(OPFLAG_READ_D) || ip->hasFlag(BCI_IMM_D) || ip->d.u32 != ip->a.u32) &&
+        opFlags.has(OPF_WRITE_A) &&
+        !opFlags.has(OPF_READ_A) &&
+        (!opFlags.has(OPF_READ_B) || ip->hasFlag(BCI_IMM_B) || ip->b.u32 != ip->a.u32) &&
+        (!opFlags.has(OPF_READ_C) || ip->hasFlag(BCI_IMM_C) || ip->c.u32 != ip->a.u32) &&
+        (!opFlags.has(OPF_READ_D) || ip->hasFlag(BCI_IMM_D) || ip->d.u32 != ip->a.u32) &&
         ip->a.u32 == ip[1].b.u32 &&
         !ip[0].hasFlag(BCI_IMM_A) &&
         !ip[1].hasFlag(BCI_START_STMT))
@@ -7030,7 +7030,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
         if (!isParam &&
             !ByteCode::isJump(ipn) &&
-            !ipn->hasOpFlag(OPFLAG_REG_ONLY) &&
+            !ipn->hasOpFlag(OPF_REG_ONLY) &&
             ipn->op != ByteCodeOp::Nop)
             return;
 
@@ -7074,13 +7074,13 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     const auto fl0 = ByteCode::opFlags(ip->op);
     const auto fl1 = ByteCode::opFlags(ipn->op);
 
-    if (fl0.has(OPFLAG_8) && !fl1.has(OPFLAG_8))
+    if (fl0.has(OPF_8) && !fl1.has(OPF_8))
         return;
-    if (fl0.has(OPFLAG_16) && !fl1.has(OPFLAG_8 | OPFLAG_16))
+    if (fl0.has(OPF_16) && !fl1.has(OPF_8 | OPF_16))
         return;
-    if (fl0.has(OPFLAG_32) && !fl1.has(OPFLAG_8 | OPFLAG_16 | OPFLAG_32))
+    if (fl0.has(OPF_32) && !fl1.has(OPF_8 | OPF_16 | OPF_32))
         return;
-    if (fl0.has(OPFLAG_64) && !fl1.has(OPFLAG_8 | OPFLAG_16 | OPFLAG_32 | OPFLAG_64))
+    if (fl0.has(OPF_64) && !fl1.has(OPF_8 | OPF_16 | OPF_32 | OPF_64))
         return;
 
     if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) &&

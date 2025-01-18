@@ -11,7 +11,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 
         uint32_t regScan = UINT32_MAX;
 
-        if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
+        if (flags.has(OPF_WRITE_A) && !flags.has(OPF_WRITE_B | OPF_WRITE_C | OPF_WRITE_D))
         {
             switch (ip->op)
             {
@@ -20,16 +20,16 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                     regScan = ip->a.u32;
                     break;
                 default:
-                    if (!flags.has(OPFLAG_READ_A))
+                    if (!flags.has(OPF_READ_A))
                         regScan = ip->a.u32;
                     break;
             }
         }
-        else if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
+        else if (flags.has(OPF_WRITE_B) && !flags.has(OPF_READ_B | OPF_WRITE_A | OPF_WRITE_C | OPF_WRITE_D))
             regScan = ip->b.u32;
-        else if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
+        else if (flags.has(OPF_WRITE_C) && !flags.has(OPF_READ_C | OPF_WRITE_A | OPF_WRITE_B | OPF_WRITE_D))
             regScan = ip->c.u32;
-        else if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
+        else if (flags.has(OPF_WRITE_D) && !flags.has(OPF_READ_D | OPF_WRITE_A | OPF_WRITE_B | OPF_WRITE_C))
             regScan = ip->d.u32;
 
         if (regScan == UINT32_MAX)
