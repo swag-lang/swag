@@ -187,6 +187,7 @@ bool ByteCodeGen::emitCastToNativeU8(const ByteCodeGenContext* context, AstNode*
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
@@ -199,18 +200,21 @@ bool ByteCodeGen::emitCastToNativeU8(const ByteCodeGenContext* context, AstNode*
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeU8, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -219,35 +223,41 @@ bool ByteCodeGen::emitCastToNativeU16(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S16, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S16, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS16, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -256,39 +266,46 @@ bool ByteCodeGen::emitCastToNativeU32(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x0000FFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS32, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -300,43 +317,50 @@ bool ByteCodeGen::emitCastToNativeU64(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
-            EMIT_INST2(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x00000000'000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x00000000'0000FFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x00000000'FFFFFFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U64:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
-            EMIT_INST2(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32S64, r0, r0);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeU64, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -345,6 +369,7 @@ bool ByteCodeGen::emitCastToNativeS8(const ByteCodeGenContext* context, AstNode*
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
@@ -357,18 +382,21 @@ bool ByteCodeGen::emitCastToNativeS8(const ByteCodeGenContext* context, AstNode*
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS8, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -377,35 +405,41 @@ bool ByteCodeGen::emitCastToNativeS16(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S16, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S16, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS16, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -414,39 +448,46 @@ bool ByteCodeGen::emitCastToNativeS32(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRc)->b.u64 = 0x0000FFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS32, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -455,44 +496,52 @@ bool ByteCodeGen::emitCastToNativeS64(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x0000000'000000FF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U16:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x0000000'0000FFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
             EMIT_INST1(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRc)->b.u64 = 0x0000000'FFFFFFFF;
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::U64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
-            EMIT_INST2(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32S64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32S32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
-            EMIT_INST2(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32S32, r0, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32S64, r0, r0);
             break;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64S64, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeS64, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -501,44 +550,48 @@ bool ByteCodeGen::emitCastToNativeF32(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
-            EMIT_INST2(context, ByteCodeOp::CastU8F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU8F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::U16:
-            EMIT_INST2(context, ByteCodeOp::CastU16F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU16F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
-            EMIT_INST2(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU32F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::U64:
-            EMIT_INST2(context, ByteCodeOp::CastU64F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU64F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
-            EMIT_INST2(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S64:
-            EMIT_INST2(context, ByteCodeOp::CastS64F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS64F32, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F32:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::CastF64F32, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF64F32, r0, exprNode->resultRegisterRc);
             break;
         default:
             Report::internalError(exprNode, "emitCastToNativeF32, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -547,44 +600,48 @@ bool ByteCodeGen::emitCastToNativeF64(const ByteCodeGenContext* context, AstNode
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
 
+    const auto r0 = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
-            EMIT_INST2(context, ByteCodeOp::CastU8F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU8F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::U16:
-            EMIT_INST2(context, ByteCodeOp::CastU16F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU16F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
-            EMIT_INST2(context, ByteCodeOp::CastU32F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU32F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::U64:
-            EMIT_INST2(context, ByteCodeOp::CastU64F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastU64F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S8:
-            EMIT_INST2(context, ByteCodeOp::CastS8F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS8F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S16:
-            EMIT_INST2(context, ByteCodeOp::CastS16F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS16F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S32:
-            EMIT_INST2(context, ByteCodeOp::CastS32F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS32F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::S64:
-            EMIT_INST2(context, ByteCodeOp::CastS64F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastS64F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::CastF32F64, exprNode->resultRegisterRc, exprNode->resultRegisterRc);
+            EMIT_INST2(context, ByteCodeOp::CastF32F64, r0, exprNode->resultRegisterRc);
             break;
         case NativeTypeKind::F64:
-            break;
+            freeRegisterRC(context, r0);
+            return true;
         default:
             Report::internalError(exprNode, "emitCastToNativeF64, invalid source type");
             break;
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRc);
+    exprNode->resultRegisterRc = r0;
     return true;
 }
 
@@ -722,11 +779,11 @@ void ByteCodeGen::resetCast(AstNode* exprNode)
 }
 
 bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t /*emitCastFlags*/)
-    {
+{
     if (fromTypeInfo == nullptr)
         return true;
     SWAG_ASSERT(typeInfo);
-    
+
     typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCE_ALIAS);
     fromTypeInfo = TypeManager::concreteType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
 
@@ -801,7 +858,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             node->resultRegisterRc = exprNode->resultRegisterRc;
         }
 
-        exprNode->typeInfo     = typeInfo;
+        exprNode->typeInfo = typeInfo;
         resetCast(exprNode);
         return true;
     }
