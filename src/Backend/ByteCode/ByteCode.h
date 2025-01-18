@@ -42,51 +42,53 @@ struct ByteCode
 
     void release();
 
-    static bool hasOpFlag(ByteCodeOp op, OpFlags fl) { return g_ByteCodeOpDesc[static_cast<int>(op)].flags.has(fl); }
+    static bool        hasOpFlag(ByteCodeOp op, OpFlags fl) { return g_ByteCodeOpDesc[static_cast<int>(op)].flags.has(fl); }
+    static OpFlags     opFlags(ByteCodeOp op) { return g_ByteCodeOpDesc[static_cast<int>(op)].flags; }
+    static const char* opName(ByteCodeOp op) { return g_ByteCodeOpDesc[static_cast<int>(op)].name; }
 
-    static bool isMemCpy(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_MEMCPY); }
-    static bool isPushParam(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_PUSH_PARAM); }
-    static bool isCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_CALL); }
-    static bool isLocalCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_LOCAL_CALL); }
-    static bool isLambdaCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_LAMBDA_CALL); }
-    static bool isForeignCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_FOREIGN_CALL); }
-    static bool isJump(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_JUMP); }
-    static bool isJumpDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_JUMP_DYN); }
-    static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_JUMP | OPFLAG_JUMP_DYN); }
+    static bool isMemCpy(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_MEMCPY); }
+    static bool isPushParam(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_PUSH_PARAM); }
+    static bool isCall(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_CALL); }
+    static bool isLocalCall(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_LOCAL_CALL); }
+    static bool isLambdaCall(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_LAMBDA_CALL); }
+    static bool isForeignCall(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_FOREIGN_CALL); }
+    static bool isJump(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_JUMP); }
+    static bool isJumpDyn(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_JUMP_DYN); }
+    static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_JUMP | OPFLAG_JUMP_DYN); }
     static bool isRet(const ByteCodeInstruction* inst) { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRAtoRRRet || inst->op == ByteCodeOp::InternalUnreachable || inst->op == ByteCodeOp::Unreachable; }
 
-    static bool hasRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A); }
-    static bool hasRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B); }
-    static bool hasRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_C | OPFLAG_WRITE_C); }
-    static bool hasRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_D | OPFLAG_WRITE_D); }
+    static bool hasRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && inst->hasOpFlag(OPFLAG_READ_A | OPFLAG_WRITE_A); }
+    static bool hasRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && inst->hasOpFlag(OPFLAG_READ_B | OPFLAG_WRITE_B); }
+    static bool hasRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && inst->hasOpFlag(OPFLAG_READ_C | OPFLAG_WRITE_C); }
+    static bool hasRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && inst->hasOpFlag(OPFLAG_READ_D | OPFLAG_WRITE_D); }
     static bool hasRefToReg(const ByteCodeInstruction* inst, uint32_t reg) { return hasRefToRegA(inst, reg) || hasRefToRegB(inst, reg) || hasRefToRegC(inst, reg) || hasRefToRegD(inst, reg); }
 
-    static bool hasWriteRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_A); }
-    static bool hasWriteRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_B); }
-    static bool hasWriteRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_C); }
-    static bool hasWriteRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_D); }
+    static bool hasWriteRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && inst->hasOpFlag(OPFLAG_WRITE_A); }
+    static bool hasWriteRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && inst->hasOpFlag(OPFLAG_WRITE_B); }
+    static bool hasWriteRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && inst->hasOpFlag(OPFLAG_WRITE_C); }
+    static bool hasWriteRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && inst->hasOpFlag(OPFLAG_WRITE_D); }
     static bool hasWriteRefToReg(const ByteCodeInstruction* inst, uint32_t reg) { return hasWriteRefToRegA(inst, reg) || hasWriteRefToRegB(inst, reg) || hasWriteRefToRegC(inst, reg) || hasWriteRefToRegD(inst, reg); }
 
-    static bool hasReadRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A); }
-    static bool hasReadRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_B); }
-    static bool hasReadRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_C); }
-    static bool hasReadRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_D); }
+    static bool hasReadRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && inst->hasOpFlag(OPFLAG_READ_A); }
+    static bool hasReadRefToRegB(const ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !inst->hasFlag(BCI_IMM_B) && inst->hasOpFlag(OPFLAG_READ_B); }
+    static bool hasReadRefToRegC(const ByteCodeInstruction* inst, uint32_t reg) { return inst->c.u32 == reg && !inst->hasFlag(BCI_IMM_C) && inst->hasOpFlag(OPFLAG_READ_C); }
+    static bool hasReadRefToRegD(const ByteCodeInstruction* inst, uint32_t reg) { return inst->d.u32 == reg && !inst->hasFlag(BCI_IMM_D) && inst->hasOpFlag(OPFLAG_READ_D); }
     static bool hasReadRefToReg(const ByteCodeInstruction* inst, uint32_t reg) { return hasReadRefToRegA(inst, reg) || hasReadRefToRegB(inst, reg) || hasReadRefToRegC(inst, reg) || hasReadRefToRegD(inst, reg); }
 
-    static bool hasWriteRegInA(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_A); }
-    static bool hasWriteRegInB(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_B); }
-    static bool hasWriteRegInC(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_C) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_C); }
-    static bool hasWriteRegInD(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_D) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_WRITE_D); }
+    static bool hasWriteRegInA(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_A) && inst->hasOpFlag(OPFLAG_WRITE_A); }
+    static bool hasWriteRegInB(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_B) && inst->hasOpFlag(OPFLAG_WRITE_B); }
+    static bool hasWriteRegInC(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_C) && inst->hasOpFlag(OPFLAG_WRITE_C); }
+    static bool hasWriteRegInD(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_D) && inst->hasOpFlag(OPFLAG_WRITE_D); }
 
-    static bool hasReadRegInA(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A); }
-    static bool hasReadRegInB(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_B) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_B); }
-    static bool hasReadRegInC(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_C) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_C); }
-    static bool hasReadRegInD(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_D) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_D); }
+    static bool hasReadRegInA(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_A) && inst->hasOpFlag(OPFLAG_READ_A); }
+    static bool hasReadRegInB(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_B) && inst->hasOpFlag(OPFLAG_READ_B); }
+    static bool hasReadRegInC(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_C) && inst->hasOpFlag(OPFLAG_READ_C); }
+    static bool hasReadRegInD(const ByteCodeInstruction* inst) { return !inst->hasFlag(BCI_IMM_D) && inst->hasOpFlag(OPFLAG_READ_D); }
 
-    static bool hasSomethingInA(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A); }
-    static bool hasSomethingInB(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B); }
-    static bool hasSomethingInC(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_C | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C); }
-    static bool hasSomethingInD(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
+    static bool hasSomethingInA(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A); }
+    static bool hasSomethingInB(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_READ_B | OPFLAG_WRITE_B | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B); }
+    static bool hasSomethingInC(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_READ_C | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C); }
+    static bool hasSomethingInD(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
 
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);

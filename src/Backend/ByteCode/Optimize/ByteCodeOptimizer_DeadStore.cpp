@@ -7,7 +7,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* inContext, const ByteCodeOptTreeParseContext& parseCxt) {
         const auto ip    = parseCxt.curIp;
-        const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+        const auto flags = ByteCode::opFlags(ip->op);
 
         uint32_t regScan = UINT32_MAX;
 

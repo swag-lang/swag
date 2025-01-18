@@ -19,7 +19,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.clear();
         }
 
-        const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+        const auto flags = ByteCode::opFlags(ip->op);
 
         if (ip->op == ByteCodeOp::CopyRBtoRA64)
         {

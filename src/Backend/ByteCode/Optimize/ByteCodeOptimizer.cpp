@@ -16,7 +16,7 @@ bool ByteCodeOptimizer::hasReadRefToReg(ByteCodeOptContext* context, uint32_t re
         if (ip1 == curIp)
             return;
 
-        const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
+        const auto flags1 = ByteCode::opFlags(ip1->op);
         if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
         {
             if (ip1->a.u32 == regScan)
@@ -363,7 +363,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
         return;
     if (ip->op == ByteCodeOp::SaveRRtoRA)
         return;
-    const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+    const auto flags = ByteCode::opFlags(ip->op);
     if (flags.has(OPFLAG_NOT_PURE))
         return;
 

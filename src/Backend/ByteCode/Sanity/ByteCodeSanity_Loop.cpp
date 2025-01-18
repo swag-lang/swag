@@ -2387,7 +2387,7 @@ bool ByteCodeSanity::loop()
                 break;
 
             default:
-                Report::internalError(context.bc->sourceFile->module, form("unknown instruction [[%s]] during sanity check", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
+                Report::internalError(context.bc->sourceFile->module, form("unknown instruction [[%s]] during sanity check", ByteCode::opName(ip->op)));
                 return false;
         }
 

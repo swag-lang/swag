@@ -113,7 +113,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
 Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 {
     Utf8       str   = g_ByteCodeOpDesc[static_cast<int>(ip->op)].display;
-    const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+    const auto flags = ByteCode::opFlags(ip->op);
 
     if (ip->hasFlag(BCI_IMM_A) || flags.has(OPFLAG_READ_VAL32_A) || flags.has(OPFLAG_READ_VAL64_A))
     {
@@ -351,10 +351,10 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
     line.rank += form("%08d", i);
 
     // Instruction name
-    line.name += g_ByteCodeOpDesc[static_cast<int>(ip->op)].name;
+    line.name += ByteCode::opName(ip->op);
 
     // Parameters
-    const auto opFlags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+    const auto opFlags = ByteCode::opFlags(ip->op);
     line.instRef += getInstructionReg("A", ip->a, opFlags.has(OPFLAG_WRITE_A), opFlags.has(OPFLAG_READ_A), opFlags.has(OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || (opFlags.has(OPFLAG_IMM_A) && ip->hasFlag(BCI_IMM_A)));
     line.instRef += getInstructionReg("B", ip->b, opFlags.has(OPFLAG_WRITE_B), opFlags.has(OPFLAG_READ_B), opFlags.has(OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || (opFlags.has(OPFLAG_IMM_B) && ip->hasFlag(BCI_IMM_B)));
     line.instRef += getInstructionReg("C", ip->c, opFlags.has(OPFLAG_WRITE_C), opFlags.has(OPFLAG_READ_C), opFlags.has(OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || (opFlags.has(OPFLAG_IMM_C) && ip->hasFlag(BCI_IMM_C)));

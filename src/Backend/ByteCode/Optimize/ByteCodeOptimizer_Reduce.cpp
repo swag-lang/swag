@@ -765,7 +765,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    const auto opFlags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+    const auto opFlags = ByteCode::opFlags(ip->op);
 
     // Multiple InternalGetTlsPtr, just copy registers, as InternalGetTlsPtr has a function call cost
     if (ip[0].op == ByteCodeOp::InternalGetTlsPtr &&
@@ -7030,7 +7030,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
         if (!isParam &&
             !ByteCode::isJump(ipn) &&
-            !(g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags.has(OPFLAG_REG_ONLY)) &&
+            !ipn->hasOpFlag(OPFLAG_REG_ONLY) &&
             ipn->op != ByteCodeOp::Nop)
             return;
 
@@ -7071,8 +7071,8 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
         ByteCode::isCall(ipn))
         return;
 
-    const auto fl0 = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
-    const auto fl1 = g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags;
+    const auto fl0 = ByteCode::opFlags(ip->op);
+    const auto fl1 = ByteCode::opFlags(ipn->op);
 
     if (fl0.has(OPFLAG_8) && !fl1.has(OPFLAG_8))
         return;
