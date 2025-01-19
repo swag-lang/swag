@@ -328,7 +328,7 @@ namespace ByteCodeGen
     bool emitCopyStruct(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     void     transformResultToLinear2(const ByteCodeGenContext* context, RegisterList& resultRegisterRC);
-    uint32_t reserveRegisterRC(const ByteCodeGenContext* context, const SymbolOverload* overload = nullptr);
+    uint32_t reserveRegisterRC(const ByteCodeGenContext* context, SymbolOverload* overload = nullptr);
     void     reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, uint32_t num);
     void     reserveLinearRegisterRC2(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, RegisterList& rc);

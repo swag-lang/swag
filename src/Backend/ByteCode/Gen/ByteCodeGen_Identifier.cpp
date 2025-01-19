@@ -49,7 +49,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->hasFlag(OVERLOAD_RETVAL))
     {
-        const RegisterList r0 = reserveRegisterRC(context);
+        const RegisterList r0 = reserveRegisterRC(context, resolved);
         emitRetValRef(context, resolved, r0, true, 0);
         identifier->resultRegisterRc                  = r0;
         identifier->identifierRef()->resultRegisterRc = identifier->resultRegisterRc;
@@ -67,7 +67,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     // A captured variable
     if (resolved->hasFlag(OVERLOAD_VAR_CAPTURE))
     {
-        node->resultRegisterRc                        = reserveRegisterRC(context);
+        node->resultRegisterRc                        = reserveRegisterRC(context, resolved);
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
         node->parent->resultRegisterRc                = node->resultRegisterRc;
 
@@ -142,7 +142,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     bool forStruct = false;
     if (resolved->hasFlag(OVERLOAD_VAR_TLS))
     {
-        node->resultRegisterRc = reserveRegisterRC(context);
+        node->resultRegisterRc = reserveRegisterRC(context, resolved);
         EMIT_INST1(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRc);
         forStruct = true;
     }
@@ -344,7 +344,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the data segment
     if (resolved->hasFlag(OVERLOAD_VAR_GLOBAL))
     {
-        node->resultRegisterRc = reserveRegisterRC(context);
+        node->resultRegisterRc = reserveRegisterRC(context, resolved);
 
         if (node->isSilentCall())
         {
@@ -539,7 +539,6 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             node->resultRegisterRc = reserveRegisterRC(context, resolved);
-            resolved->setRegisters(node->resultRegisterRc, OVERLOAD_REG_HINT);
 
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
             ByteCodeInstruction* inst = nullptr;

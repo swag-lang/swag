@@ -203,12 +203,11 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
 
 bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
 {
-    ensureCanBeChangedRC(context, r0);
-
     typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_FORCE_ALIAS);
 
     if (typeInfo->numRegisters() == 2)
     {
+        ensureCanBeChangedRC(context, r0);
         transformResultToLinear2(context, r0);
         EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
         return true;
@@ -224,6 +223,7 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
     }
 
     // We now only need one register
+    ensureCanBeChangedRC(context, r0);
     truncRegisterRC(context, r0, 1);
 
     // Register list can be stored in the parent, so we need to update it, otherwise we

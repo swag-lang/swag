@@ -40,8 +40,11 @@ void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc)
     context->bc->isDirtyRegistersRC = true;
 }
 
-uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const SymbolOverload* overload)
+uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, SymbolOverload* overload)
 {
+    uint32_t result     = UINT32_MAX;
+    bool     hasRegInit = false;
+
     if (!context->bc->availableRegistersRC.empty())
     {
         sortRegistersRC(context);
@@ -51,6 +54,7 @@ uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const
             SharedLock lk(overload->symbol->mutex);
             if (overload->hasFlag(OVERLOAD_REG_HINT))
             {
+                hasRegInit    = true;
                 const auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
                 if (it != -1)
                 {
@@ -60,12 +64,17 @@ uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const
             }
         }
 
-        const auto result = context->bc->availableRegistersRC.back();
+        result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();
-        return result;
+    }
+    else
+    {
+        result = context->bc->maxReservedRegisterRC++;
     }
 
-    return context->bc->maxReservedRegisterRC++;
+    if (overload && !hasRegInit)
+        overload->setRegisters(result, OVERLOAD_REG_HINT);
+    return result;
 }
 
 void ByteCodeGen::reserveLinearRegisterRC2(const ByteCodeGenContext* context, RegisterList& rc)
