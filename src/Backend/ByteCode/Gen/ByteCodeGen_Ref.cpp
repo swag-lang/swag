@@ -297,8 +297,10 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
 
-            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+            const auto r = reserveRegisterRC(context);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, r);
+            freeRegisterRC(context, node->array->resultRegisterRc);
+            node->array->resultRegisterRc = r;
         }
 
         if (typeInfoSlice->pointedType->isString())
@@ -349,8 +351,11 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 ensureCanBeChangedRC(context, node->access->resultRegisterRc);
                 EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
-            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+
+            const auto r = reserveRegisterRC(context);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, r);
+            freeRegisterRC(context, node->array->resultRegisterRc);
+            node->array->resultRegisterRc = r;
         }
 
         if (typeInfoPointer->pointedType->isString())
@@ -381,6 +386,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 ensureCanBeChangedRC(context, node->access->resultRegisterRc);
                 EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
+            
             ensureCanBeChangedRC(context, node->array->resultRegisterRc);
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
