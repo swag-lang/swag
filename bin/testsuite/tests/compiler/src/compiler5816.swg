@@ -1,6 +1,10 @@
+// 303379
+// 303283
+// 303031
+
 var a: ^bool
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 func toto(x: s32)->bool
 {
     if a[x] and a[x + 1]:
@@ -12,5 +16,5 @@ func toto(x: s32)->bool
 {
     var b: [10] bool
     a = b
-    @print(toto(0))
+    @assert(toto(0) == true)
 }

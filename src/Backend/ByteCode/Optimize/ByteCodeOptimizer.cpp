@@ -361,22 +361,8 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop)
         return;
-
-    // Special cases. We do not want to remove some very specific instructions
-    switch (ip->op)
-    {
-        case ByteCodeOp::SaveRRtoRA:
-            return;
-
-        // Because when executed in bytecode, this instruction has the charge of calling .saveValue on the corresponding
-        // segment.
-        case ByteCodeOp::MakeMutableSegPointer:
-        case ByteCodeOp::MakeBssSegPointer:
-            if (ip->c.pointer)
-                return;
-            break;
-    }
-
+    if (ip->op == ByteCodeOp::SaveRRtoRA)
+        return;
     const auto flags = ByteCode::opFlags(ip->op);
     if (flags.has(OPF_NOT_PURE))
         return;
@@ -517,7 +503,8 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
     size_t     size     = context->bc->numInstructions - insIndex;
     size *= sizeof(ByteCodeInstruction);
     memmove(insert + 1, insert, size);
-    insert->op = ByteCodeOp::Nop;
+    insert->op    = ByteCodeOp::Nop;
+    insert->flags = 0;
     context->bc->numInstructions++;
     return true;
 }
