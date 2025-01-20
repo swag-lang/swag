@@ -114,13 +114,14 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        bool       hasJumps = false;
-        const auto ipStart  = findLoop(context, ip, hasJumps);
+        bool hasJumps = false;
+        auto ipStart  = findLoop(context, ip, hasJumps);
         if (!ipStart)
             continue;
 
-        auto ipScan = ipStart;
         context->vecInst.clear();
+
+        auto ipScan = ipStart;
         while (ipScan != ip)
         {
             // Constant expression
@@ -139,7 +140,15 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::MakeLambda:
                     context->vecInst.push_back(ipScan);
                     break;
+
                 default:
+                    if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
+                        (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
+                        (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
+                        (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
+                    {
+                    }
+
                     break;
             }
 
@@ -247,6 +256,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 setNop(context, cstOp);
             }
+
+            ipStart += 1;
         }
 
         if (shift)
