@@ -211,17 +211,25 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 newReg = context->bc->maxReservedRegisterRC;
                 context->bc->maxReservedRegisterRC++;
 
-                cstOp          = it + shift;
-                ipStart->op    = cstOp->op;
-                ipStart->a.u32 = newReg;
-                ipStart->b     = cstOp->b;
-                ipStart->c     = cstOp->c;
-                ipStart->d     = cstOp->d;
+                cstOp       = it + shift;
+                ipStart->op = cstOp->op;
+                ipStart->a  = cstOp->a;
+                ipStart->b  = cstOp->b;
+                ipStart->c  = cstOp->c;
+                ipStart->d  = cstOp->d;
+
+                if (ByteCode::hasWriteRegInA(ipStart))
+                    ipStart->a.u64 = newReg;
+                else if (ByteCode::hasWriteRegInB(ipStart))
+                    ipStart->b.u64 = newReg;
+                else if (ByteCode::hasWriteRegInC(ipStart))
+                    ipStart->c.u64 = newReg;
+                else
+                    ipStart->d.u64 = newReg;
 
                 context->vecInstCopy.push_back(*ipStart);
-
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
-                cstOp->b.u32 = newReg;
+                cstOp->b.u64 = newReg;
 
                 ipScan = cstOp + 1;
                 while (ipScan != ip + shift)
@@ -263,7 +271,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 ipStart->d  = cstOp->d;
 
                 context->vecInstCopy.push_back(*ipStart);
-
                 setNop(context, cstOp);
             }
 
