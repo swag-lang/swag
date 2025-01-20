@@ -230,6 +230,228 @@ void ByteCodeRun::lambdaCall(ByteCodeRunContext* context, const ByteCodeInstruct
     }
 }
 
+void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
+{
+    while (executeInstruction(context, context->ip++))
+        ;
+}
+
+bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
+{
+    if ((context->debugOn || !g_ByteCodeDebugger.breakpoints.empty()) && context->debugAccept)
+    {
+        while (true)
+        {
+            if (!g_ByteCodeDebugger.step(context))
+                OS::exit(0);
+            if (!executeInstruction(context, context->ip++))
+                break;
+            if (!context->debugOn && g_ByteCodeDebugger.breakpoints.empty())
+            {
+                runLoopNoDbg(context);
+                break;
+            }
+        }
+    }
+    else
+    {
+        runLoopNoDbg(context);
+    }
+
+    return true;
+}
+
+namespace
+{
+    int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
+    {
+        // @breakpoint()
+        if (runContext->debugRaiseStart)
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+        // Exception already processed. Need to pass the hand to the previous handle
+        // This happens when bytecode executed foreign code, which executes bytecode again.
+        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+        Diagnostic*                   err = nullptr;
+        Vector<const Diagnostic*>     notes;
+        const SwagSourceCodeLocation* location = nullptr;
+        SwagSourceCodeLocation        tmpLoc;
+        auto                          level = DiagnosticLevel::Error;
+        Utf8                          userMsg;
+        int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip--;
+        const auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip++;
+
+        tmpLoc.fileName.buffer = static_cast<void*>(_strdup(loc.file->path.cstr()));
+        tmpLoc.fileName.count  = loc.file->path.length();
+        tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
+        tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
+        location                        = &tmpLoc;
+
+        // Exception 666 raised during bytecode execution
+        /////////////////////////////////////////////////
+        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
+        {
+            // Source code location
+            if (args->ExceptionRecord->ExceptionInformation[0])
+                location = reinterpret_cast<SwagSourceCodeLocation*>(args->ExceptionRecord->ExceptionInformation[0]);
+
+            // User message
+            const auto txt = Utf8{reinterpret_cast<const char*>(args->ExceptionRecord->ExceptionInformation[1]), static_cast<uint32_t>(args->ExceptionRecord->ExceptionInformation[2])};
+
+            // Kind of exception
+            const auto exceptionKind = static_cast<SwagExceptionKind>(args->ExceptionRecord->ExceptionInformation[3]);
+            switch (exceptionKind)
+            {
+                case SwagExceptionKind::Error:
+                default:
+                    level = DiagnosticLevel::Error;
+                    if (!Diagnostic::hasErrorId(txt))
+                        userMsg = formErr(Err0002, txt.cstr());
+                    else
+                        userMsg = txt;
+                    break;
+                case SwagExceptionKind::Warning:
+                    level = DiagnosticLevel::Warning;
+                    if (!Diagnostic::hasErrorId(txt))
+                        userMsg = formErr(Wrn0001, txt.cstr());
+                    else
+                        userMsg = txt;
+                    break;
+                case SwagExceptionKind::Panic:
+                    level = DiagnosticLevel::Panic;
+                    if (!Diagnostic::hasErrorId(txt))
+                        userMsg = formErr(Err0003, txt.cstr());
+                    else
+                        userMsg = txt;
+
+                    // Additional panic infos
+                    if (runContext->internalPanicSymbol)
+                    {
+                        notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
+                        if (!runContext->internalPanicHint.empty())
+                            notes.push_back(Diagnostic::note(runContext->internalPanicHint));
+                    }
+
+                    break;
+            }
+        }
+
+        // Hardware exception
+        /////////////////////
+        else
+        {
+#ifdef SWAG_DEV_MODE
+            returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
+#endif
+
+            level   = DiagnosticLevel::Exception;
+            userMsg = toErr(Err0718);
+            notes.push_back(Diagnostic::note(toNte(Nte0102)));
+            notes.push_back(Diagnostic::note(toNte(Nte0105)));
+        }
+
+        // Message
+        /////////////////////
+
+        if (runContext->forDebugger)
+        {
+            g_SilentErrorMsg = userMsg;
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
+        }
+
+        SourceFile dummyFile;
+        dummyFile.path = Utf8{location->fileName};
+
+        SourceLocation startLocation, endLocation;
+        startLocation.line   = location->lineStart;
+        startLocation.column = location->colStart;
+        endLocation.line     = location->lineEnd;
+        endLocation.column   = location->colEnd;
+
+        err = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
+
+        // Get the correct source file to raise the error in the correct context
+        //
+        // If we have an expansion, and the first expansion requests test error, then raise
+        // in its context to dismiss the error (like an error during a where for example)
+        if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
+            err->contextFile = runContext->callerContext->errCxtSteps[0].node->token.sourceFile;
+        else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
+            err->contextFile = runContext->callerContext->errCxtSteps[0].node->token.sourceFile;
+        // Otherwise get the source file from the top of the bytecode stack if possible
+        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
+            err->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
+        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
+            err->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+        // Otherwise take the current bytecode source file
+        else
+            err->contextFile = runContext->bc->sourceFile;
+
+        // Get error context
+        runContext->callerContext->extract(*err, notes);
+
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip--;
+
+        if (!g_CommandLine.dbgCallStack)
+            notes.push_back(Diagnostic::note(toNte(Nte0104)));
+
+        Report::report(*err, notes, runContext);
+
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip++;
+
+        return returnValue;
+    }
+}
+
+bool ByteCodeRun::run(ByteCodeRunContext* runContext)
+{
+    const auto module = runContext->jc.sourceFile->module;
+
+    while (true)
+    {
+        SWAG_TRY
+        {
+            return module->runner.runLoop(runContext);
+        }
+        SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
+        {
+            if (runContext->forDebugger)
+                continue;
+
+            if (runContext->debugRaiseStart)
+            {
+                runContext->debugRaiseStart = false;
+                runContext->debugOn         = true;
+                continue;
+            }
+
+            if (g_CommandLine.dbgCatch && runContext->debugOnFirstError)
+            {
+                runContext->ip--;
+                runContext->debugOnFirstError = false;
+                runContext->debugOn           = true;
+                runContext->debugEntry        = true;
+                continue;
+            }
+
+            if (g_CommandLine.scriptCommand)
+                OS::exit(-1);
+
+            g_ByteCodeStackTrace->clear();
+            return false;
+        }
+    }
+}
+
 SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->curRegistersRC;
@@ -237,52 +459,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     SWAG_ASSERT(ip->op <= ByteCodeOp::End);
     switch (ip->op)
     {
-        case ByteCodeOp::End:
-            return false;
-
-        case ByteCodeOp::Nop:
-        case ByteCodeOp::DebugNop:
-            break;
-
-        case ByteCodeOp::IntrinsicS8x1:
-        case ByteCodeOp::IntrinsicS16x1:
-        case ByteCodeOp::IntrinsicS32x1:
-        case ByteCodeOp::IntrinsicS64x1:
-        case ByteCodeOp::IntrinsicF32x1:
-        case ByteCodeOp::IntrinsicF64x1:
-        {
-            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}));
-            break;
-        }
-
-        case ByteCodeOp::IntrinsicS8x2:
-        case ByteCodeOp::IntrinsicS16x2:
-        case ByteCodeOp::IntrinsicS32x2:
-        case ByteCodeOp::IntrinsicS64x2:
-        case ByteCodeOp::IntrinsicU8x2:
-        case ByteCodeOp::IntrinsicU16x2:
-        case ByteCodeOp::IntrinsicU32x2:
-        case ByteCodeOp::IntrinsicU64x2:
-        case ByteCodeOp::IntrinsicF32x2:
-        case ByteCodeOp::IntrinsicF64x2:
-        {
-            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-            auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}));
-            break;
-        }
-
-        case ByteCodeOp::IntrinsicMulAddF32:
-        case ByteCodeOp::IntrinsicMulAddF64:
-        {
-            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-            auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-            auto& rd = ip->hasFlag(BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
-            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd));
-            break;
-        }
-
         case ByteCodeOp::TestNotZero8:
             registersRC[ip->a.u32].b = IMMB_U8(ip) != 0;
             break;
@@ -4422,232 +4598,56 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             }
             break;
 
+        case ByteCodeOp::End:
+            return false;
+
+        case ByteCodeOp::Nop:
+        case ByteCodeOp::DebugNop:
+            break;
+
+        case ByteCodeOp::IntrinsicS8x1:
+        case ByteCodeOp::IntrinsicS16x1:
+        case ByteCodeOp::IntrinsicS32x1:
+        case ByteCodeOp::IntrinsicS64x1:
+        case ByteCodeOp::IntrinsicF32x1:
+        case ByteCodeOp::IntrinsicF64x1:
+        {
+            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}));
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicS8x2:
+        case ByteCodeOp::IntrinsicS16x2:
+        case ByteCodeOp::IntrinsicS32x2:
+        case ByteCodeOp::IntrinsicS64x2:
+        case ByteCodeOp::IntrinsicU8x2:
+        case ByteCodeOp::IntrinsicU16x2:
+        case ByteCodeOp::IntrinsicU32x2:
+        case ByteCodeOp::IntrinsicU64x2:
+        case ByteCodeOp::IntrinsicF32x2:
+        case ByteCodeOp::IntrinsicF64x2:
+        {
+            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+            auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}));
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicMulAddF32:
+        case ByteCodeOp::IntrinsicMulAddF64:
+        {
+            auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+            auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+            auto& rd = ip->hasFlag(BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
+            SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd));
+            break;
+        }
+
         default:
             SWAG_ASSERT(false);
             SWAG_UNREACHABLE;
     }
 
     return true;
-}
-
-void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
-{
-    while (executeInstruction(context, context->ip++))
-        ;
-}
-
-bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
-{
-    if ((context->debugOn || !g_ByteCodeDebugger.breakpoints.empty()) && context->debugAccept)
-    {
-        while (true)
-        {
-            if (!g_ByteCodeDebugger.step(context))
-                OS::exit(0);
-            if (!executeInstruction(context, context->ip++))
-                break;
-            if (!context->debugOn && g_ByteCodeDebugger.breakpoints.empty())
-            {
-                runLoopNoDbg(context);
-                break;
-            }
-        }
-    }
-    else
-    {
-        runLoopNoDbg(context);
-    }
-
-    return true;
-}
-
-namespace
-{
-    int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
-    {
-        // @breakpoint()
-        if (runContext->debugRaiseStart)
-            return SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-        // Exception already processed. Need to pass the hand to the previous handle
-        // This happens when bytecode executed foreign code, which executes bytecode again.
-        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
-            return SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-        Diagnostic*                   err = nullptr;
-        Vector<const Diagnostic*>     notes;
-        const SwagSourceCodeLocation* location = nullptr;
-        SwagSourceCodeLocation        tmpLoc;
-        auto                          level = DiagnosticLevel::Error;
-        Utf8                          userMsg;
-        int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip--;
-        const auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip++;
-
-        tmpLoc.fileName.buffer = static_cast<void*>(_strdup(loc.file->path.cstr()));
-        tmpLoc.fileName.count  = loc.file->path.length();
-        tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
-        tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
-        location                        = &tmpLoc;
-
-        // Exception 666 raised during bytecode execution
-        /////////////////////////////////////////////////
-        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
-        {
-            // Source code location
-            if (args->ExceptionRecord->ExceptionInformation[0])
-                location = reinterpret_cast<SwagSourceCodeLocation*>(args->ExceptionRecord->ExceptionInformation[0]);
-
-            // User message
-            const auto txt = Utf8{reinterpret_cast<const char*>(args->ExceptionRecord->ExceptionInformation[1]), static_cast<uint32_t>(args->ExceptionRecord->ExceptionInformation[2])};
-
-            // Kind of exception
-            const auto exceptionKind = static_cast<SwagExceptionKind>(args->ExceptionRecord->ExceptionInformation[3]);
-            switch (exceptionKind)
-            {
-                case SwagExceptionKind::Error:
-                default:
-                    level = DiagnosticLevel::Error;
-                    if (!Diagnostic::hasErrorId(txt))
-                        userMsg = formErr(Err0002, txt.cstr());
-                    else
-                        userMsg = txt;
-                    break;
-                case SwagExceptionKind::Warning:
-                    level = DiagnosticLevel::Warning;
-                    if (!Diagnostic::hasErrorId(txt))
-                        userMsg = formErr(Wrn0001, txt.cstr());
-                    else
-                        userMsg = txt;
-                    break;
-                case SwagExceptionKind::Panic:
-                    level = DiagnosticLevel::Panic;
-                    if (!Diagnostic::hasErrorId(txt))
-                        userMsg = formErr(Err0003, txt.cstr());
-                    else
-                        userMsg = txt;
-
-                    // Additional panic infos
-                    if (runContext->internalPanicSymbol)
-                    {
-                        notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
-                        if (!runContext->internalPanicHint.empty())
-                            notes.push_back(Diagnostic::note(runContext->internalPanicHint));
-                    }
-
-                    break;
-            }
-        }
-
-        // Hardware exception
-        /////////////////////
-        else
-        {
-#ifdef SWAG_DEV_MODE
-            returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
-#endif
-
-            level   = DiagnosticLevel::Exception;
-            userMsg = toErr(Err0718);
-            notes.push_back(Diagnostic::note(toNte(Nte0102)));
-            notes.push_back(Diagnostic::note(toNte(Nte0105)));
-        }
-
-        // Message
-        /////////////////////
-
-        if (runContext->forDebugger)
-        {
-            g_SilentErrorMsg = userMsg;
-            return SWAG_EXCEPTION_EXECUTE_HANDLER;
-        }
-
-        SourceFile dummyFile;
-        dummyFile.path = Utf8{location->fileName};
-
-        SourceLocation startLocation, endLocation;
-        startLocation.line   = location->lineStart;
-        startLocation.column = location->colStart;
-        endLocation.line     = location->lineEnd;
-        endLocation.column   = location->colEnd;
-
-        err = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
-
-        // Get the correct source file to raise the error in the correct context
-        //
-        // If we have an expansion, and the first expansion requests test error, then raise
-        // in its context to dismiss the error (like an error during a where for example)
-        if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
-            err->contextFile = runContext->callerContext->errCxtSteps[0].node->token.sourceFile;
-        else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
-            err->contextFile = runContext->callerContext->errCxtSteps[0].node->token.sourceFile;
-        // Otherwise get the source file from the top of the bytecode stack if possible
-        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
-            err->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
-        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
-            err->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
-        // Otherwise take the current bytecode source file
-        else
-            err->contextFile = runContext->bc->sourceFile;
-
-        // Get error context
-        runContext->callerContext->extract(*err, notes);
-
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip--;
-
-        if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note(toNte(Nte0104)));
-
-        Report::report(*err, notes, runContext);
-
-        if (runContext->ip != runContext->bc->out)
-            runContext->ip++;
-
-        return returnValue;
-    }
-}
-
-bool ByteCodeRun::run(ByteCodeRunContext* runContext)
-{
-    const auto module = runContext->jc.sourceFile->module;
-
-    while (true)
-    {
-        SWAG_TRY
-        {
-            return module->runner.runLoop(runContext);
-        }
-        SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
-        {
-            if (runContext->forDebugger)
-                continue;
-
-            if (runContext->debugRaiseStart)
-            {
-                runContext->debugRaiseStart = false;
-                runContext->debugOn         = true;
-                continue;
-            }
-
-            if (g_CommandLine.dbgCatch && runContext->debugOnFirstError)
-            {
-                runContext->ip--;
-                runContext->debugOnFirstError = false;
-                runContext->debugOn           = true;
-                runContext->debugEntry        = true;
-                continue;
-            }
-
-            if (g_CommandLine.scriptCommand)
-                OS::exit(-1);
-
-            g_ByteCodeStackTrace->clear();
-            return false;
-        }
-    }
 }
