@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 namespace
 {
@@ -106,6 +107,32 @@ namespace
 
         return ipStart;
     }
+
+    void replaceReg(ByteCodeOptContext* context, ByteCodeInstruction* ipScan, ByteCodeInstruction* ipEnd, uint32_t reg, uint32_t newReg)
+    {
+        while (ipScan != ipEnd)
+        {
+            if (ByteCode::hasWriteRefToReg(ipScan, reg))
+                break;
+            if (ByteCode::isRet(ipScan))
+                break;
+            if (ByteCode::isJump(ipScan) && context->vecReg[reg] > 1)
+                break;
+            if (ipScan->hasFlag(BCI_START_STMT) && context->vecReg[reg] > 1)
+                break;
+
+            if (ByteCode::hasReadRefToRegA(ipScan, reg))
+                ipScan->a.u32 = newReg;
+            if (ByteCode::hasReadRefToRegB(ipScan, reg))
+                ipScan->b.u32 = newReg;
+            if (ByteCode::hasReadRefToRegC(ipScan, reg))
+                ipScan->c.u32 = newReg;
+            if (ByteCode::hasReadRefToRegD(ipScan, reg))
+                ipScan->d.u32 = newReg;
+
+            ipScan += 1;
+        }        
+    }
 }
 
 // We detect loops, and then we try to move constant instructions outside of the loop.
@@ -141,14 +168,21 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     context->vecInst.push_back(ipScan);
                     break;
 
+                case ByteCodeOp::CopyRBtoRA64:
+                case ByteCodeOp::ClearRA:
+                case ByteCodeOp::SetImmediate32:
+                case ByteCodeOp::SetImmediate64:
+                    break;
+
                 default:
-                    if (ipScan->hasOpFlag(OPF_REG_ONLY) && ByteCode::countWriteRegs(ipScan) == 1)
+                    if (ipScan->hasOpFlag(OPF_REG_ONLY) && ByteCode::countWriteRegs(ipScan) == 1 && ByteCode::countReadRegs(ipScan))
                     {
                         if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
                             (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
                             (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
                             (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
                         {
+                            //context->vecInst.push_back(ipScan);
                         }
                     }
 
@@ -195,8 +229,15 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // An instruction already exists, so replace the current one with the previous destination register
             if (newReg)
             {
+                if (ByteCode::hasWriteRegInB(cstOp))
+                    cstOp->a.u64 = cstOp->b.u64;
+                else if (ByteCode::hasWriteRegInC(cstOp))
+                    cstOp->a.u64 = cstOp->c.u64;
+                else if (ByteCode::hasWriteRegInD(cstOp))
+                    cstOp->a.u64 = cstOp->d.u64;
+                
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
-                cstOp->b.u32 = newReg;
+                cstOp->b.u64 = newReg;
                 continue;
             }
 
@@ -218,42 +259,31 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 ipStart->c  = cstOp->c;
                 ipStart->d  = cstOp->d;
 
-                if (ByteCode::hasWriteRegInA(ipStart))
-                    ipStart->a.u64 = newReg;
-                else if (ByteCode::hasWriteRegInB(ipStart))
-                    ipStart->b.u64 = newReg;
-                else if (ByteCode::hasWriteRegInC(ipStart))
-                    ipStart->c.u64 = newReg;
-                else
-                    ipStart->d.u64 = newReg;
-
-                context->vecInstCopy.push_back(*ipStart);
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u64 = newReg;
 
-                ipScan = cstOp + 1;
-                while (ipScan != ip + shift)
+                if (ByteCode::hasWriteRegInA(ipStart))
                 {
-                    if (ByteCode::hasWriteRefToReg(ipScan, cstOp->a.u32))
-                        break;
-                    if (ByteCode::isRet(ipScan))
-                        break;
-                    if (ByteCode::isJump(ipScan) && context->vecReg[cstOp->a.u32] > 1)
-                        break;
-                    if (ipScan->hasFlag(BCI_START_STMT) && context->vecReg[cstOp->a.u32] > 1)
-                        break;
-
-                    if (ByteCode::hasReadRefToRegA(ipScan, cstOp->a.u32))
-                        ipScan->a.u32 = newReg;
-                    if (ByteCode::hasReadRefToRegB(ipScan, cstOp->a.u32))
-                        ipScan->b.u32 = newReg;
-                    if (ByteCode::hasReadRefToRegC(ipScan, cstOp->a.u32))
-                        ipScan->c.u32 = newReg;
-                    if (ByteCode::hasReadRefToRegD(ipScan, cstOp->a.u32))
-                        ipScan->d.u32 = newReg;
-
-                    ipScan += 1;
+                    ipStart->a.u64 = newReg;
                 }
+                else if (ByteCode::hasWriteRegInB(ipStart))
+                {
+                    cstOp->a.u64   = ipStart->b.u64;
+                    ipStart->b.u64 = newReg;
+                }
+                else if (ByteCode::hasWriteRegInC(ipStart))
+                {
+                    cstOp->a.u64   = ipStart->c.u64;
+                    ipStart->c.u64 = newReg;
+                }
+                else
+                {
+                    cstOp->a.u64   = ipStart->d.u64;
+                    ipStart->d.u64 = newReg;
+                }
+
+                context->vecInstCopy.push_back(*ipStart);
+                replaceReg(context, cstOp + 1, ip + shift, cstOp->a.u32, newReg);
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
