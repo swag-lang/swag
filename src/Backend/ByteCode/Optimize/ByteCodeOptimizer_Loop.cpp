@@ -5,7 +5,7 @@
 // We detect loops, and then we try to move constant instructions outside of the loop.
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
-{
+{   
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         // Find a negative jump
@@ -194,6 +194,30 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u32 = newReg;
+                
+                ipScan = cstOp + 1;
+                while (ipScan != ip + shift)
+                {
+                    if (ByteCode::hasWriteRefToReg(ipScan, cstOp->a.u32))
+                        break;
+                    if (ByteCode::isRet(ipScan))
+                        break;
+                    if (ByteCode::isJump(ipScan) && countReg[cstOp->a.u32] > 1)
+                        break;
+                    if (ipScan->hasFlag(BCI_START_STMT) && countReg[cstOp->a.u32] > 1)
+                        break;
+                    
+                    if (ByteCode::hasReadRefToRegA(ipScan, cstOp->a.u32))
+                        ipScan->a.u32 = newReg;
+                    if (ByteCode::hasReadRefToRegB(ipScan, cstOp->a.u32))
+                        ipScan->b.u32 = newReg;
+                    if (ByteCode::hasReadRefToRegC(ipScan, cstOp->a.u32))
+                        ipScan->c.u32 = newReg;
+                    if (ByteCode::hasReadRefToRegD(ipScan, cstOp->a.u32))
+                        ipScan->d.u32 = newReg;
+                    
+                    ipScan += 1;
+                }
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
