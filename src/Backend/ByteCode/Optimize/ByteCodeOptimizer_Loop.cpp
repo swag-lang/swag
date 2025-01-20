@@ -138,15 +138,20 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::MakeBssSegPointer:
                 case ByteCodeOp::MakeMutableSegPointer:
                 case ByteCodeOp::MakeLambda:
+                //case ByteCodeOp::SetImmediate32:
+                //case ByteCodeOp::SetImmediate64:
                     context->vecInst.push_back(ipScan);
                     break;
 
                 default:
-                    if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
-                        (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
-                        (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
-                        (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
+                    if (ipScan->hasOpFlag(OPF_REG_ONLY))
                     {
+                        if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
+                            (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
+                            (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
+                            (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
+                        {
+                        }
                     }
 
                     break;
