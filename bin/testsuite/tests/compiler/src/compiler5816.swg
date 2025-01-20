@@ -1,14 +1,16 @@
 // 303379
 // 303283
 // 303031
+// 302549
 
 var a: ^bool
 
-//#[Swag.PrintBc]
+#[Swag.PrintBc]
 func toto(x: s32)->bool
 {
-    if a[x] and a[x + 1]:
-        return false
+    var i = 0
+    while a[x] and a[x + 1]:
+        i += 41
     return true
 }
 
