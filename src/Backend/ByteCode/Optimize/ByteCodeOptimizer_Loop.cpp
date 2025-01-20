@@ -2,15 +2,15 @@
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Wmf/Module.h"
 
-// We detect loops, and then we try to move constant instructions outside of the loop.
-// For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
-bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
-{   
-    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+namespace
+{
+    ByteCodeInstruction* findLoop(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& hasJumps)
     {
         // Find a negative jump
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
-            continue;
+            return nullptr;
+
+        context->vecReg.clear();
 
         const auto ipStart = ip + ip->b.s32 + 1;
         auto       ipScan  = ipStart;
@@ -19,22 +19,17 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         while (!ByteCode::isJump(ipScan))
             ipScan++;
         if (ipScan == ip)
-            continue;
+            return nullptr;
 
         // We should have a jump to the instruction right after the original negative jump, or
         // this is not a loop
         const auto ipEnd = ipScan + ipScan->b.s32 + 1;
         if (ipEnd != ip + 1)
-            continue;
+            return nullptr;
 
         const auto ipExitJump = ipScan;
         ipScan                = ipStart;
 
-        context->vecInst.clear();
-        context->vecInstCopy.clear();
-        VectorNative<uint32_t> countReg;
-
-        bool hasJumps = false;
         while (ipScan != ip)
         {
             // Test an inside jump that will escape the loop
@@ -50,6 +45,84 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             if (ByteCode::isJumpDyn(ipScan))
                 break;
 
+            if (ByteCode::hasWriteRegInA(ipScan))
+            {
+                context->vecReg.expand_clear(ipScan->a.u32 + 1);
+                context->vecReg[ipScan->a.u32]++;
+            }
+            if (ByteCode::hasWriteRegInB(ipScan))
+            {
+                context->vecReg.expand_clear(ipScan->b.u32 + 1);
+                context->vecReg[ipScan->b.u32]++;
+            }
+            if (ByteCode::hasWriteRegInC(ipScan))
+            {
+                context->vecReg.expand_clear(ipScan->c.u32 + 1);
+                context->vecReg[ipScan->c.u32]++;
+            }
+            if (ByteCode::hasWriteRegInD(ipScan))
+            {
+                context->vecReg.expand_clear(ipScan->d.u32 + 1);
+                context->vecReg[ipScan->d.u32]++;
+            }
+
+            ipScan++;
+        }
+
+        // Stop before the end of the loop, bad one...
+        if (ipScan != ip)
+            return nullptr;
+
+        // Be sure there's no external jump inside that loop
+        for (const auto it : context->jumps)
+        {
+            if (it == ipStart || it == ipScan)
+                continue;
+            if (!ipScan)
+                break;
+            if (ByteCode::isJumpDyn(it))
+            {
+                const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(it->d.u32));
+                for (uint32_t i = 0; i < it->c.u32; i++)
+                {
+                    const auto ipJump = it + table[i] + 1;
+                    if (ipJump >= ipStart && ipJump <= ipScan)
+                    {
+                        if (it < ipStart || it > ipScan)
+                            return nullptr;
+                    }
+                }
+            }
+            else
+            {
+                const auto ipJump = it + it->b.s32 + 1;
+                if (ipJump >= ipStart && ipJump <= ipScan)
+                {
+                    if (it < ipStart || it > ipScan)
+                        return nullptr;
+                }
+            }
+        }
+
+        return ipStart;
+    }
+}
+
+// We detect loops, and then we try to move constant instructions outside of the loop.
+// For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
+bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        bool       hasJumps = false;
+        const auto ipStart  = findLoop(context, ip, hasJumps);
+        if (!ipStart)
+            continue;
+
+        auto ipScan = ipStart;
+        context->vecInst.clear();
+        while (ipScan != ip)
+        {
             // Constant expression
             switch (ipScan->op)
             {
@@ -70,78 +143,14 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
             }
 
-            if (ByteCode::hasWriteRegInA(ipScan))
-            {
-                countReg.expand_clear(ipScan->a.u32 + 1);
-                countReg[ipScan->a.u32]++;
-            }
-            if (ByteCode::hasWriteRegInB(ipScan))
-            {
-                countReg.expand_clear(ipScan->b.u32 + 1);
-                countReg[ipScan->b.u32]++;
-            }
-            if (ByteCode::hasWriteRegInC(ipScan))
-            {
-                countReg.expand_clear(ipScan->c.u32 + 1);
-                countReg[ipScan->c.u32]++;
-            }
-            if (ByteCode::hasWriteRegInD(ipScan))
-            {
-                countReg.expand_clear(ipScan->d.u32 + 1);
-                countReg[ipScan->d.u32]++;
-            }
-
-            ipScan++;
+            ipScan += 1;
         }
-
-        // Stop before the end of the loop, bad one...
-        if (ipScan != ip)
-            continue;
 
         // Nothing to do
         if (context->vecInst.empty())
             continue;
 
-        // Be sure there's no external jump inside that loop
-        for (const auto it : context->jumps)
-        {
-            if (it == ipStart || it == ipScan)
-                continue;
-            if (!ipScan)
-                break;
-            if (ByteCode::isJumpDyn(it))
-            {
-                const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(it->d.u32));
-                for (uint32_t i = 0; i < it->c.u32; i++)
-                {
-                    const auto ipJump = it + table[i] + 1;
-                    if (ipJump >= ipStart && ipJump <= ipScan)
-                    {
-                        if (it < ipStart || it > ipScan)
-                        {
-                            ipScan = nullptr;
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                const auto ipJump = it + it->b.s32 + 1;
-                if (ipJump >= ipStart && ipJump <= ipScan)
-                {
-                    if (it < ipStart || it > ipScan)
-                    {
-                        ipScan = nullptr;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!ipScan)
-            continue;
-
+        context->vecInstCopy.clear();
         int shift = 0;
         for (const auto it : context->vecInst)
         {
@@ -174,7 +183,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
             // If the register is used more than once, then we allocate a new one and make a copy at the previous place.
             // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
-            if ((cstOp->a.u32 < countReg.size() && countReg[cstOp->a.u32] > 1) || hasJumps)
+            if ((cstOp->a.u32 < context->vecReg.size() && context->vecReg[cstOp->a.u32] > 1) || hasJumps)
             {
                 if (!insertNopBefore(context, ipStart))
                     break;
@@ -194,7 +203,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u32 = newReg;
-                
+
                 ipScan = cstOp + 1;
                 while (ipScan != ip + shift)
                 {
@@ -202,11 +211,11 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                         break;
                     if (ByteCode::isRet(ipScan))
                         break;
-                    if (ByteCode::isJump(ipScan) && countReg[cstOp->a.u32] > 1)
+                    if (ByteCode::isJump(ipScan) && context->vecReg[cstOp->a.u32] > 1)
                         break;
-                    if (ipScan->hasFlag(BCI_START_STMT) && countReg[cstOp->a.u32] > 1)
+                    if (ipScan->hasFlag(BCI_START_STMT) && context->vecReg[cstOp->a.u32] > 1)
                         break;
-                    
+
                     if (ByteCode::hasReadRefToRegA(ipScan, cstOp->a.u32))
                         ipScan->a.u32 = newReg;
                     if (ByteCode::hasReadRefToRegB(ipScan, cstOp->a.u32))
@@ -215,7 +224,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                         ipScan->c.u32 = newReg;
                     if (ByteCode::hasReadRefToRegD(ipScan, cstOp->a.u32))
                         ipScan->d.u32 = newReg;
-                    
+
                     ipScan += 1;
                 }
             }
