@@ -142,7 +142,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
 
                 default:
-                    if (ipScan->hasOpFlag(OPF_REG_ONLY))
+                    if (ipScan->hasOpFlag(OPF_REG_ONLY) && ByteCode::countWriteRegs(ipScan) == 1)
                     {
                         if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
                             (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
@@ -167,25 +167,32 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         for (const auto it : context->vecInst)
         {
             auto cstOp = it + shift;
+            SWAG_ASSERT(ByteCode::countWriteRegs(cstOp) == 1);
 
-            SWAG_ASSERT(ByteCode::hasWriteRegInA(cstOp));
-            SWAG_ASSERT(!ByteCode::hasWriteRegInB(cstOp));
-            SWAG_ASSERT(!ByteCode::hasWriteRegInC(cstOp));
-            SWAG_ASSERT(!ByteCode::hasWriteRegInD(cstOp));
-
+            // Is the same instruction already moved out of loop ?
+            // In that case we will just use the corresponding register
             uint32_t newReg = 0;
             for (const auto& it1 : context->vecInstCopy)
             {
                 if (it1.op == cstOp->op &&
-                    (it1.b.u64 == cstOp->b.u64 || !ByteCode::hasSomethingInB(cstOp)) &&
-                    (it1.c.u64 == cstOp->c.u64 || !ByteCode::hasSomethingInC(cstOp)) &&
-                    (it1.d.u64 == cstOp->d.u64 || !ByteCode::hasSomethingInD(cstOp)))
+                    (it1.a.u64 == cstOp->a.u64 || !ByteCode::hasSomethingInA(cstOp) || ByteCode::hasWriteRegInA(cstOp)) &&
+                    (it1.b.u64 == cstOp->b.u64 || !ByteCode::hasSomethingInB(cstOp) || ByteCode::hasWriteRegInB(cstOp)) &&
+                    (it1.c.u64 == cstOp->c.u64 || !ByteCode::hasSomethingInC(cstOp) || ByteCode::hasWriteRegInC(cstOp)) &&
+                    (it1.d.u64 == cstOp->d.u64 || !ByteCode::hasSomethingInD(cstOp) || ByteCode::hasWriteRegInD(cstOp)))
                 {
-                    newReg = it1.a.u32;
+                    if (ByteCode::hasWriteRegInA(&it1))
+                        newReg = it1.a.u32;
+                    else if (ByteCode::hasWriteRegInB(&it1))
+                        newReg = it1.b.u32;
+                    else if (ByteCode::hasWriteRegInC(&it1))
+                        newReg = it1.c.u32;
+                    else
+                        newReg = it1.d.u32;
                     break;
                 }
             }
 
+            // An instruction already exists, so replace the current one with the previous destination register
             if (newReg)
             {
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
@@ -197,7 +204,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
             if ((cstOp->a.u32 < context->vecReg.size() && context->vecReg[cstOp->a.u32] > 1) || hasJumps)
             {
-                context->bc->print({});
                 if (!insertNopBefore(context, ipStart))
                     break;
 
@@ -240,7 +246,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                     ipScan += 1;
                 }
-                context->bc->print({});
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.

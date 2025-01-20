@@ -90,6 +90,9 @@ struct ByteCode
     static bool hasSomethingInC(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPF_READ_C | OPF_WRITE_C | OPF_READ_VAL32_C | OPF_READ_VAL64_C); }
     static bool hasSomethingInD(const ByteCodeInstruction* inst) { return inst->hasOpFlag(OPF_READ_D | OPF_WRITE_D | OPF_READ_VAL32_D | OPF_READ_VAL64_D); }
 
+    static uint32_t countWriteRegs(const ByteCodeInstruction* inst) { return hasWriteRegInA(inst) + hasWriteRegInB(inst) + hasWriteRegInC(inst) + hasWriteRegInD(inst); }
+    static uint32_t countReadRegs(const ByteCodeInstruction* inst) { return hasReadRegInA(inst) + hasReadRegInB(inst) + hasReadRegInC(inst) + hasReadRegInD(inst); }
+
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);
     static bool     isByteCodeLambda(void* ptr);
