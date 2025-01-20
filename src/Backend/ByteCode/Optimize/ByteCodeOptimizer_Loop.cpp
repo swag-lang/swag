@@ -131,7 +131,7 @@ namespace
                 ipScan->d.u32 = newReg;
 
             ipScan += 1;
-        }        
+        }
     }
 }
 
@@ -235,9 +235,12 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     cstOp->a.u64 = cstOp->c.u64;
                 else if (ByteCode::hasWriteRegInD(cstOp))
                     cstOp->a.u64 = cstOp->d.u64;
-                
+
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u64 = newReg;
+
+                cstOp->removeFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C | BCI_IMM_D);
+                replaceReg(context, cstOp + 1, ip, cstOp->a.u32, newReg);
                 continue;
             }
 
@@ -252,15 +255,17 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 newReg = context->bc->maxReservedRegisterRC;
                 context->bc->maxReservedRegisterRC++;
 
-                cstOp       = it + shift;
-                ipStart->op = cstOp->op;
-                ipStart->a  = cstOp->a;
-                ipStart->b  = cstOp->b;
-                ipStart->c  = cstOp->c;
-                ipStart->d  = cstOp->d;
+                cstOp          = it + shift;
+                ipStart->op    = cstOp->op;
+                ipStart->flags = cstOp->flags;
+                ipStart->a     = cstOp->a;
+                ipStart->b     = cstOp->b;
+                ipStart->c     = cstOp->c;
+                ipStart->d     = cstOp->d;
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
                 cstOp->b.u64 = newReg;
+                cstOp->removeFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C | BCI_IMM_D);
 
                 if (ByteCode::hasWriteRegInA(ipStart))
                 {
