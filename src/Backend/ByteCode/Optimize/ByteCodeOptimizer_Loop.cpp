@@ -42,7 +42,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             {
                 hasJumps        = true;
                 const auto test = ipScan + ipScan->b.s32 + 1;
-                if (test < ipStart || test > ip)
+                if (test < ipStart || test > ip + 1)
                     break;
             }
 
