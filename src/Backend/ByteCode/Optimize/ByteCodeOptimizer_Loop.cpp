@@ -138,8 +138,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::MakeBssSegPointer:
                 case ByteCodeOp::MakeMutableSegPointer:
                 case ByteCodeOp::MakeLambda:
-                //case ByteCodeOp::SetImmediate32:
-                //case ByteCodeOp::SetImmediate64:
                     context->vecInst.push_back(ipScan);
                     break;
 
@@ -199,6 +197,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
             if ((cstOp->a.u32 < context->vecReg.size() && context->vecReg[cstOp->a.u32] > 1) || hasJumps)
             {
+                context->bc->print({});
                 if (!insertNopBefore(context, ipStart))
                     break;
 
@@ -241,6 +240,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                     ipScan += 1;
                 }
+                context->bc->print({});
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
