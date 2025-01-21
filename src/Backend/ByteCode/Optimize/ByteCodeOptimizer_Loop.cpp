@@ -139,9 +139,6 @@ namespace
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
-    //if (context->bc->name != "Core.Hash.Crc32.update")
-     //   return true;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool hasJumps = false;
@@ -168,13 +165,13 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::MakeBssSegPointer:
                 case ByteCodeOp::MakeMutableSegPointer:
                 case ByteCodeOp::MakeLambda:
+                case ByteCodeOp::ClearRA:
+                case ByteCodeOp::SetImmediate32:
+                case ByteCodeOp::SetImmediate64:
                     context->vecInst.push_back(ipScan);
                     break;
 
                 case ByteCodeOp::CopyRBtoRA64:
-                case ByteCodeOp::ClearRA:
-                case ByteCodeOp::SetImmediate32:
-                case ByteCodeOp::SetImmediate64:
                     break;
 
                 default:
@@ -185,7 +182,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                             (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
                             (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
                         {
-                            //context->vecInst.push_back(ipScan);
+                            context->vecInst.push_back(ipScan);
                         }
                     }
 
@@ -283,8 +280,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     ipStart->c.u64 = newReg;
                 else
                     ipStart->d.u64 = newReg;
-
-                //context->bc->print({});
 
                 context->vecInstCopy.push_back(*ipStart);
                 replaceReg(context, cstOp + 1, ip + shift, cstOp->a.u32, newReg);

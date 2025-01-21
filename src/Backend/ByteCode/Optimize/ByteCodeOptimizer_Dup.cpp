@@ -326,14 +326,14 @@ bool ByteCodeOptimizer::optimizePassDupSetRA(ByteCodeOptContext* context)
         return true;
 
     optimizePassDupSetRAOp(context, ByteCodeOp::CopyRRtoRA);
+
     optimizePassDupSetRAOp(context, ByteCodeOp::GetParam64);
     optimizePassDupSetRAOp(context, ByteCodeOp::GetIncParam64);
-
-    optimizePassDupSetRAOp(context, ByteCodeOp::MakeBssSegPointer);
-    optimizePassDupSetRAOp(context, ByteCodeOp::MakeConstantSegPointer);
-    optimizePassDupSetRAOp(context, ByteCodeOp::MakeMutableSegPointer);
-    optimizePassDupSetRAOp(context, ByteCodeOp::MakeCompilerSegPointer);
     optimizePassDupSetRAOp(context, ByteCodeOp::MakeStackPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeCompilerSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeConstantSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeBssSegPointer);
+    optimizePassDupSetRAOp(context, ByteCodeOp::MakeMutableSegPointer);
     optimizePassDupSetRAOp(context, ByteCodeOp::MakeLambda);
     optimizePassDupSetRAOp(context, ByteCodeOp::ClearRA);
     optimizePassDupSetRAOp(context, ByteCodeOp::SetImmediate32);

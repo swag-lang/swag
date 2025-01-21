@@ -693,6 +693,10 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         OPT_PASS(optimizePassLoop);
         OPT_PASS(optimizePassSwitch);
         OPT_PASS(optimizePassDupBlocks);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
+
         OPT_PASS(optimizePassReduceX2);
         removeNops(&optContext);
         if (optContext.allPassesHaveDoneSomething)

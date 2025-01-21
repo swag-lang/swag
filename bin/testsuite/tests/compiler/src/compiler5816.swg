@@ -5,10 +5,11 @@
 // 302393
 // 302369
 // 302357
+// 299882
 
 var a: ^bool
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 func toto(x: s32)->bool
 {
     var i = 0
