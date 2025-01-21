@@ -112,8 +112,6 @@ namespace
     {
         while (ipScan != ipEnd)
         {
-            if (ByteCode::hasWriteRefToReg(ipScan, reg))
-                break;
             if (ByteCode::isRet(ipScan))
                 break;
             if (ByteCode::isJump(ipScan) && context->vecReg[reg] > 1)
@@ -121,15 +119,17 @@ namespace
             if (ipScan->hasFlag(BCI_START_STMT) && context->vecReg[reg] > 1)
                 break;
 
-            if (ByteCode::hasReadRefToRegA(ipScan, reg))
+            if (ByteCode::hasReadRefToRegA(ipScan, reg) && !ByteCode::hasWriteRefToRegA(ipScan, reg))
                 ipScan->a.u32 = newReg;
-            if (ByteCode::hasReadRefToRegB(ipScan, reg))
+            if (ByteCode::hasReadRefToRegB(ipScan, reg) && !ByteCode::hasWriteRefToRegB(ipScan, reg))
                 ipScan->b.u32 = newReg;
-            if (ByteCode::hasReadRefToRegC(ipScan, reg))
+            if (ByteCode::hasReadRefToRegC(ipScan, reg) && !ByteCode::hasWriteRefToRegC(ipScan, reg))
                 ipScan->c.u32 = newReg;
-            if (ByteCode::hasReadRefToRegD(ipScan, reg))
+            if (ByteCode::hasReadRefToRegD(ipScan, reg) && !ByteCode::hasWriteRefToRegD(ipScan, reg))
                 ipScan->d.u32 = newReg;
 
+            if (ByteCode::hasWriteRefToReg(ipScan, reg))
+                break;
             ipScan += 1;
         }
     }
@@ -139,6 +139,9 @@ namespace
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
+    //if (context->bc->name != "Core.Hash.Crc32.update")
+     //   return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool hasJumps = false;
@@ -226,17 +229,21 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 }
             }
 
+            uint32_t writeReg;
+            if (ByteCode::hasWriteRegInA(cstOp))
+                writeReg = cstOp->a.u32;
+            else if (ByteCode::hasWriteRegInB(cstOp))
+                writeReg = cstOp->b.u32;
+            else if (ByteCode::hasWriteRegInC(cstOp))
+                writeReg = cstOp->c.u32;
+            else
+                writeReg = cstOp->d.u32;
+
             // An instruction already exists, so replace the current one with the previous destination register
             if (newReg)
             {
-                if (ByteCode::hasWriteRegInB(cstOp))
-                    cstOp->a.u64 = cstOp->b.u64;
-                else if (ByteCode::hasWriteRegInC(cstOp))
-                    cstOp->a.u64 = cstOp->c.u64;
-                else if (ByteCode::hasWriteRegInD(cstOp))
-                    cstOp->a.u64 = cstOp->d.u64;
-
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
+                cstOp->a.u64 = writeReg;
                 cstOp->b.u64 = newReg;
 
                 cstOp->removeFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C | BCI_IMM_D);
@@ -246,7 +253,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
             // If the register is used more than once, then we allocate a new one and make a copy at the previous place.
             // The copy will have a chance to be removed, and if not, the loop will just have one copy instead of the original instruction.
-            if ((cstOp->a.u32 < context->vecReg.size() && context->vecReg[cstOp->a.u32] > 1) || hasJumps)
+            if ((writeReg < context->vecReg.size() && context->vecReg[writeReg] > 1) || hasJumps)
             {
                 if (!insertNopBefore(context, ipStart))
                     break;
@@ -264,28 +271,20 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 ipStart->d     = cstOp->d;
 
                 SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
+                cstOp->a.u64 = writeReg;
                 cstOp->b.u64 = newReg;
                 cstOp->removeFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C | BCI_IMM_D);
 
                 if (ByteCode::hasWriteRegInA(ipStart))
-                {
                     ipStart->a.u64 = newReg;
-                }
                 else if (ByteCode::hasWriteRegInB(ipStart))
-                {
-                    cstOp->a.u64   = ipStart->b.u64;
                     ipStart->b.u64 = newReg;
-                }
                 else if (ByteCode::hasWriteRegInC(ipStart))
-                {
-                    cstOp->a.u64   = ipStart->c.u64;
                     ipStart->c.u64 = newReg;
-                }
                 else
-                {
-                    cstOp->a.u64   = ipStart->d.u64;
                     ipStart->d.u64 = newReg;
-                }
+
+                //context->bc->print({});
 
                 context->vecInstCopy.push_back(*ipStart);
                 replaceReg(context, cstOp + 1, ip + shift, cstOp->a.u32, newReg);
@@ -298,12 +297,13 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
 
                 shift += 1;
-                cstOp       = it + shift;
-                ipStart->op = cstOp->op;
-                ipStart->a  = cstOp->a;
-                ipStart->b  = cstOp->b;
-                ipStart->c  = cstOp->c;
-                ipStart->d  = cstOp->d;
+                cstOp          = it + shift;
+                ipStart->op    = cstOp->op;
+                ipStart->flags = cstOp->flags;
+                ipStart->a     = cstOp->a;
+                ipStart->b     = cstOp->b;
+                ipStart->c     = cstOp->c;
+                ipStart->d     = cstOp->d;
 
                 context->vecInstCopy.push_back(*ipStart);
                 setNop(context, cstOp);
