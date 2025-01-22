@@ -47,7 +47,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
         node->token.sourceFile->module->decImplForToSolve(typeStruct);
 
         ScopedLock lk2(node->structScope->parentScope->mutex);
-        ScopedLock lk3(node->structScope->mutex);
+        ScopedLock lk3(structDecl->scope->mutex);
 
         node->structScope->parentScope->removeChildNoLock(node->structScope);
         for (const auto s : node->structScope->childrenScopes)

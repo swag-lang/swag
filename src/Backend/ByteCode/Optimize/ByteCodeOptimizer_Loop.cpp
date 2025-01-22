@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 namespace
 {
@@ -168,10 +167,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 case ByteCodeOp::ClearRA:
                 case ByteCodeOp::SetImmediate32:
                 case ByteCodeOp::SetImmediate64:
-                    context->vecInst.push_back(ipScan);
-                    break;
-
                 case ByteCodeOp::CopyRBtoRA64:
+                    context->vecInst.push_back(ipScan);
                     break;
 
                 default:
@@ -202,6 +199,35 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         {
             auto cstOp = it + shift;
             SWAG_ASSERT(ByteCode::countWriteRegs(cstOp) == 1);
+
+            if (cstOp->op == ByteCodeOp::CopyRBtoRA64)
+            {
+                const auto reg    = cstOp->a.u32;
+                if (reg >= context->vecReg.size() || context->vecReg[reg] <= 1)
+                {
+                    const auto newReg = cstOp->b.u32;
+                    if (newReg >= context->vecReg.size() || context->vecReg[newReg] <= 1)
+                    {
+                        auto       ipT    = cstOp + 1;
+                        while (ipT != ip + shift)
+                        {
+                            if (ByteCode::hasReadRefToRegA(ipT, reg) && !ByteCode::hasWriteRefToRegA(ipT, reg))
+                                ipT->a.u32 = newReg;
+                            if (ByteCode::hasReadRefToRegB(ipT, reg) && !ByteCode::hasWriteRefToRegB(ipT, reg))
+                                ipT->b.u32 = newReg;
+                            if (ByteCode::hasReadRefToRegC(ipT, reg) && !ByteCode::hasWriteRefToRegC(ipT, reg))
+                                ipT->c.u32 = newReg;
+                            if (ByteCode::hasReadRefToRegD(ipT, reg) && !ByteCode::hasWriteRefToRegD(ipT, reg))
+                                ipT->d.u32 = newReg;
+                            if (ByteCode::hasWriteRefToReg(ipScan, newReg))
+                                break;                        
+                            ipT += 1;
+                        }
+                    }
+                }
+
+                continue;
+            }
 
             // Is the same instruction already moved out of loop ?
             // In that case we will just use the corresponding register
