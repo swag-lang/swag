@@ -697,6 +697,8 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
+        setJumps(&optContext);
+        genTree(&optContext, true);
         OPT_PASS(optimizePassReduceX2);
         removeNops(&optContext);
         if (optContext.allPassesHaveDoneSomething)
