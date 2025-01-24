@@ -341,3 +341,110 @@ bool ByteCodeOptimizer::optimizePassDupSetRA(ByteCodeOptContext* context)
 
     return true;
 }
+
+// Remove duplicated pure instructions (set RA to a constant)
+bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        if (!ip->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
+            continue;
+        if (ByteCode::countWriteRegs(ip) > 1)
+            continue;
+
+        uint32_t reg;
+        if (ByteCode::hasWriteRegInA(ip))
+            reg = ip->a.u32;
+        else if (ByteCode::hasWriteRegInB(ip))
+            reg = ip->b.u32;
+        else if (ByteCode::hasWriteRegInC(ip))
+            reg = ip->c.u32;
+        else
+            reg = ip->d.u32;
+
+        if (ByteCode::hasReadRefToReg(ip, reg))
+            continue;
+
+        for (auto ipScan = ip + 1; ipScan->op != ByteCodeOp::End; ipScan++)
+        {
+            if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
+                break;
+            if (ipScan->hasFlag(BCI_START_STMT))
+                break;
+
+            if (ByteCode::hasReadRegInA(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                break;
+            if (ByteCode::hasReadRegInB(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
+                break;
+            if (ByteCode::hasReadRegInC(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
+                break;
+            if (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
+                break;
+            if (ByteCode::hasWriteRefToReg(ipScan, reg))
+                break;
+
+            if (ipScan->op != ip->op)
+                continue;
+            if (!ByteCode::hasWriteRegInA(ipScan) && (ByteCode::hasReadRegInA(ip) != ByteCode::hasReadRegInA(ipScan) || ipScan->a.u64 != ip->a.u64))
+                continue;
+            if (!ByteCode::hasWriteRegInB(ipScan) && (ByteCode::hasReadRegInB(ip) != ByteCode::hasReadRegInB(ipScan) || ipScan->b.u64 != ip->b.u64))
+                continue;
+            if (!ByteCode::hasWriteRegInC(ipScan) && (ByteCode::hasReadRegInC(ip) != ByteCode::hasReadRegInC(ipScan) || ipScan->c.u64 != ip->c.u64))
+                continue;
+            if (!ByteCode::hasWriteRegInD(ipScan) && (ByteCode::hasReadRegInD(ip) != ByteCode::hasReadRegInD(ipScan) || ipScan->d.u64 != ip->d.u64))
+                continue;
+
+
+            uint32_t writeReg;
+            if (ByteCode::hasWriteRegInA(ipScan))
+                writeReg = ipScan->a.u32;
+            else if (ByteCode::hasWriteRegInB(ipScan))
+                writeReg = ipScan->b.u32;
+            else if (ByteCode::hasWriteRegInC(ipScan))
+                writeReg = ipScan->c.u32;
+            else
+                writeReg = ipScan->d.u32;
+
+            ipScan += 1;
+            while (ipScan->op != ByteCodeOp::End)
+            {
+                if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
+                    break;
+                if (ipScan->hasFlag(BCI_START_STMT))
+                    break;
+                if (ByteCode::hasWriteRefToReg(ipScan, reg) || ByteCode::hasWriteRefToReg(ipScan, writeReg))
+                    break;
+
+                if (ByteCode::hasReadRefToRegA(ipScan, writeReg) && !ByteCode::hasWriteRefToRegA(ipScan, writeReg))
+                {
+                    ipScan->a.u32 = reg;
+                    context->setDirtyPass();
+                }
+                
+                if (ByteCode::hasReadRefToRegB(ipScan, writeReg) && !ByteCode::hasWriteRefToRegB(ipScan, writeReg))
+                {
+                    ipScan->b.u32 = reg;
+                    context->setDirtyPass();
+                }
+
+                if (ByteCode::hasReadRefToRegC(ipScan, writeReg) && !ByteCode::hasWriteRefToRegC(ipScan, writeReg))
+                {
+                    ipScan->c.u32 = reg;
+                    context->setDirtyPass();
+                }
+
+                if (ByteCode::hasReadRefToRegD(ipScan, writeReg) && !ByteCode::hasWriteRefToRegD(ipScan, writeReg))
+                {
+                    ipScan->d.u32 = reg;
+                    context->setDirtyPass();
+                }
+
+                ipScan += 1;
+            }
+
+            break;
+        }
+    }
+
+    return true;
+}

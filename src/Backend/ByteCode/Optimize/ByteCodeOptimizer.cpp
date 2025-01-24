@@ -689,6 +689,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
 
         setJumps(&optContext);
         genTree(&optContext, true);
+        OPT_PASS(optimizePassDupInstruction);
         OPT_PASS(optimizePassErr);
         OPT_PASS(optimizePassLoop);
         OPT_PASS(optimizePassSwitch);

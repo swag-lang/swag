@@ -54,6 +54,7 @@ struct ByteCodeOptimizer
     static bool optimizePassDupCopyRBRA(ByteCodeOptContext* context);
     static bool optimizePassDupSetRA(ByteCodeOptContext* context);
     static bool optimizePassDupBlocks(ByteCodeOptContext* inContext);
+    static bool optimizePassDupInstruction(ByteCodeOptContext* context);
 
     static void reduceStackJumps(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip);
