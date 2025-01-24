@@ -426,8 +426,6 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
                     break;
                 if (ipScan->hasFlag(BCI_START_STMT))
                     break;
-                if (ByteCode::hasWriteRefToReg(ipScan, reg) || ByteCode::hasWriteRefToReg(ipScan, writeReg))
-                    break;
 
                 if (ByteCode::hasReadRefToRegA(ipScan, writeReg) && !ByteCode::hasWriteRefToRegA(ipScan, writeReg))
                 {
@@ -452,6 +450,11 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
                     ipScan->d.u32 = reg;
                     context->setDirtyPass();
                 }
+
+                if (ByteCode::hasWriteRefToReg(ipScan, writeReg))
+                    break;
+                if (ByteCode::hasWriteRefToReg(ipScan, reg))
+                    break;
 
                 ipScan += 1;
             }
