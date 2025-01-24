@@ -380,20 +380,34 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
                 break;
             if (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
                 break;
-            if (ByteCode::hasWriteRefToReg(ipScan, reg))
-                break;
 
+            bool sameInst = true;
             if (ipScan->op != ip->op)
-                continue;
-            if (!ByteCode::hasWriteRegInA(ipScan) && (ByteCode::hasReadRegInA(ip) != ByteCode::hasReadRegInA(ipScan) || ipScan->a.u64 != ip->a.u64))
-                continue;
-            if (!ByteCode::hasWriteRegInB(ipScan) && (ByteCode::hasReadRegInB(ip) != ByteCode::hasReadRegInB(ipScan) || ipScan->b.u64 != ip->b.u64))
-                continue;
-            if (!ByteCode::hasWriteRegInC(ipScan) && (ByteCode::hasReadRegInC(ip) != ByteCode::hasReadRegInC(ipScan) || ipScan->c.u64 != ip->c.u64))
-                continue;
-            if (!ByteCode::hasWriteRegInD(ipScan) && (ByteCode::hasReadRegInD(ip) != ByteCode::hasReadRegInD(ipScan) || ipScan->d.u64 != ip->d.u64))
+                sameInst = false;
+            else if (!ByteCode::hasWriteRegInA(ipScan) && (ByteCode::hasReadRegInA(ip) != ByteCode::hasReadRegInA(ipScan) || ipScan->a.u64 != ip->a.u64))
+                sameInst = false;
+            else if (!ByteCode::hasWriteRegInB(ipScan) && (ByteCode::hasReadRegInB(ip) != ByteCode::hasReadRegInB(ipScan) || ipScan->b.u64 != ip->b.u64))
+                sameInst = false;
+            else if (!ByteCode::hasWriteRegInC(ipScan) && (ByteCode::hasReadRegInC(ip) != ByteCode::hasReadRegInC(ipScan) || ipScan->c.u64 != ip->c.u64))
+                sameInst = false;
+            else if (!ByteCode::hasWriteRegInD(ipScan) && (ByteCode::hasReadRegInD(ip) != ByteCode::hasReadRegInD(ipScan) || ipScan->d.u64 != ip->d.u64))
+                sameInst = false;
+
+            if (!sameInst && ByteCode::hasWriteRefToReg(ipScan, reg))
+                break;
+            if (!sameInst)
                 continue;
 
+            // Exact same instructions, it's useless, as we only have "pure" instructions between the 2
+            // (i.e. only instructions that read something, or modify a register)
+            if ((ByteCode::hasWriteRegInA(ipScan) && ipScan->a.u32 == reg) ||
+                (ByteCode::hasWriteRegInB(ipScan) && ipScan->b.u32 == reg) ||
+                (ByteCode::hasWriteRegInC(ipScan) && ipScan->c.u32 == reg) ||
+                (ByteCode::hasWriteRegInD(ipScan) && ipScan->d.u32 == reg))
+            {
+                setNop(context, ipScan);
+                break;
+            }
 
             uint32_t writeReg;
             if (ByteCode::hasWriteRegInA(ipScan))
@@ -420,7 +434,7 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
                     ipScan->a.u32 = reg;
                     context->setDirtyPass();
                 }
-                
+
                 if (ByteCode::hasReadRefToRegB(ipScan, writeReg) && !ByteCode::hasWriteRefToRegB(ipScan, writeReg))
                 {
                     ipScan->b.u32 = reg;
