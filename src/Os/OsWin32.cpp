@@ -574,7 +574,7 @@ namespace OS
         DebugBreak();
     }
 
-    [[noreturn]] void exit(int code)
+    void exit(int code)
     {
         ExitProcess(code);
     }
