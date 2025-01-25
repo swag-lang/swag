@@ -367,7 +367,7 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
 
         for (auto ipScan = ip + 1; ipScan->op != ByteCodeOp::End; ipScan++)
         {
-            if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
+            if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ | OPF_JUMP))
                 break;
             if (ipScan->hasFlag(BCI_START_STMT))
                 break;
@@ -422,7 +422,7 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
             ipScan += 1;
             while (ipScan->op != ByteCodeOp::End)
             {
-                if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
+                if (!ipScan->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ | OPF_JUMP))
                     break;
                 if (ipScan->hasFlag(BCI_START_STMT))
                     break;
