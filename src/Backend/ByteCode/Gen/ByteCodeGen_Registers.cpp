@@ -62,10 +62,15 @@ uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, Symbo
                     return overload->symRegisters[0];
                 }
             }
-        }
 
-        result = context->bc->availableRegistersRC.back();
-        context->bc->availableRegistersRC.pop_back();
+            result = context->bc->availableRegistersRC.front();
+            context->bc->availableRegistersRC.erase_unordered(0);
+        }
+        else
+        {
+            result = context->bc->availableRegistersRC.back();
+            context->bc->availableRegistersRC.pop_back();
+        }
     }
     else
     {
