@@ -1,38 +1,11 @@
 #pragma once
-#define MK_IMMA_8(__reg)                                             \
-    do                                                               \
-    {                                                                \
-        if (ip->hasFlag(BCI_IMM_A))                                  \
-            pp.emitLoad8Immediate(__reg, ip->a.u8);                  \
-        else                                                         \
-            pp.emitLoad8Indirect(REG_OFFSET(ip->a.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMA_16(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_A))                                   \
-            pp.emitLoad16Immediate(__reg, ip->a.u16);                 \
-        else                                                          \
-            pp.emitLoad16Indirect(REG_OFFSET(ip->a.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMA_32(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_A))                                   \
-            pp.emitLoad32Immediate(__reg, ip->a.u32);                 \
-        else                                                          \
-            pp.emitLoad32Indirect(REG_OFFSET(ip->a.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMA_64(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_A))                                   \
-            pp.emitLoad64Immediate(__reg, ip->a.u64);                 \
-        else                                                          \
-            pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), __reg, RDI); \
+#define MK_IMMA(__reg, __numBits)                                               \
+    do                                                                          \
+    {                                                                           \
+        if (ip->hasFlag(BCI_IMM_A))                                             \
+            pp.emitLoadNImmediate(__reg, ip->a.u64, __numBits);                 \
+        else                                                                    \
+            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), __reg, RDI, __numBits); \
     } while (0)
 
 #define MK_IMMA_F32(__reg)                                                         \
@@ -278,7 +251,7 @@
         }                                                                       \
         else                                                                    \
         {                                                                       \
-            MK_IMMA_8(RAX);                                                     \
+            MK_IMMA(RAX, CPUBits::B8);                                          \
             MK_IMMB_8(RCX);                                                     \
             pp.__op(RAX, RCX, CPUBits::B8);                                     \
         }                                                                       \
@@ -303,7 +276,7 @@
         }                                                                        \
         else                                                                     \
         {                                                                        \
-            MK_IMMA_16(RAX);                                                     \
+            MK_IMMA(RAX, CPUBits::B16);                                                     \
             MK_IMMB_16(RCX);                                                     \
             pp.__op(RAX, RCX, CPUBits::B16);                                     \
         }                                                                        \
@@ -328,7 +301,7 @@
         }                                                                        \
         else                                                                     \
         {                                                                        \
-            MK_IMMA_32(RAX);                                                     \
+            MK_IMMA(RAX, CPUBits::B32);                                                     \
             MK_IMMB_32(RCX);                                                     \
             pp.__op(RAX, RCX, CPUBits::B32);                                     \
         }                                                                        \
@@ -353,7 +326,7 @@
         }                                                                                      \
         else                                                                                   \
         {                                                                                      \
-            MK_IMMA_64(RAX);                                                                   \
+            MK_IMMA(RAX, CPUBits::B64);                                                                   \
             MK_IMMB_64(RCX);                                                                   \
             pp.__op(RAX, RCX, CPUBits::B64);                                                   \
         }                                                                                      \
@@ -608,7 +581,7 @@
         }                                                                              \
         else                                                                           \
         {                                                                              \
-            MK_IMMA_8(RAX);                                                            \
+            MK_IMMA(RAX, CPUBits::B8);                                                 \
             MK_IMMC_8(RCX);                                                            \
             pp.emitCmpN(RAX, RCX, CPUBits::B8);                                        \
         }                                                                              \
@@ -629,7 +602,7 @@
         }                                                                                \
         else                                                                             \
         {                                                                                \
-            MK_IMMA_16(RAX);                                                             \
+            MK_IMMA(RAX, CPUBits::B16);                                                             \
             MK_IMMC_16(RCX);                                                             \
             pp.emitCmpN(RAX, RCX, CPUBits::B16);                                         \
         }                                                                                \
@@ -650,7 +623,7 @@
         }                                                                                \
         else                                                                             \
         {                                                                                \
-            MK_IMMA_32(RAX);                                                             \
+            MK_IMMA(RAX, CPUBits::B32);                                                             \
             MK_IMMC_32(RCX);                                                             \
             pp.emitCmpN(RAX, RCX, CPUBits::B32);                                         \
         }                                                                                \
@@ -671,7 +644,7 @@
         }                                                                                      \
         else                                                                                   \
         {                                                                                      \
-            MK_IMMA_64(RAX);                                                                   \
+            MK_IMMA(RAX, CPUBits::B64);                                                                   \
             MK_IMMC_64(RCX);                                                                   \
             pp.emitCmpN(RAX, RCX, CPUBits::B64);                                               \
         }                                                                                      \
