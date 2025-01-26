@@ -193,21 +193,31 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
             break;
 
         case ByteCodeOp::DeRef8:
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfDeRefEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfDeRefNotEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfDeRefEqual8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfDeRefNotEqual8);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfDeRefEqual8);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual8, ByteCodeOp::JumpIfDeRefNotEqual8);
             break;
 
         case ByteCodeOp::DeRef16:
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero16, ByteCodeOp::JumpIfDeRefEqual16);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero16, ByteCodeOp::JumpIfDeRefNotEqual16);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfDeRefEqual16);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual16, ByteCodeOp::JumpIfDeRefNotEqual16);
             break;
 
         case ByteCodeOp::DeRef32:
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero32, ByteCodeOp::JumpIfDeRefEqual32);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero32, ByteCodeOp::JumpIfDeRefNotEqual32);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfDeRefEqual32);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual32, ByteCodeOp::JumpIfDeRefNotEqual32);
             break;
 
         case ByteCodeOp::DeRef64:
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero64, ByteCodeOp::JumpIfDeRefEqual64);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero64, ByteCodeOp::JumpIfDeRefNotEqual64);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfDeRefEqual64);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotEqual64, ByteCodeOp::JumpIfDeRefNotEqual64);
             break;
