@@ -759,19 +759,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->ip += ip->b.s32;
             break;
 
-        case ByteCodeOp::JumpIfStackFalse:
-            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<bool*>(context->bp + ip->a.u32) == false)
-                context->ip += ip->b.s32;
-            break;
-        case ByteCodeOp::JumpIfStackTrue:
-            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<bool*>(context->bp + ip->a.u32) == true)
-                context->ip += ip->b.s32;
-            break;
-
         case ByteCodeOp::JumpIfLowerS8:
             if (IMMA_S8(ip) < IMMC_S8(ip))
                 context->ip += ip->b.s32;

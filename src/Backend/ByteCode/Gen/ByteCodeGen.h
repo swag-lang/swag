@@ -251,7 +251,7 @@ namespace ByteCodeGen
     bool emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context);
     bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     bool emitMakeLambda(ByteCodeGenContext* context);
-    bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
+    bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool sameReg = false);
     bool emitPointerDeRef(ByteCodeGenContext* context);
     bool emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo);
     bool emitPointerRef(ByteCodeGenContext* context);

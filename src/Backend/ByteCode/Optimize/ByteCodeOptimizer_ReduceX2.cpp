@@ -133,8 +133,8 @@ void ByteCodeOptimizer::reduceStackJumps(ByteCodeOptContext* context, ByteCodeIn
     switch (ip->op)
     {
         case ByteCodeOp::GetFromStack8:
-            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackFalse);
-            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackTrue);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfFalse, ByteCodeOp::JumpIfStackZero8);
+            reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfTrue, ByteCodeOp::JumpIfStackNotZero8);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfZero8, ByteCodeOp::JumpIfStackZero8);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfNotZero8, ByteCodeOp::JumpIfStackNotZero8);
             reduceStackJumpsOp(context, ip, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfStackEqual8);

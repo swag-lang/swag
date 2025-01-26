@@ -176,9 +176,6 @@ BYTECODE_OP(JumpIfStackNotZero32, OPF_32 | OPF_JUMP | OPF_READ_VAL32_A | OPF_REA
 BYTECODE_OP(JumpIfStackZero64, OPF_64 | OPF_JUMP | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "if sp[_rau32_] == 0 jump")
 BYTECODE_OP(JumpIfStackNotZero64, OPF_64 | OPF_JUMP | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "if sp[_rau32_] != 0 jump")
 
-BYTECODE_OP(JumpIfStackFalse, OPF_8 | OPF_JUMP | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "if !sp[_rau32_] jump")
-BYTECODE_OP(JumpIfStackTrue, OPF_8 | OPF_JUMP | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "if sp[_rau32_] jump")
-
 BYTECODE_OP(JumpIfLowerS8, OPF_8 | OPF_JUMP | OPF_READ_A | OPF_IMM_A | OPF_READ_VAL32_B | OPF_READ_C | OPF_IMM_C, "if _ras8_ < _rcs8_ jump")
 BYTECODE_OP(JumpIfLowerS16, OPF_16 | OPF_JUMP | OPF_READ_A | OPF_IMM_A | OPF_READ_VAL32_B | OPF_READ_C | OPF_IMM_C, "if _ras16_ < _rcs16_ jump")
 BYTECODE_OP(JumpIfLowerS32, OPF_32 | OPF_JUMP | OPF_READ_A | OPF_IMM_A | OPF_READ_VAL32_B | OPF_READ_C | OPF_IMM_C, "if _ras32_ < _rcs32_ jump")

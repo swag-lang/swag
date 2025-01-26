@@ -95,6 +95,8 @@ func day9BA()
     @assert(total == 6183632723350)
 }
 
+//#[Swag.Optimize("", false)]
+//#[Swag.PrintBc]
 func day9BB()
 {
     func fileSum(a, n, block_id: s64)->u64

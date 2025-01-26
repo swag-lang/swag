@@ -201,7 +201,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     return true;
 }
 
-bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
+bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool sameReg)
 {
     typeInfo = TypeManager::concretePtrRefType(typeInfo, CONCRETE_FORCE_ALIAS);
 
@@ -223,32 +223,63 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
     }
 
     // We now only need one register
-    ensureCanBeChangedRC(context, r0);
-    truncRegisterRC(context, r0, 1);
-
-    // Register list can be stored in the parent, so we need to update it, otherwise we
-    // will free one register twice
-    context->node->parent->resultRegisterRc = r0;
-
-    switch (typeInfo->sizeOf)
+    if (!sameReg)
     {
-        case 1:
-            EMIT_INST2(context, ByteCodeOp::DeRef8, r0, r0);
-            break;
-        case 2:
-            EMIT_INST2(context, ByteCodeOp::DeRef16, r0, r0);
-            break;
-        case 4:
-            EMIT_INST2(context, ByteCodeOp::DeRef32, r0, r0);
-            break;
-        case 8:
-            EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
-            break;
-        default:
-            return Report::internalError(context->node, "emitTypeDeRef, size not supported");
+        ensureCanBeChangedRC(context, r0);
+        truncRegisterRC(context, r0, 1);
+
+        // Register list can be stored in the parent, so we need to update it, otherwise we
+        // will free one register twice
+        context->node->parent->resultRegisterRc = r0;
+
+        switch (typeInfo->sizeOf)
+        {
+            case 1:
+                EMIT_INST2(context, ByteCodeOp::DeRef8, r0, r0);
+                break;
+            case 2:
+                EMIT_INST2(context, ByteCodeOp::DeRef16, r0, r0);
+                break;
+            case 4:
+                EMIT_INST2(context, ByteCodeOp::DeRef32, r0, r0);
+                break;
+            case 8:
+                EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
+                break;
+            default:
+                return Report::internalError(context->node, "emitTypeDeRef, size not supported");
+        }
+
+        SWAG_CHECK(emitSafetyValue(context, r0, typeInfo));
+    }
+    else
+    {
+        const auto r1                           = reserveRegisterRC(context);
+        context->node->parent->resultRegisterRc = r1;
+
+        switch (typeInfo->sizeOf)
+        {
+            case 1:
+                EMIT_INST2(context, ByteCodeOp::DeRef8, r1, r0);
+                break;
+            case 2:
+                EMIT_INST2(context, ByteCodeOp::DeRef16, r1, r0);
+                break;
+            case 4:
+                EMIT_INST2(context, ByteCodeOp::DeRef32, r1, r0);
+                break;
+            case 8:
+                EMIT_INST2(context, ByteCodeOp::DeRef64, r1, r0);
+                break;
+            default:
+                return Report::internalError(context->node, "emitTypeDeRef, size not supported");
+        }
+
+        SWAG_CHECK(emitSafetyValue(context, r1, typeInfo));
+        freeRegisterRC(context, r0);
+        r0 = r1;
     }
 
-    SWAG_CHECK(emitSafetyValue(context, r0, typeInfo));
     return true;
 }
 
@@ -359,9 +390,9 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfoPointer->pointedType->isString())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType, true));
         else if (!node->isForceTakeAddress())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType, true));
 
         node->resultRegisterRc         = node->array->resultRegisterRc;
         node->parent->resultRegisterRc = node->resultRegisterRc;
@@ -386,7 +417,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 ensureCanBeChangedRC(context, node->access->resultRegisterRc);
                 EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
-            
+
             ensureCanBeChangedRC(context, node->array->resultRegisterRc);
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
