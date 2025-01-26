@@ -2179,7 +2179,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CompareOp3WayF32:
                 pp.emitClearN(R8, CPUBits::B32);
-                MK_IMMA_F32(XMM0);
+                MK_IMMA(XMM0, CPUBits::F32);
                 MK_IMMB_F32(XMM1);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::UCOMIF);
                 pp.emitSetA(R8);
@@ -2190,7 +2190,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CompareOp3WayF64:
                 pp.emitClearN(R8, CPUBits::B32);
-                MK_IMMA_F64(XMM0);
+                MK_IMMA(XMM0, CPUBits::F64);
                 MK_IMMB_F64(XMM1);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::UCOMIF);
                 pp.emitSetA(R8);

@@ -585,6 +585,14 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
         case CPUBits::B64:
             emitLoad64Immediate(reg, value);
             break;
+        case CPUBits::F32:
+            emitLoad32Immediate(RAX, static_cast<uint32_t>(value));
+            emitCopyF32(reg, RAX);
+            break;
+        case CPUBits::F64:
+            emitLoad64Immediate(RAX, value);
+            emitCopyF64(reg, RAX);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
