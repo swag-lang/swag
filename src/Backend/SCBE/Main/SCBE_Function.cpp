@@ -1642,11 +1642,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 else
-                    MK_BINOP_EQ8_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQN_SCAB(CPUOp::ADD, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
-                MK_BINOP_EQ8_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQN_SSCAB(CPUOp::ADD, CPUBits::B8);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS16:
@@ -1662,11 +1662,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 else
-                    MK_BINOP_EQ16_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQN_SCAB(CPUOp::ADD, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
-                MK_BINOP_EQ16_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQN_SSCAB(CPUOp::ADD, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS32:
@@ -1682,11 +1682,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 else
-                    MK_BINOP_EQ32_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQN_SCAB(CPUOp::ADD, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
-                MK_BINOP_EQ32_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQN_SSCAB(CPUOp::ADD, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS64:
@@ -1702,11 +1702,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 else
-                    MK_BINOP_EQ64_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQN_SCAB(CPUOp::ADD, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
-                MK_BINOP_EQ64_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQN_SSCAB(CPUOp::ADD, CPUBits::B64);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU8:
@@ -1780,11 +1780,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 else
-                    MK_BINOP_EQ8_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQN_SCAB(CPUOp::SUB, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
-                MK_BINOP_EQ8_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQN_SSCAB(CPUOp::SUB, CPUBits::B8);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS16:
@@ -1800,11 +1800,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 else
-                    MK_BINOP_EQ16_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQN_SCAB(CPUOp::SUB, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU16_SSSafe:
-                MK_BINOP_EQ16_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQN_SSCAB(CPUOp::SUB, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS32:
@@ -1820,11 +1820,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 else
-                    MK_BINOP_EQ32_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQN_SCAB(CPUOp::SUB, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpMinusEqS32_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU32_SSSafe:
-                MK_BINOP_EQ32_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQN_SSCAB(CPUOp::SUB, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS64:
@@ -1840,11 +1840,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 else
-                    MK_BINOP_EQ64_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQN_SCAB(CPUOp::SUB, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpMinusEqS64_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSSafe:
-                MK_BINOP_EQ64_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQN_SSCAB(CPUOp::SUB, CPUBits::B64);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU8:
