@@ -61,25 +61,25 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoad64Immediate(CPURegister reg, uint64_t value, bool force64Bits = false);
     void emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
 
-    void emitLoad8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitLoad16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitLoad32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitLoad64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
+    void emitLoad8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoad16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoad32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoad64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoadF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoadF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
-    void emitLoadF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitLoadF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
 
     void emitStore8Immediate(uint32_t memOffset, uint8_t val, CPURegister memReg);
     void emitStore16Immediate(uint32_t memOffset, uint16_t val, CPURegister memReg);
     void emitStore32Immediate(uint32_t memOffset, uint32_t val, CPURegister memReg);
     void emitStore64Immediate(uint32_t memOffset, uint64_t val, CPURegister memReg);
 
-    void emitStore8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitStore16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitStore32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitStore64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitStoreF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emitStoreF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg = RDI);
+    void emitStore8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitStore16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitStore32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitStore64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitStoreF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitStoreF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
 
     void emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);

@@ -16,6 +16,8 @@ enum class CPUBits : uint32_t
     B16 = 16,
     B32 = 32,
     B64 = 64,
+    F32,
+    F64,
 };
 
 enum class CPUPushParamType
