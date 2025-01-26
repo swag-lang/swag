@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
+#pragma optimize("", off)
 
 namespace
 {
@@ -321,13 +322,13 @@ void SCBE_X64::emitLoadF32Indirect(uint32_t memOffset, CPURegister reg, CPURegis
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadF64Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
     concat.addU8(0xF2);
     concat.addU8(0x0F);
     concat.addU8(0x10);
-    emitModRM(concat, stackOffset, reg, memReg);
+    emitModRM(concat, memOffset, reg, memReg);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -842,19 +843,19 @@ void SCBE_X64::emitCmpNIndirectDst(uint32_t memOffset, uint32_t value, CPURegist
     if (numBits == CPUBits::B8)
     {
         concat.addU8(0x80);
-        emitModRM(concat, memOffset, memReg, memReg);
+        emitModRM(concat, memOffset, memReg, memReg, 0x39);
         concat.addU8(static_cast<uint8_t>(value));
     }
     else if (value <= 0x7F)
     {
         concat.addU8(0x83);
-        emitModRM(concat, memOffset, memReg, memReg);
+        emitModRM(concat, memOffset, memReg, memReg, 0x39);
         concat.addU8(static_cast<uint8_t>(value));
     }
     else
     {
         concat.addU8(0x81);
-        emitModRM(concat, memOffset, memReg, memReg);
+        emitModRM(concat, memOffset, memReg, memReg, 0x39);
         if (numBits == CPUBits::B16)
             concat.addU16(static_cast<uint16_t>(value));
         else

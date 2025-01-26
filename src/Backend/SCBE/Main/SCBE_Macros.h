@@ -744,184 +744,88 @@
         pp.emitJump(__op, i, ip->b.s32);                                                       \
     } while (0)
 
-#define MK_JMPCMP_STACK_8(__op)                                                           \
-    do                                                                                    \
-    {                                                                                     \
-        if (!ip->hasFlag(BCI_IMM_C))                                                      \
-        {                                                                                 \
-            pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);            \
-        }                                                                                 \
-        else if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7f)                             \
-        {                                                                                 \
-            pp.emitCmpNIndirectDst(offsetStack + ip->a.u32, ip->c.u32, RDI, CPUBits::B8); \
-        }                                                                                 \
-        else                                                                              \
-        {                                                                                 \
-            pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            MK_IMMC_8(RCX);                                                               \
-            pp.emitCmpN(RAX, RCX, CPUBits::B8);                                           \
-        }                                                                                 \
-        pp.emitJump(__op, i, ip->b.s32);                                                  \
-    } while (0)
-
-#define MK_JMPCMP_STACK_16(__op)                                                           \
-    do                                                                                     \
-    {                                                                                      \
-        if (!ip->hasFlag(BCI_IMM_C))                                                       \
-        {                                                                                  \
-            pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16);            \
-        }                                                                                  \
-        else if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7fff)                            \
-        {                                                                                  \
-            pp.emitCmpNIndirectDst(offsetStack + ip->a.u32, ip->c.u32, RDI, CPUBits::B16); \
-        }                                                                                  \
-        else                                                                               \
-        {                                                                                  \
-            pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            MK_IMMC_16(RCX);                                                               \
-            pp.emitCmpN(RAX, RCX, CPUBits::B16);                                           \
-        }                                                                                  \
-        pp.emitJump(__op, i, ip->b.s32);                                                   \
-    } while (0)
-
-#define MK_JMPCMP_STACK_32(__op)                                                           \
-    do                                                                                     \
-    {                                                                                      \
-        if (!ip->hasFlag(BCI_IMM_C))                                                       \
-        {                                                                                  \
-            pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);            \
-        }                                                                                  \
-        else if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7fffffff)                        \
-        {                                                                                  \
-            pp.emitCmpNIndirectDst(offsetStack + ip->a.u32, ip->c.u32, RDI, CPUBits::B32); \
-        }                                                                                  \
-        else                                                                               \
-        {                                                                                  \
-            pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            MK_IMMC_32(RCX);                                                               \
-            pp.emitCmpN(RAX, RCX, CPUBits::B32);                                           \
-        }                                                                                  \
-        pp.emitJump(__op, i, ip->b.s32);                                                   \
-    } while (0)
-
-#define MK_JMPCMP_STACK_64(__op)                                                           \
-    do                                                                                     \
-    {                                                                                      \
-        if (!ip->hasFlag(BCI_IMM_C))                                                       \
-        {                                                                                  \
-            pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B64);            \
-        }                                                                                  \
-        else if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7fffffff)                        \
-        {                                                                                  \
-            pp.emitCmpNIndirectDst(offsetStack + ip->a.u32, ip->c.u32, RDI, CPUBits::B64); \
-        }                                                                                  \
-        else                                                                               \
-        {                                                                                  \
-            pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);                      \
-            MK_IMMC_64(RCX);                                                               \
-            pp.emitCmpN(RAX, RCX, CPUBits::B64);                                           \
-        }                                                                                  \
-        pp.emitJump(__op, i, ip->b.s32);                                                   \
-    } while (0)
-
-#define MK_JMPCMP_DEREF_8(__op)                                                \
-    do                                                                         \
-    {                                                                          \
-        pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);                \
-        if (ip->d.u64 <= 0x7FFFFFFF)                                           \
-            pp.emitLoad8Indirect(ip->d.u32, RAX, RAX);                         \
-        else                                                                   \
-        {                                                                      \
-            pp.emitLoad64Immediate(RCX, ip->d.u64);                            \
-            pp.emitOpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);                    \
-            pp.emitLoad8Indirect(0, RAX, RAX);                                 \
-        }                                                                      \
-        if (!ip->hasFlag(BCI_IMM_C))                                           \
-        {                                                                      \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8); \
-        }                                                                      \
-        else                                                                   \
-        {                                                                      \
-            MK_IMMC_8(RCX);                                                    \
-            pp.emitCmpN(RAX, RCX, CPUBits::B8);                                \
-        }                                                                      \
-        pp.emitJump(__op, i, ip->b.s32);                                       \
-    } while (0)
-
-#define MK_JMPCMP_DEREF_16(__op)                                                \
+#define MK_JMPCMP_ADDR_8(__op, __offset, __memReg)                              \
     do                                                                          \
     {                                                                           \
-        pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);                 \
-        if (ip->d.u64 <= 0x7FFFFFFF)                                            \
-            pp.emitLoad16Indirect(ip->d.u32, RAX, RAX);                         \
-        else                                                                    \
-        {                                                                       \
-            pp.emitLoad64Immediate(RCX, ip->d.u64);                             \
-            pp.emitOpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);                     \
-            pp.emitLoad16Indirect(0, RAX, RAX);                                 \
-        }                                                                       \
         if (!ip->hasFlag(BCI_IMM_C))                                            \
         {                                                                       \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16); \
+            pp.emitLoad8Indirect(__offset, RAX, __memReg);                      \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);  \
+        }                                                                       \
+        else if (ip->c.u64 <= 0x7f)                                             \
+        {                                                                       \
+            pp.emitCmpNIndirectDst(__offset, ip->c.u32, __memReg, CPUBits::B8); \
         }                                                                       \
         else                                                                    \
         {                                                                       \
-            MK_IMMC_16(RCX);                                                    \
-            pp.emitCmpN(RAX, RCX, CPUBits::B16);                                \
+            pp.emitLoad8Indirect(__offset, RAX, __memReg);                      \
+            MK_IMMC_8(RCX);                                                     \
+            pp.emitCmpN(RAX, RCX, CPUBits::B8);                                 \
         }                                                                       \
         pp.emitJump(__op, i, ip->b.s32);                                        \
     } while (0)
 
-#define MK_JMPCMP_DEREF_32(__op)                                                \
-    do                                                                          \
-    {                                                                           \
-        pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);                 \
-        if (ip->d.u64 <= 0x7FFFFFFF)                                            \
-            pp.emitLoad32Indirect(ip->d.u32, RAX, RAX);                         \
-        else                                                                    \
-        {                                                                       \
-            pp.emitLoad64Immediate(RCX, ip->d.u64);                             \
-            pp.emitOpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);                     \
-            pp.emitLoad32Indirect(0, RAX, RAX);                                 \
-        }                                                                       \
-        if (!ip->hasFlag(BCI_IMM_C))                                            \
-        {                                                                       \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32); \
-        }                                                                       \
-        else                                                                    \
-        {                                                                       \
-            MK_IMMC_32(RCX);                                                    \
-            pp.emitCmpN(RAX, RCX, CPUBits::B32);                                \
-        }                                                                       \
-        pp.emitJump(__op, i, ip->b.s32);                                        \
+#define MK_JMPCMP_ADDR_16(__op, __offset, __memReg)                              \
+    do                                                                           \
+    {                                                                            \
+        if (!ip->hasFlag(BCI_IMM_C))                                             \
+        {                                                                        \
+            pp.emitLoad16Indirect(__offset, RAX, __memReg);                      \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16);  \
+        }                                                                        \
+        else if (ip->c.u64 <= 0x7fff)                                            \
+        {                                                                        \
+            pp.emitCmpNIndirectDst(__offset, ip->c.u32, __memReg, CPUBits::B16); \
+        }                                                                        \
+        else                                                                     \
+        {                                                                        \
+            pp.emitLoad16Indirect(__offset, RAX, __memReg);                      \
+            MK_IMMC_16(RCX);                                                     \
+            pp.emitCmpN(RAX, RCX, CPUBits::B16);                                 \
+        }                                                                        \
+        pp.emitJump(__op, i, ip->b.s32);                                         \
     } while (0)
 
-#define MK_JMPCMP_DEREF_64(__op)                                                \
-    do                                                                          \
-    {                                                                           \
-        pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);                 \
-        if (ip->d.u64 <= 0x7FFFFFFF)                                            \
-            pp.emitLoad64Indirect(ip->d.u32, RAX, RAX);                         \
-        else                                                                    \
-        {                                                                       \
-            pp.emitLoad64Immediate(RCX, ip->d.u64);                             \
-            pp.emitOpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);                     \
-            pp.emitLoad64Indirect(0, RAX, RAX);                                 \
-        }                                                                       \
-        if (!ip->hasFlag(BCI_IMM_C))                                            \
-        {                                                                       \
-            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B64); \
-        }                                                                       \
-        else                                                                    \
-        {                                                                       \
-            MK_IMMC_64(RCX);                                                    \
-            pp.emitCmpN(RAX, RCX, CPUBits::B64);                                \
-        }                                                                       \
-        pp.emitJump(__op, i, ip->b.s32);                                        \
+#define MK_JMPCMP_ADDR_32(__op, __offset, __memReg)                              \
+    do                                                                           \
+    {                                                                            \
+        if (!ip->hasFlag(BCI_IMM_C))                                             \
+        {                                                                        \
+            pp.emitLoad32Indirect(__offset, RAX, __memReg);                      \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);  \
+        }                                                                        \
+        else if (ip->c.u64 <= 0x7fffffff)                                        \
+        {                                                                        \
+            pp.emitCmpNIndirectDst(__offset, ip->c.u32, __memReg, CPUBits::B32); \
+        }                                                                        \
+        else                                                                     \
+        {                                                                        \
+            pp.emitLoad32Indirect(__offset, RAX, __memReg);                      \
+            MK_IMMC_32(RCX);                                                     \
+            pp.emitCmpN(RAX, RCX, CPUBits::B32);                                 \
+        }                                                                        \
+        pp.emitJump(__op, i, ip->b.s32);                                         \
+    } while (0)
+
+#define MK_JMPCMP_ADDR_64(__op, __offset, __memReg)                              \
+    do                                                                           \
+    {                                                                            \
+        if (!ip->hasFlag(BCI_IMM_C))                                             \
+        {                                                                        \
+            pp.emitLoad64Indirect(__offset, RAX, __memReg);                      \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B64);  \
+        }                                                                        \
+        else if (ip->c.u64 <= 0x7fffffff)                                        \
+        {                                                                        \
+            pp.emitCmpNIndirectDst(__offset, ip->c.u32, __memReg, CPUBits::B64); \
+        }                                                                        \
+        else                                                                     \
+        {                                                                        \
+            pp.emitLoad64Indirect(__offset, RAX, __memReg);                      \
+            MK_IMMC_64(RCX);                                                     \
+            pp.emitCmpN(RAX, RCX, CPUBits::B64);                                 \
+        }                                                                        \
+        pp.emitJump(__op, i, ip->b.s32);                                         \
     } while (0)
 
 #define MK_JMPCMP_F32(__op)                                          \

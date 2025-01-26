@@ -2576,59 +2576,67 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
-                MK_JMPCMP_STACK_8(JZ);
+                MK_JMPCMP_ADDR_8(JZ, offsetStack + ip->a.u32, RDI);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual8:
-                MK_JMPCMP_STACK_8(JNZ);
+                MK_JMPCMP_ADDR_8(JNZ, offsetStack + ip->a.u32, RDI);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual16:
-                MK_JMPCMP_STACK_16(JZ);
+                MK_JMPCMP_ADDR_16(JZ, offsetStack + ip->a.u32, RDI);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual16:
-                MK_JMPCMP_STACK_16(JNZ);
+                MK_JMPCMP_ADDR_16(JNZ, offsetStack + ip->a.u32, RDI);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual32:
-                MK_JMPCMP_STACK_32(JZ);
+                MK_JMPCMP_ADDR_32(JZ, offsetStack + ip->a.u32, RDI);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
-                MK_JMPCMP_STACK_32(JNZ);
+                MK_JMPCMP_ADDR_32(JNZ, offsetStack + ip->a.u32, RDI);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual64:
-                MK_JMPCMP_STACK_64(JZ);
+                MK_JMPCMP_ADDR_64(JZ, offsetStack + ip->a.u32, RDI);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
-                MK_JMPCMP_STACK_64(JNZ);
+                MK_JMPCMP_ADDR_64(JNZ, offsetStack + ip->a.u32, RDI);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
-                MK_JMPCMP_DEREF_8(JZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_8(JZ, ip->d.u32, RCX);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual8:
-                MK_JMPCMP_DEREF_8(JNZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_8(JNZ, ip->d.u32, RCX);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual16:
-                MK_JMPCMP_DEREF_16(JZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_16(JZ, ip->d.u32, RCX);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual16:
-                MK_JMPCMP_DEREF_16(JNZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_16(JNZ, ip->d.u32, RCX);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual32:
-                MK_JMPCMP_DEREF_32(JZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_32(JZ, ip->d.u32, RCX);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual32:
-                MK_JMPCMP_DEREF_32(JNZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_32(JNZ, ip->d.u32, RCX);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual64:
-                MK_JMPCMP_DEREF_64(JZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_64(JZ, ip->d.u32, RCX);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual64:
-                MK_JMPCMP_DEREF_64(JNZ);
+                pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
+                MK_JMPCMP_ADDR_64(JNZ, ip->d.u32, RCX);
                 break;
 
                 /////////////////////////////////////
