@@ -2631,50 +2631,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_DEREF_64(JNZ);
                 break;
 
-            case ByteCodeOp::JumpIfStackZero8:
-                pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B8);
-                pp.emitJump(JZ, i, ip->b.s32);
-                break;
-            case ByteCodeOp::JumpIfStackNotZero8:
-                pp.emitLoad8Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B8);
-                pp.emitJump(JNZ, i, ip->b.s32);
-                break;
-
-            case ByteCodeOp::JumpIfStackZero16:
-                pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B16);
-                pp.emitJump(JZ, i, ip->b.s32);
-                break;
-            case ByteCodeOp::JumpIfStackNotZero16:
-                pp.emitLoad16Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B16);
-                pp.emitJump(JNZ, i, ip->b.s32);
-                break;
-
-            case ByteCodeOp::JumpIfStackZero32:
-                pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitJump(JZ, i, ip->b.s32);
-                break;
-            case ByteCodeOp::JumpIfStackNotZero32:
-                pp.emitLoad32Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitJump(JNZ, i, ip->b.s32);
-                break;
-
-            case ByteCodeOp::JumpIfStackZero64:
-                pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B64);
-                pp.emitJump(JZ, i, ip->b.s32);
-                break;
-            case ByteCodeOp::JumpIfStackNotZero64:
-                pp.emitLoad64Indirect(offsetStack + ip->a.u32, RAX, RDI);
-                pp.emitTestN(RAX, RAX, CPUBits::B64);
-                pp.emitJump(JNZ, i, ip->b.s32);
-                break;
-
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:

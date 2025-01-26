@@ -707,58 +707,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->ip += ip->b.s32;
             break;
 
-        case ByteCodeOp::JumpIfStackZero8:
-            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) == 0)
-                context->ip += ip->b.s32;
-            break;
-        case ByteCodeOp::JumpIfStackNotZero8:
-            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) != 0)
-                context->ip += ip->b.s32;
-            break;
-
-        case ByteCodeOp::JumpIfStackZero16:
-            SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 2);
-            if (*reinterpret_cast<uint16_t*>(context->bp + ip->a.u32) == 0)
-                context->ip += ip->b.s32;
-            break;
-        case ByteCodeOp::JumpIfStackNotZero16:
-            SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 2);
-            if (*reinterpret_cast<uint16_t*>(context->bp + ip->a.u32) != 0)
-                context->ip += ip->b.s32;
-            break;
-
-        case ByteCodeOp::JumpIfStackZero32:
-            SWAG_ASSERT(ip->a.u32 + 4 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 4);
-            if (*reinterpret_cast<uint32_t*>(context->bp + ip->a.u32) == 0)
-                context->ip += ip->b.s32;
-            break;
-        case ByteCodeOp::JumpIfStackNotZero32:
-            SWAG_ASSERT(ip->a.u32 + 4 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 4);
-            if (*reinterpret_cast<uint32_t*>(context->bp + ip->a.u32) != 0)
-                context->ip += ip->b.s32;
-            break;
-
-        case ByteCodeOp::JumpIfStackZero64:
-            SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 8);
-            if (*reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) == 0)
-                context->ip += ip->b.s32;
-            break;
-        case ByteCodeOp::JumpIfStackNotZero64:
-            SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
-            SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 8);
-            if (*reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) != 0)
-                context->ip += ip->b.s32;
-            break;
-
         case ByteCodeOp::JumpIfLowerS8:
             if (IMMA_S8(ip) < IMMC_S8(ip))
                 context->ip += ip->b.s32;
