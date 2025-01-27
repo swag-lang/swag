@@ -34,22 +34,22 @@ namespace
             concat.addU8(getREX(numBits == CPUBits::B64, reg1 >= R8, false, reg2 >= R8));
     }
 
-    void emitModRM(Concat& concat, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1)
+    void emitModRM(Concat& concat, uint32_t memOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1)
     {
-        if (stackOffset == 0 && (memReg < R8 || memReg == R12))
+        if (memOffset == 0 && (memReg < R8 || memReg == R12))
         {
             // mov al, byte ptr [rdi]
             concat.addU8(getModRM(0, reg, memReg) | op - 1);
             if (memReg == RSP || memReg == R12)
                 concat.addU8(0x24);
         }
-        else if (stackOffset <= 0x7F)
+        else if (memOffset <= 0x7F)
         {
             // mov al, byte ptr [rdi + ??]
             concat.addU8(getModRM(Disp8, reg, memReg) | op - 1);
             if (memReg == RSP || memReg == R12)
                 concat.addU8(0x24);
-            concat.addU8(static_cast<uint8_t>(stackOffset));
+            concat.addU8(static_cast<uint8_t>(memOffset));
         }
         else
         {
@@ -57,7 +57,7 @@ namespace
             concat.addU8(getModRM(Disp32, reg, memReg) | op - 1);
             if (memReg == RSP || memReg == R12)
                 concat.addU8(0x24);
-            concat.addU32(stackOffset);
+            concat.addU32(memOffset);
         }
     }
 
@@ -2327,7 +2327,7 @@ void SCBE_X64::emitNegNIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister
 
 void SCBE_X64::emitCMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
-    if (numBits < CPUBits::B32)
+    if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
         numBits = CPUBits::B32;
     emitREX(concat, numBits, regDst, regSrc);
     concat.addU8(0x0F);

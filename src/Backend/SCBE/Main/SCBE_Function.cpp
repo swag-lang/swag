@@ -2576,67 +2576,67 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
-                MK_JMPCMP_ADDR_8(JZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual8:
-                MK_JMPCMP_ADDR_8(JNZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual16:
-                MK_JMPCMP_ADDR_16(JZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual16:
-                MK_JMPCMP_ADDR_16(JNZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual32:
-                MK_JMPCMP_ADDR_32(JZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
-                MK_JMPCMP_ADDR_32(JNZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual64:
-                MK_JMPCMP_ADDR_64(JZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
-                MK_JMPCMP_ADDR_64(JNZ, offsetStack + ip->a.u32, RDI);
+                MK_JMPCMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_8(JZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_8(JNZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_16(JZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_16(JNZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_32(JZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_32(JNZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_64(JZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
-                MK_JMPCMP_ADDR_64(JNZ, ip->d.u32, RCX);
+                MK_JMPCMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
