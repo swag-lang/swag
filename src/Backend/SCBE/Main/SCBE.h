@@ -38,8 +38,6 @@ struct SCBE final : Backend
     static void emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg);
     static void emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
-    static void emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
-    static void emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitBinOpIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitBinOpDivIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);

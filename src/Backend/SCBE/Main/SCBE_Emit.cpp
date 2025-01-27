@@ -150,22 +150,38 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
 
 void SCBE::emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
-    emitBinOpFloat32(pp, ip, op);
-    pp.emitStoreF32Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
+    emitBinOpN(pp, ip, op, CPUBits::F32);
+    pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, CPUBits::F32);
 }
 
 void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
-    emitBinOpFloat64(pp, ip, op);
-    pp.emitStoreF64Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
+    emitBinOpN(pp, ip, op, CPUBits::F64);
+    pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, CPUBits::F64);
 }
 
 void SCBE::emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
-    if (numBits == CPUBits::F32)
-        emitBinOpFloat32(pp, ip, op);
-    else if (numBits == CPUBits::F64)
-        emitBinOpFloat64(pp, ip, op);
+    if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
+    {
+        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+        {
+            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
+            pp.emitOpN(REG_OFFSET(ip->b.u32), op, numBits);
+        }
+        else
+        {
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emitLoadNImmediate(XMM0, ip->a.u64, numBits);
+            else
+                pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
+            if (ip->hasFlag(BCI_IMM_B))
+                pp.emitLoadNImmediate(XMM1, ip->b.u64, numBits);
+            else
+                pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), XMM1, RDI, numBits);
+            pp.emitOpN(XMM0, XMM1, op, numBits);
+        }
+    }
     else
     {
         if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
@@ -204,60 +220,6 @@ void SCBE::emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPU
                 pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), RCX, RDI, numBits);
             pp.emitOpN(RAX, RCX, op, numBits);
         }
-    }
-}
-
-void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoadF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
-        pp.emitOpF32(REG_OFFSET(ip->b.u32), op);
-    }
-    else
-    {
-        if (ip->hasFlag(BCI_IMM_A))
-        {
-            pp.emitLoad32Immediate(RAX, ip->a.u32);
-            pp.emitCopyF32(XMM0, RAX);
-        }
-        else
-            pp.emitLoadF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
-        if (ip->hasFlag(BCI_IMM_B))
-        {
-            pp.emitLoad32Immediate(RAX, ip->b.u32);
-            pp.emitCopyF32(XMM1, RAX);
-        }
-        else
-            pp.emitLoadF32Indirect(REG_OFFSET(ip->b.u32), XMM1, RDI);
-        pp.emitOpF32(XMM0, XMM1, op);
-    }
-}
-
-void SCBE::emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoadF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
-        pp.emitOpF64(REG_OFFSET(ip->b.u32), op);
-    }
-    else
-    {
-        if (ip->hasFlag(BCI_IMM_A))
-        {
-            pp.emitLoad64Immediate(RAX, ip->a.u64);
-            pp.emitCopyF64(XMM0, RAX);
-        }
-        else
-            pp.emitLoadF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
-        if (ip->hasFlag(BCI_IMM_B))
-        {
-            pp.emitLoad64Immediate(RAX, ip->b.u64);
-            pp.emitCopyF64(XMM1, RAX);
-        }
-        else
-            pp.emitLoadF64Indirect(REG_OFFSET(ip->b.u32), XMM1, RDI);
-        pp.emitOpF64(XMM0, XMM1, op);
     }
 }
 
